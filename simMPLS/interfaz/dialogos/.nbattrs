@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE attributes PUBLIC "-//NetBeans//DTD DefaultAttributes 1.0//EN" "http://www.netbeans.org/dtds/attributes-1_0.dtd">
+<attributes version="1.0">
+    <fileobject name="JLicencia.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="JLicencia"/>
+    </fileobject>
+    <fileobject name="JPanelCoordenadas.java">
+        <attr name="class_dependency_javax.swing.JPanel" stringvalue="JPanelCoordenadas"/>
+    </fileobject>
+    <fileobject name="JSobre.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="JSobre"/>
+    </fileobject>
+    <fileobject name="JVentanaAdvertencia.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="JVentanaAdvertencia"/>
+    </fileobject>
+    <fileobject name="JVentanaAyuda.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="JVentanaAyuda"/>
+    </fileobject>
+    <fileobject name="JVentanaBooleana.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="JVentanaBooleana"/>
+    </fileobject>
+    <fileobject name="JVentanaComentario.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="JVentanaComentario"/>
+    </fileobject>
+    <fileobject name="JVentanaEmisor.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="JVentanaEmisor"/>
+    </fileobject>
+    <fileobject name="JVentanaEnlace.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="JVentanaEnlace"/>
+    </fileobject>
+    <fileobject name="JVentanaError.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="JVentanaError"/>
+    </fileobject>
+    <fileobject name="JVentanaLER.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="JVentanaLER"/>
+    </fileobject>
+    <fileobject name="JVentanaLERA.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="JVentanaLERA"/>
+    </fileobject>
+    <fileobject name="JVentanaLSR.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="JVentanaLSR"/>
+    </fileobject>
+    <fileobject name="JVentanaLSRA.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="JVentanaLSRA"/>
+    </fileobject>
+    <fileobject name="JVentanaReceptor.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="JVentanaReceptor"/>
+    </fileobject>
+</attributes>

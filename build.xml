@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="all" name="openSimMPLS">
+
+    <target name="compile">
+        <javac debug="true" deprecation="true" destdir="." srcdir=".">
+        </javac>
+    </target>
+
+    <target depends="compile" name="jar">
+        <jar basedir="." compress="true" jarfile="openSimMPLS.jar" manifest="openSimMPLS.mf">
+            <exclude name="**/*.pdf"/>
+            <exclude name="**/*.ppt"/>
+            <exclude name="**/*.doc"/>
+            <exclude name="**/*.rtf"/>
+            <exclude name="**/*.java"/>
+            <exclude name="**/*.form"/>
+            <exclude name="openSimMPLS.jar"/>
+            <exclude name="openSimMPLS_src.jar"/>
+        </jar>
+    </target>
+
+    <target depends="clean" name="jarsrc">
+        <jar basedir="." compress="true" jarfile="openSimMPLS_src.jar">
+            <exclude name="**/*.pdf"/>
+            <exclude name="**/*.ppt"/>
+            <exclude name="**/*.doc"/>
+            <exclude name="**/*.rtf"/>
+            <exclude name="openSimMPLS.jar"/>
+            <exclude name="openSimMPLS_src.jar"/>
+        </jar>
+    </target>
+
+    <target depends="jar" description="Generando Open SimMPLS...." name="all">
+        <echo message="¡Open SimMPLS generado!"/>
+    </target>
+
+    <target depends="all" description="Ejecutando Open SimMPLS...." name="test">
+        <java classname="simMPLS.principal.openSimMPLS" failonerror="true" fork="true">
+            <classpath>
+                <pathelement location="."/>
+            </classpath>
+        </java>
+    </target>
+
+    <target description="Generando la documentación de la API." name="javadoc">
+        <mkdir dir="documentacion/simMPLS"/>
+        <javadoc destdir="documentacion/simMPLS" packagenames="simMPLS.*">
+            <sourcepath>
+                <pathelement location="."/>
+            </sourcepath>
+        </javadoc>
+    </target>
+
+    <target description="Eliminando los residuos..." name="clean">
+        <delete>
+            <fileset dir="simMPLS">
+                <include name="**/*.class"/>
+            </fileset>
+        </delete>
+        <delete dir="documentacion/html/html/GoSSobreMPLS_ESresources"/>
+        <delete dir="documentacion/html/html/GoSSobreMPLS_ES/simMPLS"/>
+        <delete>
+            <fileset dir="documentacion/html/GoSSobreMPLS_ES">
+                <include name="*.*"/>
+            </fileset>
+        </delete>
+        <delete>
+            <fileset dir="documentacion/html/GoSSobreMPLS_ES">
+                <include name="*"/>
+            </fileset>
+        </delete>
+    </target>
+
+
+    <xmlcatalog id="changeme"/>
+</project>

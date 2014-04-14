@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE attributes PUBLIC "-//NetBeans//DTD DefaultAttributes 1.0//EN" "http://www.netbeans.org/dtds/attributes-1_0.dtd">
+<attributes version="1.0">
+    <fileobject name="JPanelDisenio.java">
+        <attr name="class_dependency_javax.swing.JPanel" stringvalue="JPanelDisenio"/>
+    </fileobject>
+    <fileobject name="JPanelSimulacion.java">
+        <attr name="class_dependency_javax.swing.JPanel" stringvalue="JPanelSimulacion"/>
+    </fileobject>
+    <fileobject name="JSimulador.java">
+        <attr name="class_dependency_javax.swing.JFrame" stringvalue="JSimulador"/>
+    </fileobject>
+    <fileobject name="JVentanaHija.java">
+        <attr name="class_dependency_javax.swing.JInternalFrame" stringvalue="JVentanaHija"/>
+    </fileobject>
+</attributes>

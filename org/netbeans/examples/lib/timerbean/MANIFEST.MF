@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+
+Name: org/netbeans/examples/lib/timerbean/Timer.class
+Java-Bean: True
+
