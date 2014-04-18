@@ -2,9 +2,16 @@ OpenSimMPLS is an MPLS network simulator, multiplatform and mutilanguage. It is 
 
 It is developed by:
 
-- Manuel Domínguez-Dorado <ingeniero@ManoloDominguez.com>
-- José Luis González Sánchez <jlgs@unex.es>
-- Javier Carmona Murillo <jcarmur@unex.es>
+  Main author:
+
+    - Manuel Domínguez-Dorado <ingeniero@ManoloDominguez.com>
+   
+  Other collaborators:
+  
+    - José Luis González Sánchez <jlgs@unex.es>
+    - Javier Carmona Murillo <jcarmur@unex.es>
+    
+    
 
 Please, refer always to the project home page at:
 
