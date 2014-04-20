@@ -7,7 +7,7 @@ import simMPLS.protocolo.TPDUMPLS;
  * This class implements an entry of the DMGP memory. It stores a GoS packet and
  * all neccesary data to be forwarded.
  *
- * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @author Manuel Domínguez-Dorado - ingeniero@ManoloDominguez.com
  * @version 1.0
  */
 public class TEntradaDMGP implements Comparable {

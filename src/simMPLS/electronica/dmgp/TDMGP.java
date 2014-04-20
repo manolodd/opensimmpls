@@ -12,7 +12,7 @@ import simMPLS.utiles.TLock;
 /**
  * This class implements a DMGP memory to save GoS-aware PDUs temporarily.
  *
- * @author Manuel Domínguez Dorado</B - ingeniero@ManoloDominguez.com @version
+ * @author Manuel Domínguez-Dorado</B - ingeniero@ManoloDominguez.com @version
  * 1.0
  */
 public class TDMGP {

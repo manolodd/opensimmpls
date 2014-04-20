@@ -10,7 +10,7 @@ import simMPLS.utiles.TLock;
 /**
  * This calss implements a flow entry for the DMGP memory.
  *
- * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @author Manuel Domínguez-Dorado - ingeniero@ManoloDominguez.com
  * @version 1.0
  */
 public class TEntradaFlujoDMGP implements Comparable {
