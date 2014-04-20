@@ -4,11 +4,14 @@ It is developed by:
 
 Main author:
 
-- Manuel Domínguez-Dorado <ingeniero@ManoloDominguez.com>
-Other collaborators:
+    - Manuel Domínguez-Dorado <ingeniero@ManoloDominguez.com>
+   
+  Other collaborators:
 
-- José Luis González Sánchez <jlgs@unex.es>
-- Javier Carmona Murillo <jcarmur@unex.es>
+    - José Luis González Sánchez <jlgs@unex.es>
+    - Javier Carmona Murillo <jcarmur@unex.es>
+    
+    
 Please, refer always to the project home page at:
 
-http://www.manolodominguez.com/projects/opensimmpls/
+    http://www.manolodominguez.com/projects/opensimmpls/
