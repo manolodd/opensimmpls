@@ -6,20 +6,22 @@ import simMPLS.protocolo.TPDUMPLS;
 import simMPLS.utiles.TIdentificadorRotativo;
 import simMPLS.utiles.TLock;
 
-
 /**
- * Este m�todo implementa una tabla donde se almacenar�n las peticiones de
- * retransmisi�n realizadas por un nodo y a�n no contestadas.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements a table where received requests for retrnasmission will
+ * be stored while they wait to be managed.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public class TMatrizPeticionesGPSRP {
-    
+
     /**
-     * Constructo de la clase. Crea una nueva instancia de TMatrizPeticionesGPSRP.
+     * This is the class constructor. It creates a new instance of
+     * TMatrizPeticionesGPSRP.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     */    
+     */
     public TMatrizPeticionesGPSRP() {
         entradas = new TreeSet();
         generaId = new TIdentificadorRotativo();
@@ -27,10 +29,12 @@ public class TMatrizPeticionesGPSRP {
     }
 
     /**
-     * Este m�todo reinicia el valro de los atributos de la clase, dej�ndolos como si
-     * acabasen de ser creados por el constructor.
+     * This method reset all attributes od the class to its original values, as
+     * when created by the constructor.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     */    
+     */
     public void reset() {
         entradas = null;
         generaId = null;
@@ -39,14 +43,16 @@ public class TMatrizPeticionesGPSRP {
         generaId = new TIdentificadorRotativo();
         cerrojo = new TLock();
     }
-    
+
     /**
-     * Este m�todo actualiza el puerto de salida de todas las entradas coincidentes,
-     * por un nuevo puerto de salida.
-     * @param pAnterior Puerto que se desea susituir en las entradas.
-     * @param pNuevo Nuevo valor para el puerto de salida de las entradas.
+     * This method update the outgoing port of for all the matching entries. It
+     * will be changed for a new outgoing port.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param pAnterior The port that is goint to be replaced.
+     * @param pNuevo The new outgoing port for matching entries.
      * @since 1.0
-     */    
+     */
     public void actualizarPuertoSalida(int pAnterior, int pNuevo) {
         this.cerrojo.bloquear();
         Iterator ite = this.entradas.iterator();
@@ -61,11 +67,14 @@ public class TMatrizPeticionesGPSRP {
     }
 
     /**
-     * Este m�todo elimina de la tabla todas las entradas que tengan como puerto de
-     * salida el puerto especificado por par�metro.
-     * @param pAnterior Puerto que determinar� si la entrada se elimina o no.
+     * This method removes from the table all entries that have the outgoing
+     * port equal than the one specified as an argument.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param pAnterior Port that must match the outgoing port of entries to be
+     * removed.
      * @since 1.0
-     */    
+     */
     public void eliminarEntradasConPuertoSalida(int pAnterior) {
         this.cerrojo.bloquear();
         Iterator ite = this.entradas.iterator();
@@ -78,14 +87,18 @@ public class TMatrizPeticionesGPSRP {
         }
         this.cerrojo.liberar();
     }
-    
+
     /**
-     * Este m�todo inserta una nueva entrada en la tabla.
+     * This method insert a new entry in the table.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param paquete Packet for wich the retransmission is going to be
+     * requested.
+     * @param pEntrada Incoming port of the packet. It will be the outgoing port
+     * for the retransmission request.
+     * @return The new created an inserted entry. Otherwise, NULL.
      * @since 1.0
-     * @param paquete Paquete para el cual se va a solicitar retransmisi�n.
-     * @param pEntrada Puerto de entrada de dicho paquete. Ser� la salida de la retransmisi�n.
-     * @return La entrada creada que se acaba de insertar. Null en caso contrario.
-     */    
+     */
     public TEntradaPeticionesGPSRP insertarEntrada(TPDUMPLS paquete, int pEntrada) {
         this.cerrojo.bloquear();
         TEntradaPeticionesGPSRP ep = new TEntradaPeticionesGPSRP(this.generaId.obtenerNuevo());
@@ -93,9 +106,9 @@ public class TMatrizPeticionesGPSRP {
         ep.ponerIdFlujo(paquete.obtenerCabecera().obtenerIPOrigen().hashCode());
         ep.ponerIdPaquete(paquete.obtenerCabecera().obtenerClavePrimaria());
         int numIPs = paquete.obtenerCabecera().obtenerCampoOpciones().obtenerNumeroDeNodosActivosAtravesados();
-        int i=0;
+        int i = 0;
         String siguienteIP = "";
-        for (i=0; i<numIPs; i++) {
+        for (i = 0; i < numIPs; i++) {
             siguienteIP = paquete.obtenerCabecera().obtenerCampoOpciones().obtenerActivoNodoAtravesado(i);
             if (siguienteIP != null) {
                 ep.ponerIPNodoAtravesado(siguienteIP);
@@ -105,13 +118,15 @@ public class TMatrizPeticionesGPSRP {
         this.cerrojo.liberar();
         return ep;
     }
-    
+
     /**
-     * Este m�todo elimina una entrada de la tabla.
-     * @param idf Flujo al que hace referencia la entrada.
-     * @param idp Paquete al que hace referencia la tabla.
+     * This method removes a entry from the table.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param idf Flow the entry refers to.
+     * @param idp Packet the table refers to.
      * @since 1.0
-     */    
+     */
     public void eliminarEntrada(int idf, int idp) {
         this.cerrojo.bloquear();
         Iterator ite = this.entradas.iterator();
@@ -126,15 +141,16 @@ public class TMatrizPeticionesGPSRP {
         }
         this.cerrojo.liberar();
     }
-    
-    
+
     /**
-     * Este m�todo obtiene una entrada concreta de la tabla.
-     * @param idf Identificador del flujo al que hace referencia la entrada.
-     * @param idp identificador del paquete al que hace referencia la entrada.
-     * @return Entrada buscada. NULL si no se encuentra.
+     * This method obtains a specific entry from the table.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param idf Flow identifier the entry refers to.
+     * @param idp Packet identifier the entry refers to.
+     * @return Entry matching the specified arguments. Otherwise, NULL.
      * @since 1.0
-     */    
+     */
     public TEntradaPeticionesGPSRP obtenerEntrada(int idf, int idp) {
         this.cerrojo.bloquear();
         Iterator ite = this.entradas.iterator();
@@ -151,13 +167,14 @@ public class TMatrizPeticionesGPSRP {
         this.cerrojo.liberar();
         return null;
     }
-    
+
     /**
-     * Este m�todo actualiza la tabla. B�sicamente consiste en eliminar todas aquellas
-     * entradas para las cuales ya no quedan intentos de petici�n y se les han agotado
-     * los temporizadores.
+     * This method updates the table. It removes all entries for which no
+     * retransmission attemps are available and their timeouts have expired.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     */    
+     */
     public void actualizarEntradas() {
         this.cerrojo.bloquear();
         Iterator ite = this.entradas.iterator();
@@ -172,13 +189,14 @@ public class TMatrizPeticionesGPSRP {
         }
         this.cerrojo.liberar();
     }
-    
+
     /**
-     * Este m�todo decrementa el timeout para todas las entradas de la tabla.
-     * @param d N�mero de nanosegundos en los que se debe decrementar el timeout de las
-     * entradas.
+     * This method drecreases the timeout for all entries of the table.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param d Number of nanoseconds to be decreased from all entries timeouts.
      * @since 1.0
-     */    
+     */
     public void decrementarTimeOut(int d) {
         this.cerrojo.bloquear();
         Iterator ite = this.entradas.iterator();
@@ -191,12 +209,14 @@ public class TMatrizPeticionesGPSRP {
     }
 
     /**
-     * Este m�todo obtiene el puerto de salida de una entrada concreta.
-     * @param idf Identificador del flujo al que hace referencia la entrada.
-     * @param idp Identificador del paquete al que hace referencia la entrada.
-     * @return Puerto de salida de la entrada.
+     * This method obtains the outgoing port of a specific entry.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param idf Flow identifier the entry refers to.
+     * @param idp Packet identifier the entry refers to.
+     * @return Outgoing port of the entry maching the specified arguments.
      * @since 1.0
-     */    
+     */
     public int obtenerPuertoSalida(int idf, int idp) {
         this.cerrojo.bloquear();
         Iterator ite = this.entradas.iterator();
@@ -213,16 +233,18 @@ public class TMatrizPeticionesGPSRP {
         this.cerrojo.liberar();
         return -1;
     }
-    
+
     /**
-     * Este m�todo obtiene la IP del siguiente nodo al que se debe solicitar la
-     * retransmisi�n de un paquete.
-     * @param idf Identificador de flujo de la entrada deseada.
-     * @param idp Identificador de paquete de la entrada deseada.
-     * @return IP del siguiente nodo al que se le tiene que solicitar la retransmisi�n. NULL si
-     * no existe tal nodo.
+     * Thism method obtains the IP address of the following node that should be
+     * requested for a packet retransmission.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param idf Flow identifier of the desired entry.
+     * @param idp Packet identifier of the desired entry.
+     * @return IP address of the following node to be requested for a packet
+     * retransmission. Otherwise, NULL.
      * @since 1.0
-     */    
+     */
     public String obtenerIPNodoActivo(int idf, int idp) {
         this.cerrojo.bloquear();
         Iterator ite = this.entradas.iterator();
@@ -239,37 +261,42 @@ public class TMatrizPeticionesGPSRP {
         this.cerrojo.liberar();
         return null;
     }
-    
+
     /**
-     * Este m�todo obtiene el iterador de las entradas de la tabla.
-     * @return iterador de las entradas de la tabla.
+     * This method obtains the interator of all entries of the table.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return Iterator of all entries in the table.
      * @since 1.0
-     */    
+     */
     public Iterator obtenerIterador() {
         return entradas.iterator();
     }
-    
+
     /**
-     * Este m�todo permite el acceso al cerrojo que permite la sincronizaci�n de la
-     * tabla.
-     * @return Cerrojo de la tabla.
+     * This method allow accesing the sync monitor of this table.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return Sync monitor of the table.
      * @since 1.0
-     */    
+     */
     public TLock obtenerCerrojo() {
         return this.cerrojo;
     }
-    
+
     /**
-     * Temporizador para ver cu�ndo se ha de repetir la solicitud.
+     * Timer used to know when a retransmission request should be retried.
+     *
      * @since 1.0
-     */    
+     */
     public static final int TIMEOUT = 50000;
     /**
-     * N�mero de veces que se ha de repetir la solicitud.
+     * Number of times tha the rentransmission request should be retried.
+     *
      * @since 1.0
-     */    
+     */
     public static final int INTENTOS = 8;
-    
+
     private TreeSet entradas;
     private TIdentificadorRotativo generaId;
     private TLock cerrojo;
