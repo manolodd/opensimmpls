@@ -6,12 +6,11 @@ import simMPLS.protocolo.TPDUMPLS;
 import simMPLS.utiles.TIdentificadorRotativo;
 import simMPLS.utiles.TLock;
 
-
 /**
  * This calss implements a flow entry for the DMGP memory.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.0
+ * @version 1.1
  */
 public class TEntradaFlujoDMGP implements Comparable {
 
@@ -19,6 +18,7 @@ public class TEntradaFlujoDMGP implements Comparable {
      * This method is the constructor. It creates a new TEntradaFlujoDMGP
      * instance.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param ordenLlegada Incoming order of the flow to the DMGP memory.
      * @since 1.0
      */
@@ -36,6 +36,7 @@ public class TEntradaFlujoDMGP implements Comparable {
     /**
      * This method establishes the flow identifier associated to this entry.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param idf The flow identifier.
      * @since 1.0
      */
@@ -46,6 +47,7 @@ public class TEntradaFlujoDMGP implements Comparable {
     /**
      * This method returns the identifier of the flow assigned to this entry.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The flow identifier.
      * @since 1.0
      */
@@ -66,6 +68,7 @@ public class TEntradaFlujoDMGP implements Comparable {
     /**
      * This method obtains the percentage of DMGP assigned to this flow..
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Percentage of DMGP assigned to this flow.
      * @since 1.0
      */
@@ -76,6 +79,7 @@ public class TEntradaFlujoDMGP implements Comparable {
     /**
      * This method establishes the number of DMGP octects assigned to this flow.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param oa Number of DMGP octects assigned to this flow.
      * @since 1.0
      */
@@ -86,6 +90,7 @@ public class TEntradaFlujoDMGP implements Comparable {
     /**
      * This method obtains the number of DMGP octects assigned to this flow.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The number of DMGP octects assigned to this flow.
      * @since 1.0
      */
@@ -97,6 +102,7 @@ public class TEntradaFlujoDMGP implements Comparable {
      * This method establishes the number of DMGP octects currently used by the
      * flow.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param oo Number of DMGP octects currently used by the flow.
      * @since 1.0
      */
@@ -105,9 +111,10 @@ public class TEntradaFlujoDMGP implements Comparable {
     }
 
     /**
-     * This method obtains the number of DMGP octects currently used by the 
+     * This method obtains the number of DMGP octects currently used by the
      * flow.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Number of DMGP octects currently used by the flow.
      * @since 1.0
      */
@@ -118,6 +125,7 @@ public class TEntradaFlujoDMGP implements Comparable {
     /**
      * This method obtains the tree that contains all the packets of this flow.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The tree containing all the packets of this flow.
      * @since 1.0
      */
@@ -128,6 +136,7 @@ public class TEntradaFlujoDMGP implements Comparable {
     /**
      * This method contains the order of incoming to the DMGP.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The incoming order.
      * @since 1.0
      */
@@ -138,6 +147,7 @@ public class TEntradaFlujoDMGP implements Comparable {
     /**
      * This method returns the monitor of this flow.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      * @return The monitor of this flow.
      */
@@ -158,11 +168,12 @@ public class TEntradaFlujoDMGP implements Comparable {
     }
 
     /**
-     * This method inserts a packet that belongs to this flow, in the tree of 
+     * This method inserts a packet that belongs to this flow, in the tree of
      * packets. If there is available space, the packet is inserted. Otherwise
-     * packets are reselased untill there are space. If after this release 
-     * there are no enough space, the packet is not inserted.
+     * packets are reselased untill there are space. If after this release there
+     * are no enough space, the packet is not inserted.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param paquete Packet of this flow to be inserted in the DMGP.
      * @since 1.0
      */
@@ -191,8 +202,9 @@ public class TEntradaFlujoDMGP implements Comparable {
     /**
      * This method compares this flow entry with another of the same type.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param o The entry to be compared with.
-     * @return -1, 0,  1, depending on whether the current instance is lesser, 
+     * @return -1, 0, 1, depending on whether the current instance is lesser,
      * equal or greater than the instance passed as an argument. In terms of
      * shorting.
      * @since 1.0

@@ -7,13 +7,11 @@ import simMPLS.protocolo.TPDUMPLS;
 import simMPLS.utiles.TIdentificadorRotativo;
 import simMPLS.utiles.TLock;
 
-
-
 /**
  * This class implements a DMGP memory to save GoS-aware PDUs temporarily.
  *
- * @author Manuel Domínguez Dorado</B - ingeniero@ManoloDominguez.com @version
- * 1.0
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public class TDMGP {
 
@@ -21,6 +19,7 @@ public class TDMGP {
      * This method is the class constructor. It creates a new instance of TDMGP
      * and initialize its attributes.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      */
     public TDMGP() {
@@ -35,6 +34,7 @@ public class TDMGP {
     /**
      * This method establish the global size of DMGP in kilobytes.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      * @param tam Size in kilobytes.
      */
@@ -46,6 +46,7 @@ public class TDMGP {
     /**
      * This method obtains the globals soze of DMGP in kilobites.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Size in kilobites.
      * @since 1.0
      */
@@ -56,6 +57,7 @@ public class TDMGP {
     /**
      * This method look for a packet tagged as GoS within the DMGP memory.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param idf Identifier of the flow the packet belongs to.
      * @param idp Identifier of the packet.
      * @return The packet, if in the DMGP. NULL on the contrary.
@@ -84,6 +86,7 @@ public class TDMGP {
     /**
      * This method insert a new GoS packet into the DMGP memory.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param paquete The packet to be inserted into the DMGP memory.
      * @since 1.0
      */
@@ -103,6 +106,7 @@ public class TDMGP {
      * This method restores the value of all attributes as when created by the
      * constructor.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      */
     public void reset() {
