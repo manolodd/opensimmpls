@@ -23,12 +23,12 @@ public class TDMGP {
      * @since 1.0
      */
     public TDMGP() {
-        monitor = new TLock();
-        generaId = new TIdentificadorRotativo();
-        flujos = new TreeSet();
-        porcentajeTotalDisponible = 100;
-        tamanioTotalDMGPKB = 1;
-        octetosTotalesAsignados = 0;
+        this.monitor = new TLock();
+        this.idGenerator = new TIdentificadorRotativo();
+        this.flows = new TreeSet();
+        this.totalAvailablePercentage = 100;
+        this.totalDMGPSizeInKB = 1;
+        this.totalAssignedOctects = 0;
     }
 
     /**
@@ -36,10 +36,10 @@ public class TDMGP {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     * @param tam Size in kilobytes.
+     * @param size Size in kilobytes.
      */
-    public void ponerTamanioDMGPEnKB(int tam) {
-        this.tamanioTotalDMGPKB = tam;
+    public void setDMGPSizeInKB(int size) {
+        this.totalDMGPSizeInKB = size;
         this.reset();
     }
 
@@ -50,32 +50,32 @@ public class TDMGP {
      * @return Size in kilobites.
      * @since 1.0
      */
-    public int obtenerTamanioDMGPEnKB() {
-        return this.tamanioTotalDMGPKB;
+    public int getDMGPSizeInKB() {
+        return this.totalDMGPSizeInKB;
     }
 
     /**
      * This method look for a packet tagged as GoS within the DMGP memory.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param idf Identifier of the flow the packet belongs to.
-     * @param idp Identifier of the packet.
+     * @param flowID Identifier of the flow the packet belongs to.
+     * @param packetID Identifier of the packet.
      * @return The packet, if in the DMGP. NULL on the contrary.
      * @since 1.0
      */
-    public TPDUMPLS buscarPaquete(int idf, int idp) {
-        TPDUMPLS paqueteBuscado = null;
-        TDMGPFlowEntry efdmgp = obtenerFlujo(idf);
-        if (efdmgp != null) {
+    public TPDUMPLS getPacket(int flowID, int packetID) {
+        TPDUMPLS wantedPacket = null;
+        TDMGPFlowEntry dmgpFlowEntry = this.getFlow(flowID);
+        if (dmgpFlowEntry != null) {
             this.monitor.bloquear();
-            Iterator it = efdmgp.obtenerEntradas().iterator();
-            TDMGPEntry edmgp = null;
+            Iterator it = dmgpFlowEntry.obtenerEntradas().iterator();
+            TDMGPEntry dmgpEntry = null;
             while (it.hasNext()) {
-                edmgp = (TDMGPEntry) it.next();
-                if (edmgp.obtenerIdPaquete() == idp) {
-                    paqueteBuscado = edmgp.obtenerPaquete();
+                dmgpEntry = (TDMGPEntry) it.next();
+                if (dmgpEntry.obtenerIdPaquete() == packetID) {
+                    wantedPacket = dmgpEntry.obtenerPaquete();
                     this.monitor.liberar();
-                    return paqueteBuscado;
+                    return wantedPacket;
                 }
             }
             this.monitor.liberar();
@@ -87,18 +87,18 @@ public class TDMGP {
      * This method insert a new GoS packet into the DMGP memory.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param paquete The packet to be inserted into the DMGP memory.
+     * @param packet The packet to be inserted into the DMGP memory.
      * @since 1.0
      */
-    public void insertarPaquete(TPDUMPLS paquete) {
-        TDMGPFlowEntry efdmgp = this.obtenerFlujo(paquete);
-        if (efdmgp == null) {
-            efdmgp = this.crearFlujo(paquete);
+    public void addPacket(TPDUMPLS packet) {
+        TDMGPFlowEntry dmgpFlowEntry = this.getFlow(packet);
+        if (dmgpFlowEntry == null) {
+            dmgpFlowEntry = this.createFlow(packet);
         }
-        if (efdmgp != null) {
-            efdmgp.insertarPaquete(paquete);
+        if (dmgpFlowEntry != null) {
+            dmgpFlowEntry.insertarPaquete(packet);
         } else {
-            paquete = null;
+            packet = null;
         }
     }
 
@@ -110,132 +110,132 @@ public class TDMGP {
      * @since 1.0
      */
     public void reset() {
-        monitor = null;
-        generaId = null;
-        flujos = null;
-        monitor = new TLock();
-        generaId = new TIdentificadorRotativo();
-        flujos = new TreeSet();
-        porcentajeTotalDisponible = 100;
-        octetosTotalesAsignados = 0;
+        this.monitor = null;
+        this.idGenerator = null;
+        this.flows = null;
+        this.monitor = new TLock();
+        this.idGenerator = new TIdentificadorRotativo();
+        this.flows = new TreeSet();
+        this.totalAvailablePercentage = 100;
+        this.totalAssignedOctects = 0;
     }
 
-    private int obtenerTamanioDMGPEnOctetos() {
-        return (this.tamanioTotalDMGPKB * 1024);
+    private int getDMGPSizeInOctects() {
+        return (this.totalDMGPSizeInKB * 1024);
     }
 
-    private TDMGPFlowEntry obtenerFlujo(TPDU paquete) {
-        TDMGPFlowEntry efdmgp = null;
-        int idf = paquete.obtenerCabecera().obtenerIPOrigen().hashCode();
-        efdmgp = obtenerFlujo(idf);
-        return efdmgp;
+    private TDMGPFlowEntry getFlow(TPDU packet) {
+        TDMGPFlowEntry dmgpFlowEntry = null;
+        int flowID = packet.obtenerCabecera().obtenerIPOrigen().hashCode();
+        dmgpFlowEntry = getFlow(flowID);
+        return dmgpFlowEntry;
     }
 
-    private TDMGPFlowEntry obtenerFlujo(int idf) {
-        TDMGPFlowEntry efdmgp = null;
+    private TDMGPFlowEntry getFlow(int idf) {
+        TDMGPFlowEntry dmgpFlowEntry = null;
         this.monitor.bloquear();
-        Iterator ite = flujos.iterator();
+        Iterator ite = flows.iterator();
         while (ite.hasNext()) {
-            efdmgp = (TDMGPFlowEntry) ite.next();
-            if (efdmgp.obtenerIdFlujo() == idf) {
+            dmgpFlowEntry = (TDMGPFlowEntry) ite.next();
+            if (dmgpFlowEntry.obtenerIdFlujo() == idf) {
                 this.monitor.liberar();
-                return efdmgp;
+                return dmgpFlowEntry;
             }
         }
         this.monitor.liberar();
         return null;
     }
 
-    private TDMGPFlowEntry crearFlujo(TPDU paquete) {
+    private TDMGPFlowEntry createFlow(TPDU packet) {
         this.monitor.bloquear();
-        TDMGPFlowEntry efdmgp = null;
-        int idf = paquete.obtenerCabecera().obtenerIPOrigen().hashCode();
-        int pqsa = 0;
-        int oqsa = 0;
-        if (this.octetosTotalesAsignados < this.obtenerTamanioDMGPEnOctetos()) {
-            pqsa = this.obtenerPorcentajeQueSeAsignara(paquete);
-            oqsa = this.obtenerOctetosQueSeAsignaran(paquete);
-            if (oqsa > 0) {
-                this.octetosTotalesAsignados += oqsa;
-                this.porcentajeTotalDisponible -= pqsa;
-                efdmgp = new TDMGPFlowEntry(this.generaId.obtenerNuevo());
-                efdmgp.ponerIdFlujo(idf);
-                efdmgp.ponerPorcentajeAsignado(pqsa);
-                efdmgp.ponerOctetosAsignados(oqsa);
-                flujos.add(efdmgp);
+        TDMGPFlowEntry dmgpFlowEntry = null;
+        int flowID = packet.obtenerCabecera().obtenerIPOrigen().hashCode();
+        int percentageToBeAssigned = 0;
+        int octectsToBeAssigned = 0;
+        if (this.totalAssignedOctects < this.getDMGPSizeInOctects()) {
+            percentageToBeAssigned = this.getPercentageToBeAssigned(packet);
+            octectsToBeAssigned = this.getOctectsToBeAssigned(packet);
+            if (octectsToBeAssigned > 0) {
+                this.totalAssignedOctects += octectsToBeAssigned;
+                this.totalAvailablePercentage -= percentageToBeAssigned;
+                dmgpFlowEntry = new TDMGPFlowEntry(this.idGenerator.obtenerNuevo());
+                dmgpFlowEntry.ponerIdFlujo(flowID);
+                dmgpFlowEntry.ponerPorcentajeAsignado(percentageToBeAssigned);
+                dmgpFlowEntry.ponerOctetosAsignados(octectsToBeAssigned);
+                flows.add(dmgpFlowEntry);
                 this.monitor.liberar();
-                return efdmgp;
+                return dmgpFlowEntry;
             }
         }
         this.monitor.liberar();
         return null;
     }
 
-    private int obtenerOctetosQueSeAsignaran(TPDU paquete) {
-        int pr = obtenerPorcentajeRequerido(paquete);
-        int or = 0;
-        if (this.porcentajeTotalDisponible > 0) {
-            if (this.porcentajeTotalDisponible > pr) {
-                or = ((this.obtenerTamanioDMGPEnOctetos() * pr) / 100);
-                return or;
+    private int getOctectsToBeAssigned(TPDU packet) {
+        int reservedPercentage = getRequestedPercentage(packet);
+        int reservedOctects = 0;
+        if (this.totalAvailablePercentage > 0) {
+            if (this.totalAvailablePercentage > reservedPercentage) {
+                reservedOctects = ((this.getDMGPSizeInOctects() * reservedPercentage) / 100);
+                return reservedOctects;
             } else {
-                or = this.obtenerTamanioDMGPEnOctetos() - this.octetosTotalesAsignados;
-                return or;
+                reservedOctects = this.getDMGPSizeInOctects() - this.totalAssignedOctects;
+                return reservedOctects;
             }
         }
         return 0;
     }
 
-    private int obtenerPorcentajeQueSeAsignara(TPDU paquete) {
-        int pr = obtenerPorcentajeRequerido(paquete);
-        if (this.porcentajeTotalDisponible > 0) {
-            if (this.porcentajeTotalDisponible > pr) {
-                return pr;
+    private int getPercentageToBeAssigned(TPDU packet) {
+        int reservedPercentage = getRequestedPercentage(packet);
+        if (this.totalAvailablePercentage > 0) {
+            if (this.totalAvailablePercentage > reservedPercentage) {
+                return reservedPercentage;
             } else {
-                return this.porcentajeTotalDisponible;
+                return this.totalAvailablePercentage;
             }
         }
         return 0;
     }
 
-    private int obtenerPorcentajeRequerido(TPDU paquete) {
-        int nivelGoSDelPaquete = 0;
-        if (paquete.obtenerCabecera().obtenerCampoOpciones().estaUsado()) {
-            nivelGoSDelPaquete = paquete.obtenerCabecera().obtenerCampoOpciones().obtenerNivelGoS();
+    private int getRequestedPercentage(TPDU packet) {
+        int packetGoSLevel = 0;
+        if (packet.obtenerCabecera().obtenerCampoOpciones().estaUsado()) {
+            packetGoSLevel = packet.obtenerCabecera().obtenerCampoOpciones().obtenerNivelGoS();
         } else {
             return 0;
         }
-        if (nivelGoSDelPaquete == TPDU.EXP_NIVEL3_CONLSP) {
+        if (packetGoSLevel == TPDU.EXP_NIVEL3_CONLSP) {
             return 12;
         }
-        if (nivelGoSDelPaquete == TPDU.EXP_NIVEL3_SINLSP) {
+        if (packetGoSLevel == TPDU.EXP_NIVEL3_SINLSP) {
             return 12;
         }
-        if (nivelGoSDelPaquete == TPDU.EXP_NIVEL2_CONLSP) {
+        if (packetGoSLevel == TPDU.EXP_NIVEL2_CONLSP) {
             return 8;
         }
-        if (nivelGoSDelPaquete == TPDU.EXP_NIVEL2_SINLSP) {
+        if (packetGoSLevel == TPDU.EXP_NIVEL2_SINLSP) {
             return 8;
         }
-        if (nivelGoSDelPaquete == TPDU.EXP_NIVEL1_CONLSP) {
+        if (packetGoSLevel == TPDU.EXP_NIVEL1_CONLSP) {
             return 4;
         }
-        if (nivelGoSDelPaquete == TPDU.EXP_NIVEL1_SINLSP) {
+        if (packetGoSLevel == TPDU.EXP_NIVEL1_SINLSP) {
             return 4;
         }
-        if (nivelGoSDelPaquete == TPDU.EXP_NIVEL0_CONLSP) {
+        if (packetGoSLevel == TPDU.EXP_NIVEL0_CONLSP) {
             return 0;
         }
-        if (nivelGoSDelPaquete == TPDU.EXP_NIVEL0_SINLSP) {
+        if (packetGoSLevel == TPDU.EXP_NIVEL0_SINLSP) {
             return 0;
         }
         return 1;
     }
 
     private TLock monitor;
-    private TIdentificadorRotativo generaId;
-    private TreeSet flujos;
-    private int porcentajeTotalDisponible;
-    private int tamanioTotalDMGPKB;
-    private int octetosTotalesAsignados;
+    private TIdentificadorRotativo idGenerator;
+    private TreeSet flows;
+    private int totalAvailablePercentage;
+    private int totalDMGPSizeInKB;
+    private int totalAssignedOctects;
 }
