@@ -1,13 +1,16 @@
 THE PROJECT
+===========
 
 OpenSimMPLS is an MPLS network simulator, multiplatform and mutilanguage. It is easy-to-use and is intended for teaching activities. It can be used as well to test new protocols, techniques and methods related to MPLS and/or GoS. OpenSimMPLS is a mature project used in universities and companies in more tan 130 different countries to teach, research and design MPLS networks. It was first developed in 2004 as part of a research project at the University of Extremadura. It was hosted since then in SourceForge.net as a CVS project and since 2014 it was updated as a GIT repository and hosted in GitHub forge.
 
 LICENSE
+=======
 
     OpenSimMPLS is released under the terms of GPLv3.0+.
 
 
 AUTHORS
+=======
 
     Main author:
     
@@ -25,6 +28,7 @@ AUTHORS
 
 
 HOW TO CONTRIBUTE
+=================
 
     If you want to contribute, don't hesitate to do it. You only have to take into account the
     following guidelines:
