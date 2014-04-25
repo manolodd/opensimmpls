@@ -2,15 +2,7 @@
 
 <b>OpenSimMPLS</b> is an MPLS network simulator, multiplatform and mutilanguage. It is easy-to-use and is intended for teaching activities. It can be used as well to test new protocols, techniques and methods related to MPLS and/or GoS. OpenSimMPLS is a mature project used in universities and companies in more tan 130 different countries to teach, research and design MPLS networks. It was first developed in 2004 as part of a research project at the University of Extremadura. It was hosted since then in SourceForge.net as a CVS project and since 2014 it was updated as a GIT repository and hosted in GitHub forge.
 
-<center>![OpenSimMPLS logo](https://github.com/manolodd/opensimmpls/blob/master/src/imagenes/splash.png?raw=true)</center>
-
-    Version: 1.1 
-    Web: http://www.manolodominguez.com/projects/opensimmpls 
-    Release download: https://github.com/manolodd/opensimmpls/releases/tag/openSimMPLS-v1.1 
-    Download: https://github.com/manolodd/opensimmpls/releases/download/openSimMPLS-v1.1/openSimMPLS-bin-v1.1.jar 
-    Source: https://github.com/manolodd/opensimmpls/archive/openSimMPLS-v1.1.tar.gz
-    Keywords: MPLS, MPLS-TE, GoS, GPSRP, RABAN, TLDP, EPCD, IPv4, TCP, simulator, teching, researching, active networks
-
+![OpenSimMPLS logo](https://github.com/manolodd/opensimmpls/blob/master/src/imagenes/splash.png?raw=true)
 
 # LICENSE
  
