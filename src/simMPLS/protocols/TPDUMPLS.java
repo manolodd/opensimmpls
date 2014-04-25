@@ -98,7 +98,7 @@ public class TPDUMPLS extends TPDU {
      * @return El tama�o completeo del paquete, en bytes.
      * @since 1.0
      */
-    public int obtenerTamanio() {
+    public int getSize() {
         int tam = 0;
         tam += super.obtenerCabecera().obtenerTamanio();
         tam += this.datosTCP.obtenerTamanio();

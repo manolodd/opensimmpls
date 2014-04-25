@@ -14,7 +14,7 @@ package simMPLS.hardware.ports;
 import simMPLS.scenario.TTopologyLink;
 import simMPLS.scenario.TStats;
 import simMPLS.protocols.TPDU;
-import simMPLS.utils.TLock;
+import simMPLS.utils.TMonitor;
 
 
 /**
@@ -33,11 +33,11 @@ public abstract class TPort {
      * @param cpn Referencia al superconjunto de puertos del que este puerto forma parte.
      */
     public TPort(TNodePorts cpn, int idp) {
-        identificador = 0;
-        enlace = null;
-        cjtoPuertos = cpn;
-        cerrojo = new TLock();
-        idPuerto = idp;
+        identifier = 0;
+        link = null;
+        portsSet = cpn;
+        monitor = new TMonitor();
+        portID = idp;
     }
     
     /**
@@ -47,7 +47,7 @@ public abstract class TPort {
      * @since 1.0
      */    
     public void ponerCjtoPuertos(TNodePorts cpn) {
-        cjtoPuertos = cpn;
+        portsSet = cpn;
     }
 
     /**
@@ -56,93 +56,93 @@ public abstract class TPort {
      * @since 1.0
      */    
     public TNodePorts obtenerCjtoPuertos() {
-        return cjtoPuertos;
+        return portsSet;
     }
 
     /**
-     * Este m�todo establece el identificador del puerto.
+     * Este m�todo establece el identifier del puerto.
      * @param id Identificador que queremos asociar a este puerto.
      * @since 1.0
      */    
     public void ponerIdentificador(int id) {
-        identificador = id;
+        identifier = id;
     }
     
     /**
-     * Este m�todo obtiene el identificador del puerto.
-     * @return El identificador del puerto.
+     * Este m�todo obtiene el identifier del puerto.
+     * @return El identifier del puerto.
      * @since 1.0
      */    
     public int obtenerIdentificador() {
-        return identificador;
+        return identifier;
     }
 
     /**
-     * Este m�todo averigua si el puerto est� libre o est� conectado a al�n enlace de
-     * la topolog�a.
-     * @return TRUE, si est� libre. FALSE, si est� conectado a alg�n enlace de la topolog�a.
+     * Este m�todo averigua si el puerto est� libre o est� conectado a al�n link de
+ la topolog�a.
+     * @return TRUE, si est� libre. FALSE, si est� conectado a alg�n link de la topolog�a.
      * @since 1.0
      */    
-    public boolean estaLibre() {
-        if (enlace == null)
+    public boolean isAvailable() {
+        if (link == null)
             return true;
         return false;
     }
 
     /**
-     * Este m�todo enlaza este puerto con un enlace de la topolog�a, dejando por tanto
-     * de estar libre.
-     * @param e El enlace al que se desea conectar el puerto.
+     * Este m�todo enlaza este puerto con un link de la topolog�a, dejando por tanto
+ de estar libre.
+     * @param e El link al que se desea conectar el puerto.
      * @since 1.0
      */    
-    public void ponerEnlace(TTopologyLink e) {
-        enlace = e;
+    public void setLink(TTopologyLink e) {
+        link = e;
     }
 
     /**
-     * Este m�todo obtiene el enlace al que est� unido el puerto.
-     * @return El enlace al que est� unido el puerto, si est� unido. NULL en caso contrario.
+     * Este m�todo obtiene el link al que est� unido el puerto.
+     * @return El link al que est� unido el puerto, si est� unido. NULL en caso contrario.
      * @since 1.0
      */    
-    public TTopologyLink obtenerEnlace() {
-        return enlace;
+    public TTopologyLink getLink() {
+        return link;
     }
 
     /**
-     * Este m�todo libera la conexi�n que existe entre el puerto y un enlace de la
-     * topolog�a, dej�ndolo libre.
+     * Este m�todo libera la conexi�n que existe entre el puerto y un link de la
+ topolog�a, dej�ndolo libre.
      * @since 1.0
      */    
-    public void quitarEnlace() {
-        enlace = null;
+    public void disconnectLink() {
+        link = null;
     }
 
     /**
-     * Este m�todo coloca en el enlace al que est� unido el puerto, un paquete de
-     * datos.
-     * @param p El paquete que se desea transmitir por el enlace.
-     * @param destino 1, si el paquete va dirigido al EXTREMO1 del enlace. 2, si va dirigido al
-     * EXTREMO2.
+     * Este m�todo coloca en el link al que est� unido el puerto, un paquete de
+ datos.
+     * @param p El paquete que se desea transmitir por el link.
+     * @param destino 1, si el paquete va dirigido al END_NODE_1 del link. 2, si va dirigido al
+ END_NODE_2.
      * @since 1.0
      */    
     public void ponerPaqueteEnEnlace(TPDU p, int destino) {
-        if (enlace != null) {
-            if (!enlace.obtenerEnlaceCaido()) {
-                if (enlace.obtenerTipo() == TTopologyLink.INTERNO) {
-                    enlace.ponerPaquete(p, destino);
-                    if (this.obtenerCjtoPuertos().obtenerNodo().accederAEstadisticas() != null) {
-                        this.obtenerCjtoPuertos().obtenerNodo().accederAEstadisticas().crearEstadistica(p, TStats.SALIDA);
+        if (link != null) {
+            if (!link.obtenerEnlaceCaido()) {
+                if (link.obtenerTipo() == TTopologyLink.INTERNO) {
+                    link.ponerPaquete(p, destino);
+                    if (this.obtenerCjtoPuertos().getNode().accederAEstadisticas() != null) {
+                        this.obtenerCjtoPuertos().getNode().accederAEstadisticas().crearEstadistica(p, TStats.SALIDA);
                     }
                 } else {
                     if ((p.obtenerTipo() != TPDU.GPSRP) && (p.obtenerTipo() != TPDU.TLDP)) {
-                        enlace.ponerPaquete(p, destino);
-                        if (this.obtenerCjtoPuertos().obtenerNodo().accederAEstadisticas() != null) {
-                            this.obtenerCjtoPuertos().obtenerNodo().accederAEstadisticas().crearEstadistica(p, TStats.SALIDA);
+                        link.ponerPaquete(p, destino);
+                        if (this.obtenerCjtoPuertos().getNode().accederAEstadisticas() != null) {
+                            this.obtenerCjtoPuertos().getNode().accederAEstadisticas().crearEstadistica(p, TStats.SALIDA);
                         }
                     }
                 }
             } else {
-                descartarPaquete(p);
+                discardPacket(p);
             }
         }
     }
@@ -152,7 +152,7 @@ public abstract class TPort {
      * @param paquete El paquete que se desea descartar.
      * @since 1.0
      */    
-    public abstract void descartarPaquete(TPDU paquete);
+    public abstract void discardPacket(TPDU paquete);
     /**
      * Este m�todo inserta un paquete en el buffer de recepci�n del puerto.
      * @param paquete El paquete que queremos que sea recivido en el puerto.
@@ -166,7 +166,7 @@ public abstract class TPort {
      * @param paquete El paquete que queremos que reciba el puerto.
      * @since 1.0
      */    
-    public abstract void reencolar(TPDU paquete);
+    public abstract void reEnqueuePacket(TPDU paquete);
     /**
      * este m�todo lee un paquete del buffer de recepci�n del puerto. El paquete leido
      * depender� del algoritmo de gesti�n de los b�fferes que implemente el puerto. Por
@@ -174,7 +174,7 @@ public abstract class TPort {
      * @return El paquete le�do.
      * @since 1.0
      */    
-    public abstract TPDU obtenerPaquete();
+    public abstract TPDU getPacket();
     /**
      * Este m�todo calcula si podemos conmutar el siguiente paquete del nodo, dado el
      * n�mero de octetos que como mucho podemos conmutar en un momento dado.
@@ -182,32 +182,32 @@ public abstract class TPort {
      * @return TRUE, si podemos conmutar el siguiente paquete. FALSE, en caso contrario.
      * @since 1.0
      */    
-    public abstract boolean puedoConmutarPaquete(int octetos);
+    public abstract boolean canSwitchPacket(int octetos);
     /**
      * Este m�todo obtiene la congesti�n total el puerto, en porcentaje.
      * @return El porcentaje de ocupaci�n del puerto.
      * @since 1.0
      */    
-    public abstract long obtenerCongestion();
+    public abstract long getCongestionLevel();
     /**
      * Este m�todo comprueba si hay paquetes esperando en el buffer de recepci�n o no.
      * @return TRUE, si hay paquetes en el buffer de recepci�n. FALSE en caso contrario.
      * @since 1.0
      */    
-    public abstract boolean hayPaqueteEsperando();
+    public abstract boolean thereIsAPacketWaiting();
     /**
      * Este m�todo calcula el total de octetos que suman los paquetes que actualmente
      * hay en el buffer de recepci�n del puerto.
      * @return El tama�o en octetos del total de paquetes en el buffer de recepci�n.
      * @since 1.0
      */    
-    public abstract long obtenerOcupacion();
+    public abstract long getOccupancy();
     /**
      * Este m�todo calcula el n�mero de paquetes total que hay en el buffer del puerto.
      * @return El n�mero total de paquetes que hay en el puerto.
      * @since 1.0
      */    
-    public abstract int obtenerNumeroPaquetes();
+    public abstract int getNumberOfPackets();
     /**
      * Este m�todo reinicia los atributos de la clase como si acabasen de ser creados
      * por el constructor.
@@ -221,37 +221,37 @@ public abstract class TPort {
      * tendr� el tama�o especificado en el resto de m�todos.
      * @since 1.0
      */    
-    public abstract void ponerBufferIlimitado(boolean bi);
+    public abstract void setUnlimitedBuffer(boolean bi);
     
     /**
-     * Este atributo es el identificador del puerto. Como los nodos tienen m�s de un
-     * puerto, es necesario un identificador para referirse a cada uno de ellos.
+     * Este atributo es el identifier del puerto. Como los nodos tienen m�s de un
+ puerto, es necesario un identifier para referirse a cada uno de ellos.
      * @since 1.0
      */    
-    protected int identificador;
+    protected int identifier;
     /**
-     * Este atributo es el enlace de la topolog�a al que est� unido el puerto. Todo
-     * puerto o est� libre o est� unido a un enlace, que es este.
+     * Este atributo es el link de la topolog�a al que est� unido el puerto. Todo
+ puerto o est� libre o est� unido a un link, que es este.
      * @since 1.0
      */    
-    protected TTopologyLink enlace;
+    protected TTopologyLink link;
     /**
      * Este atributo es una referencia al superconjunto de todos los puertos de un nodo
      * al que pertenece este.
      * @since 1.0
      */    
-    protected TNodePorts cjtoPuertos;
+    protected TNodePorts portsSet;
     /**
      * Este atributo es un monitor que sirve para crear secciones cr�ticas, actuando de
      * barrera, para sincronizar el acceso concurrente a algunas zonas del objeto.
      * @since 1.0
      */    
-    protected TLock cerrojo;
+    protected TMonitor monitor;
     /**
-     * Este atributo almacenar� el identificador que indica el n�mero de puerto que
-     * ocupa la instancia actual dentro del conjunto de puertos de un nodo.
+     * Este atributo almacenar� el identifier que indica el n�mero de puerto que
+ ocupa la instancia actual dentro del conjunto de puertos de un nodo.
      * @since 1.0
      */    
-    protected int idPuerto;
+    protected int portID;
     
 }

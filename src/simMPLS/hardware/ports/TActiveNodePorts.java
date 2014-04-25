@@ -1,352 +1,381 @@
-//**************************************************************************
-// Nombre......: TNodePorts.java
-// Proyecto....: Open SimMPLS
-// Descripci�n.: Clase que implementa el conjunto de puertos de un nodo de
-// ............: la topolog�a.
-// Fecha.......: 06/03/2004
-// Autor/es....: Manuel Dom�nguez Dorado
-// ............: ingeniero@ManoloDominguez.com
-// ............: http://www.ManoloDominguez.com
-//**************************************************************************
-
 package simMPLS.hardware.ports;
 
 import simMPLS.scenario.TTopologyLink;
 import simMPLS.scenario.TTopologyNode;
 import simMPLS.protocols.TPDU;
 
-
 /**
- * Esta clase implementa un conjunto de puertos activos de un nodo.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements a set of active ports for a parentNode.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public class TActiveNodePorts extends TNodePorts {
 
-    /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
-     * TPuertosNodoActivo.
-     * @param num Numero de puertos que contendr� el conjunto e puertos.
-     * @param n Referencia al nodo al que pertenece este conjunto de puertos.
+    /**
+     * This is the constructor of the class. It creates a new instance of
+     * TActiveNodePorts.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param numberOfPorts Num of ports that the set of active ports will
+     * contain.
+     * @param activeNode Reference to the parentNode the set of active ports
+     * belongs to.
      * @since 1.0
      */
-    public TActiveNodePorts(int num, TTopologyNode n) {
-        super(num, n);
-        puertos = new TActivePort[num];
-        int i=0;
-        for (i=0; i<this.numPuertos; i++) {
-            puertos[i] = new TActivePort(this, i);
-            puertos[i].ponerIdentificador(i);
+    public TActiveNodePorts(int numberOfPorts, TTopologyNode activeNode) {
+        super(numberOfPorts, activeNode);
+        this.ports = new TActivePort[numberOfPorts];
+        int i = 0;
+        for (i = 0; i < this.numberOfPorts; i++) {
+            this.ports[i] = new TActivePort(this, i);
+            this.ports[i].ponerIdentificador(i);
         }
-        puertoLeido = 0;
-        siguientePaqueteALeer = null;
-        ratioPorPrioridad = new int[11];
-        actualPorPrioridad = new int[11];
-        for (i=0; i<11; i++) {
-            ratioPorPrioridad[i] = i+1;
-            actualPorPrioridad[i] = 0;
+        this.readPort = 0;
+        this.nextPacketToBeRead = null;
+        this.ratioByPriority = new int[11];
+        this.currentByPriority = new int[11];
+        for (i = 0; i < 11; i++) {
+            this.ratioByPriority[i] = i + 1;
+            this.currentByPriority[i] = 0;
         }
-        prioridadActual = 0;
+        this.currentPriority = 0;
     }
-    
-    private void obtenerSiguientePaquete() {
-        if (this.siguientePaqueteALeer == null) {
-            int contadorPrioridad = 0;
-            int contadorPuertos = 0;
-            boolean fin = false;
-            int prioridadAux = -1;
-            int prioridadActualAux = 0;
-            int puertoLeidoAux = 0;
-            while ((contadorPrioridad < 11) && (!fin)) {
-                prioridadActualAux = (prioridadActual+contadorPrioridad) % 11;
-                if (actualPorPrioridad[prioridadActualAux] < ratioPorPrioridad[prioridadActualAux]) {
-                    while ((contadorPuertos < numPuertos) && (!fin)) {
-                        puertoLeidoAux = (puertoLeido+contadorPuertos) % numPuertos;
-                        if (puertos[puertoLeidoAux].hayPaqueteEsperando()) {
-                            prioridadAux = ((TActivePort)puertos[puertoLeidoAux]).obtenerPrioridadSiguientePaquete();
-                            if (prioridadAux == prioridadActualAux) {
-                                puertoLeido = puertoLeidoAux;
-                                prioridadActual = prioridadActualAux;
-                                siguientePaqueteALeer = puertos[puertoLeidoAux].obtenerPaquete();
-                                fin = true;
-                                actualPorPrioridad[prioridadActualAux]++;
+
+    private void runPriorityBasedNextPacketSelection() {
+        if (this.nextPacketToBeRead == null) {
+            int priorityCounter = 0;
+            int portsCounter = 0;
+            boolean end = false;
+            int auxPriority = -1;
+            int auxCurrentPriority = 0;
+            int auxReadPort = 0;
+            while ((priorityCounter < 11) && (!end)) {
+                auxCurrentPriority = (this.currentPriority + priorityCounter) % 11;
+                if (this.currentByPriority[auxCurrentPriority] < this.ratioByPriority[auxCurrentPriority]) {
+                    while ((portsCounter < this.numberOfPorts) && (!end)) {
+                        auxReadPort = (this.readPort + portsCounter) % this.numberOfPorts;
+                        if (this.ports[auxReadPort].thereIsAPacketWaiting()) {
+                            auxPriority = ((TActivePort) this.ports[auxReadPort]).obtenerPrioridadSiguientePaquete();
+                            if (auxPriority == auxCurrentPriority) {
+                                this.readPort = auxReadPort;
+                                this.currentPriority = auxCurrentPriority;
+                                this.nextPacketToBeRead = this.ports[auxReadPort].getPacket();
+                                end = true;
+                                this.currentByPriority[auxCurrentPriority]++;
                             }
                         }
-                        contadorPuertos++;
+                        portsCounter++;
                     }
-                    if (!fin) {
-                        actualPorPrioridad[prioridadActualAux] = ratioPorPrioridad[prioridadActualAux];
+                    if (!end) {
+                        this.currentByPriority[auxCurrentPriority] = this.ratioByPriority[auxCurrentPriority];
                     }
                 }
-                if (!fin) {
-                    contadorPrioridad++;
+                if (!end) {
+                    priorityCounter++;
                 }
-                contadorPuertos = 0;
+                portsCounter = 0;
             }
-            limpiarPrioridades();
+            resetPriorities();
         }
     }
 
-    private void limpiarPrioridades() {
-        int i=0;
-        boolean limpiar = true;
-        for (i=0; i<11; i++) {
-            if (actualPorPrioridad[i] < ratioPorPrioridad[i]) {
-                limpiar = false;
+    private void resetPriorities() {
+        int i = 0;
+        boolean reset = true;
+        for (i = 0; i < 11; i++) {
+            if (this.currentByPriority[i] < this.ratioByPriority[i]) {
+                reset = false;
             }
         }
-        if (limpiar) {
-            for (i=0; i<11; i++) {
-                actualPorPrioridad[i] = 0;
+        if (reset) {
+            for (i = 0; i < 11; i++) {
+                this.currentByPriority[i] = 0;
             }
         }
     }
-    
+
     /**
-     * Este m�todo establece el conjunto de puertos como ideal, sin
-     * restricciones de tama�o, ilimitado.
-     * @param bi TRUE, indica que el buffer del conjunto de puertos es ilimitado. FALSE, indica que no es
-     * ilimitado.
+     * This method establishes the ser of ports as ideal ones, without size
+     * restrictions; unlimited.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param unlimitedBuffer TRUE, if the set of ports will be defined as
+     * unlimited ones; otherwise, FALSE.
      * @since 1.0
-     */    
+     */
     @Override
-    public void ponerBufferIlimitado(boolean bi) {
-        int i=0;
-        for (i=0; i<this.numPuertos; i++) {
-            puertos[i].ponerBufferIlimitado(bi);
+    public void setUnlimitedBuffer(boolean unlimitedBuffer) {
+        int i = 0;
+        for (i = 0; i < this.numberOfPorts; i++) {
+            this.ports[i].setUnlimitedBuffer(unlimitedBuffer);
         }
     }
-    
+
     /**
-     * Este m�todo devuelve el puerto cuyo identificador coincida con el especificado.
-     * @param numPuerto Identificador del puerto que queremos obtener.
-     * @return El puerto que deseamos obtener. NULL si el puerto con ese identificador no
-     * existe.
+     * This method returns a port whose port number match the one specified as
+     * an argument.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param portNumber port number of the port to be obtained.
+     * @return The port matching the port number specified as an argument. If
+     * the port does not exist, returns NULL.
      * @since 1.0
-     */    
+     */
     @Override
-    public TPort obtenerPuerto(int numPuerto) {
-        if (numPuerto < this.numPuertos)
-            return puertos[numPuerto];
+    public TPort getPort(int portNumber) {
+        if (portNumber < this.numberOfPorts) {
+            return this.ports[portNumber];
+        }
         return null;
     }
 
     /**
-     * Este m�todo establece el tama�o que tendr� el buffer del conjunto de puertos. Si
-     * el conjunto de puertos est� definido como ilimitado, este m�todo no tiene efecto.
-     * @param tamEnMB Tama�o en MB del buffer del conjunto de puertos.
+     * This method establishes the set of ports buffer size. If the set of ports
+     * is defined as unlimited, this method do nothing.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param sizeInMB Size, in MB, for the set of ports buffer.
      * @since 1.0
-     */    
+     */
     @Override
-    public void ponerTamanioBuffer(int tamEnMB) {
-        this.tamanioBufferCjtoPuertos = tamEnMB;
+    public void setBufferSizeInMB(int sizeInMB) {
+        this.portSetBufferSize = sizeInMB;
     }
-    
+
     /**
-     * Este m�todo devuelve el tama�o del buffer del conjunto de puertos.
-     * @return El tama�o del buffer del conjunto de puertos en MB.
+     * This method returns the size of the port set buffer.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The size of the port set buffer in MB.
      * @since 1.0
-     */    
+     */
     @Override
-    public int obtenerTamanioBuffer() {
-        return this.tamanioBufferCjtoPuertos;
+    public int getBufferSizeInMB() {
+        return this.portSetBufferSize;
     }
-    
+
     /**
-     * Este m�todo comprueba si un puerto concreto del conjunto de puertos est� libre o
-     * si por el contrario est� conectado.
-     * @param p Identificador del puerto que queremos consultar.
-     * @return TRUE, indica que el puerto est� sin conectar. FALSE indica que el puerto ya est�
-     * conectado a un enlace.
+     * This method check whether a given port is connected to a link or not.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param portNumber portNumber number of the portNumber to be checked.
+     * @return TRUE, if the portNumber is not connected to a link (available).
+     * FALSE if the portNumber is connected to a link (not available).
      * @since 1.0
-     */    
+     */
     @Override
-    public boolean estaLibre(int p) {
-        if (p < this.numPuertos)
-            return puertos[p].estaLibre();
+    public boolean isAvailable(int portNumber) {
+        if (portNumber < this.numberOfPorts) {
+            return this.ports[portNumber].isAvailable();
+        }
         return false;
     }
 
     /**
-     * Este m�todo comprueba si hay alg�n puerto libre, es decir, sin conectar a un
-     * enelace, en el conjunto de puertos.
-     * @return TRUE, si al menos uno de los puertos del conjunto de puertos est� sin conectar.
-     * FALSE si todos est�n conectado ya a un enlace.
+     * This method check whether there is at lest a port of the port set that is
+     * not connected to a link.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TRUE, if at least one port of the port set is not connected to a
+     * link. Otherwise, returns false.
      * @since 1.0
-     */    
+     */
     @Override
-    public boolean hayPuertosLibres() {
-        int i=0;
-        for (i=0; i<this.numPuertos; i++) {
-            if (puertos[i].estaLibre())
+    public boolean isAnyPortAvailable() {
+        int i = 0;
+        for (i = 0; i < this.numberOfPorts; i++) {
+            if (this.ports[i].isAvailable()) {
                 return true;
+            }
         }
         return false;
     }
 
     /**
-     * Este m�todo toma un enlace y lo conecta a un puerto concreto del conjunto de
-     * puertos.
-     * @param e Enlace que queremos conectar.
-     * @param p Identificador del puerto del conjunto de puertos al que se conectar� el enlace.
+     * This method connect a link to a given port.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param link The link to be connected.
+     * @param portNumber The port number of the port to be coonecte to the link.
      * @since 1.0
-     */    
+     */
     @Override
-    public void ponerEnlaceEnPuerto(TTopologyLink e, int p) {
-        if (p < this.numPuertos)
-            if (puertos[p].estaLibre())
-                puertos[p].ponerEnlace(e);
-    } 
+    public void connectLinkToPort(TTopologyLink link, int portNumber) {
+        if (portNumber < this.numberOfPorts) {
+            if (this.ports[portNumber].isAvailable()) {
+                this.ports[portNumber].setLink(link);
+            }
+        }
+    }
 
     /**
-     * Este m�todo devuelve el enlace al que est� conectado un puerto del conjunto de
-     * puertos.
-     * @param p Identificador de puerto de uno de los puertos del conjunto.
-     * @return Enlace al que est� conectado el puerto especificado. NULL si el puerto est�
-     * libre.
+     * This method returns the link that is connected to the port having the
+     * specified port number.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param portNumber The port number of the port where the desired linkg is
+     * connected.
+     * @return Link connected to the specified port. If the port is not
+     * connected to a link, returns NULL.
      * @since 1.0
-     */    
+     */
     @Override
-    public TTopologyLink obtenerEnlaceDePuerto(int p) {
-        if (p < this.numPuertos)
-            if (!puertos[p].estaLibre())
-                return puertos[p].obtenerEnlace();
-        return null;
-    } 
-
-    /**
-     * Este m�todo desconecta un enlace de un puerto concreto, dej�ndolo libre.
-     * @param p El identificador del puerto del conjunto de puertos, que queremos desconectar y
-     * dejar libre.
-     * @since 1.0
-     */    
-    @Override
-    public void quitarEnlaceDePuerto(int p) {
-        if ((p >= 0) && (p < this.numPuertos))
-            puertos[p].quitarEnlace();
-    } 
-
-    /**
-     * Este m�todo lee y devuelve un paquete de uno de lo puertos. El que toque.
-     * @return Un paquete le�do de uno de los puertos del conjunto de puertos.
-     * @since 1.0
-     */    
-    @Override
-    public TPDU leerPaquete() {
-/*
-        for (int i=0; i<numPuertos; i++) {
-            puertoLeido = (puertoLeido + 1) % numPuertos;
-            if (puertos[puertoLeido].hayPaqueteEsperando()) {
-                return puertos[puertoLeido].obtenerPaquete();
+    public TTopologyLink getLinkConnectedToPort(int portNumber) {
+        if (portNumber < this.numberOfPorts) {
+            if (!this.ports[portNumber].isAvailable()) {
+                return this.ports[portNumber].getLink();
             }
         }
         return null;
- */
+    }
+
+    /**
+     * This method disconnect a link from a given port, making this port
+     * available.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param portNumber the port number of the port whose link is going to be
+     * disconnected from it.
+     * @since 1.0
+     */
+    @Override
+    public void disconnectLinkFromPort(int portNumber) {
+        if ((portNumber >= 0) && (portNumber < this.numberOfPorts)) {
+            this.ports[portNumber].disconnectLink();
+        }
+    }
+
+    /**
+     * This method reads and returns packet from one port of the port set. This
+     * port will be selected automatically depending on the priority-based
+     * algorithm running in the active port set.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a new packet thas was waiting in one port of the port set.
+     * @since 1.0
+     */
+    @Override
+    public TPDU isAnyPacketWaiting() {
         TPDU paqueteAux = null;
-        this.obtenerSiguientePaquete();
-        paqueteAux = this.siguientePaqueteALeer;
-        this.siguientePaqueteALeer = null;
+        // This modifies de value of this.nextPacketToBeRead
+        // It also changes this.readPort and this.currentPriority
+        this.runPriorityBasedNextPacketSelection();
+        // End of packet selection based on priorities
+        paqueteAux = this.nextPacketToBeRead;
+        this.nextPacketToBeRead = null;
         return paqueteAux;
     }
 
     /**
-     * Este m�todo comprueba si hay o no paquetes esperando en el buffer de recepci�n.
-     * @return TRUE, si hay paquetes en el buffer de recepci�n. FALSE en caso contrario.
+     * This method check whether there are packets waiting in the incoming
+     * buffer to be switched or not.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TRUE, if there is at least one packet in one port buffer waiting
+     * to be switched/routed. Otherwise, returns FALSE.
      * @since 1.0
-     */    
+     */
     @Override
-    public boolean hayPaquetesQueConmutar() {
-        for (int i=0; i<numPuertos; i++) {
-            if (puertos[i].hayPaqueteEsperando()) {
+    public boolean isAnyPacketToSwitch() {
+        for (int i = 0; i < numberOfPorts; i++) {
+            if (ports[i].thereIsAPacketWaiting()) {
                 return true;
             }
         }
         return false;
-    }
-    
-    /**
-     * Este m�todo comprueba si hay o no paquetes esperando en el buffer de recepci�n.
-     * @return TRUE, si hay paquetes en el buffer de recepci�n. FALSE en caso contrario.
-     * @since 1.0
-     */    
-    @Override
-    public boolean hayPaquetesQueEncaminar() {
-        return hayPaquetesQueConmutar();
-    }
-    
-    /**
-     * Este m�todo comprueba si se puede conmutar el siguiente paquete del conjunto de
-     * puertos, teniendo como referencia el n�mero m�ximo de octetos que el nodo puede
-     * conmutar en ese instante.
-     * @param octetos El n�mero de octetos que el nodo puede conmutar en ese instante.
-     * @return TRUE, si puedo conmutar un nuevo paquete. FALSE en caso contrario.
-     * @since 1.0
-     */    
-    @Override
-    public boolean puedoConmutarPaquete(int octetos) {
-        TPDU paqueteAux = null;
-        this.obtenerSiguientePaquete();
-        paqueteAux = this.siguientePaqueteALeer;
-        if (paqueteAux != null) {
-            if (paqueteAux.obtenerTamanio() <= octetos) {
-                return true;
-            }
-        }
-        return false;
-/*
-        int puertosSinPaquete = 0;
-        while (puertosSinPaquete < this.numPuertos) {
-            if (puertos[((puertoLeido + 1) % numPuertos)].hayPaqueteEsperando()) {
-                return puertos[((puertoLeido + 1) % numPuertos)].puedoConmutarPaquete(octetos);
-            } else {
-                puertosSinPaquete++;
-                this.saltarPuerto();
-            }
-        }
-        return false;
-*/
- }
-    
-    /**
-     * Este m�todo salta un puerto que tocaba ser le�do y lee el siguiente.
-     * @since 1.0
-     */    
-    @Override
-    public void saltarPuerto() {
-        puertoLeido = (puertoLeido + 1) % numPuertos;
-    }
-    
-    /**
-     * Este m�todo devuelve el idetificador del puerto del que se ley� el �ltimo
-     * paquete.
-     * @return El identificador del �ltimo puerto le�do.
-     * @since 1.0
-     */    
-    @Override
-    public int obtenerPuertoLeido() {
-        return puertoLeido;
     }
 
     /**
-     * Este m�todo toma una direcci�n IP y devuelve el puerto del conjunto de puertos,
-     * en cuyo extremo est� el nodo con dicha IP.
-     * @param ip IP a la que se desea acceder.
-     * @return El puerto que conecta al nodo cuya IP es la especificada. NULL en caso de que no
-     * hay conexi�n directa con dicho nodo/IP.
+     * This method check whether there are packets waiting in the incoming
+     * buffer to be switched or not.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TRUE, if there is at least one packet in one port buffer waiting
+     * to be switched/routed. Otherwise, returns FALSE.
      * @since 1.0
-     */    
+     */
     @Override
-    public TPort obtenerPuertoDestino(String ip) {
-        for (int i=0; i<numPuertos; i++) {
-            if (!puertos[i].estaLibre()) {
-                int destino = puertos[i].obtenerEnlace().obtenerDestinoLocal(nodo);
-                if (destino == TTopologyLink.EXTREMO1) {
-                    if (puertos[i].obtenerEnlace().obtenerExtremo1().obtenerIP().equals(ip)) {
-                        return puertos[i];
+    public boolean isAnyPacketToRoute() {
+        return isAnyPacketToSwitch();
+    }
+
+    /**
+     * This method check if the next packet can be switched, taking as a
+     * reference the number of octects that the parent parentNode can switch at
+     * this momment (passed as an argument)
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param maxSwitchableOctects the max. number of octects the parent
+     * parentNode is able to switch a this moment.
+     * @return TRUE, if next packet can be switched. Otherwise, return false.
+     * @since 1.0
+     */
+    @Override
+    public boolean canSwitchPacket(int maxSwitchableOctects) {
+        TPDU auxPacket = null;
+        // This modifies de value of this.nextPacketToBeRead
+        // It also changes this.readPort and this.currentPriority
+        this.runPriorityBasedNextPacketSelection();
+        // End of packet selection based on priorities
+        auxPacket = this.nextPacketToBeRead;
+        if (auxPacket != null) {
+            if (auxPacket.getSize() <= maxSwitchableOctects) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * This method skip the port that should be read and read the next one
+     * instead.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 1.0
+     */
+    @Override
+    public void skipPort() {
+        this.readPort = (this.readPort + 1) % this.numberOfPorts;
+    }
+
+    /**
+     * This method returns the port number of the port from where the latest
+     * packet was read.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The number of the port from where the latest packet was read.
+     * @since 1.0
+     */
+    @Override
+    public int getReadPort() {
+        return this.readPort;
+    }
+
+    /**
+     * This method look for a port that is directly connected (through a link)
+     * to a parentNode having the IP address specified as an argument.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param adjacentNodeIP IP address of the parentNode connected to the port
+     * we are looking for.
+     * @return The port to wich the parentNode having the specified IP address
+     * is connected to. If the parentNode having the specified IP address is not
+     * connected to this port set, returns NULL.
+     * @since 1.0
+     */
+    @Override
+    public TPort getPortWhereIsConectedANodeHavingIP(String adjacentNodeIP) {
+        for (int i = 0; i < this.numberOfPorts; i++) {
+            if (!this.ports[i].isAvailable()) {
+                int targetNodeID = this.ports[i].getLink().getTargetNodeIDOfTrafficSentBy(this.parentNode);
+                if (targetNodeID == TTopologyLink.END_NODE_1) {
+                    if (this.ports[i].getLink().obtenerExtremo1().getIPAddress().equals(adjacentNodeIP)) {
+                        return this.ports[i];
                     }
                 } else {
-                    if (puertos[i].obtenerEnlace().obtenerExtremo2().obtenerIP().equals(ip)) {
-                        return puertos[i];
+                    if (this.ports[i].getLink().obtenerExtremo2().getIPAddress().equals(adjacentNodeIP)) {
+                        return this.ports[i];
                     }
                 }
             }
@@ -355,101 +384,118 @@ public class TActiveNodePorts extends TNodePorts {
     }
 
     /**
-     * Este m�todo consulta un puerto para obtener la IP del nodo que se encuentra en
-     * el otro extremo.
-     * @param p Identificado de un puerto del conjunto de puertos.
-     * @return IP del nodo destino al que est� unido el puerto especificado. NULL si el puerto
-     * est� libre.
+     * This method query a given port to obtain the IP of the node that is
+     * connected to this port (through a link).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param portNumber The port number of the port to be queried.
+     * @return IP address of the node that is connected to the specified port by
+     * a link. If the port is not connected (is available), returns NULL.
      * @since 1.0
-     */    
+     */
     @Override
-    public String obtenerIPDestinoDelPuerto(int p) {
-        if ((p >= 0) && (p < this.numPuertos)) {
-            if (!puertos[p].estaLibre()) {
-                String IP2 = puertos[p].obtenerEnlace().obtenerExtremo2().obtenerIP();
-                if (puertos[p].obtenerEnlace().obtenerExtremo1().obtenerIP().equals(nodo.obtenerIP()))
-                    return puertos[p].obtenerEnlace().obtenerExtremo2().obtenerIP();
-                return puertos[p].obtenerEnlace().obtenerExtremo1().obtenerIP();
+    public String getIPOfNodeLinkedTo(int portNumber) {
+        if ((portNumber >= 0) && (portNumber < this.numberOfPorts)) {
+            if (!this.ports[portNumber].isAvailable()) {
+                String IP2 = this.ports[portNumber].getLink().obtenerExtremo2().getIPAddress();
+                if (this.ports[portNumber].getLink().obtenerExtremo1().getIPAddress().equals(this.parentNode.getIPAddress())) {
+                    return this.ports[portNumber].getLink().obtenerExtremo2().getIPAddress();
+                }
+                return this.ports[portNumber].getLink().obtenerExtremo1().getIPAddress();
             }
         }
         return null;
     }
 
     /**
-     * Este m�todo calcula la congesti�n global del conjunto de puertos, en forma de
-     * porcentaje.
-     * @return Porcentaje (0%-100%) de congesti�n del conjunto de puertos.
+     * This method computes the global congestion level of the port set as a
+     * percentage.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return Congestion level of the port set as a percentage (0%-100%).
      * @since 1.0
-     */    
+     */
     @Override
-    public long obtenerCongestion() {
-        long cong = 0;
-        int i=0;
-        for (i=0; i<this.numPuertos; i++) {
-            if (puertos[i].obtenerCongestion() > cong)
-                cong = puertos[i].obtenerCongestion();
+    public long getCongestionLevel() {
+        long computedCongestion = 0;
+        int i = 0;
+        for (i = 0; i < this.numberOfPorts; i++) {
+            if (this.ports[i].getCongestionLevel() > computedCongestion) {
+                computedCongestion = ports[i].getCongestionLevel();
+            }
         }
-        return cong;
+        return computedCongestion;
+    }
 
-    }
-    
     /**
-     * Este m�todo reinicia el valor de todos los atributos de la clase, como si
-     * acabasen de ser creados en el constructor.
+     * This method reset the value of all attributes as when created by the
+     * constructor.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     */    
+     */
     @Override
-    public void reset(){
-        this.cerrojoCjtoPuertos.liberar();
-        int i=0;
-        for (i=0; i<this.numPuertos; i++) {
-            puertos[i].reset();
+    public void reset() {
+        this.portSetMonitor.unLock();
+        int i = 0;
+        for (i = 0; i < this.numberOfPorts; i++) {
+            ports[i].reset();
         }
-        this.puertoLeido = 0;
-        this.ponerTamanioOcupadoCjtoPuertos(0);
-        siguientePaqueteALeer = null;
-        for (i=0; i<11; i++) {
-            actualPorPrioridad[i] = 0;
+        this.readPort = 0;
+        this.setPortSetOccupancySize(0);
+        nextPacketToBeRead = null;
+        for (i = 0; i < 11; i++) {
+            currentByPriority[i] = 0;
         }
-        this.saturadoArtificialmente = false;
-        this.verdaderaOcupacion = 0;
-        this.cerrojoCjtoPuertos.liberar();
+        this.artificiallyCongested = false;
+        this.occupancy = 0;
+        this.portSetMonitor.unLock();
     }
-    
+
     /**
-     * Este m�todo permite establecer el nivel de saturaci�n del nodo en el 97% de tal
-     * forma que r�pidamente comience a descartar paquetes. Lo hace de forma artificial
-     * y es capaz de volver al estado original en cualquier momento.
-     * @param sa TRUE indica que el puerto se debe saturar. FALSE indica lo contrario.
+     * This method allow establishing the congestion level of the port set to
+     * 97% so that the parent node will start qickly to discard packets. It is a
+     * trick created to simulate this situation, and the port set is able to get
+     * back to the real state when desired.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param congestArtificially TRUE if port set is going to be congested
+     * artificially. Otherwise, FALSE.
      * @since 1.0
-     */    
+     */
     @Override
-    public void ponerSaturadoArtificialmente(boolean sa) {
-        long calculo97PorCiento = (long) (this.obtenerTamanioBuffer()*1017118.72);
-        if (sa) {
-            if (!this.saturadoArtificialmente) {
-                if (this.obtenerTamanioOcupadoCjtoPuertos() < calculo97PorCiento) {
-                    this.saturadoArtificialmente = true;
-                    this.verdaderaOcupacion = this.obtenerTamanioOcupadoCjtoPuertos();
-                    this.ponerTamanioOcupadoCjtoPuertos(calculo97PorCiento);
+    public void setArtificiallyCongested(boolean congestArtificially) {
+        long computationOf97Percent = (long) (this.getBufferSizeInMB() * 1017118.72);
+        if (congestArtificially) {
+            if (!this.artificiallyCongested) {
+                if (this.getPortSetOccupancySize() < computationOf97Percent) {
+                    this.artificiallyCongested = true;
+                    this.occupancy = this.getPortSetOccupancySize();
+                    this.setPortSetOccupancySize(computationOf97Percent);
                 }
             }
         } else {
-            if (this.saturadoArtificialmente) {
-                this.verdaderaOcupacion += (obtenerTamanioOcupadoCjtoPuertos() - calculo97PorCiento);
-                if (this.verdaderaOcupacion < 0)
-                    this.verdaderaOcupacion = 0;
-                this.ponerTamanioOcupadoCjtoPuertos(this.verdaderaOcupacion);
-                this.saturadoArtificialmente = false;
-                this.verdaderaOcupacion = 0;
+            if (this.artificiallyCongested) {
+                this.occupancy += (getPortSetOccupancySize() - computationOf97Percent);
+                if (this.occupancy < 0) {
+                    this.occupancy = 0;
+                }
+                this.setPortSetOccupancySize(this.occupancy);
+                this.artificiallyCongested = false;
+                this.occupancy = 0;
             }
         }
     }
-    
-    private TPort[] puertos;
-    private int puertoLeido;
-    private int prioridadActual;
-    private TPDU siguientePaqueteALeer;
-    private int ratioPorPrioridad[];
-    private int actualPorPrioridad[];
+
+    private TPort[] ports;
+    private int readPort;
+    private int currentPriority;
+    // The following attributes are used in a very dirty way to retain the next
+    // packet to be managed. This is because of the special priority-based
+    // algorithm used by active nodes to prioritize packets depending on
+    // several aspects. It need a revision to be optimized.
+    private TPDU nextPacketToBeRead;
+    private int[] ratioByPriority;
+    private int[] currentByPriority;
+    // end of comment
 }

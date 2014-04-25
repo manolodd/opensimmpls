@@ -15,7 +15,7 @@ import simMPLS.protocols.TPDU;
 import simMPLS.hardware.timer.TTimerEvent;
 import simMPLS.hardware.timer.ITimerEventListener;
 import simMPLS.hardware.ports.TNodePorts;
-import simMPLS.utils.TLock;
+import simMPLS.utils.TMonitor;
 import simMPLS.utils.TIdentificadorLargo;
 import java.awt.*;
 import java.util.*;
@@ -51,8 +51,8 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
         puertoExtremo2 = -1;
         buffer = Collections.synchronizedSortedSet(new TreeSet());
         bufferLlegadosADestino = new TreeSet();
-        cerrojo = new TLock();
-        cerrojoLlegados = new TLock();
+        cerrojo = new TMonitor();
+        cerrojoLlegados = new TMonitor();
         topologia = t;
         enlaceCaido = false;
     }
@@ -155,12 +155,12 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
             this.ponerPuertoExtremo1(tcenlace.obtenerPuertoExtremo1());
             TNodePorts p1 = extremo1.obtenerPuertos();
             if (p1 != null) {
-                p1.ponerEnlaceEnPuerto(this, this.puertoExtremo1);
+                p1.connectLinkToPort(this, this.puertoExtremo1);
             }
             this.ponerPuertoExtremo2(tcenlace.obtenerPuertoExtremo2());
             TNodePorts p2 = extremo2.obtenerPuertos();
             if (p2 != null) {
-                p2.ponerEnlaceEnPuerto(this, this.puertoExtremo2);
+                p2.connectLinkToPort(this, this.puertoExtremo2);
             }
         }
     }
@@ -193,13 +193,13 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
         if (extremo1 != null) {
             TNodePorts p1 = extremo1.obtenerPuertos();
             if (p1 != null) {
-                p1.quitarEnlaceDePuerto(this.puertoExtremo1);
+                p1.disconnectLinkFromPort(this.puertoExtremo1);
             }
         }
         if (extremo2 != null) {
             TNodePorts p2 = extremo2.obtenerPuertos();
             if (p2 != null) {
-                p2.quitarEnlaceDePuerto(this.puertoExtremo2);
+                p2.disconnectLinkFromPort(this.puertoExtremo2);
             }
         }
     }
@@ -411,9 +411,9 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
      * @since 1.0
      */
     public void ponerPaquete(TPDU paquete, int destino) {
-        cerrojo.bloquear();
+        cerrojo.lock();
         buffer.add(new TLinkBufferEntry(paquete, this.obtenerDelay(), destino));
-        cerrojo.liberar();
+        cerrojo.unLock();
     }
     
     /**
@@ -469,7 +469,7 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
      * @return El cerrojo del enlace.
      * @since 1.0
      */
-    public TLock obtenerCerrojo() {
+    public TMonitor obtenerCerrojo() {
         return this.cerrojo;
     }
     
@@ -477,26 +477,26 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
      * Este m�todo comprueba cu�l de los dos extremos del enlace es el nodo pasado por
      * par�metro.
      * @param n Nodo que realiza la consulta.
-     * @return EXTREMO1, si el nodo es el extremo 1. EXTREMO2 si es el extremo 2.
+     * @return END_NODE_1, si el nodo es el extremo 1. END_NODE_2 si es el extremo 2.
      * @since 1.0
      */
     public int queExtremoSoyYo(TTopologyNode n) {
         if (n.obtenerIdentificador() == extremo1.obtenerIdentificador())
-            return this.EXTREMO1;
-        return this.EXTREMO2;
+            return this.END_NODE_1;
+        return this.END_NODE_2;
     }
     
     /**
      * Este m�todo calcula a qu� extremo del enlace se debe enviar un paquete dado el
      * nodo quelo env�a.
      * @param n Nodo que env�a el paquete y que hace la consulta.
-     * @return EXTREMO1 si el paquete debe ir al extremo 1. EXTREMO 2 si debe ir al extremo 2.
+     * @return END_NODE_1 si el paquete debe ir al extremo 1. EXTREMO 2 si debe ir al extremo 2.
      * @since 1.0
      */
-    public int obtenerDestinoLocal(TTopologyNode n) {
+    public int getTargetNodeIDOfTrafficSentBy(TTopologyNode n) {
         if (n.obtenerIdentificador() == extremo1.obtenerIdentificador())
-            return this.EXTREMO2;
-        return this.EXTREMO1;
+            return this.END_NODE_2;
+        return this.END_NODE_1;
     }
     
     /**
@@ -586,12 +586,12 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
      * Esta constante se usa para identificar el extremo inicial del enlace.
      * @since 1.0
      */
-    public static final int EXTREMO1 = 1;
+    public static final int END_NODE_1 = 1;
     /**
      * Esta constante se usa para identificar el extremo final del enlace.
      * @since 1.0
      */
-    public static final int EXTREMO2 = 2;
+    public static final int END_NODE_2 = 2;
     
     private int id;
     private TTopologyNode extremo1;
@@ -618,13 +618,13 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
      * Este atributo es el monitor de la clase que permite sincronizaciones.
      * @since 1.0
      */
-    protected TLock cerrojo;
+    protected TMonitor cerrojo;
     /**
      * Este atributo es el monitor de la clase que permite sincronizaciones en el
      * buffer de paquetes lelgados al destino.
      * @since 1.0
      */    
-    protected TLock cerrojoLlegados;
+    protected TMonitor cerrojoLlegados;
     /**
      * Topolog�a a la cual pertenece el enlace.
      * @since 1.0

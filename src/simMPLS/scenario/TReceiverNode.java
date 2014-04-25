@@ -41,7 +41,7 @@ public class TReceiverNode extends TTopologyNode implements ITimerEventListener,
     public TReceiverNode(int identificador, String d, TIdentificadorLargo il, TTopology t) {
         super(identificador, d, il, t);
         this.ponerPuertos(super.NUM_PUERTOS_RECEPTOR);
-        this.puertos.ponerBufferIlimitado(true);
+        this.puertos.setUnlimitedBuffer(true);
         this.estadisticas = new TReceiverStats();
     }
 
@@ -93,21 +93,21 @@ public class TReceiverNode extends TTopologyNode implements ITimerEventListener,
      * @since 1.0
      */    
     public void recibirDatos() {
-        TPort p = this.puertos.obtenerPuerto(0);
+        TPort p = this.puertos.getPort(0);
         long idEvt = 0;
         int tipo = 0;
         TPDU paquete = null;
         TSEPacketReceived evt = null;
         if (p != null) {
-            while (p.hayPaqueteEsperando()) {
-                paquete = p.obtenerPaquete();
+            while (p.thereIsAPacketWaiting()) {
+                paquete = p.getPacket();
                 try {
                     idEvt = this.gILargo.obtenerNuevo();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 this.contabilizarPaquete(paquete, true);
-                evt = new TSEPacketReceived(this, idEvt, this.obtenerInstanteDeTiempo(), tipo, paquete.obtenerTamanio());
+                evt = new TSEPacketReceived(this, idEvt, this.obtenerInstanteDeTiempo(), tipo, paquete.getSize());
                 this.suscriptorSimulacion.capturarEventoSimulacion(evt);
                 paquete = null;
             }
@@ -151,7 +151,7 @@ public class TReceiverNode extends TTopologyNode implements ITimerEventListener,
      * @since 1.0
      */    
     public boolean tienePuertosLibres() {
-        return this.puertos.hayPuertosLibres();
+        return this.puertos.isAnyPortAvailable();
     }
 
     /**
@@ -238,7 +238,7 @@ public class TReceiverNode extends TTopologyNode implements ITimerEventListener,
         cadena += "#";
         cadena += this.obtenerNombre().replace('#', ' ');
         cadena += "#";
-        cadena += this.obtenerIP();
+        cadena += this.getIPAddress();
         cadena += "#";
         cadena += this.obtenerEstado();
         cadena += "#";

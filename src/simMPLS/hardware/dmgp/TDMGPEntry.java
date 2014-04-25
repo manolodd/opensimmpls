@@ -12,18 +12,18 @@ import simMPLS.protocols.TPDUMPLS;
 public class TDMGPEntry implements Comparable {
 
     /**
-     * This method is the constructor. It creates a new instance of TEntradaDMGP
+     * This method is the constructor. It creates a new instance of TDMGPEntry
      * and initialize its attributes.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param ordenLlegada Establish the incoming order in the global DMGP
+     * @param incomingOrder Establish the incoming order in the global DMGP
      * memory.
      */
-    public TDMGPEntry(int ordenLlegada) {
-        idFlujo = -1;
-        idPaquete = -1;
-        paquete = null;
-        orden = ordenLlegada;
+    public TDMGPEntry(int incomingOrder) {
+        this.flowID = -1;
+        this.packetID = -1;
+        this.packet = null;
+        this.order = incomingOrder;
     }
 
     /**
@@ -33,8 +33,8 @@ public class TDMGPEntry implements Comparable {
      * @return The identifier of the flow associated to this entry.
      * @since 1.0
      */
-    public int obtenerIdFlujo() {
-        return this.idFlujo;
+    public int getFlowID() {
+        return this.flowID;
     }
 
     /**
@@ -45,8 +45,8 @@ public class TDMGPEntry implements Comparable {
      * @return The identifier of the GoS packet.
      * @since 1.0
      */
-    public int obtenerIdPaquete() {
-        return this.idPaquete;
+    public int getPacketID() {
+        return this.packetID;
     }
 
     /**
@@ -57,8 +57,8 @@ public class TDMGPEntry implements Comparable {
      * @return The stored GoS packet.
      * @since 1.0
      */
-    public TPDUMPLS obtenerPaquete() {
-        return this.paquete.obtenerCopia();
+    public TPDUMPLS getPacket() {
+        return this.packet.obtenerCopia();
     }
 
     /**
@@ -68,10 +68,10 @@ public class TDMGPEntry implements Comparable {
      * @param p The packet to be inserted in this entry.
      * @since 1.0
      */
-    public void ponerPaquete(TPDUMPLS p) {
-        this.paquete = p.obtenerCopia();
-        this.idFlujo = p.obtenerCabecera().obtenerIPOrigen().hashCode();
-        this.idPaquete = p.obtenerCabecera().obtenerClavePrimaria();
+    public void setPacket(TPDUMPLS p) {
+        this.packet = p.obtenerCopia();
+        this.flowID = p.obtenerCabecera().obtenerIPOrigen().hashCode();
+        this.packetID = p.obtenerCabecera().obtenerClavePrimaria();
     }
 
     /**
@@ -82,8 +82,8 @@ public class TDMGPEntry implements Comparable {
      * @return The order number of this DMGP entry.
      * @since 1.0
      */
-    public int obtenerOrden() {
-        return this.orden;
+    public int getOrder() {
+        return this.order;
     }
 
     /**
@@ -97,11 +97,11 @@ public class TDMGPEntry implements Comparable {
      */
     @Override
     public int compareTo(Object o) {
-        TDMGPEntry edmgp = (TDMGPEntry) o;
-        if (this.orden < edmgp.obtenerOrden()) {
+        TDMGPEntry dmgpEntry = (TDMGPEntry) o;
+        if (this.order < dmgpEntry.getOrder()) {
             return TDMGPEntry.ESTE_MENOR;
         }
-        if (this.orden > edmgp.obtenerOrden()) {
+        if (this.order > dmgpEntry.getOrder()) {
             return TDMGPEntry.ESTE_MAYOR;
         }
         return TDMGPEntry.ESTE_IGUAL;
@@ -111,8 +111,8 @@ public class TDMGPEntry implements Comparable {
     private static final int ESTE_IGUAL = 0;
     private static final int ESTE_MAYOR = 1;
 
-    private int idFlujo;
-    private int idPaquete;
-    private int orden;
-    private TPDUMPLS paquete;
+    private int flowID;
+    private int packetID;
+    private int order;
+    private TPDUMPLS packet;
 }

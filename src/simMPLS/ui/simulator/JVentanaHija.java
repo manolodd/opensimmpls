@@ -920,10 +920,10 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             if (et != null) {
                 if (et.obtenerTipoElemento() == TTopologyElement.NODO) {
                     TTopologyNode nt = (TTopologyNode) et;
-                    if (nt.obtenerPuertos().obtenerSaturadoArtificialmente()) {
-                        nt.obtenerPuertos().ponerSaturadoArtificialmente(false);
+                    if (nt.obtenerPuertos().getArtificiallyCongested()) {
+                        nt.obtenerPuertos().setArtificiallyCongested(false);
                     } else {
-                        nt.obtenerPuertos().ponerSaturadoArtificialmente(true);
+                        nt.obtenerPuertos().setArtificiallyCongested(true);
                     }
                 } else if (et.obtenerTipoElemento() == TTopologyElement.ENLACE) {
                     TTopologyLink ent = (TTopologyLink) et;
@@ -1591,10 +1591,10 @@ private void ratonSobrePanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIR
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
         if (et.obtenerTipoElemento() == TTopologyElement.NODO) {
             TTopologyNode nt = (TTopologyNode) et;
-            if (nt.obtenerPuertos().obtenerSaturadoArtificialmente()) {
-                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.Congestion") +nt.obtenerPuertos().obtenerCongestion()+ java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.POrcentaje")+java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.paraDejarDeCongestionar"));
+            if (nt.obtenerPuertos().getArtificiallyCongested()) {
+                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.Congestion") +nt.obtenerPuertos().getCongestionLevel()+ java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.POrcentaje")+java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.paraDejarDeCongestionar"));
             } else {
-                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.Congestion") +nt.obtenerPuertos().obtenerCongestion()+ java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.POrcentaje")+java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.paraCongestionar"));
+                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.Congestion") +nt.obtenerPuertos().getCongestionLevel()+ java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.POrcentaje")+java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.paraCongestionar"));
             }
         } else if (et.obtenerTipoElemento() == TTopologyElement.ENLACE) {
             TTopologyLink ent = (TTopologyLink) et;
@@ -1629,7 +1629,7 @@ private void ratonSobrePanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
         if (et.obtenerTipoElemento() == TTopologyElement.NODO) {
             TTopologyNode nt = (TTopologyNode) et;
-            panelDisenio.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.PanelDisenio.IP") + nt.obtenerIP());
+            panelDisenio.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.PanelDisenio.IP") + nt.getIPAddress());
         } else if (et.obtenerTipoElemento() == TTopologyElement.ENLACE) {
             TTopologyLink ent = (TTopologyLink) et;
             panelDisenio.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.panelDisenio.Retardo") + ent.obtenerDelay() + java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.panelDisenio.ns"));

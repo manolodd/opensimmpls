@@ -295,8 +295,8 @@ private void clicEnCambioNodoDerecho(java.awt.event.ActionEvent evt) {//GEN-FIRS
         if (seleccionado != null) {
 //          Actualizar los puertos de dicho nodo
             int i=0;
-            for (i=0; i<seleccionado.obtenerPuertos().obtenerNumeroDePuertos(); i++) {
-                if (seleccionado.obtenerPuertos().obtenerPuerto(i).estaLibre())
+            for (i=0; i<seleccionado.obtenerPuertos().getNumberOfPorts(); i++) {
+                if (seleccionado.obtenerPuertos().getPort(i).isAvailable())
                     this.selectorPuertoDerecho.addItem(""+i);
             }
 //          Actualizar los puertos de dicho nodo
@@ -321,8 +321,8 @@ private void clicEnCambioNodoIzquierdo(java.awt.event.ActionEvent evt) {//GEN-FI
         if (seleccionado != null) {
 //          Actualizar los puertos de dicho nodo
             int i=0;
-            for (i=0; i<seleccionado.obtenerPuertos().obtenerNumeroDePuertos(); i++) {
-                if (seleccionado.obtenerPuertos().obtenerPuerto(i).estaLibre())
+            for (i=0; i<seleccionado.obtenerPuertos().getNumberOfPorts(); i++) {
+                if (seleccionado.obtenerPuertos().getPort(i).isAvailable())
                     this.selectorPuertoIzquierdo.addItem(""+i);
             }
 //          Actualizar los puertos de dicho nodo

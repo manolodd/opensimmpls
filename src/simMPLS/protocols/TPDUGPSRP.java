@@ -25,7 +25,7 @@ public class TPDUGPSRP extends TPDU {
      * @return El tama�o completo del paquete en bytes.
      * @since 1.0
      */
-    public int obtenerTamanio() {
+    public int getSize() {
         int tam = 0;
         tam += super.obtenerCabecera().obtenerTamanio(); // Cabecera IPv4
         tam += this.datosTCP.obtenerTamanio(); // Cabecera TCP

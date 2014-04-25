@@ -13,7 +13,7 @@
 package simMPLS.hardware.simulationcollector;
 
 import simMPLS.ui.simulator.JPanelSimulacion;
-import simMPLS.utils.TLock;
+import simMPLS.utils.TMonitor;
 import simMPLS.scenario.TSimulationEvent;
 import java.util.*;
 
@@ -32,7 +32,7 @@ public class TSimulationCollector implements ISimulationEventListener {
      */
     public TSimulationCollector() {
         bufferDeSimulacion = new TreeSet();
-        cerrojo = new TLock();
+        cerrojo = new TMonitor();
         panel = null;
     }
 
@@ -147,16 +147,16 @@ public class TSimulationCollector implements ISimulationEventListener {
      * acabase de ser creada por el constructor de la clase.
      */    
     public void reset() {
-        cerrojo.bloquear();
+        cerrojo.lock();
         Iterator it = this.bufferDeSimulacion.iterator();
         while (it.hasNext()) {
             it.next();
             it.remove();
         }
-        cerrojo.liberar();
+        cerrojo.unLock();
     }
     
-    private TLock cerrojo;
+    private TMonitor cerrojo;
     
     private TreeSet bufferDeSimulacion;
     private JPanelSimulacion panel;

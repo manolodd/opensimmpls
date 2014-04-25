@@ -13,7 +13,7 @@
 
 package simMPLS.hardware.tldp;
 
-import simMPLS.utils.TLock;
+import simMPLS.utils.TMonitor;
 import java.util.*;
 
 /** Esta clase implementa una matriz de conmutaci�n para cualquiera de los
@@ -30,7 +30,7 @@ public class TSwitchingMatrix {
      */
     public TSwitchingMatrix() {
         matriz = new LinkedList();
-        cerrojo = new TLock();
+        cerrojo = new TMonitor();
     }
 
     /**
@@ -40,7 +40,7 @@ public class TSwitchingMatrix {
      * @return El monitor que hace de cerrojo para operar en esta clase.
      * @since 1.0
      */    
-    public TLock obtenerCerrojo() {
+    public TMonitor obtenerCerrojo() {
         return cerrojo;
     }
     
@@ -49,13 +49,13 @@ public class TSwitchingMatrix {
      * @since 1.0
      */    
     public void borrarTodo() {
-        cerrojo.bloquear();
+        cerrojo.lock();
         Iterator it = matriz.iterator();
         while (it.hasNext()) {
             it.next();
             it.remove();
         }
-        cerrojo.liberar();
+        cerrojo.unLock();
     }
 
     /** Este m�todo inserta una nueva entrada en la matriz de conmutaci�n.
@@ -63,9 +63,9 @@ public class TSwitchingMatrix {
      * @since 1.0
      */    
     public void insertar(TSwitchingMatrixEntry emc) {
-        cerrojo.bloquear();
+        cerrojo.lock();
         matriz.addLast(emc);
-        cerrojo.liberar();
+        cerrojo.unLock();
     }
 
     /** Este m�todo permite acceder a una entrada concreta de la matriz de conmutaci�n.
@@ -78,7 +78,7 @@ public class TSwitchingMatrix {
      * @since 1.0
      */    
     public TSwitchingMatrixEntry obtenerEntrada(int p, int lf, int t) {
-        cerrojo.bloquear();
+        cerrojo.lock();
         Iterator it = matriz.iterator();
         TSwitchingMatrixEntry emc = null;
         while (it.hasNext()) {
@@ -86,13 +86,13 @@ public class TSwitchingMatrix {
             if (emc.obtenerLabelFEC() == lf) {
                 if (emc.obtenerPuertoEntrada() == p) {
                     if (emc.obtenerTipo() == t) {
-                        cerrojo.liberar();
+                        cerrojo.unLock();
                         return emc;
                     }
                 }
             }
         }
-        cerrojo.liberar();
+        cerrojo.unLock();
         return null;
     }
 
@@ -105,17 +105,17 @@ public class TSwitchingMatrix {
      * @since 1.0
      */    
     public TSwitchingMatrixEntry obtenerEntradaIDPropio(int id) {
-        cerrojo.bloquear();
+        cerrojo.lock();
         Iterator it = matriz.iterator();
         TSwitchingMatrixEntry emc = null;
         while (it.hasNext()) {
             emc = (TSwitchingMatrixEntry) it.next();
             if (emc.obtenerIDLDPPropio() == id) {
-                cerrojo.liberar();
+                cerrojo.unLock();
                 return emc;
             }
         }
-        cerrojo.liberar();
+        cerrojo.unLock();
         return null;
     }
 
@@ -131,19 +131,19 @@ public class TSwitchingMatrix {
      * @since 1.0
      */    
     public TSwitchingMatrixEntry obtenerEntradaIDAntecesor(int id, int pEntrada) {
-        cerrojo.bloquear();
+        cerrojo.lock();
         Iterator it = matriz.iterator();
         TSwitchingMatrixEntry emc = null;
         while (it.hasNext()) {
             emc = (TSwitchingMatrixEntry) it.next();
             if (emc.obtenerIDLDPAntecesor() == id) {
                 if (emc.obtenerPuertoEntrada() == pEntrada) {
-                    cerrojo.liberar();
+                    cerrojo.unLock();
                     return emc;
                 }
             }
         }
-        cerrojo.liberar();
+        cerrojo.unLock();
         return null;
     }
 
@@ -158,7 +158,7 @@ public class TSwitchingMatrix {
      * @since 1.0
      */    
     public boolean existeEntrada(int p, int lf, int t) {
-        cerrojo.bloquear();
+        cerrojo.lock();
         Iterator it = matriz.iterator();
         TSwitchingMatrixEntry emc = null;
         while (it.hasNext()) {
@@ -166,13 +166,13 @@ public class TSwitchingMatrix {
             if (emc.obtenerLabelFEC() == lf) {
                 if (emc.obtenerPuertoEntrada() == p) {
                     if (emc.obtenerTipo() == t) {
-                        cerrojo.liberar();
+                        cerrojo.unLock();
                         return true;
                     }
                 }
             }
         }
-        cerrojo.liberar();
+        cerrojo.unLock();
         return false;
     }
 
@@ -184,7 +184,7 @@ public class TSwitchingMatrix {
      * @since 1.0
      */    
     public void borrarEntrada(int p, int lf, int t) {
-        cerrojo.bloquear();
+        cerrojo.lock();
         Iterator it = matriz.iterator();
         TSwitchingMatrixEntry emc = null;
         while (it.hasNext()) {
@@ -197,7 +197,7 @@ public class TSwitchingMatrix {
                 }
             }
         }
-        cerrojo.liberar();
+        cerrojo.unLock();
     }
 
     /** Este m�todo elimina una entrada concreta de la matriz de conmutaci�n.
@@ -207,7 +207,7 @@ public class TSwitchingMatrix {
      * @since 1.0
      */    
     public void borrarEntradaIDPropio(int id, int pEntrada) {
-        cerrojo.bloquear();
+        cerrojo.lock();
         Iterator it = matriz.iterator();
         TSwitchingMatrixEntry emc = null;
         while (it.hasNext()) {
@@ -218,7 +218,7 @@ public class TSwitchingMatrix {
                 }
             }
         }
-        cerrojo.liberar();
+        cerrojo.unLock();
     }
 
     /** Este m�todo obtiene la operaci�n que hay que realizar sobre la pila de etiquetas
@@ -233,7 +233,7 @@ public class TSwitchingMatrix {
      * @since 1.0
      */    
     public int obtenerOperacion(int p, int lf, int t) {
-        cerrojo.bloquear();
+        cerrojo.lock();
         Iterator it = matriz.iterator();
         TSwitchingMatrixEntry emc = null;
         while (it.hasNext()) {
@@ -241,13 +241,13 @@ public class TSwitchingMatrix {
             if (emc.obtenerLabelFEC() == lf) {
                 if (emc.obtenerPuertoEntrada() == p) {
                     if (emc.obtenerTipo() == t) {
-                        cerrojo.liberar();
+                        cerrojo.unLock();
                         return emc.obtenerOperacion();
                     }
                 }
             }
         }
-        cerrojo.liberar();
+        cerrojo.unLock();
         return TSwitchingMatrixEntry.SIN_DEFINIR;
     }
 
@@ -262,7 +262,7 @@ public class TSwitchingMatrix {
      * @since 1.0
      */    
     public int obtenerEtiquetaSalida(int p, int lf, int t) {
-        cerrojo.bloquear();
+        cerrojo.lock();
         Iterator it = matriz.iterator();
         TSwitchingMatrixEntry emc = null;
         while (it.hasNext()) {
@@ -270,13 +270,13 @@ public class TSwitchingMatrix {
             if (emc.obtenerLabelFEC() == lf) {
                 if (emc.obtenerPuertoEntrada() == p) {
                     if (emc.obtenerTipo() == t) {
-                        cerrojo.liberar();
+                        cerrojo.unLock();
                         return emc.obtenerEtiqueta();
                     }
                 }
             }
         }
-        cerrojo.liberar();
+        cerrojo.unLock();
         return TSwitchingMatrixEntry.SIN_DEFINIR;
     }
 
@@ -291,7 +291,7 @@ public class TSwitchingMatrix {
      * @since 1.0
      */    
     public int obtenerPuertoSalida(int p, int lf, int t) {
-        cerrojo.bloquear();
+        cerrojo.lock();
         Iterator it = matriz.iterator();
         TSwitchingMatrixEntry emc = null;
         while (it.hasNext()) {
@@ -299,13 +299,13 @@ public class TSwitchingMatrix {
             if (emc.obtenerLabelFEC() == lf) {
                 if (emc.obtenerPuertoEntrada() == p) {
                     if (emc.obtenerTipo() == t) {
-                        cerrojo.liberar();
+                        cerrojo.unLock();
                         return emc.obtenerPuertoSalida();
                     }
                 }
             }
         }
-        cerrojo.liberar();
+        cerrojo.unLock();
         return TSwitchingMatrixEntry.SIN_DEFINIR;
     }
 
@@ -317,19 +317,19 @@ public class TSwitchingMatrix {
      * @since 1.0
      */    
     public boolean existeEtiquetaEntrada(int lf) {
-        cerrojo.bloquear();
+        cerrojo.lock();
         Iterator it = matriz.iterator();
         TSwitchingMatrixEntry emc = null;
         while (it.hasNext()) {
             emc = (TSwitchingMatrixEntry) it.next();
             if (emc.obtenerLabelFEC() == lf) {
                 if (emc.obtenerTipo() == TSwitchingMatrixEntry.LABEL) {
-                    cerrojo.liberar();
+                    cerrojo.unLock();
                     return true;
                 }
             }
         }
-        cerrojo.liberar();
+        cerrojo.unLock();
         return false;
     }
 
@@ -376,13 +376,13 @@ public class TSwitchingMatrix {
      * @since 1.0
      */    
     public void reset() {
-        this.cerrojo.bloquear();
+        this.cerrojo.lock();
         Iterator it = this.matriz.iterator();
         while (it.hasNext()) {
             it.next();
             it.remove();
         }
-        this.cerrojo.liberar();
+        this.cerrojo.unLock();
     }
 
     /** Lista enlazda que almacenar� las entradas de la matriz de conmutaci�n. Realmente
@@ -394,5 +394,5 @@ public class TSwitchingMatrix {
      * matriz de conmutaci�n.
      * @since 1.0
      */    
-    private TLock cerrojo;
+    private TMonitor cerrojo;
 }

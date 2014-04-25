@@ -1,7 +1,7 @@
 //**************************************************************************
 // Nombre......: TNodePorts.java
 // Proyecto....: Open SimMPLS
-// Descripci�n.: Clase que implementa el conjunto de puertos de un nodo de
+// Descripci�n.: Clase que implementa el conjunto de puertos de un parentNode de
 // ............: la topolog�a.
 // Fecha.......: 06/03/2004
 // Autor/es....: Manuel Dom�nguez Dorado
@@ -17,7 +17,7 @@ import simMPLS.protocols.TPDU;
 
 
 /**
- * Esta clase implementa un conjunto de puertos de un nodo.
+ * Esta clase implementa un conjunto de puertos de un parentNode.
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
@@ -27,14 +27,14 @@ public class TNormalNodePorts extends TNodePorts {
     /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * TPuertosNodoNormal.
      * @param num Numero de puertos que contendr� el conjunto e puertos.
-     * @param n Referencia al nodo al que pertenece este conjunto de puertos.
+     * @param n Referencia al parentNode al que pertenece este conjunto de puertos.
      * @since 1.0
      */
     public TNormalNodePorts(int num, TTopologyNode n) {
         super(num, n);
         puertos = new TNormalPort[num];
         int i=0;
-        for (i=0; i<this.numPuertos; i++) {
+        for (i=0; i<this.numberOfPorts; i++) {
             puertos[i] = new TNormalPort(this, i);
             puertos[i].ponerIdentificador(i);
         }
@@ -49,10 +49,10 @@ public class TNormalNodePorts extends TNodePorts {
      * @since 1.0
      */    
     @Override
-    public void ponerBufferIlimitado(boolean bi) {
+    public void setUnlimitedBuffer(boolean bi) {
         int i=0;
-        for (i=0; i<this.numPuertos; i++) {
-            puertos[i].ponerBufferIlimitado(bi);
+        for (i=0; i<this.numberOfPorts; i++) {
+            puertos[i].setUnlimitedBuffer(bi);
         }
     }
     
@@ -64,8 +64,8 @@ public class TNormalNodePorts extends TNodePorts {
      * @since 1.0
      */    
     @Override
-    public TPort obtenerPuerto(int numPuerto) {
-        if (numPuerto < this.numPuertos)
+    public TPort getPort(int numPuerto) {
+        if (numPuerto < this.numberOfPorts)
             return puertos[numPuerto];
         return null;
     }
@@ -77,8 +77,8 @@ public class TNormalNodePorts extends TNodePorts {
      * @since 1.0
      */    
     @Override
-    public void ponerTamanioBuffer(int tamEnMB) {
-        this.tamanioBufferCjtoPuertos = tamEnMB;
+    public void setBufferSizeInMB(int tamEnMB) {
+        this.portSetBufferSize = tamEnMB;
     }
     
     /**
@@ -87,8 +87,8 @@ public class TNormalNodePorts extends TNodePorts {
      * @since 1.0
      */    
     @Override
-    public int obtenerTamanioBuffer() {
-        return this.tamanioBufferCjtoPuertos;
+    public int getBufferSizeInMB() {
+        return this.portSetBufferSize;
     }
     
     /**
@@ -100,9 +100,9 @@ public class TNormalNodePorts extends TNodePorts {
      * @since 1.0
      */    
     @Override
-    public boolean estaLibre(int p) {
-        if (p < this.numPuertos)
-            return puertos[p].estaLibre();
+    public boolean isAvailable(int p) {
+        if (p < this.numberOfPorts)
+            return puertos[p].isAvailable();
         return false;
     }
 
@@ -114,10 +114,10 @@ public class TNormalNodePorts extends TNodePorts {
      * @since 1.0
      */    
     @Override
-    public boolean hayPuertosLibres() {
+    public boolean isAnyPortAvailable() {
         int i=0;
-        for (i=0; i<this.numPuertos; i++) {
-            if (puertos[i].estaLibre())
+        for (i=0; i<this.numberOfPorts; i++) {
+            if (puertos[i].isAvailable())
                 return true;
         }
         return false;
@@ -131,10 +131,10 @@ public class TNormalNodePorts extends TNodePorts {
      * @since 1.0
      */    
     @Override
-    public void ponerEnlaceEnPuerto(TTopologyLink e, int p) {
-        if (p < this.numPuertos)
-            if (puertos[p].estaLibre())
-                puertos[p].ponerEnlace(e);
+    public void connectLinkToPort(TTopologyLink e, int p) {
+        if (p < this.numberOfPorts)
+            if (puertos[p].isAvailable())
+                puertos[p].setLink(e);
     } 
 
     /**
@@ -146,10 +146,10 @@ public class TNormalNodePorts extends TNodePorts {
      * @since 1.0
      */    
     @Override
-    public TTopologyLink obtenerEnlaceDePuerto(int p) {
-        if (p < this.numPuertos)
-            if (!puertos[p].estaLibre())
-                return puertos[p].obtenerEnlace();
+    public TTopologyLink getLinkConnectedToPort(int p) {
+        if (p < this.numberOfPorts)
+            if (!puertos[p].isAvailable())
+                return puertos[p].getLink();
         return null;
     } 
 
@@ -160,9 +160,9 @@ public class TNormalNodePorts extends TNodePorts {
      * @since 1.0
      */    
     @Override
-    public void quitarEnlaceDePuerto(int p) {
-        if ((p >= 0) && (p < this.numPuertos))
-            puertos[p].quitarEnlace();
+    public void disconnectLinkFromPort(int p) {
+        if ((p >= 0) && (p < this.numberOfPorts))
+            puertos[p].disconnectLink();
     } 
 
     /**
@@ -171,11 +171,11 @@ public class TNormalNodePorts extends TNodePorts {
      * @since 1.0
      */    
     @Override
-    public TPDU leerPaquete() {
-        for (int i=0; i<numPuertos; i++) {
-            puertoLeido = (puertoLeido + 1) % numPuertos;
-            if (puertos[puertoLeido].hayPaqueteEsperando()) {
-                return puertos[puertoLeido].obtenerPaquete();
+    public TPDU isAnyPacketWaiting() {
+        for (int i=0; i<numberOfPorts; i++) {
+            puertoLeido = (puertoLeido + 1) % numberOfPorts;
+            if (puertos[puertoLeido].thereIsAPacketWaiting()) {
+                return puertos[puertoLeido].getPacket();
             }
         }
         return null;
@@ -187,9 +187,9 @@ public class TNormalNodePorts extends TNodePorts {
      * @since 1.0
      */    
     @Override
-    public boolean hayPaquetesQueConmutar() {
-        for (int i=0; i<numPuertos; i++) {
-            if (puertos[i].hayPaqueteEsperando()) {
+    public boolean isAnyPacketToSwitch() {
+        for (int i=0; i<numberOfPorts; i++) {
+            if (puertos[i].thereIsAPacketWaiting()) {
                 return true;
             }
         }
@@ -202,27 +202,27 @@ public class TNormalNodePorts extends TNodePorts {
      * @since 1.0
      */    
     @Override
-    public boolean hayPaquetesQueEncaminar() {
-        return hayPaquetesQueConmutar();
+    public boolean isAnyPacketToRoute() {
+        return isAnyPacketToSwitch();
     }
     
     /**
      * Este m�todo comprueba si se puede conmutar el siguiente paquete del conjunto de
-     * puertos, teniendo como referencia el n�mero m�ximo de octetos que el nodo puede
-     * conmutar en ese instante.
-     * @param octetos El n�mero de octetos que el nodo puede conmutar en ese instante.
+ puertos, teniendo como referencia el n�mero m�ximo de octetos que el parentNode puede
+ conmutar en ese instante.
+     * @param octetos El n�mero de octetos que el parentNode puede conmutar en ese instante.
      * @return TRUE, si puedo conmutar un nuevo paquete. FALSE en caso contrario.
      * @since 1.0
      */    
     @Override
-    public boolean puedoConmutarPaquete(int octetos) {
+    public boolean canSwitchPacket(int octetos) {
         int puertosSinPaquete = 0;
-        while (puertosSinPaquete < this.numPuertos) {
-            if (puertos[((puertoLeido + 1) % numPuertos)].hayPaqueteEsperando()) {
-                return puertos[((puertoLeido + 1) % numPuertos)].puedoConmutarPaquete(octetos);
+        while (puertosSinPaquete < this.numberOfPorts) {
+            if (puertos[((puertoLeido + 1) % numberOfPorts)].thereIsAPacketWaiting()) {
+                return puertos[((puertoLeido + 1) % numberOfPorts)].canSwitchPacket(octetos);
             } else {
                 puertosSinPaquete++;
-                this.saltarPuerto();
+                this.skipPort();
             }
         }
         return false;
@@ -233,8 +233,8 @@ public class TNormalNodePorts extends TNodePorts {
      * @since 1.0
      */    
     @Override
-    public void saltarPuerto() {
-        puertoLeido = (puertoLeido + 1) % numPuertos;
+    public void skipPort() {
+        puertoLeido = (puertoLeido + 1) % numberOfPorts;
     }
     
     /**
@@ -244,29 +244,29 @@ public class TNormalNodePorts extends TNodePorts {
      * @since 1.0
      */    
     @Override
-    public int obtenerPuertoLeido() {
+    public int getReadPort() {
         return puertoLeido;
     }
 
     /**
      * Este m�todo toma una direcci�n IP y devuelve el puerto del conjunto de puertos,
-     * en cuyo extremo est� el nodo con dicha IP.
+ en cuyo extremo est� el parentNode con dicha IP.
      * @param ip IP a la que se desea acceder.
-     * @return El puerto que conecta al nodo cuya IP es la especificada. NULL en caso de que no
-     * hay conexi�n directa con dicho nodo/IP.
+     * @return El puerto que conecta al parentNode cuya IP es la especificada. NULL en caso de que no
+ hay conexi�n directa con dicho parentNode/IP.
      * @since 1.0
      */    
     @Override
-    public TPort obtenerPuertoDestino(String ip) {
-        for (int i=0; i<numPuertos; i++) {
-            if (!puertos[i].estaLibre()) {
-                int destino = puertos[i].obtenerEnlace().obtenerDestinoLocal(nodo);
-                if (destino == TTopologyLink.EXTREMO1) {
-                    if (puertos[i].obtenerEnlace().obtenerExtremo1().obtenerIP().equals(ip)) {
+    public TPort getPortWhereIsConectedANodeHavingIP(String ip) {
+        for (int i=0; i<numberOfPorts; i++) {
+            if (!puertos[i].isAvailable()) {
+                int destino = puertos[i].getLink().getTargetNodeIDOfTrafficSentBy(parentNode);
+                if (destino == TTopologyLink.END_NODE_1) {
+                    if (puertos[i].getLink().obtenerExtremo1().getIPAddress().equals(ip)) {
                         return puertos[i];
                     }
                 } else {
-                    if (puertos[i].obtenerEnlace().obtenerExtremo2().obtenerIP().equals(ip)) {
+                    if (puertos[i].getLink().obtenerExtremo2().getIPAddress().equals(ip)) {
                         return puertos[i];
                     }
                 }
@@ -276,21 +276,21 @@ public class TNormalNodePorts extends TNodePorts {
     }
 
     /**
-     * Este m�todo consulta un puerto para obtener la IP del nodo que se encuentra en
-     * el otro extremo.
+     * Este m�todo consulta un puerto para obtener la IP del parentNode que se encuentra en
+ el otro extremo.
      * @param p Identificado de un puerto del conjunto de puertos.
-     * @return IP del nodo destino al que est� unido el puerto especificado. NULL si el puerto
-     * est� libre.
+     * @return IP del parentNode destino al que est� unido el puerto especificado. NULL si el puerto
+ est� libre.
      * @since 1.0
      */    
     @Override
-    public String obtenerIPDestinoDelPuerto(int p) {
-        if ((p >= 0) && (p < this.numPuertos)) {
-            if (!puertos[p].estaLibre()) {
-                String IP2 = puertos[p].obtenerEnlace().obtenerExtremo2().obtenerIP();
-                if (puertos[p].obtenerEnlace().obtenerExtremo1().obtenerIP().equals(nodo.obtenerIP()))
-                    return puertos[p].obtenerEnlace().obtenerExtremo2().obtenerIP();
-                return puertos[p].obtenerEnlace().obtenerExtremo1().obtenerIP();
+    public String getIPOfNodeLinkedTo(int p) {
+        if ((p >= 0) && (p < this.numberOfPorts)) {
+            if (!puertos[p].isAvailable()) {
+                String IP2 = puertos[p].getLink().obtenerExtremo2().getIPAddress();
+                if (puertos[p].getLink().obtenerExtremo1().getIPAddress().equals(parentNode.getIPAddress()))
+                    return puertos[p].getLink().obtenerExtremo2().getIPAddress();
+                return puertos[p].getLink().obtenerExtremo1().getIPAddress();
             }
         }
         return null;
@@ -303,12 +303,12 @@ public class TNormalNodePorts extends TNodePorts {
      * @since 1.0
      */    
     @Override
-    public long obtenerCongestion() {
+    public long getCongestionLevel() {
         long cong = 0;
         int i=0;
-        for (i=0; i<this.numPuertos; i++) {
-            if (puertos[i].obtenerCongestion() > cong)
-                cong = puertos[i].obtenerCongestion();
+        for (i=0; i<this.numberOfPorts; i++) {
+            if (puertos[i].getCongestionLevel() > cong)
+                cong = puertos[i].getCongestionLevel();
         }
         return cong;
     }
@@ -320,45 +320,45 @@ public class TNormalNodePorts extends TNodePorts {
      */    
     @Override
     public void reset(){
-        this.cerrojoCjtoPuertos.liberar();
+        this.portSetMonitor.unLock();
         int i=0;
-        for (i=0; i<this.numPuertos; i++) {
+        for (i=0; i<this.numberOfPorts; i++) {
             puertos[i].reset();
         }
         this.puertoLeido = 0;
-        this.ponerTamanioOcupadoCjtoPuertos(0);
-        this.saturadoArtificialmente = false;
-        this.verdaderaOcupacion = 0;
-        this.cerrojoCjtoPuertos.liberar();
+        this.setPortSetOccupancySize(0);
+        this.artificiallyCongested = false;
+        this.occupancy = 0;
+        this.portSetMonitor.unLock();
     }
     
     /**
-     * Este m�todo permite establecer el nivel de saturaci�n del nodo en el 97% de tal
-     * forma que r�pidamente comience a descartar paquetes. Lo hace de forma artificial
+     * Este m�todo permite establecer el nivel de saturaci�n del parentNode en el 97% de tal
+ forma que r�pidamente comience a descartar paquetes. Lo hace de forma artificial
      * y es capaz de volver al estado original en cualquier momento.
      * @param sa TRUE indica que el puerto se debe saturar artificialmente. FALSE indica lo
      * contrario.
      * @since 1.0
      */    
     @Override
-    public void ponerSaturadoArtificialmente(boolean sa) {
-        long calculo97PorCiento = (long) (this.obtenerTamanioBuffer()*1017118.72);
+    public void setArtificiallyCongested(boolean sa) {
+        long calculo97PorCiento = (long) (this.getBufferSizeInMB()*1017118.72);
         if (sa) {
-            if (!this.saturadoArtificialmente) {
-                if (this.obtenerTamanioOcupadoCjtoPuertos() < calculo97PorCiento) {
-                    this.saturadoArtificialmente = true;
-                    this.verdaderaOcupacion = this.obtenerTamanioOcupadoCjtoPuertos();
-                    this.ponerTamanioOcupadoCjtoPuertos(calculo97PorCiento);
+            if (!this.artificiallyCongested) {
+                if (this.getPortSetOccupancySize() < calculo97PorCiento) {
+                    this.artificiallyCongested = true;
+                    this.occupancy = this.getPortSetOccupancySize();
+                    this.setPortSetOccupancySize(calculo97PorCiento);
                 }
             }
         } else {
-            if (this.saturadoArtificialmente) {
-                this.verdaderaOcupacion += (obtenerTamanioOcupadoCjtoPuertos() - calculo97PorCiento);
-                if (this.verdaderaOcupacion < 0)
-                    this.verdaderaOcupacion = 0;
-                this.ponerTamanioOcupadoCjtoPuertos(this.verdaderaOcupacion);
-                this.saturadoArtificialmente = false;
-                this.verdaderaOcupacion = 0;
+            if (this.artificiallyCongested) {
+                this.occupancy += (getPortSetOccupancySize() - calculo97PorCiento);
+                if (this.occupancy < 0)
+                    this.occupancy = 0;
+                this.setPortSetOccupancySize(this.occupancy);
+                this.artificiallyCongested = false;
+                this.occupancy = 0;
             }
         }
     }

@@ -7,14 +7,14 @@ package simMPLS.utils;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TIdentificadorRotativo {
+public class TRotaryIDGenerator {
     
     /**
      * Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * TIdentificadorRotativo y lo inicia a cero.
      * @since 1.0
      */
-    public TIdentificadorRotativo() {
+    public TRotaryIDGenerator() {
         identificador = 0;
     }
     

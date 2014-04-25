@@ -9,25 +9,25 @@ import java.util.LinkedList;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 1.1
  */
-public class TGPSRPRequestsEntry implements Comparable {
+public class TGPSRPRequestEntry implements Comparable {
 
     /**
      * This is the class constructor. Implements a new instance of
-     * TEntradaPeticionesGPSRP.
+     * TGPSRPRequestsEntry.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param oll Incoming order. This is a number that must be used to make
+     * @param incomingOrder Incoming order. This is a number that must be used to make
      * this entry shorted in a collection in a coherent way.
      * @since 1.0
      */
-    public TGPSRPRequestsEntry(int oll) {
-        timeout = TGPSRPRequestsMatrix.TIMEOUT;
-        intentos = TGPSRPRequestsMatrix.INTENTOS;
-        idFlujo = -1;
-        idPaquete = -1;
-        pSalida = -1;
-        nodosAtravesados = new LinkedList();
-        orden = oll;
+    public TGPSRPRequestEntry(int incomingOrder) {
+        this.timeout = TGPSRPRequestsMatrix.TIMEOUT;
+        this.attempts = TGPSRPRequestsMatrix.ATTEMPTS;
+        this.flowID = -1;
+        this.packetID = -1;
+        this.outgoingPort = -1;
+        this.crossedNodes = new LinkedList();
+        this.order = incomingOrder;
     }
 
     /**
@@ -38,19 +38,19 @@ public class TGPSRPRequestsEntry implements Comparable {
      * @return Incoming order to the entry.
      * @since 1.0
      */
-    public int obtenerOrden() {
-        return orden;
+    public int getOrder() {
+        return order;
     }
 
     /**
      * This method establishes the flow the entry belongs to.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param idf The flow the entry belongs to.
+     * @param flowID The flow the entry belongs to.
      * @since 1.0
      */
-    public void ponerIdFlujo(int idf) {
-        this.idFlujo = idf;
+    public void setFlowID(int flowID) {
+        this.flowID = flowID;
     }
 
     /**
@@ -60,8 +60,8 @@ public class TGPSRPRequestsEntry implements Comparable {
      * @return The flow the entry belongs to.
      * @since 1.0
      */
-    public int obtenerIdFlujo() {
-        return this.idFlujo;
+    public int getFlowID() {
+        return this.flowID;
     }
 
     /**
@@ -69,11 +69,11 @@ public class TGPSRPRequestsEntry implements Comparable {
      * to.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param idp The packet identifier.
+     * @param packetID The packet identifier.
      * @since 1.0
      */
-    public void ponerIdPaquete(int idp) {
-        this.idPaquete = idp;
+    public void setPacketID(int packetID) {
+        this.packetID = packetID;
     }
 
     /**
@@ -83,8 +83,8 @@ public class TGPSRPRequestsEntry implements Comparable {
      * @return The packet identifier.
      * @since 1.0
      */
-    public int obtenerIdPaquete() {
-        return this.idPaquete;
+    public int getPacketID() {
+        return this.packetID;
     }
 
     /**
@@ -92,11 +92,11 @@ public class TGPSRPRequestsEntry implements Comparable {
      * request has been sent.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param ps Outgoing port.
+     * @param outgoingPort Outgoing port.
      * @since 1.0
      */
-    public void ponerPuertoSalida(int ps) {
-        this.pSalida = ps;
+    public void setOutgoingPort(int outgoingPort) {
+        this.outgoingPort = outgoingPort;
     }
 
     /**
@@ -107,8 +107,8 @@ public class TGPSRPRequestsEntry implements Comparable {
      * @return Outgoing port.
      * @since 1.0
      */
-    public int obtenerPuertoSalida() {
-        return this.pSalida;
+    public int getOutgoingPort() {
+        return this.outgoingPort;
     }
 
     /**
@@ -116,12 +116,12 @@ public class TGPSRPRequestsEntry implements Comparable {
      * requested for a packet retransmission.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param na IP address of the node to be requested for a packet
+     * @param crossedNodeIP IP address of the node to be requested for a packet
      * retransmission.
      * @since 1.0
      */
-    public void ponerIPNodoAtravesado(String na) {
-        this.nodosAtravesados.addFirst(na);
+    public void setCrossedNodeIP(String crossedNodeIP) {
+        this.crossedNodes.addFirst(crossedNodeIP);
     }
 
     /**
@@ -134,9 +134,9 @@ public class TGPSRPRequestsEntry implements Comparable {
      * return NULL.
      * @since 1.0
      */
-    public String obtenerIPNodoAtravesado() {
-        if (this.nodosAtravesados.size() > 0) {
-            return ((String) this.nodosAtravesados.removeFirst());
+    public String getCrossedNodeIP() {
+        if (this.crossedNodes.size() > 0) {
+            return ((String) this.crossedNodes.removeFirst());
         }
         return null;
     }
@@ -145,11 +145,11 @@ public class TGPSRPRequestsEntry implements Comparable {
      * This method decreases the retransmission TimeOut.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param d Number of nanoseconds to decrease from the timeout.
+     * @param nanoseconds Number of nanoseconds to decrease from the timeout.
      * @since 1.0
      */
-    public void decrementarTimeOut(int d) {
-        this.timeout -= d;
+    public void decreaseTimeout(int nanoseconds) {
+        this.timeout -= nanoseconds;
         if (this.timeout < 0) {
             this.timeout = 0;
         }
@@ -161,11 +161,11 @@ public class TGPSRPRequestsEntry implements Comparable {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      */
-    public void restaurarTimeOut() {
+    public void resetTimeout() {
         if (this.timeout == 0) {
-            if (this.intentos > 0) {
+            if (this.attempts > 0) {
                 this.timeout = TGPSRPRequestsMatrix.TIMEOUT;
-                this.intentos--;
+                this.attempts--;
             }
         }
     }
@@ -177,11 +177,11 @@ public class TGPSRPRequestsEntry implements Comparable {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      */
-    public void restaurarTimeOutForzosamente() {
+    public void forceTimeoutReset() {
         this.timeout = TGPSRPRequestsMatrix.TIMEOUT;
-        this.intentos--;
-        if (this.intentos < 0) {
-            intentos = 0;
+        this.attempts--;
+        if (this.attempts < 0) {
+            attempts = 0;
             timeout = 0;
         }
     }
@@ -194,10 +194,10 @@ public class TGPSRPRequestsEntry implements Comparable {
      * @return TRUE, if the retransmission must be retried. Otherwise, FALSE.
      * @since 1.0
      */
-    public boolean debeReintentarse() {
-        if (this.intentos > 0) {
+    public boolean isRetryable() {
+        if (this.attempts > 0) {
             if (this.timeout == 0) {
-                if (this.nodosAtravesados.size() > 0) {
+                if (this.crossedNodes.size() > 0) {
                     return true;
                 }
             }
@@ -213,11 +213,11 @@ public class TGPSRPRequestsEntry implements Comparable {
      * @return TRUE, if the entry must be removed. Otherwise, FALSE.
      * @since 1.0
      */
-    public boolean debePurgarse() {
-        if (this.nodosAtravesados.size() == 0) {
+    public boolean isPurgeable() {
+        if (this.crossedNodes.size() == 0) {
             return true;
         }
-        if (this.intentos == 0) {
+        if (this.attempts == 0) {
             if (this.timeout == 0) {
                 return true;
             }
@@ -238,25 +238,25 @@ public class TGPSRPRequestsEntry implements Comparable {
      */
     @Override
     public int compareTo(Object o) {
-        TGPSRPRequestsEntry e = (TGPSRPRequestsEntry) o;
-        if (this.orden < e.obtenerOrden()) {
-            return TGPSRPRequestsEntry.ESTE_MENOR;
+        TGPSRPRequestEntry e = (TGPSRPRequestEntry) o;
+        if (this.order < e.getOrder()) {
+            return TGPSRPRequestEntry.THIS_LOWER;
         }
-        if (this.orden > e.obtenerOrden()) {
-            return TGPSRPRequestsEntry.ESTE_MAYOR;
+        if (this.order > e.getOrder()) {
+            return TGPSRPRequestEntry.THIS_GREATER;
         }
-        return TGPSRPRequestsEntry.ESTE_IGUAL;
+        return TGPSRPRequestEntry.THIS_EQUAL;
     }
 
-    private static final int ESTE_MENOR = -1;
-    private static final int ESTE_IGUAL = 0;
-    private static final int ESTE_MAYOR = 1;
+    private static final int THIS_LOWER = -1;
+    private static final int THIS_EQUAL = 0;
+    private static final int THIS_GREATER = 1;
 
     private int timeout;
-    private int idFlujo;
-    private int idPaquete;
-    private int pSalida;
-    private LinkedList nodosAtravesados;
-    private int orden;
-    private int intentos;
+    private int flowID;
+    private int packetID;
+    private int outgoingPort;
+    private LinkedList crossedNodes;
+    private int order;
+    private int attempts;
 }

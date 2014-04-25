@@ -15,7 +15,7 @@ import simMPLS.protocols.TPDUMPLS;
 import simMPLS.hardware.timer.TTimerEvent;
 import simMPLS.hardware.timer.ITimerEventListener;
 import simMPLS.hardware.ports.TNodePorts;
-import simMPLS.utils.TLock;
+import simMPLS.utils.TMonitor;
 import simMPLS.utils.TIdentificadorLargo;
 import java.awt.*;
 import org.jfree.chart.*;
@@ -47,7 +47,7 @@ public abstract class TTopologyNode extends TTopologyElement implements Comparab
         mostrarNombre = false;
         IP = d;
         puertos = null;
-        cerrojo = new TLock();
+        cerrojo = new TMonitor();
         topologia = t;
         generarEstadisticas = false;
         nsDisponibles = 0;
@@ -225,7 +225,7 @@ public abstract class TTopologyNode extends TTopologyElement implements Comparab
      * @return La direcci�n IP del nodo.
      * @since 1.0
      */    
-    public String obtenerIP() {
+    public String getIPAddress() {
         return IP;
     }
 
@@ -252,9 +252,9 @@ public abstract class TTopologyNode extends TTopologyElement implements Comparab
      * @since 1.0
      */    
     public synchronized void ponerPaquete(TPDU paquete, int puerto) {
-        cerrojo.bloquear();
-        this.puertos.obtenerPuerto(puerto).ponerPaquete(paquete);
-        cerrojo.liberar();
+        cerrojo.lock();
+        this.puertos.getPort(puerto).ponerPaquete(paquete);
+        cerrojo.unLock();
     }
 
     /**
@@ -522,7 +522,7 @@ public abstract class TTopologyNode extends TTopologyElement implements Comparab
     /**
      * @since 1.0
      */    
-    private TLock cerrojo;
+    private TMonitor cerrojo;
     /**
      * Este atributo almacena la topologia en la que est� incluido el nodo.
      * @since 1.0

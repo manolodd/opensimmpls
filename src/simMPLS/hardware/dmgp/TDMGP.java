@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.TreeSet;
 import simMPLS.protocols.TPDU;
 import simMPLS.protocols.TPDUMPLS;
-import simMPLS.utils.TIdentificadorRotativo;
-import simMPLS.utils.TLock;
+import simMPLS.utils.TRotaryIDGenerator;
+import simMPLS.utils.TMonitor;
 
 /**
  * This class implements a DMGP memory to save GoS-aware PDUs temporarily.
@@ -23,8 +23,8 @@ public class TDMGP {
      * @since 1.0
      */
     public TDMGP() {
-        this.monitor = new TLock();
-        this.idGenerator = new TIdentificadorRotativo();
+        this.monitor = new TMonitor();
+        this.idGenerator = new TRotaryIDGenerator();
         this.flows = new TreeSet();
         this.totalAvailablePercentage = 100;
         this.totalDMGPSizeInKB = 1;
@@ -67,18 +67,18 @@ public class TDMGP {
         TPDUMPLS wantedPacket = null;
         TDMGPFlowEntry dmgpFlowEntry = this.getFlow(flowID);
         if (dmgpFlowEntry != null) {
-            this.monitor.bloquear();
-            Iterator it = dmgpFlowEntry.obtenerEntradas().iterator();
+            this.monitor.lock();
+            Iterator it = dmgpFlowEntry.getEntries().iterator();
             TDMGPEntry dmgpEntry = null;
             while (it.hasNext()) {
                 dmgpEntry = (TDMGPEntry) it.next();
-                if (dmgpEntry.obtenerIdPaquete() == packetID) {
-                    wantedPacket = dmgpEntry.obtenerPaquete();
-                    this.monitor.liberar();
+                if (dmgpEntry.getPacketID() == packetID) {
+                    wantedPacket = dmgpEntry.getPacket();
+                    this.monitor.unLock();
                     return wantedPacket;
                 }
             }
-            this.monitor.liberar();
+            this.monitor.unLock();
         }
         return null;
     }
@@ -96,7 +96,7 @@ public class TDMGP {
             dmgpFlowEntry = this.createFlow(packet);
         }
         if (dmgpFlowEntry != null) {
-            dmgpFlowEntry.insertarPaquete(packet);
+            dmgpFlowEntry.addPacket(packet);
         } else {
             packet = null;
         }
@@ -113,8 +113,8 @@ public class TDMGP {
         this.monitor = null;
         this.idGenerator = null;
         this.flows = null;
-        this.monitor = new TLock();
-        this.idGenerator = new TIdentificadorRotativo();
+        this.monitor = new TMonitor();
+        this.idGenerator = new TRotaryIDGenerator();
         this.flows = new TreeSet();
         this.totalAvailablePercentage = 100;
         this.totalAssignedOctects = 0;
@@ -133,21 +133,21 @@ public class TDMGP {
 
     private TDMGPFlowEntry getFlow(int idf) {
         TDMGPFlowEntry dmgpFlowEntry = null;
-        this.monitor.bloquear();
+        this.monitor.lock();
         Iterator ite = flows.iterator();
         while (ite.hasNext()) {
             dmgpFlowEntry = (TDMGPFlowEntry) ite.next();
-            if (dmgpFlowEntry.obtenerIdFlujo() == idf) {
-                this.monitor.liberar();
+            if (dmgpFlowEntry.getFlowID() == idf) {
+                this.monitor.unLock();
                 return dmgpFlowEntry;
             }
         }
-        this.monitor.liberar();
+        this.monitor.unLock();
         return null;
     }
 
     private TDMGPFlowEntry createFlow(TPDU packet) {
-        this.monitor.bloquear();
+        this.monitor.lock();
         TDMGPFlowEntry dmgpFlowEntry = null;
         int flowID = packet.obtenerCabecera().obtenerIPOrigen().hashCode();
         int percentageToBeAssigned = 0;
@@ -159,15 +159,15 @@ public class TDMGP {
                 this.totalAssignedOctects += octectsToBeAssigned;
                 this.totalAvailablePercentage -= percentageToBeAssigned;
                 dmgpFlowEntry = new TDMGPFlowEntry(this.idGenerator.obtenerNuevo());
-                dmgpFlowEntry.ponerIdFlujo(flowID);
-                dmgpFlowEntry.ponerPorcentajeAsignado(percentageToBeAssigned);
-                dmgpFlowEntry.ponerOctetosAsignados(octectsToBeAssigned);
+                dmgpFlowEntry.setFlowID(flowID);
+                dmgpFlowEntry.setAssignedPercentage(percentageToBeAssigned);
+                dmgpFlowEntry.setAssignedOctects(octectsToBeAssigned);
                 flows.add(dmgpFlowEntry);
-                this.monitor.liberar();
+                this.monitor.unLock();
                 return dmgpFlowEntry;
             }
         }
-        this.monitor.liberar();
+        this.monitor.unLock();
         return null;
     }
 
@@ -232,8 +232,8 @@ public class TDMGP {
         return 1;
     }
 
-    private TLock monitor;
-    private TIdentificadorRotativo idGenerator;
+    private TMonitor monitor;
+    private TRotaryIDGenerator idGenerator;
     private TreeSet flows;
     private int totalAvailablePercentage;
     private int totalDMGPSizeInKB;

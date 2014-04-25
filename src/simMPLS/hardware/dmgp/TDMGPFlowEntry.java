@@ -3,11 +3,11 @@ package simMPLS.hardware.dmgp;
 import java.util.Iterator;
 import java.util.TreeSet;
 import simMPLS.protocols.TPDUMPLS;
-import simMPLS.utils.TIdentificadorRotativo;
-import simMPLS.utils.TLock;
+import simMPLS.utils.TRotaryIDGenerator;
+import simMPLS.utils.TMonitor;
 
 /**
- * This calss implements a flow entry for the DMGP memory.
+ * This class implements a flow entry for the DMGP memory.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 1.1
@@ -15,33 +15,33 @@ import simMPLS.utils.TLock;
 public class TDMGPFlowEntry implements Comparable {
 
     /**
-     * This method is the constructor. It creates a new TEntradaFlujoDMGP
+     * This method is the constructor. It creates a new TDMGPFlowEntry
      * instance.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param ordenLlegada Incoming order of the flow to the DMGP memory.
+     * @param incomingOrder Incoming order of the flow to the DMGP memory.
      * @since 1.0
      */
-    public TDMGPFlowEntry(int ordenLlegada) {
-        orden = ordenLlegada;
-        idFlujo = -1;
-        porcentajeAsignado = 0;
-        octetosAsignados = 0;
-        octetosOcupados = 0;
-        entradas = new TreeSet();
-        cerrojo = new TLock();
-        generadorId = new TIdentificadorRotativo();
+    public TDMGPFlowEntry(int incomingOrder) {
+        this.order = incomingOrder;
+        this.flowID = -1;
+        this.assignedPercentage = 0;
+        this.assignedOctects = 0;
+        this.usedOctects = 0;
+        this.entries = new TreeSet();
+        this.monitor = new TMonitor();
+        this.idGenerator = new TRotaryIDGenerator();
     }
 
     /**
      * This method establishes the flow identifier associated to this entry.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param idf The flow identifier.
+     * @param flowID The flow identifier.
      * @since 1.0
      */
-    public void ponerIdFlujo(int idf) {
-        this.idFlujo = idf;
+    public void setFlowID(int flowID) {
+        this.flowID = flowID;
     }
 
     /**
@@ -51,18 +51,18 @@ public class TDMGPFlowEntry implements Comparable {
      * @return The flow identifier.
      * @since 1.0
      */
-    public int obtenerIdFlujo() {
-        return this.idFlujo;
+    public int getFlowID() {
+        return this.flowID;
     }
 
     /**
      * This method establishes the percentage of DMGP assigned to this flow.
      *
-     * @param pa Percentage of DMGP assigned to this flow.
+     * @param assignedPercentage Percentage of DMGP assigned to this flow.
      * @since 1.0
      */
-    public void ponerPorcentajeAsignado(int pa) {
-        this.porcentajeAsignado = pa;
+    public void setAssignedPercentage(int assignedPercentage) {
+        this.assignedPercentage = assignedPercentage;
     }
 
     /**
@@ -72,19 +72,19 @@ public class TDMGPFlowEntry implements Comparable {
      * @return Percentage of DMGP assigned to this flow.
      * @since 1.0
      */
-    public int obtenerPorcentajeAsignado() {
-        return this.porcentajeAsignado;
+    public int getAssignedPercentage() {
+        return this.assignedPercentage;
     }
 
     /**
      * This method establishes the number of DMGP octects assigned to this flow.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param oa Number of DMGP octects assigned to this flow.
+     * @param assignedOctects Number of DMGP octects assigned to this flow.
      * @since 1.0
      */
-    public void ponerOctetosAsignados(int oa) {
-        this.octetosAsignados = oa;
+    public void setAssignedOctects(int assignedOctects) {
+        this.assignedOctects = assignedOctects;
     }
 
     /**
@@ -94,8 +94,8 @@ public class TDMGPFlowEntry implements Comparable {
      * @return The number of DMGP octects assigned to this flow.
      * @since 1.0
      */
-    public int obtenerOctetosAsignados() {
-        return this.octetosAsignados;
+    public int getAssignedOctects() {
+        return this.assignedOctects;
     }
 
     /**
@@ -103,11 +103,11 @@ public class TDMGPFlowEntry implements Comparable {
      * flow.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param oo Number of DMGP octects currently used by the flow.
+     * @param usedOctects Number of DMGP octects currently used by the flow.
      * @since 1.0
      */
-    public void ponerOctetosOcupados(int oo) {
-        this.octetosOcupados = oo;
+    public void setUsedOctects(int usedOctects) {
+        this.usedOctects = usedOctects;
     }
 
     /**
@@ -118,8 +118,8 @@ public class TDMGPFlowEntry implements Comparable {
      * @return Number of DMGP octects currently used by the flow.
      * @since 1.0
      */
-    public int obtenerOctetosOcupados() {
-        return this.octetosOcupados;
+    public int getUsedOctects() {
+        return this.usedOctects;
     }
 
     /**
@@ -129,8 +129,8 @@ public class TDMGPFlowEntry implements Comparable {
      * @return The tree containing all the packets of this flow.
      * @since 1.0
      */
-    public TreeSet obtenerEntradas() {
-        return this.entradas;
+    public TreeSet getEntries() {
+        return this.entries;
     }
 
     /**
@@ -140,8 +140,8 @@ public class TDMGPFlowEntry implements Comparable {
      * @return The incoming order.
      * @since 1.0
      */
-    public int obtenerOrden() {
-        return this.orden;
+    public int getOrder() {
+        return this.order;
     }
 
     /**
@@ -151,20 +151,20 @@ public class TDMGPFlowEntry implements Comparable {
      * @since 1.0
      * @return The monitor of this flow.
      */
-    public TLock obtenerCerrojo() {
-        return this.cerrojo;
+    public TMonitor getMonitor() {
+        return this.monitor;
     }
 
-    private void liberarEspacio(int octetosALiberar) {
-        int octetosLiberados = 0;
-        Iterator it = entradas.iterator();
-        TDMGPEntry edmgp = null;
-        while ((it.hasNext()) && (octetosLiberados < octetosALiberar)) {
-            edmgp = (TDMGPEntry) it.next();
-            octetosLiberados += edmgp.obtenerPaquete().obtenerTamanio();
+    private void releaseMemory(int octectsToBeReleased) {
+        int releasedOctects = 0;
+        Iterator it = entries.iterator();
+        TDMGPEntry dmgpEntry = null;
+        while ((it.hasNext()) && (releasedOctects < octectsToBeReleased)) {
+            dmgpEntry = (TDMGPEntry) it.next();
+            releasedOctects += dmgpEntry.getPacket().getSize();
             it.remove();
         }
-        this.octetosOcupados -= octetosLiberados;
+        this.usedOctects -= releasedOctects;
     }
 
     /**
@@ -174,29 +174,29 @@ public class TDMGPFlowEntry implements Comparable {
      * are no enough space, the packet is not inserted.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param paquete Packet of this flow to be inserted in the DMGP.
+     * @param packet Packet of this flow to be inserted in the DMGP.
      * @since 1.0
      */
-    public void insertarPaquete(TPDUMPLS paquete) {
-        this.cerrojo.bloquear();
-        int octetosDisponibles = this.octetosAsignados - this.octetosOcupados;
-        if (octetosDisponibles >= paquete.obtenerTamanio()) {
-            TDMGPEntry edmgp = new TDMGPEntry(generadorId.obtenerNuevo());
-            edmgp.ponerPaquete(paquete);
-            this.octetosOcupados += paquete.obtenerTamanio();
-            this.entradas.add(edmgp);
+    public void addPacket(TPDUMPLS packet) {
+        this.monitor.lock();
+        int availableOctects = this.assignedOctects - this.usedOctects;
+        if (availableOctects >= packet.getSize()) {
+            TDMGPEntry dmgpEntry = new TDMGPEntry(idGenerator.obtenerNuevo());
+            dmgpEntry.setPacket(packet);
+            this.usedOctects += packet.getSize();
+            this.entries.add(dmgpEntry);
         } else {
-            if (octetosOcupados >= paquete.obtenerTamanio()) {
-                liberarEspacio(paquete.obtenerTamanio());
-                TDMGPEntry edmgp = new TDMGPEntry(generadorId.obtenerNuevo());
-                edmgp.ponerPaquete(paquete);
-                this.octetosOcupados += paquete.obtenerTamanio();
-                this.entradas.add(edmgp);
+            if (usedOctects >= packet.getSize()) {
+                releaseMemory(packet.getSize());
+                TDMGPEntry dmgpEntry = new TDMGPEntry(idGenerator.obtenerNuevo());
+                dmgpEntry.setPacket(packet);
+                this.usedOctects += packet.getSize();
+                this.entries.add(dmgpEntry);
             } else {
-                paquete = null;
+                packet = null;
             }
         }
-        this.cerrojo.liberar();
+        this.monitor.unLock();
     }
 
     /**
@@ -212,25 +212,25 @@ public class TDMGPFlowEntry implements Comparable {
     @Override
     public int compareTo(Object o) {
         TDMGPFlowEntry edmgp = (TDMGPFlowEntry) o;
-        if (this.orden < edmgp.obtenerOrden()) {
-            return TDMGPFlowEntry.ESTE_MENOR;
+        if (this.order < edmgp.getOrder()) {
+            return TDMGPFlowEntry.THIS_LOWER;
         }
-        if (this.orden > edmgp.obtenerOrden()) {
-            return TDMGPFlowEntry.ESTE_MAYOR;
+        if (this.order > edmgp.getOrder()) {
+            return TDMGPFlowEntry.THIS_GREATER;
         }
-        return TDMGPFlowEntry.ESTE_IGUAL;
+        return TDMGPFlowEntry.THIS_EQUAL;
     }
 
-    private static final int ESTE_MENOR = -1;
-    private static final int ESTE_IGUAL = 0;
-    private static final int ESTE_MAYOR = 1;
+    private static final int THIS_LOWER = -1;
+    private static final int THIS_EQUAL = 0;
+    private static final int THIS_GREATER = 1;
 
-    private int orden;
-    private int idFlujo;
-    private int porcentajeAsignado;
-    private int octetosAsignados;
-    private int octetosOcupados;
-    private TreeSet entradas;
-    private TLock cerrojo;
-    private TIdentificadorRotativo generadorId;
+    private int order;
+    private int flowID;
+    private int assignedPercentage;
+    private int assignedOctects;
+    private int usedOctects;
+    private TreeSet entries;
+    private TMonitor monitor;
+    private TRotaryIDGenerator idGenerator;
 }

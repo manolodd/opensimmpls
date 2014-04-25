@@ -8,12 +8,12 @@ package simMPLS.utils;
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  */
-public class TLock {
+public class TMonitor {
     
     /** Crea una nueva instancia de TMonitor para sincronizar hilos.
      * @since 1.0
      */
-    public TLock() {
+    public TMonitor() {
         bloqueado = false;
     }
     
@@ -22,7 +22,7 @@ public class TLock {
      * parar a otros hilos. El m�todo est� <B>sincronizado</B>.
      * @since 1.0
      */
-    public synchronized void bloquear() {
+    public synchronized void lock() {
         while (bloqueado) {
             try {
                 wait();
@@ -38,7 +38,7 @@ public class TLock {
      * <B>sincronizado</B>.
      * @since 1.0
      */
-    public synchronized void liberar() {
+    public synchronized void unLock() {
         bloqueado = false;
         notify();
     }

@@ -21,7 +21,7 @@ import simMPLS.hardware.ports.TPort;
 import simMPLS.hardware.ports.TNodePorts;
 import simMPLS.utils.EDesbordeDelIdentificador;
 import simMPLS.utils.TIdentificadorLargo;
-import simMPLS.utils.TIdentificadorRotativo;
+import simMPLS.utils.TRotaryIDGenerator;
 import java.awt.*;
 import java.util.*;
 
@@ -45,7 +45,7 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
         super(identificador, d, il, t);
         this.ponerPuertos(super.NUM_PUERTOS_EMISOR);
         gIdent = new TIdentificadorLargo();
-        gIdGoS = new TIdentificadorRotativo();
+        gIdGoS = new TRotaryIDGenerator();
         String IPDestino = "";
         tasaTransferencia = 10;
         tipoTrafico = TSenderNode.CONSTANTE;
@@ -89,7 +89,7 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
         if (!d.equals("")) {
             TTopologyNode nt = this.topologia.obtenerPrimerNodoLlamado(d);
             if (nt != null) {
-                IPDestino = nt.obtenerIP();
+                IPDestino = nt.getIPAddress();
             }
         }
     }
@@ -298,10 +298,10 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
         TPDUIPv4 paqueteIPv4 = null;
         if (paquete.obtenerTipo() == TPDU.MPLS) {
             paqueteMPLS = (TPDUMPLS) paquete;
-            return paqueteMPLS.obtenerTamanio();
+            return paqueteMPLS.getSize();
         } 
         paqueteIPv4 = (TPDUIPv4) paquete;
-        return paqueteIPv4.obtenerTamanio();
+        return paqueteIPv4.getSize();
     }
     
     /**
@@ -330,9 +330,9 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
     public void generarTrafico() {
         TPDU paquete=null;
         TPDU paqueteConTamanio=null;
-        TPort pt = puertos.obtenerPuerto(0);
+        TPort pt = puertos.getPort(0);
         if (pt != null) {
-            if (!pt.estaLibre()) {
+            if (!pt.isAvailable()) {
                 paquete = crearPaquete();
                 paqueteConTamanio = this.ponerTamanio(paquete);
                 if (paqueteConTamanio != null) {
@@ -345,13 +345,13 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
                             TPDUIPv4 paqueteIPv4 = (TPDUIPv4) paqueteConTamanio;
                             tipo = paqueteIPv4.obtenerSubTipo();
                         }
-                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), tipo, paqueteConTamanio.obtenerTamanio()));
+                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), tipo, paqueteConTamanio.getSize()));
                         this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), tipo));
                     } catch (Exception e) {
                         e.printStackTrace(); 
                     }
-                    if (this.topologia.obtenerIPSalto(this.obtenerIP(), this.obtenerDestino()) != null) {
-                        pt.ponerPaqueteEnEnlace(paqueteConTamanio, pt.obtenerEnlace().obtenerDestinoLocal(this));
+                    if (this.topologia.obtenerIPSalto(this.getIPAddress(), this.obtenerDestino()) != null) {
+                        pt.ponerPaqueteEnEnlace(paqueteConTamanio, pt.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     } else {
                         descartarPaquete(paqueteConTamanio);
                     }
@@ -531,7 +531,7 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
         try {
             if (this.encapsularSobreMPLS) {
                 if (valorGoS == TPDU.EXP_NIVEL0_SINLSP) {
-                    TPDUMPLS paquete = new TPDUMPLS(gIdent.obtenerNuevo(), obtenerIP(), this.IPDestino, 0);
+                    TPDUMPLS paquete = new TPDUMPLS(gIdent.obtenerNuevo(), getIPAddress(), this.IPDestino, 0);
                     TEtiquetaMPLS etiquetaMPLSDeEmision = new TEtiquetaMPLS();
                     etiquetaMPLSDeEmision.ponerBoS(true);
                     etiquetaMPLSDeEmision.ponerEXP(0);
@@ -540,7 +540,7 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
                     paquete.obtenerPilaEtiquetas().ponerEtiqueta(etiquetaMPLSDeEmision);
                     return paquete;
                 } else {
-                    TPDUMPLS paquete = new TPDUMPLS(gIdent.obtenerNuevo(), obtenerIP(), this.IPDestino, 0);
+                    TPDUMPLS paquete = new TPDUMPLS(gIdent.obtenerNuevo(), getIPAddress(), this.IPDestino, 0);
                     paquete.ponerSubtipo(TPDU.MPLS_GOS);
                     paquete.obtenerCabecera().obtenerCampoOpciones().ponerNivelGoS(valorGoS);
                     paquete.obtenerCabecera().obtenerCampoOpciones().ponerIDPaqueteGoS(this.gIdGoS.obtenerNuevo());
@@ -560,10 +560,10 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
                 }
             } else {
                 if (valorGoS == TPDU.EXP_NIVEL0_SINLSP) {
-                    TPDUIPv4 paquete = new TPDUIPv4(gIdent.obtenerNuevo(), obtenerIP(), this.IPDestino, 0);
+                    TPDUIPv4 paquete = new TPDUIPv4(gIdent.obtenerNuevo(), getIPAddress(), this.IPDestino, 0);
                     return paquete;
                 } else {
-                    TPDUIPv4 paquete = new TPDUIPv4(gIdent.obtenerNuevo(), obtenerIP(), this.IPDestino, 0);
+                    TPDUIPv4 paquete = new TPDUIPv4(gIdent.obtenerNuevo(), getIPAddress(), this.IPDestino, 0);
                     paquete.ponerSubtipo(TPDU.IPV4_GOS);
                     paquete.obtenerCabecera().obtenerCampoOpciones().ponerNivelGoS(valorGoS);
                     paquete.obtenerCabecera().obtenerCampoOpciones().ponerIDPaqueteGoS(this.gIdGoS.obtenerNuevo());
@@ -598,7 +598,7 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
      * @since 1.0
      */
     public boolean tienePuertosLibres() {
-        return this.puertos.hayPuertosLibres();
+        return this.puertos.isAnyPortAvailable();
     }
     
     /**
@@ -700,7 +700,7 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
         cadena += "#";
         cadena += this.obtenerNombre().replace('#', ' ');
         cadena += "#";
-        cadena += this.obtenerIP();
+        cadena += this.getIPAddress();
         cadena += "#";
         cadena += this.obtenerEstado();
         cadena += "#";
@@ -812,7 +812,7 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
     
     private Random generadorDeAleatorios;
     private int etiquetaDeEmision;
-    private TIdentificadorRotativo gIdGoS;
+    private TRotaryIDGenerator gIdGoS;
     private int tamDatosConstante;
     private int tamDatosVariable;
 

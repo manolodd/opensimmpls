@@ -35,7 +35,7 @@ import simMPLS.scenario.TTopologyLink;
 import simMPLS.scenario.TTopologyNode;
 import simMPLS.ui.utils.TDispensadorDeImagenes;
 import simMPLS.utils.TEventoSimMPLS;
-import simMPLS.utils.TLock;
+import simMPLS.utils.TMonitor;
 
 /**
  * Esta clase implementa un panel que recibir� eventos de simulaci�n y los
@@ -87,7 +87,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
         COLOR_BORDE_DOMINIO = new Color(232, 212, 197);
         COLOR_FONDO_DOMINIO = new Color(239, 222, 209);
         COLOR_LSP = new Color(0, 0, 200);
-        cerrojo = new TLock();
+        cerrojo = new TMonitor();
         ficheroTraza = null;;
         streamFicheroTraza = null;
         streamTraza = null;
@@ -98,7 +98,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
      * @since 1.0
      */    
     public void reset() {
-        cerrojo.bloquear();
+        cerrojo.lock();
         Iterator it = null;
         it = bufferEventos.iterator();
         while (it.hasNext()) {
@@ -111,7 +111,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
             it.remove();
         }
         mostrarLeyenda = false;
-        cerrojo.liberar();
+        cerrojo.unLock();
         ticActual = 0;
         ficheroTraza = null;;
         streamFicheroTraza = null;
@@ -442,11 +442,11 @@ public class JPanelSimulacion extends javax.swing.JPanel {
      * @since 1.0
      */    
     public void ponerEvento(TSimulationEvent evt) {
-        cerrojo.bloquear();
+        cerrojo.lock();
         this.enviarATraza(evt);
         if (evt.obtenerInstante() <= ticActual) {
             bufferEventos.add(evt);
-            cerrojo.liberar();
+            cerrojo.unLock();
         } else {
             ticActual = evt.obtenerInstante();
             Iterator it = this.bufferParaSimular.iterator();
@@ -462,7 +462,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
                 bufferParaSimular.add(evento);
                 it.remove();
             }
-            cerrojo.liberar();
+            cerrojo.unLock();
             repaint();
             bufferEventos.add(evt);
             try {
@@ -480,7 +480,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
      * @param g2D El lienzo donde se mostrar� el evento.
      */    
     public void dibujarEventosPaquete(Graphics2D g2D) {
-        cerrojo.bloquear();
+        cerrojo.lock();
         try {
             Iterator it = bufferParaSimular.iterator();
             TSimulationEvent evento = null;
@@ -554,7 +554,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
         } catch (Exception e) {
             e.printStackTrace(); 
         }
-        cerrojo.liberar();
+        cerrojo.unLock();
     }
 
     
@@ -564,7 +564,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
      * @param g2D El lienzo donde se mostrar� el evento.
      */    
     public void dibujarEventosNodo(Graphics2D g2D) {
-        cerrojo.bloquear();
+        cerrojo.lock();
         try {
             TSimulationEvent evento = null;
             Iterator it = bufferParaSimular.iterator();
@@ -629,7 +629,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
         } catch (Exception e) {
             e.printStackTrace(); 
         }
-        cerrojo.liberar();
+        cerrojo.unLock();
     }
 
     
@@ -640,7 +640,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
      * @param g2D El lienzo donde se mostrar� el evento.
      */    
     public void dibujarEventosEnlace(Graphics2D g2D) {
-        cerrojo.bloquear();
+        cerrojo.lock();
         try {
             TSimulationEvent evento = null;
             Iterator it = bufferParaSimular.iterator();
@@ -661,7 +661,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
         } catch (Exception e) {
             e.printStackTrace(); 
         }
-        cerrojo.liberar();
+        cerrojo.unLock();
     }
     
     
@@ -890,7 +890,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
     private TreeSet bufferEventos;
     private TreeSet bufferParaSimular;
     private long ticActual;
-    private TLock cerrojo;
+    private TMonitor cerrojo;
     private int mlsPorTic;
     private boolean mostrarLeyenda;
     

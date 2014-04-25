@@ -80,7 +80,7 @@ public abstract class TPDU implements Comparable {
      * @return El tama�o en bytes del paquete.
      * @since 1.0
      */
-    public abstract int obtenerTamanio();
+    public abstract int getSize();
     /** Este m�todo, que se debe especificar en las subclases, devuelve el tipo de
      * paquete de que se trata la instancia actual. Ser� uno de los valores constantes
      * definidos en la clase.

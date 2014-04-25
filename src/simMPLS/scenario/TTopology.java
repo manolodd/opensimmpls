@@ -14,7 +14,7 @@ package simMPLS.scenario;
 
 import simMPLS.hardware.timer.TTimer;
 import simMPLS.utils.TGeneradorDeIP;
-import simMPLS.utils.TLock;
+import simMPLS.utils.TMonitor;
 import simMPLS.utils.TIdentificador;
 import simMPLS.utils.TIdentificadorLargo;
 import java.awt.*;
@@ -41,8 +41,8 @@ public class TTopology {
         IDEvento = new TIdentificadorLargo();
         generaIdentificador = new TIdentificador();
         generadorIP = new TGeneradorDeIP();
-        cerrojoFloyd = new TLock();
-        cerrojoRABAN = new TLock();
+        cerrojoFloyd = new TMonitor();
+        cerrojoRABAN = new TMonitor();
     }
 
     /**
@@ -51,7 +51,7 @@ public class TTopology {
      * @since 1.0
      */    
     public void reset() {
-        this.cerrojoFloyd.bloquear();
+        this.cerrojoFloyd.lock();
         Iterator it;
         it = conjuntoNodos.iterator();
         TTopologyElement et;
@@ -66,8 +66,8 @@ public class TTopology {
         }
         relojTopologia.reset();
         IDEvento.reset();
-        this.cerrojoFloyd.liberar();
-        this.cerrojoRABAN.liberar();
+        this.cerrojoFloyd.unLock();
+        this.cerrojoRABAN.unLock();
     }
     
     /**
@@ -136,7 +136,7 @@ public class TTopology {
         Iterator iterador = conjuntoNodos.iterator();
         while (iterador.hasNext()) {
             nodo = (TTopologyNode) iterador.next();
-            if (nodo.obtenerIP().equals(ip))
+            if (nodo.getIPAddress().equals(ip))
                 return nodo;
         }
         return null;
@@ -215,7 +215,7 @@ public class TTopology {
             nodo = (TTopologyNode) iterador.next();
             if (nodo.obtenerTipo() == TTopologyNode.EMISOR) {
                 emisor = (TSenderNode) nodo;
-                if (emisor.obtenerDestino().equals(nr.obtenerIP()))
+                if (emisor.obtenerDestino().equals(nr.getIPAddress()))
                     return true;
             }
         }
@@ -705,7 +705,7 @@ public class TTopology {
      * @since 1.0
      */    
     public synchronized int obtenerSalto(int origen, int destino) {
-        cerrojoFloyd.bloquear();
+        cerrojoFloyd.lock();
         int numNodosActual = this.conjuntoNodos.size();
         int origen2 = 0;
         int destino2 = 0;
@@ -784,7 +784,7 @@ public class TTopology {
         } else {
             nodoSiguiente = equivalencia[nodoSiguiente];
         }
-        cerrojoFloyd.liberar();
+        cerrojoFloyd.unLock();
         return nodoSiguiente;
       }
 
@@ -803,7 +803,7 @@ public class TTopology {
         int siguienteSalto = obtenerSalto(origen, destino);
         TTopologyNode nt = this.obtenerNodo(siguienteSalto);
         if (nt != null)
-            return nt.obtenerIP();
+            return nt.getIPAddress();
         return null;
     }
 
@@ -821,7 +821,7 @@ public class TTopology {
         int siguienteSalto = obtenerSaltoRABAN(origen, destino);
         TTopologyNode nt = this.obtenerNodo(siguienteSalto);
         if (nt != null)
-            return nt.obtenerIP();
+            return nt.getIPAddress();
         return null;
     }
 
@@ -843,7 +843,7 @@ public class TTopology {
         int siguienteSalto = obtenerSaltoRABAN(origen, destino, nodoAEvitar);
         TTopologyNode nt = this.obtenerNodo(siguienteSalto);
         if (nt != null)
-            return nt.obtenerIP();
+            return nt.getIPAddress();
         return null;
     }
 
@@ -857,7 +857,7 @@ public class TTopology {
      * @since 1.0
      */    
     public synchronized int obtenerSaltoRABAN(int origen, int destino) {
-        cerrojoRABAN.bloquear();
+        cerrojoRABAN.lock();
         int numNodosActual = this.conjuntoNodos.size();
         int origen2 = 0;
         int destino2 = 0;
@@ -936,7 +936,7 @@ public class TTopology {
         } else {
             nodoSiguiente = equivalencia[nodoSiguiente];
         }
-        cerrojoRABAN.liberar();
+        cerrojoRABAN.unLock();
         return nodoSiguiente;
       }
 
@@ -953,7 +953,7 @@ public class TTopology {
      * evitar.
      */    
     public synchronized int obtenerSaltoRABAN(int origen, int destino, int nodoAEvitar) {
-        cerrojoRABAN.bloquear();
+        cerrojoRABAN.lock();
         int numNodosActual = this.conjuntoNodos.size();
         int origen2 = 0;
         int destino2 = 0;
@@ -1043,7 +1043,7 @@ public class TTopology {
         } else {
             nodoSiguiente = equivalencia[nodoSiguiente];
         }
-        cerrojoRABAN.liberar();
+        cerrojoRABAN.unLock();
         return nodoSiguiente;
       }
 
@@ -1070,6 +1070,6 @@ public class TTopology {
     private TIdentificadorLargo IDEvento;
     private TIdentificador generaIdentificador;
     private TGeneradorDeIP generadorIP;
-    private TLock cerrojoFloyd;
-    private TLock cerrojoRABAN;
+    private TMonitor cerrojoFloyd;
+    private TMonitor cerrojoRABAN;
 }

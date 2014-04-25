@@ -18,8 +18,8 @@ import simMPLS.scenario.TStats;
 import simMPLS.scenario.TTopologyNode;
 import simMPLS.protocols.TPDU;
 import simMPLS.protocols.TPDUMPLS;
-import simMPLS.utils.TIdentificadorRotativo;
-import simMPLS.utils.TLock;
+import simMPLS.utils.TRotaryIDGenerator;
+import simMPLS.utils.TMonitor;
 
 
 /**
@@ -42,18 +42,18 @@ public class TActivePort extends TPort {
         super(cpn, idp);
         paqueteDevuelto = null;
         bufferIlimitado = false;
-        ordenLlegada = new TIdentificadorRotativo();
-        cerrojoPrioridad0 = new TLock();
-        cerrojoPrioridad1 = new TLock();
-        cerrojoPrioridad2 = new TLock();
-        cerrojoPrioridad3 = new TLock();
-        cerrojoPrioridad4 = new TLock();
-        cerrojoPrioridad5 = new TLock();
-        cerrojoPrioridad6 = new TLock();
-        cerrojoPrioridad7 = new TLock();
-        cerrojoPrioridad8 = new TLock();
-        cerrojoPrioridad9 = new TLock();
-        cerrojoPrioridad10 = new TLock();
+        ordenLlegada = new TRotaryIDGenerator();
+        cerrojoPrioridad0 = new TMonitor();
+        cerrojoPrioridad1 = new TMonitor();
+        cerrojoPrioridad2 = new TMonitor();
+        cerrojoPrioridad3 = new TMonitor();
+        cerrojoPrioridad4 = new TMonitor();
+        cerrojoPrioridad5 = new TMonitor();
+        cerrojoPrioridad6 = new TMonitor();
+        cerrojoPrioridad7 = new TMonitor();
+        cerrojoPrioridad8 = new TMonitor();
+        cerrojoPrioridad9 = new TMonitor();
+        cerrojoPrioridad10 = new TMonitor();
 
         bufferPrioridad0 = new TreeSet();
         bufferPrioridad1 = new TreeSet();
@@ -89,14 +89,14 @@ public class TActivePort extends TPort {
                 if (bufferSeleccionado == 10) {
                     if (bufferPrioridad10.size() > 0) {
                         if (actualPorBuffer[10] < ratioPorBuffer[10]) {
-                            this.cerrojoPrioridad10.bloquear();
+                            this.cerrojoPrioridad10.lock();
                             ite = bufferPrioridad10.iterator();
                             if (ite.hasNext()) {
                                 epa = (TActivePortEntry) ite.next();
                                 siguientePaqueteALeer = epa.obtenerPaquete();
                                 ite.remove();
                             }
-                            this.cerrojoPrioridad10.liberar();
+                            this.cerrojoPrioridad10.unLock();
                             actualPorBuffer[10]++;
                             fin = true;
                         } else {
@@ -110,14 +110,14 @@ public class TActivePort extends TPort {
                 } else if (bufferSeleccionado == 9) {
                     if (bufferPrioridad9.size() > 0) {
                         if (actualPorBuffer[9] < ratioPorBuffer[9]) {
-                            this.cerrojoPrioridad9.bloquear();
+                            this.cerrojoPrioridad9.lock();
                             ite = bufferPrioridad9.iterator();
                             if (ite.hasNext()) {
                                 epa = (TActivePortEntry) ite.next();
                                 siguientePaqueteALeer = epa.obtenerPaquete();
                                 ite.remove();
                             }
-                            this.cerrojoPrioridad9.liberar();
+                            this.cerrojoPrioridad9.unLock();
                             actualPorBuffer[9]++;
                             fin = true;
                         } else {
@@ -131,14 +131,14 @@ public class TActivePort extends TPort {
                 } else if (bufferSeleccionado == 8) {
                     if (bufferPrioridad8.size() > 0) {
                         if (actualPorBuffer[8] < ratioPorBuffer[8]) {
-                            this.cerrojoPrioridad8.bloquear();
+                            this.cerrojoPrioridad8.lock();
                             ite = bufferPrioridad8.iterator();
                             if (ite.hasNext()) {
                                 epa = (TActivePortEntry) ite.next();
                                 siguientePaqueteALeer = epa.obtenerPaquete();
                                 ite.remove();
                             }
-                            this.cerrojoPrioridad8.liberar();
+                            this.cerrojoPrioridad8.unLock();
                             actualPorBuffer[8]++;
                             fin = true;
                         } else {
@@ -152,14 +152,14 @@ public class TActivePort extends TPort {
                 } else if (bufferSeleccionado == 7) {
                     if (bufferPrioridad7.size() > 0) {
                         if (actualPorBuffer[7] < ratioPorBuffer[7]) {
-                            this.cerrojoPrioridad7.bloquear();
+                            this.cerrojoPrioridad7.lock();
                             ite = bufferPrioridad7.iterator();
                             if (ite.hasNext()) {
                                 epa = (TActivePortEntry) ite.next();
                                 siguientePaqueteALeer = epa.obtenerPaquete();
                                 ite.remove();
                             }
-                            this.cerrojoPrioridad7.liberar();
+                            this.cerrojoPrioridad7.unLock();
                             actualPorBuffer[7]++;
                             fin = true;
                         } else {
@@ -173,14 +173,14 @@ public class TActivePort extends TPort {
                 } else if (bufferSeleccionado == 6) {
                     if (bufferPrioridad6.size() > 0) {
                         if (actualPorBuffer[6] < ratioPorBuffer[6]) {
-                            this.cerrojoPrioridad6.bloquear();
+                            this.cerrojoPrioridad6.lock();
                             ite = bufferPrioridad6.iterator();
                             if (ite.hasNext()) {
                                 epa = (TActivePortEntry) ite.next();
                                 siguientePaqueteALeer = epa.obtenerPaquete();
                                 ite.remove();
                             }
-                            this.cerrojoPrioridad6.liberar();
+                            this.cerrojoPrioridad6.unLock();
                             actualPorBuffer[6]++;
                             fin = true;
                         } else {
@@ -194,14 +194,14 @@ public class TActivePort extends TPort {
                 } else if (bufferSeleccionado == 5) {
                     if (bufferPrioridad5.size() > 0) {
                         if (actualPorBuffer[5] < ratioPorBuffer[5]) {
-                            this.cerrojoPrioridad5.bloquear();
+                            this.cerrojoPrioridad5.lock();
                             ite = bufferPrioridad5.iterator();
                             if (ite.hasNext()) {
                                 epa = (TActivePortEntry) ite.next();
                                 siguientePaqueteALeer = epa.obtenerPaquete();
                                 ite.remove();
                             }
-                            this.cerrojoPrioridad5.liberar();
+                            this.cerrojoPrioridad5.unLock();
                             actualPorBuffer[5]++;
                             fin = true;
                         } else {
@@ -215,14 +215,14 @@ public class TActivePort extends TPort {
                 } else if (bufferSeleccionado == 4) {
                     if (bufferPrioridad4.size() > 0) {
                         if (actualPorBuffer[4] < ratioPorBuffer[4]) {
-                            this.cerrojoPrioridad4.bloquear();
+                            this.cerrojoPrioridad4.lock();
                             ite = bufferPrioridad4.iterator();
                             if (ite.hasNext()) {
                                 epa = (TActivePortEntry) ite.next();
                                 siguientePaqueteALeer = epa.obtenerPaquete();
                                 ite.remove();
                             }
-                            this.cerrojoPrioridad4.liberar();
+                            this.cerrojoPrioridad4.unLock();
                             actualPorBuffer[4]++;
                             fin = true;
                         } else {
@@ -236,14 +236,14 @@ public class TActivePort extends TPort {
                 } else if (bufferSeleccionado == 3) {
                     if (bufferPrioridad3.size() > 0) {
                         if (actualPorBuffer[3] < ratioPorBuffer[3]) {
-                            this.cerrojoPrioridad3.bloquear();
+                            this.cerrojoPrioridad3.lock();
                             ite = bufferPrioridad3.iterator();
                             if (ite.hasNext()) {
                                 epa = (TActivePortEntry) ite.next();
                                 siguientePaqueteALeer = epa.obtenerPaquete();
                                 ite.remove();
                             }
-                            this.cerrojoPrioridad3.liberar();
+                            this.cerrojoPrioridad3.unLock();
                             actualPorBuffer[3]++;
                             fin = true;
                         } else {
@@ -257,14 +257,14 @@ public class TActivePort extends TPort {
                 } else if (bufferSeleccionado == 2) {
                     if (bufferPrioridad2.size() > 0) {
                         if (actualPorBuffer[2] < ratioPorBuffer[2]) {
-                            this.cerrojoPrioridad2.bloquear();
+                            this.cerrojoPrioridad2.lock();
                             ite = bufferPrioridad2.iterator();
                             if (ite.hasNext()) {
                                 epa = (TActivePortEntry) ite.next();
                                 siguientePaqueteALeer = epa.obtenerPaquete();
                                 ite.remove();
                             }
-                            this.cerrojoPrioridad2.liberar();
+                            this.cerrojoPrioridad2.unLock();
                             actualPorBuffer[2]++;
                             fin = true;
                         } else {
@@ -278,14 +278,14 @@ public class TActivePort extends TPort {
                 } else if (bufferSeleccionado == 1) {
                     if (bufferPrioridad1.size() > 0) {
                         if (actualPorBuffer[1] < ratioPorBuffer[1]) {
-                            this.cerrojoPrioridad1.bloquear();
+                            this.cerrojoPrioridad1.lock();
                             ite = bufferPrioridad1.iterator();
                             if (ite.hasNext()) {
                                 epa = (TActivePortEntry) ite.next();
                                 siguientePaqueteALeer = epa.obtenerPaquete();
                                 ite.remove();
                             }
-                            this.cerrojoPrioridad1.liberar();
+                            this.cerrojoPrioridad1.unLock();
                             actualPorBuffer[1]++;
                             fin = true;
                         } else {
@@ -299,14 +299,14 @@ public class TActivePort extends TPort {
                 } else if (bufferSeleccionado == 0) {
                     if (bufferPrioridad0.size() > 0) {
                         if (actualPorBuffer[0] < ratioPorBuffer[0]) {
-                            this.cerrojoPrioridad0.bloquear();
+                            this.cerrojoPrioridad0.lock();
                             ite = bufferPrioridad0.iterator();
                             if (ite.hasNext()) {
                                 epa = (TActivePortEntry) ite.next();
                                 siguientePaqueteALeer = epa.obtenerPaquete();
                                 ite.remove();
                             }
-                            this.cerrojoPrioridad0.liberar();
+                            this.cerrojoPrioridad0.unLock();
                             actualPorBuffer[0]++;
                             fin = true;
                         } else {
@@ -339,14 +339,14 @@ public class TActivePort extends TPort {
      */    
     public int obtenerPrioridadSiguientePaquete() {
         int p;
-        cerrojo.bloquear();
+        monitor.lock();
         obtenerSiguientePaquete();
         if (this.siguientePaqueteALeer != null) {
             p = this.calcularPrioridadPaquete(this.siguientePaqueteALeer);
-            cerrojo.liberar();
+            monitor.unLock();
             return p;
         }
-        cerrojo.liberar();
+        monitor.unLock();
         return -1;
     }
     
@@ -358,7 +358,7 @@ public class TActivePort extends TPort {
      * @since 1.0
      */    
     @Override
-    public void ponerBufferIlimitado(boolean bi) {
+    public void setUnlimitedBuffer(boolean bi) {
         this.bufferIlimitado = bi;
     }
 
@@ -368,8 +368,8 @@ public class TActivePort extends TPort {
      * @since 1.0
      */    
     @Override
-    public void descartarPaquete(TPDU paquete) {
-        this.obtenerCjtoPuertos().obtenerNodo().descartarPaquete(paquete);
+    public void discardPacket(TPDU paquete) {
+        this.obtenerCjtoPuertos().getNode().descartarPaquete(paquete);
     }
     
     /**
@@ -379,11 +379,11 @@ public class TActivePort extends TPort {
      */    
     @Override
     public void ponerPaquete(TPDU paquete) {
-        TActiveNodePorts cjtoPuertosAux = (TActiveNodePorts) cjtoPuertos;
-        cjtoPuertosAux.cerrojoCjtoPuertos.bloquear();
-        cerrojo.bloquear();
+        TActiveNodePorts cjtoPuertosAux = (TActiveNodePorts) portsSet;
+        cjtoPuertosAux.portSetMonitor.lock();
+        monitor.lock();
         
-        TTopologyNode nt = this.cjtoPuertos.obtenerNodo();
+        TTopologyNode nt = this.portsSet.getNode();
         long idEvt = 0;
         int idOrden = 0;
         int prior = this.calcularPrioridadPaquete(paquete);
@@ -397,19 +397,19 @@ public class TActivePort extends TPort {
         if (this.bufferIlimitado) {
             TActivePortEntry epa = new TActivePortEntry(prior, idOrden, paquete);
             insertarEntradaPriorizada(epa);
-            cjtoPuertosAux.incrementarTamanioOcupadoCjtoPuertos(paquete.obtenerTamanio());
-            TSEPacketReceived evt = new TSEPacketReceived(nt, idEvt, this.obtenerCjtoPuertos().obtenerNodo().obtenerInstanteDeTiempo(), tipo, paquete.obtenerTamanio());
+            cjtoPuertosAux.increasePortSetOccupancySize(paquete.getSize());
+            TSEPacketReceived evt = new TSEPacketReceived(nt, idEvt, this.obtenerCjtoPuertos().getNode().obtenerInstanteDeTiempo(), tipo, paquete.getSize());
             nt.suscriptorSimulacion.capturarEventoSimulacion(evt);
-            if (this.obtenerCjtoPuertos().obtenerNodo().accederAEstadisticas() != null) {
-                this.obtenerCjtoPuertos().obtenerNodo().accederAEstadisticas().crearEstadistica(paquete, TStats.ENTRADA);
+            if (this.obtenerCjtoPuertos().getNode().accederAEstadisticas() != null) {
+                this.obtenerCjtoPuertos().getNode().accederAEstadisticas().crearEstadistica(paquete, TStats.ENTRADA);
             }
         } else {
             if (!protocoloEPCD(paquete)) {
-                this.descartarPaquete(paquete);
+                this.discardPacket(paquete);
             }
         }
-        cerrojo.liberar();
-        cjtoPuertosAux.cerrojoCjtoPuertos.liberar();
+        monitor.unLock();
+        cjtoPuertosAux.portSetMonitor.unLock();
     }
     
     /**
@@ -424,11 +424,11 @@ public class TActivePort extends TPort {
      * se descarte el paquete.
      */    
     public boolean protocoloEPCD(TPDU paquete) {
-        TActiveNodePorts cjtoPuertosAux = (TActiveNodePorts) cjtoPuertos;
+        TActiveNodePorts cjtoPuertosAux = (TActiveNodePorts) portsSet;
         long idEvt = 0;
         int idOrden = 0;
         int prior = this.calcularPrioridadPaquete(paquete);
-        TTopologyNode nt = this.cjtoPuertos.obtenerNodo();
+        TTopologyNode nt = this.portsSet.getNode();
         try {
             idEvt = nt.gILargo.obtenerNuevo();
             idOrden = this.ordenLlegada.obtenerNuevo();
@@ -436,19 +436,19 @@ public class TActivePort extends TPort {
             ex.printStackTrace();
         }
         int tipo = paquete.obtenerSubTipo();
-        if ((cjtoPuertosAux.obtenerTamanioOcupadoCjtoPuertos() + paquete.obtenerTamanio()) <= ((cjtoPuertosAux.obtenerTamanioBuffer()*1024*1024) - UMBRAL)) {
+        if ((cjtoPuertosAux.getPortSetOccupancySize() + paquete.getSize()) <= ((cjtoPuertosAux.getBufferSizeInMB()*1024*1024) - UMBRAL)) {
                 TActivePortEntry epa = new TActivePortEntry(prior, idOrden, paquete);
                 insertarEntradaPriorizada(epa);
-                cjtoPuertosAux.incrementarTamanioOcupadoCjtoPuertos(paquete.obtenerTamanio());
-                TSEPacketReceived evt = new TSEPacketReceived(nt, idEvt, this.obtenerCjtoPuertos().obtenerNodo().obtenerInstanteDeTiempo(), tipo, paquete.obtenerTamanio());
+                cjtoPuertosAux.increasePortSetOccupancySize(paquete.getSize());
+                TSEPacketReceived evt = new TSEPacketReceived(nt, idEvt, this.obtenerCjtoPuertos().getNode().obtenerInstanteDeTiempo(), tipo, paquete.getSize());
                 nt.suscriptorSimulacion.capturarEventoSimulacion(evt);
-                if (this.obtenerCjtoPuertos().obtenerNodo().accederAEstadisticas() != null) {
-                    this.obtenerCjtoPuertos().obtenerNodo().accederAEstadisticas().crearEstadistica(paquete, TStats.ENTRADA);
+                if (this.obtenerCjtoPuertos().getNode().accederAEstadisticas() != null) {
+                    this.obtenerCjtoPuertos().getNode().accederAEstadisticas().crearEstadistica(paquete, TStats.ENTRADA);
                 }
                 return true;
         } else {
             if (paquete.obtenerSubTipo() == TPDU.MPLS_GOS) {
-                cjtoPuertosAux.obtenerNodo().solicitarGPSRP((TPDUMPLS) paquete, this.idPuerto);
+                cjtoPuertosAux.getNode().solicitarGPSRP((TPDUMPLS) paquete, this.portID);
             }
         }
         return false;
@@ -457,49 +457,49 @@ public class TActivePort extends TPort {
     private void insertarEntradaPriorizada(TActivePortEntry ep) {
         int prioridadAux = ep.obtenerPrioridad();
         if (prioridadAux == TActivePort.PRIORIDAD_10) {
-            this.cerrojoPrioridad10.bloquear();
+            this.cerrojoPrioridad10.lock();
             this.bufferPrioridad10.add(ep);
-            this.cerrojoPrioridad10.liberar();
+            this.cerrojoPrioridad10.unLock();
         } else if (prioridadAux == TActivePort.PRIORIDAD_9) {
-            this.cerrojoPrioridad9.bloquear();
+            this.cerrojoPrioridad9.lock();
             this.bufferPrioridad9.add(ep);
-            this.cerrojoPrioridad9.liberar();
+            this.cerrojoPrioridad9.unLock();
         } else if (prioridadAux == TActivePort.PRIORIDAD_8) {
-            this.cerrojoPrioridad8.bloquear();
+            this.cerrojoPrioridad8.lock();
             this.bufferPrioridad8.add(ep);
-            this.cerrojoPrioridad8.liberar();
+            this.cerrojoPrioridad8.unLock();
         } else if (prioridadAux == TActivePort.PRIORIDAD_7) {
-            this.cerrojoPrioridad7.bloquear();
+            this.cerrojoPrioridad7.lock();
             this.bufferPrioridad7.add(ep);
-            this.cerrojoPrioridad7.liberar();
+            this.cerrojoPrioridad7.unLock();
         } else if (prioridadAux == TActivePort.PRIORIDAD_6) {
-            this.cerrojoPrioridad6.bloquear();
+            this.cerrojoPrioridad6.lock();
             this.bufferPrioridad6.add(ep);
-            this.cerrojoPrioridad6.liberar();
+            this.cerrojoPrioridad6.unLock();
         } else if (prioridadAux == TActivePort.PRIORIDAD_5) {
-            this.cerrojoPrioridad5.bloquear();
+            this.cerrojoPrioridad5.lock();
             this.bufferPrioridad5.add(ep);
-            this.cerrojoPrioridad5.liberar();
+            this.cerrojoPrioridad5.unLock();
         } else if (prioridadAux == TActivePort.PRIORIDAD_4) {
-            this.cerrojoPrioridad4.bloquear();
+            this.cerrojoPrioridad4.lock();
             this.bufferPrioridad4.add(ep);
-            this.cerrojoPrioridad4.liberar();
+            this.cerrojoPrioridad4.unLock();
         } else if (prioridadAux == TActivePort.PRIORIDAD_3) {
-            this.cerrojoPrioridad3.bloquear();
+            this.cerrojoPrioridad3.lock();
             this.bufferPrioridad3.add(ep);
-            this.cerrojoPrioridad3.liberar();
+            this.cerrojoPrioridad3.unLock();
         } else if (prioridadAux == TActivePort.PRIORIDAD_2) {
-            this.cerrojoPrioridad2.bloquear();
+            this.cerrojoPrioridad2.lock();
             this.bufferPrioridad2.add(ep);
-            this.cerrojoPrioridad2.liberar();
+            this.cerrojoPrioridad2.unLock();
         } else if (prioridadAux == TActivePort.PRIORIDAD_1) {
-            this.cerrojoPrioridad1.bloquear();
+            this.cerrojoPrioridad1.lock();
             this.bufferPrioridad1.add(ep);
-            this.cerrojoPrioridad1.liberar();
+            this.cerrojoPrioridad1.unLock();
         } else if (prioridadAux == TActivePort.SIN_PRIORIDAD) {
-            this.cerrojoPrioridad0.bloquear();
+            this.cerrojoPrioridad0.lock();
             this.bufferPrioridad0.add(ep);
-            this.cerrojoPrioridad0.liberar();
+            this.cerrojoPrioridad0.unLock();
         }
     }
     
@@ -587,11 +587,11 @@ public class TActivePort extends TPort {
      * @since 1.0
      */    
     @Override
-    public void reencolar(TPDU paquete) {
-        TActiveNodePorts cjtoPuertosAux = (TActiveNodePorts) cjtoPuertos;
-        cjtoPuertosAux.cerrojoCjtoPuertos.bloquear();
-        cerrojo.bloquear();
-        TTopologyNode nt = this.cjtoPuertos.obtenerNodo();
+    public void reEnqueuePacket(TPDU paquete) {
+        TActiveNodePorts cjtoPuertosAux = (TActiveNodePorts) portsSet;
+        cjtoPuertosAux.portSetMonitor.lock();
+        monitor.lock();
+        TTopologyNode nt = this.portsSet.getNode();
         long idEvt = 0;
         int idOrden = 0;
         int prior = this.calcularPrioridadPaquete(paquete);
@@ -605,18 +605,18 @@ public class TActivePort extends TPort {
         if (this.bufferIlimitado) {
             TActivePortEntry epa = new TActivePortEntry(prior, idOrden, paquete);
             insertarEntradaPriorizada(epa);
-            cjtoPuertosAux.incrementarTamanioOcupadoCjtoPuertos(paquete.obtenerTamanio());
+            cjtoPuertosAux.increasePortSetOccupancySize(paquete.getSize());
         } else {
-            if ((cjtoPuertosAux.obtenerTamanioOcupadoCjtoPuertos() + paquete.obtenerTamanio()) <= (cjtoPuertosAux.obtenerTamanioBuffer()*1024*1024)) {
+            if ((cjtoPuertosAux.getPortSetOccupancySize() + paquete.getSize()) <= (cjtoPuertosAux.getBufferSizeInMB()*1024*1024)) {
                 TActivePortEntry epa = new TActivePortEntry(prior, idOrden, paquete);
                 insertarEntradaPriorizada(epa);
-                cjtoPuertosAux.incrementarTamanioOcupadoCjtoPuertos(paquete.obtenerTamanio());
+                cjtoPuertosAux.increasePortSetOccupancySize(paquete.getSize());
             } else {
-                this.descartarPaquete(paquete);                
+                this.discardPacket(paquete);                
             }
         }
-        cerrojo.liberar();
-        cjtoPuertosAux.cerrojoCjtoPuertos.liberar();
+        monitor.unLock();
+        cjtoPuertosAux.portSetMonitor.unLock();
     }
     
     /**
@@ -627,42 +627,42 @@ public class TActivePort extends TPort {
      * @since 1.0
      */    
     @Override
-    public TPDU obtenerPaquete() {
-        TActiveNodePorts cjtoPuertosAux = (TActiveNodePorts) cjtoPuertos;
-        cjtoPuertosAux.cerrojoCjtoPuertos.bloquear();
-        cerrojo.bloquear();
+    public TPDU getPacket() {
+        TActiveNodePorts cjtoPuertosAux = (TActiveNodePorts) portsSet;
+        cjtoPuertosAux.portSetMonitor.lock();
+        monitor.lock();
         obtenerSiguientePaquete();
         if (siguientePaqueteALeer != null) {
             paqueteDevuelto = siguientePaqueteALeer;
             if (!this.bufferIlimitado) {
-                cjtoPuertosAux.decrementarTamanioOcupadoCjtoPuertos(paqueteDevuelto.obtenerTamanio());
+                cjtoPuertosAux.decreasePortSetOccupancySize(paqueteDevuelto.getSize());
             }
             siguientePaqueteALeer = null;
         }
-        cerrojo.liberar();
-        cjtoPuertosAux.cerrojoCjtoPuertos.liberar();
+        monitor.unLock();
+        cjtoPuertosAux.portSetMonitor.unLock();
         return paqueteDevuelto;
     }
     
     /**
-     * Este m�todo calcula si podemos conmutar el siguiente paquete del nodo, dado el
-     * n�mero de octetos que como mucho podemos conmutar en un momento dado.
+     * Este m�todo calcula si podemos conmutar el siguiente paquete del parentNode, dado el
+ n�mero de octetos que como mucho podemos conmutar en un momento dado.
      * @param octetos El n�mero de octetos que podemos conmutar.
      * @return TRUE, si podemos conmutar el siguiente paquete. FALSE, en caso contrario.
      * @since 1.0
      */    
     @Override
-    public boolean puedoConmutarPaquete(int octetos) {
-        cerrojo.bloquear();
+    public boolean canSwitchPacket(int octetos) {
+        monitor.lock();
         obtenerSiguientePaquete();
         if (siguientePaqueteALeer != null) {
             paqueteDevuelto = siguientePaqueteALeer;
-            cerrojo.liberar();
-            if (paqueteDevuelto.obtenerTamanio() <= octetos) {
+            monitor.unLock();
+            if (paqueteDevuelto.getSize() <= octetos) {
                 return true;
             }
         }
-        cerrojo.liberar();
+        monitor.unLock();
         return false;
     }
 
@@ -672,12 +672,12 @@ public class TActivePort extends TPort {
      * @since 1.0
      */    
     @Override
-    public long obtenerCongestion() {
+    public long getCongestionLevel() {
         if (this.bufferIlimitado) {
             return 0;
         } 
-        TActiveNodePorts tpn = (TActiveNodePorts) cjtoPuertos;
-        long cong = (tpn.obtenerTamanioOcupadoCjtoPuertos()*100) / (tpn.obtenerTamanioBuffer()*1024*1024);
+        TActiveNodePorts tpn = (TActiveNodePorts) portsSet;
+        long cong = (tpn.getPortSetOccupancySize()*100) / (tpn.getBufferSizeInMB()*1024*1024);
         return cong;
     }
 
@@ -687,7 +687,7 @@ public class TActivePort extends TPort {
      * @since 1.0
      */    
     @Override
-    public boolean hayPaqueteEsperando() {
+    public boolean thereIsAPacketWaiting() {
         if (bufferPrioridad10.size() > 0)
             return true;
         if (bufferPrioridad9.size() > 0)
@@ -722,130 +722,130 @@ public class TActivePort extends TPort {
      * @since 1.0
      */    
     @Override
-    public long obtenerOcupacion() {
+    public long getOccupancy() {
         if (this.bufferIlimitado) {
-            this.cerrojo.bloquear();
+            this.monitor.lock();
             int ocup=0;
             TPDU paquete = null;
             TActivePortEntry epa = null;
 
-            this.cerrojoPrioridad10.bloquear();
+            this.cerrojoPrioridad10.lock();
             Iterator it = this.bufferPrioridad10.iterator();
             while (it.hasNext()) {
                 epa = (TActivePortEntry) it.next();
                 paquete = epa.obtenerPaquete();
                 if (paquete != null)
-                    ocup += paquete.obtenerTamanio();
+                    ocup += paquete.getSize();
             }
-            this.cerrojoPrioridad10.liberar();
+            this.cerrojoPrioridad10.unLock();
 
-            this.cerrojoPrioridad9.bloquear();
+            this.cerrojoPrioridad9.lock();
             it = this.bufferPrioridad9.iterator();
             while (it.hasNext()) {
                 epa = (TActivePortEntry) it.next();
                 paquete = epa.obtenerPaquete();
                 if (paquete != null)
-                    ocup += paquete.obtenerTamanio();
+                    ocup += paquete.getSize();
             }
-            this.cerrojoPrioridad9.liberar();
+            this.cerrojoPrioridad9.unLock();
 
-            this.cerrojoPrioridad8.bloquear();
+            this.cerrojoPrioridad8.lock();
             it = this.bufferPrioridad8.iterator();
             while (it.hasNext()) {
                 epa = (TActivePortEntry) it.next();
                 paquete = epa.obtenerPaquete();
                 if (paquete != null)
-                    ocup += paquete.obtenerTamanio();
+                    ocup += paquete.getSize();
             }
-            this.cerrojoPrioridad8.liberar();
+            this.cerrojoPrioridad8.unLock();
 
-            this.cerrojoPrioridad7.bloquear();
+            this.cerrojoPrioridad7.lock();
             it = this.bufferPrioridad7.iterator();
             while (it.hasNext()) {
                 epa = (TActivePortEntry) it.next();
                 paquete = epa.obtenerPaquete();
                 if (paquete != null)
-                    ocup += paquete.obtenerTamanio();
+                    ocup += paquete.getSize();
             }
-            this.cerrojoPrioridad7.liberar();
+            this.cerrojoPrioridad7.unLock();
 
-            this.cerrojoPrioridad6.bloquear();
+            this.cerrojoPrioridad6.lock();
             it = this.bufferPrioridad6.iterator();
             while (it.hasNext()) {
                 epa = (TActivePortEntry) it.next();
                 paquete = epa.obtenerPaquete();
                 if (paquete != null)
-                    ocup += paquete.obtenerTamanio();
+                    ocup += paquete.getSize();
             }
-            this.cerrojoPrioridad6.liberar();
+            this.cerrojoPrioridad6.unLock();
 
-            this.cerrojoPrioridad5.bloquear();
+            this.cerrojoPrioridad5.lock();
             it = this.bufferPrioridad5.iterator();
             while (it.hasNext()) {
                 epa = (TActivePortEntry) it.next();
                 paquete = epa.obtenerPaquete();
                 if (paquete != null)
-                    ocup += paquete.obtenerTamanio();
+                    ocup += paquete.getSize();
             }
-            this.cerrojoPrioridad5.liberar();
+            this.cerrojoPrioridad5.unLock();
 
-            this.cerrojoPrioridad4.bloquear();
+            this.cerrojoPrioridad4.lock();
             it = this.bufferPrioridad4.iterator();
             while (it.hasNext()) {
                 epa = (TActivePortEntry) it.next();
                 paquete = epa.obtenerPaquete();
                 if (paquete != null)
-                    ocup += paquete.obtenerTamanio();
+                    ocup += paquete.getSize();
             }
-            this.cerrojoPrioridad4.liberar();
+            this.cerrojoPrioridad4.unLock();
 
-            this.cerrojoPrioridad3.bloquear();
+            this.cerrojoPrioridad3.lock();
             it = this.bufferPrioridad3.iterator();
             while (it.hasNext()) {
                 epa = (TActivePortEntry) it.next();
                 paquete = epa.obtenerPaquete();
                 if (paquete != null)
-                    ocup += paquete.obtenerTamanio();
+                    ocup += paquete.getSize();
             }
-            this.cerrojoPrioridad3.liberar();
+            this.cerrojoPrioridad3.unLock();
 
-            this.cerrojoPrioridad2.bloquear();
+            this.cerrojoPrioridad2.lock();
             it = this.bufferPrioridad2.iterator();
             while (it.hasNext()) {
                 epa = (TActivePortEntry) it.next();
                 paquete = epa.obtenerPaquete();
                 if (paquete != null)
-                    ocup += paquete.obtenerTamanio();
+                    ocup += paquete.getSize();
             }
-            this.cerrojoPrioridad2.liberar();
+            this.cerrojoPrioridad2.unLock();
 
-            this.cerrojoPrioridad1.bloquear();
+            this.cerrojoPrioridad1.lock();
             it = this.bufferPrioridad1.iterator();
             while (it.hasNext()) {
                 epa = (TActivePortEntry) it.next();
                 paquete = epa.obtenerPaquete();
                 if (paquete != null)
-                    ocup += paquete.obtenerTamanio();
+                    ocup += paquete.getSize();
             }
-            this.cerrojoPrioridad1.liberar();
+            this.cerrojoPrioridad1.unLock();
 
-            this.cerrojoPrioridad0.bloquear();
+            this.cerrojoPrioridad0.lock();
             it = this.bufferPrioridad0.iterator();
             while (it.hasNext()) {
                 epa = (TActivePortEntry) it.next();
                 paquete = epa.obtenerPaquete();
                 if (paquete != null)
-                    ocup += paquete.obtenerTamanio();
+                    ocup += paquete.getSize();
             }
-            this.cerrojoPrioridad0.liberar();
+            this.cerrojoPrioridad0.unLock();
 
             if (siguientePaqueteALeer != null)
-                ocup += siguientePaqueteALeer.obtenerTamanio();
-            this.cerrojo.liberar();
+                ocup += siguientePaqueteALeer.getSize();
+            this.monitor.unLock();
             return ocup;
         }
-        TActiveNodePorts tpn = (TActiveNodePorts) cjtoPuertos;
-        return tpn.obtenerTamanioOcupadoCjtoPuertos();
+        TActiveNodePorts tpn = (TActiveNodePorts) portsSet;
+        return tpn.getPortSetOccupancySize();
     }
 
     /**
@@ -854,7 +854,7 @@ public class TActivePort extends TPort {
      * @since 1.0
      */    
     @Override
-    public int obtenerNumeroPaquetes() {
+    public int getNumberOfPackets() {
         int numP = 0;
         numP += bufferPrioridad10.size();
         numP += bufferPrioridad9.size();
@@ -879,97 +879,97 @@ public class TActivePort extends TPort {
      */    
     @Override
     public void reset() {
-        this.cerrojo.bloquear();
+        this.monitor.lock();
         
-        this.cerrojoPrioridad10.bloquear();
+        this.cerrojoPrioridad10.lock();
         Iterator it = this.bufferPrioridad10.iterator();
         while (it.hasNext()) {
             it.next();
             it.remove();
         }
-        this.cerrojoPrioridad10.liberar();
+        this.cerrojoPrioridad10.unLock();
         
-        this.cerrojoPrioridad9.bloquear();
+        this.cerrojoPrioridad9.lock();
         it = this.bufferPrioridad9.iterator();
         while (it.hasNext()) {
             it.next();
             it.remove();
         }
-        this.cerrojoPrioridad9.liberar();
+        this.cerrojoPrioridad9.unLock();
 
-        this.cerrojoPrioridad8.bloquear();
+        this.cerrojoPrioridad8.lock();
         it = this.bufferPrioridad8.iterator();
         while (it.hasNext()) {
             it.next();
             it.remove();
         }
-        this.cerrojoPrioridad8.liberar();
+        this.cerrojoPrioridad8.unLock();
 
-        this.cerrojoPrioridad7.bloquear();
+        this.cerrojoPrioridad7.lock();
         it = this.bufferPrioridad7.iterator();
         while (it.hasNext()) {
             it.next();
             it.remove();
         }
-        this.cerrojoPrioridad7.liberar();
+        this.cerrojoPrioridad7.unLock();
 
-        this.cerrojoPrioridad6.bloquear();
+        this.cerrojoPrioridad6.lock();
         it = this.bufferPrioridad6.iterator();
         while (it.hasNext()) {
             it.next();
             it.remove();
         }
-        this.cerrojoPrioridad6.liberar();
+        this.cerrojoPrioridad6.unLock();
 
-        this.cerrojoPrioridad5.bloquear();
+        this.cerrojoPrioridad5.lock();
         it = this.bufferPrioridad5.iterator();
         while (it.hasNext()) {
             it.next();
             it.remove();
         }
-        this.cerrojoPrioridad5.liberar();
+        this.cerrojoPrioridad5.unLock();
 
-        this.cerrojoPrioridad4.bloquear();
+        this.cerrojoPrioridad4.lock();
         it = this.bufferPrioridad4.iterator();
         while (it.hasNext()) {
             it.next();
             it.remove();
         }
-        this.cerrojoPrioridad4.liberar();
+        this.cerrojoPrioridad4.unLock();
 
-        this.cerrojoPrioridad3.bloquear();
+        this.cerrojoPrioridad3.lock();
         it = this.bufferPrioridad3.iterator();
         while (it.hasNext()) {
             it.next();
             it.remove();
         }
-        this.cerrojoPrioridad3.liberar();
+        this.cerrojoPrioridad3.unLock();
 
-        this.cerrojoPrioridad2.bloquear();
+        this.cerrojoPrioridad2.lock();
         it = this.bufferPrioridad2.iterator();
         while (it.hasNext()) {
             it.next();
             it.remove();
         }
-        this.cerrojoPrioridad2.liberar();
+        this.cerrojoPrioridad2.unLock();
 
-        this.cerrojoPrioridad1.bloquear();
+        this.cerrojoPrioridad1.lock();
         it = this.bufferPrioridad1.iterator();
         while (it.hasNext()) {
             it.next();
             it.remove();
         }
-        this.cerrojoPrioridad1.liberar();
+        this.cerrojoPrioridad1.unLock();
 
-        this.cerrojoPrioridad0.bloquear();
+        this.cerrojoPrioridad0.lock();
         it = this.bufferPrioridad0.iterator();
         while (it.hasNext()) {
             it.next();
             it.remove();
         }
-        this.cerrojoPrioridad0.liberar();
+        this.cerrojoPrioridad0.unLock();
 
-        this.cerrojo.liberar();
+        this.monitor.unLock();
         paqueteDevuelto = null;
         bufferSeleccionado = 0;
         siguientePaqueteALeer = null;
@@ -993,17 +993,17 @@ public class TActivePort extends TPort {
 
     private static final int UMBRAL = 100;
     
-    private TLock cerrojoPrioridad0;
-    private TLock cerrojoPrioridad1;
-    private TLock cerrojoPrioridad2;
-    private TLock cerrojoPrioridad3;
-    private TLock cerrojoPrioridad4;
-    private TLock cerrojoPrioridad5;
-    private TLock cerrojoPrioridad6;
-    private TLock cerrojoPrioridad7;
-    private TLock cerrojoPrioridad8;
-    private TLock cerrojoPrioridad9;
-    private TLock cerrojoPrioridad10;
+    private TMonitor cerrojoPrioridad0;
+    private TMonitor cerrojoPrioridad1;
+    private TMonitor cerrojoPrioridad2;
+    private TMonitor cerrojoPrioridad3;
+    private TMonitor cerrojoPrioridad4;
+    private TMonitor cerrojoPrioridad5;
+    private TMonitor cerrojoPrioridad6;
+    private TMonitor cerrojoPrioridad7;
+    private TMonitor cerrojoPrioridad8;
+    private TMonitor cerrojoPrioridad9;
+    private TMonitor cerrojoPrioridad10;
     private TreeSet bufferPrioridad0;
     private TreeSet bufferPrioridad1;
     private TreeSet bufferPrioridad2;
@@ -1019,7 +1019,7 @@ public class TActivePort extends TPort {
     private int bufferSeleccionado;
     private TPDU paqueteDevuelto;
     private boolean bufferIlimitado;
-    private TIdentificadorRotativo ordenLlegada;
+    private TRotaryIDGenerator ordenLlegada;
     private int ratioPorBuffer[];
     private int actualPorBuffer[];
     private TPDU siguientePaqueteALeer;

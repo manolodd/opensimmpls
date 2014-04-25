@@ -79,7 +79,7 @@ public class TInternalLink extends TTopologyLink implements ITimerEventListener,
                 this.numeroDeLSPs = 0;
                 this.numeroDeLSPsDeBackup = 0;
                 this.generarEventoSimulacion(new TSELinkBroken(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo()));
-                this.cerrojo.bloquear();
+                this.cerrojo.lock();
                 TPDU paquete = null;
                 TLinkBufferEntry ebe = null;
                 Iterator it = this.buffer.iterator();
@@ -95,7 +95,7 @@ public class TInternalLink extends TTopologyLink implements ITimerEventListener,
                     }
                     it.remove();
                 }
-                this.cerrojo.liberar();
+                this.cerrojo.unLock();
             } catch (EDesbordeDelIdentificador e) {
                 e.printStackTrace(); 
             }
@@ -195,7 +195,7 @@ public class TInternalLink extends TTopologyLink implements ITimerEventListener,
      * @since 1.0
      */    
     public void actualizarTiemposDeEspera() {
-        cerrojo.bloquear();
+        cerrojo.lock();
         Iterator it = buffer.iterator();
         while (it.hasNext()) {
             TLinkBufferEntry ebe = (TLinkBufferEntry) it.next();
@@ -215,7 +215,7 @@ public class TInternalLink extends TTopologyLink implements ITimerEventListener,
                 e.printStackTrace(); 
             }
         }
-        cerrojo.liberar();
+        cerrojo.unLock();
     }
 
     /**
@@ -224,14 +224,14 @@ public class TInternalLink extends TTopologyLink implements ITimerEventListener,
      * @since 1.0
      */    
     public void adelantarPaquetesEnTransito() {
-        cerrojo.bloquear();
+        cerrojo.lock();
         Iterator it = buffer.iterator();
         while (it.hasNext()) {
             TLinkBufferEntry ebe = (TLinkBufferEntry) it.next();
             if (ebe.obtenerTiempoEspera() <= 0) {
-                this.cerrojoLlegados.bloquear();
+                this.cerrojoLlegados.lock();
                 bufferLlegadosADestino.add(ebe);
-                this.cerrojoLlegados.liberar();
+                this.cerrojoLlegados.unLock();
             }
         }
         it = buffer.iterator();
@@ -240,7 +240,7 @@ public class TInternalLink extends TTopologyLink implements ITimerEventListener,
             if (ebe.obtenerTiempoEspera() <= 0)
                 it.remove();
         }
-        cerrojo.liberar();
+        cerrojo.unLock();
     }
 
     /**
@@ -249,11 +249,11 @@ public class TInternalLink extends TTopologyLink implements ITimerEventListener,
      * @since 1.0
      */    
     public void pasarPaquetesADestino() {
-        this.cerrojoLlegados.bloquear();
+        this.cerrojoLlegados.lock();
         Iterator it = bufferLlegadosADestino.iterator();
         while (it.hasNext())  {
             TLinkBufferEntry ebe = (TLinkBufferEntry) it.next();
-            if (ebe.obtenerDestino() == TTopologyLink.EXTREMO1) {
+            if (ebe.obtenerDestino() == TTopologyLink.END_NODE_1) {
                 TTopologyNode nt = this.obtenerExtremo1();
                 nt.ponerPaquete(ebe.obtenerPaquete(), this.obtenerPuertoExtremo1());
             } else {
@@ -262,7 +262,7 @@ public class TInternalLink extends TTopologyLink implements ITimerEventListener,
             }
             it.remove();
         }
-        this.cerrojoLlegados.liberar();
+        this.cerrojoLlegados.unLock();
     }
     
     /**
@@ -324,11 +324,11 @@ public class TInternalLink extends TTopologyLink implements ITimerEventListener,
         cadena += "#";
         cadena += this.obtenerDelay();
         cadena += "#";
-        cadena += this.obtenerExtremo1().obtenerIP();
+        cadena += this.obtenerExtremo1().getIPAddress();
         cadena += "#";
         cadena += this.obtenerPuertoExtremo1();
         cadena += "#";
-        cadena += this.obtenerExtremo2().obtenerIP();
+        cadena += this.obtenerExtremo2().getIPAddress();
         cadena += "#";
         cadena += this.obtenerPuertoExtremo2();
         cadena += "#";
@@ -375,20 +375,20 @@ public class TInternalLink extends TTopologyLink implements ITimerEventListener,
      * @since 1.0
      */    
     public void reset() {
-        this.cerrojo.bloquear();
+        this.cerrojo.lock();
         Iterator it = this.buffer.iterator();
         while (it.hasNext()) {
             it.next();
             it.remove();
         }
-        this.cerrojo.liberar();
-        this.cerrojoLlegados.bloquear();
+        this.cerrojo.unLock();
+        this.cerrojoLlegados.lock();
         it = this.bufferLlegadosADestino.iterator();
         while (it.hasNext()) {
             it.next();
             it.remove();
         }
-        this.cerrojoLlegados.liberar();
+        this.cerrojoLlegados.unLock();
         numeroDeLSPs = 0;
         numeroDeLSPsDeBackup = 0;
         ponerEnlaceCaido(false);

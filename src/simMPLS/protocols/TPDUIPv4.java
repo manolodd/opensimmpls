@@ -26,7 +26,7 @@ public class TPDUIPv4 extends TPDU {
      * @return El tama�o completo del paquete en bytes.
      * @since 1.0
      */
-    public int obtenerTamanio() {
+    public int getSize() {
         return (super.obtenerCabecera().obtenerTamanio() + datos.obtenerTamanio());
     }
     

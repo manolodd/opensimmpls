@@ -102,7 +102,7 @@ public class TOSMLoader {
             if (receptor.desSerializar(cadena)) {
                 escenario.obtenerTopologia().insertarNodo(receptor);
                 escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(receptor.obtenerIdentificador());
-                escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(receptor.obtenerIP());
+                escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(receptor.getIPAddress());
             }
             receptor = null;
         } else if (cadena.startsWith("#Emisor#")) {
@@ -110,7 +110,7 @@ public class TOSMLoader {
             if (emisor.desSerializar(cadena)) {
                 escenario.obtenerTopologia().insertarNodo(emisor);
                 escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(emisor.obtenerIdentificador());
-                escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(emisor.obtenerIP());
+                escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(emisor.getIPAddress());
             }
             emisor = null;
         } else if (cadena.startsWith("#LER#")) {
@@ -118,7 +118,7 @@ public class TOSMLoader {
             if (ler.desSerializar(cadena)) {
                 escenario.obtenerTopologia().insertarNodo(ler);
                 escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(ler.obtenerIdentificador());
-                escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(ler.obtenerIP());
+                escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(ler.getIPAddress());
             }
             ler = null;
         } else if (cadena.startsWith("#LERA#")) {
@@ -126,7 +126,7 @@ public class TOSMLoader {
             if (lera.desSerializar(cadena)) {
                 escenario.obtenerTopologia().insertarNodo(lera);
                 escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(lera.obtenerIdentificador());
-                escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(lera.obtenerIP());
+                escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(lera.getIPAddress());
             }
             lera = null;
         } else if (cadena.startsWith("#LSR#")) {
@@ -134,7 +134,7 @@ public class TOSMLoader {
             if (lsr.desSerializar(cadena)) {
                 escenario.obtenerTopologia().insertarNodo(lsr);
                 escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(lsr.obtenerIdentificador());
-                escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(lsr.obtenerIP());
+                escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(lsr.getIPAddress());
             }
             lsr = null;
         } else if (cadena.startsWith("#LSRA#")) {
@@ -142,7 +142,7 @@ public class TOSMLoader {
             if (lsra.desSerializar(cadena)) {
                 escenario.obtenerTopologia().insertarNodo(lsra);
                 escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(lsra.obtenerIdentificador());
-                escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(lsra.obtenerIP());
+                escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(lsra.getIPAddress());
             }
             lsra = null;
         } else if (cadena.startsWith("#EnlaceExterno#")) {

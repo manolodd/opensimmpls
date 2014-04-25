@@ -50,7 +50,7 @@ public class TNormalPort extends TPort {
      * @since 1.0
      */    
     @Override
-    public void ponerBufferIlimitado(boolean bi) {
+    public void setUnlimitedBuffer(boolean bi) {
         this.bufferIlimitado = bi;
     }
 
@@ -60,8 +60,8 @@ public class TNormalPort extends TPort {
      * @since 1.0
      */    
     @Override
-    public void descartarPaquete(TPDU paquete) {
-        this.obtenerCjtoPuertos().obtenerNodo().descartarPaquete(paquete);
+    public void discardPacket(TPDU paquete) {
+        this.obtenerCjtoPuertos().getNode().descartarPaquete(paquete);
     }
     
     /**
@@ -71,10 +71,10 @@ public class TNormalPort extends TPort {
      */    
     @Override
     public void ponerPaquete(TPDU paquete) {
-        TNormalNodePorts cjtoPuertosAux = (TNormalNodePorts) cjtoPuertos;
-        cjtoPuertosAux.cerrojoCjtoPuertos.bloquear();
-        cerrojo.bloquear();
-        TTopologyNode nt = this.cjtoPuertos.obtenerNodo();
+        TNormalNodePorts cjtoPuertosAux = (TNormalNodePorts) portsSet;
+        cjtoPuertosAux.portSetMonitor.lock();
+        monitor.lock();
+        TTopologyNode nt = this.portsSet.getNode();
         long idEvt = 0;
         try {
             idEvt = nt.gILargo.obtenerNuevo();
@@ -84,27 +84,27 @@ public class TNormalPort extends TPort {
         int tipo = paquete.obtenerSubTipo();
         if (this.bufferIlimitado) {
             buffer.addLast(paquete);
-            cjtoPuertosAux.incrementarTamanioOcupadoCjtoPuertos(paquete.obtenerTamanio());
-            TSEPacketReceived evt = new TSEPacketReceived(nt, idEvt, this.obtenerCjtoPuertos().obtenerNodo().obtenerInstanteDeTiempo(), tipo, paquete.obtenerTamanio());
+            cjtoPuertosAux.increasePortSetOccupancySize(paquete.getSize());
+            TSEPacketReceived evt = new TSEPacketReceived(nt, idEvt, this.obtenerCjtoPuertos().getNode().obtenerInstanteDeTiempo(), tipo, paquete.getSize());
             nt.suscriptorSimulacion.capturarEventoSimulacion(evt);
-            if (this.obtenerCjtoPuertos().obtenerNodo().accederAEstadisticas() != null) {
-                this.obtenerCjtoPuertos().obtenerNodo().accederAEstadisticas().crearEstadistica(paquete, TStats.ENTRADA);
+            if (this.obtenerCjtoPuertos().getNode().accederAEstadisticas() != null) {
+                this.obtenerCjtoPuertos().getNode().accederAEstadisticas().crearEstadistica(paquete, TStats.ENTRADA);
             }
         } else {
-            if ((cjtoPuertosAux.obtenerTamanioOcupadoCjtoPuertos() + paquete.obtenerTamanio()) <= (cjtoPuertosAux.obtenerTamanioBuffer()*1024*1024)) {
+            if ((cjtoPuertosAux.getPortSetOccupancySize() + paquete.getSize()) <= (cjtoPuertosAux.getBufferSizeInMB()*1024*1024)) {
                 buffer.addLast(paquete);
-                cjtoPuertosAux.incrementarTamanioOcupadoCjtoPuertos(paquete.obtenerTamanio());
-                TSEPacketReceived evt = new TSEPacketReceived(nt, idEvt, this.obtenerCjtoPuertos().obtenerNodo().obtenerInstanteDeTiempo(), tipo, paquete.obtenerTamanio());
+                cjtoPuertosAux.increasePortSetOccupancySize(paquete.getSize());
+                TSEPacketReceived evt = new TSEPacketReceived(nt, idEvt, this.obtenerCjtoPuertos().getNode().obtenerInstanteDeTiempo(), tipo, paquete.getSize());
                 nt.suscriptorSimulacion.capturarEventoSimulacion(evt);
-                if (this.obtenerCjtoPuertos().obtenerNodo().accederAEstadisticas() != null) {
-                    this.obtenerCjtoPuertos().obtenerNodo().accederAEstadisticas().crearEstadistica(paquete, TStats.ENTRADA);
+                if (this.obtenerCjtoPuertos().getNode().accederAEstadisticas() != null) {
+                    this.obtenerCjtoPuertos().getNode().accederAEstadisticas().crearEstadistica(paquete, TStats.ENTRADA);
                 }
             } else {
-                this.descartarPaquete(paquete);                
+                this.discardPacket(paquete);                
             }
         }
-        cerrojo.liberar();
-        cjtoPuertosAux.cerrojoCjtoPuertos.liberar();
+        monitor.unLock();
+        cjtoPuertosAux.portSetMonitor.unLock();
     }
 
     /**
@@ -115,11 +115,11 @@ public class TNormalPort extends TPort {
      * @since 1.0
      */    
     @Override
-    public void reencolar(TPDU paquete) {
-        TNormalNodePorts cjtoPuertosAux = (TNormalNodePorts) cjtoPuertos;
-        cjtoPuertosAux.cerrojoCjtoPuertos.bloquear();
-        cerrojo.bloquear();
-        TTopologyNode nt = this.cjtoPuertos.obtenerNodo();
+    public void reEnqueuePacket(TPDU paquete) {
+        TNormalNodePorts cjtoPuertosAux = (TNormalNodePorts) portsSet;
+        cjtoPuertosAux.portSetMonitor.lock();
+        monitor.lock();
+        TTopologyNode nt = this.portsSet.getNode();
         long idEvt = 0;
         try {
             idEvt = nt.gILargo.obtenerNuevo();
@@ -129,17 +129,17 @@ public class TNormalPort extends TPort {
         int tipo = paquete.obtenerSubTipo();
         if (this.bufferIlimitado) {
             buffer.addLast(paquete);
-            cjtoPuertosAux.incrementarTamanioOcupadoCjtoPuertos(paquete.obtenerTamanio());
+            cjtoPuertosAux.increasePortSetOccupancySize(paquete.getSize());
         } else {
-            if ((cjtoPuertosAux.obtenerTamanioOcupadoCjtoPuertos() + paquete.obtenerTamanio()) <= (cjtoPuertosAux.obtenerTamanioBuffer()*1024*1024)) {
+            if ((cjtoPuertosAux.getPortSetOccupancySize() + paquete.getSize()) <= (cjtoPuertosAux.getBufferSizeInMB()*1024*1024)) {
                 buffer.addLast(paquete);
-                cjtoPuertosAux.incrementarTamanioOcupadoCjtoPuertos(paquete.obtenerTamanio());
+                cjtoPuertosAux.increasePortSetOccupancySize(paquete.getSize());
             } else {
-                this.descartarPaquete(paquete);                
+                this.discardPacket(paquete);                
             }
         }
-        cerrojo.liberar();
-        cjtoPuertosAux.cerrojoCjtoPuertos.liberar();
+        monitor.unLock();
+        cjtoPuertosAux.portSetMonitor.unLock();
     }
     
     /**
@@ -150,32 +150,32 @@ public class TNormalPort extends TPort {
      * @since 1.0
      */    
     @Override
-    public TPDU obtenerPaquete() {
-        TNormalNodePorts cjtoPuertosAux = (TNormalNodePorts) cjtoPuertos;
-        cjtoPuertosAux.cerrojoCjtoPuertos.bloquear();
-        cerrojo.bloquear();
+    public TPDU getPacket() {
+        TNormalNodePorts cjtoPuertosAux = (TNormalNodePorts) portsSet;
+        cjtoPuertosAux.portSetMonitor.lock();
+        monitor.lock();
         paqueteDevuelto = (TPDU) buffer.removeFirst();
         if (!this.bufferIlimitado) {
-                cjtoPuertosAux.decrementarTamanioOcupadoCjtoPuertos(paqueteDevuelto.obtenerTamanio());
+                cjtoPuertosAux.decreasePortSetOccupancySize(paqueteDevuelto.getSize());
         }
-        cerrojo.liberar();
-        cjtoPuertosAux.cerrojoCjtoPuertos.liberar();
+        monitor.unLock();
+        cjtoPuertosAux.portSetMonitor.unLock();
         return paqueteDevuelto;
     }
     
     /**
-     * Este m�todo calcula si podemos conmutar el siguiente paquete del nodo, dado el
-     * n�mero de octetos que como mucho podemos conmutar en un momento dado.
+     * Este m�todo calcula si podemos conmutar el siguiente paquete del parentNode, dado el
+ n�mero de octetos que como mucho podemos conmutar en un momento dado.
      * @param octetos El n�mero de octetos que podemos conmutar.
      * @return TRUE, si podemos conmutar el siguiente paquete. FALSE, en caso contrario.
      * @since 1.0
      */    
     @Override
-    public boolean puedoConmutarPaquete(int octetos) {
-        cerrojo.bloquear();
+    public boolean canSwitchPacket(int octetos) {
+        monitor.lock();
         paqueteDevuelto = (TPDU) buffer.getFirst();
-        cerrojo.liberar();
-        if (paqueteDevuelto.obtenerTamanio() <= octetos) {
+        monitor.unLock();
+        if (paqueteDevuelto.getSize() <= octetos) {
             return true;
         }
         return false;
@@ -187,12 +187,12 @@ public class TNormalPort extends TPort {
      * @since 1.0
      */    
     @Override
-    public long obtenerCongestion() {
+    public long getCongestionLevel() {
         if (this.bufferIlimitado) {
             return 0;
         } 
-        TNormalNodePorts tpn = (TNormalNodePorts) cjtoPuertos;
-        long cong = (tpn.obtenerTamanioOcupadoCjtoPuertos()*100) / (tpn.obtenerTamanioBuffer()*1024*1024);
+        TNormalNodePorts tpn = (TNormalNodePorts) portsSet;
+        long cong = (tpn.getPortSetOccupancySize()*100) / (tpn.getBufferSizeInMB()*1024*1024);
         return cong;
     }
 
@@ -202,7 +202,7 @@ public class TNormalPort extends TPort {
      * @since 1.0
      */    
     @Override
-    public boolean hayPaqueteEsperando() {
+    public boolean thereIsAPacketWaiting() {
         if (buffer.size() > 0)
             return true;
         return false;
@@ -215,22 +215,22 @@ public class TNormalPort extends TPort {
      * @since 1.0
      */    
     @Override
-    public long obtenerOcupacion() {
+    public long getOccupancy() {
         if (this.bufferIlimitado) {
-            this.cerrojo.bloquear();
+            this.monitor.lock();
             int ocup=0;
             TPDU paquete = null;
             Iterator it = this.buffer.iterator();
             while (it.hasNext()) {
                 paquete = (TPDU) it.next();
                 if (paquete != null)
-                    ocup += paquete.obtenerTamanio();
+                    ocup += paquete.getSize();
             }
-            this.cerrojo.liberar();
+            this.monitor.unLock();
             return ocup;
         }
-        TNormalNodePorts tpn = (TNormalNodePorts) cjtoPuertos;
-        return tpn.obtenerTamanioOcupadoCjtoPuertos();
+        TNormalNodePorts tpn = (TNormalNodePorts) portsSet;
+        return tpn.getPortSetOccupancySize();
     }
 
     /**
@@ -239,7 +239,7 @@ public class TNormalPort extends TPort {
      * @since 1.0
      */    
     @Override
-    public int obtenerNumeroPaquetes() {
+    public int getNumberOfPackets() {
         return buffer.size();
     }
 
@@ -250,13 +250,13 @@ public class TNormalPort extends TPort {
      */    
     @Override
     public void reset() {
-        this.cerrojo.bloquear();
+        this.monitor.lock();
         Iterator it = this.buffer.iterator();
         while (it.hasNext()) {
             it.next();
             it.remove();
         }
-        this.cerrojo.liberar();
+        this.monitor.unLock();
     }
     
     private LinkedList buffer;
