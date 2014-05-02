@@ -29,13 +29,40 @@ Please, refer always to the project home page at:
 #HOW TO CONTRIBUTE
 
 
-If you want to contribute, don't hesitate to do it. You only have to take into account the
-following guidelines:
+OpenSimMPLS is opensource software. We encourage you to modify it as much as 
+possible; but We would like you to send this modifications back and, hence, 
+became an OpenSimMPLS contributor. In this way, all the people will benefit from
+them as you are doing downloading and using OpenSimMPLS now.
 
- - Your contribution have to be free under GPL3.0 (or any latest version) or compatible license.
- - Preferably, you should clone OpenSimMPLS repository, make your changes as preferred and do a pull request to upstream repository.
- - If this is not easy for you, send your contribution to <opensimmpls@manolodominguez.com> and we'll do our best to integrate it into the project. 
- - Describe and document well the sourcecode so it will be easy to integrate and understand by us and by the rest of the world.
- - Contributions not necessarily have to be source code. They could be art, document, scenarios, use cases and so on.
+If you want to contribute to OpenSimMPLS project, follow these instructions:
+
+ - Log in to your GitHub account.
+ - Look for OpenSimMPLS project.
+ - Create a fork of OpenSimMPL in your own GitHub repository.
+ - Clone your OpenSimMPLS repository to your PC or laptop.
+ - Create a branch in your local cloned GIT repository. We recommend to name 
+   this branch as "opensimmpls-yourgithubaccount" or something similar.
+ - Do all modifications on this branch, file additions or deletions, 
+   modifications, commits...
+ - Push your modifications to your remote github OpenSimMPLS repository.
+ - Go again to yout GitHub account, choose your OpenSimMPLS repository and then
+   your "opensimmpls-yourgithubaccount" branch (since the previous step, this 
+   branch should be there) and click on the green button at the left. This will
+   guide you to make a pull request (send your modifications on your own
+   OpenSimMPLS repository to OpenSimMPLS main repository from where you did your
+   fork at the beginning).
+ - That's all we will have your contribution and will try to merge it into the
+   master branch of OpenSimMPLS. Please, comment your contribution as much as
+   possible; we should undertand what you are contributing.
+
+This is a very easy process. However, if it is very difficult to you, simply 
+send us all your modifications (scenario, sources, documentation...) to:
+
+opensimmpls@manolodominguez.com
+
+And we will do our best to understand them and, somewhat, include your 
+contribution into the project.
+
+REMEMBER!!!! all your contributions have to be compatible with GPL3+ license.
 
 #### Thanks for contributing.
