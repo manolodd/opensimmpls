@@ -25,7 +25,7 @@ import simMPLS.scenario.TReceiverNode;
 import simMPLS.scenario.TLSRANode;
 import simMPLS.scenario.TLSRNode;
 import simMPLS.scenario.TLERANode;
-import simMPLS.scenario.TTopologyNode;
+import simMPLS.scenario.TNode;
 import java.util.*;
 import javax.swing.*;
 
@@ -124,10 +124,10 @@ public class TTimer implements Runnable {
         }
         else {
             Iterator itn = nodosSuscriptores.iterator();
-            TTopologyNode n;
-            TTopologyNode parametro = (TTopologyNode) suscriptor;
+            TNode n;
+            TNode parametro = (TNode) suscriptor;
             while (itn.hasNext()) {
-                n = (TTopologyNode) itn.next();
+                n = (TNode) itn.next();
                 if (n.obtenerIdentificador() == parametro.obtenerIdentificador()) {
                     itn.remove();
                 }
@@ -150,9 +150,9 @@ public class TTimer implements Runnable {
             }
         }
         Iterator itn = nodosSuscriptores.iterator();
-        TTopologyNode n;
+        TNode n;
         while (itn.hasNext()) {
-            n = (TTopologyNode) itn.next();
+            n = (TNode) itn.next();
             if (n.obtenerPurgar()) {
                 itn.remove();
             }
@@ -190,40 +190,40 @@ public class TTimer implements Runnable {
     private void lanzarEventoReloj() {
         Iterator ite = enlacesSuscriptores.iterator();
         Iterator itn = nodosSuscriptores.iterator();
-        TTopologyNode nodoAux;
+        TNode nodoAux;
         TTopologyLink enlaceAux;
         TTimestamp i = new TTimestamp(tAnterior.obtenerMilisegundo(), tAnterior.obtenerNanosegundo());
         TTimestamp s = new TTimestamp(tActual.obtenerMilisegundo(), tActual.obtenerNanosegundo());
         while (itn.hasNext()) {
-            nodoAux = (TTopologyNode) itn.next();
+            nodoAux = (TNode) itn.next();
             switch (nodoAux.obtenerTipo()) {
-                case TTopologyNode.EMISOR: {
+                case TNode.EMISOR: {
                     nodoAux = (TSenderNode) nodoAux;
                     break;
                 }
-                case TTopologyNode.LER: {
+                case TNode.LER: {
                     nodoAux = (TLERNode) nodoAux;
                     break;
                 }
-                case TTopologyNode.LERA: {
+                case TNode.LERA: {
                     nodoAux = (TLERANode) nodoAux;
                     break;
                 }
-                case TTopologyNode.LSR: {
+                case TNode.LSR: {
                     nodoAux = (TLSRNode) nodoAux;
                     break;
                 }
-                case TTopologyNode.LSRA: {
+                case TNode.LSRA: {
                     nodoAux = (TLSRANode) nodoAux;
                     break;
                 }
-                case TTopologyNode.RECEPTOR: {
+                case TNode.RECEPTOR: {
                     nodoAux = (TReceiverNode) nodoAux;
                     break;
                 }
             }
             try {
-                TTimerEvent evtReloj = new TTimerEvent(this, generadorIdentificadorLargo.obtenerNuevo(), i, s);
+                TTimerEvent evtReloj = new TTimerEvent(this, generadorIdentificadorLargo.getNextID(), i, s);
                 nodoAux.capturarEventoReloj(evtReloj);
             } catch (EDesbordeDelIdentificador e) {
                 e.printStackTrace(); 
@@ -242,7 +242,7 @@ public class TTimer implements Runnable {
                 }
             }
             try {
-                enlaceAux.capturarEventoReloj(new TTimerEvent(this, generadorIdentificadorLargo.obtenerNuevo(), i, s));
+                enlaceAux.capturarEventoReloj(new TTimerEvent(this, generadorIdentificadorLargo.getNextID(), i, s));
             } catch (EDesbordeDelIdentificador e) {
                 e.printStackTrace(); 
             }
@@ -261,7 +261,7 @@ public class TTimer implements Runnable {
             p = (int) Math.round((actual*100) / total);
         try {
             if (suscriptorProgreso != null) {
-                suscriptorProgreso.capturarEventoProgreso(new TProgressEvent(this, generadorIdentificadorLargo.obtenerNuevo(), p));
+                suscriptorProgreso.capturarEventoProgreso(new TProgressEvent(this, generadorIdentificadorLargo.getNextID(), p));
             }
         } catch (EDesbordeDelIdentificador e) {
             e.printStackTrace(); 
@@ -396,10 +396,10 @@ public class TTimer implements Runnable {
     private synchronized void esperarSuscriptoresReloj() {
         Iterator itn = nodosSuscriptores.iterator();
         Iterator ite = enlacesSuscriptores.iterator();
-        TTopologyNode nodo;
+        TNode nodo;
         TTopologyLink enlace;
         while (itn.hasNext()) {
-            nodo = (TTopologyNode) itn.next();
+            nodo = (TNode) itn.next();
             nodo.esperarFinalizacion();
         }
         while (ite.hasNext()) {

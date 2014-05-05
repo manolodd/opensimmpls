@@ -43,7 +43,7 @@ public abstract class TPDU implements Comparable {
      * @return La cabecera IPv4 del paquete, para poder utilizar sus m�todos de forma directa.
      * @since 1.0
      */
-    public TCabeceraIPv4 obtenerCabecera() {
+    public TCabeceraIPv4 getHeader() {
         return cabecera;
     }
     
@@ -68,7 +68,7 @@ public abstract class TPDU implements Comparable {
         if (this.obtenerIdentificador() > pdu.obtenerIdentificador()) {
             return 1;
         } else if (this.obtenerIdentificador() == pdu.obtenerIdentificador()) {
-            return (this.obtenerCabecera().obtenerIPOrigen().compareTo(pdu.obtenerCabecera().obtenerIPOrigen()));
+            return (this.getHeader().obtenerIPOrigen().compareTo(pdu.getHeader().obtenerIPOrigen()));
         } else {
             return -1;
         }
@@ -88,14 +88,14 @@ public abstract class TPDU implements Comparable {
      * las constantes definidas en esta clase.
      * @since 1.0
      */
-    public abstract int obtenerTipo();
+    public abstract int getType();
     /**
      * M�todo abstracto que permitir�, cuando sea definido, obtener las distintas
      * subclases de un paquete, si existen subclases del mismo.
      * @return El subtipo del paquete.
      * @since 1.0
      */
-    public abstract int obtenerSubTipo();
+    public abstract int getSubtype();
     /**
      * M�todo abstracto que permitir�, cuando sea definido, establecer las distintas
      * subclases de un paquete, si existen subclases del mismo.
@@ -149,49 +149,49 @@ public abstract class TPDU implements Comparable {
      * @since 1.0
      */
     
-    public static final int EXP_NIVEL0_SINLSP = 0;
+    public static final int EXP_LEVEL0_WITHOUT_BACKUP_LSP = 0;
     /**
      * Esta constante indica que nivel de garant�a de servicio 1 y no creaci�n de LSP
      * de backup.
      * @since 1.0
      */
-    public static final int EXP_NIVEL1_SINLSP = 1;
+    public static final int EXP_LEVEL1_WITHOUT_BACKUP_LSP = 1;
     /**
      * Esta constante indica que nivel de garant�a de servicio 2 y no creaci�n de LSP
      * de backup.
      * @since 1.0
      */
-    public static final int EXP_NIVEL2_SINLSP = 2;
+    public static final int EXP_LEVEL2_WITHOUT_BACKUP_LSP = 2;
     /**
      * Esta constante indica que nivel de garant�a de servicio 3 y no creaci�n de LSP
      * de backup.
      * @since 1.0
      */
-    public static final int EXP_NIVEL3_SINLSP = 3;
+    public static final int EXP_LEVEL3_WITHOUT_BACKUP_LSP = 3;
     /**
      * Esta constante indica que nivel de garant�a de servicio 0 y creaci�n de LSP
      * de backup.
      * @since 1.0
      */
-    public static final int EXP_NIVEL0_CONLSP = 4;
+    public static final int EXP_LEVEL0_WITH_BACKUP_LSP = 4;
     /**
      * Esta constante indica que nivel de garant�a de servicio 1 y creaci�n de LSP
      * de backup.
      * @since 1.0
      */
-    public static final int EXP_NIVEL1_CONLSP = 5;
+    public static final int EXP_LEVEL1_WITH_BACKUP_LSP = 5;
     /**
      * Esta constante indica que nivel de garant�a de servicio 2 y creaci�n de LSP
      * de backup.
      * @since 1.0
      */
-    public static final int EXP_NIVEL2_CONLSP = 6;
+    public static final int EXP_LEVEL2_WITH_BACKUP_LSP = 6;
     /**
      * Esta constante indica que nivel de garant�a de servicio 3 y creaci�n de LSP
      * de backup.
      * @since 1.0
      */
-    public static final int EXP_NIVEL3_CONLSP = 7;
+    public static final int EXP_LEVEL3_WITH_BACKUP_LSP = 7;
     
     /**
      * En Open SimMPLS 1.0 todos los paquetes transportan son IPv4. Por tanto todos

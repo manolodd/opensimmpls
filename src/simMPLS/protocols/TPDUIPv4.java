@@ -27,7 +27,7 @@ public class TPDUIPv4 extends TPDU {
      * @since 1.0
      */
     public int getSize() {
-        return (super.obtenerCabecera().obtenerTamanio() + datos.obtenerTamanio());
+        return (super.getHeader().obtenerTamanio() + datos.obtenerTamanio());
     }
     
     /** Este m�todo devuelve la constante IPV4, indicando que se trata de un paquete
@@ -35,7 +35,7 @@ public class TPDUIPv4 extends TPDU {
      * @return Devuelve la constante IPV4, indicando que se trata de un paquete IPv4.
      * @since 1.0
      */
-    public int obtenerTipo() {
+    public int getType() {
         return super.IPV4;
     }
     
@@ -62,8 +62,8 @@ public class TPDUIPv4 extends TPDU {
      * @return La cabecera IPv4 del paquete.
      * @since 1.0
      */
-    public TCabeceraIPv4 obtenerCabecera() {
-        return super.obtenerCabecera();
+    public TCabeceraIPv4 getHeader() {
+        return super.getHeader();
     }
     
     /**
@@ -72,7 +72,7 @@ public class TPDUIPv4 extends TPDU {
      * @return El subtipo del paquete IPv4. Una de las cosntantes definidas en la clase TPDU.
      * @since 1.0
      */
-    public int obtenerSubTipo() {
+    public int getSubtype() {
         return this.subtipo;
     }
     

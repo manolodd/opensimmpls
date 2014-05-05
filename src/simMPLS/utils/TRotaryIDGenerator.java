@@ -33,7 +33,7 @@ public class TRotaryIDGenerator {
      * @return Un identificador nuevo y �nico (en este ciclo del generador).
      * @since 1.0
      */
-    synchronized public int obtenerNuevo() {
+    synchronized public int getNextID() {
         if (identificador > 2147483646) {
             identificador = 0;
         } else {

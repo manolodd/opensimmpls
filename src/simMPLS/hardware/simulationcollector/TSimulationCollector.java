@@ -51,7 +51,7 @@ public class TSimulationCollector implements ISimulationEventListener {
      * @param evt El evento de simulaci�n emitido por el objeto al que estamos suscritos.
      * @since 1.0
      */    
-    public synchronized void capturarEventoSimulacion(TSimulationEvent evt) {
+    public synchronized void captureSimulationEvents(TSimulationEvent evt) {
         switch (evt.obtenerSubtipo()) {
             case TSimulationEvent.PAQUETE_GENERADO: {
                 panel.ponerEvento(evt);

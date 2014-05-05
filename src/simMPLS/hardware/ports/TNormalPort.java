@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import simMPLS.scenario.TSEPacketReceived;
 import simMPLS.scenario.TStats;
-import simMPLS.scenario.TTopologyNode;
+import simMPLS.scenario.TNode;
 import simMPLS.protocols.TPDU;
 
 
@@ -61,7 +61,7 @@ public class TNormalPort extends TPort {
      */    
     @Override
     public void discardPacket(TPDU paquete) {
-        this.obtenerCjtoPuertos().getNode().descartarPaquete(paquete);
+        this.getPortSet().getNode().discardPacket(paquete);
     }
     
     /**
@@ -70,34 +70,34 @@ public class TNormalPort extends TPort {
      * @since 1.0
      */    
     @Override
-    public void ponerPaquete(TPDU paquete) {
-        TNormalNodePorts cjtoPuertosAux = (TNormalNodePorts) portsSet;
+    public void addPacket(TPDU paquete) {
+        TNormalNodePorts cjtoPuertosAux = (TNormalNodePorts) parentPortSet;
         cjtoPuertosAux.portSetMonitor.lock();
         monitor.lock();
-        TTopologyNode nt = this.portsSet.getNode();
+        TNode nt = this.parentPortSet.getNode();
         long idEvt = 0;
         try {
-            idEvt = nt.gILargo.obtenerNuevo();
+            idEvt = nt.gILargo.getNextID();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        int tipo = paquete.obtenerSubTipo();
+        int tipo = paquete.getSubtype();
         if (this.bufferIlimitado) {
             buffer.addLast(paquete);
-            cjtoPuertosAux.increasePortSetOccupancySize(paquete.getSize());
-            TSEPacketReceived evt = new TSEPacketReceived(nt, idEvt, this.obtenerCjtoPuertos().getNode().obtenerInstanteDeTiempo(), tipo, paquete.getSize());
-            nt.suscriptorSimulacion.capturarEventoSimulacion(evt);
-            if (this.obtenerCjtoPuertos().getNode().accederAEstadisticas() != null) {
-                this.obtenerCjtoPuertos().getNode().accederAEstadisticas().crearEstadistica(paquete, TStats.ENTRADA);
+            cjtoPuertosAux.increasePortSetOccupancy(paquete.getSize());
+            TSEPacketReceived evt = new TSEPacketReceived(nt, idEvt, this.getPortSet().getNode().getAvailableTime(), tipo, paquete.getSize());
+            nt.simulationEventsListener.captureSimulationEvents(evt);
+            if (this.getPortSet().getNode().getStats() != null) {
+                this.getPortSet().getNode().getStats().addStatsEntry(paquete, TStats.ENTRADA);
             }
         } else {
-            if ((cjtoPuertosAux.getPortSetOccupancySize() + paquete.getSize()) <= (cjtoPuertosAux.getBufferSizeInMB()*1024*1024)) {
+            if ((cjtoPuertosAux.getPortSetOccupancy() + paquete.getSize()) <= (cjtoPuertosAux.getBufferSizeInMB()*1024*1024)) {
                 buffer.addLast(paquete);
-                cjtoPuertosAux.increasePortSetOccupancySize(paquete.getSize());
-                TSEPacketReceived evt = new TSEPacketReceived(nt, idEvt, this.obtenerCjtoPuertos().getNode().obtenerInstanteDeTiempo(), tipo, paquete.getSize());
-                nt.suscriptorSimulacion.capturarEventoSimulacion(evt);
-                if (this.obtenerCjtoPuertos().getNode().accederAEstadisticas() != null) {
-                    this.obtenerCjtoPuertos().getNode().accederAEstadisticas().crearEstadistica(paquete, TStats.ENTRADA);
+                cjtoPuertosAux.increasePortSetOccupancy(paquete.getSize());
+                TSEPacketReceived evt = new TSEPacketReceived(nt, idEvt, this.getPortSet().getNode().getAvailableTime(), tipo, paquete.getSize());
+                nt.simulationEventsListener.captureSimulationEvents(evt);
+                if (this.getPortSet().getNode().getStats() != null) {
+                    this.getPortSet().getNode().getStats().addStatsEntry(paquete, TStats.ENTRADA);
                 }
             } else {
                 this.discardPacket(paquete);                
@@ -109,31 +109,31 @@ public class TNormalPort extends TPort {
 
     /**
      * Este m�todo inserta un paquete en el buffer de recepci�n del puerto. Es igual
-     * que el m�todo ponerPaquete(), salvo que no genera eventos y lo hace
-     * silenciosamente.
+ que el m�todo addPacket(), salvo que no genera eventos y lo hace
+ silenciosamente.
      * @param paquete El paquete que queremos que reciba el puerto.
      * @since 1.0
      */    
     @Override
     public void reEnqueuePacket(TPDU paquete) {
-        TNormalNodePorts cjtoPuertosAux = (TNormalNodePorts) portsSet;
+        TNormalNodePorts cjtoPuertosAux = (TNormalNodePorts) parentPortSet;
         cjtoPuertosAux.portSetMonitor.lock();
         monitor.lock();
-        TTopologyNode nt = this.portsSet.getNode();
+        TNode nt = this.parentPortSet.getNode();
         long idEvt = 0;
         try {
-            idEvt = nt.gILargo.obtenerNuevo();
+            idEvt = nt.gILargo.getNextID();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        int tipo = paquete.obtenerSubTipo();
+        int tipo = paquete.getSubtype();
         if (this.bufferIlimitado) {
             buffer.addLast(paquete);
-            cjtoPuertosAux.increasePortSetOccupancySize(paquete.getSize());
+            cjtoPuertosAux.increasePortSetOccupancy(paquete.getSize());
         } else {
-            if ((cjtoPuertosAux.getPortSetOccupancySize() + paquete.getSize()) <= (cjtoPuertosAux.getBufferSizeInMB()*1024*1024)) {
+            if ((cjtoPuertosAux.getPortSetOccupancy() + paquete.getSize()) <= (cjtoPuertosAux.getBufferSizeInMB()*1024*1024)) {
                 buffer.addLast(paquete);
-                cjtoPuertosAux.increasePortSetOccupancySize(paquete.getSize());
+                cjtoPuertosAux.increasePortSetOccupancy(paquete.getSize());
             } else {
                 this.discardPacket(paquete);                
             }
@@ -151,7 +151,7 @@ public class TNormalPort extends TPort {
      */    
     @Override
     public TPDU getPacket() {
-        TNormalNodePorts cjtoPuertosAux = (TNormalNodePorts) portsSet;
+        TNormalNodePorts cjtoPuertosAux = (TNormalNodePorts) parentPortSet;
         cjtoPuertosAux.portSetMonitor.lock();
         monitor.lock();
         paqueteDevuelto = (TPDU) buffer.removeFirst();
@@ -191,8 +191,8 @@ public class TNormalPort extends TPort {
         if (this.bufferIlimitado) {
             return 0;
         } 
-        TNormalNodePorts tpn = (TNormalNodePorts) portsSet;
-        long cong = (tpn.getPortSetOccupancySize()*100) / (tpn.getBufferSizeInMB()*1024*1024);
+        TNormalNodePorts tpn = (TNormalNodePorts) parentPortSet;
+        long cong = (tpn.getPortSetOccupancy()*100) / (tpn.getBufferSizeInMB()*1024*1024);
         return cong;
     }
 
@@ -229,8 +229,8 @@ public class TNormalPort extends TPort {
             this.monitor.unLock();
             return ocup;
         }
-        TNormalNodePorts tpn = (TNormalNodePorts) portsSet;
-        return tpn.getPortSetOccupancySize();
+        TNormalNodePorts tpn = (TNormalNodePorts) parentPortSet;
+        return tpn.getPortSetOccupancy();
     }
 
     /**

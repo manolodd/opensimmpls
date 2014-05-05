@@ -26,5 +26,5 @@ public interface ISimulationEventListener extends EventListener {
      * suscrito.
      * @since 1.0
      */    
-    public void capturarEventoSimulacion(TSimulationEvent evt);
+    public void captureSimulationEvents(TSimulationEvent evt);
 }

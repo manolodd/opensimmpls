@@ -35,7 +35,7 @@ public abstract class TPort {
     public TPort(TNodePorts cpn, int idp) {
         identifier = 0;
         link = null;
-        portsSet = cpn;
+        parentPortSet = cpn;
         monitor = new TMonitor();
         portID = idp;
     }
@@ -47,7 +47,7 @@ public abstract class TPort {
      * @since 1.0
      */    
     public void ponerCjtoPuertos(TNodePorts cpn) {
-        portsSet = cpn;
+        parentPortSet = cpn;
     }
 
     /**
@@ -55,8 +55,8 @@ public abstract class TPort {
      * @return El conjunto de puertos al que pertenece este nodo.
      * @since 1.0
      */    
-    public TNodePorts obtenerCjtoPuertos() {
-        return portsSet;
+    public TNodePorts getPortSet() {
+        return parentPortSet;
     }
 
     /**
@@ -130,14 +130,14 @@ public abstract class TPort {
             if (!link.obtenerEnlaceCaido()) {
                 if (link.obtenerTipo() == TTopologyLink.INTERNO) {
                     link.ponerPaquete(p, destino);
-                    if (this.obtenerCjtoPuertos().getNode().accederAEstadisticas() != null) {
-                        this.obtenerCjtoPuertos().getNode().accederAEstadisticas().crearEstadistica(p, TStats.SALIDA);
+                    if (this.getPortSet().getNode().getStats() != null) {
+                        this.getPortSet().getNode().getStats().addStatsEntry(p, TStats.SALIDA);
                     }
                 } else {
-                    if ((p.obtenerTipo() != TPDU.GPSRP) && (p.obtenerTipo() != TPDU.TLDP)) {
+                    if ((p.getType() != TPDU.GPSRP) && (p.getType() != TPDU.TLDP)) {
                         link.ponerPaquete(p, destino);
-                        if (this.obtenerCjtoPuertos().getNode().accederAEstadisticas() != null) {
-                            this.obtenerCjtoPuertos().getNode().accederAEstadisticas().crearEstadistica(p, TStats.SALIDA);
+                        if (this.getPortSet().getNode().getStats() != null) {
+                            this.getPortSet().getNode().getStats().addStatsEntry(p, TStats.SALIDA);
                         }
                     }
                 }
@@ -158,11 +158,11 @@ public abstract class TPort {
      * @param paquete El paquete que queremos que sea recivido en el puerto.
      * @since 1.0
      */    
-    public abstract void ponerPaquete(TPDU paquete);
+    public abstract void addPacket(TPDU paquete);
     /**
      * Este m�todo inserta un paquete en el buffer de recepci�n del puerto. Es igual
-     * que el m�todo ponerPaquete(), salvo que no genera eventos y lo hace
-     * silenciosamente.
+ que el m�todo addPacket(), salvo que no genera eventos y lo hace
+ silenciosamente.
      * @param paquete El paquete que queremos que reciba el puerto.
      * @since 1.0
      */    
@@ -240,7 +240,7 @@ public abstract class TPort {
      * al que pertenece este.
      * @since 1.0
      */    
-    protected TNodePorts portsSet;
+    protected TNodePorts parentPortSet;
     /**
      * Este atributo es un monitor que sirve para crear secciones cr�ticas, actuando de
      * barrera, para sincronizar el acceso concurrente a algunas zonas del objeto.

@@ -38,7 +38,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
         tipoElemento = tipo;
         eliminarDelReloj = false;
         hilo = null;
-        suscriptorSimulacion = null;
+        simulationEventsListener = null;
         this.gILargo = il;
         this.nsDisponibles = 0;
         alive = true;
@@ -53,7 +53,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @return El instante de tiempo en que se encuentra el elemento.
      * @since 1.0
      */    
-    public long obtenerInstanteDeTiempo() {
+    public long getAvailableTime() {
         return this.instanteDeTiempo;
     }
     
@@ -198,8 +198,8 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @since 1.0
      */    
     public void addListenerSimulacion(TSimulationCollector rs) throws ESimulationSingleSubscriber {
-        if ( this.suscriptorSimulacion == null) {
-            this.suscriptorSimulacion = rs;
+        if ( this.simulationEventsListener == null) {
+            this.simulationEventsListener = rs;
         } else {
             throw new ESimulationSingleSubscriber();        
         }
@@ -211,7 +211,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @since 1.0
      */    
     public void removeListenerSimulacion() {
-        this.suscriptorSimulacion = null;
+        this.simulationEventsListener = null;
     }
 
     /**
@@ -221,8 +221,8 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @since 1.0
      */    
     public void generarEventoSimulacion(TSimulationEvent evt) {
-        if (suscriptorSimulacion != null) {
-            suscriptorSimulacion.capturarEventoSimulacion(evt);
+        if (simulationEventsListener != null) {
+            simulationEventsListener.captureSimulationEvents(evt);
         }
     }
 
@@ -314,7 +314,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * los eventos de simulaci�n que el elemento vaya generando.
      * @since 1.0
      */    
-    public TSimulationCollector suscriptorSimulacion;
+    public TSimulationCollector simulationEventsListener;
     /**
      * Este atributo es el generador de identificadores que debe usar el elemento para
      * asignar un identificador unico a cada evento que genere.

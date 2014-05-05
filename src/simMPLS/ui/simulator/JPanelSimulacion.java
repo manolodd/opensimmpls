@@ -32,7 +32,7 @@ import simMPLS.scenario.TSEPacketSwitched;
 import simMPLS.scenario.TSimulationEvent;
 import simMPLS.scenario.TTopology;
 import simMPLS.scenario.TTopologyLink;
-import simMPLS.scenario.TTopologyNode;
+import simMPLS.scenario.TNode;
 import simMPLS.ui.utils.TDispensadorDeImagenes;
 import simMPLS.utils.TEventoSimMPLS;
 import simMPLS.utils.TMonitor;
@@ -216,13 +216,13 @@ public class JPanelSimulacion extends javax.swing.JPanel {
      */    
     private void dibujarDominio(Graphics2D g2Dbuf) {
         Iterator itd = topologia.obtenerIteradorNodos();
-        TTopologyNode nd;
+        TNode nd;
         Polygon pol = new Polygon();
         int vertices = 0;
         while (itd.hasNext()) {
-            nd = (TTopologyNode) itd.next();
-            if ((nd.obtenerTipo() == TTopologyNode.LER) ||
-               (nd.obtenerTipo() == TTopologyNode.LERA)) {
+            nd = (TNode) itd.next();
+            if ((nd.obtenerTipo() == TNode.LER) ||
+               (nd.obtenerTipo() == TNode.LERA)) {
                    pol.addPoint(nd.obtenerPosicion().x+24, nd.obtenerPosicion().y+24);
                    vertices ++;
                }
@@ -355,7 +355,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
         maxY = 10;
         Iterator ite = topologia.obtenerIteradorNodos();
         while (ite.hasNext()) {
-            TTopologyNode nodo = (TTopologyNode) ite.next();
+            TNode nodo = (TNode) ite.next();
             Point posicion = nodo.obtenerPosicion();
 
             if ((posicion.x+48) > maxX)
@@ -367,43 +367,43 @@ public class JPanelSimulacion extends javax.swing.JPanel {
             
             int tipo = nodo.obtenerTipo();
             switch (tipo) {
-                case TTopologyNode.EMISOR: {
-                    if (nodo.obtenerEstado() == TTopologyNode.DESELECCIONADO)
+                case TNode.EMISOR: {
+                    if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
-                case TTopologyNode.RECEPTOR: {
-                    if (nodo.obtenerEstado() == TTopologyNode.DESELECCIONADO)
+                case TNode.RECEPTOR: {
+                    if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.RECEPTOR), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.RECEPTOR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
-                case TTopologyNode.LER: {
-                    if (nodo.obtenerEstado() == TTopologyNode.DESELECCIONADO)
+                case TNode.LER: {
+                    if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LER), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LER_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
-                case TTopologyNode.LERA: {
-                    if (nodo.obtenerEstado() == TTopologyNode.DESELECCIONADO)
+                case TNode.LERA: {
+                    if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LERA), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LERA_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
-                case TTopologyNode.LSR: {
-                    if (nodo.obtenerEstado() == TTopologyNode.DESELECCIONADO)
+                case TNode.LSR: {
+                    if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSR), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
-                case TTopologyNode.LSRA: {
-                    if (nodo.obtenerEstado() == TTopologyNode.DESELECCIONADO)
+                case TNode.LSRA: {
+                    if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSRA), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSRA_MOVIENDOSE), posicion.x, posicion.y, null);
@@ -506,7 +506,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
                         }
                     } else if (evento.obtenerSubtipo() == TSimulationEvent.PAQUETE_DESCARTADO) {
                         TSEPacketDiscarded epd = (TSEPacketDiscarded) evento;
-                        TTopologyNode nt = (TTopologyNode) epd.obtenerFuente();
+                        TNode nt = (TNode) epd.obtenerFuente();
                         Point p = nt.obtenerPosicion();
                         if (epd.obtenerTipoPaquete() == TPDU.GPSRP) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_GOS_CAE), p.x, p.y+24, null);
@@ -525,27 +525,27 @@ public class JPanelSimulacion extends javax.swing.JPanel {
                         // Algo se har�.
                     } else if (evento.obtenerSubtipo() == TSimulationEvent.PAQUETE_GENERADO) {
                         TSEPacketGenerated epg = (TSEPacketGenerated) evento;
-                        TTopologyNode nt = (TTopologyNode) epg.obtenerFuente();
+                        TNode nt = (TNode) epg.obtenerFuente();
                         Point p = nt.obtenerPosicion();
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PAQUETE_GENERADO), p.x+8, p.y-16, null);
                     } else if (evento.obtenerSubtipo() == TSimulationEvent.PAQUETE_ENVIADO) {
                         TSEPacketSent epe = (TSEPacketSent) evento;
-                        TTopologyNode nt = (TTopologyNode) epe.obtenerFuente();
+                        TNode nt = (TNode) epe.obtenerFuente();
                         Point p = nt.obtenerPosicion();
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PAQUETE_EMITIDO), p.x+24, p.y-16, null);
                     } else if (evento.obtenerSubtipo() == TSimulationEvent.PAQUETE_RECIBIDO) {
                         TSEPacketReceived epr = (TSEPacketReceived) evento;
-                        TTopologyNode nt = (TTopologyNode) epr.obtenerFuente();
+                        TNode nt = (TNode) epr.obtenerFuente();
                         Point p = nt.obtenerPosicion();
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PAQUETE_RECIBIDO), p.x-8, p.y-16, null);
                     } else if (evento.obtenerSubtipo() == TSimulationEvent.PAQUETE_CONMUTADO) {
                         TSEPacketSwitched epr = (TSEPacketSwitched) evento;
-                        TTopologyNode nt = (TTopologyNode) epr.obtenerFuente();
+                        TNode nt = (TNode) epr.obtenerFuente();
                         Point p = nt.obtenerPosicion();
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PAQUETE_CONMUTADO), p.x+40, p.y-16, null);
                     } else if (evento.obtenerSubtipo() == TSimulationEvent.PAQUETE_ENCAMINADO) {
                         TSEPacketRouted epr = (TSEPacketRouted) evento;
-                        TTopologyNode nt = (TTopologyNode) epr.obtenerFuente();
+                        TNode nt = (TNode) epr.obtenerFuente();
                         Point p = nt.obtenerPosicion();
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PAQUETE_CONMUTADO), p.x+40, p.y-16, null);
                     }
@@ -573,54 +573,54 @@ public class JPanelSimulacion extends javax.swing.JPanel {
                 if (evento != null) {
                     if (evento.obtenerSubtipo() == TSimulationEvent.NODO_CONGESTIONADO) {
                         TSENodeCongested enc = (TSENodeCongested) evento;
-                        TTopologyNode nt = (TTopologyNode) enc.obtenerFuente();
+                        TNode nt = (TNode) enc.obtenerFuente();
                         Point p = nt.obtenerPosicion();
                         int tipo = nt.obtenerTipo();
                         long cong = enc.obtenerPorcentajeCongestion();
                         if ((cong >= 50) && (cong < 75)) {
-                            if (tipo == TTopologyNode.EMISOR) {
+                            if (tipo == TNode.EMISOR) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR_CONGESTIONADO_20), p.x, p.y, null);
-                            } else if (tipo == TTopologyNode.RECEPTOR) {
+                            } else if (tipo == TNode.RECEPTOR) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.RECEPTOR_CONGESTIONADO_20), p.x, p.y, null);
-                            } else if (tipo == TTopologyNode.LER) {
+                            } else if (tipo == TNode.LER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LER_CONGESTIONADO_20), p.x, p.y, null);
-                            } else if (tipo == TTopologyNode.LERA) {
+                            } else if (tipo == TNode.LERA) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LERA_CONGESTIONADO_20), p.x, p.y, null);
-                            } else if (tipo == TTopologyNode.LSR) {
+                            } else if (tipo == TNode.LSR) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSR_CONGESTIONADO_20), p.x, p.y, null);
-                            } else if (tipo == TTopologyNode.LSRA) {
+                            } else if (tipo == TNode.LSRA) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSRA_CONGESTIONADO_20), p.x, p.y, null);
                             }
                         } else if ((cong >= 75) && (cong < 95)) {
-                            if (tipo == TTopologyNode.EMISOR) {
+                            if (tipo == TNode.EMISOR) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR_CONGESTIONADO_60), p.x, p.y, null);
-                            } else if (tipo == TTopologyNode.RECEPTOR) {
+                            } else if (tipo == TNode.RECEPTOR) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.RECEPTOR_CONGESTIONADO_60), p.x, p.y, null);
-                            } else if (tipo == TTopologyNode.LER) {
+                            } else if (tipo == TNode.LER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LER_CONGESTIONADO_60), p.x, p.y, null);
-                            } else if (tipo == TTopologyNode.LERA) {
+                            } else if (tipo == TNode.LERA) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LERA_CONGESTIONADO_60), p.x, p.y, null);
-                            } else if (tipo == TTopologyNode.LSR) {
+                            } else if (tipo == TNode.LSR) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSR_CONGESTIONADO_60), p.x, p.y, null);
-                            } else if (tipo == TTopologyNode.LSRA) {
+                            } else if (tipo == TNode.LSRA) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSRA_CONGESTIONADO_60), p.x, p.y, null);
                             }
                         } else if (cong >= 95) {
-                            if (tipo == TTopologyNode.EMISOR) {
+                            if (tipo == TNode.EMISOR) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR_CONGESTIONADO), p.x, p.y, null);
-                            } else if (tipo == TTopologyNode.RECEPTOR) {
+                            } else if (tipo == TNode.RECEPTOR) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.RECEPTOR_CONGESTIONADO), p.x, p.y, null);
-                            } else if (tipo == TTopologyNode.LER) {
+                            } else if (tipo == TNode.LER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LER_CONGESTIONADO), p.x, p.y, null);
-                            } else if (tipo == TTopologyNode.LERA) {
+                            } else if (tipo == TNode.LERA) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LERA_CONGESTIONADO), p.x, p.y, null);
-                            } else if (tipo == TTopologyNode.LSR) {
+                            } else if (tipo == TNode.LSR) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSR_CONGESTIONADO), p.x, p.y, null);
-                            } else if (tipo == TTopologyNode.LSRA) {
+                            } else if (tipo == TNode.LSRA) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSRA_CONGESTIONADO), p.x, p.y, null);
                             }
                         }
-                        if (nt.obtenerPasosSinEmitir() > TTopologyNode.MAX_PASOS_SIN_EMITIR) {
+                        if (nt.obtenerPasosSinEmitir() > TNode.MAX_PASOS_SIN_EMITIR) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.TRABAJANDO), p.x, p.y, null);
                         }
                     }

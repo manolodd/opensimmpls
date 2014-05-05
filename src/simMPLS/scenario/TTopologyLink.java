@@ -285,7 +285,7 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
      * @return El nodo extremo izquierdo del enlace.
      * @since 1.0
      */
-    public TTopologyNode obtenerExtremo1() {
+    public TNode obtenerExtremo1() {
         return extremo1;
     }
     
@@ -295,7 +295,7 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
      * @param e1 Nodo que estar� conectado al extremo izquierdo del enalace.
      * @since 1.0
      */
-    public void ponerExtremo1(TTopologyNode e1) {
+    public void ponerExtremo1(TNode e1) {
         extremo1 = e1;
     }
     
@@ -304,7 +304,7 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
      * @return El nodo del extremo derecho del enlace.
      * @since 1.0
      */
-    public TTopologyNode obtenerExtremo2() {
+    public TNode obtenerExtremo2() {
         return extremo2;
     }
     
@@ -314,7 +314,7 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
      * @param e2 Nodo del extremo derecho del enlace.
      * @since 1.0
      */
-    public void ponerExtremo2(TTopologyNode e2) {
+    public void ponerExtremo2(TNode e2) {
         extremo2 = e2;
     }
     
@@ -382,7 +382,7 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
      * @return TRUE, si est� conectado. FALSE en caso contrario.
      * @since 1.0
      */
-    public boolean conectadoA(TTopologyNode extremo) {
+    public boolean conectadoA(TNode extremo) {
         if (extremo1.obtenerIdentificador() == extremo.obtenerIdentificador())
             return true;
         if (extremo2.obtenerIdentificador() == extremo.obtenerIdentificador())
@@ -480,7 +480,7 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
      * @return END_NODE_1, si el nodo es el extremo 1. END_NODE_2 si es el extremo 2.
      * @since 1.0
      */
-    public int queExtremoSoyYo(TTopologyNode n) {
+    public int queExtremoSoyYo(TNode n) {
         if (n.obtenerIdentificador() == extremo1.obtenerIdentificador())
             return this.END_NODE_1;
         return this.END_NODE_2;
@@ -493,7 +493,7 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
      * @return END_NODE_1 si el paquete debe ir al extremo 1. EXTREMO 2 si debe ir al extremo 2.
      * @since 1.0
      */
-    public int getTargetNodeIDOfTrafficSentBy(TTopologyNode n) {
+    public int getTargetNodeIDOfTrafficSentBy(TNode n) {
         if (n.obtenerIdentificador() == extremo1.obtenerIdentificador())
             return this.END_NODE_2;
         return this.END_NODE_1;
@@ -594,8 +594,8 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
     public static final int END_NODE_2 = 2;
     
     private int id;
-    private TTopologyNode extremo1;
-    private TTopologyNode extremo2;
+    private TNode extremo1;
+    private TNode extremo2;
     private int puertoExtremo1;
     private int puertoExtremo2;
     private String nombre;

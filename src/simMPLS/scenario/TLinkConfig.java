@@ -279,14 +279,14 @@ public class TLinkConfig {
      * @param topo Topolog�a donde se encuentra el enlace.
      */    
     public void calcularTipo(TTopology topo) {
-        TTopologyNode e1, e2;
+        TNode e1, e2;
         e1 = topo.obtenerPrimerNodoLlamado(nombreExtremo1);
         e2 = topo.obtenerPrimerNodoLlamado(nombreExtremo2);
         if ((e1 != null) && (e2 != null)) {
             int tipo1 = e1.obtenerTipo();
             int tipo2 = e2.obtenerTipo();
-            if ((tipo1 == TTopologyNode.EMISOR) || (tipo1 == TTopologyNode.RECEPTOR) ||
-                (tipo2 == TTopologyNode.EMISOR) || (tipo2 == TTopologyNode.RECEPTOR))
+            if ((tipo1 == TNode.EMISOR) || (tipo1 == TNode.RECEPTOR) ||
+                (tipo2 == TNode.EMISOR) || (tipo2 == TNode.RECEPTOR))
                 this.ponerTipo(TTopologyLink.EXTERNO);
             else
                 this.ponerTipo(TTopologyLink.INTERNO);

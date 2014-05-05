@@ -101,15 +101,15 @@ public class TGPSRPRequestsMatrix {
      */
     public TGPSRPRequestEntry addEntry(TPDUMPLS mplsPacket, int incomingPort) {
         this.monitor.lock();
-        TGPSRPRequestEntry gpsrpRequestEntry = new TGPSRPRequestEntry(this.idGenerator.obtenerNuevo());
+        TGPSRPRequestEntry gpsrpRequestEntry = new TGPSRPRequestEntry(this.idGenerator.getNextID());
         gpsrpRequestEntry.setOutgoingPort(incomingPort);
-        gpsrpRequestEntry.setFlowID(mplsPacket.obtenerCabecera().obtenerIPOrigen().hashCode());
-        gpsrpRequestEntry.setPacketID(mplsPacket.obtenerCabecera().obtenerClavePrimaria());
-        int numberOfCrossedNodes = mplsPacket.obtenerCabecera().obtenerCampoOpciones().obtenerNumeroDeNodosActivosAtravesados();
+        gpsrpRequestEntry.setFlowID(mplsPacket.getHeader().obtenerIPOrigen().hashCode());
+        gpsrpRequestEntry.setPacketID(mplsPacket.getHeader().obtenerClavePrimaria());
+        int numberOfCrossedNodes = mplsPacket.getHeader().getOptionsField().obtenerNumeroDeNodosActivosAtravesados();
         int i = 0;
         String nextIP = "";
         for (i = 0; i < numberOfCrossedNodes; i++) {
-            nextIP = mplsPacket.obtenerCabecera().obtenerCampoOpciones().obtenerActivoNodoAtravesado(i);
+            nextIP = mplsPacket.getHeader().getOptionsField().obtenerActivoNodoAtravesado(i);
             if (nextIP != null) {
                 gpsrpRequestEntry.setCrossedNodeIP(nextIP);
             }

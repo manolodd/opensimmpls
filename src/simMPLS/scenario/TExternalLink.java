@@ -75,7 +75,7 @@ public class TExternalLink extends TTopologyLink implements ITimerEventListener,
         enlaceCaido = ec;
         if (ec) {
             try {
-                this.generarEventoSimulacion(new TSELinkBroken(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo()));
+                this.generarEventoSimulacion(new TSELinkBroken(this, this.gILargo.getNextID(), this.getAvailableTime()));
                 this.cerrojo.lock();
                 TPDU paquete = null;
                 TLinkBufferEntry ebe = null;
@@ -85,9 +85,9 @@ public class TExternalLink extends TTopologyLink implements ITimerEventListener,
                     paquete = ebe.obtenerPaquete();
                     if (paquete != null) {
                         if (ebe.obtenerDestino() == 1) {
-                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.obtenerExtremo2(), this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), paquete.obtenerSubTipo()));
+                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.obtenerExtremo2(), this.gILargo.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         } else if (ebe.obtenerDestino() == 2) {
-                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.obtenerExtremo1(), this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), paquete.obtenerSubTipo()));
+                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.obtenerExtremo1(), this.gILargo.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         }
                     }
                     it.remove();
@@ -98,7 +98,7 @@ public class TExternalLink extends TTopologyLink implements ITimerEventListener,
             }
         } else {
             try {
-                this.generarEventoSimulacion(new TSELinkRecovered(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo()));
+                this.generarEventoSimulacion(new TSELinkRecovered(this, this.gILargo.getNextID(), this.getAvailableTime()));
             } catch (EDesbordeDelIdentificador e) {
                 e.printStackTrace(); 
             }
@@ -133,7 +133,7 @@ public class TExternalLink extends TTopologyLink implements ITimerEventListener,
             if (ebe.obtenerDestino() == 1)
                 pctj = 100 - pctj;
             try {
-                this.generarEventoSimulacion(new TSEPacketOnFly(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), ebe.obtenerPaquete().obtenerSubTipo(), pctj));
+                this.generarEventoSimulacion(new TSEPacketOnFly(this, this.gILargo.getNextID(), this.getAvailableTime(), ebe.obtenerPaquete().getSubtype(), pctj));
             } catch (EDesbordeDelIdentificador e) {
                 e.printStackTrace(); 
             }
@@ -177,10 +177,10 @@ public class TExternalLink extends TTopologyLink implements ITimerEventListener,
         while (it.hasNext())  {
             TLinkBufferEntry ebe = (TLinkBufferEntry) it.next();
             if (ebe.obtenerDestino() == TTopologyLink.END_NODE_1) {
-                TTopologyNode nt = this.obtenerExtremo1();
+                TNode nt = this.obtenerExtremo1();
                 nt.ponerPaquete(ebe.obtenerPaquete(), this.obtenerPuertoExtremo1());
             } else {
-                TTopologyNode nt = this.obtenerExtremo2();
+                TNode nt = this.obtenerExtremo2();
                 nt.ponerPaquete(ebe.obtenerPaquete(), this.obtenerPuertoExtremo2());
             }
             it.remove();
@@ -277,8 +277,8 @@ public class TExternalLink extends TTopologyLink implements ITimerEventListener,
         configEnlace.ponerDelay(Integer.valueOf(valores[5]).intValue());
         String IP1 = valores[6];
         String IP2 = valores[8];
-        TTopologyNode ex1 = this.obtenerTopologia().obtenerNodo(IP1);
-        TTopologyNode ex2 = this.obtenerTopologia().obtenerNodo(IP2);
+        TNode ex1 = this.obtenerTopologia().obtenerNodo(IP1);
+        TNode ex2 = this.obtenerTopologia().obtenerNodo(IP2);
         if (!((ex1 == null) || (ex2 == null))) {
             configEnlace.ponerNombreExtremo1(ex1.obtenerNombre());
             configEnlace.ponerNombreExtremo2(ex2.obtenerNombre());

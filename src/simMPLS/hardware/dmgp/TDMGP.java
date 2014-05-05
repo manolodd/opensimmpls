@@ -126,7 +126,7 @@ public class TDMGP {
 
     private TDMGPFlowEntry getFlow(TPDU packet) {
         TDMGPFlowEntry dmgpFlowEntry = null;
-        int flowID = packet.obtenerCabecera().obtenerIPOrigen().hashCode();
+        int flowID = packet.getHeader().obtenerIPOrigen().hashCode();
         dmgpFlowEntry = getFlow(flowID);
         return dmgpFlowEntry;
     }
@@ -149,7 +149,7 @@ public class TDMGP {
     private TDMGPFlowEntry createFlow(TPDU packet) {
         this.monitor.lock();
         TDMGPFlowEntry dmgpFlowEntry = null;
-        int flowID = packet.obtenerCabecera().obtenerIPOrigen().hashCode();
+        int flowID = packet.getHeader().obtenerIPOrigen().hashCode();
         int percentageToBeAssigned = 0;
         int octectsToBeAssigned = 0;
         if (this.totalAssignedOctects < this.getDMGPSizeInOctects()) {
@@ -158,7 +158,7 @@ public class TDMGP {
             if (octectsToBeAssigned > 0) {
                 this.totalAssignedOctects += octectsToBeAssigned;
                 this.totalAvailablePercentage -= percentageToBeAssigned;
-                dmgpFlowEntry = new TDMGPFlowEntry(this.idGenerator.obtenerNuevo());
+                dmgpFlowEntry = new TDMGPFlowEntry(this.idGenerator.getNextID());
                 dmgpFlowEntry.setFlowID(flowID);
                 dmgpFlowEntry.setAssignedPercentage(percentageToBeAssigned);
                 dmgpFlowEntry.setAssignedOctects(octectsToBeAssigned);
@@ -200,33 +200,33 @@ public class TDMGP {
 
     private int getRequestedPercentage(TPDU packet) {
         int packetGoSLevel = 0;
-        if (packet.obtenerCabecera().obtenerCampoOpciones().estaUsado()) {
-            packetGoSLevel = packet.obtenerCabecera().obtenerCampoOpciones().obtenerNivelGoS();
+        if (packet.getHeader().getOptionsField().isUsed()) {
+            packetGoSLevel = packet.getHeader().getOptionsField().getEncodedGoSLevel();
         } else {
             return 0;
         }
-        if (packetGoSLevel == TPDU.EXP_NIVEL3_CONLSP) {
+        if (packetGoSLevel == TPDU.EXP_LEVEL3_WITH_BACKUP_LSP) {
             return 12;
         }
-        if (packetGoSLevel == TPDU.EXP_NIVEL3_SINLSP) {
+        if (packetGoSLevel == TPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) {
             return 12;
         }
-        if (packetGoSLevel == TPDU.EXP_NIVEL2_CONLSP) {
+        if (packetGoSLevel == TPDU.EXP_LEVEL2_WITH_BACKUP_LSP) {
             return 8;
         }
-        if (packetGoSLevel == TPDU.EXP_NIVEL2_SINLSP) {
+        if (packetGoSLevel == TPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) {
             return 8;
         }
-        if (packetGoSLevel == TPDU.EXP_NIVEL1_CONLSP) {
+        if (packetGoSLevel == TPDU.EXP_LEVEL1_WITH_BACKUP_LSP) {
             return 4;
         }
-        if (packetGoSLevel == TPDU.EXP_NIVEL1_SINLSP) {
+        if (packetGoSLevel == TPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) {
             return 4;
         }
-        if (packetGoSLevel == TPDU.EXP_NIVEL0_CONLSP) {
+        if (packetGoSLevel == TPDU.EXP_LEVEL0_WITH_BACKUP_LSP) {
             return 0;
         }
-        if (packetGoSLevel == TPDU.EXP_NIVEL0_SINLSP) {
+        if (packetGoSLevel == TPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
             return 0;
         }
         return 1;

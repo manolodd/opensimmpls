@@ -31,7 +31,7 @@ import java.util.*;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TSenderNode extends TTopologyNode implements ITimerEventListener, Runnable {
+public class TSenderNode extends TNode implements ITimerEventListener, Runnable {
     
     /**
      * Crea una nueva instanci de TNodoEmisor
@@ -87,7 +87,7 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
      */
     public void ponerDestino(String d) {
         if (!d.equals("")) {
-            TTopologyNode nt = this.topologia.obtenerPrimerNodoLlamado(d);
+            TNode nt = this.topologia.obtenerPrimerNodoLlamado(d);
             if (nt != null) {
                 IPDestino = nt.getIPAddress();
             }
@@ -123,23 +123,23 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
     
     private int obtenerCodificacionEXP() {
         if ((this.nivelDeGoS == 0) && (this.LSPDeBackup)) {
-            return TPDU.EXP_NIVEL0_CONLSP;
+            return TPDU.EXP_LEVEL0_WITH_BACKUP_LSP;
         } else if ((this.nivelDeGoS == 1) && (this.LSPDeBackup)) {
-            return TPDU.EXP_NIVEL1_CONLSP;
+            return TPDU.EXP_LEVEL1_WITH_BACKUP_LSP;
         } else if ((this.nivelDeGoS == 2) && (this.LSPDeBackup)) {
-            return TPDU.EXP_NIVEL2_CONLSP;
+            return TPDU.EXP_LEVEL2_WITH_BACKUP_LSP;
         } else if ((this.nivelDeGoS == 3) && (this.LSPDeBackup)) {
-            return TPDU.EXP_NIVEL3_CONLSP;
+            return TPDU.EXP_LEVEL3_WITH_BACKUP_LSP;
         } else if ((this.nivelDeGoS == 0) && (!this.LSPDeBackup)) {
-            return TPDU.EXP_NIVEL0_SINLSP;
+            return TPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP;
         } else if ((this.nivelDeGoS == 1) && (!this.LSPDeBackup)) {
-            return TPDU.EXP_NIVEL1_SINLSP;
+            return TPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP;
         } else if ((this.nivelDeGoS == 2) && (!this.LSPDeBackup)) {
-            return TPDU.EXP_NIVEL2_SINLSP;
+            return TPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP;
         } else if ((this.nivelDeGoS == 3) && (!this.LSPDeBackup)) {
-            return TPDU.EXP_NIVEL3_SINLSP;
+            return TPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP;
         }
-        return TPDU.EXP_NIVEL0_SINLSP;
+        return TPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP;
     }
     
     /**
@@ -225,7 +225,7 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
     
     /**
      * Este m�todo permite obtener el tipo de nodo del que se trata esta instancia.
-     * @return TTopologyNode.EMISOR, indicando que es un generador y emisor de tr�fico.
+     * @return TNode.EMISOR, indicando que es un generador y emisor de tr�fico.
      * @since 1.0
      */
     public int obtenerTipo() {
@@ -252,7 +252,7 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
      */
     public void run() {
         try {
-            this.generarEventoSimulacion(new TSENodeCongested(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), 0));
+            this.generarEventoSimulacion(new TSENodeCongested(this, this.gILargo.getNextID(), this.getAvailableTime(), 0));
         } catch (Exception e) {
             e.printStackTrace(); 
         }
@@ -268,7 +268,7 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
         } else {
             this.incrementarPasosSinEmitir();
         }
-        this.estadisticas.asentarDatos(this.obtenerInstanteDeTiempo());
+        this.estadisticas.asentarDatos(this.getAvailableTime());
     }
     
     /**
@@ -296,7 +296,7 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
     public int obtenerTamanioCabeceraSiguientePaquete(TPDU paquete) {
         TPDUMPLS paqueteMPLS = null;
         TPDUIPv4 paqueteIPv4 = null;
-        if (paquete.obtenerTipo() == TPDU.MPLS) {
+        if (paquete.getType() == TPDU.MPLS) {
             paqueteMPLS = (TPDUMPLS) paquete;
             return paqueteMPLS.getSize();
         } 
@@ -338,22 +338,22 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
                 if (paqueteConTamanio != null) {
                     try {
                         int tipo = 0;
-                        if (paqueteConTamanio.obtenerTipo() == TPDU.MPLS) {
+                        if (paqueteConTamanio.getType() == TPDU.MPLS) {
                             TPDUMPLS paqueteMPLS = (TPDUMPLS) paqueteConTamanio;
-                            tipo = paqueteMPLS.obtenerSubTipo();
-                        } else if (paqueteConTamanio.obtenerTipo() == TPDU.IPV4) {
+                            tipo = paqueteMPLS.getSubtype();
+                        } else if (paqueteConTamanio.getType() == TPDU.IPV4) {
                             TPDUIPv4 paqueteIPv4 = (TPDUIPv4) paqueteConTamanio;
-                            tipo = paqueteIPv4.obtenerSubTipo();
+                            tipo = paqueteIPv4.getSubtype();
                         }
-                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), tipo, paqueteConTamanio.getSize()));
-                        this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), tipo));
+                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.getNextID(), this.getAvailableTime(), tipo, paqueteConTamanio.getSize()));
+                        this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), tipo));
                     } catch (Exception e) {
                         e.printStackTrace(); 
                     }
                     if (this.topologia.obtenerIPSalto(this.getIPAddress(), this.obtenerDestino()) != null) {
                         pt.ponerPaqueteEnEnlace(paqueteConTamanio, pt.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     } else {
-                        descartarPaquete(paqueteConTamanio);
+                        discardPacket(paqueteConTamanio);
                     }
                 } 
             }
@@ -370,16 +370,16 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
      */    
     public void contabilizarPaquete(TPDU paquete, boolean deEntrada) {
         if (deEntrada) {
-            if (paquete.obtenerSubTipo() == TPDU.MPLS) {
-            } else if (paquete.obtenerSubTipo() == TPDU.MPLS_GOS) {
-            } else if (paquete.obtenerSubTipo() == TPDU.IPV4) {
-            } else if (paquete.obtenerSubTipo() == TPDU.IPV4_GOS) {
+            if (paquete.getSubtype() == TPDU.MPLS) {
+            } else if (paquete.getSubtype() == TPDU.MPLS_GOS) {
+            } else if (paquete.getSubtype() == TPDU.IPV4) {
+            } else if (paquete.getSubtype() == TPDU.IPV4_GOS) {
             }
         } else {
-            if (paquete.obtenerSubTipo() == TPDU.MPLS) {
-            } else if (paquete.obtenerSubTipo() == TPDU.MPLS_GOS) {
-            } else if (paquete.obtenerSubTipo() == TPDU.IPV4) {
-            } else if (paquete.obtenerSubTipo() == TPDU.IPV4_GOS) {
+            if (paquete.getSubtype() == TPDU.MPLS) {
+            } else if (paquete.getSubtype() == TPDU.MPLS_GOS) {
+            } else if (paquete.getSubtype() == TPDU.IPV4) {
+            } else if (paquete.getSubtype() == TPDU.IPV4_GOS) {
             }
         }
     }
@@ -493,7 +493,7 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
             paquete = null;
             return null;
         } else {
-            if (paquete.obtenerTipo() == TPDU.MPLS) {
+            if (paquete.getType() == TPDU.MPLS) {
                 paqueteMPLS = (TPDUMPLS) paquete;
                 paqueteMPLS.obtenerDatosTCP().ponerTamanio((int) tamanioDatos);
                 nsUsados = this.obtenerNsUsadosTotalOctetos(tamanioTotal);
@@ -504,7 +504,7 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
                     this.tamDatosVariable = this.generarTamanioSiguientePaquete();
                 }
                 return paqueteMPLS;
-            } else if (paquete.obtenerTipo() == TPDU.IPV4) {
+            } else if (paquete.getType() == TPDU.IPV4) {
                 paqueteIPv4 = (TPDUIPv4) paquete;
                 paqueteIPv4.obtenerDatos().ponerTamanio(tamanioDatos);
                 nsUsados = this.obtenerNsUsadosTotalOctetos(tamanioTotal);
@@ -530,43 +530,43 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
         int valorGoS = this.obtenerCodificacionEXP();
         try {
             if (this.encapsularSobreMPLS) {
-                if (valorGoS == TPDU.EXP_NIVEL0_SINLSP) {
-                    TPDUMPLS paquete = new TPDUMPLS(gIdent.obtenerNuevo(), getIPAddress(), this.IPDestino, 0);
+                if (valorGoS == TPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
+                    TPDUMPLS paquete = new TPDUMPLS(gIdent.getNextID(), getIPAddress(), this.IPDestino, 0);
                     TEtiquetaMPLS etiquetaMPLSDeEmision = new TEtiquetaMPLS();
                     etiquetaMPLSDeEmision.ponerBoS(true);
                     etiquetaMPLSDeEmision.ponerEXP(0);
-                    etiquetaMPLSDeEmision.ponerLabel(etiquetaDeEmision);
-                    etiquetaMPLSDeEmision.ponerTTL(paquete.obtenerCabecera().obtenerTTL());
-                    paquete.obtenerPilaEtiquetas().ponerEtiqueta(etiquetaMPLSDeEmision);
+                    etiquetaMPLSDeEmision.setLabelField(etiquetaDeEmision);
+                    etiquetaMPLSDeEmision.ponerTTL(paquete.getHeader().obtenerTTL());
+                    paquete.getLabelStack().ponerEtiqueta(etiquetaMPLSDeEmision);
                     return paquete;
                 } else {
-                    TPDUMPLS paquete = new TPDUMPLS(gIdent.obtenerNuevo(), getIPAddress(), this.IPDestino, 0);
+                    TPDUMPLS paquete = new TPDUMPLS(gIdent.getNextID(), getIPAddress(), this.IPDestino, 0);
                     paquete.ponerSubtipo(TPDU.MPLS_GOS);
-                    paquete.obtenerCabecera().obtenerCampoOpciones().ponerNivelGoS(valorGoS);
-                    paquete.obtenerCabecera().obtenerCampoOpciones().ponerIDPaqueteGoS(this.gIdGoS.obtenerNuevo());
+                    paquete.getHeader().getOptionsField().ponerNivelGoS(valorGoS);
+                    paquete.getHeader().getOptionsField().ponerIDPaqueteGoS(this.gIdGoS.getNextID());
                     TEtiquetaMPLS etiquetaMPLSDeEmision = new TEtiquetaMPLS();
                     etiquetaMPLSDeEmision.ponerBoS(true);
                     etiquetaMPLSDeEmision.ponerEXP(0);
-                    etiquetaMPLSDeEmision.ponerLabel(etiquetaDeEmision);
-                    etiquetaMPLSDeEmision.ponerTTL(paquete.obtenerCabecera().obtenerTTL());
+                    etiquetaMPLSDeEmision.setLabelField(etiquetaDeEmision);
+                    etiquetaMPLSDeEmision.ponerTTL(paquete.getHeader().obtenerTTL());
                     TEtiquetaMPLS etiquetaMPLS1 = new TEtiquetaMPLS();
                     etiquetaMPLS1.ponerBoS(false);
                     etiquetaMPLS1.ponerEXP(valorGoS);
-                    etiquetaMPLS1.ponerLabel(1);
-                    etiquetaMPLS1.ponerTTL(paquete.obtenerCabecera().obtenerTTL());
-                    paquete.obtenerPilaEtiquetas().ponerEtiqueta(etiquetaMPLSDeEmision);
-                    paquete.obtenerPilaEtiquetas().ponerEtiqueta(etiquetaMPLS1);
+                    etiquetaMPLS1.setLabelField(1);
+                    etiquetaMPLS1.ponerTTL(paquete.getHeader().obtenerTTL());
+                    paquete.getLabelStack().ponerEtiqueta(etiquetaMPLSDeEmision);
+                    paquete.getLabelStack().ponerEtiqueta(etiquetaMPLS1);
                     return paquete;
                 }
             } else {
-                if (valorGoS == TPDU.EXP_NIVEL0_SINLSP) {
-                    TPDUIPv4 paquete = new TPDUIPv4(gIdent.obtenerNuevo(), getIPAddress(), this.IPDestino, 0);
+                if (valorGoS == TPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
+                    TPDUIPv4 paquete = new TPDUIPv4(gIdent.getNextID(), getIPAddress(), this.IPDestino, 0);
                     return paquete;
                 } else {
-                    TPDUIPv4 paquete = new TPDUIPv4(gIdent.obtenerNuevo(), getIPAddress(), this.IPDestino, 0);
+                    TPDUIPv4 paquete = new TPDUIPv4(gIdent.getNextID(), getIPAddress(), this.IPDestino, 0);
                     paquete.ponerSubtipo(TPDU.IPV4_GOS);
-                    paquete.obtenerCabecera().obtenerCampoOpciones().ponerNivelGoS(valorGoS);
-                    paquete.obtenerCabecera().obtenerCampoOpciones().ponerIDPaqueteGoS(this.gIdGoS.obtenerNuevo());
+                    paquete.getHeader().getOptionsField().ponerNivelGoS(valorGoS);
+                    paquete.getHeader().getOptionsField().ponerIDPaqueteGoS(this.gIdGoS.getNextID());
                     return paquete;
                 }
             }
@@ -582,10 +582,10 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
      * @param paquete Paquete que se quiere descartar.
      * @since 1.0
      */    
-    public void descartarPaquete(TPDU paquete) {
+    public void discardPacket(TPDU paquete) {
         try {
-            this.generarEventoSimulacion(new TSEPacketDiscarded(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), paquete.obtenerSubTipo()));
-            this.estadisticas.crearEstadistica(paquete, TStats.DESCARTE);
+            this.generarEventoSimulacion(new TSEPacketDiscarded(this, this.gILargo.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+            this.estadisticas.addStatsEntry(paquete, TStats.DESCARTE);
         } catch (Exception e) {
             e.printStackTrace(); 
         }
@@ -650,11 +650,11 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
         if (soloEspacios)
             return this.SOLO_ESPACIOS;
         if (!recfg) {
-            TTopologyNode tp = t.obtenerPrimerNodoLlamado(this.obtenerNombre());
+            TNode tp = t.obtenerPrimerNodoLlamado(this.obtenerNombre());
             if (tp != null)
                 return this.NOMBRE_YA_EXISTE;
         } else {
-            TTopologyNode tp = t.obtenerPrimerNodoLlamado(this.obtenerNombre());
+            TNode tp = t.obtenerPrimerNodoLlamado(this.obtenerNombre());
             if (tp != null) {
                 if (this.topologia.existeMasDeUnNodoLlamado(this.obtenerNombre())) {
                     return this.NOMBRE_YA_EXISTE;
@@ -779,7 +779,7 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
      * @return Las estad�sticas del nodo.
      * @since 1.0
      */    
-    public TStats accederAEstadisticas() {
+    public TStats getStats() {
         return estadisticas;
     }    
     
@@ -800,7 +800,7 @@ public class TSenderNode extends TTopologyNode implements ITimerEventListener, R
     * @param pSalida Puerto por el que se enviar� la solicitud.
     * @since 1.0
     */    
-    public void solicitarGPSRP(TPDUMPLS paquete, int pSalida) {
+    public void runGoSPDUStoreAndRetransmitProtocol(TPDUMPLS paquete, int pSalida) {
     }
     
     private String IPDestino;

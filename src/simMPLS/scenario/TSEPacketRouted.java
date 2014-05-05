@@ -61,13 +61,13 @@ public class TSEPacketRouted extends TSimulationEvent {
     public String obtenerNombre() {
         TTopologyElement et = null;
         TTopologyLink ent = null;
-        TTopologyNode nt = null;
+        TNode nt = null;
         et = super.obtenerFuente();
         if (et.obtenerTipoElemento() == TTopologyElement.ENLACE) {
             ent = (TTopologyLink) et;
             return ent.obtenerNombre();
         } else if (et.obtenerTipoElemento() == TTopologyElement.NODO) {
-            nt = (TTopologyNode) et;
+            nt = (TNode) et;
             return nt.obtenerNombre();
         }
         return ("");

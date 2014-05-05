@@ -28,7 +28,7 @@ import org.jfree.data.*;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TReceiverNode extends TTopologyNode implements ITimerEventListener, Runnable {
+public class TReceiverNode extends TNode implements ITimerEventListener, Runnable {
 
     /**
      * Crea una nueva instancia de TNodoReceptor
@@ -58,7 +58,7 @@ public class TReceiverNode extends TTopologyNode implements ITimerEventListener,
     
     /**
      * Este m�todo devuelve el tipo del nodo.
-     * @return TTopologyNode.RECEPTOR, indicando que se trata de un nodo receptor.
+     * @return TNode.RECEPTOR, indicando que se trata de un nodo receptor.
      * @since 1.0
      */    
     public int obtenerTipo() {
@@ -84,7 +84,7 @@ public class TReceiverNode extends TTopologyNode implements ITimerEventListener,
     public void run() {
         // Acciones a llevar a cabo durante el tic.
         recibirDatos();
-        estadisticas.asentarDatos(this.obtenerInstanteDeTiempo());
+        estadisticas.asentarDatos(this.getAvailableTime());
         // Acciones a llevar a cabo durante el tic.
     }
 
@@ -102,13 +102,13 @@ public class TReceiverNode extends TTopologyNode implements ITimerEventListener,
             while (p.thereIsAPacketWaiting()) {
                 paquete = p.getPacket();
                 try {
-                    idEvt = this.gILargo.obtenerNuevo();
+                    idEvt = this.gILargo.getNextID();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 this.contabilizarPaquete(paquete, true);
-                evt = new TSEPacketReceived(this, idEvt, this.obtenerInstanteDeTiempo(), tipo, paquete.getSize());
-                this.suscriptorSimulacion.capturarEventoSimulacion(evt);
+                evt = new TSEPacketReceived(this, idEvt, this.getAvailableTime(), tipo, paquete.getSize());
+                this.simulationEventsListener.captureSimulationEvents(evt);
                 paquete = null;
             }
         }
@@ -122,16 +122,16 @@ public class TReceiverNode extends TTopologyNode implements ITimerEventListener,
      */    
     public void contabilizarPaquete(TPDU paquete, boolean deEntrada) {
         if (deEntrada) {
-            if (paquete.obtenerSubTipo() == TPDU.MPLS) {
-            } else if (paquete.obtenerSubTipo() == TPDU.MPLS_GOS) {
-            } else if (paquete.obtenerSubTipo() == TPDU.IPV4) {
-            } else if (paquete.obtenerSubTipo() == TPDU.IPV4_GOS) {
+            if (paquete.getSubtype() == TPDU.MPLS) {
+            } else if (paquete.getSubtype() == TPDU.MPLS_GOS) {
+            } else if (paquete.getSubtype() == TPDU.IPV4) {
+            } else if (paquete.getSubtype() == TPDU.IPV4_GOS) {
             }
         } else {
-            if (paquete.obtenerSubTipo() == TPDU.MPLS) {
-            } else if (paquete.obtenerSubTipo() == TPDU.MPLS_GOS) {
-            } else if (paquete.obtenerSubTipo() == TPDU.IPV4) {
-            } else if (paquete.obtenerSubTipo() == TPDU.IPV4_GOS) {
+            if (paquete.getSubtype() == TPDU.MPLS) {
+            } else if (paquete.getSubtype() == TPDU.MPLS_GOS) {
+            } else if (paquete.getSubtype() == TPDU.IPV4) {
+            } else if (paquete.getSubtype() == TPDU.IPV4_GOS) {
             }
         }
     }
@@ -195,11 +195,11 @@ public class TReceiverNode extends TTopologyNode implements ITimerEventListener,
         if (soloEspacios)
             return this.SOLO_ESPACIOS;
         if (!recfg) {
-            TTopologyNode tp = t.obtenerPrimerNodoLlamado(this.obtenerNombre());
+            TNode tp = t.obtenerPrimerNodoLlamado(this.obtenerNombre());
             if (tp != null)
                 return this.NOMBRE_YA_EXISTE;
         } else {
-            TTopologyNode tp = t.obtenerPrimerNodoLlamado(this.obtenerNombre());
+            TNode tp = t.obtenerPrimerNodoLlamado(this.obtenerNombre());
             if (tp != null) {
                 if (this.topologia.existeMasDeUnNodoLlamado(this.obtenerNombre())) {
                     return this.NOMBRE_YA_EXISTE;
@@ -282,7 +282,7 @@ public class TReceiverNode extends TTopologyNode implements ITimerEventListener,
      * @return Las estad�sticas del nodo.
      * @since 1.0
      */    
-    public TStats accederAEstadisticas() {
+    public TStats getStats() {
         return this.estadisticas;
     }
     
@@ -301,7 +301,7 @@ public class TReceiverNode extends TTopologyNode implements ITimerEventListener,
      * @param paquete paquete que deseamos descartar.
      * @since 1.0
      */    
-    public void descartarPaquete(TPDU paquete) {
+    public void discardPacket(TPDU paquete) {
         // Un receptor no descarta paquetes, porque tiene un buffer 
         // ilimitado y no analiza el tr�fico. Lo recibe y ya est�.
         paquete = null;
@@ -314,7 +314,7 @@ public class TReceiverNode extends TTopologyNode implements ITimerEventListener,
     * @param pSalida Puerto por el que se enviar� la solicitud.
     * @since 1.0
     */    
-    public void solicitarGPSRP(TPDUMPLS paquete, int pSalida) {
+    public void runGoSPDUStoreAndRetransmitProtocol(TPDUMPLS paquete, int pSalida) {
     }
     
     /**

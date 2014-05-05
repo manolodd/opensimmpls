@@ -12,7 +12,7 @@
 package simMPLS.hardware.ports;
 
 import simMPLS.scenario.TTopologyLink;
-import simMPLS.scenario.TTopologyNode;
+import simMPLS.scenario.TNode;
 import simMPLS.protocols.TPDU;
 
 
@@ -30,7 +30,7 @@ public class TNormalNodePorts extends TNodePorts {
      * @param n Referencia al parentNode al que pertenece este conjunto de puertos.
      * @since 1.0
      */
-    public TNormalNodePorts(int num, TTopologyNode n) {
+    public TNormalNodePorts(int num, TNode n) {
         super(num, n);
         puertos = new TNormalPort[num];
         int i=0;
@@ -345,15 +345,15 @@ public class TNormalNodePorts extends TNodePorts {
         long calculo97PorCiento = (long) (this.getBufferSizeInMB()*1017118.72);
         if (sa) {
             if (!this.artificiallyCongested) {
-                if (this.getPortSetOccupancySize() < calculo97PorCiento) {
+                if (this.getPortSetOccupancy() < calculo97PorCiento) {
                     this.artificiallyCongested = true;
-                    this.occupancy = this.getPortSetOccupancySize();
+                    this.occupancy = this.getPortSetOccupancy();
                     this.setPortSetOccupancySize(calculo97PorCiento);
                 }
             }
         } else {
             if (this.artificiallyCongested) {
-                this.occupancy += (getPortSetOccupancySize() - calculo97PorCiento);
+                this.occupancy += (getPortSetOccupancy() - calculo97PorCiento);
                 if (this.occupancy < 0)
                     this.occupancy = 0;
                 this.setPortSetOccupancySize(this.occupancy);

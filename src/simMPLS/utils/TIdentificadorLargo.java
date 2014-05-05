@@ -39,7 +39,7 @@ public class TIdentificadorLargo {
      * hay que capturar la excepci�n por si acaso.
      * @since 1.0
      */
-    synchronized public long obtenerNuevo() throws EDesbordeDelIdentificador {
+    synchronized public long getNextID() throws EDesbordeDelIdentificador {
         if (identificador > 9223372036854775806L) {
             throw new EDesbordeDelIdentificador();
         } else {

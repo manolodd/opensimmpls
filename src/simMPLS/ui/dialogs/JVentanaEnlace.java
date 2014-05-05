@@ -17,7 +17,7 @@ import java.util.*;
 import javax.swing.*;
 import simMPLS.scenario.TLinkConfig;
 import simMPLS.scenario.TTopology;
-import simMPLS.scenario.TTopologyNode;
+import simMPLS.scenario.TNode;
 import simMPLS.ui.utils.TDispensadorDeImagenes;
 
 /**
@@ -289,9 +289,9 @@ private void clicEnCambioNodoDerecho(java.awt.event.ActionEvent evt) {//GEN-FIRS
     this.selectorPuertoDerecho.addItem("");
     this.selectorPuertoDerecho.setSelectedIndex(0);
     if (this.selectorExtremoDerecho.getSelectedIndex() != 0) {
-        TTopologyNode seleccionado = topo.obtenerPrimerNodoLlamado((String) selectorExtremoDerecho.getSelectedItem());
+        TNode seleccionado = topo.obtenerPrimerNodoLlamado((String) selectorExtremoDerecho.getSelectedItem());
         Iterator it = topo.obtenerIteradorNodos();
-        TTopologyNode nt;
+        TNode nt;
         if (seleccionado != null) {
 //          Actualizar los puertos de dicho nodo
             int i=0;
@@ -315,9 +315,9 @@ private void clicEnCambioNodoIzquierdo(java.awt.event.ActionEvent evt) {//GEN-FI
     this.selectorPuertoDerecho.addItem("");
     this.selectorPuertoDerecho.setSelectedIndex(0);
     if (this.selectorExtremoIzquierdo.getSelectedIndex() != 0) {
-        TTopologyNode seleccionado = topo.obtenerPrimerNodoLlamado((String) selectorExtremoIzquierdo.getSelectedItem());
+        TNode seleccionado = topo.obtenerPrimerNodoLlamado((String) selectorExtremoIzquierdo.getSelectedItem());
         Iterator it = topo.obtenerIteradorNodos();
-        TTopologyNode nt;
+        TNode nt;
         if (seleccionado != null) {
 //          Actualizar los puertos de dicho nodo
             int i=0;
@@ -327,41 +327,41 @@ private void clicEnCambioNodoIzquierdo(java.awt.event.ActionEvent evt) {//GEN-FI
             }
 //          Actualizar los puertos de dicho nodo
             while (it.hasNext()) {
-                nt = (TTopologyNode) it.next();
+                nt = (TNode) it.next();
                 if (!nt.obtenerNombre().equals(seleccionado.obtenerNombre())) {
                     if (nt.tienePuertosLibres()) {
                         if (!topo.existeEnlace(nt.obtenerIdentificador(), seleccionado.obtenerIdentificador())) {
                             switch (seleccionado.obtenerTipo()) {
-                                case TTopologyNode.EMISOR: {
-                                    if ((nt.obtenerTipo() == TTopologyNode.LER) || (nt.obtenerTipo() == TTopologyNode.LERA)) {
+                                case TNode.EMISOR: {
+                                    if ((nt.obtenerTipo() == TNode.LER) || (nt.obtenerTipo() == TNode.LERA)) {
                                         selectorExtremoDerecho.addItem(nt.obtenerNombre());
                                     }
                                     break;
                                 }
-                                case TTopologyNode.RECEPTOR: {
-                                    if ((nt.obtenerTipo() == TTopologyNode.LER) || (nt.obtenerTipo() == TTopologyNode.LERA)) {
+                                case TNode.RECEPTOR: {
+                                    if ((nt.obtenerTipo() == TNode.LER) || (nt.obtenerTipo() == TNode.LERA)) {
                                         selectorExtremoDerecho.addItem(nt.obtenerNombre());
                                     }
                                     break;
                                 }
-                                case TTopologyNode.LER: {
+                                case TNode.LER: {
                                     selectorExtremoDerecho.addItem(nt.obtenerNombre());
                                     break;
                                 }
-                                case TTopologyNode.LERA: {
+                                case TNode.LERA: {
                                     selectorExtremoDerecho.addItem(nt.obtenerNombre());
                                     break;
                                 }
-                                case TTopologyNode.LSR: {
-                                    if ((nt.obtenerTipo() == TTopologyNode.LER) || (nt.obtenerTipo() == TTopologyNode.LERA)
-                                       || (nt.obtenerTipo() == TTopologyNode.LSR) || (nt.obtenerTipo() == TTopologyNode.LSRA)) {
+                                case TNode.LSR: {
+                                    if ((nt.obtenerTipo() == TNode.LER) || (nt.obtenerTipo() == TNode.LERA)
+                                       || (nt.obtenerTipo() == TNode.LSR) || (nt.obtenerTipo() == TNode.LSRA)) {
                                         selectorExtremoDerecho.addItem(nt.obtenerNombre());
                                     }
                                     break;
                                 }
-                                case TTopologyNode.LSRA: {
-                                    if ((nt.obtenerTipo() == TTopologyNode.LER) || (nt.obtenerTipo() == TTopologyNode.LERA)
-                                       || (nt.obtenerTipo() == TTopologyNode.LSR) || (nt.obtenerTipo() == TTopologyNode.LSRA)) {
+                                case TNode.LSRA: {
+                                    if ((nt.obtenerTipo() == TNode.LER) || (nt.obtenerTipo() == TNode.LERA)
+                                       || (nt.obtenerTipo() == TNode.LSR) || (nt.obtenerTipo() == TNode.LSRA)) {
                                         selectorExtremoDerecho.addItem(nt.obtenerNombre());
                                     }
                                     break;
@@ -382,9 +382,9 @@ private void clicEnCambioNodoIzquierdo(java.awt.event.ActionEvent evt) {//GEN-FI
  */
 public void cargarNodosPorDefecto() {
     Iterator it = topo.obtenerIteradorNodos();
-    TTopologyNode nt;
+    TNode nt;
     while (it.hasNext()) {
-        nt = (TTopologyNode) it.next();
+        nt = (TNode) it.next();
         if (nt.tienePuertosLibres()) {
             selectorExtremoIzquierdo.addItem(nt.obtenerNombre());
             selectorExtremoIzquierdo.setSelectedIndex(0);

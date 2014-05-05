@@ -30,7 +30,7 @@ public class TCabeceraIPv4 {
      */
     public int obtenerClavePrimaria() {
         String clave = "";
-        if (opciones.estaUsado()) {
+        if (opciones.isUsed()) {
             clave = this.IPOrigen + opciones.obtenerIDPaqueteGoS();
             return clave.hashCode();
         }
@@ -101,7 +101,7 @@ public class TCabeceraIPv4 {
      * @return El campo opciones de la cabecera, completo.
      * @since 1.0
      */
-    public TCampoOpcionesIPv4 obtenerCampoOpciones() {
+    public TCampoOpcionesIPv4 getOptionsField() {
         return opciones;
     }
     

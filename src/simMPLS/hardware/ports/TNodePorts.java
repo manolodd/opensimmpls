@@ -12,7 +12,7 @@
 package simMPLS.hardware.ports;
 
 import simMPLS.scenario.TTopologyLink;
-import simMPLS.scenario.TTopologyNode;
+import simMPLS.scenario.TNode;
 import simMPLS.protocols.TPDU;
 import simMPLS.utils.TMonitor;
 
@@ -31,7 +31,7 @@ public abstract class TNodePorts {
      * @param n Referencia al parentNode al que pertenece este conjunto de puertos.
      * @since 1.0
      */
-    public TNodePorts(int num, TTopologyNode n) {
+    public TNodePorts(int num, TNode n) {
         this.numberOfPorts = num;
         this.parentNode = n;
         this.portSetBufferSize = 1;
@@ -46,7 +46,7 @@ public abstract class TNodePorts {
      * @param tcp Tama�o (en octetos) en que se debe incrementar la ocupaci�n total.
      * @since 1.0
      */    
-    public synchronized void increasePortSetOccupancySize(long tcp) {
+    public synchronized void increasePortSetOccupancy(long tcp) {
         this.portSetBufferOccupancy += tcp;
     }
     
@@ -73,7 +73,7 @@ public abstract class TNodePorts {
      * @return Tama�o (en octetos) del buffer que est� ocupado.
      * @since 1.0
      */    
-    public synchronized long getPortSetOccupancySize() {
+    public synchronized long getPortSetOccupancy() {
         return this.portSetBufferOccupancy;
     }
     
@@ -107,7 +107,7 @@ public abstract class TNodePorts {
      * @param n El parentNode poseedor de este conjunto de puertos.
      * @since 1.0
      */    
-    public void setNode(TTopologyNode n) {
+    public void setNode(TNode n) {
         parentNode = n;
     }
 
@@ -117,7 +117,7 @@ public abstract class TNodePorts {
      * @return El parentNode que posee este conjunto de puertos.
      * @since 1.0
      */    
-    public TTopologyNode getNode() {
+    public TNode getNode() {
         return parentNode;
     }
 
@@ -273,7 +273,7 @@ public abstract class TNodePorts {
  puertos.
      * @since 1.0
      */    
-    protected TTopologyNode parentNode;
+    protected TNode parentNode;
     /**
      * Este atributo indica el tama�o en MB del b�ffer existente para el conjunto de
      * puertos.

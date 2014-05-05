@@ -2,7 +2,7 @@ package simMPLS.io.osm;
 
 import simMPLS.scenario.TScenario;
 import simMPLS.scenario.TTopologyLink;
-import simMPLS.scenario.TTopologyNode;
+import simMPLS.scenario.TNode;
 import java.io.*;
 import java.util.zip.*;
 import java.util.*;
@@ -37,7 +37,7 @@ public class TOSMSaver {
      */    
     public boolean almacenar(File ficheroSalida, boolean conCRC) {
         try {
-            TTopologyNode nt;
+            TNode nt;
             TTopologyLink et;
             Iterator in;
             flujoDeSalida = new FileOutputStream(ficheroSalida);
@@ -81,9 +81,9 @@ public class TOSMSaver {
             // Volcamos los receptores.
             in = escenario.obtenerTopologia().obtenerIteradorNodos();
             while (in.hasNext()) {
-                nt = (TTopologyNode) in.next();
+                nt = (TNode) in.next();
                 if (nt != null) {
-                    if (nt.obtenerTipo() == TTopologyNode.RECEPTOR) {
+                    if (nt.obtenerTipo() == TNode.RECEPTOR) {
                         salida.println(nt.serializar());
                         crc.update(nt.serializar().getBytes());
                     }
@@ -92,9 +92,9 @@ public class TOSMSaver {
             // Volcamos el resto de nodos despu�s
             in = escenario.obtenerTopologia().obtenerIteradorNodos();
             while (in.hasNext()) {
-                nt = (TTopologyNode) in.next();
+                nt = (TNode) in.next();
                 if (nt != null) {
-                    if (nt.obtenerTipo() != TTopologyNode.RECEPTOR) {
+                    if (nt.obtenerTipo() != TNode.RECEPTOR) {
                         salida.println(nt.serializar());
                         crc.update(nt.serializar().getBytes());
                     }

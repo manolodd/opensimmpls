@@ -55,7 +55,7 @@ public class TEtiquetaMPLS implements Comparable {
      * @param l El nuevo valor que deseamos para el campo label de la etiqueta MPLS.
      * @since 1.0
      */
-    public void ponerLabel(int l) {
+    public void setLabelField(int l) {
         label = l;
     }
     
@@ -63,7 +63,7 @@ public class TEtiquetaMPLS implements Comparable {
      * @return El valor del atributo privado label, de la etiqueta MPLS.
      * @since 1.0
      */
-    public int obtenerLabel() {
+    public int getLabelField() {
         return label;
     }
     
@@ -99,7 +99,7 @@ public class TEtiquetaMPLS implements Comparable {
      * @return El valor del atributo privado EXP de la etiqueta MPLS.
      * @since 1.0
      */
-    public int obtenerEXP() {
+    public int getEXPField() {
         return EXP;
     }
     

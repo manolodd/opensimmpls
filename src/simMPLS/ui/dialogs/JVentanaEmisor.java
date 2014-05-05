@@ -17,7 +17,7 @@ import java.util.*;
 import javax.swing.*;
 import simMPLS.scenario.TSenderNode;
 import simMPLS.scenario.TTopology;
-import simMPLS.scenario.TTopologyNode;
+import simMPLS.scenario.TNode;
 import simMPLS.ui.simulator.JPanelDisenio;
 import simMPLS.ui.utils.TDispensadorDeImagenes;
 
@@ -66,10 +66,10 @@ public class JVentanaEmisor extends javax.swing.JDialog {
         Iterator it = topo.obtenerIteradorNodos();
         selectorDelReceptor.removeAllItems();
         selectorDelReceptor.addItem("");
-        TTopologyNode nt;
+        TNode nt;
         while (it.hasNext()) {
-            nt = (TTopologyNode) it.next();
-            if (nt.obtenerTipo() == TTopologyNode.RECEPTOR) {
+            nt = (TNode) it.next();
+            if (nt.obtenerTipo() == TNode.RECEPTOR) {
                 selectorDelReceptor.addItem(nt.obtenerNombre());
             }
         }
@@ -622,7 +622,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
         if (reconfigurando) {
             this.panelCoordenadas.setEnabled(false);
             this.panelCoordenadas.setToolTipText(null);
-            TTopologyNode nt = this.topo.obtenerNodo(emisor.obtenerDestino());
+            TNode nt = this.topo.obtenerNodo(emisor.obtenerDestino());
             if (nt != null) {
                 BKUPDestino = nt.obtenerNombre();
             }

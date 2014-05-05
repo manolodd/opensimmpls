@@ -46,7 +46,7 @@ public class TPilaEtiquetasMPLS {
      * @return Etiqueta en la cima de la pila de etiquetas MPLS.
      * @since 1.0
      */
-    public TEtiquetaMPLS obtenerEtiqueta() {
+    public TEtiquetaMPLS getTop() {
         return (TEtiquetaMPLS) pila.getLast();
     }
     

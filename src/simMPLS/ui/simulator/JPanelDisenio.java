@@ -21,7 +21,7 @@ import java.util.*;
 import javax.swing.*;
 import simMPLS.scenario.TTopology;
 import simMPLS.scenario.TTopologyLink;
-import simMPLS.scenario.TTopologyNode;
+import simMPLS.scenario.TNode;
 import simMPLS.ui.utils.TDispensadorDeImagenes;
 
 /**
@@ -111,13 +111,13 @@ public class JPanelDisenio extends javax.swing.JPanel {
      */    
     private void dibujarDominio(Graphics2D g2Dbuf) {
         Iterator itd = topologia.obtenerIteradorNodos();
-        TTopologyNode nd;
+        TNode nd;
         Polygon pol = new Polygon();
         int vertices = 0;
         while (itd.hasNext()) {
-            nd = (TTopologyNode) itd.next();
-            if ((nd.obtenerTipo() == TTopologyNode.LER) ||
-               (nd.obtenerTipo() == TTopologyNode.LERA)) {
+            nd = (TNode) itd.next();
+            if ((nd.obtenerTipo() == TNode.LER) ||
+               (nd.obtenerTipo() == TNode.LERA)) {
                    pol.addPoint(nd.obtenerPosicion().x+24, nd.obtenerPosicion().y+24);
                    vertices ++;
                }
@@ -192,7 +192,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
         maxY = 10;
         Iterator ite = topologia.obtenerIteradorNodos();
         while (ite.hasNext()) {
-            TTopologyNode nodo = (TTopologyNode) ite.next();
+            TNode nodo = (TNode) ite.next();
             Point posicion = nodo.obtenerPosicion();
 
             if ((posicion.x+48) > maxX)
@@ -204,43 +204,43 @@ public class JPanelDisenio extends javax.swing.JPanel {
 
             int tipo = nodo.obtenerTipo();
             switch (tipo) {
-                case TTopologyNode.EMISOR: {
-                    if (nodo.obtenerEstado() == TTopologyNode.DESELECCIONADO)
+                case TNode.EMISOR: {
+                    if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
-                case TTopologyNode.RECEPTOR: {
-                    if (nodo.obtenerEstado() == TTopologyNode.DESELECCIONADO)
+                case TNode.RECEPTOR: {
+                    if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.RECEPTOR), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.RECEPTOR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
-                case TTopologyNode.LER: {
-                    if (nodo.obtenerEstado() == TTopologyNode.DESELECCIONADO)
+                case TNode.LER: {
+                    if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LER), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LER_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
-                case TTopologyNode.LERA: {
-                    if (nodo.obtenerEstado() == TTopologyNode.DESELECCIONADO)
+                case TNode.LERA: {
+                    if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LERA), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LERA_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
-                case TTopologyNode.LSR: {
-                    if (nodo.obtenerEstado() == TTopologyNode.DESELECCIONADO)
+                case TNode.LSR: {
+                    if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSR), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
-                case TTopologyNode.LSRA: {
-                    if (nodo.obtenerEstado() == TTopologyNode.DESELECCIONADO)
+                case TNode.LSRA: {
+                    if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSRA), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSRA_MOVIENDOSE), posicion.x, posicion.y, null);

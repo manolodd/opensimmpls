@@ -1,5 +1,5 @@
 //**************************************************************************
-// Nombre......: TTopologyNode.java
+// Nombre......: TNode.java
 // Proyecto....: Open SimMPLS
 // Descripci�n.: Superclase que implementa un nodo de la topolog�a.
 // Fecha.......: 27/02/2004
@@ -28,7 +28,7 @@ import org.jfree.data.*;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public abstract class TTopologyNode extends TTopologyElement implements Comparable, ITimerEventListener, Runnable {
+public abstract class TNode extends TTopologyElement implements Comparable, ITimerEventListener, Runnable {
 
     /**
      * Crea una nueva instancia de TNodoTopologia.
@@ -38,7 +38,7 @@ public abstract class TTopologyNode extends TTopologyElement implements Comparab
      * @param il Generador de identificadores para los eventos que deba emitir el nodo.
      * @param t Topologia donde se encuentra el nodo inclu�do.
      */
-    public TTopologyNode(int identificador, String d, TIdentificadorLargo il, TTopology t) {
+    public TNode(int identificador, String d, TIdentificadorLargo il, TTopology t) {
         super(TTopologyElement.NODO, il);
         posicion = new Point(0,0);
         id = identificador;
@@ -82,7 +82,7 @@ public abstract class TTopologyNode extends TTopologyElement implements Comparab
      * @since 1.0
      */    
     public int compareTo(Object o) {
-        TTopologyNode n = (TTopologyNode) o;
+        TNode n = (TNode) o;
         if (obtenerIdentificador() < n.obtenerIdentificador())
             return -1;
         else if (obtenerIdentificador() == n.obtenerIdentificador())
@@ -253,7 +253,7 @@ public abstract class TTopologyNode extends TTopologyElement implements Comparab
      */    
     public synchronized void ponerPaquete(TPDU paquete, int puerto) {
         cerrojo.lock();
-        this.puertos.getPort(puerto).ponerPaquete(paquete);
+        this.puertos.getPort(puerto).addPacket(paquete);
         cerrojo.unLock();
     }
 
@@ -289,7 +289,7 @@ public abstract class TTopologyNode extends TTopologyElement implements Comparab
      * @param paquete Paquete que deseamos descartar.
      * @since 1.0
      */    
-    public abstract void descartarPaquete(TPDU paquete);
+    public abstract void discardPacket(TPDU paquete);
     
     /**
      * Este m�todo permite acceder directamente a los puertos del nodo.
@@ -326,7 +326,7 @@ public abstract class TTopologyNode extends TTopologyElement implements Comparab
      * @param pSalida Puerto por el que se enviar� la solicitud.
      * @since 1.0
      */    
-    public abstract void solicitarGPSRP(TPDUMPLS paquete, int pSalida);
+    public abstract void runGoSPDUStoreAndRetransmitProtocol(TPDUMPLS paquete, int pSalida);
     
     /**
      * Este m�todo averigua si al nodo le quedan puertos libre o no.
@@ -390,7 +390,7 @@ public abstract class TTopologyNode extends TTopologyElement implements Comparab
      * @return Estad�sticas del nodo.
      * @since 1.0
      */    
-    public abstract TStats accederAEstadisticas();
+    public abstract TStats getStats();
    
     /**
      * Este m�todo reinicia los atributos de la clase, dej�ndolos como recien iniciados

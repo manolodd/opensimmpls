@@ -78,7 +78,7 @@ public class TInternalLink extends TTopologyLink implements ITimerEventListener,
             try {
                 this.numeroDeLSPs = 0;
                 this.numeroDeLSPsDeBackup = 0;
-                this.generarEventoSimulacion(new TSELinkBroken(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo()));
+                this.generarEventoSimulacion(new TSELinkBroken(this, this.gILargo.getNextID(), this.getAvailableTime()));
                 this.cerrojo.lock();
                 TPDU paquete = null;
                 TLinkBufferEntry ebe = null;
@@ -88,9 +88,9 @@ public class TInternalLink extends TTopologyLink implements ITimerEventListener,
                     paquete = ebe.obtenerPaquete();
                     if (paquete != null) {
                         if (ebe.obtenerDestino() == 1) {
-                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.obtenerExtremo2(), this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), paquete.obtenerSubTipo()));
+                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.obtenerExtremo2(), this.gILargo.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         } else if (ebe.obtenerDestino() == 2) {
-                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.obtenerExtremo1(), this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), paquete.obtenerSubTipo()));
+                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.obtenerExtremo1(), this.gILargo.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         }
                     }
                     it.remove();
@@ -101,7 +101,7 @@ public class TInternalLink extends TTopologyLink implements ITimerEventListener,
             }
         } else {
             try {
-                this.generarEventoSimulacion(new TSELinkRecovered(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo()));
+                this.generarEventoSimulacion(new TSELinkRecovered(this, this.gILargo.getNextID(), this.getAvailableTime()));
             } catch (EDesbordeDelIdentificador e) {
                 e.printStackTrace(); 
             }
@@ -139,7 +139,7 @@ public class TInternalLink extends TTopologyLink implements ITimerEventListener,
     public void ponerLSP() {
         numeroDeLSPs++;
         try {
-            this.generarEventoSimulacion(new TSELSPEstablished(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo()));
+            this.generarEventoSimulacion(new TSELSPEstablished(this, this.gILargo.getNextID(), this.getAvailableTime()));
         } catch (Exception e) {
             e.printStackTrace(); 
         }
@@ -153,7 +153,7 @@ public class TInternalLink extends TTopologyLink implements ITimerEventListener,
         if (numeroDeLSPs > 0) {
             numeroDeLSPs--;
             try {
-                this.generarEventoSimulacion(new TSELSPRemoved(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo()));
+                this.generarEventoSimulacion(new TSELSPRemoved(this, this.gILargo.getNextID(), this.getAvailableTime()));
             } catch (Exception e) {
                 e.printStackTrace(); 
             }
@@ -204,12 +204,12 @@ public class TInternalLink extends TTopologyLink implements ITimerEventListener,
             if (ebe.obtenerDestino() == 1)
                 pctj = 100 - pctj;
             try {
-                if (ebe.obtenerPaquete().obtenerTipo() == TPDU.TLDP) {
-                    this.generarEventoSimulacion(new TSEPacketOnFly(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.TLDP, pctj));
-                } else if (ebe.obtenerPaquete().obtenerTipo() == TPDU.MPLS) {
-                    this.generarEventoSimulacion(new TSEPacketOnFly(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), ebe.obtenerPaquete().obtenerSubTipo(), pctj));
-                } else if (ebe.obtenerPaquete().obtenerTipo() == TPDU.GPSRP) {
-                    this.generarEventoSimulacion(new TSEPacketOnFly(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.GPSRP, pctj));
+                if (ebe.obtenerPaquete().getType() == TPDU.TLDP) {
+                    this.generarEventoSimulacion(new TSEPacketOnFly(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP, pctj));
+                } else if (ebe.obtenerPaquete().getType() == TPDU.MPLS) {
+                    this.generarEventoSimulacion(new TSEPacketOnFly(this, this.gILargo.getNextID(), this.getAvailableTime(), ebe.obtenerPaquete().getSubtype(), pctj));
+                } else if (ebe.obtenerPaquete().getType() == TPDU.GPSRP) {
+                    this.generarEventoSimulacion(new TSEPacketOnFly(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.GPSRP, pctj));
                 }
             } catch (EDesbordeDelIdentificador e) {
                 e.printStackTrace(); 
@@ -254,10 +254,10 @@ public class TInternalLink extends TTopologyLink implements ITimerEventListener,
         while (it.hasNext())  {
             TLinkBufferEntry ebe = (TLinkBufferEntry) it.next();
             if (ebe.obtenerDestino() == TTopologyLink.END_NODE_1) {
-                TTopologyNode nt = this.obtenerExtremo1();
+                TNode nt = this.obtenerExtremo1();
                 nt.ponerPaquete(ebe.obtenerPaquete(), this.obtenerPuertoExtremo1());
             } else {
-                TTopologyNode nt = this.obtenerExtremo2();
+                TNode nt = this.obtenerExtremo2();
                 nt.ponerPaquete(ebe.obtenerPaquete(), this.obtenerPuertoExtremo2());
             }
             it.remove();
@@ -354,8 +354,8 @@ public class TInternalLink extends TTopologyLink implements ITimerEventListener,
         configEnlace.ponerDelay(Integer.valueOf(valores[5]).intValue());
         String IP1 = valores[6];
         String IP2 = valores[8];
-        TTopologyNode ex1 = this.obtenerTopologia().obtenerNodo(IP1);
-        TTopologyNode ex2 = this.obtenerTopologia().obtenerNodo(IP2);
+        TNode ex1 = this.obtenerTopologia().obtenerNodo(IP1);
+        TNode ex2 = this.obtenerTopologia().obtenerNodo(IP2);
         if (!((ex1 == null) || (ex2 == null))) {
             configEnlace.ponerNombreExtremo1(ex1.obtenerNombre());
             configEnlace.ponerNombreExtremo2(ex2.obtenerNombre());

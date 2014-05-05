@@ -11,7 +11,7 @@ import simMPLS.protocols.TPDU;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TActivePortEntry implements Comparable {
+public class TActivePortBufferEntry implements Comparable {
     
     /**
      * Crea una nueva instancia de TEntradaPuertoActivo
@@ -20,14 +20,14 @@ public class TActivePortEntry implements Comparable {
      * @param orden Orden de llegada al buffer.
      * @param paquet Paquete que ha llegado al buffer y que est� contenido en la entrada.
      */
-    public TActivePortEntry(int prior, int orden, TPDU paquet) {
+    public TActivePortBufferEntry(int prior, int orden, TPDU paquet) {
         this.prioridad = prior;
         this.ordenDeLlegada = orden;
         this.paquete = paquet;
     }
     
     /**
-     * Este m�todo sirve para comparar dos instancias de TActivePortEntry.
+     * Este m�todo sirve para comparar dos instancias de TActivePortBufferEntry.
      * @param o Otra entrada de un puerto activo con la que se quiere comparar la instancia
      * actual.
      * @return -1, 0 � 1, dependiendo de si la instancia actual es menor, mayo o igual que la
@@ -36,14 +36,14 @@ public class TActivePortEntry implements Comparable {
      */    
     @Override
     public int compareTo(Object o) {
-        TActivePortEntry parametro = (TActivePortEntry) o;
+        TActivePortBufferEntry parametro = (TActivePortBufferEntry) o;
         if (this.ordenDeLlegada < parametro.obtenerOrdenDeLlegada()) {
-            return TActivePortEntry.PRIMERO_EL_ACTUAL;
+            return TActivePortBufferEntry.PRIMERO_EL_ACTUAL;
         }
         if (this.ordenDeLlegada > parametro.obtenerOrdenDeLlegada()) {
-            return TActivePortEntry.PRIMERO_EL_PARAMETRO;
+            return TActivePortBufferEntry.PRIMERO_EL_PARAMETRO;
         }
-        return TActivePortEntry.IGUALES;
+        return TActivePortBufferEntry.IGUALES;
     }
     
     /**
@@ -51,7 +51,7 @@ public class TActivePortEntry implements Comparable {
      * @since 1.0
      * @return La prioridad de la entrada, de 0 a 10, inclusives.
      */    
-    public int obtenerPrioridad() {
+    public int getPriority() {
         return this.prioridad;
     }
     
@@ -69,7 +69,7 @@ public class TActivePortEntry implements Comparable {
      * @return Paquete que est� almacenado en el buffer.
      * @since 1.0
      */    
-    public TPDU obtenerPaquete() {
+    public TPDU getPacket() {
         return this.paquete;
     }
     

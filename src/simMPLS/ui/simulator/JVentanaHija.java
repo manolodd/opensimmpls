@@ -40,7 +40,7 @@ import simMPLS.scenario.TStats;
 import simMPLS.scenario.TTopology;
 import simMPLS.scenario.TTopologyElement;
 import simMPLS.scenario.TTopologyLink;
-import simMPLS.scenario.TTopologyNode;
+import simMPLS.scenario.TNode;
 import simMPLS.ui.dialogs.JVentanaAdvertencia;
 import simMPLS.ui.dialogs.JVentanaBooleana;
 import simMPLS.ui.dialogs.JVentanaEmisor;
@@ -919,7 +919,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             TTopologyElement et = escenario.obtenerTopologia().obtenerElementoEnPosicion(evt.getPoint());
             if (et != null) {
                 if (et.obtenerTipoElemento() == TTopologyElement.NODO) {
-                    TTopologyNode nt = (TTopologyNode) et;
+                    TNode nt = (TNode) et;
                     if (nt.obtenerPuertos().getArtificiallyCongested()) {
                         nt.obtenerPuertos().setArtificiallyCongested(false);
                     } else {
@@ -1046,7 +1046,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
     private void ratonSoltadoEnPanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSoltadoEnPanelSimulacion
         if (evt.getButton() == MouseEvent.BUTTON1) {
             if (nodoSeleccionado != null) {
-                nodoSeleccionado.ponerEstado(TTopologyNode.DESELECCIONADO);
+                nodoSeleccionado.ponerEstado(TNode.DESELECCIONADO);
                 nodoSeleccionado = null;
                 this.escenario.ponerModificado(true);
             }
@@ -1068,10 +1068,10 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             if (et != null) {
                 this.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 if (et.obtenerTipoElemento() == TTopologyElement.NODO) {
-                    TTopologyNode nt = (TTopologyNode) et;
+                    TNode nt = (TNode) et;
                     nodoSeleccionado = nt;
                     if (nodoSeleccionado != null) {
-                        nodoSeleccionado.ponerEstado(TTopologyNode.SELECCIONADO);
+                        nodoSeleccionado.ponerEstado(TNode.SELECCIONADO);
                         this.escenario.ponerModificado(true);
                     }
                 }
@@ -1093,28 +1093,28 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
     private void clicEnPropiedadesPopUpDisenioElemento(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPropiedadesPopUpDisenioElemento
         if (elementoDisenioClicDerecho != null) {
             if (elementoDisenioClicDerecho.obtenerTipoElemento() == TTopologyElement.NODO) {
-                TTopologyNode nt = (TTopologyNode) elementoDisenioClicDerecho;
-                if (nt.obtenerTipo() == TTopologyNode.EMISOR) {
+                TNode nt = (TNode) elementoDisenioClicDerecho;
+                if (nt.obtenerTipo() == TNode.EMISOR) {
                     JVentanaEmisor ve = new JVentanaEmisor(escenario.obtenerTopologia(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     ve.ponerConfiguracion((TSenderNode) nt, true);
                     ve.show();
-                } else if (nt.obtenerTipo() == TTopologyNode.LER) {
+                } else if (nt.obtenerTipo() == TNode.LER) {
                     JVentanaLER vler = new JVentanaLER(escenario.obtenerTopologia(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     vler.ponerConfiguracion((TLERNode) nt, true);
                     vler.show();
-                } else if (nt.obtenerTipo() == TTopologyNode.LERA) {
+                } else if (nt.obtenerTipo() == TNode.LERA) {
                     JVentanaLERA vlera = new JVentanaLERA(escenario.obtenerTopologia(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     vlera.ponerConfiguracion((TLERANode) nt, true);
                     vlera.show();
-                } else if (nt.obtenerTipo() == TTopologyNode.LSR) {
+                } else if (nt.obtenerTipo() == TNode.LSR) {
                     JVentanaLSR vlsr = new JVentanaLSR(escenario.obtenerTopologia(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     vlsr.ponerConfiguracion((TLSRNode) nt, true);
                     vlsr.show();
-                } else if (nt.obtenerTipo() == TTopologyNode.LSRA) {
+                } else if (nt.obtenerTipo() == TNode.LSRA) {
                     JVentanaLSRA vlsra = new JVentanaLSRA(escenario.obtenerTopologia(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     vlsra.ponerConfiguracion((TLSRANode) nt, true);
                     vlsra.show();
-                } else if (nt.obtenerTipo() == TTopologyNode.RECEPTOR) {
+                } else if (nt.obtenerTipo() == TNode.RECEPTOR) {
                     JVentanaReceptor vr = new JVentanaReceptor(escenario.obtenerTopologia(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     vr.ponerConfiguracion((TReceiverNode) nt, true);
                     vr.show();
@@ -1252,9 +1252,9 @@ private void clicEnPopUpDisenioFondoVerNombreEnlaces(java.awt.event.ActionEvent 
  */
 private void clicEnPopUpDisenioFondoOcultarNombreNodos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoOcultarNombreNodos
     Iterator it = escenario.obtenerTopologia().obtenerIteradorNodos();
-    TTopologyNode nodoAux;
+    TNode nodoAux;
     while (it.hasNext()) {
-        nodoAux = (TTopologyNode) it.next();
+        nodoAux = (TNode) it.next();
         nodoAux.ponerMostrarNombre(false);
     }
     panelDisenio.repaint();
@@ -1268,9 +1268,9 @@ private void clicEnPopUpDisenioFondoOcultarNombreNodos(java.awt.event.ActionEven
  */
 private void clicEnPopUpDisenioFondoVerNombreNodos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoVerNombreNodos
     Iterator it = escenario.obtenerTopologia().obtenerIteradorNodos();
-    TTopologyNode nodoAux;
+    TNode nodoAux;
     while (it.hasNext()) {
-        nodoAux = (TTopologyNode) it.next();
+        nodoAux = (TNode) it.next();
         nodoAux.ponerMostrarNombre(true);
     }
     panelDisenio.repaint();
@@ -1392,8 +1392,8 @@ private void clicEnPopUpDisenioEliminar(java.awt.event.ActionEvent evt) {//GEN-F
     if (respuesta) {
         if (elementoDisenioClicDerecho != null) {
             if (elementoDisenioClicDerecho.obtenerTipoElemento() == TTopologyElement.NODO) {
-                TTopologyNode nt = (TTopologyNode) elementoDisenioClicDerecho;
-                if (nt.obtenerTipo() == TTopologyNode.RECEPTOR) {
+                TNode nt = (TNode) elementoDisenioClicDerecho;
+                if (nt.obtenerTipo() == TNode.RECEPTOR) {
                     if (this.escenario.obtenerTopologia().hayTraficoDirigidoAMi((TReceiverNode) nt)) {
                         JVentanaAdvertencia va;
                         va = new JVentanaAdvertencia(VentanaPadre, true, dispensadorDeImagenes);
@@ -1431,7 +1431,7 @@ private void clicEnPopUpDisenioEliminar(java.awt.event.ActionEvent evt) {//GEN-F
 private void clicEnPopUpDisenioVerNombre(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioVerNombre
     if (elementoDisenioClicDerecho != null) {
         if (elementoDisenioClicDerecho.obtenerTipoElemento() == TTopologyElement.NODO) {
-            TTopologyNode nt = (TTopologyNode) elementoDisenioClicDerecho;
+            TNode nt = (TNode) elementoDisenioClicDerecho;
             nt.ponerMostrarNombre(dVerNombreMenuItem.isSelected());
             elementoDisenioClicDerecho = null;
             panelDisenio.repaint();
@@ -1458,7 +1458,7 @@ private void clicDerechoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
         }
         else {
             if (et.obtenerTipoElemento() == TTopologyElement.NODO) {
-                TTopologyNode nt = (TTopologyNode) et;
+                TNode nt = (TNode) et;
                 dVerNombreMenuItem.setSelected(nt.obtenerMostrarNombre());
                 elementoDisenioClicDerecho = et;
                 diseElementoPopUp.show(this, evt.getX()+7, evt.getY()+15);
@@ -1590,7 +1590,7 @@ private void ratonSobrePanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIR
     if (et != null) {
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
         if (et.obtenerTipoElemento() == TTopologyElement.NODO) {
-            TTopologyNode nt = (TTopologyNode) et;
+            TNode nt = (TNode) et;
             if (nt.obtenerPuertos().getArtificiallyCongested()) {
                 panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.Congestion") +nt.obtenerPuertos().getCongestionLevel()+ java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.POrcentaje")+java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.paraDejarDeCongestionar"));
             } else {
@@ -1628,7 +1628,7 @@ private void ratonSobrePanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:
     if (et != null) {
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
         if (et.obtenerTipoElemento() == TTopologyElement.NODO) {
-            TTopologyNode nt = (TTopologyNode) et;
+            TNode nt = (TNode) et;
             panelDisenio.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.PanelDisenio.IP") + nt.getIPAddress());
         } else if (et.obtenerTipoElemento() == TTopologyElement.ENLACE) {
             TTopologyLink ent = (TTopologyLink) et;
@@ -1675,7 +1675,7 @@ private void arrastrandoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
 private void clicSoltadoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicSoltadoEnPanelDisenio
     if (evt.getButton() == MouseEvent.BUTTON1) {
         if (nodoSeleccionado != null) {
-            nodoSeleccionado.ponerEstado(TTopologyNode.DESELECCIONADO);
+            nodoSeleccionado.ponerEstado(TNode.DESELECCIONADO);
             nodoSeleccionado = null;
             this.escenario.ponerModificado(true);
         }
@@ -1693,7 +1693,7 @@ private void clicEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:even
         TTopology topo = escenario.obtenerTopologia();
         nodoSeleccionado = topo.obtenerNodoEnPosicion(evt.getPoint());
         if (nodoSeleccionado != null) {
-            nodoSeleccionado.ponerEstado(TTopologyNode.SELECCIONADO);
+            nodoSeleccionado.ponerEstado(TNode.SELECCIONADO);
             this.escenario.ponerModificado(true);
         }
         panelDisenio.repaint();
@@ -1996,11 +1996,11 @@ private void clicEnAniadirReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
 private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirEmisorDeTrafico
     TTopology t = escenario.obtenerTopologia();
     Iterator it = t.obtenerIteradorNodos();
-    TTopologyNode nt;
+    TNode nt;
     boolean hayDestino = false;
     while (it.hasNext()) {
-        nt = (TTopologyNode) it.next();
-        if (nt.obtenerTipo() == TTopologyNode.RECEPTOR)
+        nt = (TNode) it.next();
+        if (nt.obtenerTipo() == TNode.RECEPTOR)
             hayDestino = true;
     }
     if (!hayDestino) {
@@ -2121,13 +2121,13 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
      */    
     public void crearListaElementosEstadistica() {
         Iterator it = null;
-        TTopologyNode nt = null;
+        TNode nt = null;
         TTopologyLink et = null;
         this.selectorElementoEstadisticas.removeAllItems();
         this.selectorElementoEstadisticas.addItem("");
         it = this.escenario.obtenerTopologia().obtenerIteradorNodos();
         while (it.hasNext()) {
-            nt = (TTopologyNode) it.next();
+            nt = (TNode) it.next();
             if (nt.obtenerEstadisticas()) {
                 this.selectorElementoEstadisticas.addItem(nt.obtenerNombre());
             }
@@ -2325,7 +2325,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             this.etiquetaEstadisticasNombreAutor.setText(this.nombreAutor.getText());
             this.areaEstadisticasDescripcion.setText(this.descripcionEscenario.getText());
             this.etiquetaNombreElementoEstadistica.setText(nombre);
-            TTopologyNode nt = this.escenario.obtenerTopologia().obtenerPrimerNodoLlamado(nombre);
+            TNode nt = this.escenario.obtenerTopologia().obtenerPrimerNodoLlamado(nombre);
             gbc = new java.awt.GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 0;
@@ -2362,27 +2362,27 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
             this.panelAnalisis.add(this.panelFijo, gbc);
             if (nt != null) {
-                if (nt.obtenerTipo() == TTopologyNode.EMISOR) {
+                if (nt.obtenerTipo() == TNode.EMISOR) {
                     this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.EMISOR));
-                } else if (nt.obtenerTipo() == TTopologyNode.RECEPTOR) {
+                } else if (nt.obtenerTipo() == TNode.RECEPTOR) {
                     this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.RECEPTOR));
-                } else if (nt.obtenerTipo() == TTopologyNode.LER) {
+                } else if (nt.obtenerTipo() == TNode.LER) {
                     this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LER));
-                } else if (nt.obtenerTipo() == TTopologyNode.LERA) {
+                } else if (nt.obtenerTipo() == TNode.LERA) {
                     this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LERA));
-                } else if (nt.obtenerTipo() == TTopologyNode.LSR) {
+                } else if (nt.obtenerTipo() == TNode.LSR) {
                     this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LSR));
-                } else if (nt.obtenerTipo() == TTopologyNode.LSRA) {
+                } else if (nt.obtenerTipo() == TNode.LSRA) {
                     this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LSRA));
                 }
 
-                int numeroGraficos = nt.accederAEstadisticas().obtenerNumeroGraficas();
+                int numeroGraficos = nt.getStats().obtenerNumeroGraficas();
                 
                 if (numeroGraficos > 0) {
-                    grafico1 = ChartFactory.createXYLineChart(nt.accederAEstadisticas().obtenerTitulo1(), 
+                    grafico1 = ChartFactory.createXYLineChart(nt.getStats().obtenerTitulo1(), 
                                                              TStats.TIEMPO,
                                                              TStats.NUMERO_DE_PAQUETES,
-                                                             (XYSeriesCollection) nt.accederAEstadisticas().obtenerDatosGrafica1(),
+                                                             (XYSeriesCollection) nt.getStats().obtenerDatosGrafica1(),
                                                              PlotOrientation.VERTICAL, 
                                                              true, true, true);
 
@@ -2405,10 +2405,10 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
                     this.panelAnalisis.add(panelGrafico1, gbc);
                 }
                 if (numeroGraficos > 1) {
-                    grafico2 = ChartFactory.createXYLineChart(nt.accederAEstadisticas().obtenerTitulo2(), 
+                    grafico2 = ChartFactory.createXYLineChart(nt.getStats().obtenerTitulo2(), 
                                                              TStats.TIEMPO,
                                                              TStats.NUMERO_DE_PAQUETES,
-                                                             (XYSeriesCollection) nt.accederAEstadisticas().obtenerDatosGrafica2(),
+                                                             (XYSeriesCollection) nt.getStats().obtenerDatosGrafica2(),
                                                              PlotOrientation.VERTICAL, 
                                                              true, true, true);
                     grafico2.getPlot().setBackgroundPaint(Color.WHITE);
@@ -2430,10 +2430,10 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
                     this.panelAnalisis.add(panelGrafico2, gbc);
                 }
                 if (numeroGraficos > 2) {
-                    grafico3 = ChartFactory.createXYLineChart(nt.accederAEstadisticas().obtenerTitulo3(), 
+                    grafico3 = ChartFactory.createXYLineChart(nt.getStats().obtenerTitulo3(), 
                                                              TStats.TIEMPO,
                                                              TStats.NUMERO_DE_PAQUETES,
-                                                             (XYSeriesCollection) nt.accederAEstadisticas().obtenerDatosGrafica3(),
+                                                             (XYSeriesCollection) nt.getStats().obtenerDatosGrafica3(),
                                                              PlotOrientation.VERTICAL, 
                                                              true, true, true);
                     grafico3.getPlot().setBackgroundPaint(Color.WHITE);
@@ -2455,10 +2455,10 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
                     this.panelAnalisis.add(panelGrafico3, gbc);
                 }
                 if (numeroGraficos > 3) {
-                    grafico4 = ChartFactory.createBarChart(nt.accederAEstadisticas().obtenerTitulo4(), 
+                    grafico4 = ChartFactory.createBarChart(nt.getStats().obtenerTitulo4(), 
                                                              TStats.DESCRIPCION,
                                                              TStats.NUMERO,
-                                                             (DefaultCategoryDataset) nt.accederAEstadisticas().obtenerDatosGrafica4(),
+                                                             (DefaultCategoryDataset) nt.getStats().obtenerDatosGrafica4(),
                                                              PlotOrientation.VERTICAL, 
                                                              true, true, true);
                     grafico4.getPlot().setBackgroundPaint(Color.WHITE);
@@ -2479,10 +2479,10 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
                     this.panelAnalisis.add(panelGrafico4, gbc);
                 }
                 if (numeroGraficos > 4) {
-                    grafico5 = ChartFactory.createBarChart(nt.accederAEstadisticas().obtenerTitulo5(), 
+                    grafico5 = ChartFactory.createBarChart(nt.getStats().obtenerTitulo5(), 
                                                              TStats.DESCRIPCION,
                                                              TStats.NUMERO,
-                                                             (DefaultCategoryDataset) nt.accederAEstadisticas().obtenerDatosGrafica5(),
+                                                             (DefaultCategoryDataset) nt.getStats().obtenerDatosGrafica5(),
                                                              PlotOrientation.VERTICAL, 
                                                              true, true, true);
                     grafico5.getPlot().setBackgroundPaint(Color.WHITE);
@@ -2503,10 +2503,10 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
                     this.panelAnalisis.add(panelGrafico5, gbc);
                 }
                 if (numeroGraficos > 5) {
-                    grafico6 = ChartFactory.createXYLineChart(nt.accederAEstadisticas().obtenerTitulo6(), 
+                    grafico6 = ChartFactory.createXYLineChart(nt.getStats().obtenerTitulo6(), 
                                                              TStats.TIEMPO,
                                                              TStats.NUMERO_DE_PAQUETES,
-                                                             (XYSeriesCollection) nt.accederAEstadisticas().obtenerDatosGrafica6(),
+                                                             (XYSeriesCollection) nt.getStats().obtenerDatosGrafica6(),
                                                              PlotOrientation.VERTICAL, 
                                                              true, true, true);
                     grafico6.getPlot().setBackgroundPaint(Color.WHITE);
@@ -2558,7 +2558,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
      * se est� arrastrando.
      * @since 1.0
      */
-    private TTopologyNode nodoSeleccionado;
+    private TNode nodoSeleccionado;
     /** Este atributo contendr� todas las im�genes de Open SimMPLS para poder acceder a
      * ellas de forma m�s r�pida y para no tener que cargar la misma imagen en
      * distintas instancias.

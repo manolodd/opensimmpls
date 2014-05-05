@@ -34,23 +34,23 @@ public class TPDUMPLS extends TPDU {
      */    
     public TPDUMPLS obtenerCopia() {
         long id = this.obtenerIdentificador();
-        String IPo = new String(this.obtenerCabecera().obtenerIPOrigen());
-        String IPd = new String(this.obtenerCabecera().obtenerIPDestino());
+        String IPo = new String(this.getHeader().obtenerIPOrigen());
+        String IPd = new String(this.getHeader().obtenerIPDestino());
         int tamD = this.datosTCP.obtenerTamanio() - 20;
         TPDUMPLS clon = new TPDUMPLS(id, IPo, IPd, tamD);
-        if (this.obtenerCabecera().obtenerCampoOpciones().estaUsado()) {
-            int nivelGoS = this.obtenerCabecera().obtenerCampoOpciones().obtenerNivelGoS();
-            clon.obtenerCabecera().obtenerCampoOpciones().ponerNivelGoS(nivelGoS);
-            int idGoS = this.obtenerCabecera().obtenerCampoOpciones().obtenerIDPaqueteGoS();
-            clon.obtenerCabecera().obtenerCampoOpciones().ponerIDPaqueteGoS(idGoS);
-            if (this.obtenerCabecera().obtenerCampoOpciones().tieneMarcasDePaso()) {
-                int numMarcas = this.obtenerCabecera().obtenerCampoOpciones().obtenerNumeroDeNodosActivosAtravesados();
+        if (this.getHeader().getOptionsField().isUsed()) {
+            int nivelGoS = this.getHeader().getOptionsField().getEncodedGoSLevel();
+            clon.getHeader().getOptionsField().ponerNivelGoS(nivelGoS);
+            int idGoS = this.getHeader().getOptionsField().obtenerIDPaqueteGoS();
+            clon.getHeader().getOptionsField().ponerIDPaqueteGoS(idGoS);
+            if (this.getHeader().getOptionsField().tieneMarcasDePaso()) {
+                int numMarcas = this.getHeader().getOptionsField().obtenerNumeroDeNodosActivosAtravesados();
 		int i=0;
                 String marcaActual = null;
 		for (i=0; i< numMarcas; i++) {
-                    marcaActual = this.obtenerCabecera().obtenerCampoOpciones().obtenerActivoNodoAtravesado(i);
+                    marcaActual = this.getHeader().getOptionsField().obtenerActivoNodoAtravesado(i);
                     if (marcaActual != null) {
-                        clon.obtenerCabecera().obtenerCampoOpciones().ponerNodoAtravesado(new String(marcaActual));
+                        clon.getHeader().getOptionsField().ponerNodoAtravesado(new String(marcaActual));
                     }
                 }
             }
@@ -60,19 +60,19 @@ public class TPDUMPLS extends TPDU {
         TEtiquetaMPLS etiquetaNuevaClon = null;
         LinkedList pilaEtiquetasLocal = new LinkedList();
         LinkedList pilaEtiquetasClon = new LinkedList();
-        while (this.obtenerPilaEtiquetas().obtenerTamanio() > 0) {
-            etiquetaActual = this.obtenerPilaEtiquetas().obtenerEtiqueta();
-            this.obtenerPilaEtiquetas().borrarEtiqueta();
+        while (this.getLabelStack().obtenerTamanio() > 0) {
+            etiquetaActual = this.getLabelStack().getTop();
+            this.getLabelStack().borrarEtiqueta();
             int idEtiq = etiquetaActual.obtenerIdentificador();
             etiquetaNuevaLocal = new TEtiquetaMPLS(idEtiq);
             etiquetaNuevaLocal.ponerBoS(etiquetaActual.obtenerBoS());
-            etiquetaNuevaLocal.ponerEXP(etiquetaActual.obtenerEXP());
-            etiquetaNuevaLocal.ponerLabel(etiquetaActual.obtenerLabel());
+            etiquetaNuevaLocal.ponerEXP(etiquetaActual.getEXPField());
+            etiquetaNuevaLocal.setLabelField(etiquetaActual.getLabelField());
             etiquetaNuevaLocal.ponerTTL(etiquetaActual.obtenerTTL());
             etiquetaNuevaClon = new TEtiquetaMPLS(idEtiq);
             etiquetaNuevaClon.ponerBoS(etiquetaActual.obtenerBoS());
-            etiquetaNuevaClon.ponerEXP(etiquetaActual.obtenerEXP());
-            etiquetaNuevaClon.ponerLabel(etiquetaActual.obtenerLabel());
+            etiquetaNuevaClon.ponerEXP(etiquetaActual.getEXPField());
+            etiquetaNuevaClon.setLabelField(etiquetaActual.getLabelField());
             etiquetaNuevaClon.ponerTTL(etiquetaActual.obtenerTTL());
             if (pilaEtiquetasLocal.size() == 0) {
                 pilaEtiquetasLocal.add(etiquetaNuevaLocal);
@@ -86,10 +86,10 @@ public class TPDUMPLS extends TPDU {
             }
         }
         while (pilaEtiquetasLocal.size() > 0) {
-            this.obtenerPilaEtiquetas().ponerEtiqueta((TEtiquetaMPLS) pilaEtiquetasLocal.removeFirst());
+            this.getLabelStack().ponerEtiqueta((TEtiquetaMPLS) pilaEtiquetasLocal.removeFirst());
         }
         while (pilaEtiquetasClon.size() > 0) {
-            clon.obtenerPilaEtiquetas().ponerEtiqueta((TEtiquetaMPLS) pilaEtiquetasClon.removeFirst());
+            clon.getLabelStack().ponerEtiqueta((TEtiquetaMPLS) pilaEtiquetasClon.removeFirst());
         }
         return clon;
     }
@@ -100,7 +100,7 @@ public class TPDUMPLS extends TPDU {
      */
     public int getSize() {
         int tam = 0;
-        tam += super.obtenerCabecera().obtenerTamanio();
+        tam += super.getHeader().obtenerTamanio();
         tam += this.datosTCP.obtenerTamanio();
         tam += (4 * this.pilaEtiquetas.obtenerTamanio());
         return (tam);
@@ -111,7 +111,7 @@ public class TPDUMPLS extends TPDU {
      * @return La constante MPLS.
      * @since 1.0
      */
-    public int obtenerTipo() {
+    public int getType() {
         return super.MPLS;
     }
     
@@ -138,7 +138,7 @@ public class TPDUMPLS extends TPDU {
      * @return La pila de etiquetas del paquete MPLS.
      * @since 1.0
      */
-    public TPilaEtiquetasMPLS obtenerPilaEtiquetas() {
+    public TPilaEtiquetasMPLS getLabelStack() {
         return pilaEtiquetas;
     }
     
@@ -158,7 +158,7 @@ public class TPDUMPLS extends TPDU {
      * @return El subtipo el paquete MPLS.
      * @since 1.0
      */
-    public int obtenerSubTipo() {
+    public int getSubtype() {
         return subtipo;
     }
     

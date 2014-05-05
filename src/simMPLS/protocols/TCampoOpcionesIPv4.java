@@ -69,7 +69,7 @@ public class TCampoOpcionesIPv4 {
      * @return true, si el campo opciones est� siendo usado. false en caso contrario.
      * @since 1.0
      */
-    public boolean estaUsado() {
+    public boolean isUsed() {
         return this.campoUsado;
     }
     
@@ -80,7 +80,7 @@ public class TCampoOpcionesIPv4 {
      * la clase TPDU.
      * @since 1.0
      */
-    public int obtenerNivelGoS() {
+    public int getEncodedGoSLevel() {
         return this.nivelGoS;
     }
     

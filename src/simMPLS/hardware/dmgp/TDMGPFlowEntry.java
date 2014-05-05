@@ -181,14 +181,14 @@ public class TDMGPFlowEntry implements Comparable {
         this.monitor.lock();
         int availableOctects = this.assignedOctects - this.usedOctects;
         if (availableOctects >= packet.getSize()) {
-            TDMGPEntry dmgpEntry = new TDMGPEntry(idGenerator.obtenerNuevo());
+            TDMGPEntry dmgpEntry = new TDMGPEntry(idGenerator.getNextID());
             dmgpEntry.setPacket(packet);
             this.usedOctects += packet.getSize();
             this.entries.add(dmgpEntry);
         } else {
             if (usedOctects >= packet.getSize()) {
                 releaseMemory(packet.getSize());
-                TDMGPEntry dmgpEntry = new TDMGPEntry(idGenerator.obtenerNuevo());
+                TDMGPEntry dmgpEntry = new TDMGPEntry(idGenerator.getNextID());
                 dmgpEntry.setPacket(packet);
                 this.usedOctects += packet.getSize();
                 this.entries.add(dmgpEntry);

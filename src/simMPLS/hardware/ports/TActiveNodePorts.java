@@ -1,7 +1,7 @@
 package simMPLS.hardware.ports;
 
 import simMPLS.scenario.TTopologyLink;
-import simMPLS.scenario.TTopologyNode;
+import simMPLS.scenario.TNode;
 import simMPLS.protocols.TPDU;
 
 /**
@@ -23,7 +23,7 @@ public class TActiveNodePorts extends TNodePorts {
      * belongs to.
      * @since 1.0
      */
-    public TActiveNodePorts(int numberOfPorts, TTopologyNode activeNode) {
+    public TActiveNodePorts(int numberOfPorts, TNode activeNode) {
         super(numberOfPorts, activeNode);
         this.ports = new TActivePort[numberOfPorts];
         int i = 0;
@@ -56,7 +56,7 @@ public class TActiveNodePorts extends TNodePorts {
                     while ((portsCounter < this.numberOfPorts) && (!end)) {
                         auxReadPort = (this.readPort + portsCounter) % this.numberOfPorts;
                         if (this.ports[auxReadPort].thereIsAPacketWaiting()) {
-                            auxPriority = ((TActivePort) this.ports[auxReadPort]).obtenerPrioridadSiguientePaquete();
+                            auxPriority = ((TActivePort) this.ports[auxReadPort]).getNextPacketPriority();
                             if (auxPriority == auxCurrentPriority) {
                                 this.readPort = auxReadPort;
                                 this.currentPriority = auxCurrentPriority;
@@ -468,15 +468,15 @@ public class TActiveNodePorts extends TNodePorts {
         long computationOf97Percent = (long) (this.getBufferSizeInMB() * 1017118.72);
         if (congestArtificially) {
             if (!this.artificiallyCongested) {
-                if (this.getPortSetOccupancySize() < computationOf97Percent) {
+                if (this.getPortSetOccupancy() < computationOf97Percent) {
                     this.artificiallyCongested = true;
-                    this.occupancy = this.getPortSetOccupancySize();
+                    this.occupancy = this.getPortSetOccupancy();
                     this.setPortSetOccupancySize(computationOf97Percent);
                 }
             }
         } else {
             if (this.artificiallyCongested) {
-                this.occupancy += (getPortSetOccupancySize() - computationOf97Percent);
+                this.occupancy += (getPortSetOccupancy() - computationOf97Percent);
                 if (this.occupancy < 0) {
                     this.occupancy = 0;
                 }

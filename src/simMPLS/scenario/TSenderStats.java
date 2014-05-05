@@ -118,9 +118,9 @@ public class TSenderStats extends TStats {
      * de �l o es descartado.
      * @since 1.0
      */    
-    public void crearEstadistica(TPDU paquete, int entrada) {
+    public void addStatsEntry(TPDU paquete, int entrada) {
         if (this.estadisticasActivas) {
-            int tipoPaquete = paquete.obtenerSubTipo();
+            int tipoPaquete = paquete.getSubtype();
             int GoS = 0;
             if (tipoPaquete == TPDU.MPLS) {
                 if (entrada == TStats.SALIDA) {
@@ -129,25 +129,25 @@ public class TSenderStats extends TStats {
                     this.tDMPLS++;
                 }
             } else if (tipoPaquete == TPDU.MPLS_GOS) {
-                GoS = paquete.obtenerCabecera().obtenerCampoOpciones().obtenerNivelGoS();
+                GoS = paquete.getHeader().getOptionsField().getEncodedGoSLevel();
                 if (entrada == TStats.SALIDA) {
-                    if ((GoS == TPDU.EXP_NIVEL0_SINLSP) || (GoS == TPDU.EXP_NIVEL0_CONLSP)) {
+                    if ((GoS == TPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tSMPLS++;
-                    } else if ((GoS == TPDU.EXP_NIVEL1_SINLSP) || (GoS == TPDU.EXP_NIVEL1_CONLSP)) {
+                    } else if ((GoS == TPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
                         this.tSMPLS_GOS1++;
-                    } else if ((GoS == TPDU.EXP_NIVEL2_SINLSP) || (GoS == TPDU.EXP_NIVEL2_CONLSP)) {
+                    } else if ((GoS == TPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
                         this.tSMPLS_GOS2++;
-                    } else if ((GoS == TPDU.EXP_NIVEL3_SINLSP) || (GoS == TPDU.EXP_NIVEL3_CONLSP)) {
+                    } else if ((GoS == TPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.tSMPLS_GOS3++;
                     }
                 } else if (entrada == TStats.DESCARTE) {
-                    if ((GoS == TPDU.EXP_NIVEL0_SINLSP) || (GoS == TPDU.EXP_NIVEL0_CONLSP)) {
+                    if ((GoS == TPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tDMPLS++;
-                    } else if ((GoS == TPDU.EXP_NIVEL1_SINLSP) || (GoS == TPDU.EXP_NIVEL1_CONLSP)) {
+                    } else if ((GoS == TPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
                         this.tDMPLS_GOS1++;
-                    } else if ((GoS == TPDU.EXP_NIVEL2_SINLSP) || (GoS == TPDU.EXP_NIVEL2_CONLSP)) {
+                    } else if ((GoS == TPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
                         this.tDMPLS_GOS2++;
-                    } else if ((GoS == TPDU.EXP_NIVEL3_SINLSP) || (GoS == TPDU.EXP_NIVEL3_CONLSP)) {
+                    } else if ((GoS == TPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.tDMPLS_GOS3++;
                     }
                 }
@@ -158,25 +158,25 @@ public class TSenderStats extends TStats {
                     this.tDIPV4++;
                 }
             } else if (tipoPaquete == TPDU.IPV4_GOS) {
-                GoS = paquete.obtenerCabecera().obtenerCampoOpciones().obtenerNivelGoS();
+                GoS = paquete.getHeader().getOptionsField().getEncodedGoSLevel();
                 if (entrada == TStats.SALIDA) {
-                    if ((GoS == TPDU.EXP_NIVEL0_SINLSP) || (GoS == TPDU.EXP_NIVEL0_CONLSP)) {
+                    if ((GoS == TPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tSIPV4++;
-                    } else if ((GoS == TPDU.EXP_NIVEL1_SINLSP) || (GoS == TPDU.EXP_NIVEL1_CONLSP)) {
+                    } else if ((GoS == TPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
                         this.tSIPV4_GOS1++;
-                    } else if ((GoS == TPDU.EXP_NIVEL2_SINLSP) || (GoS == TPDU.EXP_NIVEL2_CONLSP)) {
+                    } else if ((GoS == TPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
                         this.tSIPV4_GOS2++;
-                    } else if ((GoS == TPDU.EXP_NIVEL3_SINLSP) || (GoS == TPDU.EXP_NIVEL3_CONLSP)) {
+                    } else if ((GoS == TPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.tSIPV4_GOS3++;
                     }
                 } else if (entrada == TStats.DESCARTE) {
-                    if ((GoS == TPDU.EXP_NIVEL0_SINLSP) || (GoS == TPDU.EXP_NIVEL0_CONLSP)) {
+                    if ((GoS == TPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tDIPV4++;
-                    } else if ((GoS == TPDU.EXP_NIVEL1_SINLSP) || (GoS == TPDU.EXP_NIVEL1_CONLSP)) {
+                    } else if ((GoS == TPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
                         this.tDIPV4_GOS1++;
-                    } else if ((GoS == TPDU.EXP_NIVEL2_SINLSP) || (GoS == TPDU.EXP_NIVEL2_CONLSP)) {
+                    } else if ((GoS == TPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
                         this.tDIPV4_GOS2++;
-                    } else if ((GoS == TPDU.EXP_NIVEL3_SINLSP) || (GoS == TPDU.EXP_NIVEL3_CONLSP)) {
+                    } else if ((GoS == TPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.tDIPV4_GOS3++;
                     }
                 }

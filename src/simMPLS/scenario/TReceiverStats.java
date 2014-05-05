@@ -114,9 +114,9 @@ public class TReceiverStats extends TStats {
      * de �l o es descartado.
      * @since 1.0
      */    
-    public void crearEstadistica(TPDU paquete, int entrada) {
+    public void addStatsEntry(TPDU paquete, int entrada) {
         if (this.estadisticasActivas) {
-            int tipoPaquete = paquete.obtenerSubTipo();
+            int tipoPaquete = paquete.getSubtype();
             int GoS = 0;
             if (tipoPaquete == TPDU.GPSRP) {
                 if (entrada == TStats.ENTRADA) {
@@ -127,15 +127,15 @@ public class TReceiverStats extends TStats {
                     this.tEMPLS++;
                 }
             } else if (tipoPaquete == TPDU.MPLS_GOS) {
-                GoS = paquete.obtenerCabecera().obtenerCampoOpciones().obtenerNivelGoS();
+                GoS = paquete.getHeader().getOptionsField().getEncodedGoSLevel();
                 if (entrada == TStats.ENTRADA) {
-                    if ((GoS == TPDU.EXP_NIVEL0_SINLSP) || (GoS == TPDU.EXP_NIVEL0_CONLSP)) {
+                    if ((GoS == TPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tEMPLS++;
-                    } else if ((GoS == TPDU.EXP_NIVEL1_SINLSP) || (GoS == TPDU.EXP_NIVEL1_CONLSP)) {
+                    } else if ((GoS == TPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
                         this.tEMPLS_GOS1++;
-                    } else if ((GoS == TPDU.EXP_NIVEL2_SINLSP) || (GoS == TPDU.EXP_NIVEL2_CONLSP)) {
+                    } else if ((GoS == TPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
                         this.tEMPLS_GOS2++;
-                    } else if ((GoS == TPDU.EXP_NIVEL3_SINLSP) || (GoS == TPDU.EXP_NIVEL3_CONLSP)) {
+                    } else if ((GoS == TPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.tEMPLS_GOS3++;
                     }
                 }
@@ -144,15 +144,15 @@ public class TReceiverStats extends TStats {
                     this.tEIPV4++;
                 }
             } else if (tipoPaquete == TPDU.IPV4_GOS) {
-                GoS = paquete.obtenerCabecera().obtenerCampoOpciones().obtenerNivelGoS();
+                GoS = paquete.getHeader().getOptionsField().getEncodedGoSLevel();
                 if (entrada == TStats.ENTRADA) {
-                    if ((GoS == TPDU.EXP_NIVEL0_SINLSP) || (GoS == TPDU.EXP_NIVEL0_CONLSP)) {
+                    if ((GoS == TPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tEIPV4++;
-                    } else if ((GoS == TPDU.EXP_NIVEL1_SINLSP) || (GoS == TPDU.EXP_NIVEL1_CONLSP)) {
+                    } else if ((GoS == TPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
                         this.tEIPV4_GOS1++;
-                    } else if ((GoS == TPDU.EXP_NIVEL2_SINLSP) || (GoS == TPDU.EXP_NIVEL2_CONLSP)) {
+                    } else if ((GoS == TPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
                         this.tEIPV4_GOS2++;
-                    } else if ((GoS == TPDU.EXP_NIVEL3_SINLSP) || (GoS == TPDU.EXP_NIVEL3_CONLSP)) {
+                    } else if ((GoS == TPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.tEIPV4_GOS3++;
                     }
                 }

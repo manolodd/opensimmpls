@@ -41,7 +41,7 @@ import org.jfree.data.*;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TLSRANode extends TTopologyNode implements ITimerEventListener, Runnable {
+public class TLSRANode extends TNode implements ITimerEventListener, Runnable {
     
     /**
      * Crea una nueva instancia de TNodoLSR
@@ -185,7 +185,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
     
     /**
      * Este m�todo permite obtener el tipo del nodo.
-     * @return TTopologyNode.LSR, indicando que se trata de un nodo LSR.
+     * @return TNode.LSR, indicando que se trata de un nodo LSR.
      * @since 1.0
      */
     public int obtenerTipo() {
@@ -217,14 +217,14 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
     public void run() {
         // Acciones a llevar a cabo durante el tic.
         try {
-            this.generarEventoSimulacion(new TSENodeCongested(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), this.obtenerPuertos().getCongestionLevel()));
+            this.generarEventoSimulacion(new TSENodeCongested(this, this.gILargo.getNextID(), this.getAvailableTime(), this.obtenerPuertos().getCongestionLevel()));
         } catch (Exception e) {
             e.printStackTrace();
         }
         comprobarElEstadoDeLasComunicaciones();
         decrementarContadores();
         conmutarPaquete();
-        estadisticas.asentarDatos(this.obtenerInstanteDeTiempo());
+        estadisticas.asentarDatos(this.getAvailableTime());
         // Acciones a llevar a cabo durante el tic.
     }
     
@@ -351,15 +351,15 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
             paquete = this.puertos.isAnyPacketWaiting();
             puertoLeido = puertos.getReadPort();
             if (paquete != null) {
-                if (paquete.obtenerTipo() == TPDU.TLDP) {
+                if (paquete.getType() == TPDU.TLDP) {
                     conmutarTLDP((TPDUTLDP) paquete, puertoLeido);
-                } else if (paquete.obtenerTipo() == TPDU.MPLS) {
+                } else if (paquete.getType() == TPDU.MPLS) {
                     conmutarMPLS((TPDUMPLS) paquete, puertoLeido);
-                } else if (paquete.obtenerTipo() == TPDU.GPSRP) {
+                } else if (paquete.getType() == TPDU.GPSRP) {
                     conmutarGPSRP((TPDUGPSRP) paquete, puertoLeido);
                 } else {
                     this.nsDisponibles += obtenerNsUsadosTotalOctetos(paquete.getSize());
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 }
                 this.nsDisponibles -= obtenerNsUsadosTotalOctetos(paquete.getSize());
                 octetosQuePuedoMandar = this.obtenerOctetosTransmitibles();
@@ -383,7 +383,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
             int mensaje = paquete.obtenerDatosGPSRP().obtenerMensaje();
             int flujo = paquete.obtenerDatosGPSRP().obtenerFlujo();
             int idPaquete = paquete.obtenerDatosGPSRP().obtenerIdPaquete();
-            String IPDestinoFinal = paquete.obtenerCabecera().obtenerIPDestino();
+            String IPDestinoFinal = paquete.getHeader().obtenerIPDestino();
             TActivePort pSalida = null;
             if (IPDestinoFinal.equals(this.getIPAddress())) {
                 if (mensaje == TDatosGPSRP.SOLICITUD_RETRANSMISION) {
@@ -399,12 +399,12 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                 if (pSalida != null) {
                     pSalida.ponerPaqueteEnEnlace(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     try {
-                        this.generarEventoSimulacion(new TSEPacketRouted(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.GPSRP));
+                        this.generarEventoSimulacion(new TSEPacketRouted(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.GPSRP));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
-                    this.descartarPaquete(paquete);
+                    this.discardPacket(paquete);
                 }
             }
         }
@@ -426,7 +426,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
             if (puertoSalida != null) {
                 puertoSalida.ponerPaqueteEnEnlace(paqueteBuscado, puertoSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                 try {
-                    this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), paqueteBuscado.obtenerSubTipo()));
+                    this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), paqueteBuscado.getSubtype()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -480,7 +480,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
      * @param pSalida Puerto por el que se debe encaminar la petici�n.
      * @since 1.0
      */
-    public void solicitarGPSRP(TPDUMPLS paquete, int pSalida) {
+    public void runGoSPDUStoreAndRetransmitProtocol(TPDUMPLS paquete, int pSalida) {
         TGPSRPRequestEntry ep = null;
         ep = this.peticionesGPSRP.addEntry(paquete, pSalida);
         if (ep != null) {
@@ -489,7 +489,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
             String IPDestino = ep.getCrossedNodeIP();
             if (IPDestino != null) {
                 try {
-                    paqueteGPSRP = new TPDUGPSRP(gIdent.obtenerNuevo(), this.getIPAddress(), IPDestino);
+                    paqueteGPSRP = new TPDUGPSRP(gIdent.getNextID(), this.getIPAddress(), IPDestino);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -498,8 +498,8 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                 paqueteGPSRP.obtenerDatosGPSRP().ponerMensaje(TDatosGPSRP.SOLICITUD_RETRANSMISION);
                 puertoSalida.ponerPaqueteEnEnlace(paqueteGPSRP, puertoSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                 try {
-                    this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.GPSRP, paqueteGPSRP.getSize()));
-                    this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.GPSRP));
+                    this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.GPSRP, paqueteGPSRP.getSize()));
+                    this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.GPSRP));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -520,7 +520,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
         TPDUGPSRP paqueteGPSRP = null;
         if (IPDestino != null) {
             try {
-                paqueteGPSRP = new TPDUGPSRP(gIdent.obtenerNuevo(), this.getIPAddress(), IPDestino);
+                paqueteGPSRP = new TPDUGPSRP(gIdent.getNextID(), this.getIPAddress(), IPDestino);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -529,8 +529,8 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
             paqueteGPSRP.obtenerDatosGPSRP().ponerMensaje(TDatosGPSRP.SOLICITUD_RETRANSMISION);
             puertoSalida.ponerPaqueteEnEnlace(paqueteGPSRP, puertoSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
             try {
-                this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.GPSRP, paqueteGPSRP.getSize()));
-                this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.GPSRP));
+                this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.GPSRP, paqueteGPSRP.getSize()));
+                this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.GPSRP));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -548,7 +548,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
         if (puertoSalida != null) {
             TPDUGPSRP paqueteGPSRP = null;
             try {
-                paqueteGPSRP = new TPDUGPSRP(gIdent.obtenerNuevo(), this.getIPAddress(), paquete.obtenerCabecera().obtenerIPOrigen());
+                paqueteGPSRP = new TPDUGPSRP(gIdent.getNextID(), this.getIPAddress(), paquete.getHeader().obtenerIPOrigen());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -557,13 +557,13 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
             paqueteGPSRP.obtenerDatosGPSRP().ponerMensaje(TDatosGPSRP.RETRANSMISION_NO);
             puertoSalida.ponerPaqueteEnEnlace(paqueteGPSRP, puertoSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
             try {
-                this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.GPSRP, paqueteGPSRP.getSize()));
-                this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.GPSRP));
+                this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.GPSRP, paqueteGPSRP.getSize()));
+                this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.GPSRP));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            descartarPaquete(paquete);
+            discardPacket(paquete);
         }
     }
     
@@ -578,7 +578,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
         if (puertoSalida != null) {
             TPDUGPSRP paqueteGPSRP = null;
             try {
-                paqueteGPSRP = new TPDUGPSRP(gIdent.obtenerNuevo(), this.getIPAddress(), paquete.obtenerCabecera().obtenerIPOrigen());
+                paqueteGPSRP = new TPDUGPSRP(gIdent.getNextID(), this.getIPAddress(), paquete.getHeader().obtenerIPOrigen());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -587,13 +587,13 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
             paqueteGPSRP.obtenerDatosGPSRP().ponerMensaje(TDatosGPSRP.RETRANSMISION_OK);
             puertoSalida.ponerPaqueteEnEnlace(paqueteGPSRP, puertoSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
             try {
-                this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.GPSRP, paqueteGPSRP.getSize()));
-                this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.GPSRP));
+                this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.GPSRP, paqueteGPSRP.getSize()));
+                this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.GPSRP));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            descartarPaquete(paquete);
+            discardPacket(paquete);
         }
     }
     
@@ -628,87 +628,87 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
         TSwitchingMatrixEntry emc = null;
         boolean conEtiqueta1 = false;
         boolean requiereLSPDeRespaldo = false;
-        if (paquete.obtenerPilaEtiquetas().obtenerEtiqueta().obtenerLabel() == 1) {
-            eMPLS = paquete.obtenerPilaEtiquetas().obtenerEtiqueta();
-            paquete.obtenerPilaEtiquetas().borrarEtiqueta();
+        if (paquete.getLabelStack().getTop().getLabelField() == 1) {
+            eMPLS = paquete.getLabelStack().getTop();
+            paquete.getLabelStack().borrarEtiqueta();
             conEtiqueta1 = true;
-            if ((eMPLS.obtenerEXP() == TPDU.EXP_NIVEL0_CONLSP) ||
-            (eMPLS.obtenerEXP() == TPDU.EXP_NIVEL1_CONLSP) ||
-            (eMPLS.obtenerEXP() == TPDU.EXP_NIVEL2_CONLSP) ||
-            (eMPLS.obtenerEXP() == TPDU.EXP_NIVEL3_CONLSP)) {
+            if ((eMPLS.getEXPField() == TPDU.EXP_LEVEL0_WITH_BACKUP_LSP) ||
+            (eMPLS.getEXPField() == TPDU.EXP_LEVEL1_WITH_BACKUP_LSP) ||
+            (eMPLS.getEXPField() == TPDU.EXP_LEVEL2_WITH_BACKUP_LSP) ||
+            (eMPLS.getEXPField() == TPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                 requiereLSPDeRespaldo = true;
             }
         }
-        int valorLABEL = paquete.obtenerPilaEtiquetas().obtenerEtiqueta().obtenerLabel();
-        String IPDestinoFinal = paquete.obtenerCabecera().obtenerIPDestino();
+        int valorLABEL = paquete.getLabelStack().getTop().getLabelField();
+        String IPDestinoFinal = paquete.getHeader().obtenerIPDestino();
         emc = matrizConmutacion.obtenerEntrada(pEntrada, valorLABEL, TSwitchingMatrixEntry.LABEL);
         if (emc == null) {
             if (conEtiqueta1) {
-                paquete.obtenerPilaEtiquetas().ponerEtiqueta(eMPLS);
+                paquete.getLabelStack().ponerEtiqueta(eMPLS);
             }
-            descartarPaquete(paquete);
+            discardPacket(paquete);
         } else {
             int etiquetaActual = emc.obtenerEtiqueta();
             if (etiquetaActual == TSwitchingMatrixEntry.SIN_DEFINIR) {
                 emc.ponerEtiqueta(TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA);
                 solicitarTLDP(emc);
                 if (conEtiqueta1) {
-                    paquete.obtenerPilaEtiquetas().ponerEtiqueta(eMPLS);
+                    paquete.getLabelStack().ponerEtiqueta(eMPLS);
                 }
                 this.puertos.getPort(emc.obtenerPuertoEntrada()).reEnqueuePacket(paquete);
             } else if (etiquetaActual == TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA) {
                 if (conEtiqueta1) {
-                    paquete.obtenerPilaEtiquetas().ponerEtiqueta(eMPLS);
+                    paquete.getLabelStack().ponerEtiqueta(eMPLS);
                 }
                 this.puertos.getPort(emc.obtenerPuertoEntrada()).reEnqueuePacket(paquete);
             } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_DENEGADA) {
                 if (conEtiqueta1) {
-                    paquete.obtenerPilaEtiquetas().ponerEtiqueta(eMPLS);
+                    paquete.getLabelStack().ponerEtiqueta(eMPLS);
                 }
-                descartarPaquete(paquete);
+                discardPacket(paquete);
             } else if (etiquetaActual == TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA) {
                 if (conEtiqueta1) {
-                    paquete.obtenerPilaEtiquetas().ponerEtiqueta(eMPLS);
+                    paquete.getLabelStack().ponerEtiqueta(eMPLS);
                 }
-                descartarPaquete(paquete);
+                discardPacket(paquete);
             } else if ((etiquetaActual > 15) || (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA)) {
                 int operacion = emc.obtenerOperacion();
                 if (operacion == TSwitchingMatrixEntry.SIN_DEFINIR) {
                     if (conEtiqueta1) {
-                        paquete.obtenerPilaEtiquetas().ponerEtiqueta(eMPLS);
+                        paquete.getLabelStack().ponerEtiqueta(eMPLS);
                     }
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else {
                     if (operacion == TSwitchingMatrixEntry.PONER_ETIQUETA) {
                         TEtiquetaMPLS empls = new TEtiquetaMPLS();
                         empls.ponerBoS(false);
                         empls.ponerEXP(0);
-                        empls.ponerLabel(emc.obtenerEtiqueta());
-                        empls.ponerTTL(paquete.obtenerPilaEtiquetas().obtenerEtiqueta().obtenerTTL()-1);
-                        paquete.obtenerPilaEtiquetas().ponerEtiqueta(empls);
+                        empls.setLabelField(emc.obtenerEtiqueta());
+                        empls.ponerTTL(paquete.getLabelStack().getTop().obtenerTTL()-1);
+                        paquete.getLabelStack().ponerEtiqueta(empls);
                         if (conEtiqueta1) {
-                            paquete.obtenerPilaEtiquetas().ponerEtiqueta(eMPLS);
-                            paquete.obtenerCabecera().obtenerCampoOpciones().ponerNodoAtravesado(this.getIPAddress());
+                            paquete.getLabelStack().ponerEtiqueta(eMPLS);
+                            paquete.getHeader().getOptionsField().ponerNodoAtravesado(this.getIPAddress());
                             dmgp.addPacket(paquete);
                         }
                         TPort pSalida = puertos.getPort(emc.obtenerPuertoSalida());
                         pSalida.ponerPaqueteEnEnlace(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
-                            this.generarEventoSimulacion(new TSEPacketSwitched(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), paquete.obtenerSubTipo()));
+                            this.generarEventoSimulacion(new TSEPacketSwitched(this, this.gILargo.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     } else if (operacion == TSwitchingMatrixEntry.QUITAR_ETIQUETA) {
-                        paquete.obtenerPilaEtiquetas().borrarEtiqueta();
+                        paquete.getLabelStack().borrarEtiqueta();
                         if (conEtiqueta1) {
-                            paquete.obtenerPilaEtiquetas().ponerEtiqueta(eMPLS);
-                            paquete.obtenerCabecera().obtenerCampoOpciones().ponerNodoAtravesado(this.getIPAddress());
+                            paquete.getLabelStack().ponerEtiqueta(eMPLS);
+                            paquete.getHeader().getOptionsField().ponerNodoAtravesado(this.getIPAddress());
                             dmgp.addPacket(paquete);
                         }
                         TPort pSalida = puertos.getPort(emc.obtenerPuertoSalida());
                         pSalida.ponerPaqueteEnEnlace(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
-                            this.generarEventoSimulacion(new TSEPacketSwitched(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), paquete.obtenerSubTipo()));
+                            this.generarEventoSimulacion(new TSEPacketSwitched(this, this.gILargo.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -716,10 +716,10 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                         if (requiereLSPDeRespaldo) {
                             solicitarTLDPDeBackup(emc);
                         }
-                        paquete.obtenerPilaEtiquetas().obtenerEtiqueta().ponerLabel(emc.obtenerEtiqueta());
+                        paquete.getLabelStack().getTop().setLabelField(emc.obtenerEtiqueta());
                         if (conEtiqueta1) {
-                            paquete.obtenerPilaEtiquetas().ponerEtiqueta(eMPLS);
-                            paquete.obtenerCabecera().obtenerCampoOpciones().ponerNodoAtravesado(this.getIPAddress());
+                            paquete.getLabelStack().ponerEtiqueta(eMPLS);
+                            paquete.getHeader().getOptionsField().ponerNodoAtravesado(this.getIPAddress());
                             dmgp.addPacket(paquete);
                         }
                         TPort pSalida = puertos.getPort(emc.obtenerPuertoSalida());
@@ -731,7 +731,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                             emc.ponerEntranteEsLSPDEBackup(false);
                         }
                         try {
-                            this.generarEventoSimulacion(new TSEPacketSwitched(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), paquete.obtenerSubTipo()));
+                            this.generarEventoSimulacion(new TSEPacketSwitched(this, this.gILargo.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -739,7 +739,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                         TPort pSalida = puertos.getPort(emc.obtenerPuertoSalida());
                         pSalida.ponerPaqueteEnEnlace(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
-                            this.generarEventoSimulacion(new TSEPacketSwitched(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), paquete.obtenerSubTipo()));
+                            this.generarEventoSimulacion(new TSEPacketSwitched(this, this.gILargo.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -747,9 +747,9 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                 }
             } else {
                 if (conEtiqueta1) {
-                    paquete.obtenerPilaEtiquetas().ponerEtiqueta(eMPLS);
+                    paquete.getLabelStack().ponerEtiqueta(eMPLS);
                 }
-                descartarPaquete(paquete);
+                discardPacket(paquete);
             }
         }
     }
@@ -782,10 +782,10 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
             } else if (etiquetaActual > 15) {
                 enviarSolicitudOkTLDP(emc);
             } else {
-                descartarPaquete(paquete);
+                discardPacket(paquete);
             }
         } else {
-            descartarPaquete(paquete);
+            discardPacket(paquete);
         }
     }
     
@@ -803,7 +803,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
             emc = matrizConmutacion.obtenerEntradaIDPropio(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP());
         }
         if (emc == null) {
-            descartarPaquete(paquete);
+            discardPacket(paquete);
         } else {
             if (emc.obtenerPuertoEntrada() == pEntrada) {
                 int etiquetaActual = emc.obtenerEtiqueta();
@@ -826,7 +826,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                     enviarEliminacionOkTLDP(emc, pEntrada);
                     eliminarTLDP(emc, emc.obtenerPuertoSalida());
                 } else {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 }
                 if (emc.hayLSPDeBackup() || emc.seDebeEliminarLSPDeBackup()) {
                     int etiquetaActualBackup = emc.obtenerEtiquetaBackup();
@@ -845,7 +845,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                         emc.ponerEtiquetaBackup(TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA);
                         eliminarTLDP(emc, emc.obtenerPuertoSalidaBackup());
                     } else {
-                        descartarPaquete(paquete);
+                        discardPacket(paquete);
                     }
                 }
             } else if (emc.obtenerPuertoSalida() == pEntrada) {
@@ -879,7 +879,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                         eliminarTLDP(emc, emc.obtenerPuertoEntrada());
                     }
                 } else {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 }
             } else if (emc.obtenerPuertoSalidaBackup() == pEntrada) {
                 int etiquetaActualBackup = emc.obtenerEtiquetaBackup();
@@ -904,7 +904,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                     enviarEliminacionOkTLDP(emc, pEntrada);
                     emc.ponerPuertoSalidaBackup(TSwitchingMatrixEntry.SIN_DEFINIR);
                 } else {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 }
             }
         }
@@ -920,12 +920,12 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
         TSwitchingMatrixEntry emc = null;
         emc = matrizConmutacion.obtenerEntradaIDPropio(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP());
         if (emc == null) {
-            descartarPaquete(paquete);
+            discardPacket(paquete);
         } else {
             if (emc.obtenerPuertoSalida() == pEntrada) {
                 int etiquetaActual = emc.obtenerEtiqueta();
                 if (etiquetaActual == TSwitchingMatrixEntry.SIN_DEFINIR) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActual == TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA) {
                     emc.ponerEtiqueta(paquete.obtenerDatosTLDP().obtenerEtiqueta());
                     if (emc.obtenerLabelFEC() == TSwitchingMatrixEntry.SIN_DEFINIR) {
@@ -941,20 +941,20 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                     }
                     enviarSolicitudOkTLDP(emc);
                 } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_DENEGADA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActual == TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActual > 15) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 }
             } else if (emc.obtenerPuertoSalidaBackup() == pEntrada) {
                 int etiquetaActualBackup = emc.obtenerEtiquetaBackup();
                 if (etiquetaActualBackup == TSwitchingMatrixEntry.SIN_DEFINIR) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActualBackup == TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA) {
                     emc.ponerEtiquetaBackup(paquete.obtenerDatosTLDP().obtenerEtiqueta());
                     if (emc.obtenerLabelFEC() == TSwitchingMatrixEntry.SIN_DEFINIR) {
@@ -965,15 +965,15 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                         et.ponerLSPDeBackup();
                     }
                 } else if (etiquetaActualBackup == TSwitchingMatrixEntry.ETIQUETA_DENEGADA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActualBackup == TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActualBackup == TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActualBackup > 15) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 }
             }
         }
@@ -989,43 +989,43 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
         TSwitchingMatrixEntry emc = null;
         emc = matrizConmutacion.obtenerEntradaIDPropio(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP());
         if (emc == null) {
-            descartarPaquete(paquete);
+            discardPacket(paquete);
         } else {
             if (emc.obtenerPuertoSalida() == pEntrada) {
                 int etiquetaActual = emc.obtenerEtiqueta();
                 if (etiquetaActual == TSwitchingMatrixEntry.SIN_DEFINIR) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActual == TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA) {
                     emc.ponerEtiqueta(TSwitchingMatrixEntry.ETIQUETA_DENEGADA);
                     enviarSolicitudNoTLDP(emc);
                 } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_DENEGADA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActual == TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActual > 15) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 }
             } else if (emc.obtenerPuertoSalidaBackup() == pEntrada) {
                 int etiquetaActualBackup = emc.obtenerEtiquetaBackup();
                 if (etiquetaActualBackup == TSwitchingMatrixEntry.SIN_DEFINIR) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActualBackup == TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA) {
                     emc.ponerEtiquetaBackup(TSwitchingMatrixEntry.ETIQUETA_DENEGADA);
                     enviarSolicitudNoTLDP(emc);
                 } else if (etiquetaActualBackup == TSwitchingMatrixEntry.ETIQUETA_DENEGADA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActualBackup == TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActualBackup == TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActualBackup > 15) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 }
             }
         }
@@ -1045,18 +1045,18 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
             emc = matrizConmutacion.obtenerEntradaIDPropio(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP());
         }
         if (emc == null) {
-            descartarPaquete(paquete);
+            discardPacket(paquete);
         } else {
             if (emc.obtenerPuertoEntrada() == pEntrada) {
                 int etiquetaActual = emc.obtenerEtiqueta();
                 if (etiquetaActual == TSwitchingMatrixEntry.SIN_DEFINIR) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActual == TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_DENEGADA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if ((etiquetaActual == TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA) ||
                 (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_ELIMINADA)) {
                     if (emc.obtenerEtiqueta() == TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA) {
@@ -1092,20 +1092,20 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                     }
                     matrizConmutacion.borrarEntrada(emc.obtenerPuertoEntrada(), emc.obtenerLabelFEC(), emc.obtenerTipo());
                 } else if (etiquetaActual > 15) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 }
             } else if (emc.obtenerPuertoSalida() == pEntrada) {
                 int etiquetaActual = emc.obtenerEtiqueta();
                 if (etiquetaActual == TSwitchingMatrixEntry.SIN_DEFINIR) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActual == TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_DENEGADA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActual == TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA) {
                     TPort pSalida = puertos.getPort(pEntrada);
                     TInternalLink ei = (TInternalLink) pSalida.getLink();
@@ -1118,20 +1118,20 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                         matrizConmutacion.borrarEntrada(emc.obtenerPuertoEntrada(), emc.obtenerLabelFEC(), emc.obtenerTipo());
                     }
                 } else if (etiquetaActual > 15) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 }
             } else if (emc.obtenerPuertoSalidaBackup() == pEntrada) {
                 int etiquetaActualBackup = emc.obtenerEtiquetaBackup();
                 if (etiquetaActualBackup == TSwitchingMatrixEntry.SIN_DEFINIR) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActualBackup == TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActualBackup == TSwitchingMatrixEntry.ETIQUETA_DENEGADA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActualBackup == TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else if (etiquetaActualBackup == TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA) {
                     TPort pSalida = puertos.getPort(pEntrada);
                     TInternalLink ei = (TInternalLink) pSalida.getLink();
@@ -1141,9 +1141,9 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                         matrizConmutacion.borrarEntrada(emc.obtenerPuertoEntrada(), emc.obtenerLabelFEC(), emc.obtenerTipo());
                     }
                 } else if (etiquetaActualBackup > 15) {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 } else {
-                    descartarPaquete(paquete);
+                    discardPacket(paquete);
                 }
             }
         }
@@ -1163,7 +1163,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                 if (IPDestino != null) {
                     TPDUTLDP nuevoTLDP = null;
                     try {
-                        nuevoTLDP = new TPDUTLDP(gIdent.obtenerNuevo(), IPLocal, IPDestino);
+                        nuevoTLDP = new TPDUTLDP(gIdent.getNextID(), IPLocal, IPDestino);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1180,8 +1180,8 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                         TPort pSalida = puertos.getPortWhereIsConectedANodeHavingIP(IPDestino);
                         pSalida.ponerPaqueteEnEnlace(nuevoTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
-                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.TLDP, nuevoTLDP.getSize()));
-                            this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.TLDP));
+                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP, nuevoTLDP.getSize()));
+                            this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -1205,7 +1205,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                 if (IPDestino != null) {
                     TPDUTLDP nuevoTLDP = null;
                     try {
-                        nuevoTLDP = new TPDUTLDP(gIdent.obtenerNuevo(), IPLocal, IPDestino);
+                        nuevoTLDP = new TPDUTLDP(gIdent.getNextID(), IPLocal, IPDestino);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1222,8 +1222,8 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                         TPort pSalida = puertos.getPortWhereIsConectedANodeHavingIP(IPDestino);
                         pSalida.ponerPaqueteEnEnlace(nuevoTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
-                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.TLDP, nuevoTLDP.getSize()));
-                            this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.TLDP));
+                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP, nuevoTLDP.getSize()));
+                            this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -1247,7 +1247,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
             if (IPDestino != null) {
                 TPDUTLDP nuevoTLDP = null;
                 try {
-                    nuevoTLDP = new TPDUTLDP(gIdent.obtenerNuevo(), IPLocal, IPDestino);
+                    nuevoTLDP = new TPDUTLDP(gIdent.getNextID(), IPLocal, IPDestino);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1272,8 +1272,8 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                     TPort pSalida = puertos.getPort(puerto);
                     pSalida.ponerPaqueteEnEnlace(nuevoTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     try {
-                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.TLDP, nuevoTLDP.getSize()));
-                        this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.TLDP));
+                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP, nuevoTLDP.getSize()));
+                        this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1295,7 +1295,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
         if (IPSalto != null) {
             TPDUTLDP paqueteTLDP = null;
             try {
-                paqueteTLDP = new TPDUTLDP(gIdent.obtenerNuevo(), IPLocal, IPSalto);
+                paqueteTLDP = new TPDUTLDP(gIdent.getNextID(), IPLocal, IPSalto);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1314,8 +1314,8 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                     pSalida.ponerPaqueteEnEnlace(paqueteTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     emc.ponerPuertoSalida(pSalida.obtenerIdentificador());
                     try {
-                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.TLDP, paqueteTLDP.getSize()));
-                        this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.TLDP));
+                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP, paqueteTLDP.getSize()));
+                        this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1343,7 +1343,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                         if (IPSalto != null) {
                             TPDUTLDP paqueteTLDP = null;
                             try {
-                                paqueteTLDP = new TPDUTLDP(gIdent.obtenerNuevo(), IPLocal, IPSalto);
+                                paqueteTLDP = new TPDUTLDP(gIdent.getNextID(), IPLocal, IPSalto);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -1358,8 +1358,8 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                                 if (pSalida != null) {
                                     pSalida.ponerPaqueteEnEnlace(paqueteTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                                     try {
-                                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.TLDP, paqueteTLDP.getSize()));
-                                        this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.TLDP));
+                                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP, paqueteTLDP.getSize()));
+                                        this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP));
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -1388,7 +1388,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
             if (IPSalto != null) {
                 TPDUTLDP paqueteTLDP = null;
                 try {
-                    paqueteTLDP = new TPDUTLDP(gIdent.obtenerNuevo(), IPLocal, IPSalto);
+                    paqueteTLDP = new TPDUTLDP(gIdent.getNextID(), IPLocal, IPSalto);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1413,8 +1413,8 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                     if (pSalida != null) {
                         pSalida.ponerPaqueteEnEnlace(paqueteTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
-                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.TLDP, paqueteTLDP.getSize()));
-                            this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.TLDP));
+                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP, paqueteTLDP.getSize()));
+                            this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -1438,7 +1438,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
             if (IPSalto != null) {
                 TPDUTLDP paqueteTLDP = null;
                 try {
-                    paqueteTLDP = new TPDUTLDP(gIdent.obtenerNuevo(), IPLocal, IPSalto);
+                    paqueteTLDP = new TPDUTLDP(gIdent.getNextID(), IPLocal, IPSalto);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1456,8 +1456,8 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
                     if (pSalida != null) {
                         pSalida.ponerPaqueteEnEnlace(paqueteTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
-                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.TLDP, paqueteTLDP.getSize()));
-                            this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), TPDU.TLDP));
+                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP, paqueteTLDP.getSize()));
+                            this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -1573,10 +1573,10 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
      * @param paquete Paquete que queremos descartar.
      * @since 1.0
      */
-    public void descartarPaquete(TPDU paquete) {
+    public void discardPacket(TPDU paquete) {
         try {
-            this.generarEventoSimulacion(new TSEPacketDiscarded(this, this.gILargo.obtenerNuevo(), this.obtenerInstanteDeTiempo(), paquete.obtenerSubTipo()));
-            this.estadisticas.crearEstadistica(paquete, TStats.DESCARTE);
+            this.generarEventoSimulacion(new TSEPacketDiscarded(this, this.gILargo.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+            this.estadisticas.addStatsEntry(paquete, TStats.DESCARTE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1644,11 +1644,11 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
         if (soloEspacios)
             return this.SOLO_ESPACIOS;
         if (!recfg) {
-            TTopologyNode tp = t.obtenerPrimerNodoLlamado(this.obtenerNombre());
+            TNode tp = t.obtenerPrimerNodoLlamado(this.obtenerNombre());
             if (tp != null)
                 return this.NOMBRE_YA_EXISTE;
         } else {
-            TTopologyNode tp = t.obtenerPrimerNodoLlamado(this.obtenerNombre());
+            TNode tp = t.obtenerPrimerNodoLlamado(this.obtenerNombre());
             if (tp != null) {
                 if (this.topologia.existeMasDeUnNodoLlamado(this.obtenerNombre())) {
                     return this.NOMBRE_YA_EXISTE;
@@ -1740,7 +1740,7 @@ public class TLSRANode extends TTopologyNode implements ITimerEventListener, Run
      * @return Las estad�sticas del nodo.
      * @since 1.0
      */
-    public TStats accederAEstadisticas() {
+    public TStats getStats() {
         return estadisticas;
     }
     

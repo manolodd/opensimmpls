@@ -75,7 +75,7 @@ public class TTopology {
      * @param nodo Nodo que queremos insertar.
      * @since 1.0
      */    
-    public void insertarNodo(TTopologyNode nodo) {
+    public void insertarNodo(TNode nodo) {
         conjuntoNodos.add(nodo);
         relojTopologia.addListenerReloj(nodo);
         try {
@@ -88,10 +88,10 @@ public class TTopology {
      */    
     private void eliminarSoloNodo(int identificador) {
         boolean fin = false;
-        TTopologyNode nodo = null;
+        TNode nodo = null;
         Iterator iterador = conjuntoNodos.iterator();
         while ((iterador.hasNext()) && (!fin)) {
-            nodo = (TTopologyNode) iterador.next();
+            nodo = (TNode) iterador.next();
             if (nodo.obtenerIdentificador() == identificador) {
                 nodo.ponerPurgar(true);
                 iterador.remove();
@@ -104,7 +104,7 @@ public class TTopology {
     /**
      * @param n
      */    
-    private void eliminarSoloNodo(TTopologyNode n) {
+    private void eliminarSoloNodo(TNode n) {
         eliminarSoloNodo(n.obtenerIdentificador());
     }
 
@@ -114,11 +114,11 @@ public class TTopology {
      * @return Nodo que busc�bamos.NULL si no existe.
      * @since 1.0
      */    
-    public TTopologyNode obtenerNodo(int identificador) {
-        TTopologyNode nodo = null;
+    public TNode obtenerNodo(int identificador) {
+        TNode nodo = null;
         Iterator iterador = conjuntoNodos.iterator();
         while (iterador.hasNext()) {
-            nodo = (TTopologyNode) iterador.next();
+            nodo = (TNode) iterador.next();
             if (nodo.obtenerIdentificador() == identificador)
                 return nodo;
         }
@@ -131,11 +131,11 @@ public class TTopology {
      * @return Nodo que busc�bamos.NULL si no existe.
      * @since 1.0
      */    
-    public TTopologyNode obtenerNodo(String ip) {
-        TTopologyNode nodo = null;
+    public TNode obtenerNodo(String ip) {
+        TNode nodo = null;
         Iterator iterador = conjuntoNodos.iterator();
         while (iterador.hasNext()) {
-            nodo = (TTopologyNode) iterador.next();
+            nodo = (TNode) iterador.next();
             if (nodo.getIPAddress().equals(ip))
                 return nodo;
         }
@@ -149,11 +149,11 @@ public class TTopology {
      * @return Nodo que busc�bamos. NULL si no existe.
      * @since 1.0
      */    
-    public TTopologyNode obtenerPrimerNodoLlamado(String nom) {
-        TTopologyNode nodo = null;
+    public TNode obtenerPrimerNodoLlamado(String nom) {
+        TNode nodo = null;
         Iterator iterador = conjuntoNodos.iterator();
         while (iterador.hasNext()) {
-            nodo = (TTopologyNode) iterador.next();
+            nodo = (TNode) iterador.next();
             if (nodo.obtenerNombre().equals(nom))
                 return nodo;
         }
@@ -168,10 +168,10 @@ public class TTopology {
      */    
     public boolean existeMasDeUnNodoLlamado(String nom) {
         int cuantos = 0;
-        TTopologyNode nodo = null;
+        TNode nodo = null;
         Iterator iterador = conjuntoNodos.iterator();
         while (iterador.hasNext()) {
-            nodo = (TTopologyNode) iterador.next();
+            nodo = (TNode) iterador.next();
             if (nodo.obtenerNombre().equals(nom))
                 cuantos++;
                 if (cuantos > 1)
@@ -208,12 +208,12 @@ public class TTopology {
      * @since 1.0
      */    
     public boolean hayTraficoDirigidoAMi(TReceiverNode nr) {
-        TTopologyNode nodo = null;
+        TNode nodo = null;
         TSenderNode emisor = null;
         Iterator iterador = conjuntoNodos.iterator();
         while (iterador.hasNext()) {
-            nodo = (TTopologyNode) iterador.next();
-            if (nodo.obtenerTipo() == TTopologyNode.EMISOR) {
+            nodo = (TNode) iterador.next();
+            if (nodo.obtenerTipo() == TNode.EMISOR) {
                 emisor = (TSenderNode) nodo;
                 if (emisor.obtenerDestino().equals(nr.getIPAddress()))
                     return true;
@@ -247,11 +247,11 @@ public class TTopology {
      * @return El nodo buscado. NULL si no existe.
      * @since 1.0
      */    
-    public TTopologyNode obtenerNodoEnPosicion(Point p) {
-        TTopologyNode nodo = null;
+    public TNode obtenerNodoEnPosicion(Point p) {
+        TNode nodo = null;
         Iterator iterador = conjuntoNodos.iterator();
         while (iterador.hasNext()) {
-            nodo = (TTopologyNode) iterador.next();
+            nodo = (TNode) iterador.next();
             if (nodo.estaEnPosicion(p))
                 return nodo;
         }
@@ -263,8 +263,8 @@ public class TTopology {
      * @return Un vector con todos los nodos de la topologia.
      * @since 1.0
      */    
-    public TTopologyNode[] obtenerNodos() {
-        return (TTopologyNode[]) conjuntoNodos.toArray();
+    public TNode[] obtenerNodos() {
+        return (TNode[]) conjuntoNodos.toArray();
     }
 
     /**
@@ -273,44 +273,44 @@ public class TTopology {
      * @param nodo Nodo que queremos actualizar, con los nuevos valores.
      * @since 1.0
      */    
-    public void modificarNodo(TTopologyNode nodo) {
+    public void modificarNodo(TNode nodo) {
         boolean fin = false;
-        TTopologyNode nodoBuscado = null;
+        TNode nodoBuscado = null;
         Iterator iterador = conjuntoNodos.iterator();
         while ((iterador.hasNext()) && (!fin)) {
-            nodoBuscado = (TTopologyNode) iterador.next();
+            nodoBuscado = (TNode) iterador.next();
             if (nodoBuscado.obtenerIdentificador() == nodo.obtenerIdentificador()) {
-                if (nodo.obtenerTipo() == TTopologyNode.EMISOR) {
+                if (nodo.obtenerTipo() == TNode.EMISOR) {
                     TSenderNode nodoTrasCast = (TSenderNode) nodoBuscado;
                     nodoTrasCast.ponerNombre(nodo.obtenerNombre());
                     nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
                 }
-                else if (nodo.obtenerTipo() == TTopologyNode.RECEPTOR) {
+                else if (nodo.obtenerTipo() == TNode.RECEPTOR) {
                     TSenderNode nodoTrasCast = (TSenderNode) nodoBuscado;
                     nodoTrasCast.ponerNombre(nodo.obtenerNombre());
                     nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
                 }
-                else if (nodo.obtenerTipo() == TTopologyNode.RECEPTOR) {
+                else if (nodo.obtenerTipo() == TNode.RECEPTOR) {
                     TReceiverNode nodoTrasCast = (TReceiverNode) nodoBuscado;
                     nodoTrasCast.ponerNombre(nodo.obtenerNombre());
                     nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
                 }
-                else if (nodo.obtenerTipo() == TTopologyNode.LER) {
+                else if (nodo.obtenerTipo() == TNode.LER) {
                     TLERNode nodoTrasCast = (TLERNode) nodoBuscado;
                     nodoTrasCast.ponerNombre(nodo.obtenerNombre());
                     nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
                 }
-                else if (nodo.obtenerTipo() == TTopologyNode.LERA) {
+                else if (nodo.obtenerTipo() == TNode.LERA) {
                     TLERANode nodoTrasCast = (TLERANode) nodoBuscado;
                     nodoTrasCast.ponerNombre(nodo.obtenerNombre());
                     nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
                 }
-                else if (nodo.obtenerTipo() == TTopologyNode.LSR) {
+                else if (nodo.obtenerTipo() == TNode.LSR) {
                     TLSRNode nodoTrasCast = (TLSRNode) nodoBuscado;
                     nodoTrasCast.ponerNombre(nodo.obtenerNombre());
                     nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
                 }
-                else if (nodo.obtenerTipo() == TTopologyNode.LSRA) {
+                else if (nodo.obtenerTipo() == TNode.LSRA) {
                     TLSRANode nodoTrasCast = (TLSRANode) nodoBuscado;
                     nodoTrasCast.ponerNombre(nodo.obtenerNombre());
                     nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
@@ -457,7 +457,7 @@ public class TTopology {
      */    
     public TTopologyElement obtenerElementoEnPosicion(Point p) {
         if (hayElementoEnPosicion(p)) {
-            TTopologyNode n;
+            TNode n;
             n = obtenerNodoEnPosicion(p);
             if (n != null)
                 return n;
@@ -496,7 +496,7 @@ public class TTopology {
      * @param n Nodo que deseamos eliminar.
      * @since 1.0
      */    
-    public void eliminarNodo(TTopologyNode n) {
+    public void eliminarNodo(TNode n) {
         eliminarNodo(n.obtenerIdentificador());
     }
 
@@ -527,7 +527,7 @@ public class TTopology {
      */    
     public void eliminarTodo() {
         Iterator it = this.obtenerIteradorEnlaces();
-        TTopologyNode n;
+        TNode n;
         TTopologyLink e;
         while (it.hasNext()) {
             e = (TTopologyLink) it.next();
@@ -537,7 +537,7 @@ public class TTopology {
         }
         it = this.obtenerIteradorNodos();
         while (it.hasNext()) {
-            n = (TTopologyNode) it.next();
+            n = (TNode) it.next();
             n.ponerPurgar(true);
             it.remove();
         }
@@ -608,8 +608,8 @@ public class TTopology {
     public boolean existeEnlace(int extremo1, int extremo2) {
         TTopologyLink enlace = null;
         Iterator iterador = conjuntoEnlaces.iterator();
-        TTopologyNode izquierdo;
-        TTopologyNode derecho;
+        TNode izquierdo;
+        TNode derecho;
         while (iterador.hasNext()) {
             enlace = (TTopologyLink) iterador.next();
             izquierdo = enlace.obtenerExtremo1();
@@ -633,8 +633,8 @@ public class TTopology {
     public TTopologyLink obtenerEnlace(int extremo1, int extremo2) {
         TTopologyLink enlace = null;
         Iterator iterador = conjuntoEnlaces.iterator();
-        TTopologyNode izquierdo;
-        TTopologyNode derecho;
+        TNode izquierdo;
+        TNode derecho;
         while (iterador.hasNext()) {
             enlace = (TTopologyLink) iterador.next();
             izquierdo = enlace.obtenerExtremo1();
@@ -712,10 +712,10 @@ public class TTopology {
         // Hayamos equivalencias entre �ndices e identificadores de nodo
         int equivalencia[] = new int[numNodosActual];
         int i=0;
-        TTopologyNode nt = null;
+        TNode nt = null;
         Iterator it = this.obtenerIteradorNodos();
         while (it.hasNext()) {
-            nt = (TTopologyNode) it.next();
+            nt = (TNode) it.next();
             equivalencia[i] = nt.obtenerIdentificador();
             if (equivalencia[i] == origen)
                 origen2 = i;
@@ -801,7 +801,7 @@ public class TTopology {
         int origen = this.obtenerNodo(IPorigen).obtenerIdentificador();
         int destino = this.obtenerNodo(IPdestino).obtenerIdentificador();
         int siguienteSalto = obtenerSalto(origen, destino);
-        TTopologyNode nt = this.obtenerNodo(siguienteSalto);
+        TNode nt = this.obtenerNodo(siguienteSalto);
         if (nt != null)
             return nt.getIPAddress();
         return null;
@@ -819,7 +819,7 @@ public class TTopology {
         int origen = this.obtenerNodo(IPorigen).obtenerIdentificador();
         int destino = this.obtenerNodo(IPdestino).obtenerIdentificador();
         int siguienteSalto = obtenerSaltoRABAN(origen, destino);
-        TTopologyNode nt = this.obtenerNodo(siguienteSalto);
+        TNode nt = this.obtenerNodo(siguienteSalto);
         if (nt != null)
             return nt.getIPAddress();
         return null;
@@ -841,7 +841,7 @@ public class TTopology {
         int destino = this.obtenerNodo(IPdestino).obtenerIdentificador();
         int nodoAEvitar = this.obtenerNodo(IPNodoAEvitar).obtenerIdentificador();
         int siguienteSalto = obtenerSaltoRABAN(origen, destino, nodoAEvitar);
-        TTopologyNode nt = this.obtenerNodo(siguienteSalto);
+        TNode nt = this.obtenerNodo(siguienteSalto);
         if (nt != null)
             return nt.getIPAddress();
         return null;
@@ -864,10 +864,10 @@ public class TTopology {
         // Hayamos equivalencias entre �ndices e identificadores de nodo
         int equivalencia[] = new int[numNodosActual];
         int i=0;
-        TTopologyNode nt = null;
+        TNode nt = null;
         Iterator it = this.obtenerIteradorNodos();
         while (it.hasNext()) {
-            nt = (TTopologyNode) it.next();
+            nt = (TNode) it.next();
             equivalencia[i] = nt.obtenerIdentificador();
             if (equivalencia[i] == origen)
                 origen2 = i;
@@ -961,10 +961,10 @@ public class TTopology {
         // Hayamos equivalencias entre �ndices e identificadores de nodo
         int equivalencia[] = new int[numNodosActual];
         int i=0;
-        TTopologyNode nt = null;
+        TNode nt = null;
         Iterator it = this.obtenerIteradorNodos();
         while (it.hasNext()) {
-            nt = (TTopologyNode) it.next();
+            nt = (TNode) it.next();
             equivalencia[i] = nt.obtenerIdentificador();
             if (equivalencia[i] == origen)
                 origen2 = i;

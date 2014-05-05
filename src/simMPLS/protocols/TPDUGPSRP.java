@@ -27,7 +27,7 @@ public class TPDUGPSRP extends TPDU {
      */
     public int getSize() {
         int tam = 0;
-        tam += super.obtenerCabecera().obtenerTamanio(); // Cabecera IPv4
+        tam += super.getHeader().obtenerTamanio(); // Cabecera IPv4
         tam += this.datosTCP.obtenerTamanio(); // Cabecera TCP
         tam += this.datosGPSRP.obtenerTamanio(); // Tamanio mensaje GPSRP
         return (tam);
@@ -38,7 +38,7 @@ public class TPDUGPSRP extends TPDU {
      * @return La constante GPSRP.
      * @since 1.0
      */
-    public int obtenerTipo() {
+    public int getType() {
         return super.GPSRP;
     }
     
@@ -65,8 +65,8 @@ public class TPDUGPSRP extends TPDU {
      * @return La cabecera IP del paquete.
      * @since 1.0
      */
-    public TCabeceraIPv4 obtenerCabecera() {
-        return super.obtenerCabecera();
+    public TCabeceraIPv4 getHeader() {
+        return super.getHeader();
     }
     
     /**
@@ -76,7 +76,7 @@ public class TPDUGPSRP extends TPDU {
      * @return TPDU.TLDP
      * @since 1.0
      */
-    public int obtenerSubTipo() {
+    public int getSubtype() {
         return super.GPSRP;
     }
     
