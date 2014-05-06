@@ -29,7 +29,7 @@ import org.jfree.data.*;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TExternalLink extends TTopologyLink implements ITimerEventListener, Runnable {
+public class TExternalLink extends TLink implements ITimerEventListener, Runnable {
 
     /**
      * Crea una nueva instancia de TEnlaceExterno
@@ -45,7 +45,7 @@ public class TExternalLink extends TTopologyLink implements ITimerEventListener,
 
     /**
      * Este m�todo devuelve el tipo el enlace.
-     * @return TTopologyLink.EXTERNO, indicando que es un nodo externo.
+     * @return TLink.EXTERNO, indicando que es un nodo externo.
      * @since 1.0
      */    
     public int obtenerTipo() {
@@ -75,7 +75,7 @@ public class TExternalLink extends TTopologyLink implements ITimerEventListener,
         enlaceCaido = ec;
         if (ec) {
             try {
-                this.generarEventoSimulacion(new TSELinkBroken(this, this.gILargo.getNextID(), this.getAvailableTime()));
+                this.generarEventoSimulacion(new TSELinkBroken(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
                 this.cerrojo.lock();
                 TPDU paquete = null;
                 TLinkBufferEntry ebe = null;
@@ -85,9 +85,9 @@ public class TExternalLink extends TTopologyLink implements ITimerEventListener,
                     paquete = ebe.obtenerPaquete();
                     if (paquete != null) {
                         if (ebe.obtenerDestino() == 1) {
-                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.obtenerExtremo2(), this.gILargo.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.obtenerExtremo2(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         } else if (ebe.obtenerDestino() == 2) {
-                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.obtenerExtremo1(), this.gILargo.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.obtenerExtremo1(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         }
                     }
                     it.remove();
@@ -98,7 +98,7 @@ public class TExternalLink extends TTopologyLink implements ITimerEventListener,
             }
         } else {
             try {
-                this.generarEventoSimulacion(new TSELinkRecovered(this, this.gILargo.getNextID(), this.getAvailableTime()));
+                this.generarEventoSimulacion(new TSELinkRecovered(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
             } catch (EDesbordeDelIdentificador e) {
                 e.printStackTrace(); 
             }
@@ -133,7 +133,7 @@ public class TExternalLink extends TTopologyLink implements ITimerEventListener,
             if (ebe.obtenerDestino() == 1)
                 pctj = 100 - pctj;
             try {
-                this.generarEventoSimulacion(new TSEPacketOnFly(this, this.gILargo.getNextID(), this.getAvailableTime(), ebe.obtenerPaquete().getSubtype(), pctj));
+                this.generarEventoSimulacion(new TSEPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), ebe.obtenerPaquete().getSubtype(), pctj));
             } catch (EDesbordeDelIdentificador e) {
                 e.printStackTrace(); 
             }
@@ -176,7 +176,7 @@ public class TExternalLink extends TTopologyLink implements ITimerEventListener,
         Iterator it = bufferLlegadosADestino.iterator();
         while (it.hasNext())  {
             TLinkBufferEntry ebe = (TLinkBufferEntry) it.next();
-            if (ebe.obtenerDestino() == TTopologyLink.END_NODE_1) {
+            if (ebe.obtenerDestino() == TLink.END_NODE_1) {
                 TNode nt = this.obtenerExtremo1();
                 nt.ponerPaquete(ebe.obtenerPaquete(), this.obtenerPuertoExtremo1());
             } else {

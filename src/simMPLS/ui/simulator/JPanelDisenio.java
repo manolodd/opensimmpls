@@ -20,7 +20,7 @@ import java.awt.image.*;
 import java.util.*;
 import javax.swing.*;
 import simMPLS.scenario.TTopology;
-import simMPLS.scenario.TTopologyLink;
+import simMPLS.scenario.TLink;
 import simMPLS.scenario.TNode;
 import simMPLS.ui.utils.TDispensadorDeImagenes;
 
@@ -153,12 +153,12 @@ public class JPanelDisenio extends javax.swing.JPanel {
     private void dibujarEnlaces(Graphics2D g2Dbuf) {
         Iterator ite = topologia.obtenerIteradorEnlaces();
         while (ite.hasNext()) {
-            TTopologyLink enlace = (TTopologyLink) ite.next();
+            TLink enlace = (TLink) ite.next();
             Point inicio = enlace.obtenerExtremo1().obtenerPosicion();
             Point fin = enlace.obtenerExtremo2().obtenerPosicion();
             int del = enlace.obtenerDelay();
             g2Dbuf.setStroke(new BasicStroke((float) obtenerGrosorEnlace(del)));
-            if (enlace.obtenerTipo() == TTopologyLink.EXTERNO) {
+            if (enlace.obtenerTipo() == TLink.EXTERNO) {
                 g2Dbuf.setColor(Color.GRAY);
             } else {
                 g2Dbuf.setColor(Color.BLUE);

@@ -14,7 +14,7 @@ import simMPLS.protocols.TPDU;
 import simMPLS.protocols.TPDUMPLS;
 import simMPLS.hardware.timer.TTimerEvent;
 import simMPLS.hardware.timer.ITimerEventListener;
-import simMPLS.hardware.ports.TNodePorts;
+import simMPLS.hardware.ports.TPortSet;
 import simMPLS.utils.TMonitor;
 import simMPLS.utils.TIdentificadorLargo;
 import java.awt.*;
@@ -296,7 +296,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @return El conjunto de puertos del nodo.
      * @since 1.0
      */    
-    public abstract TNodePorts obtenerPuertos();
+    public abstract TPortSet obtenerPuertos();
     /**
      * Este m�todo permite obtener eventos de sincronizaci�n del reloj principal del
      * simulador.
@@ -518,7 +518,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * Este atributo contiene el conjunto de puertos del nodo.
      * @since 1.0
      */    
-    protected TNodePorts puertos;
+    protected TPortSet puertos;
     /**
      * @since 1.0
      */    

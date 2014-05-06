@@ -18,7 +18,7 @@ import simMPLS.utils.TIdentificadorLargo;
 import simMPLS.scenario.TTopologyElement;
 import simMPLS.scenario.TInternalLink;
 import simMPLS.scenario.TExternalLink;
-import simMPLS.scenario.TTopologyLink;
+import simMPLS.scenario.TLink;
 import simMPLS.scenario.TLERNode;
 import simMPLS.scenario.TSenderNode;
 import simMPLS.scenario.TReceiverNode;
@@ -113,10 +113,10 @@ public class TTimer implements Runnable {
     public void removeListenerReloj(TTopologyElement suscriptor) {
         if (suscriptor.obtenerTipoElemento() == TTopologyElement.ENLACE) {
             Iterator ite = enlacesSuscriptores.iterator();
-            TTopologyLink e;
-            TTopologyLink parametro = (TTopologyLink) suscriptor;
+            TLink e;
+            TLink parametro = (TLink) suscriptor;
             while (ite.hasNext()) {
-                e = (TTopologyLink) ite.next();
+                e = (TLink) ite.next();
                 if (e.obtenerIdentificador() == parametro.obtenerIdentificador()) {
                     ite.remove();
                 }
@@ -142,9 +142,9 @@ public class TTimer implements Runnable {
      */    
     public void purgarListenerReloj() {
         Iterator ite = enlacesSuscriptores.iterator();
-        TTopologyLink e;
+        TLink e;
         while (ite.hasNext()) {
-            e = (TTopologyLink) ite.next();
+            e = (TLink) ite.next();
             if (e.obtenerPurgar()) {
                 ite.remove();
             }
@@ -191,7 +191,7 @@ public class TTimer implements Runnable {
         Iterator ite = enlacesSuscriptores.iterator();
         Iterator itn = nodosSuscriptores.iterator();
         TNode nodoAux;
-        TTopologyLink enlaceAux;
+        TLink enlaceAux;
         TTimestamp i = new TTimestamp(tAnterior.obtenerMilisegundo(), tAnterior.obtenerNanosegundo());
         TTimestamp s = new TTimestamp(tActual.obtenerMilisegundo(), tActual.obtenerNanosegundo());
         while (itn.hasNext()) {
@@ -230,13 +230,13 @@ public class TTimer implements Runnable {
             }
         }
         while (ite.hasNext()) {
-            enlaceAux = (TTopologyLink) ite.next();
+            enlaceAux = (TLink) ite.next();
             switch (enlaceAux.obtenerTipo()) {
-                case TTopologyLink.EXTERNO: {
+                case TLink.EXTERNO: {
                     enlaceAux = (TExternalLink) enlaceAux;
                     break;
                 }
-                case TTopologyLink.INTERNO: {
+                case TLink.INTERNO: {
                     enlaceAux = (TInternalLink) enlaceAux;
                     break;
                 }
@@ -397,13 +397,13 @@ public class TTimer implements Runnable {
         Iterator itn = nodosSuscriptores.iterator();
         Iterator ite = enlacesSuscriptores.iterator();
         TNode nodo;
-        TTopologyLink enlace;
+        TLink enlace;
         while (itn.hasNext()) {
             nodo = (TNode) itn.next();
             nodo.esperarFinalizacion();
         }
         while (ite.hasNext()) {
-            enlace = (TTopologyLink) ite.next();
+            enlace = (TLink) ite.next();
             enlace.esperarFinalizacion();
         }
     }

@@ -11,7 +11,7 @@
 
 package simMPLS.hardware.ports;
 
-import simMPLS.scenario.TTopologyLink;
+import simMPLS.scenario.TLink;
 import simMPLS.scenario.TStats;
 import simMPLS.protocols.TPDU;
 import simMPLS.utils.TMonitor;
@@ -32,7 +32,7 @@ public abstract class TPort {
      * @param idp Identificador (n�mero) del puerto.
      * @param cpn Referencia al superconjunto de puertos del que este puerto forma parte.
      */
-    public TPort(TNodePorts cpn, int idp) {
+    public TPort(TPortSet cpn, int idp) {
         identifier = 0;
         link = null;
         parentPortSet = cpn;
@@ -46,7 +46,7 @@ public abstract class TPort {
      * @param cpn El conjunto de puertos al que pertenece este puerto.
      * @since 1.0
      */    
-    public void ponerCjtoPuertos(TNodePorts cpn) {
+    public void ponerCjtoPuertos(TPortSet cpn) {
         parentPortSet = cpn;
     }
 
@@ -55,7 +55,7 @@ public abstract class TPort {
      * @return El conjunto de puertos al que pertenece este nodo.
      * @since 1.0
      */    
-    public TNodePorts getPortSet() {
+    public TPortSet getPortSet() {
         return parentPortSet;
     }
 
@@ -64,7 +64,7 @@ public abstract class TPort {
      * @param id Identificador que queremos asociar a este puerto.
      * @since 1.0
      */    
-    public void ponerIdentificador(int id) {
+    public void setPortID(int id) {
         identifier = id;
     }
     
@@ -95,7 +95,7 @@ public abstract class TPort {
      * @param e El link al que se desea conectar el puerto.
      * @since 1.0
      */    
-    public void setLink(TTopologyLink e) {
+    public void setLink(TLink e) {
         link = e;
     }
 
@@ -104,7 +104,7 @@ public abstract class TPort {
      * @return El link al que est� unido el puerto, si est� unido. NULL en caso contrario.
      * @since 1.0
      */    
-    public TTopologyLink getLink() {
+    public TLink getLink() {
         return link;
     }
 
@@ -128,7 +128,7 @@ public abstract class TPort {
     public void ponerPaqueteEnEnlace(TPDU p, int destino) {
         if (link != null) {
             if (!link.obtenerEnlaceCaido()) {
-                if (link.obtenerTipo() == TTopologyLink.INTERNO) {
+                if (link.obtenerTipo() == TLink.INTERNO) {
                     link.ponerPaquete(p, destino);
                     if (this.getPortSet().getNode().getStats() != null) {
                         this.getPortSet().getNode().getStats().addStatsEntry(p, TStats.SALIDA);
@@ -234,13 +234,13 @@ public abstract class TPort {
  puerto o est� libre o est� unido a un link, que es este.
      * @since 1.0
      */    
-    protected TTopologyLink link;
+    protected TLink link;
     /**
      * Este atributo es una referencia al superconjunto de todos los puertos de un nodo
      * al que pertenece este.
      * @since 1.0
      */    
-    protected TNodePorts parentPortSet;
+    protected TPortSet parentPortSet;
     /**
      * Este atributo es un monitor que sirve para crear secciones cr�ticas, actuando de
      * barrera, para sincronizar el acceso concurrente a algunas zonas del objeto.

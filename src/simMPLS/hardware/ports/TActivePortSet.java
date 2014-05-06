@@ -1,6 +1,6 @@
 package simMPLS.hardware.ports;
 
-import simMPLS.scenario.TTopologyLink;
+import simMPLS.scenario.TLink;
 import simMPLS.scenario.TNode;
 import simMPLS.protocols.TPDU;
 
@@ -10,7 +10,7 @@ import simMPLS.protocols.TPDU;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 1.1
  */
-public class TActiveNodePorts extends TNodePorts {
+public class TActivePortSet extends TPortSet {
 
     /**
      * This is the constructor of the class. It creates a new instance of
@@ -23,13 +23,13 @@ public class TActiveNodePorts extends TNodePorts {
      * belongs to.
      * @since 1.0
      */
-    public TActiveNodePorts(int numberOfPorts, TNode activeNode) {
+    public TActivePortSet(int numberOfPorts, TNode activeNode) {
         super(numberOfPorts, activeNode);
         this.ports = new TActivePort[numberOfPorts];
         int i = 0;
         for (i = 0; i < this.numberOfPorts; i++) {
             this.ports[i] = new TActivePort(this, i);
-            this.ports[i].ponerIdentificador(i);
+            this.ports[i].setPortID(i);
         }
         this.readPort = 0;
         this.nextPacketToBeRead = null;
@@ -201,7 +201,7 @@ public class TActiveNodePorts extends TNodePorts {
      * @since 1.0
      */
     @Override
-    public void connectLinkToPort(TTopologyLink link, int portNumber) {
+    public void connectLinkToPort(TLink link, int portNumber) {
         if (portNumber < this.numberOfPorts) {
             if (this.ports[portNumber].isAvailable()) {
                 this.ports[portNumber].setLink(link);
@@ -221,7 +221,7 @@ public class TActiveNodePorts extends TNodePorts {
      * @since 1.0
      */
     @Override
-    public TTopologyLink getLinkConnectedToPort(int portNumber) {
+    public TLink getLinkConnectedToPort(int portNumber) {
         if (portNumber < this.numberOfPorts) {
             if (!this.ports[portNumber].isAvailable()) {
                 return this.ports[portNumber].getLink();
@@ -369,7 +369,7 @@ public class TActiveNodePorts extends TNodePorts {
         for (int i = 0; i < this.numberOfPorts; i++) {
             if (!this.ports[i].isAvailable()) {
                 int targetNodeID = this.ports[i].getLink().getTargetNodeIDOfTrafficSentBy(this.parentNode);
-                if (targetNodeID == TTopologyLink.END_NODE_1) {
+                if (targetNodeID == TLink.END_NODE_1) {
                     if (this.ports[i].getLink().obtenerExtremo1().getIPAddress().equals(adjacentNodeIP)) {
                         return this.ports[i];
                     }

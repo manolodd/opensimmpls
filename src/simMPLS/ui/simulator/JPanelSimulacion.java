@@ -31,7 +31,7 @@ import simMPLS.scenario.TSEPacketSent;
 import simMPLS.scenario.TSEPacketSwitched;
 import simMPLS.scenario.TSimulationEvent;
 import simMPLS.scenario.TTopology;
-import simMPLS.scenario.TTopologyLink;
+import simMPLS.scenario.TLink;
 import simMPLS.scenario.TNode;
 import simMPLS.ui.utils.TDispensadorDeImagenes;
 import simMPLS.utils.TEventoSimMPLS;
@@ -258,12 +258,12 @@ public class JPanelSimulacion extends javax.swing.JPanel {
     private void dibujarEnlaces(Graphics2D g2Dbuf) {
         Iterator ite = topologia.obtenerIteradorEnlaces();
         while (ite.hasNext()) {
-            TTopologyLink enlace = (TTopologyLink) ite.next();
+            TLink enlace = (TLink) ite.next();
             Point inicio = enlace.obtenerExtremo1().obtenerPosicion();
             Point fin = enlace.obtenerExtremo2().obtenerPosicion();
             int del = enlace.obtenerDelay();
             g2Dbuf.setStroke(new BasicStroke((float) obtenerGrosorEnlace(del)));
-            if (enlace.obtenerTipo() == TTopologyLink.EXTERNO) {
+            if (enlace.obtenerTipo() == TLink.EXTERNO) {
                 g2Dbuf.setColor(Color.GRAY);
             } else {
                 g2Dbuf.setColor(Color.BLUE);
@@ -278,7 +278,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
             g2Dbuf.setStroke(new BasicStroke((float) 1));
 //
             if (!enlace.obtenerEnlaceCaido()) {
-                if (enlace.obtenerTipo() == TTopologyLink.INTERNO) {
+                if (enlace.obtenerTipo() == TLink.INTERNO) {
                     TInternalLink ei = (TInternalLink) enlace;
                     if (ei.tieneLSPs()) {
                         float dash1[] = {5.0f};
@@ -304,7 +304,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
 //
 //
             if (!enlace.obtenerEnlaceCaido()) {
-                if (enlace.obtenerTipo() == TTopologyLink.INTERNO) {
+                if (enlace.obtenerTipo() == TLink.INTERNO) {
                     TInternalLink ei = (TInternalLink) enlace;
                     if (ei.tieneLSPsDeBackup()) {
                         float dash1[] = {10.0f, 5.0f, 0.2f, 5.0f};
@@ -489,7 +489,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
                 if (evento != null) {
                     if (evento.obtenerSubtipo() == TSimulationEvent.PAQUETE_EN_TRANSITO) {
                         TSEPacketOnFly ept = (TSEPacketOnFly) evento;
-                        TTopologyLink et = (TTopologyLink) ept.obtenerFuente();
+                        TLink et = (TLink) ept.obtenerFuente();
                         Point p = et.obtenerCoordenadasPaquete(ept.obtenerPorcentajeTransito());
                         if (ept.obtenerTipoPaquete() == TPDU.GPSRP) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_GOS), p.x-14, p.y-14, null);
@@ -648,11 +648,11 @@ public class JPanelSimulacion extends javax.swing.JPanel {
                 evento = (TSimulationEvent) it.next();
                 if (evento != null) {
                     if (evento.obtenerSubtipo() == TSimulationEvent.ENLACE_CAIDO) {
-                        TTopologyLink ent = (TTopologyLink) evento.obtenerFuente();
+                        TLink ent = (TLink) evento.obtenerFuente();
                         Point p = ent.obtenerCoordenadasPaquete(50);
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.ENLACE_CAIDO), p.x-41, p.y-41, null);
                     } else if (evento.obtenerSubtipo() == TSimulationEvent.ENLACE_RECUPERADO) {
-                        TTopologyLink ent = (TTopologyLink) evento.obtenerFuente();
+                        TLink ent = (TLink) evento.obtenerFuente();
                         Point p = ent.obtenerCoordenadasPaquete(50);
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.ENLACE_RECUPERADO), p.x-41, p.y-41, null);
                     }

@@ -14,9 +14,9 @@ import simMPLS.protocols.TPDU;
 import simMPLS.protocols.TPDUMPLS;
 import simMPLS.hardware.timer.TTimerEvent;
 import simMPLS.hardware.timer.ITimerEventListener;
-import simMPLS.hardware.ports.TNormalNodePorts;
+import simMPLS.hardware.ports.TNormalPortSet;
 import simMPLS.hardware.ports.TPort;
-import simMPLS.hardware.ports.TNodePorts;
+import simMPLS.hardware.ports.TPortSet;
 import simMPLS.utils.TIdentificadorLargo;
 import java.awt.*;
 import org.jfree.chart.*;
@@ -102,7 +102,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
             while (p.thereIsAPacketWaiting()) {
                 paquete = p.getPacket();
                 try {
-                    idEvt = this.gILargo.getNextID();
+                    idEvt = this.longIdentifierGenerator.getNextID();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -141,7 +141,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * @return El conjunto de puertos del nodo.
      * @since 1.0
      */    
-    public TNodePorts obtenerPuertos() {
+    public TPortSet obtenerPuertos() {
         return this.puertos;
     }
 
@@ -292,7 +292,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * @since 1.0
      */    
     public synchronized void ponerPuertos(int num) {
-        puertos = new TNormalNodePorts(num, this);
+        puertos = new TNormalPortSet(num, this);
     }
     
     /**

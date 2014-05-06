@@ -1,7 +1,7 @@
 package simMPLS.io.osm;
 
 import simMPLS.scenario.TScenario;
-import simMPLS.scenario.TTopologyLink;
+import simMPLS.scenario.TLink;
 import simMPLS.scenario.TNode;
 import java.io.*;
 import java.util.zip.*;
@@ -38,7 +38,7 @@ public class TOSMSaver {
     public boolean almacenar(File ficheroSalida, boolean conCRC) {
         try {
             TNode nt;
-            TTopologyLink et;
+            TLink et;
             Iterator in;
             flujoDeSalida = new FileOutputStream(ficheroSalida);
             salida = new PrintStream(flujoDeSalida);
@@ -103,7 +103,7 @@ public class TOSMSaver {
             // Volcamos al final los enlaces
             in = escenario.obtenerTopologia().obtenerIteradorEnlaces();
             while (in.hasNext()) {
-                et = (TTopologyLink) in.next();
+                et = (TLink) in.next();
                 if (et != null) {
                     salida.println(et.serializar());
                     crc.update(et.serializar().getBytes());

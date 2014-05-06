@@ -2,82 +2,102 @@ package simMPLS.hardware.ports;
 
 import simMPLS.protocols.TPDU;
 
-
 /**
- * Esta clase implementa una entrada en el buffer de un puerto activo. Es necesario
- * para poder priorizar unos paquetes mas que otros en el buffer de forma
- * sencilla.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implement an active port buffer entry. It is needed to prioritize
+ * some packets, because of their embedded priority, within the buffer.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public class TActivePortBufferEntry implements Comparable {
-    
-    /**
-     * Crea una nueva instancia de TEntradaPuertoActivo
-     * @since 1.0
-     * @param prior Prioridad de la entrada del buffer.
-     * @param orden Orden de llegada al buffer.
-     * @param paquet Paquete que ha llegado al buffer y que est� contenido en la entrada.
-     */
-    public TActivePortBufferEntry(int prior, int orden, TPDU paquet) {
-        this.prioridad = prior;
-        this.ordenDeLlegada = orden;
-        this.paquete = paquet;
-    }
-    
-    /**
-     * Este m�todo sirve para comparar dos instancias de TActivePortBufferEntry.
-     * @param o Otra entrada de un puerto activo con la que se quiere comparar la instancia
-     * actual.
-     * @return -1, 0 � 1, dependiendo de si la instancia actual es menor, mayo o igual que la
-     * especificada por par�metro, hablando de orden.
-     * @since 1.0
-     */    
-    @Override
-    public int compareTo(Object o) {
-        TActivePortBufferEntry parametro = (TActivePortBufferEntry) o;
-        if (this.ordenDeLlegada < parametro.obtenerOrdenDeLlegada()) {
-            return TActivePortBufferEntry.PRIMERO_EL_ACTUAL;
-        }
-        if (this.ordenDeLlegada > parametro.obtenerOrdenDeLlegada()) {
-            return TActivePortBufferEntry.PRIMERO_EL_PARAMETRO;
-        }
-        return TActivePortBufferEntry.IGUALES;
-    }
-    
-    /**
-     * Este m�todo obtiene la prioridad de la entrada.
-     * @since 1.0
-     * @return La prioridad de la entrada, de 0 a 10, inclusives.
-     */    
-    public int getPriority() {
-        return this.prioridad;
-    }
-    
-    /**
-     * Este m�todo devuelve el orden de llegada de la entrada al puerto.
-     * @since 1.0
-     * @return El orden de llegada de la entrada al puerto.
-     */    
-    public int obtenerOrdenDeLlegada() {
-        return this.ordenDeLlegada;
-    }
-    
-    /**
-     * Este m�todo devuelve el paquete que lleg� a la entrada del puerto.
-     * @return Paquete que est� almacenado en el buffer.
-     * @since 1.0
-     */    
-    public TPDU getPacket() {
-        return this.paquete;
-    }
-    
-    private static final int PRIMERO_EL_ACTUAL = -1;
-    private static final int PRIMERO_EL_PARAMETRO = 1;
-    private static final int IGUALES = 0;
 
-    private int prioridad;
-    private int ordenDeLlegada;
-    private TPDU paquete;
+    /**
+     * This method is the constructor of the class. It creates a new instance of
+     * TActivePortBufferEntry.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 1.0
+     * @param priority packet priority. Embedded on it as defined by "Guarante
+     * of Service (GoS)Support over MPLS using Active Techniques". Read this
+     * proposal to know more about GoS priorities.
+     * @param incomingOrder The incoming ordet to the buffer. To be used when
+     * following a FIFO packet dispatching.
+     * @param packet The packet itself.
+     */
+    public TActivePortBufferEntry(int priority, int incomingOrder, TPDU packet) {
+        this.priority = priority;
+        this.incomingOrder = incomingOrder;
+        this.packet = packet;
+    }
+
+    /**
+     * This method compares the current instance with other specified as an
+     * argument. It is used to store TActivePortBufferEntry objects in a
+     * collection.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param anotherActivePortBufferEntry Otra entrada de un puerto activo con
+     * la que se quiere comparar la instancia actual.
+     * @return -1, 0 or 1, depending on whether the current instance incoming
+     * order is lower, equal or greater than the one specified as an argument.
+     * @since 1.0
+     */
+    @Override
+    public int compareTo(Object anotherActivePortBufferEntry) {
+        TActivePortBufferEntry activePortBufferEntryAux = (TActivePortBufferEntry) anotherActivePortBufferEntry;
+        if (this.incomingOrder < activePortBufferEntryAux.getIncomingOrder()) {
+            return TActivePortBufferEntry.THIS_IS_LOWER;
+        }
+        if (this.incomingOrder > activePortBufferEntryAux.getIncomingOrder()) {
+            return TActivePortBufferEntry.THIS_IS_GREATER;
+        }
+        return TActivePortBufferEntry.BOTH_ARE_EQUAL;
+    }
+
+    /**
+     * This method returns the priority of the packets stored in this active
+     * port buffer entry. This priority has to be interpreted as defined by
+     * "Guarante of Service (GoS)Support over MPLS using Active Techniques".
+     * Read this proposal to know more about GoS priorities.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 1.0
+     * @return Priority of the packet embedded in this active port buffer entry.
+     * A number between 0 (no priority) and 10 (maximum priority).
+     */
+    public int getPriority() {
+        return this.priority;
+    }
+
+    /**
+     * This method returns the incoming order of the packet embedded in this
+     * active port buffer entry. It is the incoming order of the packet in the
+     * parent buffer.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 1.0
+     * @return The incoming order of the embedded packet to the active port
+     * parent buffer.
+     */
+    public int getIncomingOrder() {
+        return this.incomingOrder;
+    }
+
+    /**
+     * This method returns the packet embedded in this active port buffer entry.
+     *
+     * @return The packet itself.
+     * @since 1.0
+     */
+    public TPDU getPacket() {
+        return this.packet;
+    }
+
+    private static final int THIS_IS_LOWER = -1;
+    private static final int THIS_IS_GREATER = 1;
+    private static final int BOTH_ARE_EQUAL = 0;
+
+    private int priority;
+    private int incomingOrder;
+    private TPDU packet;
 }

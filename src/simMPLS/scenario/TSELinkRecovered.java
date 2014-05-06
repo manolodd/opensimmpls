@@ -48,11 +48,11 @@ public class TSELinkRecovered extends TSimulationEvent {
      */    
     public String obtenerNombre() {
         TTopologyElement et = null;
-        TTopologyLink ent = null;
+        TLink ent = null;
         TNode nt = null;
         et = super.obtenerFuente();
         if (et.obtenerTipoElemento() == TTopologyElement.ENLACE) {
-            ent = (TTopologyLink) et;
+            ent = (TLink) et;
             return ent.obtenerNombre();
         } else if (et.obtenerTipoElemento() == TTopologyElement.NODO) {
             nt = (TNode) et;

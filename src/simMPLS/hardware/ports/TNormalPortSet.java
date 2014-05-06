@@ -1,5 +1,5 @@
 //**************************************************************************
-// Nombre......: TNodePorts.java
+// Nombre......: TPortSet.java
 // Proyecto....: Open SimMPLS
 // Descripci�n.: Clase que implementa el conjunto de puertos de un parentNode de
 // ............: la topolog�a.
@@ -11,7 +11,7 @@
 
 package simMPLS.hardware.ports;
 
-import simMPLS.scenario.TTopologyLink;
+import simMPLS.scenario.TLink;
 import simMPLS.scenario.TNode;
 import simMPLS.protocols.TPDU;
 
@@ -22,7 +22,7 @@ import simMPLS.protocols.TPDU;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TNormalNodePorts extends TNodePorts {
+public class TNormalPortSet extends TPortSet {
 
     /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * TPuertosNodoNormal.
@@ -30,13 +30,13 @@ public class TNormalNodePorts extends TNodePorts {
      * @param n Referencia al parentNode al que pertenece este conjunto de puertos.
      * @since 1.0
      */
-    public TNormalNodePorts(int num, TNode n) {
+    public TNormalPortSet(int num, TNode n) {
         super(num, n);
         puertos = new TNormalPort[num];
         int i=0;
         for (i=0; i<this.numberOfPorts; i++) {
             puertos[i] = new TNormalPort(this, i);
-            puertos[i].ponerIdentificador(i);
+            puertos[i].setPortID(i);
         }
         puertoLeido = 0;
     }
@@ -131,7 +131,7 @@ public class TNormalNodePorts extends TNodePorts {
      * @since 1.0
      */    
     @Override
-    public void connectLinkToPort(TTopologyLink e, int p) {
+    public void connectLinkToPort(TLink e, int p) {
         if (p < this.numberOfPorts)
             if (puertos[p].isAvailable())
                 puertos[p].setLink(e);
@@ -146,7 +146,7 @@ public class TNormalNodePorts extends TNodePorts {
      * @since 1.0
      */    
     @Override
-    public TTopologyLink getLinkConnectedToPort(int p) {
+    public TLink getLinkConnectedToPort(int p) {
         if (p < this.numberOfPorts)
             if (!puertos[p].isAvailable())
                 return puertos[p].getLink();
@@ -261,7 +261,7 @@ public class TNormalNodePorts extends TNodePorts {
         for (int i=0; i<numberOfPorts; i++) {
             if (!puertos[i].isAvailable()) {
                 int destino = puertos[i].getLink().getTargetNodeIDOfTrafficSentBy(parentNode);
-                if (destino == TTopologyLink.END_NODE_1) {
+                if (destino == TLink.END_NODE_1) {
                     if (puertos[i].getLink().obtenerExtremo1().getIPAddress().equals(ip)) {
                         return puertos[i];
                     }

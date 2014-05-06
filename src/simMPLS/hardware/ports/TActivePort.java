@@ -23,17 +23,18 @@ public class TActivePort extends TPort {
      * This method is the constructor of the class. It creates a new instance of
      * TActivePort.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      * @param portNumber port number (the port identifier used to distinguish
      * this port of other in the same active parentNode).
      * @param parentSetOfActivePorts A reference to the parent set of active
      * ports this active port belongs to.
      */
-    public TActivePort(TNodePorts parentSetOfActivePorts, int portNumber) {
+    public TActivePort(TPortSet parentSetOfActivePorts, int portNumber) {
         super(parentSetOfActivePorts, portNumber);
         this.packetRead = null;
-        this.unlimitedBuffer = false;
-        this.incomingOrder = new TRotaryIDGenerator();
+        this.isUnlimitedBuffer = false;
+        this.rotaryIdentifierGenerator = new TRotaryIDGenerator();
         this.priority0Monitor = new TMonitor();
         this.priority1Monitor = new TMonitor();
         this.priority2Monitor = new TMonitor();
@@ -75,10 +76,10 @@ public class TActivePort extends TPort {
      * are not read from the buffer following a FIFO paradigm. Instead, the
      * active port has 11 different prioritized buffers (10 to 0) depending on
      * the requirements of each packet which is embedded in the packet itself.
-     * Read the proposal "Guarantee of Service (gosLevel) support over MPLS
-     * using active techniques" to know more about these 11 types of traffic.
+     * Read the proposal "Guarantee of Service (GoS) support over MPLS using
+     * active techniques" to know more about these 11 types of traffic.
      * Summarizing, an active port acts as a single port, but maintains 11
-     * buffers with increased priority from 0 to 10. The port executes a
+     * buffers with increased packetPriority from 0 to 10. The port executes a
      * prioritized Round Robin algorithm. Y goes on buffer by buffer avoiding
      * undefined relegation of packets but assuring that more prioritized
      * packets (those in higher buffers) will be handled before less prioritized
@@ -87,18 +88,20 @@ public class TActivePort extends TPort {
      * prioritized buffer 10, 9 from prioritized buffer 9, 8 from prioritized
      * buffer 8, and so on. So, imagine that there are enough packets in each
      * buffer, then in a complete Prioritized Round Robin cicle the ports should
-     * read: 11 packets from buffer of priority 10; 10 packets from buffer of
-     * priority 9; 9 packets from buffer of priority 8; 8 packets from buffer of
-     * priority 7; 7 packets from buffer of priority 6; 6 packets from buffer of
-     * priority 5; 5 packets from buffer of priority 4; 4 packets from buffer of
-     * priority 3; 3 packets from buffer of priority 2; 2 packets from buffer of
-     * priority 1; 1 packets from buffer of priority 0.
+     * read: 11 packets from buffer of packetPriority 10; 10 packets from buffer
+     * of packetPriority 9; 9 packets from buffer of packetPriority 8; 8 packets
+     * from buffer of packetPriority 7; 7 packets from buffer of packetPriority
+     * 6; 6 packets from buffer of packetPriority 5; 5 packets from buffer of
+     * packetPriority 4; 4 packets from buffer of packetPriority 3; 3 packets
+     * from buffer of packetPriority 2; 2 packets from buffer of packetPriority
+     * 1; 1 packets from buffer of packetPriority 0.
      *
      * This method prepares the next read that follow this scheme. And, in case
      * of existing only best effort traffic without gosLevel requirements, the
      * port works as a traditional one, dispatching one packet per cicle
      * followin a FIFO paradigm.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      */
     private void doPrioritizedRoundRobinPacketSelection() {
@@ -354,15 +357,16 @@ public class TActivePort extends TPort {
 
     /**
      * This method selects next packet to be read from the active port and
-     * return its priority according to the "Guarante of Service (gosLevel)
+     * return its packetPriority according to the "Guarante of Service (GoS)
      * support over MPLS using active techniques". This information is embedded
      * in the packet itself. Read the proposal to know more about prioritized
      * packets.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      * @return -1, if there are not packet to read (the port is empty).
-     * Otherwise, it return a value between 0 and 10 (inclusive) which is the
-     * priority of the next packet to be read from the port.
+     * Otherwise, iterator return a value between 0 and 10 (inclusive) which is
+     * the packetPriority of the next packet to be read from the port.
      */
     public int getNextPacketPriority() {
         int priorityAux;
@@ -382,17 +386,18 @@ public class TActivePort extends TPort {
      * configure the port as an ideal port, with unlimited space.
      *
      * @param unlimitedBuffer TRUE if the port is going to be defined as an
-     * ideal one (unlimited space on it). FALSE, on the contrary.
+     * ideal one (unlimited space on iterator). FALSE, on the contrary.
      * @since 1.0
      */
     @Override
     public void setUnlimitedBuffer(boolean unlimitedBuffer) {
-        this.unlimitedBuffer = unlimitedBuffer;
+        this.isUnlimitedBuffer = unlimitedBuffer;
     }
 
     /**
      * This method discard the packet passed as an argument from the buffer.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packet The packet to be discarded from the buffer.
      * @since 1.0
      */
@@ -404,12 +409,13 @@ public class TActivePort extends TPort {
     /**
      * This method put a new packet in the buffer of the active port.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packet Packet to be inserted in the buffer of the active port.
      * @since 1.0
      */
     @Override
     public void addPacket(TPDU packet) {
-        TActiveNodePorts parentPortSetAux = (TActiveNodePorts) this.parentPortSet;
+        TActivePortSet parentPortSetAux = (TActivePortSet) this.parentPortSet;
         parentPortSetAux.portSetMonitor.lock();
         monitor.lock();
         TNode parentNode = this.parentPortSet.getNode();
@@ -417,13 +423,13 @@ public class TActivePort extends TPort {
         int packetOrder = 0;
         int priority = this.loadPacketPriority(packet);
         try {
-            eventID = parentNode.gILargo.getNextID();
-            packetOrder = this.incomingOrder.getNextID();
+            eventID = parentNode.longIdentifierGenerator.getNextID();
+            packetOrder = this.rotaryIdentifierGenerator.getNextID();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         int packetSubtype = packet.getSubtype();
-        if (this.unlimitedBuffer) {
+        if (this.isUnlimitedBuffer) {
             TActivePortBufferEntry activePortBufferEntry = new TActivePortBufferEntry(priority, packetOrder, packet);
             this.addPrioritizedBufferEntry(activePortBufferEntry);
             parentPortSetAux.increasePortSetOccupancy(packet.getSize());
@@ -444,33 +450,35 @@ public class TActivePort extends TPort {
     /**
      * This method implements Early Packet Catch and Discard algorithm for
      * active buffer management, as defined in the proposal "Guarentee of
-     * Service Support (gosLevel) over MPLS using Active Techniques". Read the
+     * Service Support (GoS) over MPLS using Active Techniques". Read the
      * proposal to know more about EPCD algorithm.
      *
      * Summarizing, EPCD maintains a fixed thresshold free in the buffer of the
      * active port. If the packet is going to be discarded, this small space
      * allow the algorithm to retain some bytes of the packet header that are
-     * codified as expressed in the gosLevel proposal. Using these bytes, this
-     * method request the parent node to request retransmission of the packet,
-     * if needed, to other active nodes.
+     * codified as expressed in the GoS proposal. Using these bytes, this method
+     * request the parent parentNode to request retransmission of the packet, if
+     * needed, to other active nodes.
      *
+     * @since 1.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packet The packet that is going to be inserted in the buffer
      * through EPCD algoritm.
      * @return TRUE, if the packet can be inserted in the buffer. If this is the
      * case, the packet is inserted in the same operation. If the packet should
      * be discarded because a buffer overflow, the method returns FALSE and the
-     * EPCD algorithm request the parent node to request the packet
+     * EPCD algorithm request the parent parentNode to request the packet
      * retransmission.
      */
     public boolean runEarlyPacketCatchAndDiscard(TPDU packet) {
-        TActiveNodePorts parentPortSetAux = (TActiveNodePorts) parentPortSet;
+        TActivePortSet parentPortSetAux = (TActivePortSet) parentPortSet;
         long eventID = 0;
         int packetOrder = 0;
         int packetPriority = this.loadPacketPriority(packet);
         TNode parentNode = this.parentPortSet.getNode();
         try {
-            eventID = parentNode.gILargo.getNextID();
-            packetOrder = this.incomingOrder.getNextID();
+            eventID = parentNode.longIdentifierGenerator.getNextID();
+            packetOrder = this.rotaryIdentifierGenerator.getNextID();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -619,91 +627,93 @@ public class TActivePort extends TPort {
     }
 
     /**
-     * Este m�todo inserta un packet en el buffer de recepci�n del puerto. Es
-     * igual que el m�todo addPacket(), salvo que no genera eventos y lo hace
-     * silenciosamente.
+     * This method put a new packet in the buffer of the active port. In fact,
+     * this do the same than addPacket(p) method, but does not generates
+     * simulation events but do iterator silently.
      *
-     * @param packet El packet que queremos que reciba el puerto.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packet The packet to be inserted in the buffer of the active port.
      * @since 1.0
      */
     @Override
     public void reEnqueuePacket(TPDU packet) {
-        TActiveNodePorts cjtoPuertosAux = (TActiveNodePorts) parentPortSet;
-        cjtoPuertosAux.portSetMonitor.lock();
-        monitor.lock();
-        TNode nt = this.parentPortSet.getNode();
-        long idEvt = 0;
-        int idOrden = 0;
-        int prior = this.loadPacketPriority(packet);
+        TActivePortSet parentPortSetAux = (TActivePortSet) parentPortSet;
+        parentPortSetAux.portSetMonitor.lock();
+        this.monitor.lock();
+        TNode parentNode = this.parentPortSet.getNode();
+        long eventID = 0;
+        int packetOrder = 0;
+        int packetPriority = this.loadPacketPriority(packet);
         try {
-            idEvt = nt.gILargo.getNextID();
-            idOrden = this.incomingOrder.getNextID();
+            eventID = parentNode.longIdentifierGenerator.getNextID();
+            packetOrder = this.rotaryIdentifierGenerator.getNextID();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        int tipo = packet.getSubtype();
-        if (this.unlimitedBuffer) {
-            TActivePortBufferEntry epa = new TActivePortBufferEntry(prior, idOrden, packet);
-            addPrioritizedBufferEntry(epa);
-            cjtoPuertosAux.increasePortSetOccupancy(packet.getSize());
+        int packetSubtype = packet.getSubtype();
+        if (this.isUnlimitedBuffer) {
+            TActivePortBufferEntry activePortBufferEntry = new TActivePortBufferEntry(packetPriority, packetOrder, packet);
+            this.addPrioritizedBufferEntry(activePortBufferEntry);
+            parentPortSetAux.increasePortSetOccupancy(packet.getSize());
         } else {
-            if ((cjtoPuertosAux.getPortSetOccupancy() + packet.getSize()) <= (cjtoPuertosAux.getBufferSizeInMB() * 1024 * 1024)) {
-                TActivePortBufferEntry epa = new TActivePortBufferEntry(prior, idOrden, packet);
-                addPrioritizedBufferEntry(epa);
-                cjtoPuertosAux.increasePortSetOccupancy(packet.getSize());
+            if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= (parentPortSetAux.getBufferSizeInMB() * 1024 * 1024)) {
+                TActivePortBufferEntry activePortBufferEntry = new TActivePortBufferEntry(packetPriority, packetOrder, packet);
+                this.addPrioritizedBufferEntry(activePortBufferEntry);
+                parentPortSetAux.increasePortSetOccupancy(packet.getSize());
             } else {
                 this.discardPacket(packet);
             }
         }
-        monitor.unLock();
-        cjtoPuertosAux.portSetMonitor.unLock();
+        this.monitor.unLock();
+        parentPortSetAux.portSetMonitor.unLock();
     }
 
     /**
-     * este m�todo lee un paquete del buffer de recepci�n del puerto. El paquete
-     * leido depender� del algoritmo de gesti�n de los b�fferes que implemente
-     * el puerto. Por defecto, es un FIFO con prioridad por packetSubtype de
-     * paquetes.
+     * This method reads an returns the next packet of the buffer according to
+     * the buffer management policy of an active port.
      *
-     * @return El paquete le�do.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The read packet
      * @since 1.0
      */
     @Override
     public TPDU getPacket() {
-        TActiveNodePorts cjtoPuertosAux = (TActiveNodePorts) parentPortSet;
-        cjtoPuertosAux.portSetMonitor.lock();
-        monitor.lock();
-        doPrioritizedRoundRobinPacketSelection();
-        if (nextPacketToBeRead != null) {
-            packetRead = nextPacketToBeRead;
-            if (!this.unlimitedBuffer) {
-                cjtoPuertosAux.decreasePortSetOccupancySize(packetRead.getSize());
+        TActivePortSet parentPortSetAux = (TActivePortSet) parentPortSet;
+        parentPortSetAux.portSetMonitor.lock();
+        this.monitor.lock();
+        this.doPrioritizedRoundRobinPacketSelection();
+        if (this.nextPacketToBeRead != null) {
+            this.packetRead = this.nextPacketToBeRead;
+            if (!this.isUnlimitedBuffer) {
+                parentPortSetAux.decreasePortSetOccupancySize(packetRead.getSize());
             }
-            nextPacketToBeRead = null;
+            this.nextPacketToBeRead = null;
         }
-        monitor.unLock();
-        cjtoPuertosAux.portSetMonitor.unLock();
+        this.monitor.unLock();
+        parentPortSetAux.portSetMonitor.unLock();
         return packetRead;
     }
 
     /**
-     * Este m�todo calcula si podemos conmutar el siguiente paquete del
-     * parentNode, dado el n�mero de octetos que como mucho podemos conmutar en
-     * un momento dado.
+     * This method compute whether iterator is possible or not to switch the
+     * next packet in the buffer having the number of octects (specified as an
+     * argument) that the port can switch in the current moment.
      *
-     * @param octetos El n�mero de octetos que podemos conmutar.
-     * @return TRUE, si podemos conmutar el siguiente paquete. FALSE, en caso
-     * contrario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param octets The number of octects that the active port can switch in
+     * this moment.
+     * @return TRUE, if we can switch the next packet of the buffer at this
+     * moment. Otherwise, FALSE.
      * @since 1.0
      */
     @Override
-    public boolean canSwitchPacket(int octetos) {
-        monitor.lock();
-        doPrioritizedRoundRobinPacketSelection();
-        if (nextPacketToBeRead != null) {
-            packetRead = nextPacketToBeRead;
-            monitor.unLock();
-            if (packetRead.getSize() <= octetos) {
+    public boolean canSwitchPacket(int octets) {
+        this.monitor.lock();
+        this.doPrioritizedRoundRobinPacketSelection();
+        if (this.nextPacketToBeRead != null) {
+            this.packetRead = this.nextPacketToBeRead;
+            this.monitor.unLock();
+            if (this.packetRead.getSize() <= octets) {
                 return true;
             }
         }
@@ -712,248 +722,244 @@ public class TActivePort extends TPort {
     }
 
     /**
-     * Este m�todo obtiene la congesti�n total el puerto, en porcentaje.
+     * This method computes the congestion level of the active port.
      *
-     * @return El porcentaje de ocupaci�n del puerto.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return A number, without decimals, between 0 and 100, which will be the
+     * congestion level as a percentage.
      * @since 1.0
      */
     @Override
     public long getCongestionLevel() {
-        if (this.unlimitedBuffer) {
+        if (this.isUnlimitedBuffer) {
             return 0;
         }
-        TActiveNodePorts tpn = (TActiveNodePorts) parentPortSet;
-        long cong = (tpn.getPortSetOccupancy() * 100) / (tpn.getBufferSizeInMB() * 1024 * 1024);
-        return cong;
+        TActivePortSet parentPortSetAux = (TActivePortSet) this.parentPortSet;
+        long congestion = (parentPortSetAux.getPortSetOccupancy() * 100) / (parentPortSetAux.getBufferSizeInMB() * 1024 * 1024);
+        return congestion;
     }
 
     /**
-     * Este m�todo comprueba si hay paquetes esperando en el buffer de recepci�n
-     * o no.
+     * This method checks whether there is a packet in te buffer waiting to be
+     * switched/routed, or not.
      *
-     * @return TRUE, si hay paquetes en el buffer de recepci�n. FALSE en caso
-     * contrario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TRUE, if there is a packet waiting to be switched/routed.
+     * Otherwise, FALSE.
      * @since 1.0
      */
     @Override
     public boolean thereIsAPacketWaiting() {
-        if (priority10Buffer.size() > 0) {
+        if (this.priority10Buffer.size() > 0) {
             return true;
         }
-        if (priority9Buffer.size() > 0) {
+        if (this.priority9Buffer.size() > 0) {
             return true;
         }
-        if (priority8Buffer.size() > 0) {
+        if (this.priority8Buffer.size() > 0) {
             return true;
         }
-        if (priority7Buffer.size() > 0) {
+        if (this.priority7Buffer.size() > 0) {
             return true;
         }
-        if (priority6Buffer.size() > 0) {
+        if (this.priority6Buffer.size() > 0) {
             return true;
         }
-        if (priority5Buffer.size() > 0) {
+        if (this.priority5Buffer.size() > 0) {
             return true;
         }
-        if (priority4Buffer.size() > 0) {
+        if (this.priority4Buffer.size() > 0) {
             return true;
         }
-        if (priority3Buffer.size() > 0) {
+        if (this.priority3Buffer.size() > 0) {
             return true;
         }
-        if (priority2Buffer.size() > 0) {
+        if (this.priority2Buffer.size() > 0) {
             return true;
         }
-        if (priority1Buffer.size() > 0) {
+        if (this.priority1Buffer.size() > 0) {
             return true;
         }
-        if (priority0Buffer.size() > 0) {
+        if (this.priority0Buffer.size() > 0) {
             return true;
         }
-        if (nextPacketToBeRead != null) {
+        if (this.nextPacketToBeRead != null) {
             return true;
         }
         return false;
     }
 
     /**
-     * Este m�todo calcula el total de octetos que suman los paquetes que
-     * actualmente hay en el buffer de recepci�n del puerto.
+     * This method computes and returns the number of octets that are currently
+     * used by packets in the buffer of the active port.
      *
-     * @return El tama�o en octetos del total de paquetes en el buffer de
-     * recepci�n.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return Size, in octects, used by packets in the buffer of the active
+     * port.
      * @since 1.0
      */
     @Override
     public long getOccupancy() {
-        if (this.unlimitedBuffer) {
+        if (this.isUnlimitedBuffer) {
             this.monitor.lock();
-            int ocup = 0;
-            TPDU paquete = null;
-            TActivePortBufferEntry epa = null;
+            int occupancyAux = 0;
+            TPDU packet = null;
+            TActivePortBufferEntry activePortBufferEntry = null;
 
             this.priority10Monitor.lock();
-            Iterator it = this.priority10Buffer.iterator();
-            while (it.hasNext()) {
-                epa = (TActivePortBufferEntry) it.next();
-                paquete = epa.getPacket();
-                if (paquete != null) {
-                    ocup += paquete.getSize();
+            Iterator iterator = this.priority10Buffer.iterator();
+            while (iterator.hasNext()) {
+                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                packet = activePortBufferEntry.getPacket();
+                if (packet != null) {
+                    occupancyAux += packet.getSize();
                 }
             }
             this.priority10Monitor.unLock();
-
             this.priority9Monitor.lock();
-            it = this.priority9Buffer.iterator();
-            while (it.hasNext()) {
-                epa = (TActivePortBufferEntry) it.next();
-                paquete = epa.getPacket();
-                if (paquete != null) {
-                    ocup += paquete.getSize();
+            iterator = this.priority9Buffer.iterator();
+            while (iterator.hasNext()) {
+                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                packet = activePortBufferEntry.getPacket();
+                if (packet != null) {
+                    occupancyAux += packet.getSize();
                 }
             }
             this.priority9Monitor.unLock();
-
             this.priority8Monitor.lock();
-            it = this.priority8Buffer.iterator();
-            while (it.hasNext()) {
-                epa = (TActivePortBufferEntry) it.next();
-                paquete = epa.getPacket();
-                if (paquete != null) {
-                    ocup += paquete.getSize();
+            iterator = this.priority8Buffer.iterator();
+            while (iterator.hasNext()) {
+                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                packet = activePortBufferEntry.getPacket();
+                if (packet != null) {
+                    occupancyAux += packet.getSize();
                 }
             }
             this.priority8Monitor.unLock();
-
             this.priority7Monitor.lock();
-            it = this.priority7Buffer.iterator();
-            while (it.hasNext()) {
-                epa = (TActivePortBufferEntry) it.next();
-                paquete = epa.getPacket();
-                if (paquete != null) {
-                    ocup += paquete.getSize();
+            iterator = this.priority7Buffer.iterator();
+            while (iterator.hasNext()) {
+                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                packet = activePortBufferEntry.getPacket();
+                if (packet != null) {
+                    occupancyAux += packet.getSize();
                 }
             }
             this.priority7Monitor.unLock();
-
             this.priority6Monitor.lock();
-            it = this.priority6Buffer.iterator();
-            while (it.hasNext()) {
-                epa = (TActivePortBufferEntry) it.next();
-                paquete = epa.getPacket();
-                if (paquete != null) {
-                    ocup += paquete.getSize();
+            iterator = this.priority6Buffer.iterator();
+            while (iterator.hasNext()) {
+                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                packet = activePortBufferEntry.getPacket();
+                if (packet != null) {
+                    occupancyAux += packet.getSize();
                 }
             }
             this.priority6Monitor.unLock();
-
             this.priority5Monitor.lock();
-            it = this.priority5Buffer.iterator();
-            while (it.hasNext()) {
-                epa = (TActivePortBufferEntry) it.next();
-                paquete = epa.getPacket();
-                if (paquete != null) {
-                    ocup += paquete.getSize();
+            iterator = this.priority5Buffer.iterator();
+            while (iterator.hasNext()) {
+                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                packet = activePortBufferEntry.getPacket();
+                if (packet != null) {
+                    occupancyAux += packet.getSize();
                 }
             }
             this.priority5Monitor.unLock();
-
             this.priority4Monitor.lock();
-            it = this.priority4Buffer.iterator();
-            while (it.hasNext()) {
-                epa = (TActivePortBufferEntry) it.next();
-                paquete = epa.getPacket();
-                if (paquete != null) {
-                    ocup += paquete.getSize();
+            iterator = this.priority4Buffer.iterator();
+            while (iterator.hasNext()) {
+                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                packet = activePortBufferEntry.getPacket();
+                if (packet != null) {
+                    occupancyAux += packet.getSize();
                 }
             }
             this.priority4Monitor.unLock();
-
             this.priority3Monitor.lock();
-            it = this.priority3Buffer.iterator();
-            while (it.hasNext()) {
-                epa = (TActivePortBufferEntry) it.next();
-                paquete = epa.getPacket();
-                if (paquete != null) {
-                    ocup += paquete.getSize();
+            iterator = this.priority3Buffer.iterator();
+            while (iterator.hasNext()) {
+                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                packet = activePortBufferEntry.getPacket();
+                if (packet != null) {
+                    occupancyAux += packet.getSize();
                 }
             }
             this.priority3Monitor.unLock();
-
             this.priority2Monitor.lock();
-            it = this.priority2Buffer.iterator();
-            while (it.hasNext()) {
-                epa = (TActivePortBufferEntry) it.next();
-                paquete = epa.getPacket();
-                if (paquete != null) {
-                    ocup += paquete.getSize();
+            iterator = this.priority2Buffer.iterator();
+            while (iterator.hasNext()) {
+                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                packet = activePortBufferEntry.getPacket();
+                if (packet != null) {
+                    occupancyAux += packet.getSize();
                 }
             }
             this.priority2Monitor.unLock();
-
             this.priority1Monitor.lock();
-            it = this.priority1Buffer.iterator();
-            while (it.hasNext()) {
-                epa = (TActivePortBufferEntry) it.next();
-                paquete = epa.getPacket();
-                if (paquete != null) {
-                    ocup += paquete.getSize();
+            iterator = this.priority1Buffer.iterator();
+            while (iterator.hasNext()) {
+                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                packet = activePortBufferEntry.getPacket();
+                if (packet != null) {
+                    occupancyAux += packet.getSize();
                 }
             }
             this.priority1Monitor.unLock();
-
             this.priority0Monitor.lock();
-            it = this.priority0Buffer.iterator();
-            while (it.hasNext()) {
-                epa = (TActivePortBufferEntry) it.next();
-                paquete = epa.getPacket();
-                if (paquete != null) {
-                    ocup += paquete.getSize();
+            iterator = this.priority0Buffer.iterator();
+            while (iterator.hasNext()) {
+                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                packet = activePortBufferEntry.getPacket();
+                if (packet != null) {
+                    occupancyAux += packet.getSize();
                 }
             }
             this.priority0Monitor.unLock();
-
-            if (nextPacketToBeRead != null) {
-                ocup += nextPacketToBeRead.getSize();
+            if (this.nextPacketToBeRead != null) {
+                occupancyAux += this.nextPacketToBeRead.getSize();
             }
             this.monitor.unLock();
-            return ocup;
+            return occupancyAux;
         }
-        TActiveNodePorts tpn = (TActiveNodePorts) parentPortSet;
-        return tpn.getPortSetOccupancy();
+        TActivePortSet parentPortSetAux = (TActivePortSet) this.parentPortSet;
+        return parentPortSetAux.getPortSetOccupancy();
     }
 
     /**
-     * Este m�todo calcula el n�mero de paquetes total que hay en el buffer del
-     * puerto.
+     * This method computes and returns the number of packets stored in the
+     * buffer of the active port.
      *
-     * @return El n�mero total de paquetes que hay en el puerto.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The total number of packets stored in the buffer of the active
+     * port.
      * @since 1.0
      */
     @Override
     public int getNumberOfPackets() {
-        int numP = 0;
-        numP += priority10Buffer.size();
-        numP += priority9Buffer.size();
-        numP += priority8Buffer.size();
-        numP += priority7Buffer.size();
-        numP += priority6Buffer.size();
-        numP += priority5Buffer.size();
-        numP += priority4Buffer.size();
-        numP += priority3Buffer.size();
-        numP += priority2Buffer.size();
-        numP += priority1Buffer.size();
-        numP += priority0Buffer.size();
-        if (nextPacketToBeRead != null) {
-            numP++;
+        int numPackets = 0;
+        numPackets += this.priority10Buffer.size();
+        numPackets += this.priority9Buffer.size();
+        numPackets += this.priority8Buffer.size();
+        numPackets += this.priority7Buffer.size();
+        numPackets += this.priority6Buffer.size();
+        numPackets += this.priority5Buffer.size();
+        numPackets += this.priority4Buffer.size();
+        numPackets += this.priority3Buffer.size();
+        numPackets += this.priority2Buffer.size();
+        numPackets += this.priority1Buffer.size();
+        numPackets += this.priority0Buffer.size();
+        if (this.nextPacketToBeRead != null) {
+            numPackets++;
         }
-        return numP;
+        return numPackets;
     }
 
     /**
-     * Este m�todo reinicia los atributos de la clase como si acabasen de ser
-     * creados por el constructor.
+     * This method reset attributes of the class as when created by the
+     * constructor.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      */
     @Override
@@ -961,100 +967,89 @@ public class TActivePort extends TPort {
         this.monitor.lock();
 
         this.priority10Monitor.lock();
-        Iterator it = this.priority10Buffer.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
+        Iterator iterator = this.priority10Buffer.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
         }
         this.priority10Monitor.unLock();
-
         this.priority9Monitor.lock();
-        it = this.priority9Buffer.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
+        iterator = this.priority9Buffer.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
         }
         this.priority9Monitor.unLock();
-
         this.priority8Monitor.lock();
-        it = this.priority8Buffer.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
+        iterator = this.priority8Buffer.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
         }
         this.priority8Monitor.unLock();
-
         this.priority7Monitor.lock();
-        it = this.priority7Buffer.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
+        iterator = this.priority7Buffer.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
         }
         this.priority7Monitor.unLock();
-
         this.priority6Monitor.lock();
-        it = this.priority6Buffer.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
+        iterator = this.priority6Buffer.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
         }
         this.priority6Monitor.unLock();
-
         this.priority5Monitor.lock();
-        it = this.priority5Buffer.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
+        iterator = this.priority5Buffer.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
         }
         this.priority5Monitor.unLock();
-
         this.priority4Monitor.lock();
-        it = this.priority4Buffer.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
+        iterator = this.priority4Buffer.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
         }
         this.priority4Monitor.unLock();
-
         this.priority3Monitor.lock();
-        it = this.priority3Buffer.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
+        iterator = this.priority3Buffer.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
         }
         this.priority3Monitor.unLock();
-
         this.priority2Monitor.lock();
-        it = this.priority2Buffer.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
+        iterator = this.priority2Buffer.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
         }
         this.priority2Monitor.unLock();
-
         this.priority1Monitor.lock();
-        it = this.priority1Buffer.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
+        iterator = this.priority1Buffer.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
         }
         this.priority1Monitor.unLock();
-
         this.priority0Monitor.lock();
-        it = this.priority0Buffer.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
+        iterator = this.priority0Buffer.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
         }
         this.priority0Monitor.unLock();
-
         this.monitor.unLock();
-        packetRead = null;
-        selectedBuffer = 0;
-        nextPacketToBeRead = null;
+        this.packetRead = null;
+        this.selectedBuffer = 0;
+        this.nextPacketToBeRead = null;
         int i;
         for (i = 0; i < 11; i++) {
-            currentReadsOfBuffer[i] = 0;
+            this.currentReadsOfBuffer[i] = 0;
         }
     }
 
@@ -1097,8 +1092,8 @@ public class TActivePort extends TPort {
 
     private int selectedBuffer;
     private TPDU packetRead;
-    private boolean unlimitedBuffer;
-    private TRotaryIDGenerator incomingOrder;
+    private boolean isUnlimitedBuffer;
+    private TRotaryIDGenerator rotaryIdentifierGenerator;
     private int[] maxReadsOfBuffer;
     private int[] currentReadsOfBuffer;
     private TPDU nextPacketToBeRead;

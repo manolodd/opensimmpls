@@ -39,7 +39,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
         eliminarDelReloj = false;
         hilo = null;
         simulationEventsListener = null;
-        this.gILargo = il;
+        this.longIdentifierGenerator = il;
         this.nsDisponibles = 0;
         alive = true;
         bienConfigurado = false;
@@ -320,7 +320,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * asignar un identificador unico a cada evento que genere.
      * @since 1.0
      */    
-    public TIdentificadorLargo gILargo;
+    public TIdentificadorLargo longIdentifierGenerator;
     /**
      * Este atributo almacena en cada momento los nanosegundos de los que dispone el
      * elemento para realizar las operaciones que necesite.

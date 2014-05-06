@@ -188,10 +188,10 @@ public class TTopology {
      */    
     public boolean existeMasDeUnEnlaceLlamado(String nom) {
         int cuantos = 0;
-        TTopologyLink enlace = null;
+        TLink enlace = null;
         Iterator iterador = conjuntoEnlaces.iterator();
         while (iterador.hasNext()) {
-            enlace = (TTopologyLink) iterador.next();
+            enlace = (TLink) iterador.next();
             if (enlace.obtenerNombre().equals(nom))
                 cuantos++;
                 if (cuantos > 1)
@@ -229,11 +229,11 @@ public class TTopology {
      * @return El enlace buscado. NULL si no existe.
      * @since 1.0
      */    
-    public TTopologyLink obtenerPrimerEnlaceLlamado(String nom) {
-        TTopologyLink enlace = null;
+    public TLink obtenerPrimerEnlaceLlamado(String nom) {
+        TLink enlace = null;
         Iterator iterador = conjuntoEnlaces.iterator();
         while (iterador.hasNext()) {
-            enlace = (TTopologyLink) iterador.next();
+            enlace = (TLink) iterador.next();
             if (enlace.obtenerNombre().equals(nom))
                 return enlace;
         }
@@ -325,7 +325,7 @@ public class TTopology {
      * @param enlace Enlace que deseamos insertar.
      * @since 1.0
      */    
-    public void insertarEnlace(TTopologyLink enlace) {
+    public void insertarEnlace(TLink enlace) {
         conjuntoEnlaces.add(enlace);
         relojTopologia.addListenerReloj(enlace);
         try {
@@ -341,10 +341,10 @@ public class TTopology {
      */    
     public void eliminarEnlace(int identificador) {
         boolean fin = false;
-        TTopologyLink enlace = null;
+        TLink enlace = null;
         Iterator iterador = conjuntoEnlaces.iterator();
         while ((iterador.hasNext()) && (!fin)) {
-            enlace = (TTopologyLink) iterador.next();
+            enlace = (TLink) iterador.next();
             if (enlace.obtenerIdentificador() == identificador) {
                 enlace.desconectarDePuertos();
                 enlace.ponerPurgar(true);
@@ -360,7 +360,7 @@ public class TTopology {
      * @param e El enlace que deseamos eliminar.
      * @since 1.0
      */    
-    public void eliminarEnlace(TTopologyLink e) {
+    public void eliminarEnlace(TLink e) {
         eliminarEnlace(e.obtenerIdentificador());
     }
 
@@ -371,11 +371,11 @@ public class TTopology {
      * @return El enlace que dese�bamos obtener. NULL si no existe.
      * @since 1.0
      */    
-    public TTopologyLink obtenerEnlace(int identificador) {
-        TTopologyLink enlace = null;
+    public TLink obtenerEnlace(int identificador) {
+        TLink enlace = null;
         Iterator iterador = conjuntoEnlaces.iterator();
         while (iterador.hasNext()) {
-            enlace = (TTopologyLink) iterador.next();
+            enlace = (TLink) iterador.next();
             if (enlace.obtenerIdentificador() == identificador)
                 return enlace;
         }
@@ -389,11 +389,11 @@ public class TTopology {
      * @return El enlace buscado. NULL si no existe.
      * @since 1.0
      */    
-    public TTopologyLink obtenerEnlaceEnPosicion(Point p) {
-        TTopologyLink enlace = null;
+    public TLink obtenerEnlaceEnPosicion(Point p) {
+        TLink enlace = null;
         Iterator iterador = conjuntoEnlaces.iterator();
         while (iterador.hasNext()) {
-            enlace = (TTopologyLink) iterador.next();
+            enlace = (TLink) iterador.next();
             if (enlace.estaEnPosicion(p))
                 return enlace;
         }
@@ -405,8 +405,8 @@ public class TTopology {
      * @return Un vector con todos los enlaces de la topolog�a.
      * @since 1.0
      */    
-    public TTopologyLink[] obtenerEnlaces() {
-        return (TTopologyLink[]) conjuntoEnlaces.toArray();
+    public TLink[] obtenerEnlaces() {
+        return (TLink[]) conjuntoEnlaces.toArray();
     }
 
     /**
@@ -414,19 +414,19 @@ public class TTopology {
      * @param enlace Enlace que queremos actualizar, con los valores nuevos.
      * @since 1.0
      */    
-    public void modificarEnlace(TTopologyLink enlace) {
+    public void modificarEnlace(TLink enlace) {
         boolean fin = false;
-        TTopologyLink enlaceBuscado = null;
+        TLink enlaceBuscado = null;
         Iterator iterador = conjuntoEnlaces.iterator();
         while ((iterador.hasNext()) && (!fin)) {
-            enlaceBuscado = (TTopologyLink) iterador.next();
+            enlaceBuscado = (TLink) iterador.next();
             if (enlaceBuscado.obtenerIdentificador() == enlace.obtenerIdentificador()) {
-                if (enlaceBuscado.obtenerTipo() == TTopologyLink.EXTERNO) {
+                if (enlaceBuscado.obtenerTipo() == TLink.EXTERNO) {
                     TExternalLink enlaceTrasCast = (TExternalLink) enlaceBuscado;
                     enlaceTrasCast.ponerExtremo1(enlace.obtenerExtremo1());
                     enlaceTrasCast.ponerExtremo2(enlace.obtenerExtremo2());
                 }
-                else if (enlace.obtenerTipo() == TTopologyLink.INTERNO) {
+                else if (enlace.obtenerTipo() == TLink.INTERNO) {
                     TInternalLink enlaceTrasCast = (TInternalLink) enlaceBuscado;
                     enlaceTrasCast.ponerExtremo1(enlace.obtenerExtremo1());
                     enlaceTrasCast.ponerExtremo2(enlace.obtenerExtremo2());
@@ -462,7 +462,7 @@ public class TTopology {
             if (n != null)
                 return n;
 
-            TTopologyLink e;
+            TLink e;
             e = obtenerEnlaceEnPosicion(p);
             if (e != null)
                 return e;
@@ -477,10 +477,10 @@ public class TTopology {
      * @since 1.0
      */    
     public void eliminarNodo(int identificador) {
-        TTopologyLink enlace = null;
+        TLink enlace = null;
         Iterator iterador = conjuntoEnlaces.iterator();
         while (iterador.hasNext()) {
-            enlace = (TTopologyLink) iterador.next();
+            enlace = (TLink) iterador.next();
             if (enlace.conectadoA(identificador)) {
                 enlace.desconectarDePuertos();
                 enlace.ponerPurgar(true);
@@ -528,9 +528,9 @@ public class TTopology {
     public void eliminarTodo() {
         Iterator it = this.obtenerIteradorEnlaces();
         TNode n;
-        TTopologyLink e;
+        TLink e;
         while (it.hasNext()) {
-            e = (TTopologyLink) it.next();
+            e = (TLink) it.next();
             e.desconectarDePuertos();
             e.ponerPurgar(true);
             it.remove();
@@ -578,11 +578,11 @@ public class TTopology {
      */    
     public int obtenerMinimoDelay() {
         Iterator it = this.obtenerIteradorEnlaces();
-        TTopologyLink e;
+        TLink e;
         int minimoDelay = 0;
         int delayAux=0;
         while (it.hasNext()) {
-            e = (TTopologyLink) it.next();
+            e = (TLink) it.next();
             if (minimoDelay == 0) {
                 minimoDelay = e.obtenerDelay();
             } else {
@@ -606,12 +606,12 @@ public class TTopology {
      * @since 1.0
      */    
     public boolean existeEnlace(int extremo1, int extremo2) {
-        TTopologyLink enlace = null;
+        TLink enlace = null;
         Iterator iterador = conjuntoEnlaces.iterator();
         TNode izquierdo;
         TNode derecho;
         while (iterador.hasNext()) {
-            enlace = (TTopologyLink) iterador.next();
+            enlace = (TLink) iterador.next();
             izquierdo = enlace.obtenerExtremo1();
             derecho = enlace.obtenerExtremo2();
             if ((derecho.obtenerIdentificador() == extremo1) && (izquierdo.obtenerIdentificador() == extremo2))
@@ -630,13 +630,13 @@ public class TTopology {
      * @return El enlace entre extremo 1 y extremo 2. NULL si no existe.
      * @since 1.0
      */    
-    public TTopologyLink obtenerEnlace(int extremo1, int extremo2) {
-        TTopologyLink enlace = null;
+    public TLink obtenerEnlace(int extremo1, int extremo2) {
+        TLink enlace = null;
         Iterator iterador = conjuntoEnlaces.iterator();
         TNode izquierdo;
         TNode derecho;
         while (iterador.hasNext()) {
-            enlace = (TTopologyLink) iterador.next();
+            enlace = (TLink) iterador.next();
             izquierdo = enlace.obtenerExtremo1();
             derecho = enlace.obtenerExtremo2();
             if ((derecho.obtenerIdentificador() == extremo1) && (izquierdo.obtenerIdentificador() == extremo2))
@@ -724,7 +724,7 @@ public class TTopology {
             i++;
         }
         // Averiguamos la matriz de adyacencia
-        TTopologyLink en = null;
+        TLink en = null;
         long matrizAdyacencia[][] = new long[numNodosActual][numNodosActual];
         int j=0;
         for (i=0; i<numNodosActual; i++) {
@@ -737,7 +737,7 @@ public class TTopology {
                         matrizAdyacencia[i][j] = this.PESO_INFINITO;
                     }
                 } else {
-                    if (en.obtenerTipo() == TTopologyLink.EXTERNO) {
+                    if (en.obtenerTipo() == TLink.EXTERNO) {
                         TExternalLink ee = (TExternalLink) en;
                         matrizAdyacencia[i][j] = ee.obtenerPeso();
                     } else {
@@ -778,7 +778,7 @@ public class TTopology {
         }
         // Comprobamos si no hay camino o es que son adyacentes
         if (nodoSiguiente == this.SIN_CAMINO) {
-            TTopologyLink enlt = this.obtenerEnlace(origen, destino);
+            TLink enlt = this.obtenerEnlace(origen, destino);
             if (enlt != null)
                 nodoSiguiente = destino;
         } else {
@@ -876,7 +876,7 @@ public class TTopology {
             i++;
         }
         // Averiguamos la matriz de adyacencia
-        TTopologyLink en = null;
+        TLink en = null;
         long matrizAdyacencia[][] = new long[numNodosActual][numNodosActual];
         int j=0;
         for (i=0; i<numNodosActual; i++) {
@@ -889,7 +889,7 @@ public class TTopology {
                         matrizAdyacencia[i][j] = this.PESO_INFINITO;
                     }
                 } else {
-                    if (en.obtenerTipo() == TTopologyLink.EXTERNO) {
+                    if (en.obtenerTipo() == TLink.EXTERNO) {
                         TExternalLink ee = (TExternalLink) en;
                         matrizAdyacencia[i][j] = ee.obtenerPesoRABAN();
                     } else {
@@ -930,7 +930,7 @@ public class TTopology {
         }
         // Comprobamos si no hay camino o es que son adyacentes
         if (nodoSiguiente == this.SIN_CAMINO) {
-            TTopologyLink enlt = this.obtenerEnlace(origen, destino);
+            TLink enlt = this.obtenerEnlace(origen, destino);
             if (enlt != null)
                 nodoSiguiente = destino;
         } else {
@@ -975,7 +975,7 @@ public class TTopology {
             i++;
         }
         // Averiguamos la matriz de adyacencia
-        TTopologyLink en = null;
+        TLink en = null;
         long matrizAdyacencia[][] = new long[numNodosActual][numNodosActual];
         int j=0;
         for (i=0; i<numNodosActual; i++) {
@@ -988,7 +988,7 @@ public class TTopology {
                         matrizAdyacencia[i][j] = this.PESO_INFINITO;
                     }
                 } else {
-                    if (en.obtenerTipo() == TTopologyLink.EXTERNO) {
+                    if (en.obtenerTipo() == TLink.EXTERNO) {
                         TExternalLink ee = (TExternalLink) en;
                         matrizAdyacencia[i][j] = ee.obtenerPesoRABAN();
                     } else {
@@ -1037,7 +1037,7 @@ public class TTopology {
         }
         // Comprobamos si no hay camino o es que son adyacentes
         if (nodoSiguiente == this.SIN_CAMINO) {
-            TTopologyLink enlt = this.obtenerEnlace(origen, destino);
+            TLink enlt = this.obtenerEnlace(origen, destino);
             if (enlt != null)
                 nodoSiguiente = destino;
         } else {

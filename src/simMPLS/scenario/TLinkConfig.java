@@ -31,7 +31,7 @@ public class TLinkConfig {
         delay = 1;
         valida = false;
         ponerNombre = false;
-        tipoEnlace = TTopologyLink.INTERNO;
+        tipoEnlace = TLink.INTERNO;
         puertoExtremo1 = -1;
         puertoExtremo2 = -1;
     }
@@ -222,11 +222,11 @@ public class TLinkConfig {
         if (soloEspacios)
             return this.SOLO_ESPACIOS;
         if (!recfg) {
-            TTopologyLink e = topo.obtenerPrimerEnlaceLlamado(nombre);
+            TLink e = topo.obtenerPrimerEnlaceLlamado(nombre);
             if (e != null)
                 return this.NOMBRE_YA_EXISTE;
         } else {
-            TTopologyLink e = topo.obtenerPrimerEnlaceLlamado(nombre);
+            TLink e = topo.obtenerPrimerEnlaceLlamado(nombre);
             if (e != null) {
                 if (topo.existeMasDeUnEnlaceLlamado(nombre)) {
                     return this.NOMBRE_YA_EXISTE;
@@ -287,9 +287,9 @@ public class TLinkConfig {
             int tipo2 = e2.obtenerTipo();
             if ((tipo1 == TNode.EMISOR) || (tipo1 == TNode.RECEPTOR) ||
                 (tipo2 == TNode.EMISOR) || (tipo2 == TNode.RECEPTOR))
-                this.ponerTipo(TTopologyLink.EXTERNO);
+                this.ponerTipo(TLink.EXTERNO);
             else
-                this.ponerTipo(TTopologyLink.INTERNO);
+                this.ponerTipo(TLink.INTERNO);
         }
     }
 

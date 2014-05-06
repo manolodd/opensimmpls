@@ -1,5 +1,5 @@
 //**************************************************************************
-// Nombre......: TTopologyLink.java
+// Nombre......: TLink.java
 // Proyecto....: Open SimMPLS
 // Descripci�n.: Superclase que implementa un enlace entre dos nodos de la
 // ............: topolog�a.
@@ -14,7 +14,7 @@ package simMPLS.scenario;
 import simMPLS.protocols.TPDU;
 import simMPLS.hardware.timer.TTimerEvent;
 import simMPLS.hardware.timer.ITimerEventListener;
-import simMPLS.hardware.ports.TNodePorts;
+import simMPLS.hardware.ports.TPortSet;
 import simMPLS.utils.TMonitor;
 import simMPLS.utils.TIdentificadorLargo;
 import java.awt.*;
@@ -29,7 +29,7 @@ import org.jfree.chart.*;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public abstract class TTopologyLink extends TTopologyElement implements Comparable, ITimerEventListener, Runnable {
+public abstract class TLink extends TTopologyElement implements Comparable, ITimerEventListener, Runnable {
     
     /**
      * Este m�todo es el constructor de la clase. Crea una nueva instancia de
@@ -39,7 +39,7 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
      * @param t Topolog�a a la que pertenece el enlace.
      * @since 1.0
      */
-    public TTopologyLink(int identificador, TIdentificadorLargo il, TTopology t) {
+    public TLink(int identificador, TIdentificadorLargo il, TTopology t) {
         super(TTopologyElement.ENLACE, il);
         id = identificador;
         extremo1 = null;
@@ -75,7 +75,7 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
      * @since 1.0
      */
     public int compareTo(Object o) {
-        TTopologyLink e = (TTopologyLink) o;
+        TLink e = (TLink) o;
         if (obtenerIdentificador() < e.obtenerIdentificador())
             return -1;
         else if (obtenerIdentificador() == e.obtenerIdentificador())
@@ -153,12 +153,12 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
             this.ponerExtremo2(topo.obtenerPrimerNodoLlamado(tcenlace.obtenerNombreExtremo2()));
             this.desconectarDePuertos();
             this.ponerPuertoExtremo1(tcenlace.obtenerPuertoExtremo1());
-            TNodePorts p1 = extremo1.obtenerPuertos();
+            TPortSet p1 = extremo1.obtenerPuertos();
             if (p1 != null) {
                 p1.connectLinkToPort(this, this.puertoExtremo1);
             }
             this.ponerPuertoExtremo2(tcenlace.obtenerPuertoExtremo2());
-            TNodePorts p2 = extremo2.obtenerPuertos();
+            TPortSet p2 = extremo2.obtenerPuertos();
             if (p2 != null) {
                 p2.connectLinkToPort(this, this.puertoExtremo2);
             }
@@ -191,13 +191,13 @@ public abstract class TTopologyLink extends TTopologyElement implements Comparab
      */
     public void desconectarDePuertos() {
         if (extremo1 != null) {
-            TNodePorts p1 = extremo1.obtenerPuertos();
+            TPortSet p1 = extremo1.obtenerPuertos();
             if (p1 != null) {
                 p1.disconnectLinkFromPort(this.puertoExtremo1);
             }
         }
         if (extremo2 != null) {
-            TNodePorts p2 = extremo2.obtenerPuertos();
+            TPortSet p2 = extremo2.obtenerPuertos();
             if (p2 != null) {
                 p2.disconnectLinkFromPort(this.puertoExtremo2);
             }

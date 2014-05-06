@@ -1,14 +1,3 @@
-//**************************************************************************
-// Nombre......: TPort.java
-// Proyecto....: Open SimMPLS
-// Descripci�n.: Clase que implementa un puerto de comunicaciones de un no-
-// ............: do de la topologia.
-// Fecha.......: 12/03/2004
-// Autor/es....: Manuel Dom�nguez Dorado
-// ............: ingeniero@ManoloDominguez.com
-// ............: http://www.ManoloDominguez.com
-//**************************************************************************
-
 package simMPLS.hardware.ports;
 
 import java.util.Iterator;
@@ -35,7 +24,7 @@ public class TNormalPort extends TPort {
      * @param idp Identificador (n�mero) del puerto.
      * @param cpn Referencia al superconjunto de puertos del que este puerto forma parte.
      */
-    public TNormalPort(TNodePorts cpn, int idp) {
+    public TNormalPort(TPortSet cpn, int idp) {
         super(cpn, idp);
         buffer = new LinkedList();
         paqueteDevuelto = null;
@@ -71,13 +60,13 @@ public class TNormalPort extends TPort {
      */    
     @Override
     public void addPacket(TPDU paquete) {
-        TNormalNodePorts cjtoPuertosAux = (TNormalNodePorts) parentPortSet;
+        TNormalPortSet cjtoPuertosAux = (TNormalPortSet) parentPortSet;
         cjtoPuertosAux.portSetMonitor.lock();
         monitor.lock();
         TNode nt = this.parentPortSet.getNode();
         long idEvt = 0;
         try {
-            idEvt = nt.gILargo.getNextID();
+            idEvt = nt.longIdentifierGenerator.getNextID();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -116,13 +105,13 @@ public class TNormalPort extends TPort {
      */    
     @Override
     public void reEnqueuePacket(TPDU paquete) {
-        TNormalNodePorts cjtoPuertosAux = (TNormalNodePorts) parentPortSet;
+        TNormalPortSet cjtoPuertosAux = (TNormalPortSet) parentPortSet;
         cjtoPuertosAux.portSetMonitor.lock();
         monitor.lock();
         TNode nt = this.parentPortSet.getNode();
         long idEvt = 0;
         try {
-            idEvt = nt.gILargo.getNextID();
+            idEvt = nt.longIdentifierGenerator.getNextID();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -151,7 +140,7 @@ public class TNormalPort extends TPort {
      */    
     @Override
     public TPDU getPacket() {
-        TNormalNodePorts cjtoPuertosAux = (TNormalNodePorts) parentPortSet;
+        TNormalPortSet cjtoPuertosAux = (TNormalPortSet) parentPortSet;
         cjtoPuertosAux.portSetMonitor.lock();
         monitor.lock();
         paqueteDevuelto = (TPDU) buffer.removeFirst();
@@ -191,7 +180,7 @@ public class TNormalPort extends TPort {
         if (this.bufferIlimitado) {
             return 0;
         } 
-        TNormalNodePorts tpn = (TNormalNodePorts) parentPortSet;
+        TNormalPortSet tpn = (TNormalPortSet) parentPortSet;
         long cong = (tpn.getPortSetOccupancy()*100) / (tpn.getBufferSizeInMB()*1024*1024);
         return cong;
     }
@@ -229,7 +218,7 @@ public class TNormalPort extends TPort {
             this.monitor.unLock();
             return ocup;
         }
-        TNormalNodePorts tpn = (TNormalNodePorts) parentPortSet;
+        TNormalPortSet tpn = (TNormalPortSet) parentPortSet;
         return tpn.getPortSetOccupancy();
     }
 

@@ -16,9 +16,9 @@ import simMPLS.protocols.TPDUMPLS;
 import simMPLS.protocols.TPDUIPv4;
 import simMPLS.hardware.timer.TTimerEvent;
 import simMPLS.hardware.timer.ITimerEventListener;
-import simMPLS.hardware.ports.TNormalNodePorts;
+import simMPLS.hardware.ports.TNormalPortSet;
 import simMPLS.hardware.ports.TPort;
-import simMPLS.hardware.ports.TNodePorts;
+import simMPLS.hardware.ports.TPortSet;
 import simMPLS.utils.EDesbordeDelIdentificador;
 import simMPLS.utils.TIdentificadorLargo;
 import simMPLS.utils.TRotaryIDGenerator;
@@ -252,7 +252,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      */
     public void run() {
         try {
-            this.generarEventoSimulacion(new TSENodeCongested(this, this.gILargo.getNextID(), this.getAvailableTime(), 0));
+            this.generarEventoSimulacion(new TSENodeCongested(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), 0));
         } catch (Exception e) {
             e.printStackTrace(); 
         }
@@ -345,8 +345,8 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                             TPDUIPv4 paqueteIPv4 = (TPDUIPv4) paqueteConTamanio;
                             tipo = paqueteIPv4.getSubtype();
                         }
-                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.getNextID(), this.getAvailableTime(), tipo, paqueteConTamanio.getSize()));
-                        this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), tipo));
+                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), tipo, paqueteConTamanio.getSize()));
+                        this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), tipo));
                     } catch (Exception e) {
                         e.printStackTrace(); 
                     }
@@ -584,7 +584,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      */    
     public void discardPacket(TPDU paquete) {
         try {
-            this.generarEventoSimulacion(new TSEPacketDiscarded(this, this.gILargo.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+            this.generarEventoSimulacion(new TSEPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
             this.estadisticas.addStatsEntry(paquete, TStats.DESCARTE);
         } catch (Exception e) {
             e.printStackTrace(); 
@@ -606,7 +606,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @return El conjunto de puertos del nodo.
      * @since 1.0
      */
-    public TNodePorts obtenerPuertos() {
+    public TPortSet obtenerPuertos() {
         return this.puertos;
     }
     
@@ -790,7 +790,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @since 1.0
      */    
     public synchronized void ponerPuertos(int num) {
-        puertos = new TNormalNodePorts(num, this);
+        puertos = new TNormalPortSet(num, this);
     }
     
 	/**    

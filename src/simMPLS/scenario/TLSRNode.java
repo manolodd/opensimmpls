@@ -21,9 +21,9 @@ import simMPLS.hardware.timer.ITimerEventListener;
 import simMPLS.hardware.ports.TNormalPort;
 import simMPLS.hardware.tldp.TSwitchingMatrix;
 import simMPLS.hardware.tldp.TSwitchingMatrixEntry;
-import simMPLS.hardware.ports.TNormalNodePorts;
+import simMPLS.hardware.ports.TNormalPortSet;
 import simMPLS.hardware.ports.TPort;
-import simMPLS.hardware.ports.TNodePorts;
+import simMPLS.hardware.ports.TPortSet;
 import simMPLS.utils.TIdentificador;
 import simMPLS.utils.TIdentificadorLargo;
 import java.awt.*;
@@ -190,7 +190,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      */
     public void run() {
         try {
-            this.generarEventoSimulacion(new TSENodeCongested(this, this.gILargo.getNextID(), this.getAvailableTime(), this.obtenerPuertos().getCongestionLevel()));
+            this.generarEventoSimulacion(new TSENodeCongested(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), this.obtenerPuertos().getCongestionLevel()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -212,7 +212,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         int idPuerto = 0;
         TPort puertoSalida = null;
         TPort puertoEntrada = null;
-        TTopologyLink et = null;
+        TLink et = null;
         matrizConmutacion.obtenerCerrojo().lock();
         Iterator it = matrizConmutacion.obtenerIteradorEntradas();
         while (it.hasNext()) {
@@ -307,7 +307,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                 if (pSalida != null) {
                     pSalida.ponerPaqueteEnEnlace(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     try {
-                        this.generarEventoSimulacion(new TSEPacketRouted(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.GPSRP));
+                        this.generarEventoSimulacion(new TSEPacketRouted(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.GPSRP));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -406,7 +406,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                         TPort pSalida = puertos.getPort(emc.obtenerPuertoSalida());
                         pSalida.ponerPaqueteEnEnlace(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
-                            this.generarEventoSimulacion(new TSEPacketSwitched(this, this.gILargo.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+                            this.generarEventoSimulacion(new TSEPacketSwitched(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -418,7 +418,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                         TPort pSalida = puertos.getPort(emc.obtenerPuertoSalida());
                         pSalida.ponerPaqueteEnEnlace(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
-                            this.generarEventoSimulacion(new TSEPacketSwitched(this, this.gILargo.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+                            this.generarEventoSimulacion(new TSEPacketSwitched(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -436,7 +436,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                             emc.ponerEntranteEsLSPDEBackup(false);
                         }
                         try {
-                            this.generarEventoSimulacion(new TSEPacketSwitched(this, this.gILargo.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+                            this.generarEventoSimulacion(new TSEPacketSwitched(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -444,7 +444,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                         TPort pSalida = puertos.getPort(emc.obtenerPuertoSalida());
                         pSalida.ponerPaqueteEnEnlace(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
-                            this.generarEventoSimulacion(new TSEPacketSwitched(this, this.gILargo.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+                            this.generarEventoSimulacion(new TSEPacketSwitched(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -683,8 +683,8 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                         TPort pSalida = puertos.getPortWhereIsConectedANodeHavingIP(IPDestino);
                         pSalida.ponerPaqueteEnEnlace(nuevoTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
-                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP, nuevoTLDP.getSize()));
-                            this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP));
+                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP, nuevoTLDP.getSize()));
+                            this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -725,8 +725,8 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                         TPort pSalida = puertos.getPortWhereIsConectedANodeHavingIP(IPDestino);
                         pSalida.ponerPaqueteEnEnlace(nuevoTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
-                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP, nuevoTLDP.getSize()));
-                            this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP));
+                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP, nuevoTLDP.getSize()));
+                            this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -772,8 +772,8 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                     TPort pSalida = puertos.getPort(puerto);
                     pSalida.ponerPaqueteEnEnlace(nuevoTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     try {
-                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP, nuevoTLDP.getSize()));
-                        this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP));
+                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP, nuevoTLDP.getSize()));
+                        this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -813,8 +813,8 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                 if (pSalida != null) {
                     pSalida.ponerPaqueteEnEnlace(paqueteTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     try {
-                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP, paqueteTLDP.getSize()));
-                        this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP));
+                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP, paqueteTLDP.getSize()));
+                        this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -862,8 +862,8 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                         if (pSalida != null) {
                             pSalida.ponerPaqueteEnEnlace(paqueteTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                             try {
-                                this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP, paqueteTLDP.getSize()));
-                                this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP));
+                                this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP, paqueteTLDP.getSize()));
+                                this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP));
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -906,8 +906,8 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                     if (pSalida != null) {
                         pSalida.ponerPaqueteEnEnlace(paqueteTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
-                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP, paqueteTLDP.getSize()));
-                            this.generarEventoSimulacion(new TSEPacketSent(this, this.gILargo.getNextID(), this.getAvailableTime(), TPDU.TLDP));
+                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP, paqueteTLDP.getSize()));
+                            this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -1024,7 +1024,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      */
     public void discardPacket(TPDU paquete) {
         try {
-            this.generarEventoSimulacion(new TSEPacketDiscarded(this, this.gILargo.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+            this.generarEventoSimulacion(new TSEPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
             this.estadisticas.addStatsEntry(paquete, TStats.DESCARTE);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1037,7 +1037,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * @return El conjunto de puertos del nodo.
      * @since 1.0
      */
-    public TNodePorts obtenerPuertos() {
+    public TPortSet obtenerPuertos() {
         return this.puertos;
     }
     
@@ -1196,7 +1196,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * @since 1.0
      */
     public synchronized void ponerPuertos(int num) {
-        puertos = new TNormalNodePorts(num, this);
+        puertos = new TNormalPortSet(num, this);
     }
     
     /**

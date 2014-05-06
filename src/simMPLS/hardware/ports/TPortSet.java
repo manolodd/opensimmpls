@@ -1,5 +1,5 @@
 //**************************************************************************
-// Nombre......: TNodePorts.java
+// Nombre......: TPortSet.java
 // Proyecto....: Open SimMPLS
 // Descripci�n.: Clase que implementa el conjunto de puertos de un parentNode de
 // ............: la topolog�a.
@@ -11,7 +11,7 @@
 
 package simMPLS.hardware.ports;
 
-import simMPLS.scenario.TTopologyLink;
+import simMPLS.scenario.TLink;
 import simMPLS.scenario.TNode;
 import simMPLS.protocols.TPDU;
 import simMPLS.utils.TMonitor;
@@ -23,7 +23,7 @@ import simMPLS.utils.TMonitor;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public abstract class TNodePorts {
+public abstract class TPortSet {
 
     /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * TPuertosNodo.
@@ -31,7 +31,7 @@ public abstract class TNodePorts {
      * @param n Referencia al parentNode al que pertenece este conjunto de puertos.
      * @since 1.0
      */
-    public TNodePorts(int num, TNode n) {
+    public TPortSet(int num, TNode n) {
         this.numberOfPorts = num;
         this.parentNode = n;
         this.portSetBufferSize = 1;
@@ -198,7 +198,7 @@ public abstract class TNodePorts {
      * @param p Identificador del puerto del conjunto de puertos al que se conectar� el enlace.
      * @since 1.0
      */    
-    public abstract void connectLinkToPort(TTopologyLink e, int p);
+    public abstract void connectLinkToPort(TLink e, int p);
     /**
      * Este m�todo devuelve el enlace al que est� conectado un puerto del conjunto de
      * puertos.
@@ -207,7 +207,7 @@ public abstract class TNodePorts {
      * libre.
      * @since 1.0
      */    
-    public abstract TTopologyLink getLinkConnectedToPort(int p);
+    public abstract TLink getLinkConnectedToPort(int p);
     /**
      * Este m�todo desconecta un enlace de un puerto concreto, dej�ndolo libre.
      * @param p El identificador del puerto del conjunto de puertos, que queremos desconectar y
