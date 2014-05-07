@@ -1,16 +1,19 @@
-//**************************************************************************
-// Nombre......: TProgressEvent.java
-// Proyecto....: Open SimMPLS
-// Descripci�n.: Implementaci�n de un evento para indicar el grado de pro-
-// ............: gresi�n, generalmente de tareas. Est� indicado principal-
-// ............: mente para hacer llegar el nuevo valor a las barras de pro-
-// ............: greso en interfaces Swing.
-// Fecha.......: 27/01/2004
-// Autor/es....: Manuel Dom�nguez Dorado
-// ............: ingeniero@ManoloDominguez.com
-// ............: http://www.ManoloDominguez.com
-//**************************************************************************
-
+/* 
+ * Copyright (C) 2014 Manuel Domínguez-Dorado <ingeniero@manolodominguez.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package simMPLS.hardware.timer;
 
 import simMPLS.utils.TEventoSimMPLS;

@@ -1,14 +1,19 @@
-//**************************************************************************
-// Nombre......: TPortSet.java
-// Proyecto....: Open SimMPLS
-// Descripci�n.: Clase que implementa el conjunto de puertos de un parentNode de
-// ............: la topolog�a.
-// Fecha.......: 06/03/2004
-// Autor/es....: Manuel Dom�nguez Dorado
-// ............: ingeniero@ManoloDominguez.com
-// ............: http://www.ManoloDominguez.com
-//**************************************************************************
-
+/* 
+ * Copyright (C) 2014 Manuel Domínguez-Dorado <ingeniero@manolodominguez.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package simMPLS.hardware.ports;
 
 import simMPLS.scenario.TLink;
@@ -22,7 +27,7 @@ import simMPLS.protocols.TPDU;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TNormalPortSet extends TPortSet {
+public class TFIFOPortSet extends TPortSet {
 
     /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * TPuertosNodoNormal.
@@ -30,12 +35,12 @@ public class TNormalPortSet extends TPortSet {
      * @param n Referencia al parentNode al que pertenece este conjunto de puertos.
      * @since 1.0
      */
-    public TNormalPortSet(int num, TNode n) {
+    public TFIFOPortSet(int num, TNode n) {
         super(num, n);
-        puertos = new TNormalPort[num];
+        puertos = new TFIFOPort[num];
         int i=0;
         for (i=0; i<this.numberOfPorts; i++) {
-            puertos[i] = new TNormalPort(this, i);
+            puertos[i] = new TFIFOPort(this, i);
             puertos[i].setPortID(i);
         }
         puertoLeido = 0;

@@ -1,0 +1,302 @@
+/* 
+ * Copyright (C) 2014 Manuel Domínguez-Dorado <ingeniero@manolodominguez.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package simMPLS.hardware.ports;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import simMPLS.scenario.TSEPacketReceived;
+import simMPLS.scenario.TStats;
+import simMPLS.scenario.TNode;
+import simMPLS.protocols.TPDU;
+
+/**
+ * This class implements a I/O port that follow a FIFO scheme to dispatch
+ * packets.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
+ */
+public class TFIFOPort extends TPort {
+
+    /**
+     * This method is the constructor of the class. It creates a new instance of
+     * TFIFOPort.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 1.0
+     * @param portID the identifier of the port. This is the unique identifier
+     * ti distinguish the port within the parent port set.
+     * @param parentPortSet A reference to the parent port set this port belongs
+     * to.
+     */
+    public TFIFOPort(TPortSet parentPortSet, int portID) {
+        super(parentPortSet, portID);
+        this.buffer = new LinkedList();
+        this.packetRead = null;
+        this.isUnlimitedBuffer = false;
+    }
+
+    /**
+     * This method allow to skip size limitation of the buffer and, hence,
+     * configure the port as an ideal port, with unlimited space.
+     *
+     * @param unlimitedBuffer TRUE if the port is going to be defined as an
+     * ideal one (unlimited space on iterator). FALSE, on the contrary.
+     * @since 1.0
+     */
+    @Override
+    public void setUnlimitedBuffer(boolean unlimitedBuffer) {
+        this.isUnlimitedBuffer = unlimitedBuffer;
+    }
+
+    /**
+     * This method discard the packet passed as an argument from the buffer.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packet The packet to be discarded from the buffer.
+     * @since 1.0
+     */
+    @Override
+    public void discardPacket(TPDU packet) {
+        this.getPortSet().getNode().discardPacket(packet);
+    }
+
+    /**
+     * This method put a new packet in the buffer of the port.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packet Packet to be inserted in the buffer of the port.
+     * @since 1.0
+     */
+    @Override
+    public void addPacket(TPDU packet) {
+        TFIFOPortSet parentPortSetAux = (TFIFOPortSet) this.parentPortSet;
+        parentPortSetAux.portSetMonitor.lock();
+        this.monitor.lock();
+        TNode parentNode = this.parentPortSet.getNode();
+        long eventID = 0;
+        try {
+            eventID = parentNode.longIdentifierGenerator.getNextID();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        int packetSubtype = packet.getSubtype();
+        if (this.isUnlimitedBuffer) {
+            this.buffer.addLast(packet);
+            parentPortSetAux.increasePortSetOccupancy(packet.getSize());
+            TSEPacketReceived packetReceivedEvent = new TSEPacketReceived(parentNode, eventID, this.getPortSet().getNode().getAvailableTime(), packetSubtype, packet.getSize());
+            parentNode.simulationEventsListener.captureSimulationEvents(packetReceivedEvent);
+            if (this.getPortSet().getNode().getStats() != null) {
+                this.getPortSet().getNode().getStats().addStatsEntry(packet, TStats.ENTRADA);
+            }
+        } else {
+            if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= (parentPortSetAux.getBufferSizeInMB() * 1024 * 1024)) {
+                this.buffer.addLast(packet);
+                parentPortSetAux.increasePortSetOccupancy(packet.getSize());
+                TSEPacketReceived packetReceivedEvent = new TSEPacketReceived(parentNode, eventID, this.getPortSet().getNode().getAvailableTime(), packetSubtype, packet.getSize());
+                parentNode.simulationEventsListener.captureSimulationEvents(packetReceivedEvent);
+                if (this.getPortSet().getNode().getStats() != null) {
+                    this.getPortSet().getNode().getStats().addStatsEntry(packet, TStats.ENTRADA);
+                }
+            } else {
+                this.discardPacket(packet);
+            }
+        }
+        this.monitor.unLock();
+        parentPortSetAux.portSetMonitor.unLock();
+    }
+
+    /**
+     * This method put a new packet in the buffer of the port. In fact, this do
+     * the same than addPacket(p) method, but does not generates simulation
+     * events but do iterator silently.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packet The packet to be inserted in the buffer of the port.
+     * @since 1.0
+     */
+    @Override
+    public void reEnqueuePacket(TPDU packet) {
+        TFIFOPortSet parentPortSetAux = (TFIFOPortSet) this.parentPortSet;
+        parentPortSetAux.portSetMonitor.lock();
+        this.monitor.lock();
+        TNode parentNode = this.parentPortSet.getNode();
+        long eventID = 0;
+        try {
+            eventID = parentNode.longIdentifierGenerator.getNextID();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        int packetSubtype = packet.getSubtype();
+        if (this.isUnlimitedBuffer) {
+            this.buffer.addLast(packet);
+            parentPortSetAux.increasePortSetOccupancy(packet.getSize());
+        } else {
+            if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= (parentPortSetAux.getBufferSizeInMB() * 1024 * 1024)) {
+                this.buffer.addLast(packet);
+                parentPortSetAux.increasePortSetOccupancy(packet.getSize());
+            } else {
+                this.discardPacket(packet);
+            }
+        }
+        this.monitor.unLock();
+        parentPortSetAux.portSetMonitor.unLock();
+    }
+
+    /**
+     * This method reads an returns the next packet of the buffer according to
+     * FIFO policy.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The read packet
+     * @since 1.0
+     */
+    @Override
+    public TPDU getPacket() {
+        TFIFOPortSet cjtoPuertosAux = (TFIFOPortSet) parentPortSet;
+        cjtoPuertosAux.portSetMonitor.lock();
+        monitor.lock();
+        packetRead = (TPDU) buffer.removeFirst();
+        if (!this.isUnlimitedBuffer) {
+            cjtoPuertosAux.decreasePortSetOccupancySize(packetRead.getSize());
+        }
+        monitor.unLock();
+        cjtoPuertosAux.portSetMonitor.unLock();
+        return packetRead;
+    }
+
+    /**
+     * This method compute whether it is possible or not to switch the next
+     * packet in the buffer having the number of octets (specified as an
+     * argument) that the port can switch in the current moment.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param octets The number of octets that the port can switch in this
+     * moment.
+     * @return TRUE, if we can switch the next packet of the buffer at this
+     * moment. Otherwise, FALSE.
+     * @since 1.0
+     */
+    @Override
+    public boolean canSwitchPacket(int octets) {
+        monitor.lock();
+        packetRead = (TPDU) buffer.getFirst();
+        monitor.unLock();
+        if (packetRead.getSize() <= octets) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * This method computes the congestion level of the port.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return A number, without decimals, between 0 and 100, which will be the
+     * congestion level as a percentage.
+     * @since 1.0
+     */
+    @Override
+    public long getCongestionLevel() {
+        if (this.isUnlimitedBuffer) {
+            return 0;
+        }
+        TFIFOPortSet tpn = (TFIFOPortSet) parentPortSet;
+        long cong = (tpn.getPortSetOccupancy() * 100) / (tpn.getBufferSizeInMB() * 1024 * 1024);
+        return cong;
+    }
+
+    /**
+     * This method checks whether there is a packet in the buffer waiting to be
+     * switched/routed, or not.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TRUE, if there is a packet waiting to be switched/routed.
+     * Otherwise, FALSE.
+     * @since 1.0
+     */
+    @Override
+    public boolean thereIsAPacketWaiting() {
+        if (buffer.size() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * This method computes and returns the number of octets that are currently
+     * used by packets in the buffer of the port.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return Size, in octects, used by packets in the buffer of the port.
+     * @since 1.0
+     */
+    @Override
+    public long getOccupancy() {
+        if (this.isUnlimitedBuffer) {
+            this.monitor.lock();
+            int ocup = 0;
+            TPDU paquete = null;
+            Iterator it = this.buffer.iterator();
+            while (it.hasNext()) {
+                paquete = (TPDU) it.next();
+                if (paquete != null) {
+                    ocup += paquete.getSize();
+                }
+            }
+            this.monitor.unLock();
+            return ocup;
+        }
+        TFIFOPortSet tpn = (TFIFOPortSet) parentPortSet;
+        return tpn.getPortSetOccupancy();
+    }
+
+    /**
+     * This method computes and returns the number of packets stored in the
+     * buffer of the port.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The total number of packets stored in the buffer of the port.
+     * @since 1.0
+     */
+    @Override
+    public int getNumberOfPackets() {
+        return buffer.size();
+    }
+
+    /**
+     * This method reset attributes of the class as when created by the
+     * constructor.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 1.0
+     */
+    @Override
+    public void reset() {
+        this.monitor.lock();
+        Iterator it = this.buffer.iterator();
+        while (it.hasNext()) {
+            it.next();
+            it.remove();
+        }
+        this.monitor.unLock();
+    }
+
+    private LinkedList buffer;
+    private TPDU packetRead;
+    private boolean isUnlimitedBuffer;
+}
