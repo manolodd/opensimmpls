@@ -1,12 +1,12 @@
 /* 
  * Copyright (C) 2014 Manuel Domínguez-Dorado <ingeniero@manolodominguez.com>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * This program is free software: you can redistribute iterator and/or modify
+ * iterator under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that iterator will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -167,22 +167,22 @@ public class TFIFOPort extends TPort {
      */
     @Override
     public TPDU getPacket() {
-        TFIFOPortSet cjtoPuertosAux = (TFIFOPortSet) parentPortSet;
-        cjtoPuertosAux.portSetMonitor.lock();
-        monitor.lock();
-        packetRead = (TPDU) buffer.removeFirst();
+        TFIFOPortSet parentPortSetAux = (TFIFOPortSet) this.parentPortSet;
+        parentPortSetAux.portSetMonitor.lock();
+        this.monitor.lock();
+        this.packetRead = (TPDU) this.buffer.removeFirst();
         if (!this.isUnlimitedBuffer) {
-            cjtoPuertosAux.decreasePortSetOccupancySize(packetRead.getSize());
+            parentPortSetAux.decreasePortSetOccupancySize(this.packetRead.getSize());
         }
-        monitor.unLock();
-        cjtoPuertosAux.portSetMonitor.unLock();
-        return packetRead;
+        this.monitor.unLock();
+        parentPortSetAux.portSetMonitor.unLock();
+        return this.packetRead;
     }
 
     /**
-     * This method compute whether it is possible or not to switch the next
-     * packet in the buffer having the number of octets (specified as an
-     * argument) that the port can switch in the current moment.
+     * This method compute whether iterator is possible or not to switch the next
+ packet in the buffer having the number of octets (specified as an
+ argument) that the port can switch in the current moment.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param octets The number of octets that the port can switch in this
@@ -193,10 +193,10 @@ public class TFIFOPort extends TPort {
      */
     @Override
     public boolean canSwitchPacket(int octets) {
-        monitor.lock();
-        packetRead = (TPDU) buffer.getFirst();
-        monitor.unLock();
-        if (packetRead.getSize() <= octets) {
+        this.monitor.lock();
+        this.packetRead = (TPDU) this.buffer.getFirst();
+        this.monitor.unLock();
+        if (this.packetRead.getSize() <= octets) {
             return true;
         }
         return false;
@@ -215,9 +215,9 @@ public class TFIFOPort extends TPort {
         if (this.isUnlimitedBuffer) {
             return 0;
         }
-        TFIFOPortSet tpn = (TFIFOPortSet) parentPortSet;
-        long cong = (tpn.getPortSetOccupancy() * 100) / (tpn.getBufferSizeInMB() * 1024 * 1024);
-        return cong;
+        TFIFOPortSet parentPortSetAux = (TFIFOPortSet) this.parentPortSet;
+        long congestion = (parentPortSetAux.getPortSetOccupancy() * 100) / (parentPortSetAux.getBufferSizeInMB() * 1024 * 1024);
+        return congestion;
     }
 
     /**
@@ -231,7 +231,7 @@ public class TFIFOPort extends TPort {
      */
     @Override
     public boolean thereIsAPacketWaiting() {
-        if (buffer.size() > 0) {
+        if (this.buffer.size() > 0) {
             return true;
         }
         return false;
@@ -249,20 +249,20 @@ public class TFIFOPort extends TPort {
     public long getOccupancy() {
         if (this.isUnlimitedBuffer) {
             this.monitor.lock();
-            int ocup = 0;
-            TPDU paquete = null;
-            Iterator it = this.buffer.iterator();
-            while (it.hasNext()) {
-                paquete = (TPDU) it.next();
-                if (paquete != null) {
-                    ocup += paquete.getSize();
+            int occupancy = 0;
+            TPDU packet = null;
+            Iterator iterator = this.buffer.iterator();
+            while (iterator.hasNext()) {
+                packet = (TPDU) iterator.next();
+                if (packet != null) {
+                    occupancy += packet.getSize();
                 }
             }
             this.monitor.unLock();
-            return ocup;
+            return occupancy;
         }
-        TFIFOPortSet tpn = (TFIFOPortSet) parentPortSet;
-        return tpn.getPortSetOccupancy();
+        TFIFOPortSet parentPortSetAux = (TFIFOPortSet) parentPortSet;
+        return parentPortSetAux.getPortSetOccupancy();
     }
 
     /**
@@ -275,7 +275,7 @@ public class TFIFOPort extends TPort {
      */
     @Override
     public int getNumberOfPackets() {
-        return buffer.size();
+        return this.buffer.size();
     }
 
     /**
@@ -288,10 +288,10 @@ public class TFIFOPort extends TPort {
     @Override
     public void reset() {
         this.monitor.lock();
-        Iterator it = this.buffer.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
+        Iterator iterator = this.buffer.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
         }
         this.monitor.unLock();
     }
