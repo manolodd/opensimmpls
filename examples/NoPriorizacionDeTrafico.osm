@@ -1,0 +1,44 @@
+// ***********************************************
+// Fichero generado por Open SimMPLS 1.0
+//                                                
+// Este fichero no debe ser modificado manualmente
+// porque incluye un código CRCR y así el simulador
+// puede comprobar su integridad. Si lo modificas
+// el simulador podria detectar el fichero como
+// corrupto.
+// ***********************************************
+
+// ***********************************************
+// Definición global del escenario
+// ***********************************************
+
+@?Escenario
+
+#Titulo#Priorización de tráfico con GoS#
+#Autor#Manuel Domínguez Dorado#
+#Descripcion#Muestra como de dos flujos iguales, uno de ellos, marcado con GoS, no es priorizado por no haber LSR activos.#
+#Temporizacion#45000#100#
+
+@!Escenario
+
+// ***********************************************
+// Definición de la topología del escenario
+// ***********************************************
+
+@?Topologia
+
+#Receptor#1#Receptor#10.0.0.1#0#true#false#685#184#
+#Emisor#2#IPv4 GoS#10.0.0.2#0#true#true#67#51#10.0.0.1#false#1#false#10240#0#618#
+#Emisor#3#IPv4#10.0.0.3#0#true#false#68#298#10.0.0.1#false#0#false#10240#0#618#
+#LERA#4#LER activo de entrada#10.0.0.4#0#true#false#191#51#10240#1024#1#
+#LER#5#LER entrada#10.0.0.5#0#true#false#191#298#10240#1024#
+#LER#6#LER de salida#10.0.0.6#0#true#false#556#183#10240#1024#
+#LSR#14#LSR#10.0.0.8#0#false#false#314#177#10240#1024#
+#EnlaceExterno#8#dfej#false#1000#10.0.0.2#0#10.0.0.4#0#
+#EnlaceExterno#9#dsfgn#false#1000#10.0.0.3#0#10.0.0.5#1#
+#EnlaceExterno#13#sdfdfg dfgdsfg#false#1000#10.0.0.6#4#10.0.0.1#0#
+#EnlaceInterno#15#dehwr#false#1000#10.0.0.4#2#10.0.0.8#1#
+#EnlaceInterno#16#ertewrt#false#1000#10.0.0.5#3#10.0.0.8#2#
+#EnlaceInterno#17#wert #false#1000#10.0.0.8#3#10.0.0.6#2#
+
+@!Topologia

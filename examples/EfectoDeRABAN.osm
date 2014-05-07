@@ -1,0 +1,75 @@
+// ***********************************************
+// Fichero generado por Open SimMPLS 1.0
+//                                                
+// Este fichero no debe ser modificado manualmente
+// porque incluye un código CRCR y así el simulador
+// puede comprobar su integridad. Si lo modificas
+// el simulador podria detectar el fichero como
+// corrupto.
+// ***********************************************
+
+// ***********************************************
+// Definición global del escenario
+// ***********************************************
+
+@?Escenario
+
+#Titulo#Sin definir#
+#Autor#Sin definir#
+#Descripcion#Sin definir#
+#Temporizacion#200000#100#
+
+@!Escenario
+
+// ***********************************************
+// Definición de la topología del escenario
+// ***********************************************
+
+@?Topologia
+
+#Receptor#1#Receptor#10.0.0.1#0#true#true#723#189#
+#Receptor#46#Receptor 2#10.0.0.23#0#true#false#683#29#
+#Receptor#47#Receptor 3#10.0.0.24#0#true#false#696#367#
+#Emisor#2#Emisor 1#10.0.0.2#0#true#false#45#51#10.0.0.1#false#0#false#3079#0#618#
+#Emisor#3#Emisor 2#10.0.0.3#0#true#false#46#147#10.0.0.1#false#1#false#3079#0#618#
+#Emisor#4#Emisor 3#10.0.0.4#0#true#false#47#236#10.0.0.1#false#0#false#3079#0#618#
+#Emisor#5#Emisor 4#10.0.0.5#0#true#false#47#330#10.0.0.1#false#3#false#3079#0#618#
+#LERA#7#LERA entrada 1#10.0.0.7#0#false#false#158#109#10240#1#10240#
+#LERA#9#LERA entrada 2#10.0.0.9#0#false#false#156#286#10240#1#10240#
+#LER#10#LER salida 1#10.0.0.10#0#true#false#574#367#1#1#
+#LER#11#LER salida 2#10.0.0.11#0#false#false#619#189#10240#1#
+#LER#12#LER salida 3#10.0.0.12#0#true#false#554#29#1#1#
+#LSR#14#LSR 1#10.0.0.14#0#false#false#268#132#10240#1#
+#LSR#15#LSR 2#10.0.0.15#0#false#false#268#194#10240#1#
+#LSR#16#LSR 3#10.0.0.16#0#false#false#266#260#10240#1#
+#LSRA#17#LSRA 1#10.0.0.17#0#false#true#365#192#10240#1#1#
+#LSR#19#LSR 5#10.0.0.19#0#false#false#485#155#6139#1#
+#LSR#20#LSR 6#10.0.0.20#0#false#false#484#218#6139#1#
+#LSR#21#LSR 7#10.0.0.21#0#true#false#484#287#6139#1#
+#LSR#39#LSR 4#10.0.0.22#0#true#false#486#94#6139#1#
+#EnlaceExterno#22#sdfgsd#false#1000#10.0.0.2#0#10.0.0.7#1#
+#EnlaceExterno#23#dsgsd#false#1000#10.0.0.3#0#10.0.0.7#3#
+#EnlaceExterno#24#fhdfhdfh#false#1000#10.0.0.4#0#10.0.0.9#2#
+#EnlaceExterno#25#dfgdg ertywet#false#1000#10.0.0.5#0#10.0.0.9#1#
+#EnlaceInterno#26#Interno 1#false#1000#10.0.0.7#0#10.0.0.14#1#
+#EnlaceInterno#27#Interno 2#false#1000#10.0.0.7#4#10.0.0.15#2#
+#EnlaceInterno#28#Interno 3#false#1000#10.0.0.9#3#10.0.0.15#3#
+#EnlaceInterno#29#Interno 4#false#1000#10.0.0.9#0#10.0.0.16#3#
+#EnlaceInterno#30#Interno 5#false#1000#10.0.0.14#3#10.0.0.17#3#
+#EnlaceInterno#31#Interno 6#false#1000#10.0.0.15#4#10.0.0.17#0#
+#EnlaceInterno#32#Interno 7#false#1000#10.0.0.16#2#10.0.0.17#2#
+#EnlaceInterno#35#Interno 9#false#1000#10.0.0.17#5#10.0.0.19#3#
+#EnlaceInterno#36#Interno 10#false#1000#10.0.0.17#6#10.0.0.20#4#
+#EnlaceInterno#37#Interno 11#false#1000#10.0.0.17#1#10.0.0.21#2#
+#EnlaceInterno#40#Interno 8#false#1000#10.0.0.17#7#10.0.0.22#2#
+#EnlaceInterno#41#Interno 12#false#1000#10.0.0.22#0#10.0.0.11#2#
+#EnlaceInterno#42#Interno 13#false#1000#10.0.0.19#1#10.0.0.11#3#
+#EnlaceInterno#43#Interno 14#false#1000#10.0.0.20#1#10.0.0.11#1#
+#EnlaceInterno#44#Interno 15#false#1000#10.0.0.21#0#10.0.0.11#4#
+#EnlaceExterno#45#trytr ery ery#false#1000#10.0.0.11#5#10.0.0.1#0#
+#EnlaceExterno#48#sdafasfasdf#false#125000#10.0.0.12#2#10.0.0.23#0#
+#EnlaceExterno#50#asdfsf2rwr #false#125000#10.0.0.10#1#10.0.0.24#0#
+#EnlaceInterno#51#werfwertwer wer #false#125000#10.0.0.21#3#10.0.0.10#0#
+#EnlaceInterno#52#wetwet wertwer#false#125000#10.0.0.22#3#10.0.0.12#4#
+
+@!Topologia
