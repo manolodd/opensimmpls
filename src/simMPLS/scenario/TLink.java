@@ -179,10 +179,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
         TLinkConfig tce = new TLinkConfig();
         tce.ponerNombre(this.obtenerNombre());
         tce.ponerMostrarNombre(this.obtenerMostrarNombre());
-        if (this.obtenerExtremo1() != null)
-            tce.ponerNombreExtremo1(this.obtenerExtremo1().obtenerNombre());
-        if (this.obtenerExtremo2() != null)
-            tce.ponerNombreExtremo2(this.obtenerExtremo2().obtenerNombre());
+        if (this.getEnd1() != null)
+            tce.ponerNombreExtremo1(this.getEnd1().obtenerNombre());
+        if (this.getEnd2() != null)
+            tce.ponerNombreExtremo2(this.getEnd2().obtenerNombre());
         tce.ponerDelay(this.obtenerDelay());
         tce.ponerPuertoExtremo1(this.obtenerPuertoExtremo1());
         tce.ponerPuertoExtremo2(this.obtenerPuertoExtremo2());
@@ -290,7 +290,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return El nodo extremo izquierdo del enlace.
      * @since 1.0
      */
-    public TNode obtenerExtremo1() {
+    public TNode getEnd1() {
         return extremo1;
     }
     
@@ -309,7 +309,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return El nodo del extremo derecho del enlace.
      * @since 1.0
      */
-    public TNode obtenerExtremo2() {
+    public TNode getEnd2() {
         return extremo2;
     }
     

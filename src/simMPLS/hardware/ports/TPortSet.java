@@ -131,7 +131,7 @@ public abstract class TPortSet {
      * @return Un paquete le�do de uno de los puertos del conjunto de puertos.
      * @since 1.0
      */    
-    public abstract TPDU isAnyPacketWaiting();
+    public abstract TPDU getNextPacket();
     /**
      * Este m�todo comprueba si hay o no paquetes esperando en el buffer de recepci�n.
      * @return TRUE, si hay paquetes en el buffer de recepci�n. FALSE en caso contrario.

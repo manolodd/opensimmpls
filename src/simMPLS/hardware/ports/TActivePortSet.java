@@ -21,7 +21,7 @@ import simMPLS.scenario.TNode;
 import simMPLS.protocols.TPDU;
 
 /**
- * This class implements a set of active ports for a parentNode.
+ * This class implements a set of active ports for a node.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 1.1
@@ -30,7 +30,7 @@ public class TActivePortSet extends TPortSet {
 
     /**
      * This is the constructor of the class. It creates a new instance of
-     * TActiveNodePorts.
+     * TActivePortSet.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param numberOfPorts Num of ports that the set of active ports will
@@ -272,15 +272,15 @@ public class TActivePortSet extends TPortSet {
      * @since 1.0
      */
     @Override
-    public TPDU isAnyPacketWaiting() {
-        TPDU paqueteAux = null;
+    public TPDU getNextPacket() {
+        TPDU packetAux = null;
         // This modifies de value of this.nextPacketToBeRead
         // It also changes this.readPort and this.currentPriority
         this.runPriorityBasedNextPacketSelection();
         // End of packet selection based on priorities
-        paqueteAux = this.nextPacketToBeRead;
+        packetAux = this.nextPacketToBeRead;
         this.nextPacketToBeRead = null;
-        return paqueteAux;
+        return packetAux;
     }
 
     /**
@@ -304,7 +304,7 @@ public class TActivePortSet extends TPortSet {
 
     /**
      * This method check whether there are packets waiting in the incoming
-     * buffer to be switched or not.
+     * buffer to be routed or not.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TRUE, if there is at least one packet in one port buffer waiting
@@ -313,7 +313,7 @@ public class TActivePortSet extends TPortSet {
      */
     @Override
     public boolean isAnyPacketToRoute() {
-        return isAnyPacketToSwitch();
+        return this.isAnyPacketToSwitch();
     }
 
     /**
@@ -386,11 +386,11 @@ public class TActivePortSet extends TPortSet {
             if (!this.ports[i].isAvailable()) {
                 int targetNodeID = this.ports[i].getLink().getTargetNodeIDOfTrafficSentBy(this.parentNode);
                 if (targetNodeID == TLink.END_NODE_1) {
-                    if (this.ports[i].getLink().obtenerExtremo1().getIPAddress().equals(adjacentNodeIP)) {
+                    if (this.ports[i].getLink().getEnd1().getIPAddress().equals(adjacentNodeIP)) {
                         return this.ports[i];
                     }
                 } else {
-                    if (this.ports[i].getLink().obtenerExtremo2().getIPAddress().equals(adjacentNodeIP)) {
+                    if (this.ports[i].getLink().getEnd2().getIPAddress().equals(adjacentNodeIP)) {
                         return this.ports[i];
                     }
                 }
@@ -413,11 +413,11 @@ public class TActivePortSet extends TPortSet {
     public String getIPOfNodeLinkedTo(int portNumber) {
         if ((portNumber >= 0) && (portNumber < this.numberOfPorts)) {
             if (!this.ports[portNumber].isAvailable()) {
-                String IP2 = this.ports[portNumber].getLink().obtenerExtremo2().getIPAddress();
-                if (this.ports[portNumber].getLink().obtenerExtremo1().getIPAddress().equals(this.parentNode.getIPAddress())) {
-                    return this.ports[portNumber].getLink().obtenerExtremo2().getIPAddress();
+                String IP2 = this.ports[portNumber].getLink().getEnd2().getIPAddress();
+                if (this.ports[portNumber].getLink().getEnd1().getIPAddress().equals(this.parentNode.getIPAddress())) {
+                    return this.ports[portNumber].getLink().getEnd2().getIPAddress();
                 }
-                return this.ports[portNumber].getLink().obtenerExtremo1().getIPAddress();
+                return this.ports[portNumber].getLink().getEnd1().getIPAddress();
             }
         }
         return null;
@@ -505,6 +505,7 @@ public class TActivePortSet extends TPortSet {
 
     private TPort[] ports;
     private int readPort;
+
     private int currentPriority;
     // The following attributes are used in a very dirty way to retain the next
     // packet to be managed. This is because of the special priority-based

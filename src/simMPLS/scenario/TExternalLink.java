@@ -88,9 +88,9 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
                     paquete = ebe.obtenerPaquete();
                     if (paquete != null) {
                         if (ebe.obtenerDestino() == 1) {
-                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.obtenerExtremo2(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.getEnd2(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         } else if (ebe.obtenerDestino() == 2) {
-                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.obtenerExtremo1(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.getEnd1(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         }
                     }
                     it.remove();
@@ -180,10 +180,10 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
         while (it.hasNext())  {
             TLinkBufferEntry ebe = (TLinkBufferEntry) it.next();
             if (ebe.obtenerDestino() == TLink.END_NODE_1) {
-                TNode nt = this.obtenerExtremo1();
+                TNode nt = this.getEnd1();
                 nt.ponerPaquete(ebe.obtenerPaquete(), this.obtenerPuertoExtremo1());
             } else {
-                TNode nt = this.obtenerExtremo2();
+                TNode nt = this.getEnd2();
                 nt.ponerPaquete(ebe.obtenerPaquete(), this.obtenerPuertoExtremo2());
             }
             it.remove();
@@ -250,11 +250,11 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
         cadena += "#";
         cadena += this.obtenerDelay();
         cadena += "#";
-        cadena += this.obtenerExtremo1().getIPAddress();
+        cadena += this.getEnd1().getIPAddress();
         cadena += "#";
         cadena += this.obtenerPuertoExtremo1();
         cadena += "#";
-        cadena += this.obtenerExtremo2().getIPAddress();
+        cadena += this.getEnd2().getIPAddress();
         cadena += "#";
         cadena += this.obtenerPuertoExtremo2();
         cadena += "#";

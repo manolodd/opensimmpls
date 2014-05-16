@@ -158,8 +158,8 @@ public class JPanelDisenio extends javax.swing.JPanel {
         Iterator ite = topologia.obtenerIteradorEnlaces();
         while (ite.hasNext()) {
             TLink enlace = (TLink) ite.next();
-            Point inicio = enlace.obtenerExtremo1().obtenerPosicion();
-            Point fin = enlace.obtenerExtremo2().obtenerPosicion();
+            Point inicio = enlace.getEnd1().obtenerPosicion();
+            Point fin = enlace.getEnd2().obtenerPosicion();
             int del = enlace.obtenerDelay();
             g2Dbuf.setStroke(new BasicStroke((float) obtenerGrosorEnlace(del)));
             if (enlace.obtenerTipo() == TLink.EXTERNO) {
@@ -172,10 +172,10 @@ public class JPanelDisenio extends javax.swing.JPanel {
             if (enlace.obtenerMostrarNombre()) {
                 FontMetrics fm = this.getFontMetrics(this.getFont());
                 int anchoTexto = fm.charsWidth(enlace.obtenerNombre().toCharArray(), 0, enlace.obtenerNombre().length());
-                int posX1 = enlace.obtenerExtremo1().obtenerPosicion().x+24;
-                int posY1 = enlace.obtenerExtremo1().obtenerPosicion().y+24;
-                int posX2 = enlace.obtenerExtremo2().obtenerPosicion().x+24;
-                int posY2 = enlace.obtenerExtremo2().obtenerPosicion().y+24;
+                int posX1 = enlace.getEnd1().obtenerPosicion().x+24;
+                int posY1 = enlace.getEnd1().obtenerPosicion().y+24;
+                int posX2 = enlace.getEnd2().obtenerPosicion().x+24;
+                int posY2 = enlace.getEnd2().obtenerPosicion().y+24;
                 int posX = Math.min(posX1, posX2) + ((Math.max(posX1, posX2) - Math.min(posX1, posX2)) / 2) - (anchoTexto / 2);
                 int posY = Math.min(posY1, posY2) + ((Math.max(posY1, posY2) - Math.min(posY1, posY2)) / 2) + 5;
                 g2Dbuf.setColor(new Color(255, 254, 226));

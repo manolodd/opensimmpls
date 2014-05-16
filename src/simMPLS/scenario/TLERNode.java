@@ -313,7 +313,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         int octetosQuePuedoMandar = this.obtenerOctetosTransmitibles();
         while (this.obtenerPuertos().canSwitchPacket(octetosQuePuedoMandar)) {
             conmute = true;
-            paquete = this.puertos.isAnyPacketWaiting();
+            paquete = this.puertos.getNextPacket();
             puertoLeido = puertos.getReadPort();
             if (paquete != null) {
                 if (paquete.getType() == TPDU.IPV4) {

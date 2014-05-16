@@ -427,13 +427,13 @@ public class TTopology {
             if (enlaceBuscado.obtenerIdentificador() == enlace.obtenerIdentificador()) {
                 if (enlaceBuscado.obtenerTipo() == TLink.EXTERNO) {
                     TExternalLink enlaceTrasCast = (TExternalLink) enlaceBuscado;
-                    enlaceTrasCast.ponerExtremo1(enlace.obtenerExtremo1());
-                    enlaceTrasCast.ponerExtremo2(enlace.obtenerExtremo2());
+                    enlaceTrasCast.ponerExtremo1(enlace.getEnd1());
+                    enlaceTrasCast.ponerExtremo2(enlace.getEnd2());
                 }
                 else if (enlace.obtenerTipo() == TLink.INTERNO) {
                     TInternalLink enlaceTrasCast = (TInternalLink) enlaceBuscado;
-                    enlaceTrasCast.ponerExtremo1(enlace.obtenerExtremo1());
-                    enlaceTrasCast.ponerExtremo2(enlace.obtenerExtremo2());
+                    enlaceTrasCast.ponerExtremo1(enlace.getEnd1());
+                    enlaceTrasCast.ponerExtremo2(enlace.getEnd2());
                 }
                 fin = true;
             }
@@ -616,8 +616,8 @@ public class TTopology {
         TNode derecho;
         while (iterador.hasNext()) {
             enlace = (TLink) iterador.next();
-            izquierdo = enlace.obtenerExtremo1();
-            derecho = enlace.obtenerExtremo2();
+            izquierdo = enlace.getEnd1();
+            derecho = enlace.getEnd2();
             if ((derecho.obtenerIdentificador() == extremo1) && (izquierdo.obtenerIdentificador() == extremo2))
                 return true;
             if ((derecho.obtenerIdentificador() == extremo2) && (izquierdo.obtenerIdentificador() == extremo1))
@@ -641,8 +641,8 @@ public class TTopology {
         TNode derecho;
         while (iterador.hasNext()) {
             enlace = (TLink) iterador.next();
-            izquierdo = enlace.obtenerExtremo1();
-            derecho = enlace.obtenerExtremo2();
+            izquierdo = enlace.getEnd1();
+            derecho = enlace.getEnd2();
             if ((derecho.obtenerIdentificador() == extremo1) && (izquierdo.obtenerIdentificador() == extremo2))
                 return enlace;
             if ((derecho.obtenerIdentificador() == extremo2) && (izquierdo.obtenerIdentificador() == extremo1))
