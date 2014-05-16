@@ -133,15 +133,15 @@ public class TActivePortSet extends TPortSet {
      * an argument.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param portNumber port number of the port to be obtained.
+     * @param portID port number of the port to be obtained.
      * @return The port matching the port number specified as an argument. If
      * the port does not exist, returns NULL.
      * @since 1.0
      */
     @Override
-    public TPort getPort(int portNumber) {
-        if (portNumber < this.numberOfPorts) {
-            return this.ports[portNumber];
+    public TPort getPort(int portID) {
+        if (portID < this.numberOfPorts) {
+            return this.ports[portID];
         }
         return null;
     }
@@ -175,15 +175,15 @@ public class TActivePortSet extends TPortSet {
      * This method check whether a given port is connected to a link or not.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param portNumber portNumber number of the portNumber to be checked.
-     * @return TRUE, if the portNumber is not connected to a link (available).
-     * FALSE if the portNumber is connected to a link (not available).
+     * @param portID portID number of the portID to be checked.
+     * @return TRUE, if the portID is not connected to a link (available). FALSE
+     * if the portID is connected to a link (not available).
      * @since 1.0
      */
     @Override
-    public boolean isAvailable(int portNumber) {
-        if (portNumber < this.numberOfPorts) {
-            return this.ports[portNumber].isAvailable();
+    public boolean isAvailable(int portID) {
+        if (portID < this.numberOfPorts) {
+            return this.ports[portID].isAvailable();
         }
         return false;
     }
@@ -213,14 +213,14 @@ public class TActivePortSet extends TPortSet {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param link The link to be connected.
-     * @param portNumber The port number of the port to be coonecte to the link.
+     * @param portID The port number of the port to be coonecte to the link.
      * @since 1.0
      */
     @Override
-    public void connectLinkToPort(TLink link, int portNumber) {
-        if (portNumber < this.numberOfPorts) {
-            if (this.ports[portNumber].isAvailable()) {
-                this.ports[portNumber].setLink(link);
+    public void connectLinkToPort(TLink link, int portID) {
+        if (portID < this.numberOfPorts) {
+            if (this.ports[portID].isAvailable()) {
+                this.ports[portID].setLink(link);
             }
         }
     }
@@ -230,17 +230,17 @@ public class TActivePortSet extends TPortSet {
      * specified port number.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param portNumber The port number of the port where the desired linkg is
+     * @param portID The port number of the port where the desired linkg is
      * connected.
      * @return Link connected to the specified port. If the port is not
      * connected to a link, returns NULL.
      * @since 1.0
      */
     @Override
-    public TLink getLinkConnectedToPort(int portNumber) {
-        if (portNumber < this.numberOfPorts) {
-            if (!this.ports[portNumber].isAvailable()) {
-                return this.ports[portNumber].getLink();
+    public TLink getLinkConnectedToPort(int portID) {
+        if (portID < this.numberOfPorts) {
+            if (!this.ports[portID].isAvailable()) {
+                return this.ports[portID].getLink();
             }
         }
         return null;
@@ -251,14 +251,14 @@ public class TActivePortSet extends TPortSet {
      * available.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param portNumber the port number of the port whose link is going to be
+     * @param portID the port number of the port whose link is going to be
      * disconnected from it.
      * @since 1.0
      */
     @Override
-    public void disconnectLinkFromPort(int portNumber) {
-        if ((portNumber >= 0) && (portNumber < this.numberOfPorts)) {
-            this.ports[portNumber].disconnectLink();
+    public void disconnectLinkFromPort(int portID) {
+        if ((portID >= 0) && (portID < this.numberOfPorts)) {
+            this.ports[portID].disconnectLink();
         }
     }
 
@@ -404,20 +404,20 @@ public class TActivePortSet extends TPortSet {
      * connected to this port (through a link).
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param portNumber The port number of the port to be queried.
+     * @param portID The port number of the port to be queried.
      * @return IP address of the node that is connected to the specified port by
      * a link. If the port is not connected (is available), returns NULL.
      * @since 1.0
      */
     @Override
-    public String getIPOfNodeLinkedTo(int portNumber) {
-        if ((portNumber >= 0) && (portNumber < this.numberOfPorts)) {
-            if (!this.ports[portNumber].isAvailable()) {
-                String IP2 = this.ports[portNumber].getLink().getEnd2().getIPAddress();
-                if (this.ports[portNumber].getLink().getEnd1().getIPAddress().equals(this.parentNode.getIPAddress())) {
-                    return this.ports[portNumber].getLink().getEnd2().getIPAddress();
+    public String getIPOfNodeLinkedTo(int portID) {
+        if ((portID >= 0) && (portID < this.numberOfPorts)) {
+            if (!this.ports[portID].isAvailable()) {
+                String IP2 = this.ports[portID].getLink().getEnd2().getIPAddress();
+                if (this.ports[portID].getLink().getEnd1().getIPAddress().equals(this.parentNode.getIPAddress())) {
+                    return this.ports[portID].getLink().getEnd2().getIPAddress();
                 }
-                return this.ports[portNumber].getLink().getEnd1().getIPAddress();
+                return this.ports[portID].getLink().getEnd1().getIPAddress();
             }
         }
         return null;

@@ -78,232 +78,213 @@ public abstract class TPort {
     }
 
     /**
-     * Este m�todo obtiene el identifier del puerto.
+     * This method gets the port number for this port.
      *
-     * @return El identifier del puerto.
+     * @return The port number for this port.
      * @since 1.0
      */
-    public int obtenerIdentificador() {
+    public int getPortID() {
         return this.portID;
     }
 
     /**
-     * Este m�todo averigua si el puerto est� libre o est� conectado a al�n link
-     * de la topolog�a.
+     * This method check whether the port is available (not connected to another
+     * adjacent node) or no (if it is connected to another adjacent node).
      *
-     * @return TRUE, si est� libre. FALSE, si est� conectado a alg�n link de la
-     * topolog�a.
+     * @return TRUE, if it is available. Otherwise, FALSE.
      * @since 1.0
      */
     public boolean isAvailable() {
-        if (link == null) {
+        if (this.link == null) {
             return true;
         }
         return false;
     }
 
     /**
-     * Este m�todo enlaza este puerto con un link de la topolog�a, dejando por
-     * tanto de estar libre.
+     * This method attach a link to this port, making it unavailable for new
+     * link attachments.
      *
-     * @param e El link al que se desea conectar el puerto.
+     * @param link the link to be attached to this port.
      * @since 1.0
      */
-    public void setLink(TLink e) {
-        link = e;
+    public void setLink(TLink link) {
+        this.link = link;
     }
 
     /**
-     * Este m�todo obtiene el link al que est� unido el puerto.
+     * This method return the link attached to this port.
      *
-     * @return El link al que est� unido el puerto, si est� unido. NULL en caso
-     * contrario.
+     * @return The link attached to this port, if the port is connected.
+     * Otherwise, NULL.
      * @since 1.0
      */
     public TLink getLink() {
-        return link;
+        return this.link;
     }
 
     /**
-     * Este m�todo libera la conexi�n que existe entre el puerto y un link de la
-     * topolog�a, dej�ndolo libre.
+     * This method dettach a link from this port, making it available for new
+     * links attachments.
      *
      * @since 1.0
      */
     public void disconnectLink() {
-        link = null;
+        this.link = null;
     }
 
     /**
-     * Este m�todo coloca en el link al que est� unido el puerto, un paquete de
-     * datos.
+     * This method put a packet in the link connected to it, to be delivered to
+     * the other end of the link. Links are full-duplex, so it is necessary to
+     * identify to where the packet is going to.
      *
-     * @param p El paquete que se desea transmitir por el link.
-     * @param destino 1, si el paquete va dirigido al END_NODE_1 del link. 2, si
-     * va dirigido al END_NODE_2.
+     * @param packet The packet to be delivered through the link.
+     * @param endID 1, if the packet has to be delivered to the end 1. 2, if the
+     * packet has to be delivered to the end 2.
      * @since 1.0
      */
-    public void ponerPaqueteEnEnlace(TPDU p, int destino) {
-        if (link != null) {
-            if (!link.obtenerEnlaceCaido()) {
-                if (link.obtenerTipo() == TLink.INTERNO) {
-                    link.ponerPaquete(p, destino);
-                    if (this.getPortSet().getNode().getStats() != null) {
-                        this.getPortSet().getNode().getStats().addStatsEntry(p, TStats.SALIDA);
+    public void putPacketOnLink(TPDU packet, int endID) {
+        if (this.link != null) {
+            if (!this.link.linkIsBroken()) {
+                if (this.link.getLinkType() == TLink.INTERNO) {
+                    this.link.carryPacket(packet, endID);
+                    if (this.getPortSet().getParentNode().getStats() != null) {
+                        this.getPortSet().getParentNode().getStats().addStatsEntry(packet, TStats.SALIDA);
                     }
                 } else {
-                    if ((p.getType() != TPDU.GPSRP) && (p.getType() != TPDU.TLDP)) {
-                        link.ponerPaquete(p, destino);
-                        if (this.getPortSet().getNode().getStats() != null) {
-                            this.getPortSet().getNode().getStats().addStatsEntry(p, TStats.SALIDA);
+                    if ((packet.getType() != TPDU.GPSRP) && (packet.getType() != TPDU.TLDP)) {
+                        this.link.carryPacket(packet, endID);
+                        if (this.getPortSet().getParentNode().getStats() != null) {
+                            this.getPortSet().getParentNode().getStats().addStatsEntry(packet, TStats.SALIDA);
                         }
                     }
                 }
             } else {
-                discardPacket(p);
+                this.discardPacket(packet);
             }
         }
     }
 
     /**
-     * Este m�todo deshecha el paquete pasado por parametro.
+     * This method, when implemente, will discard the packet passed as an
+     * argument from the buffer.
      *
-     * @param paquete El paquete que se desea descartar.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packet The packet to be discarded from the buffer.
      * @since 1.0
      */
-    public abstract void discardPacket(TPDU paquete);
+    public abstract void discardPacket(TPDU packet);
 
     /**
-     * Este m�todo inserta un paquete en el buffer de recepci�n del puerto.
+     * This method, when implemented, will put a new packet in the buffer of the
+     * port.
      *
-     * @param paquete El paquete que queremos que sea recivido en el puerto.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packet Packet to be inserted in the buffer of the port.
      * @since 1.0
      */
-    public abstract void addPacket(TPDU paquete);
+    public abstract void addPacket(TPDU packet);
 
     /**
-     * Este m�todo inserta un paquete en el buffer de recepci�n del puerto. Es
-     * igual que el m�todo addPacket(), salvo que no genera eventos y lo hace
-     * silenciosamente.
+     * This method, when implemented, will put a new packet in the buffer of the
+     * port. In fact, this will do the same than addPacket(p) method, but will
+     * not generate simulation events but do it silently.
      *
-     * @param paquete El paquete que queremos que reciba el puerto.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packet The packet to be inserted in the buffer of the port.
      * @since 1.0
      */
-    public abstract void reEnqueuePacket(TPDU paquete);
+    public abstract void reEnqueuePacket(TPDU packet);
 
     /**
-     * este m�todo lee un paquete del buffer de recepci�n del puerto. El paquete
-     * leido depender� del algoritmo de gesti�n de los b�fferes que implemente
-     * el puerto. Por defecto, es un FIFO Droptail.
+     * This method, when implemented, wil read and return the next packet of the
+     * buffer according to the port management policy.
      *
-     * @return El paquete le�do.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The read packet
      * @since 1.0
      */
     public abstract TPDU getPacket();
 
     /**
-     * Este m�todo calcula si podemos conmutar el siguiente paquete del nodo,
-     * dado el n�mero de octetos que como mucho podemos conmutar en un momento
-     * dado.
+     * This method, when implemented, will compute whether it is possible or not
+     * to switch the next packet in the buffer having the number of octets
+     * (specified as an argument) that the port can switch in the current
+     * moment.
      *
-     * @param octetos El n�mero de octetos que podemos conmutar.
-     * @return TRUE, si podemos conmutar el siguiente paquete. FALSE, en caso
-     * contrario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param octets The number of octets that the port can switch in this
+     * moment.
+     * @return TRUE, if we can switch the next packet of the buffer at this
+     * moment. Otherwise, FALSE.
      * @since 1.0
      */
     public abstract boolean canSwitchPacket(int octetos);
 
     /**
-     * Este m�todo obtiene la congesti�n total el puerto, en porcentaje.
+     * This method, when implemented, will compute the congestion level of the
+     * port.
      *
-     * @return El porcentaje de ocupaci�n del puerto.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return A number, without decimals, between 0 and 100, which will be the
+     * congestion level as a percentage.
      * @since 1.0
      */
     public abstract long getCongestionLevel();
 
     /**
-     * Este m�todo comprueba si hay paquetes esperando en el buffer de recepci�n
-     * o no.
+     * This method, when implemented, will check whether there is a packet in
+     * the buffer waiting to be switched/routed, or not.
      *
-     * @return TRUE, si hay paquetes en el buffer de recepci�n. FALSE en caso
-     * contrario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TRUE, if there is a packet waiting to be switched/routed.
+     * Otherwise, FALSE.
      * @since 1.0
      */
     public abstract boolean thereIsAPacketWaiting();
 
     /**
-     * Este m�todo calcula el total de octetos que suman los paquetes que
-     * actualmente hay en el buffer de recepci�n del puerto.
+     * This method, when implemented, will compute and return the number of
+     * octets that are currently used by packets in the buffer of the port.
      *
-     * @return El tama�o en octetos del total de paquetes en el buffer de
-     * recepci�n.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return Size, in octects, used by packets in the buffer of the port.
      * @since 1.0
      */
     public abstract long getOccupancy();
 
     /**
-     * Este m�todo calcula el n�mero de paquetes total que hay en el buffer del
-     * puerto.
+     * This method, when implemented, will compute and return the number of
+     * packets stored in the buffer of the port.
      *
-     * @return El n�mero total de paquetes que hay en el puerto.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The total number of packets stored in the buffer of the port.
      * @since 1.0
      */
     public abstract int getNumberOfPackets();
 
     /**
-     * Este m�todo reinicia los atributos de la clase como si acabasen de ser
-     * creados por el constructor.
+     * This method, when implemented, will reset attributes of the class as when
+     * created by the constructor.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      */
     public abstract void reset();
 
     /**
-     * Este m�todo permite saltarse las limitaciones de tama�o del buffer y
-     * establecer �ste como un buffer ideal, con capacidad infinita.
+     * This method, when implemented, will allow to skip size limitation of the
+     * buffer and, hence, configure the port as an ideal port, with unlimited
+     * space.
      *
-     * @param bi TRUE indica que el buffer se tomar� como ilimitado. FALSE
-     * indica que el buffer tendr� el tama�o especificado en el resto de
-     * m�todos.
+     * @param unlimitedBuffer TRUE if the port is going to be defined as an
+     * ideal one (unlimited space on it). FALSE, on the contrary.
      * @since 1.0
      */
-    public abstract void setUnlimitedBuffer(boolean bi);
+    public abstract void setUnlimitedBuffer(boolean unlimitedBuffer);
 
-    /**
-     * Este atributo es el identifier del puerto. Como los nodos tienen m�s de
-     * un puerto, es necesario un identifier para referirse a cada uno de ellos.
-     *
-     * @since 1.0
-     */
-    //protected int identifier;
-    /**
-     * Este atributo es el link de la topolog�a al que est� unido el puerto.
-     * Todo puerto o est� libre o est� unido a un link, que es este.
-     *
-     * @since 1.0
-     */
     protected TLink link;
-    /**
-     * Este atributo es una referencia al superconjunto de todos los puertos de
-     * un nodo al que pertenece este.
-     *
-     * @since 1.0
-     */
     protected TPortSet parentPortSet;
-    /**
-     * Este atributo es un monitor que sirve para crear secciones cr�ticas,
-     * actuando de barrera, para sincronizar el acceso concurrente a algunas
-     * zonas del objeto.
-     *
-     * @since 1.0
-     */
     protected TMonitor monitor;
-    /**
-     * Este atributo almacenar� el identifier que indica el n�mero de puerto que
-     * ocupa la instancia actual dentro del conjunto de puertos de un nodo.
-     *
-     * @since 1.0
-     */
     protected int portID;
-
 }

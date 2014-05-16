@@ -41,13 +41,13 @@ public class TActivePort extends TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     * @param portNumber port number (the port identifier used to distinguish
+     * @param portID port number (the port identifier used to distinguish
      * this port of other in the same active parentNode).
      * @param parentSetOfActivePorts A reference to the parent set of active
      * ports this active port belongs to.
      */
-    public TActivePort(TPortSet parentSetOfActivePorts, int portNumber) {
-        super(parentSetOfActivePorts, portNumber);
+    public TActivePort(TPortSet parentSetOfActivePorts, int portID) {
+        super(parentSetOfActivePorts, portID);
         this.packetRead = null;
         this.isUnlimitedBuffer = false;
         this.rotaryIdentifierGenerator = new TRotaryIDGenerator();
@@ -419,7 +419,7 @@ public class TActivePort extends TPort {
      */
     @Override
     public void discardPacket(TPDU packet) {
-        this.getPortSet().getNode().discardPacket(packet);
+        this.getPortSet().getParentNode().discardPacket(packet);
     }
 
     /**
@@ -434,7 +434,7 @@ public class TActivePort extends TPort {
         TActivePortSet parentPortSetAux = (TActivePortSet) this.parentPortSet;
         parentPortSetAux.portSetMonitor.lock();
         monitor.lock();
-        TNode parentNode = this.parentPortSet.getNode();
+        TNode parentNode = this.parentPortSet.getParentNode();
         long eventID = 0;
         int packetOrder = 0;
         int priority = this.loadPacketPriority(packet);
@@ -449,10 +449,10 @@ public class TActivePort extends TPort {
             TActivePortBufferEntry activePortBufferEntry = new TActivePortBufferEntry(priority, packetOrder, packet);
             this.addPrioritizedBufferEntry(activePortBufferEntry);
             parentPortSetAux.increasePortSetOccupancy(packet.getSize());
-            TSEPacketReceived packetReceivedEvent = new TSEPacketReceived(parentNode, eventID, this.getPortSet().getNode().getAvailableTime(), packetSubtype, packet.getSize());
+            TSEPacketReceived packetReceivedEvent = new TSEPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getAvailableTime(), packetSubtype, packet.getSize());
             parentNode.simulationEventsListener.captureSimulationEvents(packetReceivedEvent);
-            if (this.getPortSet().getNode().getStats() != null) {
-                this.getPortSet().getNode().getStats().addStatsEntry(packet, TStats.ENTRADA);
+            if (this.getPortSet().getParentNode().getStats() != null) {
+                this.getPortSet().getParentNode().getStats().addStatsEntry(packet, TStats.ENTRADA);
             }
         } else {
             if (!this.runEarlyPacketCatchAndDiscard(packet)) {
@@ -491,7 +491,7 @@ public class TActivePort extends TPort {
         long eventID = 0;
         int packetOrder = 0;
         int packetPriority = this.loadPacketPriority(packet);
-        TNode parentNode = this.parentPortSet.getNode();
+        TNode parentNode = this.parentPortSet.getParentNode();
         try {
             eventID = parentNode.longIdentifierGenerator.getNextID();
             packetOrder = this.rotaryIdentifierGenerator.getNextID();
@@ -503,15 +503,15 @@ public class TActivePort extends TPort {
             TActivePortBufferEntry activePortBufferEntry = new TActivePortBufferEntry(packetPriority, packetOrder, packet);
             this.addPrioritizedBufferEntry(activePortBufferEntry);
             parentPortSetAux.increasePortSetOccupancy(packet.getSize());
-            TSEPacketReceived packetReceivedEvent = new TSEPacketReceived(parentNode, eventID, this.getPortSet().getNode().getAvailableTime(), packetSubtype, packet.getSize());
+            TSEPacketReceived packetReceivedEvent = new TSEPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getAvailableTime(), packetSubtype, packet.getSize());
             parentNode.simulationEventsListener.captureSimulationEvents(packetReceivedEvent);
-            if (this.getPortSet().getNode().getStats() != null) {
-                this.getPortSet().getNode().getStats().addStatsEntry(packet, TStats.ENTRADA);
+            if (this.getPortSet().getParentNode().getStats() != null) {
+                this.getPortSet().getParentNode().getStats().addStatsEntry(packet, TStats.ENTRADA);
             }
             return true;
         } else {
             if (packet.getSubtype() == TPDU.MPLS_GOS) {
-                parentPortSetAux.getNode().runGoSPDUStoreAndRetransmitProtocol((TPDUMPLS) packet, this.portID);
+                parentPortSetAux.getParentNode().runGoSPDUStoreAndRetransmitProtocol((TPDUMPLS) packet, this.portID);
             }
         }
         return false;
@@ -656,7 +656,7 @@ public class TActivePort extends TPort {
         TActivePortSet parentPortSetAux = (TActivePortSet) parentPortSet;
         parentPortSetAux.portSetMonitor.lock();
         this.monitor.lock();
-        TNode parentNode = this.parentPortSet.getNode();
+        TNode parentNode = this.parentPortSet.getParentNode();
         long eventID = 0;
         int packetOrder = 0;
         int packetPriority = this.loadPacketPriority(packet);

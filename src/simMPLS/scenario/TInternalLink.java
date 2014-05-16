@@ -52,7 +52,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @return TLink.INTERNO, indicando que es un nodo interno.
      * @since 1.0
      */    
-    public int obtenerTipo() {
+    public int getLinkType() {
         return super.INTERNO;
     }
 

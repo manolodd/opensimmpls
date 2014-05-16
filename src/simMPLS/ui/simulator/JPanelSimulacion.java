@@ -266,12 +266,12 @@ public class JPanelSimulacion extends javax.swing.JPanel {
             Point fin = enlace.getEnd2().obtenerPosicion();
             int del = enlace.obtenerDelay();
             g2Dbuf.setStroke(new BasicStroke((float) obtenerGrosorEnlace(del)));
-            if (enlace.obtenerTipo() == TLink.EXTERNO) {
+            if (enlace.getLinkType() == TLink.EXTERNO) {
                 g2Dbuf.setColor(Color.GRAY);
             } else {
                 g2Dbuf.setColor(Color.BLUE);
             }
-            if (enlace.obtenerEnlaceCaido()) {
+            if (enlace.linkIsBroken()) {
                     float dash1[] = {5.0f};
                     BasicStroke dashed = new BasicStroke(2.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash1, 0.0f);
                     g2Dbuf.setColor(Color.RED);
@@ -280,8 +280,8 @@ public class JPanelSimulacion extends javax.swing.JPanel {
             g2Dbuf.drawLine(inicio.x+24, inicio.y+24, fin.x+24, fin.y+24);
             g2Dbuf.setStroke(new BasicStroke((float) 1));
 //
-            if (!enlace.obtenerEnlaceCaido()) {
-                if (enlace.obtenerTipo() == TLink.INTERNO) {
+            if (!enlace.linkIsBroken()) {
+                if (enlace.getLinkType() == TLink.INTERNO) {
                     TInternalLink ei = (TInternalLink) enlace;
                     if (ei.tieneLSPs()) {
                         float dash1[] = {5.0f};
@@ -306,8 +306,8 @@ public class JPanelSimulacion extends javax.swing.JPanel {
             }
 //
 //
-            if (!enlace.obtenerEnlaceCaido()) {
-                if (enlace.obtenerTipo() == TLink.INTERNO) {
+            if (!enlace.linkIsBroken()) {
+                if (enlace.getLinkType() == TLink.INTERNO) {
                     TInternalLink ei = (TInternalLink) enlace;
                     if (ei.tieneLSPsDeBackup()) {
                         float dash1[] = {10.0f, 5.0f, 0.2f, 5.0f};

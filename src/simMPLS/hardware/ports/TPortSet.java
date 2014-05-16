@@ -21,24 +21,27 @@ import simMPLS.scenario.TNode;
 import simMPLS.protocols.TPDU;
 import simMPLS.utils.TMonitor;
 
-
 /**
- * Esta clase abstracta es la superclase del conjunto de puertos que hay en un parentNode.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements a set of ports for a node.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public abstract class TPortSet {
 
-    /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
-     * TPuertosNodo.
-     * @param num Numero de puertos que contendr� el conjunto e puertos.
-     * @param n Referencia al parentNode al que pertenece este conjunto de puertos.
+    /**
+     * This is the constructor of the class. It creates a new instance of
+     * TPortSet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param numberOfPorts Num of ports that the set of ports will contain.
+     * @param parentNode Reference to the parentNode the set of active ports
+     * belongs to.
      * @since 1.0
      */
-    public TPortSet(int num, TNode n) {
-        this.numberOfPorts = num;
-        this.parentNode = n;
+    public TPortSet(int numberOfPorts, TNode parentNode) {
+        this.numberOfPorts = numberOfPorts;
+        this.parentNode = parentNode;
         this.portSetBufferSize = 1;
         this.portSetBufferOccupancy = 0;
         this.portSetMonitor = new TMonitor();
@@ -47,266 +50,319 @@ public abstract class TPortSet {
     }
 
     /**
-     * Este m�todo incrementa la cantidad de buffer que est� ocupada.
-     * @param tcp Tama�o (en octetos) en que se debe incrementar la ocupaci�n total.
+     * This method increases the amount of buffer memory that is occuped.
+     *
+     * @param occupancyIncrement Size (in octets) that should be added to the
+     * current occupancy.
      * @since 1.0
-     */    
-    public synchronized void increasePortSetOccupancy(long tcp) {
-        this.portSetBufferOccupancy += tcp;
-    }
-    
-    /**
-     * Este m�todo decrementa la cantidad de buffer que est� ocupada.
-     * @param tcp Tama�o (en octetos) en que se debe decrementar la ocupaci�n total.
-     * @since 1.0
-     */    
-    public synchronized void decreasePortSetOccupancySize(long tcp) {
-        this.portSetBufferOccupancy -= tcp;
+     */
+    public synchronized void increasePortSetOccupancy(long occupancyIncrement) {
+        this.portSetBufferOccupancy += occupancyIncrement;
     }
 
     /**
-     * Este m�todo establece la cantidad de buffer que est� ocupada.
-     * @param tcp Tama�o (en octetos) del buffer que est� ocupado.
+     * This method decreases the amount of buffer memory that is occuped.
+     *
+     * @param occupancyDecrement Size (in octets) that should be substracted
+     * from the current occupancy.
      * @since 1.0
-     */    
-    public synchronized void setPortSetOccupancySize(long tcp) {
-        this.portSetBufferOccupancy = tcp;
+     */
+    public synchronized void decreasePortSetOccupancySize(long occupancyDecrement) {
+        this.portSetBufferOccupancy -= occupancyDecrement;
     }
-    
+
     /**
-     * Este m�todo obtiene el tama�o de buffer que est� ocupado actualmente.
-     * @return Tama�o (en octetos) del buffer que est� ocupado.
+     * This method set the amount of buffer memory that is occuped.
+     *
+     * @param portSetBufferOccupancy The amount of buffer memory that is occuped
+     * (in octects). that is occuped.
      * @since 1.0
-     */    
+     */
+    public synchronized void setPortSetOccupancySize(long portSetBufferOccupancy) {
+        this.portSetBufferOccupancy = portSetBufferOccupancy;
+    }
+
+    /**
+     * This method get the amount of buffer memory that is occuped.
+     *
+     * @return The amount of buffer memory that is occuped(in octects).
+     * @since 1.0
+     */
     public synchronized long getPortSetOccupancy() {
         return this.portSetBufferOccupancy;
     }
-    
+
     /**
-     * Este m�todo obtiene si el parentNode est� saturado artificialmente o no.
+     * This method checks whether the parent node is congested artificially or
+     * not.
+     *
      * @since 1.0
-     * @return TRUE, si el parentNode est� saturado artificialmente. FALSE en caso contrario.
-     */    
-    public boolean getArtificiallyCongested() {
+     * @return TRUE, if hte parent node is congested artificially. Otherwise,
+     * FALSE.
+     */
+    public boolean isArtificiallyCongested() {
         return this.artificiallyCongested;
     }
-    
-    /**
-     * Este m�todo es abstracto. Saturar� o no artificialmente el puerto.
-     * @since 1.0
-     * @param sa TRUE, si el parentNode se saturar� artificialmente. FALSE en caso contrario.
-     */    
-    public abstract void setArtificiallyCongested(boolean sa);
 
     /**
-     * Este m�todo devuelve el n�mero de puerto que tiene el conjunto de puertos.
-     * @return El n�mero de puertos del conjunto de puertos.
+     * This method, when implemented, will allow establishing the congestion
+     * level of the port set to a value near 100% so that the parent node will
+     * start qickly to discard packets. It will be a trick created to simulate
+     * this situation, and the port set wil be able to get back to the real
+     * state when desired.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param congestArtificially TRUE if port set is going to be congested
+     * artificially. Otherwise, FALSE.
      * @since 1.0
-     */    
+     */
+    public abstract void setArtificiallyCongested(boolean congestArtificially);
+
+    /**
+     * This method gets the number of ports that the current port set contains.
+     *
+     * @return The number of ports that the current port set contains.
+     * @since 1.0
+     */
     public int getNumberOfPorts() {
-        return numberOfPorts;
+        return this.numberOfPorts;
     }
 
     /**
-     * Este m�todo establece qu� parentNode es el propietario de este conjunto de puertos.
-     * @param n El parentNode poseedor de este conjunto de puertos.
+     * This method sets the parent node of this port set.
+     *
+     * @param parentNode The parent node of this port set.
      * @since 1.0
-     */    
-    public void setNode(TNode n) {
-        parentNode = n;
+     */
+    public void setParentNode(TNode parentNode) {
+        this.parentNode = parentNode;
     }
 
     /**
-     * Este m�todo devuelve una referencia al parentNode que es poseedor de este conjunto de
- puertos.
-     * @return El parentNode que posee este conjunto de puertos.
+     * This method gets the parent node of this port set.
+     *
+     * @return The parent node of this port set.
      * @since 1.0
-     */    
-    public TNode getNode() {
-        return parentNode;
+     */
+    public TNode getParentNode() {
+        return this.parentNode;
     }
 
     /**
-     * Este m�todo lee y devuelve un paquete de uno de lo puertos. El que toque.
-     * @return Un paquete le�do de uno de los puertos del conjunto de puertos.
+     * This method, when implemented, will read and return a packet from one
+     * port of the port set. This port will be selected automatically depending
+     * on the priority-based algorithm running in the port set.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a new packet thas was waiting in one port of the port set.
      * @since 1.0
-     */    
+     */
     public abstract TPDU getNextPacket();
+
     /**
-     * Este m�todo comprueba si hay o no paquetes esperando en el buffer de recepci�n.
-     * @return TRUE, si hay paquetes en el buffer de recepci�n. FALSE en caso contrario.
+     * This method, when implemented, will check whether there are packets
+     * waiting in the incoming buffer to be switched or not.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TRUE, if there is at least one packet in one port buffer waiting
+     * to be switched/routed. Otherwise, returns FALSE.
      * @since 1.0
-     */    
+     */
     public abstract boolean isAnyPacketToSwitch();
+
     /**
-     * Este m�todo comprueba si hay o no paquetes esperando en el buffer de recepci�n.
-     * @return TRUE, si hay paquetes en el buffer de recepci�n. FALSE en caso contrario.
+     * This method, when implemented, will check whether there are packets
+     * waiting in the incoming buffer to be routed or not.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TRUE, if there is at least one packet in one port buffer waiting
+     * to be switched/routed. Otherwise, returns FALSE.
      * @since 1.0
-     */    
+     */
     public abstract boolean isAnyPacketToRoute();
+
     /**
-     * Este m�todo comprueba si se puede conmutar el siguiente paquete del conjunto de
- puertos, teniendo como referencia el n�mero m�ximo de octetos que el parentNode puede
- conmutar en ese instante.
-     * @param octetos El n�mero de octetos que el parentNode puede conmutar en ese instante.
-     * @return TRUE, si puedo conmutar un nuevo paquete. FALSE en caso contrario.
+     * This method, when implemented, will check if the next packet can be
+     * switched, taking as a reference the number of octects that the parent
+     * parentNode can switch at this momment (passed as an argument)
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param maxSwitchableOctects the max. number of octects the parent node is
+     * able to switch a this moment.
+     * @return TRUE, if next packet can be switched. Otherwise, return false.
      * @since 1.0
-     */    
-    public abstract boolean canSwitchPacket(int octetos);
+     */
+    public abstract boolean canSwitchPacket(int maxSwitchableOctects);
+
     /**
-     * Este m�todo salta un puerto que tocaba ser le�do y lee el siguiente.
+     * This method, when implemented, will skip the port that should be read and
+     * read the next one instead.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     */    
+     */
     public abstract void skipPort();
+
     /**
-     * Este m�todo devuelve el idetificador del puerto del que se ley� el �ltimo
-     * paquete.
-     * @return El identificador del �ltimo puerto le�do.
+     * This method, when implemented, will return the port number of the port
+     * from where the latest packet was read.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The number of the port from where the latest packet was read.
      * @since 1.0
-     */    
+     */
     public abstract int getReadPort();
+
     /**
-     * Este m�todo toma una direcci�n IP y devuelve el puerto del conjunto de puertos,
- en cuyo extremo est� el parentNode con dicha IP.
-     * @param ip IP a la que se desea acceder.
-     * @return El puerto que conecta al parentNode cuya IP es la especificada. NULL en caso de que no
- hay conexi�n directa con dicho parentNode/IP.
+     * This method, when implemented, will look for a port that is directly
+     * connected (through a link) to a node having the IP address specified as
+     * an argument.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param adjacentNodeIP IP address of the node connected to the port we are
+     * looking for.
+     * @return The port to wich the node having the specified IP address is
+     * connected to. If the node having the specified IP address is not
+     * connected to this port set, returns NULL.
      * @since 1.0
-     */    
-    public abstract TPort getPortWhereIsConectedANodeHavingIP(String ip);
+     */
+    public abstract TPort getPortWhereIsConectedANodeHavingIP(String adjacentNodeIP);
+
     /**
-     * Este m�todo consulta un puerto para obtener la IP del parentNode que se encuentra en
- el otro extremo.
-     * @param p Identificado de un puerto del conjunto de puertos.
-     * @return IP del parentNode destino al que est� unido el puerto especificado. NULL si el puerto
- est� libre.
+     * This method, when implemented, will query a given port to obtain the IP
+     * of the node that is connected to this port (through a link).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param portID The port number of the port to be queried.
+     * @return IP address of the node that is connected to the specified port by
+     * a link. If the port is not connected (is available), returns NULL.
      * @since 1.0
-     */    
-    public abstract String getIPOfNodeLinkedTo(int p);
+     */
+    public abstract String getIPOfNodeLinkedTo(int portID);
+
     /**
-     * Este m�todo calcula la congesti�n global del conjunto de puertos, en forma de
-     * porcentaje.
-     * @return Porcentaje (0%-100%) de congesti�n del conjunto de puertos.
+     * This method, when implemented, will compute the global congestion level
+     * of the port set as a percentage.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return Congestion level of the port set as a percentage (0%-100%).
      * @since 1.0
-     */    
+     */
     public abstract long getCongestionLevel();
+
     /**
-     * Este m�todo reinicia el valor de todos los atributos de la clase, como si
-     * acabasen de ser creados en el constructor.
+     * This method, when implemented, will reset the value of all attributes as
+     * when created by the constructor.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     */    
+     */
     public abstract void reset();
+
     /**
-     * Este m�todo toma un enlace y lo conecta a un puerto concreto del conjunto de
-     * puertos.
-     * @param e Enlace que queremos conectar.
-     * @param p Identificador del puerto del conjunto de puertos al que se conectar� el enlace.
+     * This method, when implemented, will connect a link to a given port.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param link The link to be connected.
+     * @param portID The port number of the port to be coonecte to the link.
      * @since 1.0
-     */    
-    public abstract void connectLinkToPort(TLink e, int p);
+     */
+    public abstract void connectLinkToPort(TLink link, int portID);
+
     /**
-     * Este m�todo devuelve el enlace al que est� conectado un puerto del conjunto de
-     * puertos.
+     * Este m�todo devuelve el enlace al que est� conectado un puerto del
+     * conjunto de puertos.
+     *
      * @param p Identificador de puerto de uno de los puertos del conjunto.
-     * @return Enlace al que est� conectado el puerto especificado. NULL si el puerto est�
-     * libre.
+     * @return Enlace al que est� conectado el puerto especificado. NULL si el
+     * puerto est� libre.
      * @since 1.0
-     */    
+     */
     public abstract TLink getLinkConnectedToPort(int p);
+
     /**
-     * Este m�todo desconecta un enlace de un puerto concreto, dej�ndolo libre.
-     * @param p El identificador del puerto del conjunto de puertos, que queremos desconectar y
-     * dejar libre.
+     * This method, when implemented, will disconnect a link from a given port,
+     * making this port available.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param portID the port number of the port whose link is going to be
+     * disconnected from it.
      * @since 1.0
-     */    
-    public abstract void disconnectLinkFromPort(int p);
+     */
+    public abstract void disconnectLinkFromPort(int portID);
+
     /**
-     * Este m�todo establece el conjunto de puertos como ideal, sin
-     * restricciones de tama�o, ilimitado.
-     * @param bi TRUE, indica que el buffer del conjunto de puertos es ilimitado. FALSE, indica que no es
-     * ilimitado.
+     * This method, when implemented, will establish the ser of ports as ideal
+     * ones, without size restrictions; unlimited.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param unlimitedBuffer TRUE, if the set of ports will be defined as
+     * unlimited ones; otherwise, FALSE.
      * @since 1.0
-     */    
-    public abstract void setUnlimitedBuffer(boolean bi);
+     */
+    public abstract void setUnlimitedBuffer(boolean unlimitedBuffer);
+
     /**
-     * Este m�todo devuelve el puerto cuyo identificador coincida con el especificado.
-     * @param numPuerto Identificador del puerto que queremos obtener.
-     * @return El puerto que deseamos obtener. NULL si el puerto con ese identificador no
-     * existe.
+     * This method, when implemented, will return a port whose port number match
+     * the one specified as an argument.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param portID port number of the port to be obtained.
+     * @return The port matching the port number specified as an argument. If
+     * the port does not exist, returns NULL.
      * @since 1.0
-     */    
-    public abstract TPort getPort(int numPuerto);
+     */
+    public abstract TPort getPort(int portID);
+
     /**
-     * Este m�todo establece el tama�o que tendr� el buffer del conjunto de puertos. Si
-     * el conjunto de puertos est� definido como ilimitado, este m�todo no tiene efecto.
-     * @param tamEnMB Tama�o en MB del buffer del conjunto de puertos.
+     * This method, when implemented, will establish the set of ports buffer
+     * size. If the set of ports is defined as unlimited, this method do
+     * nothing.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param sizeInMB Size, in MB, for the set of ports buffer.
      * @since 1.0
-     */    
-    public abstract void setBufferSizeInMB(int tamEnMB);
+     */
+    public abstract void setBufferSizeInMB(int sizeInMB);
+
     /**
-     * Este m�todo devuelve el tama�o del buffer del conjunto de puertos.
-     * @return El tama�o del buffer del conjunto de puertos en MB.
+     * This method, when implemented, will return the size of the port set
+     * buffer.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The size of the port set buffer in MB.
      * @since 1.0
-     */    
+     */
     public abstract int getBufferSizeInMB();
+
     /**
-     * Este m�todo comprueba si un puerto concreto del conjunto de puertos est� libre o
-     * si por el contrario est� conectado.
-     * @param p Identificador del puerto que queremos consultar.
-     * @return TRUE, indica que el puerto est� sin conectar. FALSE indica que el puerto ya est�
-     * conectado a un enlace.
+     * This method, when implemented, will check whether a given port is
+     * connected to a link or not.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param portID port number of the port set to be checked.
+     * @return TRUE, if the portID is not connected to a link (available). FALSE
+     * if the port is connected to a link (not available).
      * @since 1.0
-     */    
-    public abstract boolean isAvailable(int p);
+     */
+    public abstract boolean isAvailable(int portID);
+
     /**
-     * Este m�todo comprueba si hay alg�n puerto libre, es decir, sin conectar a un
-     * enelace, en el conjunto de puertos.
-     * @return TRUE, si al menos uno de los puertos del conjunto de puertos est� sin conectar.
-     * FALSE si todos est�n conectado ya a un enlace.
+     * This method, when implemented, will check whether there is at least a
+     * port of the port set that is not connected to a link.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TRUE, if at least one port of the port set is not connected to a
+     * link. Otherwise, returns false.
      * @since 1.0
-     */    
+     */
     public abstract boolean isAnyPortAvailable();
-    
-    /**
-     * Este atributo de la clase especifica el n�mero de puertos que hay en el conjunto
-     * de puertos.
-     * @since 1.0
-     */    
+
     protected int numberOfPorts;
-    /**
-     * Este atributo es una referencia al parentNode que es due�o de este conjunto de
- puertos.
-     * @since 1.0
-     */    
     protected TNode parentNode;
-    /**
-     * Este atributo indica el tama�o en MB del b�ffer existente para el conjunto de
-     * puertos.
-     * @since 1.0
-     */    
     protected int portSetBufferSize;
-    /**
-     * Este atributo almacena el tama�o del buffer del conjunto de puertos que
-     * actualmente est� ocupado. En octetos.
-     * @since 1.0
-     */    
     private long portSetBufferOccupancy;
-    /**
-     * Este atributo es un Monitor gen�rico que se usa para crear regiones cr�ticas que
-     * sirvan para sincronizar accesos concurrentes.
-     * @since 1.0
-     */    
     public TMonitor portSetMonitor;
-    /**
-     * Este atributo almacena el estado de saturaci�n artificial o no no saturaci�n
-     * artificial del puerto.
-     * @since 1.0
-     */    
     protected boolean artificiallyCongested;
-    /**
-     * Este atributo almacena la verdadera ocupaci�n del parentNode. As� se permite restaurar
-     * este valor tras una congesti�n artificial.
-     * @since 1.0
-     */    
     protected long occupancy;
 }

@@ -425,12 +425,12 @@ public class TTopology {
         while ((iterador.hasNext()) && (!fin)) {
             enlaceBuscado = (TLink) iterador.next();
             if (enlaceBuscado.obtenerIdentificador() == enlace.obtenerIdentificador()) {
-                if (enlaceBuscado.obtenerTipo() == TLink.EXTERNO) {
+                if (enlaceBuscado.getLinkType() == TLink.EXTERNO) {
                     TExternalLink enlaceTrasCast = (TExternalLink) enlaceBuscado;
                     enlaceTrasCast.ponerExtremo1(enlace.getEnd1());
                     enlaceTrasCast.ponerExtremo2(enlace.getEnd2());
                 }
-                else if (enlace.obtenerTipo() == TLink.INTERNO) {
+                else if (enlace.getLinkType() == TLink.INTERNO) {
                     TInternalLink enlaceTrasCast = (TInternalLink) enlaceBuscado;
                     enlaceTrasCast.ponerExtremo1(enlace.getEnd1());
                     enlaceTrasCast.ponerExtremo2(enlace.getEnd2());
@@ -734,14 +734,14 @@ public class TTopology {
         for (i=0; i<numNodosActual; i++) {
             for (j=0; j<numNodosActual; j++) {
                 en = obtenerEnlace(equivalencia[i], equivalencia[j]);
-                if ((en == null) || ((en != null) && (en.obtenerEnlaceCaido()))) {
+                if ((en == null) || ((en != null) && (en.linkIsBroken()))) {
                     if (i==j) {
                         matrizAdyacencia[i][j] = 0;
                     } else {
                         matrizAdyacencia[i][j] = this.PESO_INFINITO;
                     }
                 } else {
-                    if (en.obtenerTipo() == TLink.EXTERNO) {
+                    if (en.getLinkType() == TLink.EXTERNO) {
                         TExternalLink ee = (TExternalLink) en;
                         matrizAdyacencia[i][j] = ee.obtenerPeso();
                     } else {
@@ -886,14 +886,14 @@ public class TTopology {
         for (i=0; i<numNodosActual; i++) {
             for (j=0; j<numNodosActual; j++) {
                 en = obtenerEnlace(equivalencia[i], equivalencia[j]);
-                if ((en == null) || ((en != null) && (en.obtenerEnlaceCaido()))) {
+                if ((en == null) || ((en != null) && (en.linkIsBroken()))) {
                     if (i==j) {
                         matrizAdyacencia[i][j] = 0;
                     } else {
                         matrizAdyacencia[i][j] = this.PESO_INFINITO;
                     }
                 } else {
-                    if (en.obtenerTipo() == TLink.EXTERNO) {
+                    if (en.getLinkType() == TLink.EXTERNO) {
                         TExternalLink ee = (TExternalLink) en;
                         matrizAdyacencia[i][j] = ee.obtenerPesoRABAN();
                     } else {
@@ -985,14 +985,14 @@ public class TTopology {
         for (i=0; i<numNodosActual; i++) {
             for (j=0; j<numNodosActual; j++) {
                 en = obtenerEnlace(equivalencia[i], equivalencia[j]);
-                if ((en == null) || ((en != null) && (en.obtenerEnlaceCaido()))) {
+                if ((en == null) || ((en != null) && (en.linkIsBroken()))) {
                     if (i==j) {
                         matrizAdyacencia[i][j] = 0;
                     } else {
                         matrizAdyacencia[i][j] = this.PESO_INFINITO;
                     }
                 } else {
-                    if (en.obtenerTipo() == TLink.EXTERNO) {
+                    if (en.getLinkType() == TLink.EXTERNO) {
                         TExternalLink ee = (TExternalLink) en;
                         matrizAdyacencia[i][j] = ee.obtenerPesoRABAN();
                     } else {

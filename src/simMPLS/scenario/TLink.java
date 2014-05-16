@@ -67,7 +67,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return TRUE, si el enlace est� caido. FALSE en caso contrario.
      * @since 1.0
      */    
-    public boolean obtenerEnlaceCaido() {
+    public boolean linkIsBroken() {
         return enlaceCaido;
     }
     
@@ -415,7 +415,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @param destino Nodo destino del paquete en el enlace.
      * @since 1.0
      */
-    public void ponerPaquete(TPDU paquete, int destino) {
+    public void carryPacket(TPDU paquete, int destino) {
         cerrojo.lock();
         buffer.add(new TLinkBufferEntry(paquete, this.obtenerDelay(), destino));
         cerrojo.unLock();
@@ -487,8 +487,8 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      */
     public int queExtremoSoyYo(TNode n) {
         if (n.obtenerIdentificador() == extremo1.obtenerIdentificador())
-            return this.END_NODE_1;
-        return this.END_NODE_2;
+            return TLink.END_NODE_1;
+        return TLink.END_NODE_2;
     }
     
     /**
@@ -500,8 +500,8 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      */
     public int getTargetNodeIDOfTrafficSentBy(TNode n) {
         if (n.obtenerIdentificador() == extremo1.obtenerIdentificador())
-            return this.END_NODE_2;
-        return this.END_NODE_1;
+            return TLink.END_NODE_2;
+        return TLink.END_NODE_1;
     }
     
     /**
@@ -509,7 +509,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return Ser� redefinido por las subclases.
      * @since 1.0
      */
-    public abstract int obtenerTipo();
+    public abstract int getLinkType();
     /**
      * Este m�todo captura un evento de reloj lo que pone en funcionamiento al enlace.
      * @param evt Evento de reloj.

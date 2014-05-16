@@ -923,14 +923,14 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             if (et != null) {
                 if (et.obtenerTipoElemento() == TTopologyElement.NODO) {
                     TNode nt = (TNode) et;
-                    if (nt.obtenerPuertos().getArtificiallyCongested()) {
+                    if (nt.obtenerPuertos().isArtificiallyCongested()) {
                         nt.obtenerPuertos().setArtificiallyCongested(false);
                     } else {
                         nt.obtenerPuertos().setArtificiallyCongested(true);
                     }
                 } else if (et.obtenerTipoElemento() == TTopologyElement.ENLACE) {
                     TLink ent = (TLink) et;
-                    if (ent.obtenerEnlaceCaido()) {
+                    if (ent.linkIsBroken()) {
                         ent.ponerEnlaceCaido(false);
                     } else {
                         ent.ponerEnlaceCaido(true);
@@ -1130,10 +1130,10 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                 JVentanaEnlace ve = new JVentanaEnlace(escenario.obtenerTopologia(), dispensadorDeImagenes, VentanaPadre, true);
                 ve.ponerConfiguracion(tceAux, true);
                 ve.show();
-                if (ent.obtenerTipo() == TLink.EXTERNO) {
+                if (ent.getLinkType() == TLink.EXTERNO) {
                     TExternalLink ext = (TExternalLink) ent;
                     ext.configurar(tceAux, this.escenario.obtenerTopologia(), true);
-                } else if (ent.obtenerTipo() == TLink.INTERNO) {
+                } else if (ent.getLinkType() == TLink.INTERNO) {
                     TInternalLink inte = (TInternalLink) ent;
                     inte.configurar(tceAux, this.escenario.obtenerTopologia(), true);
                 }
@@ -1594,14 +1594,14 @@ private void ratonSobrePanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIR
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
         if (et.obtenerTipoElemento() == TTopologyElement.NODO) {
             TNode nt = (TNode) et;
-            if (nt.obtenerPuertos().getArtificiallyCongested()) {
+            if (nt.obtenerPuertos().isArtificiallyCongested()) {
                 panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.Congestion") +nt.obtenerPuertos().getCongestionLevel()+ java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.POrcentaje")+java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.paraDejarDeCongestionar"));
             } else {
                 panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.Congestion") +nt.obtenerPuertos().getCongestionLevel()+ java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.POrcentaje")+java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.paraCongestionar"));
             }
         } else if (et.obtenerTipoElemento() == TTopologyElement.ENLACE) {
             TLink ent = (TLink) et;
-            if (ent.obtenerEnlaceCaido()) {
+            if (ent.linkIsBroken()) {
                 panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.EnlaceRoto"));
             } else {
                 panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.EnlaceFuncionando"));

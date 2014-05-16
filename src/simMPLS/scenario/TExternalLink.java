@@ -51,7 +51,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * @return TLink.EXTERNO, indicando que es un nodo externo.
      * @since 1.0
      */    
-    public int obtenerTipo() {
+    public int getLinkType() {
         return super.EXTERNO;
     }
 

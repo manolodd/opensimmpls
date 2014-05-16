@@ -357,7 +357,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                         e.printStackTrace(); 
                     }
                     if (this.topologia.obtenerIPSalto(this.getIPAddress(), this.obtenerDestino()) != null) {
-                        pt.ponerPaqueteEnEnlace(paqueteConTamanio, pt.getLink().getTargetNodeIDOfTrafficSentBy(this));
+                        pt.putPacketOnLink(paqueteConTamanio, pt.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     } else {
                         discardPacket(paqueteConTamanio);
                     }

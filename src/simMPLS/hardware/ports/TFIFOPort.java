@@ -72,7 +72,7 @@ public class TFIFOPort extends TPort {
      */
     @Override
     public void discardPacket(TPDU packet) {
-        this.getPortSet().getNode().discardPacket(packet);
+        this.getPortSet().getParentNode().discardPacket(packet);
     }
 
     /**
@@ -87,7 +87,7 @@ public class TFIFOPort extends TPort {
         TFIFOPortSet parentPortSetAux = (TFIFOPortSet) this.parentPortSet;
         parentPortSetAux.portSetMonitor.lock();
         this.monitor.lock();
-        TNode parentNode = this.parentPortSet.getNode();
+        TNode parentNode = this.parentPortSet.getParentNode();
         long eventID = 0;
         try {
             eventID = parentNode.longIdentifierGenerator.getNextID();
@@ -98,19 +98,19 @@ public class TFIFOPort extends TPort {
         if (this.isUnlimitedBuffer) {
             this.buffer.addLast(packet);
             parentPortSetAux.increasePortSetOccupancy(packet.getSize());
-            TSEPacketReceived packetReceivedEvent = new TSEPacketReceived(parentNode, eventID, this.getPortSet().getNode().getAvailableTime(), packetSubtype, packet.getSize());
+            TSEPacketReceived packetReceivedEvent = new TSEPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getAvailableTime(), packetSubtype, packet.getSize());
             parentNode.simulationEventsListener.captureSimulationEvents(packetReceivedEvent);
-            if (this.getPortSet().getNode().getStats() != null) {
-                this.getPortSet().getNode().getStats().addStatsEntry(packet, TStats.ENTRADA);
+            if (this.getPortSet().getParentNode().getStats() != null) {
+                this.getPortSet().getParentNode().getStats().addStatsEntry(packet, TStats.ENTRADA);
             }
         } else {
             if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= (parentPortSetAux.getBufferSizeInMB() * 1024 * 1024)) {
                 this.buffer.addLast(packet);
                 parentPortSetAux.increasePortSetOccupancy(packet.getSize());
-                TSEPacketReceived packetReceivedEvent = new TSEPacketReceived(parentNode, eventID, this.getPortSet().getNode().getAvailableTime(), packetSubtype, packet.getSize());
+                TSEPacketReceived packetReceivedEvent = new TSEPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getAvailableTime(), packetSubtype, packet.getSize());
                 parentNode.simulationEventsListener.captureSimulationEvents(packetReceivedEvent);
-                if (this.getPortSet().getNode().getStats() != null) {
-                    this.getPortSet().getNode().getStats().addStatsEntry(packet, TStats.ENTRADA);
+                if (this.getPortSet().getParentNode().getStats() != null) {
+                    this.getPortSet().getParentNode().getStats().addStatsEntry(packet, TStats.ENTRADA);
                 }
             } else {
                 this.discardPacket(packet);
@@ -123,7 +123,7 @@ public class TFIFOPort extends TPort {
     /**
      * This method put a new packet in the buffer of the port. In fact, this do
      * the same than addPacket(p) method, but does not generates simulation
-     * events but do iterator silently.
+     * events but do it silently.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packet The packet to be inserted in the buffer of the port.
@@ -134,7 +134,7 @@ public class TFIFOPort extends TPort {
         TFIFOPortSet parentPortSetAux = (TFIFOPortSet) this.parentPortSet;
         parentPortSetAux.portSetMonitor.lock();
         this.monitor.lock();
-        TNode parentNode = this.parentPortSet.getNode();
+        TNode parentNode = this.parentPortSet.getParentNode();
         long eventID = 0;
         try {
             eventID = parentNode.longIdentifierGenerator.getNextID();
@@ -180,9 +180,9 @@ public class TFIFOPort extends TPort {
     }
 
     /**
-     * This method compute whether iterator is possible or not to switch the next
- packet in the buffer having the number of octets (specified as an
- argument) that the port can switch in the current moment.
+     * This method compute whether it is possible or not to switch the
+     * next packet in the buffer having the number of octets (specified as an
+     * argument) that the port can switch in the current moment.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param octets The number of octets that the port can switch in this
