@@ -1,0 +1,66 @@
+// ***********************************************
+// Fichero generado por Open SimMPLS
+//                                                
+// Este fichero no debe ser modificado manualmente
+// porque incluye un código CRCR y así el simulador
+// puede comprobar su integridad. Si lo modificas
+// el simulador podria detectar el fichero como
+// corrupto.
+// ***********************************************
+
+// ***********************************************
+// Definición global del escenario
+// ***********************************************
+
+@?Escenario
+
+#Titulo#RLPRP Justification. Benefits of pre-computing LSP segments to the receiver.#
+#Autor#Manuel Domínguez Dorado#
+#Descripcion#IPv4 Sender send traffic requiring GoS and backup LSP. This scenario shows how active nodes always pre-computes backup LSP segements from themselves to the exit LER. Click on links to make it fail and see how RLPRP computes an alternate LSP segment again.#
+#Temporizacion#2000000#75#
+
+@!Escenario
+
+// ***********************************************
+// Definición de la topología del escenario
+// ***********************************************
+
+@?Topologia
+
+#Receptor#1#Receiver#10.0.0.1#0#true#false#704#286#
+#Emisor#2#Sender#10.0.0.2#0#true#false#23#47#10.0.0.1#true#3#false#3079#0#100#
+#LERA#3#Entrance active LER#10.0.0.3#0#true#false#118#48#10240#100#10240#
+#LSR#6#LSR 10#10.0.0.6#0#false#false#500#157#10240#5#
+#LSRA#7#Active LSR#10.0.0.7#0#true#false#369#157#5120#512#3#
+#LER#21#Exit LER#10.0.0.11#0#false#false#607#287#10240#1#
+#LSR#23#LSR 9#10.0.0.12#0#false#false#232#157#10240#1#
+#LSR#34#LSR 1#10.0.0.13#0#false#false#228#86#10240#1#
+#LSR#35#LSR 2#10.0.0.14#0#false#false#318#86#10240#1#
+#LSR#36#LSR 3#10.0.0.15#0#false#false#436#86#10240#1#
+#LSR#37#LSR 4#10.0.0.16#0#false#false#562#86#10240#1#
+#LSR#38#LSR 5#10.0.0.17#0#false#false#195#234#10240#1#
+#LSR#39#LSR 6#10.0.0.18#0#false#false#313#234#10240#1#
+#LSR#40#LSR 7#10.0.0.19#0#false#false#500#234#10240#1#
+#LSR#41#LSR 8#10.0.0.20#0#false#false#422#234#10240#1#
+#EnlaceExterno#8#Link 1#false#1000#10.0.0.2#0#10.0.0.3#0#
+#EnlaceExterno#22#Link 2#false#1000#10.0.0.1#0#10.0.0.11#1#
+#EnlaceInterno#42#Backbone 2#false#1000#10.0.0.3#1#10.0.0.12#1#
+#EnlaceInterno#43#Backbone 5#false#1000#10.0.0.12#2#10.0.0.7#2#
+#EnlaceInterno#44#Backbone 12#false#1000#10.0.0.7#5#10.0.0.6#1#
+#EnlaceInterno#45#Backbone 15#false#1000#10.0.0.6#2#10.0.0.11#4#
+#EnlaceInterno#46#Backbone 1#false#1000#10.0.0.3#2#10.0.0.13#1#
+#EnlaceInterno#47#Backbone 3#false#1000#10.0.0.3#4#10.0.0.17#1#
+#EnlaceInterno#48#Backbone 4#false#1000#10.0.0.13#5#10.0.0.14#3#
+#EnlaceInterno#49#Backbone 7#false#1000#10.0.0.14#2#10.0.0.15#3#
+#EnlaceInterno#50#Backbone 11#false#1000#10.0.0.15#2#10.0.0.16#4#
+#EnlaceInterno#51#Backbone 14#false#1000#10.0.0.16#1#10.0.0.11#3#
+#EnlaceInterno#52#Backbone 6#false#1000#10.0.0.17#3#10.0.0.18#2#
+#EnlaceInterno#53#Backbone 10#false#1000#10.0.0.18#3#10.0.0.20#0#
+#EnlaceInterno#54#Backbone 13#false#1000#10.0.0.19#2#10.0.0.20#3#
+#EnlaceInterno#55#Backbone 16#false#1000#10.0.0.19#1#10.0.0.11#6#
+#EnlaceInterno#56#Backbone 8#false#1000#10.0.0.14#1#10.0.0.7#1#
+#EnlaceInterno#57#ryeryery#false#1000#10.0.0.15#4#10.0.0.7#4#
+#EnlaceInterno#58#Backbone 9#false#1000#10.0.0.18#5#10.0.0.7#0#
+#EnlaceInterno#59#fdh563 56#false#1000#10.0.0.7#6#10.0.0.20#5#
+
+@!Topologia

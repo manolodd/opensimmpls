@@ -1,0 +1,44 @@
+// ***********************************************
+// Fichero generado por Open SimMPLS
+//                                                
+// Este fichero no debe ser modificado manualmente
+// porque incluye un código CRCR y así el simulador
+// puede comprobar su integridad. Si lo modificas
+// el simulador podria detectar el fichero como
+// corrupto.
+// ***********************************************
+
+// ***********************************************
+// Definición global del escenario
+// ***********************************************
+
+@?Escenario
+
+#Titulo#Prioritizing GoS traffic#
+#Autor#Manuel Domínguez Dorado#
+#Descripcion#This scenario shows two identical flows sent to the receiver (one of them is GoS tagged). Shows how active nodes prioritize this GoS traffic.#
+#Temporizacion#1000001#200#
+
+@!Escenario
+
+// ***********************************************
+// Definición de la topología del escenario
+// ***********************************************
+
+@?Topologia
+
+#Receptor#1#Receiver#10.0.0.1#0#true#true#685#184#
+#Emisor#2#IPv4 sender (GoS 1)#10.0.0.2#0#true#false#47#51#10.0.0.1#false#1#false#10240#0#618#
+#Emisor#3#IPv4 sender (no GoS)#10.0.0.3#0#true#false#49#297#10.0.0.1#false#0#false#10240#0#618#
+#LERA#4#Entrance active LER#10.0.0.4#0#true#false#191#51#10240#1024#1#
+#LER#5#Entrance LER#10.0.0.5#0#false#false#191#298#10240#1024#
+#LER#6#Exit LER#10.0.0.6#0#false#false#556#183#10240#1024#
+#LSRA#7#Active LSR#10.0.0.7#0#true#true#317#180#10240#1024#1#
+#EnlaceExterno#8#Llink 1#false#1000#10.0.0.2#0#10.0.0.4#0#
+#EnlaceExterno#9#Link 2#false#1000#10.0.0.3#0#10.0.0.5#1#
+#EnlaceInterno#10#Backbone 1#false#1000#10.0.0.4#2#10.0.0.7#1#
+#EnlaceInterno#11#Backbone 2#false#1000#10.0.0.5#2#10.0.0.7#3#
+#EnlaceInterno#12#Backbone 3#false#1000#10.0.0.7#2#10.0.0.6#3#
+#EnlaceExterno#13#Link 3#false#1000#10.0.0.6#4#10.0.0.1#0#
+
+@!Topologia

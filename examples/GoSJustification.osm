@@ -1,0 +1,44 @@
+// ***********************************************
+// Fichero generado por Open SimMPLS
+//                                                
+// Este fichero no debe ser modificado manualmente
+// porque incluye un código CRCR y así el simulador
+// puede comprobar su integridad. Si lo modificas
+// el simulador podria detectar el fichero como
+// corrupto.
+// ***********************************************
+
+// ***********************************************
+// Definición global del escenario
+// ***********************************************
+
+@?Escenario
+
+#Titulo#GoS justification#
+#Autor#Manuel Domínguez Dorado#
+#Descripcion#A connection between  IPv4 Sender (GoS 3) and the receiver is simulated. Exit active LER become congested (click to simulate) and start discarding packets that are recovered via Active LER or Entrance active LER if possible.#
+#Temporizacion#400000#100#
+
+@!Escenario
+
+// ***********************************************
+// Definición de la topología del escenario
+// ***********************************************
+
+@?Topologia
+
+#Receptor#1#Receiver#10.0.0.1#0#true#false#706#204#
+#Emisor#2#IPv4 sender (GoS 3)#10.0.0.2#0#true#false#58#34#10.0.0.1#false#3#false#10240#0#100#
+#LERA#3#Entrance active LER#10.0.0.3#0#true#false#148#107#10240#100#10240#
+#LSR#6#LER#10.0.0.6#0#false#false#283#150#10240#5#
+#LSRA#7#Active LER#10.0.0.7#0#true#false#465#150#10240#6#128#
+#LERA#13#Exit active LER#10.0.0.8#0#true#true#596#205#6139#1#10240#
+#Emisor#16#IPv4 sender (no GoS)#10.0.0.9#0#true#false#55#147#10.0.0.1#false#0#false#10240#0#100#
+#EnlaceExterno#8#Link 1#false#3000#10.0.0.2#0#10.0.0.3#0#
+#EnlaceInterno#9#Backbone 1#false#1000#10.0.0.3#1#10.0.0.6#1#
+#EnlaceInterno#10#Backbone 2#false#1000#10.0.0.6#0#10.0.0.7#1#
+#EnlaceInterno#14#Backbone 3#false#3000#10.0.0.7#2#10.0.0.8#0#
+#EnlaceExterno#15#Link 3#false#60000#10.0.0.8#2#10.0.0.1#0#
+#EnlaceExterno#17#Link 2#false#1000#10.0.0.9#0#10.0.0.3#3#
+
+@!Topologia

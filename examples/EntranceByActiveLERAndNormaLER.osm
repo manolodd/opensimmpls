@@ -1,0 +1,44 @@
+// ***********************************************
+// Fichero generado por Open SimMPLS
+//                                                
+// Este fichero no debe ser modificado manualmente
+// porque incluye un código CRCR y así el simulador
+// puede comprobar su integridad. Si lo modificas
+// el simulador podria detectar el fichero como
+// corrupto.
+// ***********************************************
+
+// ***********************************************
+// Definición global del escenario
+// ***********************************************
+
+@?Escenario
+
+#Titulo#Entering the domain through an Active and a Traditional LER#
+#Autor#Manuel Domínguez Dorado#
+#Descripcion#Two flows ares sent to the receiver. One is GoS 1 and another is GoS 3. Receiver will receive more traffic of GoS instead of GoS 1 because Entrance LER is not able to detect GoS tags and treat the traffic as prioritized.#
+#Temporizacion#200000#100#
+
+@!Escenario
+
+// ***********************************************
+// Definición de la topología del escenario
+// ***********************************************
+
+@?Topologia
+
+#Receptor#1#Receiver#10.0.0.1#0#true#true#711#194#
+#Emisor#2#IPv4 sender (GoS 1)#10.0.0.2#0#true#false#85#30#10.0.0.1#false#1#false#10240#0#618#
+#Emisor#9#IPv4 sender (GoS 3)#10.0.0.9#0#true#false#80#342#10.0.0.1#false#3#false#10240#0#618#
+#LERA#10#Active entrance LER#10.0.0.10#0#true#true#230#276#10240#1024#1#
+#LER#12#Exit LER#10.0.0.12#0#true#false#586#194#10240#1024#
+#LSRA#14#LSR activo#10.0.0.14#0#false#false#352#190#5125#1#1#
+#LER#31#Entrance LER#10.0.0.16#0#true#true#230#86#10240#1024#
+#EnlaceExterno#22#Link 2#false#1000#10.0.0.9#0#10.0.0.10#4#
+#EnlaceInterno#24#Backbone 2#false#1000#10.0.0.10#5#10.0.0.14#2#
+#EnlaceExterno#25#Link 3#false#1000#10.0.0.12#5#10.0.0.1#0#
+#EnlaceInterno#26#Backbone 3#false#1000#10.0.0.14#5#10.0.0.12#3#
+#EnlaceExterno#32#Llink 1#false#1000#10.0.0.2#0#10.0.0.16#0#
+#EnlaceInterno#34#Backbone 1#false#1000#10.0.0.16#2#10.0.0.14#0#
+
+@!Topologia

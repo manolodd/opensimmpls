@@ -1,0 +1,75 @@
+// ***********************************************
+// Fichero generado por Open SimMPLS
+//                                                
+// Este fichero no debe ser modificado manualmente
+// porque incluye un código CRCR y así el simulador
+// puede comprobar su integridad. Si lo modificas
+// el simulador podria detectar el fichero como
+// corrupto.
+// ***********************************************
+
+// ***********************************************
+// Definición global del escenario
+// ***********************************************
+
+@?Escenario
+
+#Titulo#RABAN (Routing Algorithm for Balance and Active Networks) effect#
+#Autor#Manuel Domínguez Dorado#
+#Descripcion#This scenario shows how how active nodes compute and stablishes LSP trying to balance the load of the network in comparition to typical Dijkstra or Floyd algorithms.#
+#Temporizacion#200000#50#
+
+@!Escenario
+
+// ***********************************************
+// Definición de la topología del escenario
+// ***********************************************
+
+@?Topologia
+
+#Receptor#1#Receiver#10.0.0.1#0#true#true#723#189#
+#Receptor#46#Dummy receiver 1#10.0.0.23#0#true#false#683#29#
+#Receptor#47#Dummy receiver 2#10.0.0.24#0#true#false#696#367#
+#Emisor#2#Sender 1#10.0.0.2#0#true#false#45#51#10.0.0.1#false#0#false#3079#1#618#
+#Emisor#3#Sender 2#10.0.0.3#0#true#false#46#147#10.0.0.1#false#1#false#3079#1#618#
+#Emisor#4#Sender 3#10.0.0.4#0#true#false#47#236#10.0.0.1#false#0#false#3079#1#618#
+#Emisor#5#Sender 4#10.0.0.5#0#true#false#47#330#10.0.0.1#false#3#false#3079#1#618#
+#LERA#7#Entrance active LER 1#10.0.0.7#0#true#false#158#109#10240#1#10240#
+#LERA#9#Entrance active LER 2#10.0.0.9#0#true#false#156#286#10240#1#10240#
+#LER#10#Exit LER 3#10.0.0.10#0#false#false#574#367#1#1#
+#LER#11#Exit LER 2#10.0.0.11#0#false#false#619#189#10240#1#
+#LER#12#Exit LER 1#10.0.0.12#0#false#false#554#29#1#1#
+#LSR#14#LSR 1#10.0.0.14#0#false#false#268#132#10240#1#
+#LSR#15#LSR 2#10.0.0.15#0#false#false#268#194#10240#1#
+#LSR#16#LSR 3#10.0.0.16#0#false#false#266#260#10240#1#
+#LSRA#17#Active LSR#10.0.0.17#0#true#true#365#192#10240#1#1#
+#LSR#19#LSR 5#10.0.0.19#0#false#false#485#155#6139#1#
+#LSR#20#LSR 6#10.0.0.20#0#false#false#484#218#6139#1#
+#LSR#21#LSR 7#10.0.0.21#0#false#false#484#287#6139#1#
+#LSR#39#LSR 4#10.0.0.22#0#false#false#486#94#6139#1#
+#EnlaceExterno#22#Link 1#false#1000#10.0.0.2#0#10.0.0.7#1#
+#EnlaceExterno#23#Link 2#false#1000#10.0.0.3#0#10.0.0.7#3#
+#EnlaceExterno#24#Link 3#false#1000#10.0.0.4#0#10.0.0.9#2#
+#EnlaceExterno#25#Link 4#false#1000#10.0.0.5#0#10.0.0.9#1#
+#EnlaceInterno#26#Backbone 1#false#1000#10.0.0.7#0#10.0.0.14#1#
+#EnlaceInterno#27#Backbone 2#false#1000#10.0.0.7#4#10.0.0.15#2#
+#EnlaceInterno#28#Backbone 3#false#1000#10.0.0.9#3#10.0.0.15#3#
+#EnlaceInterno#29#Backbone 4#false#1000#10.0.0.9#0#10.0.0.16#3#
+#EnlaceInterno#30#Backbone 5#false#1000#10.0.0.14#3#10.0.0.17#3#
+#EnlaceInterno#31#Backbone 6#false#1000#10.0.0.15#4#10.0.0.17#0#
+#EnlaceInterno#32#Backbone 7#false#1000#10.0.0.16#2#10.0.0.17#2#
+#EnlaceInterno#35#Backbone 9#false#1000#10.0.0.17#5#10.0.0.19#3#
+#EnlaceInterno#36#Backbone 10#false#1000#10.0.0.17#6#10.0.0.20#4#
+#EnlaceInterno#37#Backbone 11#false#1000#10.0.0.17#1#10.0.0.21#2#
+#EnlaceInterno#40#Backbone 8#false#1000#10.0.0.17#7#10.0.0.22#2#
+#EnlaceInterno#41#Backbone 13 #false#1000#10.0.0.22#0#10.0.0.11#2#
+#EnlaceInterno#42#Backbone 14#false#1000#10.0.0.19#1#10.0.0.11#3#
+#EnlaceInterno#43#Backbone 15#false#1000#10.0.0.20#1#10.0.0.11#1#
+#EnlaceInterno#44#Backbone 16#false#1000#10.0.0.21#0#10.0.0.11#4#
+#EnlaceExterno#45#Link 6#false#1000#10.0.0.11#5#10.0.0.1#0#
+#EnlaceExterno#48#Link 5#false#125000#10.0.0.12#2#10.0.0.23#0#
+#EnlaceExterno#50#Link 7#false#125000#10.0.0.10#1#10.0.0.24#0#
+#EnlaceInterno#51#Backbone 17#false#125000#10.0.0.21#3#10.0.0.10#0#
+#EnlaceInterno#52#Backbone 12#false#125000#10.0.0.22#3#10.0.0.12#4#
+
+@!Topologia

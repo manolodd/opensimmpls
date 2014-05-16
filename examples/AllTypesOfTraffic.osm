@@ -1,0 +1,58 @@
+// ***********************************************
+// Fichero generado por Open SimMPLS
+//                                                
+// Este fichero no debe ser modificado manualmente
+// porque incluye un código CRCR y así el simulador
+// puede comprobar su integridad. Si lo modificas
+// el simulador podria detectar el fichero como
+// corrupto.
+// ***********************************************
+
+// ***********************************************
+// Definición global del escenario
+// ***********************************************
+
+@?Escenario
+
+#Titulo#All types of traffic#
+#Autor#Manuel Domínguez Dorado.#
+#Descripcion#Traffic of all types are sent to the receiver crossing an active LSR that delivers them based on their GoS level. The receiver has to receive sent traffic in the correct proportion as defined by the traffic's GoS level.#
+#Temporizacion#200000#150#
+
+@!Escenario
+
+// ***********************************************
+// Definición de la topología del escenario
+// ***********************************************
+
+@?Topologia
+
+#Receptor#1#Receiver#10.0.0.1#0#true#true#718#204#
+#LERA#2#Active LER 1#10.0.0.2#0#false#false#282#47#10240#1024#5#
+#LERA#3#Active LER 2#10.0.0.3#0#false#false#157#133#10240#1024#5#
+#LERA#4#Active LER 3#10.0.0.4#0#false#false#158#286#10240#1024#5#
+#LER#5#LER#10.0.0.5#0#false#false#282#364#10240#1024#
+#LER#6#Exit LER#10.0.0.6#0#false#false#620#204#2056#1#
+#Emisor#7#Sender (GoS 1)#10.0.0.7#0#true#false#141#23#10.0.0.1#false#1#false#10240#0#100#
+#Emisor#8#Sender (GoS 2)#10.0.0.8#0#true#false#53#133#10.0.0.1#false#2#false#10240#0#100#
+#Emisor#9#Sender (GoS 3)#10.0.0.9#0#true#false#57#286#10.0.0.1#false#3#false#10240#0#100#
+#Emisor#10#Sender (sin GoS)#10.0.0.10#0#true#false#158#375#10.0.0.1#false#0#false#10240#0#100#
+#LSRA#11#Active LSR 1#10.0.0.11#0#true#true#282#204#10240#1024#5#
+#LSR#12#LSR#10.0.0.12#0#false#false#410#204#10240#1#
+#LSRA#27#Active LSR 2#10.0.0.13#0#false#false#517#204#2560#256#2#
+#EnlaceExterno#13#Link 1#false#1000#10.0.0.2#3#10.0.0.7#0#
+#EnlaceExterno#15#Link 2#false#1000#10.0.0.3#2#10.0.0.8#0#
+#EnlaceExterno#16#Link 3#false#1000#10.0.0.4#1#10.0.0.9#0#
+#EnlaceExterno#17#Link 4#false#1000#10.0.0.5#1#10.0.0.10#0#
+#EnlaceExterno#18#Link 5#false#1000#10.0.0.6#1#10.0.0.1#0#
+#EnlaceInterno#19#Backbone 8#false#1000#10.0.0.11#1#10.0.0.12#3#
+#EnlaceInterno#21#Backbone 2#false#1000#10.0.0.2#1#10.0.0.11#2#
+#EnlaceInterno#22#Backbone 3#false#1000#10.0.0.3#0#10.0.0.11#4#
+#EnlaceInterno#23#Backbone 4#false#1000#10.0.0.4#2#10.0.0.11#5#
+#EnlaceInterno#24#Backbone 6#false#1300#10.0.0.5#3#10.0.0.11#6#
+#EnlaceInterno#25#Backbone 1#false#125000#10.0.0.2#0#10.0.0.12#4#
+#EnlaceInterno#26#Backbone 7#false#22060#10.0.0.5#0#10.0.0.12#6#
+#EnlaceInterno#29#Backbone 9#false#1000#10.0.0.12#1#10.0.0.13#4#
+#EnlaceInterno#30#Backbone 10#false#1000#10.0.0.13#3#10.0.0.6#5#
+
+@!Topologia
