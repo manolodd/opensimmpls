@@ -131,20 +131,5 @@
         <zip destfile="${store.example.zip}" basedir="examples" includes="*.osm"/>
 
     </target>
-
-    <target name="opensimmpls-release-and-examples-clean">
-
-        <!-- Change the value of this property to be the name of your JAR,
-             minus the .jar extension. It should not have spaces.
-             <property name="store.jar.name" value="MyJarName"/>
-        -->
-
-        <property name="release.and.example.dir" value="binary-fat-release"/>
-        <echo message="Deleting ${release.and.example.dir}"/>
-
-        <delete dir="${release.and.example.dir}"/>
-    </target>
-
-
-
+    
 </project>

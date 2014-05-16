@@ -41,7 +41,6 @@ public abstract class TPort {
      * to.
      */
     public TPort(TPortSet parentPortSet, int portID) {
-        this.identifier = 0;
         this.link = null;
         this.parentPortSet = parentPortSet;
         this.monitor = new TMonitor();
@@ -75,7 +74,7 @@ public abstract class TPort {
      * @since 1.0
      */
     public void setPortID(int portID) {
-        this.identifier = portID;
+        this.portID = portID;
     }
 
     /**
@@ -85,7 +84,7 @@ public abstract class TPort {
      * @since 1.0
      */
     public int obtenerIdentificador() {
-        return identifier;
+        return this.portID;
     }
 
     /**
@@ -276,7 +275,7 @@ public abstract class TPort {
      *
      * @since 1.0
      */
-    protected int identifier;
+    //protected int identifier;
     /**
      * Este atributo es el link de la topolog�a al que est� unido el puerto.
      * Todo puerto o est� libre o est� unido a un link, que es este.
