@@ -42,8 +42,8 @@ public class TSELinkBroken extends TSimulationEvent {
      * @return El subtipo del evento.
      * @since 1.0
      */    
-    public int obtenerSubtipo() {
-        return super.ENLACE_CAIDO;
+    public int getSubtype() {
+        return super.LINK_BROKEN;
     }
 
     /**

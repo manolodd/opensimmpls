@@ -16,20 +16,23 @@
  */
 package simMPLS.hardware.timer;
 
-import java.util.*;
+import java.util.EventListener;
 
-/** Esta interfaz la implementar�n aquellas clases que se quieran convertir en
- * suscriptoras de eventos de reloj.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+
+/**
+ * This interface has to be implemented by classess that wants to receive
+ * timer events.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public interface ITimerEventListener extends EventListener {
-    /** Este m�todo deber� ser implementado. A la clase que lo implemente le servir�
-     * para que a trav�s de �l le lleguen eventos de reloj del objeto generador de los
-     * mismo al que est� suscrito.
-     * @param evt El evento de reloj emitido por el objeto generador al que se est� suscrito.
+    /**
+     * This method, when implemented, will capture timer events.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     */    
-    public void capturarEventoReloj(TTimerEvent evt);
+     * @param timerEvent The timer event received.
+     */ 
+    public void capturarEventoReloj(TTimerEvent timerEvent);
 }

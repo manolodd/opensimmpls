@@ -16,152 +16,147 @@
  */
 package simMPLS.hardware.simulationcollector;
 
-import simMPLS.ui.simulator.JPanelSimulacion;
-import simMPLS.utils.TMonitor;
+import java.util.Iterator;
+import java.util.TreeSet;
 import simMPLS.scenario.TSimulationEvent;
-import java.util.*;
+import simMPLS.ui.simulator.JSimulationPanel;
+import simMPLS.utils.TMonitor;
 
-/** Esta clase implementa la interfaz ISimulationEventListener. Las instancias de
- * esta clase son recolectores de eventos de simulaci�n generados por los objetos a
- * los que estan suscritos.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+/**
+ * This class implements a simulation event listener that will receive
+ * simulation events.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public class TSimulationCollector implements ISimulationEventListener {
 
-    /** Este m�todo es el constructor de la clase. Crea una nueva instanci de
-     * TRecolectorSimulacion.
+    /**
+     * This method is the constructor of the class. It creates a new instance of
+     * TSimulationCollector.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      */
     public TSimulationCollector() {
-        bufferDeSimulacion = new TreeSet();
-        cerrojo = new TMonitor();
-        panel = null;
+        this.simulationEventsBuffer = new TreeSet();
+        this.monitor = new TMonitor();
+        this.simulationPanel = null;
     }
 
     /**
-     * Este m�todo establece el panel de simulaci�n donde se deben mostrar los eventos
-     * de simulaci�n que el recolector vaya recibiendo.
+     * This method establishes the simulation panel where collected simulation
+     * events will be displayed. It connects the generated events to the GUI.
+     *
      * @since 1.0
-     * @param ps Panel de simulaci�n donde se mostrar�n los eventos.
-     */    
-    public synchronized void ponerPanelSimulacion(JPanelSimulacion ps) {
-        panel = ps;
+     * @param simulationPanel The simulation panel where collected simulation
+     * events will be displayed.
+     */
+    public synchronized void setSimulationPanel(JSimulationPanel simulationPanel) {
+        this.simulationPanel = simulationPanel;
     }
-    
-    /** Este m�todo es utilizado por el objeto al que se est� suscrito, para que pueda
-     * enviar los eventos de simulaci�n cuando sea necesario.
-     * @param evt El evento de simulaci�n emitido por el objeto al que estamos suscritos.
-     * @since 1.0
-     */    
-    public synchronized void captureSimulationEvents(TSimulationEvent evt) {
-        switch (evt.obtenerSubtipo()) {
-            case TSimulationEvent.PAQUETE_GENERADO: {
-                panel.ponerEvento(evt);
-//                System.out.println(evt.toString());
-                break;
-            }
-            case TSimulationEvent.PAQUETE_ENVIADO: {
-                panel.ponerEvento(evt);
-//                System.out.println(evt.toString());
-                break;
-            }
-            case TSimulationEvent.PAQUETE_RECIBIDO: {
-                panel.ponerEvento(evt);
-//                System.out.println(evt.toString());
-                break;
-            }
-            case TSimulationEvent.PAQUETE_CONMUTADO: {
-                panel.ponerEvento(evt);
-//                System.out.println(evt.toString());
-                break;
-            }
-            case TSimulationEvent.PAQUETE_DESCARTADO: {
-                panel.ponerEvento(evt);
-//                System.out.println(evt.toString());
-                break;
-            }
-            case TSimulationEvent.PAQUETE_EN_TRANSITO: {
-                panel.ponerEvento(evt);
-//                System.out.println(evt.toString());
-                break;
-            }
-            case TSimulationEvent.PAQUETE_ENCAMINADO: {
-                panel.ponerEvento(evt);
-//                System.out.println(evt.toString());
-                break;
-            }
-            case TSimulationEvent.LSP_ESTABLECIDO: {
-                panel.ponerEvento(evt);
-//                System.out.println(evt.toString());
-                break;
-            }
-            case TSimulationEvent.LSP_ELIMINADO: {
-                panel.ponerEvento(evt);
-//                System.out.println(evt.toString());
-                break;
-            }
-            case TSimulationEvent.ETIQUETA_ASIGNADA: {
-                panel.ponerEvento(evt);
-//                System.out.println(evt.toString());
-                break;
-            }
-            case TSimulationEvent.ETIQUETA_DENEGADA: {
-                panel.ponerEvento(evt);
-//                System.out.println(evt.toString());
-                break;
-            }
-            case TSimulationEvent.ETIQUETA_ELIMINADA: {
-                panel.ponerEvento(evt);
-//                System.out.println(evt.toString());
-                break;
-            }
-            case TSimulationEvent.ETIQUETA_RECIBIDA: {
-                panel.ponerEvento(evt);
-//                System.out.println(evt.toString());
-                break;
-            }
-            case TSimulationEvent.ETIQUETA_SOLICITADA: {
-                panel.ponerEvento(evt);
-//                System.out.println(evt.toString());
-                break;
-            }
-            case TSimulationEvent.NODO_CONGESTIONADO: {
-                panel.ponerEvento(evt);
-//                System.out.println(evt.toString());
-                break;
-            }
-            case TSimulationEvent.ENLACE_CAIDO: {
-                panel.ponerEvento(evt);
-//                System.out.println(evt.toString());
-                break;
-            }
-            case TSimulationEvent.ENLACE_RECUPERADO: {
-                panel.ponerEvento(evt);
-//                System.out.println(evt.toString());
-                break;
-            }
-        }
-//        bufferDeSimulacion.add(evt);
-    }
-    
+
     /**
-     * Este m�todo reinicia los atributos de la clase y deja la instancia como si
-     * acabase de ser creada por el constructor de la clase.
-     */    
-    public void reset() {
-        cerrojo.lock();
-        Iterator it = this.bufferDeSimulacion.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
+     * This method, when implemented, will capture simulation events. It also
+     * delivers them to the simulation panel to be displayed.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 1.0
+     * @param simulationEvent The simulation event received.
+     */
+    @Override
+    public synchronized void captureSimulationEvents(TSimulationEvent simulationEvent) {
+        switch (simulationEvent.getSubtype()) {
+            case TSimulationEvent.PACKET_GENERATED: {
+                this.simulationPanel.addEvent(simulationEvent);
+                break;
+            }
+            case TSimulationEvent.PACKET_SENT: {
+                this.simulationPanel.addEvent(simulationEvent);
+                break;
+            }
+            case TSimulationEvent.PACKET_RECEIVED: {
+                this.simulationPanel.addEvent(simulationEvent);
+                break;
+            }
+            case TSimulationEvent.PACKET_SWITCHED: {
+                this.simulationPanel.addEvent(simulationEvent);
+                break;
+            }
+            case TSimulationEvent.PACKET_DISCARDED: {
+                this.simulationPanel.addEvent(simulationEvent);
+                break;
+            }
+            case TSimulationEvent.PACKET_ON_FLY: {
+                this.simulationPanel.addEvent(simulationEvent);
+                break;
+            }
+            case TSimulationEvent.PACKET_ROUTED: {
+                this.simulationPanel.addEvent(simulationEvent);
+                break;
+            }
+            case TSimulationEvent.LSP_ESTABLISHED: {
+                this.simulationPanel.addEvent(simulationEvent);
+                break;
+            }
+            case TSimulationEvent.LSP_REMOVED: {
+                this.simulationPanel.addEvent(simulationEvent);
+                break;
+            }
+            case TSimulationEvent.LABEL_ASSIGNED: {
+                this.simulationPanel.addEvent(simulationEvent);
+                break;
+            }
+            case TSimulationEvent.LABEL_DENIED: {
+                this.simulationPanel.addEvent(simulationEvent);
+                break;
+            }
+            case TSimulationEvent.LABEL_REMOVED: {
+                this.simulationPanel.addEvent(simulationEvent);
+                break;
+            }
+            case TSimulationEvent.LABEL_RECEIVED: {
+                this.simulationPanel.addEvent(simulationEvent);
+                break;
+            }
+            case TSimulationEvent.LABEL_REQUESTED: {
+                this.simulationPanel.addEvent(simulationEvent);
+                break;
+            }
+            case TSimulationEvent.NODE_CONGESTED: {
+                this.simulationPanel.addEvent(simulationEvent);
+                break;
+            }
+            case TSimulationEvent.LINK_BROKEN: {
+                this.simulationPanel.addEvent(simulationEvent);
+                break;
+            }
+            case TSimulationEvent.LINK_RECOVERED: {
+                this.simulationPanel.addEvent(simulationEvent);
+                break;
+            }
         }
-        cerrojo.unLock();
     }
-    
-    private TMonitor cerrojo;
-    
-    private TreeSet bufferDeSimulacion;
-    private JPanelSimulacion panel;
+
+    /**
+     * This method reset to value of the class attributes to their original
+     * values, as when created by the constructor.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 1.0
+     *
+     */
+    public void reset() {
+        this.monitor.lock();
+        Iterator iterator = this.simulationEventsBuffer.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
+        }
+        this.monitor.unLock();
+    }
+
+    private TMonitor monitor;
+    private TreeSet simulationEventsBuffer;
+    private JSimulationPanel simulationPanel;
 }

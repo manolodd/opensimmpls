@@ -215,13 +215,13 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
      * @since 1.0
      */    
     public void capturarEventoReloj(TTimerEvent evt) {
-        this.ponerDuracionTic(evt.obtenerDuracionTic());
-        this.ponerInstanteDeTiempo(evt.obtenerLimiteSuperior());
+        this.ponerDuracionTic(evt.getStepDuration());
+        this.ponerInstanteDeTiempo(evt.getUpperLimit());
         if (this.obtenerPuertos().isAnyPacketToRoute()) {
-            this.nsDisponibles += evt.obtenerDuracionTic();
+            this.nsDisponibles += evt.getStepDuration();
         } else {
             this.restaurarPasosSinEmitir();
-            this.nsDisponibles = evt.obtenerDuracionTic();
+            this.nsDisponibles = evt.getStepDuration();
         }
         this.iniciar();
     }

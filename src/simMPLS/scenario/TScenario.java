@@ -16,7 +16,7 @@
  */
 package simMPLS.scenario;
 
-import simMPLS.ui.simulator.JPanelSimulacion;
+import simMPLS.ui.simulator.JSimulationPanel;
 import simMPLS.hardware.timer.TTimestamp;
 import java.io.*;
 
@@ -50,7 +50,7 @@ public class TScenario {
      * @param ps Un panel de simulaci�n existente.
      * @since 1.0
      */    
-    public void ponerPanelSimulacion(JPanelSimulacion ps) {
+    public void ponerPanelSimulacion(JSimulationPanel ps) {
         simulacion.ponerPanelSimulacion(ps);
     }
     

@@ -56,8 +56,8 @@ public class TSEPacketGenerated extends TSimulationEvent {
      * @return El subtipo del evento.
      * @since 1.0
      */    
-    public int obtenerSubtipo() {
-        return super.PAQUETE_GENERADO;
+    public int getSubtype() {
+        return super.PACKET_GENERATED;
     }
 
     /**

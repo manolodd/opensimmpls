@@ -24,7 +24,7 @@ import java.util.*;
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  */
-public abstract class TEventoSimMPLS extends EventObject implements Comparable {
+public abstract class TOpenSimMPLSEvent extends EventObject implements Comparable {
     
     /**
      * Este el el constructor de la clase, que permitir� crear instancias de tipo
@@ -37,7 +37,7 @@ public abstract class TEventoSimMPLS extends EventObject implements Comparable {
      * @param id El identificador �nico del evento, para que el recolector de eventos pueda
      * ordenarlo.
      */
-    public TEventoSimMPLS(Object emisor, long id, long inst) {
+    public TOpenSimMPLSEvent(Object emisor, long id, long inst) {
         super(emisor);
         identificador = id;
         instante = inst;
@@ -78,7 +78,7 @@ public abstract class TEventoSimMPLS extends EventObject implements Comparable {
      * @since 1.0
      */
     public int compareTo(Object o) {
-        TEventoSimMPLS e = (TEventoSimMPLS) o;
+        TOpenSimMPLSEvent e = (TOpenSimMPLSEvent) o;
         if (this.instante < e.obtenerInstante())
             return -1;
         else if (this.instante > e.obtenerInstante())
@@ -98,7 +98,7 @@ public abstract class TEventoSimMPLS extends EventObject implements Comparable {
      * @return La constante que indica de qu� tipo es el evento.
      * @since 1.0
      */
-    public abstract int obtenerTipo();
+    public abstract int getType();
     
     /** Constante que indica que el evento es de tipo ESTADISTICA.
      * @since 1.0
@@ -108,14 +108,14 @@ public abstract class TEventoSimMPLS extends EventObject implements Comparable {
      * @since 1.0
      */
     public static final int SIMULACION = 1;
-    /** Constante que indica que el evento es de tipo RELOJ.
+    /** Constante que indica que el evento es de tipo TIMER.
      * @since 1.0
      */
-    public static final int RELOJ = 2;
-    /** Constante que indica que el evento es de tipo PROGRESION.
+    public static final int TIMER = 2;
+    /** Constante que indica que el evento es de tipo PROGRESS.
      * @since 1.0
      */
-    public static final int PROGRESION = 3;
+    public static final int PROGRESS = 3;
     
     /** Atributo que contiene el identificador del evento.
      * @since 1.0

@@ -14,26 +14,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package simMPLS.hardware.simulationcollector;
-
-import java.util.EventListener;
-import simMPLS.scenario.TSimulationEvent;
+package simMPLS.hardware.timer;
 
 /**
- * This interface has to be implemented by classess that wants to receive
- * simulation events.
+ * This class implements an exception that will be thrown in those situations
+ * when a single IProgressEventListener is allowed and there is an attempt of
+ * subscribing an aditional one.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 1.1
  */
-public interface ISimulationEventListener extends EventListener {
+public class EProgressEventGeneratorOnlyAllowASingleListener extends Exception {
 
     /**
-     * This method, when implemented, will capture simulation events.
+     * This is the constructor of the class. It creates a new instance of
+     * EProgressEventGeneratorOnlyAllowASingleListener.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     * @param simulationEvent The simulation event received.
      */
-    public void captureSimulationEvents(TSimulationEvent simulationEvent);
+    public EProgressEventGeneratorOnlyAllowASingleListener() {
+    }
+
+    /**
+     * This method returns a text showing the cause of the exception.
+     *
+     * @return A string explaining the cause of the exception.
+     */
+    public String toString() {
+        return (java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("EProgresoUnSoloSuscriptor.texto"));
+    }
+
 }

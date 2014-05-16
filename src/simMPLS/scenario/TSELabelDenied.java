@@ -41,8 +41,8 @@ public class TSELabelDenied extends TSimulationEvent {
      * @return El subtipo del evento.
      * @since 1.0
      */    
-    public int obtenerSubtipo() {
-        return super.ETIQUETA_DENEGADA;
+    public int getSubtype() {
+        return super.LABEL_DENIED;
     }
 
     /**

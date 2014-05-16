@@ -44,7 +44,7 @@ public class TActualizadorDeProgreso implements IProgressEventListener {
      * @param evt El evento de progresi�n capturado.
      */
     public void capturarEventoProgreso(TProgressEvent evt) {
-        barraDeProgreso.setValue(evt.obtenerPorcentaje());
+        barraDeProgreso.setValue(evt.getProgressPercentage());
     }
     
     /** Barra de progreso que debe ir actualizando el actualizador de progreso.

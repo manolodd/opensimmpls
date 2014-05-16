@@ -16,58 +16,55 @@
  */
 package simMPLS.hardware.timer;
 
-import simMPLS.utils.TEventoSimMPLS;
-import java.util.*;
+import simMPLS.utils.TOpenSimMPLSEvent;
 
-/** Esta clase implementa un evento que se utilizar� cuando se necesite notificar
- * que un contador de progreso ha cambiado de valor.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+/**
+ * This class implements a progress event that will allow knowing the state of
+ * the simulation when it is running.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
-public class TProgressEvent extends TEventoSimMPLS {
+public class TProgressEvent extends TOpenSimMPLSEvent {
 
-    /** Este atributo contendr� el porcentaje de progreso indicado por el contador de
-     * progreso que emiti� este evento de progreso.
+    /**
+     * This method is the constrctor of the class. It creates a new instance of
+     * TProgressEvent.
+     *
+     * @param eventID The unique event identifier.
+     * @param eventGenerator The object that generates the event.
+     * @param progressPercentage The progress percentage that the event is
+     * carrying out and will be received by the listener.
      * @since 1.0
-     */    
-    private int porcentaje;
-    
-    /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
-     * TEventoprogresion.
-     * @param id El identificador �nico del evento.
-     * @param emisor Objeto que ha generado el evento.
-     * @param porcentaje Porcentaje de progresi�n que se desea que porte el evento hasta llegar al
-     * suscriptor que lo debe recibir.
-     * @since 1.0
-     */    
-    public TProgressEvent(Object emisor, long id, int porcentaje) {
-        super(emisor, id, 0);
-        this.porcentaje=porcentaje;
+     */
+    public TProgressEvent(Object eventGenerator, long eventID, int progressPercentage) {
+        super(eventGenerator, eventID, 0);
+        this.progressPercentage = progressPercentage;
     }
 
-    /** Este m�todo devuelve el valor interno del porcentaje de progresi�n que lleva
-     * incorporado el evento.
-     * @return El valor del porcentaje de progreso que debe ser leido por el suscriptor.
+    /**
+     * This method returns the progress percentage advertised by this event.
+     *
+     * @return The progress percentage that the event is carrying out and will
+     * be received by the listener.
      * @since 1.0
-     */    
-    public int obtenerPorcentaje() {
-        return this.porcentaje;
+     */
+    public int getProgressPercentage() {
+        return this.progressPercentage;
     }
 
-    /** Este m�todo devuelve el tipo de evento de que se trata la instancia actual. Es
-     * una de las constantes descritas en TEventoSimMPLS.
-     * @return El tipo de evento de que se trata. Una de las constantes descritas en
-     * TEventoSimMPLS.
+    /**
+     * This method return the type of this event. It is one of the constants
+     * defined in TOpenSimMPLSEvent.
+     *
+     * @return The type of this event. It is one of the constants defined in
+     * TOpenSimMPLSEvent.
      * @since 1.0
-     */    
-    public int obtenerTipo() {
-        return super.PROGRESION;
+     */
+    @Override
+    public int getType() {
+        return TOpenSimMPLSEvent.PROGRESS;
     }
 
+    private final int progressPercentage;
 }
-
-
-
-
-

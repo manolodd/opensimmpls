@@ -63,9 +63,9 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @since 1.0
      */    
     public void capturarEventoReloj(simMPLS.hardware.timer.TTimerEvent evt) {
-        this.ponerDuracionTic(evt.obtenerDuracionTic());
-        this.ponerInstanteDeTiempo(evt.obtenerLimiteSuperior());
-        paso = evt.obtenerDuracionTic();
+        this.ponerDuracionTic(evt.getStepDuration());
+        this.ponerInstanteDeTiempo(evt.getUpperLimit());
+        paso = evt.getStepDuration();
         this.iniciar();
     }
 

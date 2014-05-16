@@ -42,8 +42,8 @@ public class TSELabelAssigned extends TSimulationEvent {
      * @return El subtipo del evento.
      * @since 1.0
      */    
-    public int obtenerSubtipo() {
-        return super.ETIQUETA_ASIGNADA;
+    public int getSubtype() {
+        return super.LABEL_ASSIGNED;
     }
 
     /**

@@ -16,7 +16,7 @@
  */
 package simMPLS.scenario;
 
-import simMPLS.ui.simulator.JPanelSimulacion;
+import simMPLS.ui.simulator.JSimulationPanel;
 import simMPLS.hardware.simulationcollector.TSimulationCollector;
 
 /**
@@ -46,8 +46,8 @@ public class TSimulation {
      * @since 1.0
      * @param ps El panel de simulaci�n.
      */    
-    public void ponerPanelSimulacion(JPanelSimulacion ps) {
-        recolector.ponerPanelSimulacion(ps);
+    public void ponerPanelSimulacion(JSimulationPanel ps) {
+        recolector.setSimulationPanel(ps);
     }
     
     /**

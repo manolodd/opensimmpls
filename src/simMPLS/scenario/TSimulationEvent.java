@@ -16,7 +16,7 @@
  */
 package simMPLS.scenario;
 
-import simMPLS.utils.TEventoSimMPLS;
+import simMPLS.utils.TOpenSimMPLSEvent;
 
 /**
  * Esta clase es la superclase de todos los eventos de simulaci�n del simulador.
@@ -26,7 +26,7 @@ import simMPLS.utils.TEventoSimMPLS;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public abstract class TSimulationEvent extends TEventoSimMPLS {
+public abstract class TSimulationEvent extends TOpenSimMPLSEvent {
 
     /**
      * Crea una nueva instancia de TEventoSimulacion
@@ -41,10 +41,10 @@ public abstract class TSimulationEvent extends TEventoSimMPLS {
 
     /**
      * Este m�todo permite saber el tipo de evento de que se trata.
-     * @return TEventoSimMPLS.SIMULACION, indicando que se trata de un evento de simulaci�n.
+     * @return TOpenSimMPLSEvent.SIMULACION, indicando que se trata de un evento de simulaci�n.
      * @since 1.0
      */    
-    public int obtenerTipo() {
+    public int getType() {
         return super.SIMULACION;
     }
 
@@ -53,7 +53,7 @@ public abstract class TSimulationEvent extends TEventoSimMPLS {
      * @return Tipo del evento de simulaci�n. Una de las constantes de la clase.
      * @since 1.0
      */    
-    public abstract int obtenerSubtipo();
+    public abstract int getSubtype();
 
     /**
      * Este m�todo permite obtener el elemento de la topolog�a que gener� el evento.
@@ -68,32 +68,32 @@ public abstract class TSimulationEvent extends TEventoSimMPLS {
      * Constante que identifica a un evento de generaci�n de paquete.
      * @since 1.0
      */    
-    public static final int PAQUETE_GENERADO =              0;
+    public static final int PACKET_GENERATED =              0;
     /**
      * Constante que identifica a un evento de  env�o de paquete.
      * @since 1.0
      */    
-    public static final int PAQUETE_ENVIADO =               1;
+    public static final int PACKET_SENT =               1;
     /**
      * Constante que identifica a un evento de recepci�n de paquete.
      * @since 1.0
      */    
-    public static final int PAQUETE_RECIBIDO =              2;
+    public static final int PACKET_RECEIVED =              2;
     /**
      * Constante que identifica a un evento de conmutaci�n de paquete.
      * @since 1.0
      */    
-    public static final int PAQUETE_CONMUTADO =             3;
+    public static final int PACKET_SWITCHED =             3;
     /**
      * Constante que identifica a un evento de descarte de paquete.
      * @since 1.0
      */    
-    public static final int PAQUETE_DESCARTADO =            4;
+    public static final int PACKET_DISCARDED =            4;
     /**
      * Constante que identifica a un evento de paquete en tr�nsito.
      * @since 1.0
      */    
-    public static final int PAQUETE_EN_TRANSITO =           5;
+    public static final int PACKET_ON_FLY =           5;
     /**
      * Constante que identifica a un evento de paquete almacenado en la DMGP
      * @since 1.0
@@ -129,50 +129,50 @@ public abstract class TSimulationEvent extends TEventoSimMPLS {
      * Constante que identifica a un evento de enlace ca�do
      * @since 1.0
      */    
-    public static final int ENLACE_CAIDO =                 12;
+    public static final int LINK_BROKEN =                 12;
     /**
      * Constante que identifica a un evento de enlace recuperado
      * @since 1.0
      */    
-    public static final int ENLACE_RECUPERADO =            13;
+    public static final int LINK_RECOVERED =            13;
     
     /**
      * Constante que identifica a un evento de enlace congestionado
      * @since 1.0
      */    
-    public static final int NODO_CONGESTIONADO =           14;
+    public static final int NODE_CONGESTED =           14;
 
     /**
      * Constante que identifica a un evento de etiqueta solicitada
      * @since 1.0
      */    
-    public static final int ETIQUETA_SOLICITADA =          15;
+    public static final int LABEL_REQUESTED =          15;
     /**
      * Constante que identifica a un evento de etiqueta recibida
      * @since 1.0
      */    
-    public static final int ETIQUETA_RECIBIDA =            16;
+    public static final int LABEL_RECEIVED =            16;
     /**
      * Constante que identifica a un evento de etiqueta asignada
      * @since 1.0
      */    
-    public static final int ETIQUETA_ASIGNADA =            17;
+    public static final int LABEL_ASSIGNED =            17;
     /**
      * Constante que identifica a un evento de etiqueta denegada
      * @since 1.0
      */    
-    public static final int ETIQUETA_DENEGADA =            18;
+    public static final int LABEL_DENIED =            18;
     /**
      * Constante que identifica a un evento de etiqueta eliminada
      * @since 1.0
      */    
-    public static final int ETIQUETA_ELIMINADA =           19;
+    public static final int LABEL_REMOVED =           19;
 
     /**
      * Constante que identifica a un evento de LSP establecido
      * @since 1.0
      */    
-    public static final int LSP_ESTABLECIDO =              20;
+    public static final int LSP_ESTABLISHED =              20;
     /**
      * Constante que identifica a un evento de LSP no establecido
      * @since 1.0
@@ -182,7 +182,7 @@ public abstract class TSimulationEvent extends TEventoSimMPLS {
      * Constante que identifica a un evento de LSP eliminado
      * @since 1.0
      */    
-    public static final int LSP_ELIMINADO =                22;
+    public static final int LSP_REMOVED =                22;
     /**
      * Constante que identifica a un evento de LSP de respaldo establecido
      * @since 1.0
@@ -228,5 +228,5 @@ public abstract class TSimulationEvent extends TEventoSimMPLS {
      * Constante que identifica a un evento de paquete encaminado
      * @since 1.0
      */    
-    public static final int PAQUETE_ENCAMINADO =           30;
+    public static final int PACKET_ROUTED =           30;
 }

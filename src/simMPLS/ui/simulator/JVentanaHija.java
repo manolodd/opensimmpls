@@ -26,7 +26,7 @@ import javax.swing.border.*;
 import org.jfree.chart.*;
 import org.jfree.chart.plot.*;
 import org.jfree.data.*;
-import simMPLS.hardware.timer.EProgressSingleSubscriber;
+import simMPLS.hardware.timer.EProgressEventGeneratorOnlyAllowASingleListener;
 import simMPLS.hardware.timer.TTimestamp;
 import simMPLS.io.osm.TOSMSaver;
 import simMPLS.scenario.TExternalLink;
@@ -136,7 +136,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         aProgresoGeneracion = new TActualizadorDeProgreso(barraDeProgreso);
         try {
             escenario.obtenerTopologia().obtenerReloj().addListenerProgreso(aProgresoGeneracion);
-        } catch (EProgressSingleSubscriber e) {
+        } catch (EProgressEventGeneratorOnlyAllowASingleListener e) {
             e.printStackTrace();
         }
         this.mlsPorTic.setValue(1);
@@ -204,7 +204,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         etiquetaMlsPorTic = new javax.swing.JLabel();
         crearTraza = new javax.swing.JCheckBox();
         jScrollPane2 = new javax.swing.JScrollPane();
-        panelSimulacion = new simMPLS.ui.simulator.JPanelSimulacion();
+        panelSimulacion = new simMPLS.ui.simulator.JSimulationPanel();
         panelAnalisisSuperior = new javax.swing.JPanel();
         panelSeleccionElemento = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -1171,7 +1171,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             this.etiquetaDuracionMs.setText(this.duracionMs.getValue() + java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija._ms."));
             this.etiquetaDuracionNs.setText(this.duracionNs.getValue() + java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija._ns."));
             this.etiquetaPasoNs.setText(this.pasoNs.getValue() + java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija._ns."));
-            escenario.obtenerSimulacion().ponerDuracion(new TTimestamp(duracionMs.getValue(), duracionNs.getValue()).obtenerTotalEnNanosegundos());
+            escenario.obtenerSimulacion().ponerDuracion(new TTimestamp(duracionMs.getValue(), duracionNs.getValue()).getNanoseconds());
             escenario.obtenerSimulacion().ponerPaso(pasoNs.getValue());
         }
     }
@@ -1316,7 +1316,7 @@ public void ponerEscenario(TScenario esc) {
     aProgresoGeneracion = new TActualizadorDeProgreso(barraDeProgreso);
     try {
         esc.obtenerTopologia().obtenerReloj().addListenerProgreso(aProgresoGeneracion);
-    } catch (EProgressSingleSubscriber e) {
+    } catch (EProgressEventGeneratorOnlyAllowASingleListener e) {
         e.printStackTrace();
     }
     this.duracionMs.setValue((int)(durac/1000000));
@@ -2659,7 +2659,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
     private javax.swing.JPanel panelOpciones;
     private javax.swing.JPanel panelOpcionesSuperior;
     private javax.swing.JPanel panelSeleccionElemento;
-    private simMPLS.ui.simulator.JPanelSimulacion panelSimulacion;
+    private simMPLS.ui.simulator.JSimulationPanel panelSimulacion;
     private javax.swing.JPanel panelSimulacionSuperior;
     private javax.swing.JSlider pasoNs;
     private javax.swing.JComboBox selectorElementoEstadisticas;

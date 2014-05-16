@@ -16,71 +16,73 @@
  */
 package simMPLS.hardware.timer;
 
-import simMPLS.utils.TEventoSimMPLS;
-import java.util.*;
+import simMPLS.utils.TOpenSimMPLSEvent;
 
-/** Esta clase implementa un evento que se utilizar� cuando se necesite notificar
- * que un contador de progreso ha cambiado de valor.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+/**
+ * This class implements a timer event that will govern and synchronize all
+ * elements that compose the simulation.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
-public class TTimerEvent extends TEventoSimMPLS {
+public class TTimerEvent extends TOpenSimMPLSEvent {
 
-    /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
-     * TEventoReloj.
-     * @param emisor Objeto que gener� el evento.
-     * @param id Identificador unico del evento.
-     * @param i L�mite inferior del intervalo temporal que expresa este evento.
-     * @param s L�mite superior del intervalo temporal que expresa este evento.
+    /**
+     * This method is the constrctor of the class. It creates a new instance of
+     * TTimerEvent.
+     *
+     * @param eventID The unique event identifier.
+     * @param eventGenerator The object that generates the event.
+     * @param lowerEndOfInterval The start of the period of time (simulation
+     * step) carried out by this event.
+     * @param upperEndOfInterval The end of the period of time (simulation step)
+     * carried out by this event.
      * @since 1.0
-     */    
-    public TTimerEvent(Object emisor, long id, TTimestamp i, TTimestamp s) {
-        super(emisor, id, s.obtenerTotalEnNanosegundos());
-        marcaInferior = i;
-        marcaSuperior = s;
+     */
+    public TTimerEvent(Object eventGenerator, long eventID, TTimestamp lowerEndOfInterval, TTimestamp upperEndOfInterval) {
+        super(eventGenerator, eventID, upperEndOfInterval.getNanoseconds());
+        this.lowerEndOfInterval = lowerEndOfInterval;
+        this.upperEndOfInterval = upperEndOfInterval;
     }
 
-    /** Este m�todo devuelve la duraci�n del tic, o sea, la diferencia existente entre
-     * el l�mite superior y el l�mite inferior del intervalo expresado por el evento.
-     * @return La duraci�n del tic de reloj expresada en este evento.
+    /**
+     * This method return the duration of the simulation step in nanoseconds.
+     * That is, the difference between the end of the interval and the start of
+     * the interval carried out by the event.
+     *
+     * @return The duration of the simulation step in nanoseconds, according to
+     * the values included in this event.
      * @since 1.0
-     */    
-    public int obtenerDuracionTic() {
-        return (int) ((marcaSuperior.obtenerTotalEnNanosegundos()) - (marcaInferior.obtenerTotalEnNanosegundos()));
+     */
+    public int getStepDuration() {
+        return (int) ((this.upperEndOfInterval.getNanoseconds()) - (this.lowerEndOfInterval.getNanoseconds()));
     }
 
-    /** Este m�todo obtiene el l�mite superior del intervalo temporal que expresa este
-     * evento.
-     * @return El limite superior del intervalo de tiempo expresado por este evento.
+    /**
+     * This method get the end of the interval according to the values included
+     * in the event, in nanoseconds.
+     *
+     * @return The end of the interval according to the values included in the
+     * event, in nanoseconds.
      * @since 1.0
-     */    
-    public long obtenerLimiteSuperior() {
-        return (long) (marcaSuperior.obtenerTotalEnNanosegundos());
+     */
+    public long getUpperLimit() {
+        return (long) (this.upperEndOfInterval.getNanoseconds());
     }
 
-    /** Este m�todo devuelve el tipo de evento de que se trata la instancia actual.
-     * @return El tipo de evento de que se trata la instancia actual, seg�n las constantes
-     * definidas en TEventoSimMPLS.
+    /**
+     * This method return the type of this event. It is one of the constants
+     * defined in TOpenSimMPLSEvent.
+     *
+     * @return The type of this event. It is one of the constants defined in
+     * TOpenSimMPLSEvent.
      * @since 1.0
-     */    
-    public int obtenerTipo() {
-        return super.RELOJ;
+     */
+    @Override
+    public int getType() {
+        return TOpenSimMPLSEvent.TIMER;
     }
 
-    /** Este atributo marca el extremo inferior del intervalo temporal que es lo que
-     * significa este evento.
-     * @since 1.0
-     */    
-    private TTimestamp marcaInferior;
-    /** Este atributo marca el extremo superior del intervalo temporal que es lo que
-     * significa este evento.
-     * @since 1.0
-     */    
-    private TTimestamp marcaSuperior;
+    private final TTimestamp lowerEndOfInterval;
+    private final TTimestamp upperEndOfInterval;
 }
-
-
-
-
-

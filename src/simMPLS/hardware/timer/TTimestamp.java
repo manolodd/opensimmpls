@@ -38,27 +38,27 @@ public class TTimestamp {
 
     /** Este m�todo compara la instancia actual con otra del tipo TTimestamp. Es
      * requisito por implementar la interfaz comparable.
-     * @param o Objeto del tipo TTimestamp con el que deseamos compar la instancia actual.
-     * @return MAYOR_EL_PARAMETRO, IGUALES o MENOR_EL_PARAMETRO, en funci�n de si la instancia
-     * con al que nos estamos comparando es mayor, igual o menor que la actual, de
-     * acuerdo al orden elegido.
+     * @param anotherTimestamp Objeto del tipo TTimestamp con el que deseamos compar la instancia actual.
+     * @return ARGUMENT_IS_GREATER, BOTH_ARE_EQUAL anotherTimestamp ARGUMENT_IS_LOWER, en funci�n de si la instancia
+ con al que nos estamos comparando es mayor, igual anotherTimestamp menor que la actual, de
+ acuerdo al orden elegido.
      * @since 1.0
      */    
-    public int comparar(Object o) {
-        TTimestamp parametro = (TTimestamp) o;
-        if (milisegundo < parametro.obtenerMilisegundo())
-            return this.MAYOR_EL_PARAMETRO;
-        if (milisegundo > parametro.obtenerMilisegundo())
-            return this.MENOR_EL_PARAMETRO;
-        if (milisegundo == parametro.obtenerMilisegundo()) {
-            if (nanosegundo < parametro.obtenerNanosegundo())
-                return this.MAYOR_EL_PARAMETRO;
-            if (nanosegundo > parametro.obtenerNanosegundo())
-                return this.MENOR_EL_PARAMETRO;
-            if (nanosegundo == parametro.obtenerNanosegundo())
-                return this.IGUALES;
+    public int comparar(Object anotherTimestamp) {
+        TTimestamp argument = (TTimestamp) anotherTimestamp;
+        if (milisegundo < argument.getMillisecond())
+            return this.ARGUMENT_IS_GREATER;
+        if (milisegundo > argument.getMillisecond())
+            return this.ARGUMENT_IS_LOWER;
+        if (milisegundo == argument.getMillisecond()) {
+            if (nanosegundo < argument.getNanosecond())
+                return this.ARGUMENT_IS_GREATER;
+            if (nanosegundo > argument.getNanosecond())
+                return this.ARGUMENT_IS_LOWER;
+            if (nanosegundo == argument.getNanosecond())
+                return this.BOTH_ARE_EQUAL;
         }
-        return this.IGUALES;
+        return this.BOTH_ARE_EQUAL;
     }
 
     /** Este m�todo obtiene la componente de la marca de tiempo que expresa los
@@ -67,7 +67,7 @@ public class TTimestamp {
      * nanosegundos.
      * @since 1.0
      */    
-    public int obtenerNanosegundo() {
+    public int getNanosecond() {
         return nanosegundo;
     }
 
@@ -101,7 +101,7 @@ public class TTimestamp {
      * milisegundos.
      * @since 1.0
      */    
-    public long obtenerMilisegundo() {
+    public long getMillisecond() {
         return milisegundo;
     }
 
@@ -123,8 +123,8 @@ public class TTimestamp {
      * @since 1.0
      */    
     public void ponerMarca(TTimestamp mt) {
-        this.milisegundo = mt.obtenerMilisegundo();
-        this.nanosegundo = mt.obtenerNanosegundo();
+        this.milisegundo = mt.getMillisecond();
+        this.nanosegundo = mt.getNanosecond();
     }
     
     /** Este m�todo permite sumar un n�mero de milisegundos determinados a la instancia
@@ -140,24 +140,24 @@ public class TTimestamp {
      * @return la expresi�n de la marca de tiempo en nanosegundos.
      * @since 1.0
      */    
-    public long obtenerTotalEnNanosegundos() {
-        return (long) ((this.obtenerMilisegundo()*1000000) + this.obtenerNanosegundo());
+    public long getNanoseconds() {
+        return (long) ((this.getMillisecond()*1000000) + this.getNanosecond());
     }
 
     /** Constante para indicar que, al comparar dos marcas, la que se compara con la
      * instancia actual es mayor.
      * @since 1.0
      */    
-    public static final int MAYOR_EL_PARAMETRO = -1;
+    public static final int ARGUMENT_IS_GREATER = -1;
     /** Constante para indicar que, al comparar dos marcas, ambas son iguales.
      * @since 1.0
      */    
-    public static final int IGUALES = 0;
+    public static final int BOTH_ARE_EQUAL = 0;
     /** Constante para indicar que, al comparar dos marcas, la que se compara con la
      * instancia actual es menor.
      * @since 1.0
      */    
-    public static final int MENOR_EL_PARAMETRO = 1;
+    public static final int ARGUMENT_IS_LOWER = 1;
 
     /** Este atributo almacenar� la componente de la marca de tiempo que expresa los
      * milisegundos.

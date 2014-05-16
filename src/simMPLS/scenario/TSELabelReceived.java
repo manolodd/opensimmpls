@@ -41,8 +41,8 @@ public class TSELabelReceived extends TSimulationEvent {
      * @return El subtipo del evento.
      * @since 1.0
      */    
-    public int obtenerSubtipo() {
-        return super.ETIQUETA_RECIBIDA;
+    public int getSubtype() {
+        return super.LABEL_RECEIVED;
     }
 
     /**

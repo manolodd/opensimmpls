@@ -16,22 +16,22 @@
  */
 package simMPLS.hardware.timer;
 
+import java.util.Iterator;
+import java.util.TreeSet;
+import simMPLS.scenario.TExternalLink;
+import simMPLS.scenario.TInternalLink;
+import simMPLS.scenario.TLERANode;
+import simMPLS.scenario.TLERNode;
+import simMPLS.scenario.TLSRANode;
+import simMPLS.scenario.TLSRNode;
+import simMPLS.scenario.TLink;
+import simMPLS.scenario.TNode;
+import simMPLS.scenario.TReceiverNode;
+import simMPLS.scenario.TSenderNode;
+import simMPLS.scenario.TTopologyElement;
 import simMPLS.utils.EDesbordeDelIdentificador;
 import simMPLS.utils.TActualizadorDeProgreso;
 import simMPLS.utils.TIdentificadorLargo;
-import simMPLS.scenario.TTopologyElement;
-import simMPLS.scenario.TInternalLink;
-import simMPLS.scenario.TExternalLink;
-import simMPLS.scenario.TLink;
-import simMPLS.scenario.TLERNode;
-import simMPLS.scenario.TSenderNode;
-import simMPLS.scenario.TReceiverNode;
-import simMPLS.scenario.TLSRANode;
-import simMPLS.scenario.TLSRNode;
-import simMPLS.scenario.TLERANode;
-import simMPLS.scenario.TNode;
-import java.util.*;
-import javax.swing.*;
 
 /** Esta clase implementa un reloj que sincronizar� toda la simulaci�n desde el
  * comienzo hasta el final.
@@ -83,8 +83,8 @@ public class TTimer implements Runnable {
      * @since 1.0
      */    
     public void ponerLimite(TTimestamp l) {
-        tLimite.ponerMilisegundo(l.obtenerMilisegundo());
-        tLimite.ponerNanosegundo(l.obtenerNanosegundo());
+        tLimite.ponerMilisegundo(l.getMillisecond());
+        tLimite.ponerNanosegundo(l.getNanosecond());
     }
 
     /** Este m�todo permite establecer cada cuanto tiempo debe generar eventos el reloj.
@@ -166,16 +166,16 @@ public class TTimer implements Runnable {
     /** Este elemento permite a un actualizador de progreso suscribirse para recibir
      * eventos de progresi�n.
      * @param ap El actualizador de progreso que deseamos susccribir.
-     * @throws EProgressSingleSubscriber Excepci�n que se lanza cuando se intenta suscribir nu actualizador de progreso y
+     * @throws EProgressEventGeneratorOnlyAllowASingleListener Excepci�n que se lanza cuando se intenta suscribir nu actualizador de progreso y
      * ya hay uno suscrito. S�lo se permite un actualizador de progreso suscrito en un
      * momento dado.
      * @since 1.0
      */    
-    public void addListenerProgreso(TActualizadorDeProgreso ap) throws EProgressSingleSubscriber {
+    public void addListenerProgreso(TActualizadorDeProgreso ap) throws EProgressEventGeneratorOnlyAllowASingleListener {
         if (suscriptorProgreso == null) {
             suscriptorProgreso = ap;
         } else {
-            throw new EProgressSingleSubscriber();
+            throw new EProgressEventGeneratorOnlyAllowASingleListener();
         }
     }
 
@@ -196,8 +196,8 @@ public class TTimer implements Runnable {
         Iterator itn = nodosSuscriptores.iterator();
         TNode nodoAux;
         TLink enlaceAux;
-        TTimestamp i = new TTimestamp(tAnterior.obtenerMilisegundo(), tAnterior.obtenerNanosegundo());
-        TTimestamp s = new TTimestamp(tActual.obtenerMilisegundo(), tActual.obtenerNanosegundo());
+        TTimestamp i = new TTimestamp(tAnterior.getMillisecond(), tAnterior.getNanosecond());
+        TTimestamp s = new TTimestamp(tActual.getMillisecond(), tActual.getNanosecond());
         while (itn.hasNext()) {
             nodoAux = (TNode) itn.next();
             switch (nodoAux.obtenerTipo()) {
@@ -259,8 +259,8 @@ public class TTimer implements Runnable {
      */    
     public void lanzarEventoProgreso() {
         int p=0;
-        long total = tLimite.obtenerTotalEnNanosegundos();
-        long actual = tActual.obtenerTotalEnNanosegundos();
+        long total = tLimite.getNanoseconds();
+        long actual = tActual.getNanoseconds();
         if (total != 0)
             p = (int) Math.round((actual*100) / total);
         try {
@@ -356,24 +356,24 @@ public class TTimer implements Runnable {
         boolean ultimoPasoDado = false;
         fin = false;
         tActual.sumarNanosegundo(paso);
-        totalActual = tActual.obtenerTotalEnNanosegundos();
-        totalLimite = tLimite.obtenerTotalEnNanosegundos();
+        totalActual = tActual.getNanoseconds();
+        totalLimite = tLimite.getNanoseconds();
         if (totalActual == totalLimite) {
             ultimoPasoDado = true;
         }
-        while ((tActual.comparar(tLimite) != TTimestamp.MENOR_EL_PARAMETRO) && (!fin)) {
+        while ((tActual.comparar(tLimite) != TTimestamp.ARGUMENT_IS_LOWER) && (!fin)) {
             // Acciones a llevar a cabo
             lanzarEventoProgreso();
             lanzarEventoReloj();
             // Acciones a llevar a cabo
-            tAnterior.ponerMilisegundo(tActual.obtenerMilisegundo());
-            tAnterior.ponerNanosegundo(tActual.obtenerNanosegundo());
-            totalActual = tActual.obtenerTotalEnNanosegundos();
-            totalLimite = tLimite.obtenerTotalEnNanosegundos();
+            tAnterior.ponerMilisegundo(tActual.getMillisecond());
+            tAnterior.ponerNanosegundo(tActual.getNanosecond());
+            totalActual = tActual.getNanoseconds();
+            totalLimite = tLimite.getNanoseconds();
             if (totalActual+paso > totalLimite) {
                 if (!ultimoPasoDado) {
-                    tActual.ponerMilisegundo(tLimite.obtenerMilisegundo());
-                    tActual.ponerNanosegundo(tLimite.obtenerNanosegundo());
+                    tActual.ponerMilisegundo(tLimite.getMillisecond());
+                    tActual.ponerNanosegundo(tLimite.getNanosecond());
                     ultimoPasoDado = true;
                 } else {
                     tActual.sumarNanosegundo(paso);
@@ -381,8 +381,8 @@ public class TTimer implements Runnable {
             } else {
                 tActual.sumarNanosegundo(paso);
             }
-            totalActual = tActual.obtenerTotalEnNanosegundos();
-            totalAnterior = tAnterior.obtenerTotalEnNanosegundos();
+            totalActual = tActual.getNanoseconds();
+            totalAnterior = tAnterior.getNanoseconds();
             if (totalAnterior == totalActual) {
                 fin = true;
             }

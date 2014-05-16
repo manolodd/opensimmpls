@@ -77,8 +77,8 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * @since 1.0
      */    
     public void capturarEventoReloj(TTimerEvent evt) {
-        this.ponerDuracionTic(evt.obtenerDuracionTic());
-        this.ponerInstanteDeTiempo(evt.obtenerLimiteSuperior());
+        this.ponerDuracionTic(evt.getStepDuration());
+        this.ponerInstanteDeTiempo(evt.getUpperLimit());
         this.iniciar();
     }
 

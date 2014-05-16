@@ -37,7 +37,7 @@ import simMPLS.scenario.TTopology;
 import simMPLS.scenario.TLink;
 import simMPLS.scenario.TNode;
 import simMPLS.ui.utils.TDispensadorDeImagenes;
-import simMPLS.utils.TEventoSimMPLS;
+import simMPLS.utils.TOpenSimMPLSEvent;
 import simMPLS.utils.TMonitor;
 
 /**
@@ -48,13 +48,13 @@ import simMPLS.utils.TMonitor;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class JPanelSimulacion extends javax.swing.JPanel {
+public class JSimulationPanel extends javax.swing.JPanel {
 
     /**
      * Crea una nueva instancia de JPanelSimulacion
      * @since 1.0
      */
-    public JPanelSimulacion() {
+    public JSimulationPanel() {
         initComponents();
     }
 
@@ -64,7 +64,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
      * @param di Dispensador de im�genes de donde el panel tomar� las im�genes que necesite
      * mostrar en pantalla.
      */    
-    public JPanelSimulacion(TDispensadorDeImagenes di) {
+    public JSimulationPanel(TDispensadorDeImagenes di) {
         dispensadorDeImagenes = di;
         initComponents();
     }
@@ -130,7 +130,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
         String texto = "";
         texto += this.ticActual + ": ";
         if (this.streamTraza != null) {
-            if (es.obtenerTipo() == TEventoSimMPLS.SIMULACION) {
+            if (es.getType() == TOpenSimMPLSEvent.SIMULACION) {
                 texto += es.toString();
                 this.streamTraza.println(texto);
             }
@@ -444,7 +444,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
      * @param evt El nuevo evento que se debe mostrar en la simulaci�n.
      * @since 1.0
      */    
-    public void ponerEvento(TSimulationEvent evt) {
+    public void addEvent(TSimulationEvent evt) {
         cerrojo.lock();
         this.enviarATraza(evt);
         if (evt.obtenerInstante() <= ticActual) {
@@ -490,7 +490,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
             while (it.hasNext()) {
                 evento = (TSimulationEvent) it.next();
                 if (evento != null) {
-                    if (evento.obtenerSubtipo() == TSimulationEvent.PAQUETE_EN_TRANSITO) {
+                    if (evento.getSubtype() == TSimulationEvent.PACKET_ON_FLY) {
                         TSEPacketOnFly ept = (TSEPacketOnFly) evento;
                         TLink et = (TLink) ept.obtenerFuente();
                         Point p = et.obtenerCoordenadasPaquete(ept.obtenerPorcentajeTransito());
@@ -507,7 +507,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
                         } else if (ept.obtenerTipoPaquete() == TPDU.MPLS_GOS) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_MPLS_GOS), p.x-8, p.y-8, null);
                         }
-                    } else if (evento.obtenerSubtipo() == TSimulationEvent.PAQUETE_DESCARTADO) {
+                    } else if (evento.getSubtype() == TSimulationEvent.PACKET_DISCARDED) {
                         TSEPacketDiscarded epd = (TSEPacketDiscarded) evento;
                         TNode nt = (TNode) epd.obtenerFuente();
                         Point p = nt.obtenerPosicion();
@@ -524,29 +524,29 @@ public class JPanelSimulacion extends javax.swing.JPanel {
                         } else if (epd.obtenerTipoPaquete() == TPDU.MPLS_GOS) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_MPLS_GOS_CAE), p.x, p.y+24, null);
                         }
-                    } else if (evento.obtenerSubtipo() == TSimulationEvent.LSP_ESTABLECIDO) {
+                    } else if (evento.getSubtype() == TSimulationEvent.LSP_ESTABLISHED) {
                         // Algo se har�.
-                    } else if (evento.obtenerSubtipo() == TSimulationEvent.PAQUETE_GENERADO) {
+                    } else if (evento.getSubtype() == TSimulationEvent.PACKET_GENERATED) {
                         TSEPacketGenerated epg = (TSEPacketGenerated) evento;
                         TNode nt = (TNode) epg.obtenerFuente();
                         Point p = nt.obtenerPosicion();
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PAQUETE_GENERADO), p.x+8, p.y-16, null);
-                    } else if (evento.obtenerSubtipo() == TSimulationEvent.PAQUETE_ENVIADO) {
+                    } else if (evento.getSubtype() == TSimulationEvent.PACKET_SENT) {
                         TSEPacketSent epe = (TSEPacketSent) evento;
                         TNode nt = (TNode) epe.obtenerFuente();
                         Point p = nt.obtenerPosicion();
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PAQUETE_EMITIDO), p.x+24, p.y-16, null);
-                    } else if (evento.obtenerSubtipo() == TSimulationEvent.PAQUETE_RECIBIDO) {
+                    } else if (evento.getSubtype() == TSimulationEvent.PACKET_RECEIVED) {
                         TSEPacketReceived epr = (TSEPacketReceived) evento;
                         TNode nt = (TNode) epr.obtenerFuente();
                         Point p = nt.obtenerPosicion();
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PAQUETE_RECIBIDO), p.x-8, p.y-16, null);
-                    } else if (evento.obtenerSubtipo() == TSimulationEvent.PAQUETE_CONMUTADO) {
+                    } else if (evento.getSubtype() == TSimulationEvent.PACKET_SWITCHED) {
                         TSEPacketSwitched epr = (TSEPacketSwitched) evento;
                         TNode nt = (TNode) epr.obtenerFuente();
                         Point p = nt.obtenerPosicion();
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PAQUETE_CONMUTADO), p.x+40, p.y-16, null);
-                    } else if (evento.obtenerSubtipo() == TSimulationEvent.PAQUETE_ENCAMINADO) {
+                    } else if (evento.getSubtype() == TSimulationEvent.PACKET_ROUTED) {
                         TSEPacketRouted epr = (TSEPacketRouted) evento;
                         TNode nt = (TNode) epr.obtenerFuente();
                         Point p = nt.obtenerPosicion();
@@ -574,7 +574,7 @@ public class JPanelSimulacion extends javax.swing.JPanel {
             while (it.hasNext()) {
                 evento = (TSimulationEvent) it.next();
                 if (evento != null) {
-                    if (evento.obtenerSubtipo() == TSimulationEvent.NODO_CONGESTIONADO) {
+                    if (evento.getSubtype() == TSimulationEvent.NODE_CONGESTED) {
                         TSENodeCongested enc = (TSENodeCongested) evento;
                         TNode nt = (TNode) enc.obtenerFuente();
                         Point p = nt.obtenerPosicion();
@@ -650,11 +650,11 @@ public class JPanelSimulacion extends javax.swing.JPanel {
             while (it.hasNext()) {
                 evento = (TSimulationEvent) it.next();
                 if (evento != null) {
-                    if (evento.obtenerSubtipo() == TSimulationEvent.ENLACE_CAIDO) {
+                    if (evento.getSubtype() == TSimulationEvent.LINK_BROKEN) {
                         TLink ent = (TLink) evento.obtenerFuente();
                         Point p = ent.obtenerCoordenadasPaquete(50);
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.ENLACE_CAIDO), p.x-41, p.y-41, null);
-                    } else if (evento.obtenerSubtipo() == TSimulationEvent.ENLACE_RECUPERADO) {
+                    } else if (evento.getSubtype() == TSimulationEvent.LINK_RECOVERED) {
                         TLink ent = (TLink) evento.obtenerFuente();
                         Point p = ent.obtenerCoordenadasPaquete(50);
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.ENLACE_RECUPERADO), p.x-41, p.y-41, null);

@@ -41,8 +41,8 @@ public class TSELSPRemoved extends TSimulationEvent {
      * @return El subtipo del evento.
      * @since 1.0
      */    
-    public int obtenerSubtipo() {
-        return super.LSP_ELIMINADO;
+    public int getSubtype() {
+        return super.LSP_REMOVED;
     }
 
     /**

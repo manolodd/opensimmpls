@@ -16,20 +16,23 @@
  */
 package simMPLS.hardware.timer;
 
-import java.util.*;
+import java.util.EventListener;
 
-/** Interfaz para la creaci�n de clases sean suscriptoras de eventos de progresi�n.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+
+/**
+ * This interface has to be implemented by classess that wants to receive
+ * progress events.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public interface IProgressEventListener extends EventListener {
-    /** Este m�todo deber� ser implementado. Su funci�n es que los objetos generadores
-     * de eventos de progresi�n a los que nos hemos suscrito puedan enviarnos los
-     * eventos cuando se produzcan.
-     * @param evt El evento de progresi�n que habr� emitido un objeto al que se est�
-     * suscrito.
+    /**
+     * This method, when implemented, will capture progress events.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     */    
-    public void capturarEventoProgreso(TProgressEvent evt);
+     * @param progressEvent The progress event received.
+     */ 
+    public void capturarEventoProgreso(TProgressEvent progressEvent);
 }

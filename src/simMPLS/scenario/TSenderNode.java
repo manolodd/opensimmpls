@@ -245,9 +245,9 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @since 1.0
      */
     public void capturarEventoReloj(TTimerEvent evt) {
-        this.ponerDuracionTic(evt.obtenerDuracionTic());
-        this.ponerInstanteDeTiempo(evt.obtenerLimiteSuperior());
-        this.nsDisponibles += evt.obtenerDuracionTic();
+        this.ponerDuracionTic(evt.getStepDuration());
+        this.ponerInstanteDeTiempo(evt.getUpperLimit());
+        this.nsDisponibles += evt.getStepDuration();
         this.iniciar();
     }
     
