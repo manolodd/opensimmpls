@@ -269,7 +269,7 @@ public class TScenario {
      * @since 1.0
      */    
     public boolean simulacionEnFuncionamiento() {
-        if (topologia.obtenerReloj().estaEnFuncionamiento()) 
+        if (topologia.obtenerReloj().isRunning()) 
             return true;
         return false;
     }
@@ -281,7 +281,7 @@ public class TScenario {
     public void generarSimulacion() {
         if (!this.simulacionEnFuncionamiento()) {
             topologia.obtenerReloj().reset();
-            topologia.obtenerReloj().iniciar();
+            topologia.obtenerReloj().start();
         }
     }
 
@@ -293,7 +293,7 @@ public class TScenario {
      */    
     public void ponerDuracionSimulacion(TTimestamp d) {
         if (!this.simulacionEnFuncionamiento()) {
-            this.topologia.obtenerReloj().ponerLimite(d);
+            this.topologia.obtenerReloj().setFinishTimestamp(d);
         }
     }
 
@@ -307,7 +307,7 @@ public class TScenario {
      */    
     public void ponerPasoSimulacion(int p) {
         if (!this.simulacionEnFuncionamiento()) {
-            this.topologia.obtenerReloj().ponerPaso(p);
+            this.topologia.obtenerReloj().setTick(p);
         }
     }
 

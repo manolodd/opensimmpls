@@ -23,7 +23,7 @@ import simMPLS.hardware.timer.ITimerEventListener;
 import simMPLS.hardware.ports.TFIFOPortSet;
 import simMPLS.hardware.ports.TPort;
 import simMPLS.hardware.ports.TPortSet;
-import simMPLS.utils.TIdentificadorLargo;
+import simMPLS.utils.TLongIdentifier;
 import java.awt.*;
 import org.jfree.chart.*;
 import org.jfree.data.*;
@@ -44,7 +44,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * @param t Topologia dentro de la cual se encuentra el nodo.
      * @since 1.0
      */
-    public TReceiverNode(int identificador, String d, TIdentificadorLargo il, TTopology t) {
+    public TReceiverNode(int identificador, String d, TLongIdentifier il, TTopology t) {
         super(identificador, d, il, t);
         this.ponerPuertos(super.NUM_PUERTOS_RECEPTOR);
         this.puertos.setUnlimitedBuffer(true);
@@ -64,11 +64,11 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     
     /**
      * Este m�todo devuelve el tipo del nodo.
-     * @return TNode.RECEPTOR, indicando que se trata de un nodo receptor.
+     * @return TNode.RECEIVER, indicando que se trata de un nodo receptor.
      * @since 1.0
      */    
-    public int obtenerTipo() {
-        return super.RECEPTOR;
+    public int getNodeType() {
+        return super.RECEIVER;
     }
 
     /**
@@ -76,7 +76,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * @param evt Evento enviado desde el reloj principal del simulador.
      * @since 1.0
      */    
-    public void capturarEventoReloj(TTimerEvent evt) {
+    public void receiveTimerEvent(TTimerEvent evt) {
         this.ponerDuracionTic(evt.getStepDuration());
         this.ponerInstanteDeTiempo(evt.getUpperLimit());
         this.iniciar();
@@ -240,7 +240,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      */    
     public String serializar() {
         String cadena = "#Receptor#";
-        cadena += this.obtenerIdentificador();
+        cadena += this.getID();
         cadena += "#";
         cadena += this.obtenerNombre().replace('#', ' ');
         cadena += "#";

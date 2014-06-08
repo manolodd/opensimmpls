@@ -29,468 +29,486 @@ import simMPLS.scenario.TNode;
 import simMPLS.scenario.TReceiverNode;
 import simMPLS.scenario.TSenderNode;
 import simMPLS.scenario.TTopologyElement;
-import simMPLS.utils.EDesbordeDelIdentificador;
-import simMPLS.utils.TActualizadorDeProgreso;
-import simMPLS.utils.TIdentificadorLargo;
+import simMPLS.utils.EIdentifierGeneratorOverflow;
+import simMPLS.utils.TProgressEventListener;
+import simMPLS.utils.TLongIdentifier;
 
-/** Esta clase implementa un reloj que sincronizar� toda la simulaci�n desde el
- * comienzo hasta el final.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+/**
+ * This class implements a timer that will govern the operation and
+ * synchronization of the simulation. It will send time events to the rest of
+ * component that compose the topology.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public class TTimer implements Runnable {
 
-    /** Este m�todo es el constructor de la clase. Crea una nueva instancia de TReloj.
+    /**
+     * This method is the constuctor of the class. It will create a new instance
+     * of TTimer and will set the initial values for the attributes of the
+     * class.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      */
     public TTimer() {
-        hilo = null;
-        nodosSuscriptores = new TreeSet();
-        enlacesSuscriptores = new TreeSet();
-        suscriptorProgreso = null;
-        generadorIdentificadorLargo = new TIdentificadorLargo();
-        tActual = new TTimestamp(0, 0);
-        tAnterior = new TTimestamp(0, 0);
-        tLimite = new TTimestamp(0, 100000);
-        tActualAux = new TTimestamp(0, 0);
-        tAnteriorAux = new TTimestamp(0, 0);
-        tLimiteAux = new TTimestamp(0, 100000);
-        paso = 1000;
-        enFuncionamiento = false;
-        fin = true;
-        pausa = false;
+        this.thread = null;
+        this.timerEventListenerNodes = new TreeSet();
+        this.timerEventListenerLInks = new TreeSet();
+        this.progressEventListener = null;
+        this.longIdentifierGenerator = new TLongIdentifier();
+        this.currentTimestamp = new TTimestamp(0, 0);
+        this.previousTimestamp = new TTimestamp(0, 0);
+        this.finishTimestamp = new TTimestamp(0, 100000);
+        this.currentTimestampAux = new TTimestamp(0, 0);
+        this.previousTimestampAux = new TTimestamp(0, 0);
+        this.finishTimestampAux = new TTimestamp(0, 100000);
+        this.tick = 1000;
+        this.running = false;
+        this.isFinished = true;
+        this.paused = false;
     }
-    
+
     /**
-     * Este m�todo reinicia el reloj y lo deja como si acabase de ser creado por el
-     * constructor de la clase.
+     * This method reset the attributes of the class as when created by the
+     * constructor.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     */    
+     */
     public void reset() {
-        tActual = new TTimestamp(0, 0);
-        tAnterior = new TTimestamp(0, 0);
-        enFuncionamiento = false;
-        generadorIdentificadorLargo.reset();
-        fin = true;
-        pausa = false;
-        lanzarEventoProgreso();        
+        this.currentTimestamp = new TTimestamp(0, 0);
+        this.previousTimestamp = new TTimestamp(0, 0);
+        this.running = false;
+        this.longIdentifierGenerator.reset();
+        this.isFinished = true;
+        this.paused = false;
+        generateProgressEvent();
     }
 
-    /** Este m�todo permite establecer el l�mite temporal a partir del cual el reloj se
-     * parar� y dejar� de emitir eventos.
-     * @param l Marca de tiempo indicando el l�mite donde el reloj (y por tanto la simulacion) se parar�.
+    /**
+     * This method allows establishing the end of the simulation. When the timer
+     * reaches this limit the simulation stops and no more events are generated.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param finishTimestamp is the time limit for the simulation. In fact it
+     * it the timestamp the timer has to reach to finish the simulation.
      * @since 1.0
-     */    
-    public void ponerLimite(TTimestamp l) {
-        tLimite.ponerMilisegundo(l.getMillisecond());
-        tLimite.ponerNanosegundo(l.getNanosecond());
+     */
+    public void setFinishTimestamp(TTimestamp finishTimestamp) {
+        this.finishTimestamp.setMillisecond(finishTimestamp.getMillisecond());
+        this.finishTimestamp.setNanosecond(finishTimestamp.getNanosecond());
     }
 
-    /** Este m�todo permite establecer cada cuanto tiempo debe generar eventos el reloj.
+    /**
+     * This method establishes the granularity of the simulation, that is, it
+     * tells the timmer how often it has to generate a timer event to let the
+     * topology componets advance the simulation.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     * @param p El intervalo de tiempo que deseamos que pase entre que el reloj genera un evento
-     * y el siguiente.
-     */    
-    public void ponerPaso(int p) {
-        paso = p;
+     * @param tick the period the timer has to wait between generating a timer
+     * event and the next one.
+     */
+    public void setTick(int tick) {
+        this.tick = tick;
     }
 
-    /** Este evento permite que se pueda suscribir para recibir eventos de reloj
-     * cualquier elemento de la topolog�a.
-     * @param suscriptor Elemento de la topolog�a que queremos suscribir para recibir eventos de reloj.
+    /**
+     * This method let a topology element (nodes and/or links) to subscribe the
+     * timer to receive timer events.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param timerEventListener the element that wants to receive timer events.
      * @since 1.0
-     */    
-    public void addListenerReloj(TTopologyElement suscriptor) {
-        if (suscriptor.obtenerTipoElemento() == TTopologyElement.ENLACE)
-            enlacesSuscriptores.add(suscriptor);
-        else
-            nodosSuscriptores.add(suscriptor);
+     */
+    public void addTimerEventListener(TTopologyElement timerEventListener) {
+        if (timerEventListener.getElementType() == TTopologyElement.LINK) {
+            this.timerEventListenerLInks.add(timerEventListener);
+        } else {
+            this.timerEventListenerNodes.add(timerEventListener);
+        }
     }
 
-    /** Este evento permite eliminar la suscripci�n uno de los elementos de la topolog�a
-     * que se encuentre suscrito para recibir eventos de reloj.
-     * @param suscriptor El elemento de la topolog�a cuya suscripci�n para recibir eventos de reloj
-     * deseamos eliminar.
+    /**
+     * This method removes a timer event listener from the list of timer event
+     * listeners. In this way, the listener will stop receiving timer events..
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param timerEventListener The topology element that are going to stop
+     * receiving timer events from this timer.
      * @since 1.0
-     */    
-    public void removeListenerReloj(TTopologyElement suscriptor) {
-        if (suscriptor.obtenerTipoElemento() == TTopologyElement.ENLACE) {
-            Iterator ite = enlacesSuscriptores.iterator();
-            TLink e;
-            TLink parametro = (TLink) suscriptor;
-            while (ite.hasNext()) {
-                e = (TLink) ite.next();
-                if (e.obtenerIdentificador() == parametro.obtenerIdentificador()) {
-                    ite.remove();
+     */
+    public void removeTimerEventListener(TTopologyElement timerEventListener) {
+        if (timerEventListener.getElementType() == TTopologyElement.LINK) {
+            Iterator iterator = this.timerEventListenerLInks.iterator();
+            TLink linkAux;
+            TLink timerEventListenerAux = (TLink) timerEventListener;
+            while (iterator.hasNext()) {
+                linkAux = (TLink) iterator.next();
+                if (linkAux.getID() == timerEventListenerAux.getID()) {
+                    iterator.remove();
+                }
+            }
+        } else {
+            Iterator iterator = this.timerEventListenerNodes.iterator();
+            TNode nodeAux;
+            TNode timerEventListenerAux = (TNode) timerEventListener;
+            while (iterator.hasNext()) {
+                nodeAux = (TNode) iterator.next();
+                if (nodeAux.getID() == timerEventListenerAux.getID()) {
+                    iterator.remove();
                 }
             }
         }
-        else {
-            Iterator itn = nodosSuscriptores.iterator();
-            TNode n;
-            TNode parametro = (TNode) suscriptor;
-            while (itn.hasNext()) {
-                n = (TNode) itn.next();
-                if (n.obtenerIdentificador() == parametro.obtenerIdentificador()) {
-                    itn.remove();
-                }
+    }
+
+    /**
+     * This method removes from the list of time event listeners those that are
+     * checked off to be removed as timer event listeners.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 1.0
+     */
+    public void purgeTimerEventListeners() {
+        Iterator linksIterator = this.timerEventListenerLInks.iterator();
+        TLink linkAux;
+        while (linksIterator.hasNext()) {
+            linkAux = (TLink) linksIterator.next();
+            if (linkAux.hasToBePurged()) {
+                linksIterator.remove();
+            }
+        }
+        Iterator nodesIterator = this.timerEventListenerNodes.iterator();
+        TNode nodeAux;
+        while (nodesIterator.hasNext()) {
+            nodeAux = (TNode) nodesIterator.next();
+            if (nodeAux.hasToBePurged()) {
+                nodesIterator.remove();
             }
         }
     }
 
-    /** Este m�todo permite eliminar la suscripci�n de uno ovarios elementos de la
-     * topolog�a que se hayan marcado para desuscribirse desde cualquier otra parte del
-     * programa. As� se evita una excepci�n de acceso concurrente.
+    /**
+     * This method subscribe a progress event listener to thi timer. In this
+     * way, the overall simulation progess will be known by this listener.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param progressEventListener The progress event listener that are going
+     * to receive progress events from this timer.
+     * @throws EProgressEventGeneratorOnlyAllowASingleListener It is possible to
+     * subscribe only one progress event listener at the same time. So, if you
+     * try to subscribe another one whe n there is a previous progress event
+     * listener subscribed to the timer, this ixception is thrown.
      * @since 1.0
-     */    
-    public void purgarListenerReloj() {
-        Iterator ite = enlacesSuscriptores.iterator();
-        TLink e;
-        while (ite.hasNext()) {
-            e = (TLink) ite.next();
-            if (e.obtenerPurgar()) {
-                ite.remove();
-            }
-        }
-        Iterator itn = nodosSuscriptores.iterator();
-        TNode n;
-        while (itn.hasNext()) {
-            n = (TNode) itn.next();
-            if (n.obtenerPurgar()) {
-                itn.remove();
-            }
-        }
-    }
-
-    /** Este elemento permite a un actualizador de progreso suscribirse para recibir
-     * eventos de progresi�n.
-     * @param ap El actualizador de progreso que deseamos susccribir.
-     * @throws EProgressEventGeneratorOnlyAllowASingleListener Excepci�n que se lanza cuando se intenta suscribir nu actualizador de progreso y
-     * ya hay uno suscrito. S�lo se permite un actualizador de progreso suscrito en un
-     * momento dado.
-     * @since 1.0
-     */    
-    public void addListenerProgreso(TActualizadorDeProgreso ap) throws EProgressEventGeneratorOnlyAllowASingleListener {
-        if (suscriptorProgreso == null) {
-            suscriptorProgreso = ap;
+     */
+    public void addProgressEventListener(TProgressEventListener progressEventListener) throws EProgressEventGeneratorOnlyAllowASingleListener {
+        if (this.progressEventListener == null) {
+            this.progressEventListener = progressEventListener;
         } else {
             throw new EProgressEventGeneratorOnlyAllowASingleListener();
         }
     }
 
-    /** Este m�todo permite anular la suscripci�n de un actualizador de progreso para
-     * recibir eventos de progresi�n.
+    /**
+     * This method unsubscribe the progress event listener from the timer. So,
+     * this progress event listener will stop receiving progress events.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     */    
-    public void removeListenerProgreso() {
-        suscriptorProgreso = null;
+     */
+    public void removeProgressEventListener() {
+        this.progressEventListener = null;
     }
 
-    /** Este m�todo genera y remite un evento de reloj a todos los suscriptores que lo
-     * est�n esperando.
+    /**
+     * This method generates a new timer event an sends it to all topology
+     * elements that are subscribed to receive timer events.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     */    
-    private void lanzarEventoReloj() {
-        Iterator ite = enlacesSuscriptores.iterator();
-        Iterator itn = nodosSuscriptores.iterator();
-        TNode nodoAux;
-        TLink enlaceAux;
-        TTimestamp i = new TTimestamp(tAnterior.getMillisecond(), tAnterior.getNanosecond());
-        TTimestamp s = new TTimestamp(tActual.getMillisecond(), tActual.getNanosecond());
-        while (itn.hasNext()) {
-            nodoAux = (TNode) itn.next();
-            switch (nodoAux.obtenerTipo()) {
-                case TNode.EMISOR: {
-                    nodoAux = (TSenderNode) nodoAux;
+     */
+    private void generateTimerEvent() {
+        Iterator linksIterator = this.timerEventListenerLInks.iterator();
+        Iterator nodesIterator = this.timerEventListenerNodes.iterator();
+        TNode nodeAux;
+        TLink linkAux;
+        TTimestamp startOfSimulationInterval = new TTimestamp(this.previousTimestamp.getMillisecond(), this.previousTimestamp.getNanosecond());
+        TTimestamp endOfSimulationInterval = new TTimestamp(this.currentTimestamp.getMillisecond(), this.currentTimestamp.getNanosecond());
+        while (nodesIterator.hasNext()) {
+            nodeAux = (TNode) nodesIterator.next();
+            switch (nodeAux.getNodeType()) {
+                case TNode.SENDER: {
+                    nodeAux = (TSenderNode) nodeAux;
                     break;
                 }
                 case TNode.LER: {
-                    nodoAux = (TLERNode) nodoAux;
+                    nodeAux = (TLERNode) nodeAux;
                     break;
                 }
                 case TNode.LERA: {
-                    nodoAux = (TLERANode) nodoAux;
+                    nodeAux = (TLERANode) nodeAux;
                     break;
                 }
                 case TNode.LSR: {
-                    nodoAux = (TLSRNode) nodoAux;
+                    nodeAux = (TLSRNode) nodeAux;
                     break;
                 }
                 case TNode.LSRA: {
-                    nodoAux = (TLSRANode) nodoAux;
+                    nodeAux = (TLSRANode) nodeAux;
                     break;
                 }
-                case TNode.RECEPTOR: {
-                    nodoAux = (TReceiverNode) nodoAux;
+                case TNode.RECEIVER: {
+                    nodeAux = (TReceiverNode) nodeAux;
                     break;
                 }
             }
             try {
-                TTimerEvent evtReloj = new TTimerEvent(this, generadorIdentificadorLargo.getNextID(), i, s);
-                nodoAux.capturarEventoReloj(evtReloj);
-            } catch (EDesbordeDelIdentificador e) {
-                e.printStackTrace(); 
+                TTimerEvent timerEvent = new TTimerEvent(this, this.longIdentifierGenerator.getNextID(), startOfSimulationInterval, endOfSimulationInterval);
+                nodeAux.receiveTimerEvent(timerEvent);
+            } catch (EIdentifierGeneratorOverflow e) {
+                e.printStackTrace();
             }
         }
-        while (ite.hasNext()) {
-            enlaceAux = (TLink) ite.next();
-            switch (enlaceAux.getLinkType()) {
-                case TLink.EXTERNO: {
-                    enlaceAux = (TExternalLink) enlaceAux;
+        while (linksIterator.hasNext()) {
+            linkAux = (TLink) linksIterator.next();
+            switch (linkAux.getLinkType()) {
+                case TLink.EXTERNAL: {
+                    linkAux = (TExternalLink) linkAux;
                     break;
                 }
-                case TLink.INTERNO: {
-                    enlaceAux = (TInternalLink) enlaceAux;
+                case TLink.INTERNAL: {
+                    linkAux = (TInternalLink) linkAux;
                     break;
                 }
             }
             try {
-                enlaceAux.capturarEventoReloj(new TTimerEvent(this, generadorIdentificadorLargo.getNextID(), i, s));
-            } catch (EDesbordeDelIdentificador e) {
-                e.printStackTrace(); 
+                linkAux.receiveTimerEvent(new TTimerEvent(this, this.longIdentifierGenerator.getNextID(), startOfSimulationInterval, endOfSimulationInterval));
+            } catch (EIdentifierGeneratorOverflow e) {
+                e.printStackTrace();
             }
         }
     }
 
-    /** Este m�todo genera y remite un evento de progresi�n al suscriptor (solo uno) que
-     * lo est� esperando.
+    /**
+     * This method generates a new progress event an sends it to the only one
+     * listener that are subscribed to receive it.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     */    
-    public void lanzarEventoProgreso() {
-        int p=0;
-        long total = tLimite.getNanoseconds();
-        long actual = tActual.getNanoseconds();
-        if (total != 0)
-            p = (int) Math.round((actual*100) / total);
+     */
+    public void generateProgressEvent() {
+        int computedProgress = 0;
+        long simulationDuration = this.finishTimestamp.getNanoseconds();
+        long currentTime = this.currentTimestamp.getNanoseconds();
+        if (simulationDuration != 0) {
+            computedProgress = (int) Math.round((currentTime * 100) / simulationDuration);
+        }
         try {
-            if (suscriptorProgreso != null) {
-                suscriptorProgreso.capturarEventoProgreso(new TProgressEvent(this, generadorIdentificadorLargo.getNextID(), p));
+            if (this.progressEventListener != null) {
+                this.progressEventListener.receiveProgressEvent(new TProgressEvent(this, this.longIdentifierGenerator.getNextID(), computedProgress));
             }
-        } catch (EDesbordeDelIdentificador e) {
-            e.printStackTrace(); 
+        } catch (EIdentifierGeneratorOverflow e) {
+            e.printStackTrace();
         }
     }
 
     /**
-     * Este m�todo <B>sincronizado</B> reanuda la ejecuci�n del reloj una vez que ha sido
-     * detenida.
+     * This method restart the timer operation after it was previously paused.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     */    
-    public synchronized void reanudar() {
-        if (hilo == null) {
-            hilo = new Thread(this);
-            this.hilo.start();
+     */
+    public synchronized void restart() {
+        if (this.thread == null) {
+            this.thread = new Thread(this);
+            this.thread.start();
         } else {
-            if (!hilo.isAlive()) {
-                hilo = new Thread(this);
-                this.hilo.start();
+            if (!this.thread.isAlive()) {
+                this.thread = new Thread(this);
+                this.thread.start();
             }
         }
     }
-    
-    /** Este m�todo inicia la ejecuci�n del hilo del reloj. Se debe llamar para comenzar
-     * la cuenta y generaci�n de eventos. El m�todo est� <B>sincronizado</B>.
+
+    /**
+     * This method starts the timer operation and, therefore, the planned
+     * simulation will start. This method is a synchronized one.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     */    
-    public synchronized void iniciar() {
-        if (hilo == null) {
+     */
+    public synchronized void start() {
+        if (this.thread == null) {
             reset();
-            hilo = new Thread(this);
-            this.hilo.start();
+            this.thread = new Thread(this);
+            this.thread.start();
         } else {
-            if (!hilo.isAlive()) {
+            if (!this.thread.isAlive()) {
                 reset();
-                hilo = new Thread(this);
-                this.hilo.start();
+                this.thread = new Thread(this);
+                this.thread.start();
             }
         }
     }
 
     /**
-     * Este m�todo detiene la ejecuci�n del reloj y por tanto de la simulaci�n.
-     * @param p TRUE, indica que el reloj se  tiene que parar. FALSE indica que el reloj tiene
-     * que reanudar su ejecuci�n.
+     * This method will pause or continue/restart the operation of the timer
+     * and, therefore, the simulation itself.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param pause TRUE, if the timer has to be paused. FALSE if the timer has
+     * to be restarted.
      * @since 1.0
-     */    
-    public void ponerPausa(boolean p) {
-        if ((pausa) && (p)) {
-            // No hago nada. Ya estoy en pausa.
-        } else if ((pausa) && (!p)) {
-            tActual.ponerMarca(tActualAux);
-            tAnterior.ponerMarca(tAnteriorAux);
-            tLimite.ponerMarca(tLimiteAux);
-            pausa = p;
-            this.reanudar();
-        } else if ((!pausa) && (p)) {
-            tActualAux.ponerMarca(tActual);
-            tAnteriorAux.ponerMarca(tAnterior);
-            tLimiteAux.ponerMarca(tLimite);
-            pausa = p;
-            this.fin = true;
-        } else if ((!pausa) && (!p)) {
-            // No hago nada. Ya estoy funcionando.
+     */
+    public void setPaused(boolean pause) {
+        if ((this.paused) && (pause)) {
+            // Do nothing. The timer is already paused.
+        } else if ((this.paused) && (!pause)) {
+            this.currentTimestamp.setTimestamp(this.currentTimestampAux);
+            this.previousTimestamp.setTimestamp(this.previousTimestampAux);
+            this.finishTimestamp.setTimestamp(this.finishTimestampAux);
+            this.paused = pause;
+            restart();
+        } else if ((!this.paused) && (pause)) {
+            this.currentTimestampAux.setTimestamp(this.currentTimestamp);
+            this.previousTimestampAux.setTimestamp(this.previousTimestamp);
+            this.finishTimestampAux.setTimestamp(this.finishTimestamp);
+            this.paused = pause;
+            this.isFinished = true;
+        } else if ((!this.paused) && (!pause)) {
+            // Do nothing. The timer is already running.
         }
     }
-    
+
     /**
-     * Este m�todo comprueba si actualmente el reloj est� en pausa o no.
+     * This method checks whether the timer is currently running or paused.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     * @return TRUE, indica que el reloj est� en pausa. FALSE indica lo contrario.
-     */    
-    public boolean obtenerPausa() {
-        return pausa;
+     * @return TRUE, if the timmer is currently paused. Otherwise, return FALSE.
+     */
+    public boolean isPaused() {
+        return this.paused;
     }
-    
-    /** Si el hilo del reloj est� activo y funcionando, este m�todo es el que se ejecuta
-     * ciclicamente. B�sicamente se van contando el tiempo en pasos hasta llegar al
-     * l�mite impuesto y en cada uno de los pasos se generan los eventos de reloj y de
-     * progresi�n que son necesarios.
+
+    /**
+     * If the thread of this timer is alive and operative, this method will
+     * simulate and synchronize all topology elements continuously. This method
+     * orchestrate everything by sending timer events to al elements an wait
+     * until they finishing using this event to simulate whatever.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     */    
+     */
     public void run() {
-        enFuncionamiento = true;
-        long totalActual;
-        long totalAnterior;
-        long totalLimite;
-        boolean ultimoPasoDado = false;
-        fin = false;
-        tActual.sumarNanosegundo(paso);
-        totalActual = tActual.getNanoseconds();
-        totalLimite = tLimite.getNanoseconds();
-        if (totalActual == totalLimite) {
-            ultimoPasoDado = true;
+        this.running = true;
+        long currentSimulatedTime;
+        long previousSimulatedTime;
+        long simulationDuration;
+        boolean simulationFinished = false;
+        this.isFinished = false;
+        this.currentTimestamp.increaseNanosecond(this.tick);
+        currentSimulatedTime = this.currentTimestamp.getNanoseconds();
+        simulationDuration = this.finishTimestamp.getNanoseconds();
+        if (currentSimulatedTime == simulationDuration) {
+            simulationFinished = true;
         }
-        while ((tActual.comparar(tLimite) != TTimestamp.ARGUMENT_IS_LOWER) && (!fin)) {
-            // Acciones a llevar a cabo
-            lanzarEventoProgreso();
-            lanzarEventoReloj();
-            // Acciones a llevar a cabo
-            tAnterior.ponerMilisegundo(tActual.getMillisecond());
-            tAnterior.ponerNanosegundo(tActual.getNanosecond());
-            totalActual = tActual.getNanoseconds();
-            totalLimite = tLimite.getNanoseconds();
-            if (totalActual+paso > totalLimite) {
-                if (!ultimoPasoDado) {
-                    tActual.ponerMilisegundo(tLimite.getMillisecond());
-                    tActual.ponerNanosegundo(tLimite.getNanosecond());
-                    ultimoPasoDado = true;
+        while ((this.currentTimestamp.compare(this.finishTimestamp) != TTimestamp.ARGUMENT_IS_LOWER) && (!this.isFinished)) {
+            // Let's simulate
+            generateProgressEvent();
+            generateTimerEvent();
+            // ------------------
+            this.previousTimestamp.setMillisecond(this.currentTimestamp.getMillisecond());
+            this.previousTimestamp.setNanosecond(this.currentTimestamp.getNanosecond());
+            currentSimulatedTime = this.currentTimestamp.getNanoseconds();
+            simulationDuration = this.finishTimestamp.getNanoseconds();
+            if (currentSimulatedTime + this.tick > simulationDuration) {
+                if (!simulationFinished) {
+                    currentTimestamp.setMillisecond(this.finishTimestamp.getMillisecond());
+                    currentTimestamp.setNanosecond(this.finishTimestamp.getNanosecond());
+                    simulationFinished = true;
                 } else {
-                    tActual.sumarNanosegundo(paso);
+                    this.currentTimestamp.increaseNanosecond(this.tick);
                 }
             } else {
-                tActual.sumarNanosegundo(paso);
+                this.currentTimestamp.increaseNanosecond(this.tick);
             }
-            totalActual = tActual.getNanoseconds();
-            totalAnterior = tAnterior.getNanoseconds();
-            if (totalAnterior == totalActual) {
-                fin = true;
+            currentSimulatedTime = this.currentTimestamp.getNanoseconds();
+            previousSimulatedTime = this.previousTimestamp.getNanoseconds();
+            if (previousSimulatedTime == currentSimulatedTime) {
+                this.isFinished = true;
             }
-            esperarSuscriptoresReloj();
+            waitUntilTimerEventListenersFinishTheirWork();
         }
-        enFuncionamiento = false;
+        this.running = false;
     }
 
-    /** Este m�todo espera a que todos los suscriptores de eventos de reloj a los que se
-     * ha remitido un evento lo hayan consumido. As� se puede sincronizar y no enviar
-     * m�s eventos hasta que hayan finalizado con el anterior. El m�todo est�
-     * <B>sincronizado</B>.
+    /**
+     * This method wait until all element that received a timer event have
+     * consumed them. This is the way to synchronize al topology elements
+     * between timer events. This method is a synchronized one.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     */    
-    private synchronized void esperarSuscriptoresReloj() {
-        Iterator itn = nodosSuscriptores.iterator();
-        Iterator ite = enlacesSuscriptores.iterator();
-        TNode nodo;
-        TLink enlace;
-        while (itn.hasNext()) {
-            nodo = (TNode) itn.next();
-            nodo.esperarFinalizacion();
+     */
+    private synchronized void waitUntilTimerEventListenersFinishTheirWork() {
+        Iterator nodesIterator = this.timerEventListenerNodes.iterator();
+        Iterator linksIterator = this.timerEventListenerLInks.iterator();
+        TNode nodeAux;
+        TLink linkAux;
+        while (nodesIterator.hasNext()) {
+            nodeAux = (TNode) nodesIterator.next();
+            nodeAux.waitForCompletion();
         }
-        while (ite.hasNext()) {
-            enlace = (TLink) ite.next();
-            enlace.esperarFinalizacion();
+        while (linksIterator.hasNext()) {
+            linkAux = (TLink) linksIterator.next();
+            linkAux.waitForCompletion();
         }
     }
 
-    /** Este m�todo permite a cualquier objeto del simulador detectar y esperar a que el
-     * reloj haya finalizado su ejecuci�n antes de hacer una operaci�n. El m�todo est�
-     * <B>sincronizado</B>.
+    /**
+     * This method is used by any simulator object to wait for the timer finish
+     * before doing a new operation. This method is a synchronized one.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     */    
-    public synchronized void esperarFinalizacion() {
-        if (hilo != null) {
+     */
+    public synchronized void waitForCompletion() {
+        if (this.thread != null) {
             try {
-                this.hilo.join();
+                this.thread.join();
             } catch (Exception e) {
                 System.out.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TReloj.ErrorAlEsperarFinalizacionDelReloj") + e.toString());
             };
         }
     }
 
-    /** Este m�todo permite saber si en un momento dado el reloj est� activo, esto es,
-     * contando y generando eventos de reloj y simulaci�n, o por el contrario est�
-     * detenido.
-     * @return TRUE, si el reloj est� funcionando. FALSE si el reloj est� parado.
+    /**
+     * This method check whether the timer is running (and therefore, generating
+     * events) or not.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TRUE, if the timer is running. Otherwise, return FALSE.
      * @since 1.0
-     */    
-    public boolean estaEnFuncionamiento() {
-        return enFuncionamiento;
+     */
+    public boolean isRunning() {
+        return this.running;
     }
 
-    /** Este atributo contiene el conjunto de nodos que est�n suscritos para recibir los
-     * eventos de reloj que se vayan produciendo.
-     * @since 1.0
-     */    
-    private TreeSet nodosSuscriptores;
-    /** Este atributo contiene el conjunto de enlaces que est�n suscritos para recibir los
-     * eventos de reloj que se vayan produciendo.
-     * @since 1.0
-     */    
-    private TreeSet enlacesSuscriptores;
-    /** Este atributo es el actualizador de progreso que est� a la espera de los eventos
-     * de progresi�n que genere esta instancia.
-     * @since 1.0
-     */    
-    private TActualizadorDeProgreso suscriptorProgreso;
-    /** Este atributo es el generador de identificadores largos que se usar� para
-     * asignar a cada evento generado un identificador distinto.
-     * @since 1.0
-     */    
-    private TIdentificadorLargo generadorIdentificadorLargo;
-    /** Este atributo indica cada cuanto tiempo se debe generar un evento de reloj y de
-     * progresi�n.
-     */    
-    private int paso;
-    /** Este atributo es el hilo sobre el que correr� la instancia de TTimer.
-     * @since 1.0
-     */    
-    private Thread hilo;    
-    /** Este atributo almacena el l�mite superior que se usar� en el siguiente evento
-     * de reloj que se genere.
-     * @since 1.0
-     */    
-    private TTimestamp tActual;
-    /** Este atributo almacena el l�mite inferior que se usar� en el siguiente evento
-     * de reloj que se genere.
-     * @since 1.0
-     */    
-    private TTimestamp tAnterior;
-    /** Este atributo almacena el l�mite superior de la simulaci�n. Todas las
-     * simulaciones comienzan en tiempo t=0 y acaban en el instante que indica este
-     * atributo.
-     * @since 1.0
-     */    
-    private TTimestamp tLimite;
-    /** Este atributo indicar� si el reloj (esta instancia) est� en proceso de ejecuci�n
-     * y, por tanto, generando eventos, o si por el contrario est� parado.
-     * @since 1.0
-     */    
-    private boolean enFuncionamiento;
-
-    private boolean fin;
-    private boolean pausa;
-    
-    private TTimestamp tActualAux;
-    private TTimestamp tAnteriorAux;
-    private TTimestamp tLimiteAux;
+    private TreeSet timerEventListenerNodes;
+    private TreeSet timerEventListenerLInks;
+    private TProgressEventListener progressEventListener;
+    private TLongIdentifier longIdentifierGenerator;
+    private int tick;
+    private Thread thread;
+    private TTimestamp currentTimestamp;
+    private TTimestamp previousTimestamp;
+    private TTimestamp finishTimestamp;
+    private boolean running;
+    private boolean isFinished;
+    private boolean paused;
+    private TTimestamp currentTimestampAux;
+    private TTimestamp previousTimestampAux;
+    private TTimestamp finishTimestampAux;
 }

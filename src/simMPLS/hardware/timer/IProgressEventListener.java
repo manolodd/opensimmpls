@@ -34,5 +34,5 @@ public interface IProgressEventListener extends EventListener {
      * @since 1.0
      * @param progressEvent The progress event received.
      */ 
-    public void capturarEventoProgreso(TProgressEvent progressEvent);
+    public void receiveProgressEvent(TProgressEvent progressEvent);
 }

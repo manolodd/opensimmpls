@@ -36,9 +36,9 @@ import simMPLS.hardware.dmgp.TGPSRPRequestsMatrix;
 import simMPLS.hardware.dmgp.TGPSRPRequestEntry;
 import simMPLS.hardware.ports.TPort;
 import simMPLS.hardware.ports.TPortSet;
-import simMPLS.utils.EDesbordeDelIdentificador;
+import simMPLS.utils.EIdentifierGeneratorOverflow;
 import simMPLS.utils.TIdentificador;
-import simMPLS.utils.TIdentificadorLargo;
+import simMPLS.utils.TLongIdentifier;
 import java.awt.*;
 import java.util.*;
 import org.jfree.chart.*;
@@ -65,11 +65,11 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
      * comprobaciones, calcular rutas, etc�tera.
      * @since 1.0
      */
-    public TLERANode(int identificador, String d, TIdentificadorLargo il, TTopology t) {
+    public TLERANode(int identificador, String d, TLongIdentifier il, TTopology t) {
         super(identificador, d, il, t);
         this.ponerPuertos(super.NUM_PUERTOS_LERA);
         matrizConmutacion = new TSwitchingMatrix();
-        gIdent = new TIdentificadorLargo();
+        gIdent = new TLongIdentifier();
         gIdentLDP = new TIdentificador();
         potenciaEnMb = 512;
         dmgp = new TDMGP();
@@ -203,7 +203,7 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
      * @return LER. Indica que el nodo es de este tipo.
      * @since 1.0
      */    
-    public int obtenerTipo() {
+    public int getNodeType() {
         return super.LERA;
     }
 
@@ -214,7 +214,7 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
      * @param evt Evento de reloj que sincroniza la ejecuci�n de los elementos de la topologia.
      * @since 1.0
      */    
-    public void capturarEventoReloj(TTimerEvent evt) {
+    public void receiveTimerEvent(TTimerEvent evt) {
         this.ponerDuracionTic(evt.getStepDuration());
         this.ponerInstanteDeTiempo(evt.getUpperLimit());
         if (this.obtenerPuertos().isAnyPacketToRoute()) {
@@ -289,7 +289,7 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
                             if ((et.linkIsBroken()) && (emc.obtenerEtiqueta() != TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA)) {
                                 puertoEntrada = this.puertos.getPort(emc.obtenerPuertoEntrada());
                                 et = puertoEntrada.getLink();
-                                if (et.getLinkType() == TLink.INTERNO) {
+                                if (et.getLinkType() == TLink.INTERNAL) {
                                     eliminarTLDP(emc, emc.obtenerPuertoEntrada());
                                 } else {
                                     eliminar = true;
@@ -307,7 +307,7 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
                             if ((et.linkIsBroken()) && (emc.obtenerEtiqueta() != TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA)) {
                                 puertoSalida = this.puertos.getPort(emc.obtenerPuertoSalida());
                                 et = puertoSalida.getLink();
-                                if (et.getLinkType() == TLink.INTERNO) {
+                                if (et.getLinkType() == TLink.INTERNAL) {
                                     eliminarTLDP(emc, emc.obtenerPuertoSalida());
                                 } else {
                                     eliminar = false;
@@ -322,10 +322,10 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
                     if (et.linkIsBroken() && et2.linkIsBroken()) {
                         eliminar = true;
                     }
-                    if (et.linkIsBroken() && (et2.getLinkType() == TLink.EXTERNO)) {
+                    if (et.linkIsBroken() && (et2.getLinkType() == TLink.EXTERNAL)) {
                         eliminar = true;
                     }
-                    if ((et.getLinkType() == TLink.EXTERNO) && et2.linkIsBroken()) {
+                    if ((et.getLinkType() == TLink.EXTERNAL) && et2.linkIsBroken()) {
                         eliminar = true;
                     }
                 } else {
@@ -1244,7 +1244,7 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
                             TPort pSalida = puertos.getPort(emc.obtenerPuertoSalida());
                             if (pSalida != null) {
                                 TLink et = pSalida.getLink();
-                                if (et.getLinkType() == TLink.INTERNO) {
+                                if (et.getLinkType() == TLink.INTERNAL) {
                                     TInternalLink ei = (TInternalLink) et;
                                     if (emc.obtenerEntranteEsLSPDEBackup()) {
                                         ei.quitarLSPDeBackup();
@@ -1263,7 +1263,7 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
                                 TPort pSalida = puertos.getPort(emc.obtenerPuertoSalidaBackup());
                                 if (pSalida != null) {
                                     TLink et = pSalida.getLink();
-                                    if (et.getLinkType() == TLink.INTERNO) {
+                                    if (et.getLinkType() == TLink.INTERNAL) {
                                         TInternalLink ei = (TInternalLink) et;
                                         ei.quitarLSPDeBackup();
                                     }
@@ -1276,7 +1276,7 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
                         TPort pSalida = puertos.getPort(pEntrada);
                         if (pSalida != null) {
                             TLink et = pSalida.getLink();
-                            if (et.getLinkType() == TLink.INTERNO) {
+                            if (et.getLinkType() == TLink.INTERNAL) {
                                 TInternalLink ei = (TInternalLink) et;
                                 if (emc.obtenerEntranteEsLSPDEBackup()) {
                                     ei.quitarLSPDeBackup();
@@ -1305,7 +1305,7 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
                 } else if (etiquetaActual == TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA) {
                     TPort pSalida = puertos.getPort(pEntrada);
                     TLink et = pSalida.getLink();
-                    if (et.getLinkType() == TLink.INTERNO) {
+                    if (et.getLinkType() == TLink.INTERNAL) {
                         TInternalLink ei = (TInternalLink) et;
                         if (emc.obtenerEntranteEsLSPDEBackup()) {
                             ei.quitarLSPDeBackup();
@@ -1336,7 +1336,7 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
                 } else if (etiquetaActual == TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA) {
                     TPort pSalida = puertos.getPort(pEntrada);
                     TLink et = pSalida.getLink();
-                    if (et.getLinkType() == TLink.INTERNO) {
+                    if (et.getLinkType() == TLink.INTERNAL) {
                         TInternalLink ei = (TInternalLink) et;
                         if (emc.obtenerEntranteEsLSPDEBackup()) {
                             ei.quitarLSPDeBackup();
@@ -1756,8 +1756,8 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
         String IPSalto = topologia.obtenerIPSaltoRABAN(this.getIPAddress(), IPDestinoFinal);
         if (IPSalto != null) {
             TPort puertoSalida = puertos.getPortWhereIsConectedANodeHavingIP(IPSalto);
-            int enlaceOrigen = TLink.EXTERNO;
-            int enlaceDestino = TLink.INTERNO;
+            int enlaceOrigen = TLink.EXTERNAL;
+            int enlaceDestino = TLink.INTERNAL;
             emc = new TSwitchingMatrixEntry();
             emc.ponerIDLDPAntecesor(IdTLDPAntecesor);
             emc.ponerDestinoFinal(IPDestinoFinal);
@@ -1776,16 +1776,16 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
             if (puertoSalida != null) {
                 enlaceDestino = puertoSalida.getLink().getLinkType();
             }
-            if ((enlaceOrigen == TLink.EXTERNO) && (enlaceDestino == TLink.EXTERNO)) {
+            if ((enlaceOrigen == TLink.EXTERNAL) && (enlaceDestino == TLink.EXTERNAL)) {
                 emc.ponerTipo(TSwitchingMatrixEntry.FEC);
                 emc.ponerOperacion(TSwitchingMatrixEntry.NOOP);
-            } else if ((enlaceOrigen == TLink.EXTERNO) && (enlaceDestino == TLink.INTERNO)) {
+            } else if ((enlaceOrigen == TLink.EXTERNAL) && (enlaceDestino == TLink.INTERNAL)) {
                 emc.ponerTipo(TSwitchingMatrixEntry.FEC);
                 emc.ponerOperacion(TSwitchingMatrixEntry.PONER_ETIQUETA);
-            } else if ((enlaceOrigen == TLink.INTERNO) && (enlaceDestino == TLink.EXTERNO)) {
+            } else if ((enlaceOrigen == TLink.INTERNAL) && (enlaceDestino == TLink.EXTERNAL)) {
                 emc.ponerTipo(TSwitchingMatrixEntry.LABEL);
                 emc.ponerOperacion(TSwitchingMatrixEntry.QUITAR_ETIQUETA);
-            } else if ((enlaceOrigen == TLink.INTERNO) && (enlaceDestino == TLink.INTERNO)) {
+            } else if ((enlaceOrigen == TLink.INTERNAL) && (enlaceDestino == TLink.INTERNAL)) {
                 emc.ponerTipo(TSwitchingMatrixEntry.LABEL);
                 emc.ponerOperacion(TSwitchingMatrixEntry.CAMBIAR_ETIQUETA);
             }
@@ -1820,8 +1820,8 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
         if (IPSalida != null) {
             TPort puertoEntrada = puertos.getPort(pEntrada);
             TPort puertoSalida = puertos.getPortWhereIsConectedANodeHavingIP(IPSalida);
-            int enlaceOrigen = TLink.EXTERNO;
-            int enlaceDestino = TLink.INTERNO;
+            int enlaceOrigen = TLink.EXTERNAL;
+            int enlaceDestino = TLink.INTERNAL;
             emc = new TSwitchingMatrixEntry();
             emc.ponerIDLDPAntecesor(TSwitchingMatrixEntry.SIN_DEFINIR);
             emc.ponerDestinoFinal(IPDestinoFinal);
@@ -1838,15 +1838,15 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
             if (puertoEntrada != null) {
                 enlaceOrigen = puertoEntrada.getLink().getLinkType();
             }
-            if ((enlaceOrigen == TLink.EXTERNO) && (enlaceDestino == TLink.EXTERNO)) {
+            if ((enlaceOrigen == TLink.EXTERNAL) && (enlaceDestino == TLink.EXTERNAL)) {
                 emc.ponerTipo(TSwitchingMatrixEntry.FEC);
                 emc.ponerOperacion(TSwitchingMatrixEntry.NOOP);
-            } else if ((enlaceOrigen == TLink.EXTERNO) && (enlaceDestino == TLink.INTERNO)) {
+            } else if ((enlaceOrigen == TLink.EXTERNAL) && (enlaceDestino == TLink.INTERNAL)) {
                 emc.ponerTipo(TSwitchingMatrixEntry.FEC);
                 emc.ponerOperacion(TSwitchingMatrixEntry.PONER_ETIQUETA);
-            } else if ((enlaceOrigen == TLink.INTERNO) && (enlaceDestino == TLink.EXTERNO)) {
+            } else if ((enlaceOrigen == TLink.INTERNAL) && (enlaceDestino == TLink.EXTERNAL)) {
                 // No es posible
-            } else if ((enlaceOrigen == TLink.INTERNO) && (enlaceDestino == TLink.INTERNO)) {
+            } else if ((enlaceOrigen == TLink.INTERNAL) && (enlaceDestino == TLink.INTERNAL)) {
                 // No es posible
             }
             if (soyLERDeSalida(IPDestinoFinal)) {
@@ -1880,8 +1880,8 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
         if (IPSalida != null) {
             TPort puertoEntrada = puertos.getPort(pEntrada);
             TPort puertoSalida = puertos.getPortWhereIsConectedANodeHavingIP(IPSalida);
-            int enlaceOrigen = TLink.EXTERNO;
-            int enlaceDestino = TLink.INTERNO;
+            int enlaceOrigen = TLink.EXTERNAL;
+            int enlaceDestino = TLink.INTERNAL;
             emc = new TSwitchingMatrixEntry();
             emc.ponerIDLDPAntecesor(TSwitchingMatrixEntry.SIN_DEFINIR);
             emc.ponerDestinoFinal(IPDestinoFinal);
@@ -1898,16 +1898,16 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
             if (puertoEntrada != null) {
                 enlaceOrigen = puertoEntrada.getLink().getLinkType();
             }
-            if ((enlaceOrigen == TLink.EXTERNO) && (enlaceDestino == TLink.EXTERNO)) {
+            if ((enlaceOrigen == TLink.EXTERNAL) && (enlaceDestino == TLink.EXTERNAL)) {
                 emc.ponerTipo(TSwitchingMatrixEntry.LABEL);
                 emc.ponerOperacion(TSwitchingMatrixEntry.NOOP);
-            } else if ((enlaceOrigen == TLink.EXTERNO) && (enlaceDestino == TLink.INTERNO)) {
+            } else if ((enlaceOrigen == TLink.EXTERNAL) && (enlaceDestino == TLink.INTERNAL)) {
                 emc.ponerTipo(TSwitchingMatrixEntry.LABEL);
                 emc.ponerOperacion(TSwitchingMatrixEntry.PONER_ETIQUETA);
-            } else if ((enlaceOrigen == TLink.INTERNO) && (enlaceDestino == TLink.EXTERNO)) {
+            } else if ((enlaceOrigen == TLink.INTERNAL) && (enlaceDestino == TLink.EXTERNAL)) {
                 emc.ponerTipo(TSwitchingMatrixEntry.LABEL);
                 emc.ponerOperacion(TSwitchingMatrixEntry.QUITAR_ETIQUETA);
-            } else if ((enlaceOrigen == TLink.INTERNO) && (enlaceDestino == TLink.INTERNO)) {
+            } else if ((enlaceOrigen == TLink.INTERNAL) && (enlaceDestino == TLink.INTERNAL)) {
                 emc.ponerTipo(TSwitchingMatrixEntry.LABEL);
                 emc.ponerOperacion(TSwitchingMatrixEntry.CAMBIAR_ETIQUETA);
             }
@@ -1941,7 +1941,7 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
         TPDUMPLS paqueteMPLS = null;
         try {
             paqueteMPLS = new TPDUMPLS(gIdent.getNextID(), paqueteIPv4.getHeader().obtenerIPOrigen(), paqueteIPv4.getHeader().obtenerIPDestino(), paqueteIPv4.getSize());
-        } catch (EDesbordeDelIdentificador e) {
+        } catch (EIdentifierGeneratorOverflow e) {
             e.printStackTrace(); 
         }
         paqueteMPLS.ponerCabecera(paqueteIPv4.getHeader());
@@ -1980,7 +1980,7 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
         TPDUIPv4 paqueteIPv4 = null;
         try {
             paqueteIPv4 = new TPDUIPv4(gIdent.getNextID(), paqueteMPLS.getHeader().obtenerIPOrigen(), paqueteMPLS.getHeader().obtenerIPDestino(), paqueteMPLS.obtenerDatosTCP().obtenerTamanio());
-        } catch (EDesbordeDelIdentificador e) {
+        } catch (EIdentifierGeneratorOverflow e) {
             e.printStackTrace(); 
         }
         paqueteIPv4.ponerCabecera(paqueteMPLS.getHeader());
@@ -2012,7 +2012,7 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
         if (paquete.getType() == TPDU.IPV4)
             return true;
         TPort pe = puertos.getPort(pEntrada);
-        if (pe.getLink().getLinkType() == TLink.EXTERNO)
+        if (pe.getLink().getLinkType() == TLink.EXTERNAL)
             return true;
         return false;
     }
@@ -2094,7 +2094,7 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
     public boolean soyLERDeSalida(String ip) {
         TPort p = puertos.getPortWhereIsConectedANodeHavingIP(ip);
         if (p != null)
-            if (p.getLink().getLinkType() == TLink.EXTERNO)
+            if (p.getLink().getLinkType() == TLink.EXTERNAL)
                 return true;
         return false;
     }
@@ -2174,7 +2174,7 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
      */    
     public String serializar() {
         String cadena = "#LERA#";
-        cadena += this.obtenerIdentificador();
+        cadena += this.getID();
         cadena += "#";
         cadena += this.obtenerNombre().replace('#', ' ');
         cadena += "#";
@@ -2270,7 +2270,7 @@ public class TLERANode extends TNode implements ITimerEventListener, Runnable {
     public static final int SOLO_ESPACIOS = 3;    
     
     private TSwitchingMatrix matrizConmutacion;
-    private TIdentificadorLargo gIdent;
+    private TLongIdentifier gIdent;
     private TIdentificador gIdentLDP;
     private int potenciaEnMb;
     private TDMGP dmgp;

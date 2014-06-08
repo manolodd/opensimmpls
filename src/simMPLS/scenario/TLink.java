@@ -21,7 +21,7 @@ import simMPLS.hardware.timer.TTimerEvent;
 import simMPLS.hardware.timer.ITimerEventListener;
 import simMPLS.hardware.ports.TPortSet;
 import simMPLS.utils.TMonitor;
-import simMPLS.utils.TIdentificadorLargo;
+import simMPLS.utils.TLongIdentifier;
 import java.awt.*;
 import java.util.*;
 import org.jfree.data.*;
@@ -44,8 +44,8 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @param t Topolog�a a la que pertenece el enlace.
      * @since 1.0
      */
-    public TLink(int identificador, TIdentificadorLargo il, TTopology t) {
-        super(TTopologyElement.ENLACE, il);
+    public TLink(int identificador, TLongIdentifier il, TTopology t) {
+        super(TTopologyElement.LINK, il);
         id = identificador;
         extremo1 = null;
         extremo2 = null;
@@ -81,9 +81,9 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      */
     public int compareTo(Object o) {
         TLink e = (TLink) o;
-        if (obtenerIdentificador() < e.obtenerIdentificador())
+        if (getID() < e.getID())
             return -1;
-        else if (obtenerIdentificador() == e.obtenerIdentificador())
+        else if (getID() == e.getID())
             return 0;
         return 1;
     }
@@ -245,7 +245,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return Identificador unico del enlace.
      * @since 1.0
      */
-    public int obtenerIdentificador() {
+    public int getID() {
         return id;
     }
     
@@ -388,9 +388,9 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @since 1.0
      */
     public boolean conectadoA(TNode extremo) {
-        if (extremo1.obtenerIdentificador() == extremo.obtenerIdentificador())
+        if (extremo1.getID() == extremo.getID())
             return true;
-        if (extremo2.obtenerIdentificador() == extremo.obtenerIdentificador())
+        if (extremo2.getID() == extremo.getID())
             return true;
         return false;
     }
@@ -402,9 +402,9 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @since 1.0
      */
     public boolean conectadoA(int idExtremo) {
-        if (extremo1.obtenerIdentificador() == idExtremo)
+        if (extremo1.getID() == idExtremo)
             return true;
-        if (extremo2.obtenerIdentificador() == idExtremo)
+        if (extremo2.getID() == idExtremo)
             return true;
         return false;
     }
@@ -486,7 +486,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @since 1.0
      */
     public int queExtremoSoyYo(TNode n) {
-        if (n.obtenerIdentificador() == extremo1.obtenerIdentificador())
+        if (n.getID() == extremo1.getID())
             return TLink.END_NODE_1;
         return TLink.END_NODE_2;
     }
@@ -499,7 +499,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @since 1.0
      */
     public int getTargetNodeIDOfTrafficSentBy(TNode n) {
-        if (n.obtenerIdentificador() == extremo1.obtenerIdentificador())
+        if (n.getID() == extremo1.getID())
             return TLink.END_NODE_2;
         return TLink.END_NODE_1;
     }
@@ -515,7 +515,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @param evt Evento de reloj.
      * @since 1.0
      */
-    public abstract void capturarEventoReloj(TTimerEvent evt);
+    public abstract void receiveTimerEvent(TTimerEvent evt);
     /**
      * N�cleo del enlace. Aqu� se codificar� (en las subclases) toda la funcionalidad.
      * @since 1.0
@@ -580,12 +580,12 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * Esta constante identifica a un enlace interno al dominio MPLS.
      * @since 1.0
      */
-    public static final int INTERNO = 0;
+    public static final int INTERNAL = 0;
     /**
      * Est� constante identifica a un enlace externo al dominio MPLS.
      * @since 1.0
      */
-    public static final int EXTERNO = 1;
+    public static final int EXTERNAL = 1;
     
     /**
      * Esta constante se usa para identificar el extremo inicial del enlace.

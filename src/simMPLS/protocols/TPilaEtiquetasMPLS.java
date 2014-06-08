@@ -16,7 +16,7 @@
  */
 package simMPLS.protocols;
 
-import simMPLS.utils.EDesbordeDelIdentificador;
+import simMPLS.utils.EIdentifierGeneratorOverflow;
 import simMPLS.utils.TIdentificador;
 import java.util.*;
 
@@ -51,7 +51,7 @@ public class TPilaEtiquetasMPLS {
     public void ponerEtiqueta(TEtiquetaMPLS etiqueta) {
         try {
             etiqueta.ponerIdentificador(generaID.obtenerNuevo());
-        } catch (EDesbordeDelIdentificador e) {
+        } catch (EIdentifierGeneratorOverflow e) {
             e.printStackTrace();
         }
         pila.addLast(etiqueta);
@@ -83,7 +83,7 @@ public class TPilaEtiquetasMPLS {
         this.borrarEtiqueta();
         try {
             etiqueta.ponerIdentificador(generaID.obtenerNuevo());
-        } catch (EDesbordeDelIdentificador e) {
+        } catch (EIdentifierGeneratorOverflow e) {
             e.printStackTrace();
         }
         pila.addLast(etiqueta);

@@ -25,8 +25,8 @@ import simMPLS.hardware.timer.ITimerEventListener;
 import simMPLS.hardware.ports.TFIFOPortSet;
 import simMPLS.hardware.ports.TPort;
 import simMPLS.hardware.ports.TPortSet;
-import simMPLS.utils.EDesbordeDelIdentificador;
-import simMPLS.utils.TIdentificadorLargo;
+import simMPLS.utils.EIdentifierGeneratorOverflow;
+import simMPLS.utils.TLongIdentifier;
 import simMPLS.utils.TRotaryIDGenerator;
 import java.awt.*;
 import java.util.*;
@@ -47,10 +47,10 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @param t Topolog�a dentro de la cual se encuentra el nodo.
      * @since 1.0
      */
-    public TSenderNode(int identificador, String d, TIdentificadorLargo il, TTopology t) {
+    public TSenderNode(int identificador, String d, TLongIdentifier il, TTopology t) {
         super(identificador, d, il, t);
         this.ponerPuertos(super.NUM_PUERTOS_EMISOR);
-        gIdent = new TIdentificadorLargo();
+        gIdent = new TLongIdentifier();
         gIdGoS = new TRotaryIDGenerator();
         String IPDestino = "";
         tasaTransferencia = 10;
@@ -231,11 +231,11 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     
     /**
      * Este m�todo permite obtener el tipo de nodo del que se trata esta instancia.
-     * @return TNode.EMISOR, indicando que es un generador y emisor de tr�fico.
+     * @return TNode.SENDER, indicando que es un generador y emisor de tr�fico.
      * @since 1.0
      */
-    public int obtenerTipo() {
-        return super.EMISOR;
+    public int getNodeType() {
+        return super.SENDER;
     }
     
     /**
@@ -244,7 +244,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @param evt Evento de sincronizaci�n enviado por el reloj principal.
      * @since 1.0
      */
-    public void capturarEventoReloj(TTimerEvent evt) {
+    public void receiveTimerEvent(TTimerEvent evt) {
         this.ponerDuracionTic(evt.getStepDuration());
         this.ponerInstanteDeTiempo(evt.getUpperLimit());
         this.nsDisponibles += evt.getStepDuration();
@@ -576,7 +576,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                     return paquete;
                 }
             }
-        } catch (EDesbordeDelIdentificador e) {
+        } catch (EIdentifierGeneratorOverflow e) {
             e.printStackTrace(); 
         }
         return null;
@@ -702,7 +702,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      */    
     public String serializar() {
         String cadena = "#Emisor#";
-        cadena += this.obtenerIdentificador();
+        cadena += this.getID();
         cadena += "#";
         cadena += this.obtenerNombre().replace('#', ' ');
         cadena += "#";
@@ -822,7 +822,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     private int tamDatosConstante;
     private int tamDatosVariable;
 
-    private TIdentificadorLargo gIdent;
+    private TLongIdentifier gIdent;
     
     /**
      * Este atributo almacenar� las estad�sticas del nodo.

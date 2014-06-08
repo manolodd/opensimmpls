@@ -335,16 +335,16 @@ private void clicEnCambioNodoIzquierdo(java.awt.event.ActionEvent evt) {//GEN-FI
                 nt = (TNode) it.next();
                 if (!nt.obtenerNombre().equals(seleccionado.obtenerNombre())) {
                     if (nt.tienePuertosLibres()) {
-                        if (!topo.existeEnlace(nt.obtenerIdentificador(), seleccionado.obtenerIdentificador())) {
-                            switch (seleccionado.obtenerTipo()) {
-                                case TNode.EMISOR: {
-                                    if ((nt.obtenerTipo() == TNode.LER) || (nt.obtenerTipo() == TNode.LERA)) {
+                        if (!topo.existeEnlace(nt.getID(), seleccionado.getID())) {
+                            switch (seleccionado.getNodeType()) {
+                                case TNode.SENDER: {
+                                    if ((nt.getNodeType() == TNode.LER) || (nt.getNodeType() == TNode.LERA)) {
                                         selectorExtremoDerecho.addItem(nt.obtenerNombre());
                                     }
                                     break;
                                 }
-                                case TNode.RECEPTOR: {
-                                    if ((nt.obtenerTipo() == TNode.LER) || (nt.obtenerTipo() == TNode.LERA)) {
+                                case TNode.RECEIVER: {
+                                    if ((nt.getNodeType() == TNode.LER) || (nt.getNodeType() == TNode.LERA)) {
                                         selectorExtremoDerecho.addItem(nt.obtenerNombre());
                                     }
                                     break;
@@ -358,15 +358,15 @@ private void clicEnCambioNodoIzquierdo(java.awt.event.ActionEvent evt) {//GEN-FI
                                     break;
                                 }
                                 case TNode.LSR: {
-                                    if ((nt.obtenerTipo() == TNode.LER) || (nt.obtenerTipo() == TNode.LERA)
-                                       || (nt.obtenerTipo() == TNode.LSR) || (nt.obtenerTipo() == TNode.LSRA)) {
+                                    if ((nt.getNodeType() == TNode.LER) || (nt.getNodeType() == TNode.LERA)
+                                       || (nt.getNodeType() == TNode.LSR) || (nt.getNodeType() == TNode.LSRA)) {
                                         selectorExtremoDerecho.addItem(nt.obtenerNombre());
                                     }
                                     break;
                                 }
                                 case TNode.LSRA: {
-                                    if ((nt.obtenerTipo() == TNode.LER) || (nt.obtenerTipo() == TNode.LERA)
-                                       || (nt.obtenerTipo() == TNode.LSR) || (nt.obtenerTipo() == TNode.LSRA)) {
+                                    if ((nt.getNodeType() == TNode.LER) || (nt.getNodeType() == TNode.LERA)
+                                       || (nt.getNodeType() == TNode.LSR) || (nt.getNodeType() == TNode.LSRA)) {
                                         selectorExtremoDerecho.addItem(nt.obtenerNombre());
                                     }
                                     break;

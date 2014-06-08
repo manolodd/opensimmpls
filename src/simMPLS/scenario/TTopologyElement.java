@@ -19,7 +19,7 @@ package simMPLS.scenario;
 import simMPLS.hardware.timer.TTimerEvent;
 import simMPLS.hardware.timer.ITimerEventListener;
 import simMPLS.hardware.simulationcollector.TSimulationCollector;
-import simMPLS.utils.TIdentificadorLargo;
+import simMPLS.utils.TLongIdentifier;
 import java.awt.*;
 import org.jfree.chart.*;
 import org.jfree.data.*;
@@ -39,7 +39,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @param il generador de identificadores de eventos.
      * @since 1.0
      */
-    public TTopologyElement(int tipo, TIdentificadorLargo il) {
+    public TTopologyElement(int tipo, TLongIdentifier il) {
         tipoElemento = tipo;
         eliminarDelReloj = false;
         hilo = null;
@@ -106,7 +106,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * lo contrario.
      * @since 1.0
      */    
-    public boolean obtenerPurgar() {
+    public boolean hasToBePurged() {
         return eliminarDelReloj;
     }
 
@@ -115,7 +115,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @return El tipo del elemento. Una de las constantes de la clase.
      * @since 1.0
      */    
-    public int obtenerTipoElemento() {
+    public int getElementType() {
         return tipoElemento;
     }
 
@@ -184,7 +184,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * simulador, que sincroniza toda la simulaci�n.
      * @since 1.0
      */    
-    public synchronized void esperarFinalizacion() {
+    public synchronized void waitForCompletion() {
         if (hilo != null) {
             try {
                 this.hilo.join();
@@ -255,7 +255,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @param evt Evento que el reloj principal env�a al elemento.
      * @since 1.0
      */    
-    public abstract void capturarEventoReloj(TTimerEvent evt);
+    public abstract void receiveTimerEvent(TTimerEvent evt);
 
     /**
      * Este m�todo es el que se ejecuta cuando se pone el hilo independiente del
@@ -304,7 +304,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * Esta constante indica que el elemento es un enlace.
      * @since 1.0
      */    
-    public static final int ENLACE = 0;
+    public static final int LINK = 0;
     /**
      * Esta constante indica que el elemento es un nodo.
      * @since 1.0
@@ -325,7 +325,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * asignar un identificador unico a cada evento que genere.
      * @since 1.0
      */    
-    public TIdentificadorLargo longIdentifierGenerator;
+    public TLongIdentifier longIdentifierGenerator;
     /**
      * Este atributo almacena en cada momento los nanosegundos de los que dispone el
      * elemento para realizar las operaciones que necesite.

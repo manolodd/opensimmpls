@@ -18,8 +18,8 @@ package simMPLS.scenario;
 
 import simMPLS.protocols.TPDU;
 import simMPLS.hardware.timer.ITimerEventListener;
-import simMPLS.utils.EDesbordeDelIdentificador;
-import simMPLS.utils.TIdentificadorLargo;
+import simMPLS.utils.EIdentifierGeneratorOverflow;
+import simMPLS.utils.TLongIdentifier;
 import java.util.*;
 import org.jfree.chart.*;
 import org.jfree.data.*;
@@ -40,7 +40,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @param t Topologia en la que se encuentra este enlace interno.
      * @since 1.0
      */
-    public TInternalLink(int identificador, TIdentificadorLargo il, TTopology t) {
+    public TInternalLink(int identificador, TLongIdentifier il, TTopology t) {
         super(identificador, il, t);
         numeroDeLSPs = 0;
         numeroDeLSPsDeBackup = 0;
@@ -49,11 +49,11 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
 
     /**
      * Este m�todo devuelve el tipo el enlace.
-     * @return TLink.INTERNO, indicando que es un nodo interno.
+     * @return TLink.INTERNAL, indicando que es un nodo interno.
      * @since 1.0
      */    
     public int getLinkType() {
-        return super.INTERNO;
+        return super.INTERNAL;
     }
 
     /**
@@ -62,7 +62,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @param evt Evento de sincronizaci�n que el reloj del simulador env�a a este enlace interno.
      * @since 1.0
      */    
-    public void capturarEventoReloj(simMPLS.hardware.timer.TTimerEvent evt) {
+    public void receiveTimerEvent(simMPLS.hardware.timer.TTimerEvent evt) {
         this.ponerDuracionTic(evt.getStepDuration());
         this.ponerInstanteDeTiempo(evt.getUpperLimit());
         paso = evt.getStepDuration();
@@ -99,13 +99,13 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
                     it.remove();
                 }
                 this.cerrojo.unLock();
-            } catch (EDesbordeDelIdentificador e) {
+            } catch (EIdentifierGeneratorOverflow e) {
                 e.printStackTrace(); 
             }
         } else {
             try {
                 this.generarEventoSimulacion(new TSELinkRecovered(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
-            } catch (EDesbordeDelIdentificador e) {
+            } catch (EIdentifierGeneratorOverflow e) {
                 e.printStackTrace(); 
             }
         }
@@ -214,7 +214,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
                 } else if (ebe.obtenerPaquete().getType() == TPDU.GPSRP) {
                     this.generarEventoSimulacion(new TSEPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.GPSRP, pctj));
                 }
-            } catch (EDesbordeDelIdentificador e) {
+            } catch (EIdentifierGeneratorOverflow e) {
                 e.printStackTrace(); 
             }
         }
@@ -319,7 +319,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      */    
     public String serializar() {
         String cadena = "#EnlaceInterno#";
-        cadena += this.obtenerIdentificador();
+        cadena += this.getID();
         cadena += "#";
         cadena += this.obtenerNombre().replace('#', ' ');
         cadena += "#";

@@ -20,7 +20,7 @@ import simMPLS.hardware.timer.TTimer;
 import simMPLS.utils.TGeneradorDeIP;
 import simMPLS.utils.TMonitor;
 import simMPLS.utils.TIdentificador;
-import simMPLS.utils.TIdentificadorLargo;
+import simMPLS.utils.TLongIdentifier;
 import java.awt.*;
 import java.util.*;
 
@@ -42,7 +42,7 @@ public class TTopology {
         conjuntoEnlaces = new TreeSet();
         relojTopologia = new TTimer();
         escenarioPadre = e;
-        IDEvento = new TIdentificadorLargo();
+        IDEvento = new TLongIdentifier();
         generaIdentificador = new TIdentificador();
         generadorIP = new TGeneradorDeIP();
         cerrojoFloyd = new TMonitor();
@@ -81,7 +81,7 @@ public class TTopology {
      */    
     public void insertarNodo(TNode nodo) {
         conjuntoNodos.add(nodo);
-        relojTopologia.addListenerReloj(nodo);
+        relojTopologia.addTimerEventListener(nodo);
         try {
             nodo.addListenerSimulacion(escenarioPadre.obtenerSimulacion().obtenerRecolector());
         } catch (ESimulationSingleSubscriber e) {System.out.println(e.toString());}
@@ -96,20 +96,20 @@ public class TTopology {
         Iterator iterador = conjuntoNodos.iterator();
         while ((iterador.hasNext()) && (!fin)) {
             nodo = (TNode) iterador.next();
-            if (nodo.obtenerIdentificador() == identificador) {
+            if (nodo.getID() == identificador) {
                 nodo.ponerPurgar(true);
                 iterador.remove();
                 fin = true;
             }
         }
-        this.relojTopologia.purgarListenerReloj();
+        this.relojTopologia.purgeTimerEventListeners();
     }
 
     /**
      * @param n
      */    
     private void eliminarSoloNodo(TNode n) {
-        eliminarSoloNodo(n.obtenerIdentificador());
+        eliminarSoloNodo(n.getID());
     }
 
     /**
@@ -123,7 +123,7 @@ public class TTopology {
         Iterator iterador = conjuntoNodos.iterator();
         while (iterador.hasNext()) {
             nodo = (TNode) iterador.next();
-            if (nodo.obtenerIdentificador() == identificador)
+            if (nodo.getID() == identificador)
                 return nodo;
         }
         return null;
@@ -217,7 +217,7 @@ public class TTopology {
         Iterator iterador = conjuntoNodos.iterator();
         while (iterador.hasNext()) {
             nodo = (TNode) iterador.next();
-            if (nodo.obtenerTipo() == TNode.EMISOR) {
+            if (nodo.getNodeType() == TNode.SENDER) {
                 emisor = (TSenderNode) nodo;
                 if (emisor.obtenerDestino().equals(nr.getIPAddress()))
                     return true;
@@ -283,38 +283,38 @@ public class TTopology {
         Iterator iterador = conjuntoNodos.iterator();
         while ((iterador.hasNext()) && (!fin)) {
             nodoBuscado = (TNode) iterador.next();
-            if (nodoBuscado.obtenerIdentificador() == nodo.obtenerIdentificador()) {
-                if (nodo.obtenerTipo() == TNode.EMISOR) {
+            if (nodoBuscado.getID() == nodo.getID()) {
+                if (nodo.getNodeType() == TNode.SENDER) {
                     TSenderNode nodoTrasCast = (TSenderNode) nodoBuscado;
                     nodoTrasCast.ponerNombre(nodo.obtenerNombre());
                     nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
                 }
-                else if (nodo.obtenerTipo() == TNode.RECEPTOR) {
+                else if (nodo.getNodeType() == TNode.RECEIVER) {
                     TSenderNode nodoTrasCast = (TSenderNode) nodoBuscado;
                     nodoTrasCast.ponerNombre(nodo.obtenerNombre());
                     nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
                 }
-                else if (nodo.obtenerTipo() == TNode.RECEPTOR) {
+                else if (nodo.getNodeType() == TNode.RECEIVER) {
                     TReceiverNode nodoTrasCast = (TReceiverNode) nodoBuscado;
                     nodoTrasCast.ponerNombre(nodo.obtenerNombre());
                     nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
                 }
-                else if (nodo.obtenerTipo() == TNode.LER) {
+                else if (nodo.getNodeType() == TNode.LER) {
                     TLERNode nodoTrasCast = (TLERNode) nodoBuscado;
                     nodoTrasCast.ponerNombre(nodo.obtenerNombre());
                     nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
                 }
-                else if (nodo.obtenerTipo() == TNode.LERA) {
+                else if (nodo.getNodeType() == TNode.LERA) {
                     TLERANode nodoTrasCast = (TLERANode) nodoBuscado;
                     nodoTrasCast.ponerNombre(nodo.obtenerNombre());
                     nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
                 }
-                else if (nodo.obtenerTipo() == TNode.LSR) {
+                else if (nodo.getNodeType() == TNode.LSR) {
                     TLSRNode nodoTrasCast = (TLSRNode) nodoBuscado;
                     nodoTrasCast.ponerNombre(nodo.obtenerNombre());
                     nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
                 }
-                else if (nodo.obtenerTipo() == TNode.LSRA) {
+                else if (nodo.getNodeType() == TNode.LSRA) {
                     TLSRANode nodoTrasCast = (TLSRANode) nodoBuscado;
                     nodoTrasCast.ponerNombre(nodo.obtenerNombre());
                     nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
@@ -331,7 +331,7 @@ public class TTopology {
      */    
     public void insertarEnlace(TLink enlace) {
         conjuntoEnlaces.add(enlace);
-        relojTopologia.addListenerReloj(enlace);
+        relojTopologia.addTimerEventListener(enlace);
         try {
             enlace.addListenerSimulacion(escenarioPadre.obtenerSimulacion().obtenerRecolector());
         } catch (ESimulationSingleSubscriber e) {System.out.println(e.toString());}
@@ -349,14 +349,14 @@ public class TTopology {
         Iterator iterador = conjuntoEnlaces.iterator();
         while ((iterador.hasNext()) && (!fin)) {
             enlace = (TLink) iterador.next();
-            if (enlace.obtenerIdentificador() == identificador) {
+            if (enlace.getID() == identificador) {
                 enlace.desconectarDePuertos();
                 enlace.ponerPurgar(true);
                 iterador.remove();
                 fin = true;
             }
         }
-        this.relojTopologia.purgarListenerReloj();
+        this.relojTopologia.purgeTimerEventListeners();
     }
 
     /**
@@ -365,7 +365,7 @@ public class TTopology {
      * @since 1.0
      */    
     public void eliminarEnlace(TLink e) {
-        eliminarEnlace(e.obtenerIdentificador());
+        eliminarEnlace(e.getID());
     }
 
     /**
@@ -380,7 +380,7 @@ public class TTopology {
         Iterator iterador = conjuntoEnlaces.iterator();
         while (iterador.hasNext()) {
             enlace = (TLink) iterador.next();
-            if (enlace.obtenerIdentificador() == identificador)
+            if (enlace.getID() == identificador)
                 return enlace;
         }
         return null;
@@ -424,13 +424,13 @@ public class TTopology {
         Iterator iterador = conjuntoEnlaces.iterator();
         while ((iterador.hasNext()) && (!fin)) {
             enlaceBuscado = (TLink) iterador.next();
-            if (enlaceBuscado.obtenerIdentificador() == enlace.obtenerIdentificador()) {
-                if (enlaceBuscado.getLinkType() == TLink.EXTERNO) {
+            if (enlaceBuscado.getID() == enlace.getID()) {
+                if (enlaceBuscado.getLinkType() == TLink.EXTERNAL) {
                     TExternalLink enlaceTrasCast = (TExternalLink) enlaceBuscado;
                     enlaceTrasCast.ponerExtremo1(enlace.getEnd1());
                     enlaceTrasCast.ponerExtremo2(enlace.getEnd2());
                 }
-                else if (enlace.getLinkType() == TLink.INTERNO) {
+                else if (enlace.getLinkType() == TLink.INTERNAL) {
                     TInternalLink enlaceTrasCast = (TInternalLink) enlaceBuscado;
                     enlaceTrasCast.ponerExtremo1(enlace.getEnd1());
                     enlaceTrasCast.ponerExtremo2(enlace.getEnd2());
@@ -492,7 +492,7 @@ public class TTopology {
             }
         }
         eliminarSoloNodo(identificador);
-        this.relojTopologia.purgarListenerReloj();
+        this.relojTopologia.purgeTimerEventListeners();
     }
 
     /**
@@ -501,7 +501,7 @@ public class TTopology {
      * @since 1.0
      */    
     public void eliminarNodo(TNode n) {
-        eliminarNodo(n.obtenerIdentificador());
+        eliminarNodo(n.getID());
     }
 
     /**
@@ -545,7 +545,7 @@ public class TTopology {
             n.ponerPurgar(true);
             it.remove();
         }
-        this.relojTopologia.purgarListenerReloj();
+        this.relojTopologia.purgeTimerEventListeners();
     }
 
     /**
@@ -618,9 +618,9 @@ public class TTopology {
             enlace = (TLink) iterador.next();
             izquierdo = enlace.getEnd1();
             derecho = enlace.getEnd2();
-            if ((derecho.obtenerIdentificador() == extremo1) && (izquierdo.obtenerIdentificador() == extremo2))
+            if ((derecho.getID() == extremo1) && (izquierdo.getID() == extremo2))
                 return true;
-            if ((derecho.obtenerIdentificador() == extremo2) && (izquierdo.obtenerIdentificador() == extremo1))
+            if ((derecho.getID() == extremo2) && (izquierdo.getID() == extremo1))
                 return true;
         }
         return false;
@@ -643,9 +643,9 @@ public class TTopology {
             enlace = (TLink) iterador.next();
             izquierdo = enlace.getEnd1();
             derecho = enlace.getEnd2();
-            if ((derecho.obtenerIdentificador() == extremo1) && (izquierdo.obtenerIdentificador() == extremo2))
+            if ((derecho.getID() == extremo1) && (izquierdo.getID() == extremo2))
                 return enlace;
-            if ((derecho.obtenerIdentificador() == extremo2) && (izquierdo.obtenerIdentificador() == extremo1))
+            if ((derecho.getID() == extremo2) && (izquierdo.getID() == extremo1))
                 return enlace;
         }
         return null;
@@ -657,7 +657,7 @@ public class TTopology {
      * @return El generador de identificadores para eventos de la topologia.
      * @since 1.0
      */    
-    public TIdentificadorLargo obtenerGeneradorIDEvento() {
+    public TLongIdentifier obtenerGeneradorIDEvento() {
         return this.IDEvento;
     }
 
@@ -720,7 +720,7 @@ public class TTopology {
         Iterator it = this.obtenerIteradorNodos();
         while (it.hasNext()) {
             nt = (TNode) it.next();
-            equivalencia[i] = nt.obtenerIdentificador();
+            equivalencia[i] = nt.getID();
             if (equivalencia[i] == origen)
                 origen2 = i;
             else if (equivalencia[i] == destino)
@@ -741,7 +741,7 @@ public class TTopology {
                         matrizAdyacencia[i][j] = this.PESO_INFINITO;
                     }
                 } else {
-                    if (en.getLinkType() == TLink.EXTERNO) {
+                    if (en.getLinkType() == TLink.EXTERNAL) {
                         TExternalLink ee = (TExternalLink) en;
                         matrizAdyacencia[i][j] = ee.obtenerPeso();
                     } else {
@@ -802,8 +802,8 @@ public class TTopology {
      * @since 1.0
      */    
     public synchronized String obtenerIPSalto(String IPorigen, String IPdestino) {
-        int origen = this.obtenerNodo(IPorigen).obtenerIdentificador();
-        int destino = this.obtenerNodo(IPdestino).obtenerIdentificador();
+        int origen = this.obtenerNodo(IPorigen).getID();
+        int destino = this.obtenerNodo(IPdestino).getID();
         int siguienteSalto = obtenerSalto(origen, destino);
         TNode nt = this.obtenerNodo(siguienteSalto);
         if (nt != null)
@@ -820,8 +820,8 @@ public class TTopology {
      * @since 1.0
      */    
     public synchronized String obtenerIPSaltoRABAN(String IPorigen, String IPdestino) {
-        int origen = this.obtenerNodo(IPorigen).obtenerIdentificador();
-        int destino = this.obtenerNodo(IPdestino).obtenerIdentificador();
+        int origen = this.obtenerNodo(IPorigen).getID();
+        int destino = this.obtenerNodo(IPdestino).getID();
         int siguienteSalto = obtenerSaltoRABAN(origen, destino);
         TNode nt = this.obtenerNodo(siguienteSalto);
         if (nt != null)
@@ -841,9 +841,9 @@ public class TTopology {
      * @param IPdestino Direcci�n IP del nodo al que se quiere llegar.
      */    
     public synchronized String obtenerIPSaltoRABAN(String IPorigen, String IPdestino, String IPNodoAEvitar) {
-        int origen = this.obtenerNodo(IPorigen).obtenerIdentificador();
-        int destino = this.obtenerNodo(IPdestino).obtenerIdentificador();
-        int nodoAEvitar = this.obtenerNodo(IPNodoAEvitar).obtenerIdentificador();
+        int origen = this.obtenerNodo(IPorigen).getID();
+        int destino = this.obtenerNodo(IPdestino).getID();
+        int nodoAEvitar = this.obtenerNodo(IPNodoAEvitar).getID();
         int siguienteSalto = obtenerSaltoRABAN(origen, destino, nodoAEvitar);
         TNode nt = this.obtenerNodo(siguienteSalto);
         if (nt != null)
@@ -872,7 +872,7 @@ public class TTopology {
         Iterator it = this.obtenerIteradorNodos();
         while (it.hasNext()) {
             nt = (TNode) it.next();
-            equivalencia[i] = nt.obtenerIdentificador();
+            equivalencia[i] = nt.getID();
             if (equivalencia[i] == origen)
                 origen2 = i;
             else if (equivalencia[i] == destino)
@@ -893,7 +893,7 @@ public class TTopology {
                         matrizAdyacencia[i][j] = this.PESO_INFINITO;
                     }
                 } else {
-                    if (en.getLinkType() == TLink.EXTERNO) {
+                    if (en.getLinkType() == TLink.EXTERNAL) {
                         TExternalLink ee = (TExternalLink) en;
                         matrizAdyacencia[i][j] = ee.obtenerPesoRABAN();
                     } else {
@@ -969,7 +969,7 @@ public class TTopology {
         Iterator it = this.obtenerIteradorNodos();
         while (it.hasNext()) {
             nt = (TNode) it.next();
-            equivalencia[i] = nt.obtenerIdentificador();
+            equivalencia[i] = nt.getID();
             if (equivalencia[i] == origen)
                 origen2 = i;
             else if (equivalencia[i] == destino)
@@ -992,7 +992,7 @@ public class TTopology {
                         matrizAdyacencia[i][j] = this.PESO_INFINITO;
                     }
                 } else {
-                    if (en.getLinkType() == TLink.EXTERNO) {
+                    if (en.getLinkType() == TLink.EXTERNAL) {
                         TExternalLink ee = (TExternalLink) en;
                         matrizAdyacencia[i][j] = ee.obtenerPesoRABAN();
                     } else {
@@ -1071,7 +1071,7 @@ public class TTopology {
     private TreeSet conjuntoEnlaces;
     private TTimer relojTopologia;
     private TScenario escenarioPadre;
-    private TIdentificadorLargo IDEvento;
+    private TLongIdentifier IDEvento;
     private TIdentificador generaIdentificador;
     private TGeneradorDeIP generadorIP;
     private TMonitor cerrojoFloyd;

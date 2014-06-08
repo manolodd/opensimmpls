@@ -36,7 +36,7 @@ public class TLinkConfig {
         delay = 1;
         valida = false;
         ponerNombre = false;
-        tipoEnlace = TLink.INTERNO;
+        tipoEnlace = TLink.INTERNAL;
         puertoExtremo1 = -1;
         puertoExtremo2 = -1;
     }
@@ -80,8 +80,8 @@ public class TLinkConfig {
     /**
      * Este m�todo establece si el enlace es externo o interno al dominio MPLS.
      * @since 1.0
-     * @param t EXTERO, si se desea que el enlace sea externo. INTERNO, si se desea que sea
-     * interno.
+     * @param t EXTERO, si se desea que el enlace sea externo. INTERNAL, si se desea que sea
+ interno.
      */    
     public void ponerTipo(int t) {
         tipoEnlace = t;
@@ -90,7 +90,7 @@ public class TLinkConfig {
     /**
      * Este m�todo averigua el tipo del enlace.
      * @since 1.0
-     * @return EXTERNO, si el enlace es externo. INTERNO si el enlace es interno.
+     * @return EXTERNAL, si el enlace es externo. INTERNAL si el enlace es interno.
      */    
     public int obtenerTipo() {
         return tipoEnlace;
@@ -288,13 +288,13 @@ public class TLinkConfig {
         e1 = topo.obtenerPrimerNodoLlamado(nombreExtremo1);
         e2 = topo.obtenerPrimerNodoLlamado(nombreExtremo2);
         if ((e1 != null) && (e2 != null)) {
-            int tipo1 = e1.obtenerTipo();
-            int tipo2 = e2.obtenerTipo();
-            if ((tipo1 == TNode.EMISOR) || (tipo1 == TNode.RECEPTOR) ||
-                (tipo2 == TNode.EMISOR) || (tipo2 == TNode.RECEPTOR))
-                this.ponerTipo(TLink.EXTERNO);
+            int tipo1 = e1.getNodeType();
+            int tipo2 = e2.getNodeType();
+            if ((tipo1 == TNode.SENDER) || (tipo1 == TNode.RECEIVER) ||
+                (tipo2 == TNode.SENDER) || (tipo2 == TNode.RECEIVER))
+                this.ponerTipo(TLink.EXTERNAL);
             else
-                this.ponerTipo(TLink.INTERNO);
+                this.ponerTipo(TLink.INTERNAL);
         }
     }
 

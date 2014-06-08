@@ -111,7 +111,7 @@ public class TOSMLoader {
             TReceiverNode receptor = new TReceiverNode(0, "10.0.0.1", escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
             if (receptor.desSerializar(cadena)) {
                 escenario.obtenerTopologia().insertarNodo(receptor);
-                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(receptor.obtenerIdentificador());
+                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(receptor.getID());
                 escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(receptor.getIPAddress());
             }
             receptor = null;
@@ -119,7 +119,7 @@ public class TOSMLoader {
             TSenderNode emisor = new TSenderNode(0, "10.0.0.1", escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
             if (emisor.desSerializar(cadena)) {
                 escenario.obtenerTopologia().insertarNodo(emisor);
-                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(emisor.obtenerIdentificador());
+                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(emisor.getID());
                 escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(emisor.getIPAddress());
             }
             emisor = null;
@@ -127,7 +127,7 @@ public class TOSMLoader {
             TLERNode ler = new TLERNode(0, "10.0.0.1", escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
             if (ler.desSerializar(cadena)) {
                 escenario.obtenerTopologia().insertarNodo(ler);
-                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(ler.obtenerIdentificador());
+                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(ler.getID());
                 escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(ler.getIPAddress());
             }
             ler = null;
@@ -135,7 +135,7 @@ public class TOSMLoader {
             TLERANode lera = new TLERANode(0, "10.0.0.1", escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
             if (lera.desSerializar(cadena)) {
                 escenario.obtenerTopologia().insertarNodo(lera);
-                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(lera.obtenerIdentificador());
+                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(lera.getID());
                 escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(lera.getIPAddress());
             }
             lera = null;
@@ -143,7 +143,7 @@ public class TOSMLoader {
             TLSRNode lsr = new TLSRNode(0, "10.0.0.1", escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
             if (lsr.desSerializar(cadena)) {
                 escenario.obtenerTopologia().insertarNodo(lsr);
-                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(lsr.obtenerIdentificador());
+                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(lsr.getID());
                 escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(lsr.getIPAddress());
             }
             lsr = null;
@@ -151,7 +151,7 @@ public class TOSMLoader {
             TLSRANode lsra = new TLSRANode(0, "10.0.0.1", escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
             if (lsra.desSerializar(cadena)) {
                 escenario.obtenerTopologia().insertarNodo(lsra);
-                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(lsra.obtenerIdentificador());
+                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(lsra.getID());
                 escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(lsra.getIPAddress());
             }
             lsra = null;
@@ -159,14 +159,14 @@ public class TOSMLoader {
             TExternalLink externo = new TExternalLink(0, escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
             if (externo.desSerializar(cadena)) {
                 escenario.obtenerTopologia().insertarEnlace(externo);
-                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(externo.obtenerIdentificador());
+                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(externo.getID());
             }
             externo = null;
         } else if (cadena.startsWith("#EnlaceInterno#")) {
             TInternalLink interno = new TInternalLink(0, escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
             if (interno.desSerializar(cadena)) {
                 escenario.obtenerTopologia().insertarEnlace(interno);
-                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(interno.obtenerIdentificador());
+                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(interno.getID());
             }
             interno = null;
         }

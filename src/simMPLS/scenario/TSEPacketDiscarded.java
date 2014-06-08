@@ -69,10 +69,10 @@ public class TSEPacketDiscarded extends TSimulationEvent {
         TLink ent = null;
         TNode nt = null;
         et = super.obtenerFuente();
-        if (et.obtenerTipoElemento() == TTopologyElement.ENLACE) {
+        if (et.getElementType() == TTopologyElement.LINK) {
             ent = (TLink) et;
             return ent.obtenerNombre();
-        } else if (et.obtenerTipoElemento() == TTopologyElement.NODO) {
+        } else if (et.getElementType() == TTopologyElement.NODO) {
             nt = (TNode) et;
             return nt.obtenerNombre();
         }
@@ -87,9 +87,9 @@ public class TSEPacketDiscarded extends TSimulationEvent {
     public String obtenerNombreTipo() {
         TTopologyElement et = null;
         et = super.obtenerFuente();
-        if (et.obtenerTipoElemento() == TTopologyElement.ENLACE) {
+        if (et.getElementType() == TTopologyElement.LINK) {
             return ("Enlace ");
-        } else if (et.obtenerTipoElemento() == TTopologyElement.NODO) {
+        } else if (et.getElementType() == TTopologyElement.NODO) {
             return ("Nodo ");
         }
         return ("");

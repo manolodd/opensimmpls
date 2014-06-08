@@ -31,7 +31,7 @@ import simMPLS.hardware.ports.TFIFOPortSet;
 import simMPLS.hardware.ports.TPort;
 import simMPLS.hardware.ports.TPortSet;
 import simMPLS.utils.TIdentificador;
-import simMPLS.utils.TIdentificadorLargo;
+import simMPLS.utils.TLongIdentifier;
 import java.awt.*;
 import java.util.*;
 import org.jfree.chart.*;
@@ -53,11 +53,11 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * @param t Topolog�a dentro de la cual se encuentra el nodo.
      * @since 1.0
      */
-    public TLSRNode(int identificador, String d, TIdentificadorLargo il, TTopology t) {
+    public TLSRNode(int identificador, String d, TLongIdentifier il, TTopology t) {
         super(identificador, d, il, t);
         this.ponerPuertos(super.NUM_PUERTOS_LSR);
         matrizConmutacion = new TSwitchingMatrix();
-        gIdent = new TIdentificadorLargo();
+        gIdent = new TLongIdentifier();
         gIdentLDP = new TIdentificador();
         potenciaEnMb = 512;
         estadisticas = new TLSRStats();
@@ -168,7 +168,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * @return TNode.LSR, indicando que se trata de un nodo LSR.
      * @since 1.0
      */
-    public int obtenerTipo() {
+    public int getNodeType() {
         return super.LSR;
     }
     
@@ -177,7 +177,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * @param evt Evento de sincronizaci�n que env�a el reloj del simulador.
      * @since 1.0
      */
-    public void capturarEventoReloj(TTimerEvent evt) {
+    public void receiveTimerEvent(TTimerEvent evt) {
         this.ponerDuracionTic(evt.getStepDuration());
         this.ponerInstanteDeTiempo(evt.getUpperLimit());
         if (this.obtenerPuertos().isAnyPacketToSwitch()) {
@@ -1138,7 +1138,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      */
     public String serializar() {
         String cadena = "#LSR#";
-        cadena += this.obtenerIdentificador();
+        cadena += this.getID();
         cadena += "#";
         cadena += this.obtenerNombre().replace('#', ' ');
         cadena += "#";
@@ -1239,7 +1239,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     public static final int SOLO_ESPACIOS = 3;
     
     private TSwitchingMatrix matrizConmutacion;
-    private TIdentificadorLargo gIdent;
+    private TLongIdentifier gIdent;
     private TIdentificador gIdentLDP;
     private int potenciaEnMb;
     private TLSRStats estadisticas;

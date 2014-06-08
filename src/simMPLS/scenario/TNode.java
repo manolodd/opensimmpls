@@ -22,7 +22,7 @@ import simMPLS.hardware.timer.TTimerEvent;
 import simMPLS.hardware.timer.ITimerEventListener;
 import simMPLS.hardware.ports.TPortSet;
 import simMPLS.utils.TMonitor;
-import simMPLS.utils.TIdentificadorLargo;
+import simMPLS.utils.TLongIdentifier;
 import java.awt.*;
 import org.jfree.chart.*;
 import org.jfree.data.*;
@@ -44,7 +44,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @param il Generador de identificadores para los eventos que deba emitir el nodo.
      * @param t Topologia donde se encuentra el nodo inclu�do.
      */
-    public TNode(int identificador, String d, TIdentificadorLargo il, TTopology t) {
+    public TNode(int identificador, String d, TLongIdentifier il, TTopology t) {
         super(TTopologyElement.NODO, il);
         posicion = new Point(0,0);
         id = identificador;
@@ -89,9 +89,9 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      */    
     public int compareTo(Object o) {
         TNode n = (TNode) o;
-        if (obtenerIdentificador() < n.obtenerIdentificador())
+        if (getID() < n.getID())
             return -1;
-        else if (obtenerIdentificador() == n.obtenerIdentificador())
+        else if (getID() == n.getID())
             return 0;
         return 1;
     }
@@ -137,7 +137,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @return El identificador unico del nodo.
      * @since 1.0
      */    
-    public int obtenerIdentificador() {
+    public int getID() {
         return id;
     }
 
@@ -309,14 +309,14 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @param evt Evento enviado por el reloj principal del simulador.
      * @since 1.0
      */    
-    public abstract void capturarEventoReloj(TTimerEvent evt);
+    public abstract void receiveTimerEvent(TTimerEvent evt);
     /**
      * Este m�todo permite obtener el tipo de nodo al que pertenece la instancia
      * actual.
      * @return El tipo del nodo. Una de las constantes definidas en la clase.
      * @since 1.0
      */    
-    public abstract int obtenerTipo();
+    public abstract int getNodeType();
 
     /**
      * Este m�todo se ponen en funcionamiento cuando el hilo independiente del nodo
@@ -409,12 +409,12 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * Esta constante identifica a un nodo emisor.
      * @since 1.0
      */    
-    public static final int EMISOR = 0;
+    public static final int SENDER = 0;
     /**
      * Esta constante identifica a un nodo receptor.
      * @since 1.0
      */    
-    public static final int RECEPTOR = 1;
+    public static final int RECEIVER = 1;
     /**
      * Esta constante identifica a un nodo LER.
      * @since 1.0

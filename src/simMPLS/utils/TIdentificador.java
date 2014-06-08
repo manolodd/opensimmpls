@@ -49,14 +49,14 @@ public class TIdentificador {
      * modifica el contador interno para que el siguiente generador sea distinto. El
      * m�todo est� <B>sincronizado</B>.
      * @return Un numero entero que ser� un identificador: no estar� repetido.
-     * @throws EDesbordeDelIdentificador Esta excepci�n se lanza cuando el contador interno del generador de
+     * @throws EIdentifierGeneratorOverflow Esta excepci�n se lanza cuando el contador interno del generador de
      * identificadores se desborda. Es alto por lo que ngeneralmente no ocurrir�, pero
      * hay que capturar la excepci�n por si acaso.
      * @since 1.0
      */
-    synchronized public int obtenerNuevo() throws EDesbordeDelIdentificador {
+    synchronized public int obtenerNuevo() throws EIdentifierGeneratorOverflow {
         if (identificador > 2147483646) {
-            throw new EDesbordeDelIdentificador();
+            throw new EIdentifierGeneratorOverflow();
         } else {
             identificador++;
         }

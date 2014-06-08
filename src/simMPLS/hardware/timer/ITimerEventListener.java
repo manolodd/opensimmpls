@@ -34,5 +34,5 @@ public interface ITimerEventListener extends EventListener {
      * @since 1.0
      * @param timerEvent The timer event received.
      */ 
-    public void capturarEventoReloj(TTimerEvent timerEvent);
+    public void receiveTimerEvent(TTimerEvent timerEvent);
 }

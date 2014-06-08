@@ -224,8 +224,8 @@ public class JSimulationPanel extends javax.swing.JPanel {
         int vertices = 0;
         while (itd.hasNext()) {
             nd = (TNode) itd.next();
-            if ((nd.obtenerTipo() == TNode.LER) ||
-               (nd.obtenerTipo() == TNode.LERA)) {
+            if ((nd.getNodeType() == TNode.LER) ||
+               (nd.getNodeType() == TNode.LERA)) {
                    pol.addPoint(nd.obtenerPosicion().x+24, nd.obtenerPosicion().y+24);
                    vertices ++;
                }
@@ -266,7 +266,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
             Point fin = enlace.getEnd2().obtenerPosicion();
             int del = enlace.obtenerDelay();
             g2Dbuf.setStroke(new BasicStroke((float) obtenerGrosorEnlace(del)));
-            if (enlace.getLinkType() == TLink.EXTERNO) {
+            if (enlace.getLinkType() == TLink.EXTERNAL) {
                 g2Dbuf.setColor(Color.GRAY);
             } else {
                 g2Dbuf.setColor(Color.BLUE);
@@ -281,7 +281,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
             g2Dbuf.setStroke(new BasicStroke((float) 1));
 //
             if (!enlace.linkIsBroken()) {
-                if (enlace.getLinkType() == TLink.INTERNO) {
+                if (enlace.getLinkType() == TLink.INTERNAL) {
                     TInternalLink ei = (TInternalLink) enlace;
                     if (ei.tieneLSPs()) {
                         float dash1[] = {5.0f};
@@ -307,7 +307,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
 //
 //
             if (!enlace.linkIsBroken()) {
-                if (enlace.getLinkType() == TLink.INTERNO) {
+                if (enlace.getLinkType() == TLink.INTERNAL) {
                     TInternalLink ei = (TInternalLink) enlace;
                     if (ei.tieneLSPsDeBackup()) {
                         float dash1[] = {10.0f, 5.0f, 0.2f, 5.0f};
@@ -368,16 +368,16 @@ public class JSimulationPanel extends javax.swing.JPanel {
             this.setPreferredSize(new Dimension(maxX, maxY));
             this.revalidate();
             
-            int tipo = nodo.obtenerTipo();
+            int tipo = nodo.getNodeType();
             switch (tipo) {
-                case TNode.EMISOR: {
+                case TNode.SENDER: {
                     if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
-                case TNode.RECEPTOR: {
+                case TNode.RECEIVER: {
                     if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.RECEPTOR), posicion.x, posicion.y, null);
                     else
@@ -578,12 +578,12 @@ public class JSimulationPanel extends javax.swing.JPanel {
                         TSENodeCongested enc = (TSENodeCongested) evento;
                         TNode nt = (TNode) enc.obtenerFuente();
                         Point p = nt.obtenerPosicion();
-                        int tipo = nt.obtenerTipo();
+                        int tipo = nt.getNodeType();
                         long cong = enc.obtenerPorcentajeCongestion();
                         if ((cong >= 50) && (cong < 75)) {
-                            if (tipo == TNode.EMISOR) {
+                            if (tipo == TNode.SENDER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR_CONGESTIONADO_20), p.x, p.y, null);
-                            } else if (tipo == TNode.RECEPTOR) {
+                            } else if (tipo == TNode.RECEIVER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.RECEPTOR_CONGESTIONADO_20), p.x, p.y, null);
                             } else if (tipo == TNode.LER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LER_CONGESTIONADO_20), p.x, p.y, null);
@@ -595,9 +595,9 @@ public class JSimulationPanel extends javax.swing.JPanel {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSRA_CONGESTIONADO_20), p.x, p.y, null);
                             }
                         } else if ((cong >= 75) && (cong < 95)) {
-                            if (tipo == TNode.EMISOR) {
+                            if (tipo == TNode.SENDER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR_CONGESTIONADO_60), p.x, p.y, null);
-                            } else if (tipo == TNode.RECEPTOR) {
+                            } else if (tipo == TNode.RECEIVER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.RECEPTOR_CONGESTIONADO_60), p.x, p.y, null);
                             } else if (tipo == TNode.LER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LER_CONGESTIONADO_60), p.x, p.y, null);
@@ -609,9 +609,9 @@ public class JSimulationPanel extends javax.swing.JPanel {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSRA_CONGESTIONADO_60), p.x, p.y, null);
                             }
                         } else if (cong >= 95) {
-                            if (tipo == TNode.EMISOR) {
+                            if (tipo == TNode.SENDER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR_CONGESTIONADO), p.x, p.y, null);
-                            } else if (tipo == TNode.RECEPTOR) {
+                            } else if (tipo == TNode.RECEIVER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.RECEPTOR_CONGESTIONADO), p.x, p.y, null);
                             } else if (tipo == TNode.LER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LER_CONGESTIONADO), p.x, p.y, null);

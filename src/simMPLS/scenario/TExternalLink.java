@@ -19,8 +19,8 @@ package simMPLS.scenario;
 import simMPLS.protocols.TPDU;
 import simMPLS.hardware.timer.TTimerEvent;
 import simMPLS.hardware.timer.ITimerEventListener;
-import simMPLS.utils.EDesbordeDelIdentificador;
-import simMPLS.utils.TIdentificadorLargo;
+import simMPLS.utils.EIdentifierGeneratorOverflow;
+import simMPLS.utils.TLongIdentifier;
 import java.util.*;
 import org.jfree.chart.*;
 import org.jfree.data.*;
@@ -41,18 +41,18 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * @param t Topologia en la que se encuentra este enlace externo.
      * @since 1.0
      */
-    public TExternalLink(int identificador, TIdentificadorLargo il, TTopology t) {
+    public TExternalLink(int identificador, TLongIdentifier il, TTopology t) {
         super(identificador, il, t);
         paso=0;
     }
 
     /**
      * Este m�todo devuelve el tipo el enlace.
-     * @return TLink.EXTERNO, indicando que es un nodo externo.
+     * @return TLink.EXTERNAL, indicando que es un nodo externo.
      * @since 1.0
      */    
     public int getLinkType() {
-        return super.EXTERNO;
+        return super.EXTERNAL;
     }
 
     /**
@@ -61,7 +61,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * @param evt Evento de sincronizaci�n que el reloj del simulador env�a a este enlace externo.
      * @since 1.0
      */    
-    public void capturarEventoReloj(TTimerEvent evt) {
+    public void receiveTimerEvent(TTimerEvent evt) {
         this.ponerDuracionTic(evt.getStepDuration());
         this.ponerInstanteDeTiempo(evt.getUpperLimit());
         paso = evt.getStepDuration();
@@ -96,13 +96,13 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
                     it.remove();
                 }
                 this.cerrojo.unLock();
-            } catch (EDesbordeDelIdentificador e) {
+            } catch (EIdentifierGeneratorOverflow e) {
                 e.printStackTrace(); 
             }
         } else {
             try {
                 this.generarEventoSimulacion(new TSELinkRecovered(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
-            } catch (EDesbordeDelIdentificador e) {
+            } catch (EIdentifierGeneratorOverflow e) {
                 e.printStackTrace(); 
             }
         }
@@ -137,7 +137,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
                 pctj = 100 - pctj;
             try {
                 this.generarEventoSimulacion(new TSEPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), ebe.obtenerPaquete().getSubtype(), pctj));
-            } catch (EDesbordeDelIdentificador e) {
+            } catch (EIdentifierGeneratorOverflow e) {
                 e.printStackTrace(); 
             }
         }
@@ -242,7 +242,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      */    
     public String serializar() {
         String cadena = "#EnlaceExterno#";
-        cadena += this.obtenerIdentificador();
+        cadena += this.getID();
         cadena += "#";
         cadena += this.obtenerNombre().replace('#', ' ');
         cadena += "#";

@@ -99,7 +99,7 @@ public class TOSMSaver {
             while (in.hasNext()) {
                 nt = (TNode) in.next();
                 if (nt != null) {
-                    if (nt.obtenerTipo() == TNode.RECEPTOR) {
+                    if (nt.getNodeType() == TNode.RECEIVER) {
                         salida.println(nt.serializar());
                         crc.update(nt.serializar().getBytes());
                     }
@@ -110,7 +110,7 @@ public class TOSMSaver {
             while (in.hasNext()) {
                 nt = (TNode) in.next();
                 if (nt != null) {
-                    if (nt.obtenerTipo() != TNode.RECEPTOR) {
+                    if (nt.getNodeType() != TNode.RECEIVER) {
                         salida.println(nt.serializar());
                         crc.update(nt.serializar().getBytes());
                     }

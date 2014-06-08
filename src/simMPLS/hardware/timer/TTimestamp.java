@@ -44,7 +44,7 @@ public class TTimestamp {
  acuerdo al orden elegido.
      * @since 1.0
      */    
-    public int comparar(Object anotherTimestamp) {
+    public int compare(Object anotherTimestamp) {
         TTimestamp argument = (TTimestamp) anotherTimestamp;
         if (milisegundo < argument.getMillisecond())
             return this.ARGUMENT_IS_GREATER;
@@ -77,7 +77,7 @@ public class TTimestamp {
      * nanosegundos.
      * @since 1.0
      */    
-    public void ponerNanosegundo(int ns) {
+    public void setNanosecond(int ns) {
         nanosegundo = ns;
     }
 
@@ -86,7 +86,7 @@ public class TTimestamp {
      * @param ns El n�mero de nanosegundos a sumar a la instancia actual.
      * @since 1.0
      */    
-    public void sumarNanosegundo(int ns) {
+    public void increaseNanosecond(int ns) {
         nanosegundo += ns;
         long divisionEntera = (nanosegundo / 1000000);
         if (divisionEntera > 0) {
@@ -111,7 +111,7 @@ public class TTimestamp {
      * milisegundos.
      * @since 1.0
      */    
-    public void ponerMilisegundo(long ms) {
+    public void setMillisecond(long ms) {
         milisegundo = ms;
     }
 
@@ -122,7 +122,7 @@ public class TTimestamp {
      * actual.
      * @since 1.0
      */    
-    public void ponerMarca(TTimestamp mt) {
+    public void setTimestamp(TTimestamp mt) {
         this.milisegundo = mt.getMillisecond();
         this.nanosegundo = mt.getNanosecond();
     }
@@ -144,17 +144,17 @@ public class TTimestamp {
         return (long) ((this.getMillisecond()*1000000) + this.getNanosecond());
     }
 
-    /** Constante para indicar que, al comparar dos marcas, la que se compara con la
-     * instancia actual es mayor.
+    /** Constante para indicar que, al compare dos marcas, la que se compara con la
+ instancia actual es mayor.
      * @since 1.0
      */    
     public static final int ARGUMENT_IS_GREATER = -1;
-    /** Constante para indicar que, al comparar dos marcas, ambas son iguales.
+    /** Constante para indicar que, al compare dos marcas, ambas son iguales.
      * @since 1.0
      */    
     public static final int BOTH_ARE_EQUAL = 0;
-    /** Constante para indicar que, al comparar dos marcas, la que se compara con la
-     * instancia actual es menor.
+    /** Constante para indicar que, al compare dos marcas, la que se compara con la
+ instancia actual es menor.
      * @since 1.0
      */    
     public static final int ARGUMENT_IS_LOWER = 1;

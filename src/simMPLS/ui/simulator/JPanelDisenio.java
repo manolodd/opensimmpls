@@ -120,8 +120,8 @@ public class JPanelDisenio extends javax.swing.JPanel {
         int vertices = 0;
         while (itd.hasNext()) {
             nd = (TNode) itd.next();
-            if ((nd.obtenerTipo() == TNode.LER) ||
-               (nd.obtenerTipo() == TNode.LERA)) {
+            if ((nd.getNodeType() == TNode.LER) ||
+               (nd.getNodeType() == TNode.LERA)) {
                    pol.addPoint(nd.obtenerPosicion().x+24, nd.obtenerPosicion().y+24);
                    vertices ++;
                }
@@ -162,7 +162,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
             Point fin = enlace.getEnd2().obtenerPosicion();
             int del = enlace.obtenerDelay();
             g2Dbuf.setStroke(new BasicStroke((float) obtenerGrosorEnlace(del)));
-            if (enlace.getLinkType() == TLink.EXTERNO) {
+            if (enlace.getLinkType() == TLink.EXTERNAL) {
                 g2Dbuf.setColor(Color.GRAY);
             } else {
                 g2Dbuf.setColor(Color.BLUE);
@@ -206,16 +206,16 @@ public class JPanelDisenio extends javax.swing.JPanel {
             this.setPreferredSize(new Dimension(maxX, maxY));
             this.revalidate();
 
-            int tipo = nodo.obtenerTipo();
+            int tipo = nodo.getNodeType();
             switch (tipo) {
-                case TNode.EMISOR: {
+                case TNode.SENDER: {
                     if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
-                case TNode.RECEPTOR: {
+                case TNode.RECEIVER: {
                     if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.RECEPTOR), posicion.x, posicion.y, null);
                     else
