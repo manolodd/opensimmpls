@@ -19,8 +19,8 @@ package simMPLS.hardware.timer;
 import simMPLS.utils.TOpenSimMPLSEvent;
 
 /**
- * This class implements a timer event that will govern and synchronize all
- * elements that compose the simulation.
+ * This class implements a timer event that will be used to govern and
+ * synchronize all elements that compose the simulation.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 1.1
@@ -28,7 +28,7 @@ import simMPLS.utils.TOpenSimMPLSEvent;
 public class TTimerEvent extends TOpenSimMPLSEvent {
 
     /**
-     * This method is the constrctor of the class. It creates a new instance of
+     * This method is the constructor of the class. It creates a new instance of
      * TTimerEvent.
      *
      * @param eventID The unique event identifier.
@@ -40,7 +40,7 @@ public class TTimerEvent extends TOpenSimMPLSEvent {
      * @since 1.0
      */
     public TTimerEvent(Object eventGenerator, long eventID, TTimestamp lowerEndOfInterval, TTimestamp upperEndOfInterval) {
-        super(eventGenerator, eventID, upperEndOfInterval.getNanoseconds());
+        super(eventGenerator, eventID, upperEndOfInterval.getTotalAsNanoseconds());
         this.lowerEndOfInterval = lowerEndOfInterval;
         this.upperEndOfInterval = upperEndOfInterval;
     }
@@ -55,7 +55,7 @@ public class TTimerEvent extends TOpenSimMPLSEvent {
      * @since 1.0
      */
     public int getStepDuration() {
-        return (int) ((this.upperEndOfInterval.getNanoseconds()) - (this.lowerEndOfInterval.getNanoseconds()));
+        return (int) ((this.upperEndOfInterval.getTotalAsNanoseconds()) - (this.lowerEndOfInterval.getTotalAsNanoseconds()));
     }
 
     /**
@@ -67,7 +67,7 @@ public class TTimerEvent extends TOpenSimMPLSEvent {
      * @since 1.0
      */
     public long getUpperLimit() {
-        return (long) (this.upperEndOfInterval.getNanoseconds());
+        return (long) (this.upperEndOfInterval.getTotalAsNanoseconds());
     }
 
     /**

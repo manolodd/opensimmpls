@@ -1171,7 +1171,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             this.etiquetaDuracionMs.setText(this.duracionMs.getValue() + java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija._ms."));
             this.etiquetaDuracionNs.setText(this.duracionNs.getValue() + java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija._ns."));
             this.etiquetaPasoNs.setText(this.pasoNs.getValue() + java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija._ns."));
-            escenario.obtenerSimulacion().ponerDuracion(new TTimestamp(duracionMs.getValue(), duracionNs.getValue()).getNanoseconds());
+            escenario.obtenerSimulacion().ponerDuracion(new TTimestamp(duracionMs.getValue(), duracionNs.getValue()).getTotalAsNanoseconds());
             escenario.obtenerSimulacion().ponerPaso(pasoNs.getValue());
         }
     }

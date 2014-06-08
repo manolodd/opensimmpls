@@ -16,157 +16,157 @@
  */
 package simMPLS.hardware.timer;
 
-/** Esta clase implementa una marca de tiempo, un instante, un momento temporal
- * dado. un tic de reloj vendr� dado siempre como un par de marcas de tiempo que
- * delimitr�n su duraci�n; cada marca de tiempo es de este tipo.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+/**
+ * This class implements a timestamp.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
-public class TTimestamp {
+public class TTimestamp implements Comparable {
 
-    /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
-     * TMarcaTiempo.
-     * @param ms La componente de la marca de tiempo que expresa los milisegundos.
-     * @param ns La componente de la marca de tiempo que expresa los nanosegundos.
+    /**
+     * This method is the constructor of the class. Is creates a new instance of
+     * TTimestamp that represent a given moment. Through this timestamp, a
+     * moment is represented as M:N where M=milliseconds and N=nanoseconds.
+     *
+     * @param millisecond The millisecond part of the timestamp.
+     * @param nanosecond The nanosecond part of the timestamp.
      * @since 1.0
      */
-    public TTimestamp(long ms, int ns) {
-        milisegundo = ms;
-        nanosegundo = ns;
+    public TTimestamp(long millisecond, int nanosecond) {
+        this.millisecond = millisecond;
+        this.nanosecond = nanosecond;
     }
 
-    /** Este m�todo compara la instancia actual con otra del tipo TTimestamp. Es
-     * requisito por implementar la interfaz comparable.
-     * @param anotherTimestamp Objeto del tipo TTimestamp con el que deseamos compar la instancia actual.
-     * @return ARGUMENT_IS_GREATER, BOTH_ARE_EQUAL anotherTimestamp ARGUMENT_IS_LOWER, en funci�n de si la instancia
- con al que nos estamos comparando es mayor, igual anotherTimestamp menor que la actual, de
- acuerdo al orden elegido.
+    /**
+     * This method compares the current timestamp with another that is specified
+     * as an argument.
+     *
+     * @param anotherTimestamp An external TTimestamp instace to be compared
+     * with the current one.
+     * @return ARGUMENT_IS_GREATER, BOTH_ARE_EQUAL or ARGUMENT_IS_LOWER,
+     * depending on whether the specified argument is greater, equal or lower
+     * than the current instance.
      * @since 1.0
-     */    
-    public int compare(Object anotherTimestamp) {
+     */
+    @Override
+    public int compareTo(Object anotherTimestamp) {
         TTimestamp argument = (TTimestamp) anotherTimestamp;
-        if (milisegundo < argument.getMillisecond())
+        if (this.millisecond < argument.getMillisecond()) {
             return this.ARGUMENT_IS_GREATER;
-        if (milisegundo > argument.getMillisecond())
+        }
+        if (this.millisecond > argument.getMillisecond()) {
             return this.ARGUMENT_IS_LOWER;
-        if (milisegundo == argument.getMillisecond()) {
-            if (nanosegundo < argument.getNanosecond())
+        }
+        if (this.millisecond == argument.getMillisecond()) {
+            if (this.nanosecond < argument.getNanosecond()) {
                 return this.ARGUMENT_IS_GREATER;
-            if (nanosegundo > argument.getNanosecond())
+            }
+            if (this.nanosecond > argument.getNanosecond()) {
                 return this.ARGUMENT_IS_LOWER;
-            if (nanosegundo == argument.getNanosecond())
+            }
+            if (this.nanosecond == argument.getNanosecond()) {
                 return this.BOTH_ARE_EQUAL;
+            }
         }
         return this.BOTH_ARE_EQUAL;
     }
 
-    /** Este m�todo obtiene la componente de la marca de tiempo que expresa los
-     * nanosegundos.
-     * @return La componente de la marca de tiempo que expresa los
-     * nanosegundos.
+    /**
+     * This method gets the nanosecond component of the timestamp.
+     *
+     * @return The nanosecond component of the timestamp.
      * @since 1.0
-     */    
+     */
     public int getNanosecond() {
-        return nanosegundo;
-    }
-
-    /** Este m�todo permite establecer la componente de la marca de tiempo que expresa los
-     * nanosegundos.
-     * @param ns La componente de la marca de tiempo que expresa los
-     * nanosegundos.
-     * @since 1.0
-     */    
-    public void setNanosecond(int ns) {
-        nanosegundo = ns;
-    }
-
-    /** Este m�todo permite sumar un n�mero de nanosegundos determinados a la instancia
-     * actual.
-     * @param ns El n�mero de nanosegundos a sumar a la instancia actual.
-     * @since 1.0
-     */    
-    public void increaseNanosecond(int ns) {
-        nanosegundo += ns;
-        long divisionEntera = (nanosegundo / 1000000);
-        if (divisionEntera > 0) {
-            sumarMilisegundo(divisionEntera);
-            nanosegundo %= 1000000;
-        }
-    }
-
-    /** Este m�todo obtiene la componente de la marca de tiempo que expresa los
-     * milisegundos.
-     * @return La componente de la marca de tiempo que expresa los
-     * milisegundos.
-     * @since 1.0
-     */    
-    public long getMillisecond() {
-        return milisegundo;
-    }
-
-    /** Este m�todo permite establecer la componente de la marca de tiempo que expresa los
-     * milisegundos.
-     * @param ms La componente de la marca de tiempo que expresa los
-     * milisegundos.
-     * @since 1.0
-     */    
-    public void setMillisecond(long ms) {
-        milisegundo = ms;
+        return this.nanosecond;
     }
 
     /**
-     * Este m�todo configura la instancia de marca actual bas�ndose en otra marca de
-     * tiempo ya existente.
-     * @param mt Marca de tiempo ya existente con cuyos valores vamos a iniciar la instancia
-     * actual.
+     * This method set the nanosecond component of the timestamp.
+     *
+     * @param nanosecond The nanosecond component of the timestamp.
      * @since 1.0
-     */    
-    public void setTimestamp(TTimestamp mt) {
-        this.milisegundo = mt.getMillisecond();
-        this.nanosegundo = mt.getNanosecond();
-    }
-    
-    /** Este m�todo permite sumar un n�mero de milisegundos determinados a la instancia
-     * actual.
-     * @param ms El n�mero de milisegundos a sumar a la instancia actual.
-     * @since 1.0
-     */    
-    public void sumarMilisegundo(long ms) {
-        milisegundo += ms;
+     */
+    public void setNanosecond(int nanosecond) {
+        this.nanosecond = nanosecond;
     }
 
-    /** Este m�todo permite obtener la expresi�n de la marca de tiempo en nanosegundos.
-     * @return la expresi�n de la marca de tiempo en nanosegundos.
+    /**
+     * This method adds the specified number of nanoseconds to the current
+     * timestamp.
+     *
+     * @param addedNanosecond The number of nanoseconds to be added to the
+     * current timestamp.
      * @since 1.0
-     */    
-    public long getNanoseconds() {
-        return (long) ((this.getMillisecond()*1000000) + this.getNanosecond());
+     */
+    public void increaseNanoseconds(int addedNanosecond) {
+        this.nanosecond += addedNanosecond;
+        long integerDivision = (this.nanosecond / 1000000);
+        if (integerDivision > 0) {
+            increaseMiliseconds(integerDivision);
+            this.nanosecond %= 1000000;
+        }
     }
 
-    /** Constante para indicar que, al compare dos marcas, la que se compara con la
- instancia actual es mayor.
+    /**
+     * This method get the millisecond component of the timestamp.
+     *
+     * @return The millisecond component of the timestamp.
      * @since 1.0
-     */    
+     */
+    public long getMillisecond() {
+        return this.millisecond;
+    }
+
+    /**
+     * This method set the millisecond component of the timestamp.
+     *
+     * @param millisecond The millisecond component of the timestamp.
+     * @since 1.0
+     */
+    public void setMillisecond(long millisecond) {
+        this.millisecond = millisecond;
+    }
+
+    /**
+     * This method set the current timestamp using the values of another
+     * timestamp specified as an argument.
+     *
+     * @param anotherTimestamp A timestamp that will be used to set the values
+     * of the current one..
+     * @since 1.0
+     */
+    public void setTimestamp(TTimestamp anotherTimestamp) {
+        this.millisecond = anotherTimestamp.getMillisecond();
+        this.nanosecond = anotherTimestamp.getNanosecond();
+    }
+
+    /**
+     * This method adds the specified number of milliseconds to the current
+     * timestamp.
+     *
+     * @param addedMilliseconds The number of milliseconds to be added to the
+     * current timestamp.
+     * @since 1.0
+     */
+    public void increaseMiliseconds(long addedMilliseconds) {
+        this.millisecond += addedMilliseconds;
+    }
+
+    /**
+     * This method gets the moment represented by the current timestamp, in
+     * nanoseconds.
+     *
+     * @return The moment represented by the current timestamp, in nanoseconds.
+     * @since 1.0
+     */
+    public long getTotalAsNanoseconds() {
+        return (long) ((this.getMillisecond() * 1000000) + this.getNanosecond());
+    }
     public static final int ARGUMENT_IS_GREATER = -1;
-    /** Constante para indicar que, al compare dos marcas, ambas son iguales.
-     * @since 1.0
-     */    
     public static final int BOTH_ARE_EQUAL = 0;
-    /** Constante para indicar que, al compare dos marcas, la que se compara con la
- instancia actual es menor.
-     * @since 1.0
-     */    
     public static final int ARGUMENT_IS_LOWER = 1;
-
-    /** Este atributo almacenar� la componente de la marca de tiempo que expresa los
-     * milisegundos.
-     * @since 1.0
-     */    
-    private long milisegundo;
-    /** Este atributo almacenar� la componente de la marca de tiempo que expresa los
-     * nanosegundos.
-     * @since 1.0
-     */    
-    private int nanosegundo;
+    private long millisecond;
+    private int nanosecond;
 }

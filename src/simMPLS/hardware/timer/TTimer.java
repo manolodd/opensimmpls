@@ -299,8 +299,8 @@ public class TTimer implements Runnable {
      */
     public void generateProgressEvent() {
         int computedProgress = 0;
-        long simulationDuration = this.finishTimestamp.getNanoseconds();
-        long currentTime = this.currentTimestamp.getNanoseconds();
+        long simulationDuration = this.finishTimestamp.getTotalAsNanoseconds();
+        long currentTime = this.currentTimestamp.getTotalAsNanoseconds();
         if (simulationDuration != 0) {
             computedProgress = (int) Math.round((currentTime * 100) / simulationDuration);
         }
@@ -408,34 +408,34 @@ public class TTimer implements Runnable {
         long simulationDuration;
         boolean simulationFinished = false;
         this.isFinished = false;
-        this.currentTimestamp.increaseNanosecond(this.tick);
-        currentSimulatedTime = this.currentTimestamp.getNanoseconds();
-        simulationDuration = this.finishTimestamp.getNanoseconds();
+        this.currentTimestamp.increaseNanoseconds(this.tick);
+        currentSimulatedTime = this.currentTimestamp.getTotalAsNanoseconds();
+        simulationDuration = this.finishTimestamp.getTotalAsNanoseconds();
         if (currentSimulatedTime == simulationDuration) {
             simulationFinished = true;
         }
-        while ((this.currentTimestamp.compare(this.finishTimestamp) != TTimestamp.ARGUMENT_IS_LOWER) && (!this.isFinished)) {
+        while ((this.currentTimestamp.compareTo(this.finishTimestamp) != TTimestamp.ARGUMENT_IS_LOWER) && (!this.isFinished)) {
             // Let's simulate
             generateProgressEvent();
             generateTimerEvent();
             // ------------------
             this.previousTimestamp.setMillisecond(this.currentTimestamp.getMillisecond());
             this.previousTimestamp.setNanosecond(this.currentTimestamp.getNanosecond());
-            currentSimulatedTime = this.currentTimestamp.getNanoseconds();
-            simulationDuration = this.finishTimestamp.getNanoseconds();
+            currentSimulatedTime = this.currentTimestamp.getTotalAsNanoseconds();
+            simulationDuration = this.finishTimestamp.getTotalAsNanoseconds();
             if (currentSimulatedTime + this.tick > simulationDuration) {
                 if (!simulationFinished) {
                     currentTimestamp.setMillisecond(this.finishTimestamp.getMillisecond());
                     currentTimestamp.setNanosecond(this.finishTimestamp.getNanosecond());
                     simulationFinished = true;
                 } else {
-                    this.currentTimestamp.increaseNanosecond(this.tick);
+                    this.currentTimestamp.increaseNanoseconds(this.tick);
                 }
             } else {
-                this.currentTimestamp.increaseNanosecond(this.tick);
+                this.currentTimestamp.increaseNanoseconds(this.tick);
             }
-            currentSimulatedTime = this.currentTimestamp.getNanoseconds();
-            previousSimulatedTime = this.previousTimestamp.getNanoseconds();
+            currentSimulatedTime = this.currentTimestamp.getTotalAsNanoseconds();
+            previousSimulatedTime = this.previousTimestamp.getTotalAsNanoseconds();
             if (previousSimulatedTime == currentSimulatedTime) {
                 this.isFinished = true;
             }
