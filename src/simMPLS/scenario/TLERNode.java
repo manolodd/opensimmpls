@@ -232,22 +232,22 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         TPort puertoEntrada = null;
         TLink et = null;
         TLink et2 = null;
-        matrizConmutacion.obtenerCerrojo().lock();
-        Iterator it = matrizConmutacion.obtenerIteradorEntradas();
+        matrizConmutacion.getMonitor().lock();
+        Iterator it = matrizConmutacion.getEntriesIterator();
         while (it.hasNext()) {
             emc = (TSwitchingMatrixEntry) it.next();
             if (emc != null) {
-                idPuerto = emc.obtenerPuertoSalida();
+                idPuerto = emc.getOutgoingPortID();
                 if ((idPuerto >= 0) && (idPuerto < this.puertos.getNumberOfPorts())) {
                     puertoSalida = this.puertos.getPort(idPuerto);
                     if (puertoSalida != null) {
                         et = puertoSalida.getLink();
                         if (et != null) {
-                            if ((et.linkIsBroken()) && (emc.obtenerEtiqueta() != TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA)) {
-                                puertoEntrada = this.puertos.getPort(emc.obtenerPuertoEntrada());
+                            if ((et.linkIsBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
+                                puertoEntrada = this.puertos.getPort(emc.getIncomingPortID());
                                 et = puertoEntrada.getLink();
                                 if (et.getLinkType() == TLink.INTERNAL) {
-                                    eliminarTLDP(emc, emc.obtenerPuertoEntrada());
+                                    eliminarTLDP(emc, emc.getIncomingPortID());
                                 } else {
                                     eliminar = true;
                                 }
@@ -255,17 +255,17 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                         }
                     }
                 }
-                idPuerto = emc.obtenerPuertoEntrada();
+                idPuerto = emc.getIncomingPortID();
                 if ((idPuerto >= 0) && (idPuerto < this.puertos.getNumberOfPorts())) {
                     puertoEntrada = this.puertos.getPort(idPuerto);
                     if (puertoEntrada != null) {
                         et = puertoEntrada.getLink();
                         if (et != null) {
-                            if ((et.linkIsBroken()) && (emc.obtenerEtiqueta() != TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA)) {
-                                puertoSalida = this.puertos.getPort(emc.obtenerPuertoSalida());
+                            if ((et.linkIsBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
+                                puertoSalida = this.puertos.getPort(emc.getOutgoingPortID());
                                 et = puertoSalida.getLink();
                                 if (et.getLinkType() == TLink.INTERNAL) {
-                                    eliminarTLDP(emc, emc.obtenerPuertoSalida());
+                                    eliminarTLDP(emc, emc.getOutgoingPortID());
                                 } else {
                                     eliminar = false;
                                 }
@@ -273,9 +273,9 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                         }
                     }
                 }
-                if ((emc.obtenerPuertoEntrada() >= 0) && ((emc.obtenerPuertoSalida() >= 0))) {
-                    et = puertos.getPort(emc.obtenerPuertoEntrada()).getLink();
-                    et2 = puertos.getPort(emc.obtenerPuertoSalida()).getLink();
+                if ((emc.getIncomingPortID() >= 0) && ((emc.getOutgoingPortID() >= 0))) {
+                    et = puertos.getPort(emc.getIncomingPortID()).getLink();
+                    et2 = puertos.getPort(emc.getOutgoingPortID()).getLink();
                     if (et.linkIsBroken() && et2.linkIsBroken()) {
                         eliminar = true;
                     }
@@ -295,7 +295,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                 it.remove();
             }
         }
-        matrizConmutacion.obtenerCerrojo().unLock();
+        matrizConmutacion.getMonitor().unLock();
     }
     
     /**
@@ -387,36 +387,36 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         int valorFEC = clasificarPaquete(paquete);
         String IPDestinoFinal = paquete.getHeader().obtenerIPDestino();
         TSwitchingMatrixEntry emc = null;
-        emc = matrizConmutacion.obtenerEntrada(pEntrada, valorFEC, TSwitchingMatrixEntry.FEC);
+        emc = matrizConmutacion.getEntry(pEntrada, valorFEC, TSwitchingMatrixEntry.FEC_ENTRY);
         if (emc == null) {
             emc = crearEntradaInicialEnMatrizFEC(paquete, pEntrada);
             if (emc != null) {
                 if (!soyLERDeSalida(IPDestinoFinal)) {
-                    emc.ponerEtiqueta(TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA);
+                    emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_REQUESTED);
                     solicitarTLDP(emc);
                 }
                 this.puertos.getPort(pEntrada).reEnqueuePacket(paquete);
             }
         }
         if (emc != null) {
-            int etiquetaActual = emc.obtenerEtiqueta();
-            if (etiquetaActual == TSwitchingMatrixEntry.SIN_DEFINIR) {
-                emc.ponerEtiqueta(TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA);
+            int etiquetaActual = emc.getOutgoingLabel();
+            if (etiquetaActual == TSwitchingMatrixEntry.UNDEFINED) {
+                emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_REQUESTED);
                 solicitarTLDP(emc);
-                this.puertos.getPort(emc.obtenerPuertoEntrada()).reEnqueuePacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA) {
-                this.puertos.getPort(emc.obtenerPuertoEntrada()).reEnqueuePacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_DENEGADA) {
+                this.puertos.getPort(emc.getIncomingPortID()).reEnqueuePacket(paquete);
+            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+                this.puertos.getPort(emc.getIncomingPortID()).reEnqueuePacket(paquete);
+            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_DENIED) {
                 discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA) {
+            } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
                 discardPacket(paquete);
-            } else if ((etiquetaActual > 15) || (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA)) {
-                int operacion = emc.obtenerOperacion();
-                if (operacion == TSwitchingMatrixEntry.SIN_DEFINIR) {
+            } else if ((etiquetaActual > 15) || (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED)) {
+                int operacion = emc.getLabelStackOperation();
+                if (operacion == TSwitchingMatrixEntry.UNDEFINED) {
                     discardPacket(paquete);
                 } else {
-                    if (operacion == TSwitchingMatrixEntry.PONER_ETIQUETA) {
-                        TPort pSalida = puertos.getPort(emc.obtenerPuertoSalida());
+                    if (operacion == TSwitchingMatrixEntry.PUSH_LABEL) {
+                        TPort pSalida = puertos.getPort(emc.getOutgoingPortID());
                         TPDUMPLS paqueteMPLS = this.crearPaqueteMPLS(paquete, emc);
                         pSalida.putPacketOnLink(paqueteMPLS, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
@@ -424,12 +424,12 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    } else if (operacion == TSwitchingMatrixEntry.QUITAR_ETIQUETA) {
+                    } else if (operacion == TSwitchingMatrixEntry.POP_LABEL) {
                         discardPacket(paquete);
-                    } else if (operacion == TSwitchingMatrixEntry.CAMBIAR_ETIQUETA) {
+                    } else if (operacion == TSwitchingMatrixEntry.SWAP_LABEL) {
                         discardPacket(paquete);
                     } else if (operacion == TSwitchingMatrixEntry.NOOP) {
-                        TPort pSalida = puertos.getPort(emc.obtenerPuertoSalida());
+                        TPort pSalida = puertos.getPort(emc.getOutgoingPortID());
                         pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
                             this.generarEventoSimulacion(new TSEPacketRouted(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
@@ -490,12 +490,12 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         }
         int valorLABEL = paquete.getLabelStack().getTop().getLabelField();
         String IPDestinoFinal = paquete.getHeader().obtenerIPDestino();
-        emc = matrizConmutacion.obtenerEntrada(pEntrada, valorLABEL, TSwitchingMatrixEntry.LABEL);
+        emc = matrizConmutacion.getEntry(pEntrada, valorLABEL, TSwitchingMatrixEntry.LABEL_ENTRY);
         if (emc == null) {
             emc = crearEntradaInicialEnMatrizLABEL(paquete, pEntrada);
             if (emc != null) {
                 if (!soyLERDeSalida(IPDestinoFinal)) {
-                    emc.ponerEtiqueta(TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA);
+                    emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_REQUESTED);
                     solicitarTLDP(emc);
                 }
                 if (conEtiqueta1) {
@@ -505,42 +505,42 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
             }
         }
         if (emc != null) {
-            int etiquetaActual = emc.obtenerEtiqueta();
-            if (etiquetaActual == TSwitchingMatrixEntry.SIN_DEFINIR) {
-                emc.ponerEtiqueta(TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA);
+            int etiquetaActual = emc.getOutgoingLabel();
+            if (etiquetaActual == TSwitchingMatrixEntry.UNDEFINED) {
+                emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_REQUESTED);
                 solicitarTLDP(emc);
                 if (conEtiqueta1) {
                     paquete.getLabelStack().ponerEtiqueta(eMPLS);
                 }
-                this.puertos.getPort(emc.obtenerPuertoEntrada()).reEnqueuePacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA) {
+                this.puertos.getPort(emc.getIncomingPortID()).reEnqueuePacket(paquete);
+            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
                 if (conEtiqueta1) {
                     paquete.getLabelStack().ponerEtiqueta(eMPLS);
                 }
-                this.puertos.getPort(emc.obtenerPuertoEntrada()).reEnqueuePacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_DENEGADA) {
-                if (conEtiqueta1) {
-                    paquete.getLabelStack().ponerEtiqueta(eMPLS);
-                }
-                discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA) {
+                this.puertos.getPort(emc.getIncomingPortID()).reEnqueuePacket(paquete);
+            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_DENIED) {
                 if (conEtiqueta1) {
                     paquete.getLabelStack().ponerEtiqueta(eMPLS);
                 }
                 discardPacket(paquete);
-            } else if ((etiquetaActual > 15) || (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA)) {
-                int operacion = emc.obtenerOperacion();
-                if (operacion == TSwitchingMatrixEntry.SIN_DEFINIR) {
+            } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
+                if (conEtiqueta1) {
+                    paquete.getLabelStack().ponerEtiqueta(eMPLS);
+                }
+                discardPacket(paquete);
+            } else if ((etiquetaActual > 15) || (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED)) {
+                int operacion = emc.getLabelStackOperation();
+                if (operacion == TSwitchingMatrixEntry.UNDEFINED) {
                     if (conEtiqueta1) {
                         paquete.getLabelStack().ponerEtiqueta(eMPLS);
                     }
                     discardPacket(paquete);
                 } else {
-                    if (operacion == TSwitchingMatrixEntry.PONER_ETIQUETA) {
+                    if (operacion == TSwitchingMatrixEntry.PUSH_LABEL) {
                         TEtiquetaMPLS empls = new TEtiquetaMPLS();
                         empls.ponerBoS(false);
                         empls.ponerEXP(0);
-                        empls.setLabelField(emc.obtenerEtiqueta());
+                        empls.setLabelField(emc.getOutgoingLabel());
                         empls.ponerTTL(paquete.getLabelStack().getTop().obtenerTTL()-1);
                         paquete.getLabelStack().ponerEtiqueta(empls);
                         if (conEtiqueta1) {
@@ -549,27 +549,27 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                         } else {
                             paquete.ponerSubtipo(TPDU.MPLS);
                         }
-                        TPort pSalida = puertos.getPort(emc.obtenerPuertoSalida());
+                        TPort pSalida = puertos.getPort(emc.getOutgoingPortID());
                         pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
                             this.generarEventoSimulacion(new TSEPacketRouted(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    } else if (operacion == TSwitchingMatrixEntry.QUITAR_ETIQUETA) {
+                    } else if (operacion == TSwitchingMatrixEntry.POP_LABEL) {
                         if (paquete.getLabelStack().getTop().obtenerBoS()) {
                             TPDUIPv4 paqueteIPv4 = this.crearPaqueteIPv4(paquete, emc);
                             if (conEtiqueta1) {
                                 paqueteIPv4.ponerSubtipo(TPDU.IPV4_GOS);
                             }
-                            TPort pSalida = puertos.getPort(emc.obtenerPuertoSalida());
+                            TPort pSalida = puertos.getPort(emc.getOutgoingPortID());
                             pSalida.putPacketOnLink(paqueteIPv4, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         } else {
                             paquete.getLabelStack().borrarEtiqueta();
                             if (conEtiqueta1) {
                                 paquete.getLabelStack().ponerEtiqueta(eMPLS);
                             }
-                            TPort pSalida = puertos.getPort(emc.obtenerPuertoSalida());
+                            TPort pSalida = puertos.getPort(emc.getOutgoingPortID());
                             pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         }
                         try {
@@ -577,12 +577,12 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    } else if (operacion == TSwitchingMatrixEntry.CAMBIAR_ETIQUETA) {
-                        paquete.getLabelStack().getTop().setLabelField(emc.obtenerEtiqueta());
+                    } else if (operacion == TSwitchingMatrixEntry.SWAP_LABEL) {
+                        paquete.getLabelStack().getTop().setLabelField(emc.getOutgoingLabel());
                         if (conEtiqueta1) {
                             paquete.getLabelStack().ponerEtiqueta(eMPLS);
                         }
-                        TPort pSalida = puertos.getPort(emc.obtenerPuertoSalida());
+                        TPort pSalida = puertos.getPort(emc.getOutgoingPortID());
                         pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
                             this.generarEventoSimulacion(new TSEPacketRouted(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
@@ -590,7 +590,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                             e.printStackTrace();
                         }
                     } else if (operacion == TSwitchingMatrixEntry.NOOP) {
-                        TPort pSalida = puertos.getPort(emc.obtenerPuertoSalida());
+                        TPort pSalida = puertos.getPort(emc.getOutgoingPortID());
                         pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
                             this.generarEventoSimulacion(new TSEPacketRouted(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
@@ -621,22 +621,22 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      */
     public void tratarSolicitudTLDP(TPDUTLDP paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
-        emc = matrizConmutacion.obtenerEntradaIDAntecesor(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP(), pEntrada);
+        emc = matrizConmutacion.getEntryHavinUpstreamTLDPSessionID(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP(), pEntrada);
         if (emc == null) {
             emc = crearEntradaAPartirDeTLDP(paquete, pEntrada);
         }
         if (emc != null) {
-            int etiquetaActual = emc.obtenerEtiqueta();
-            if (etiquetaActual == TSwitchingMatrixEntry.SIN_DEFINIR) {
-                emc.ponerEtiqueta(TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA);
+            int etiquetaActual = emc.getOutgoingLabel();
+            if (etiquetaActual == TSwitchingMatrixEntry.UNDEFINED) {
+                emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_REQUESTED);
                 this.solicitarTLDP(emc);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA) {
+            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
                 // no hago nada. Se est� esperando una etiqueta.);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_DENEGADA) {
+            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_DENIED) {
                 enviarSolicitudNoTLDP(emc);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA) {
+            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
                 enviarSolicitudOkTLDP(emc);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA) {
+            } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
                 eliminarTLDP(emc, pEntrada);
             } else if (etiquetaActual > 15) {
                 enviarSolicitudOkTLDP(emc);
@@ -657,42 +657,42 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     public void tratarEliminacionTLDP(TPDUTLDP paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
         if (paquete.obtenerEntradaPaquete() == TPDUTLDP.ENTRADA) {
-            emc = matrizConmutacion.obtenerEntradaIDAntecesor(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP(), pEntrada);
+            emc = matrizConmutacion.getEntryHavinUpstreamTLDPSessionID(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP(), pEntrada);
         } else {
-            emc = matrizConmutacion.obtenerEntradaIDPropio(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP());
+            emc = matrizConmutacion.getEntryHavingLocalTLDPSessionID(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP());
         }
         if (emc == null) {
             discardPacket(paquete);
         } else {
-            if (emc.obtenerIDLDPAntecesor() != TSwitchingMatrixEntry.SIN_DEFINIR) {
-                int etiquetaActual = emc.obtenerEtiqueta();
-                if (etiquetaActual == TSwitchingMatrixEntry.SIN_DEFINIR) {
-                    emc.ponerEtiqueta(TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA);
+            if (emc.getUpstreamTLDPSessionID() != TSwitchingMatrixEntry.UNDEFINED) {
+                int etiquetaActual = emc.getOutgoingLabel();
+                if (etiquetaActual == TSwitchingMatrixEntry.UNDEFINED) {
+                    emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
                     enviarEliminacionOkTLDP(emc, pEntrada);
-                    eliminarTLDP(emc, emc.obtenerPuertoOpuesto(pEntrada));
-                } else if (etiquetaActual == TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA) {
-                    emc.ponerEtiqueta(TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA);
+                    eliminarTLDP(emc, emc.getOppositePortID(pEntrada));
+                } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+                    emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
                     enviarEliminacionOkTLDP(emc, pEntrada);
-                    eliminarTLDP(emc, emc.obtenerPuertoOpuesto(pEntrada));
-                } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_DENEGADA) {
-                    emc.ponerEtiqueta(TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA);
+                    eliminarTLDP(emc, emc.getOppositePortID(pEntrada));
+                } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_DENIED) {
+                    emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
                     enviarEliminacionOkTLDP(emc, pEntrada);
-                    eliminarTLDP(emc, emc.obtenerPuertoOpuesto(pEntrada));
-                } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA) {
+                    eliminarTLDP(emc, emc.getOppositePortID(pEntrada));
+                } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
                     enviarEliminacionOkTLDP(emc, pEntrada);
-                    matrizConmutacion.borrarEntrada(emc.obtenerPuertoEntrada(), emc.obtenerLabelFEC(), emc.obtenerTipo());
-                } else if (etiquetaActual == TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA) {
+                    matrizConmutacion.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
+                } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
                     enviarEliminacionOkTLDP(emc, pEntrada);
                 } else if (etiquetaActual > 15) {
-                    emc.ponerEtiqueta(TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA);
+                    emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
                     enviarEliminacionOkTLDP(emc, pEntrada);
-                    eliminarTLDP(emc, emc.obtenerPuertoOpuesto(pEntrada));
+                    eliminarTLDP(emc, emc.getOppositePortID(pEntrada));
                 } else {
                     discardPacket(paquete);
                 }
             } else {
                 enviarEliminacionOkTLDP(emc, pEntrada);
-                matrizConmutacion.borrarEntrada(emc.obtenerPuertoEntrada(), emc.obtenerLabelFEC(), emc.obtenerTipo());
+                matrizConmutacion.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
             }
         }
     }
@@ -705,32 +705,32 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      */
     public void tratarSolicitudOkTLDP(TPDUTLDP paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
-        emc = matrizConmutacion.obtenerEntradaIDPropio(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP());
+        emc = matrizConmutacion.getEntryHavingLocalTLDPSessionID(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP());
         if (emc == null) {
             discardPacket(paquete);
         } else {
-            int etiquetaActual = emc.obtenerEtiqueta();
-            if (etiquetaActual == TSwitchingMatrixEntry.SIN_DEFINIR) {
+            int etiquetaActual = emc.getOutgoingLabel();
+            if (etiquetaActual == TSwitchingMatrixEntry.UNDEFINED) {
                 discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA) {
-                emc.ponerEtiqueta(paquete.obtenerDatosTLDP().obtenerEtiqueta());
-                if (emc.obtenerLabelFEC() == TSwitchingMatrixEntry.SIN_DEFINIR) {
-                    emc.ponerLabelFEC(matrizConmutacion.obtenerEtiqueta());
+            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+                emc.setOutgoingLabel(paquete.obtenerDatosTLDP().obtenerEtiqueta());
+                if (emc.getLabelOrFEC() == TSwitchingMatrixEntry.UNDEFINED) {
+                    emc.setLabelOrFEC(matrizConmutacion.getNewLabel());
                 }
-                TInternalLink et = (TInternalLink) puertos.getPort(emc.obtenerPuertoSalida()).getLink();
+                TInternalLink et = (TInternalLink) puertos.getPort(emc.getOutgoingPortID()).getLink();
                 if (et != null) {
-                    if (emc.obtenerEntranteEsLSPDEBackup()) {
+                    if (emc.aBackupLSPHasBeenRequested()) {
                         et.ponerLSPDeBackup();
                     } else {
                         et.ponerLSP();
                     }
                 }
                 enviarSolicitudOkTLDP(emc);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_DENEGADA) {
+            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_DENIED) {
                 discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA) {
+            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
                 discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA) {
+            } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
                 discardPacket(paquete);
             } else if (etiquetaActual > 15) {
                 discardPacket(paquete);
@@ -748,21 +748,21 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      */
     public void tratarSolicitudNoTLDP(TPDUTLDP paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
-        emc = matrizConmutacion.obtenerEntradaIDPropio(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP());
+        emc = matrizConmutacion.getEntryHavingLocalTLDPSessionID(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP());
         if (emc == null) {
             discardPacket(paquete);
         } else {
-            int etiquetaActual = emc.obtenerEtiqueta();
-            if (etiquetaActual == TSwitchingMatrixEntry.SIN_DEFINIR) {
+            int etiquetaActual = emc.getOutgoingLabel();
+            if (etiquetaActual == TSwitchingMatrixEntry.UNDEFINED) {
                 discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA) {
-                emc.ponerEtiqueta(TSwitchingMatrixEntry.ETIQUETA_DENEGADA);
+            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+                emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_DENIED);
                 enviarSolicitudNoTLDP(emc);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_DENEGADA) {
+            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_DENIED) {
                 discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA) {
+            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
                 discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA) {
+            } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
                 discardPacket(paquete);
             } else if (etiquetaActual > 15) {
                 discardPacket(paquete);
@@ -781,36 +781,36 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     public void tratarEliminacionOkTLDP(TPDUTLDP paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
         if (paquete.obtenerEntradaPaquete() == TPDUTLDP.ENTRADA) {
-            emc = matrizConmutacion.obtenerEntradaIDAntecesor(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP(), pEntrada);
+            emc = matrizConmutacion.getEntryHavinUpstreamTLDPSessionID(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP(), pEntrada);
         } else {
-            emc = matrizConmutacion.obtenerEntradaIDPropio(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP());
+            emc = matrizConmutacion.getEntryHavingLocalTLDPSessionID(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP());
         }
         if (emc == null) {
             discardPacket(paquete);
         } else {
-            int etiquetaActual = emc.obtenerEtiqueta();
-            if (etiquetaActual == TSwitchingMatrixEntry.SIN_DEFINIR) {
+            int etiquetaActual = emc.getOutgoingLabel();
+            if (etiquetaActual == TSwitchingMatrixEntry.UNDEFINED) {
                 discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA) {
+            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
                 discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_DENEGADA) {
+            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_DENIED) {
                 discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA) {
+            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
                 discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA) {
-                if (emc.obtenerEtiqueta() != TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA) {
+            } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
+                if (emc.getOutgoingLabel() != TSwitchingMatrixEntry.LABEL_ASSIGNED) {
                     TPort pSalida = puertos.getPort(pEntrada);
                     TLink et = pSalida.getLink();
                     if (et.getLinkType() == TLink.INTERNAL) {
                         TInternalLink ei = (TInternalLink) et;
-                        if (emc.obtenerEntranteEsLSPDEBackup()) {
+                        if (emc.aBackupLSPHasBeenRequested()) {
                             ei.quitarLSPDeBackup();
                         } else {
                             ei.quitarLSP();
                         }
                     }
                 }
-                matrizConmutacion.borrarEntrada(emc.obtenerPuertoEntrada(), emc.obtenerLabelFEC(), emc.obtenerTipo());
+                matrizConmutacion.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
              } else if (etiquetaActual > 15) {
                  discardPacket(paquete);
              } else {
@@ -827,9 +827,9 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      */
     public void enviarSolicitudOkTLDP(TSwitchingMatrixEntry emc) {
         if (emc != null) {
-            if (emc.obtenerIDLDPAntecesor() != TSwitchingMatrixEntry.SIN_DEFINIR) {
+            if (emc.getUpstreamTLDPSessionID() != TSwitchingMatrixEntry.UNDEFINED) {
                 String IPLocal = this.getIPAddress();
-                String IPDestino = puertos.getIPOfNodeLinkedTo(emc.obtenerPuertoEntrada());
+                String IPDestino = puertos.getIPOfNodeLinkedTo(emc.getIncomingPortID());
                 if (IPDestino != null) {
                     TPDUTLDP nuevoTLDP = null;
                     try {
@@ -839,10 +839,10 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                     }
                     if (nuevoTLDP != null) {
                         nuevoTLDP.obtenerDatosTLDP().ponerMensaje(TDatosTLDP.SOLICITUD_OK);
-                        nuevoTLDP.obtenerDatosTLDP().ponerIPDestinoFinal(emc.obtenerDestinoFinal());
-                        nuevoTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.obtenerIDLDPAntecesor());
-                        nuevoTLDP.obtenerDatosTLDP().ponerEtiqueta(emc.obtenerLabelFEC());
-                        if (emc.obtenerEntranteEsLSPDEBackup()) {
+                        nuevoTLDP.obtenerDatosTLDP().ponerIPDestinoFinal(emc.getTailEndIPAddress());
+                        nuevoTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.getUpstreamTLDPSessionID());
+                        nuevoTLDP.obtenerDatosTLDP().ponerEtiqueta(emc.getLabelOrFEC());
+                        if (emc.aBackupLSPHasBeenRequested()) {
                             nuevoTLDP.ponerSalidaPaquete(TPDUTLDP.ATRAS_BACKUP);
                         } else {
                             nuevoTLDP.ponerSalidaPaquete(TPDUTLDP.ATRAS);
@@ -869,9 +869,9 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      */
     public void enviarSolicitudNoTLDP(TSwitchingMatrixEntry emc) {
         if (emc != null) {
-            if (emc.obtenerIDLDPAntecesor() != TSwitchingMatrixEntry.SIN_DEFINIR) {
+            if (emc.getUpstreamTLDPSessionID() != TSwitchingMatrixEntry.UNDEFINED) {
                 String IPLocal = this.getIPAddress();
-                String IPDestino = puertos.getIPOfNodeLinkedTo(emc.obtenerPuertoEntrada());
+                String IPDestino = puertos.getIPOfNodeLinkedTo(emc.getIncomingPortID());
                 if (IPDestino != null) {
                     TPDUTLDP nuevoTLDP = null;
                     try {
@@ -881,10 +881,10 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                     }
                     if (nuevoTLDP != null) {
                         nuevoTLDP.obtenerDatosTLDP().ponerMensaje(TDatosTLDP.SOLICITUD_NO);
-                        nuevoTLDP.obtenerDatosTLDP().ponerIPDestinoFinal(emc.obtenerDestinoFinal());
-                        nuevoTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.obtenerIDLDPAntecesor());
-                        nuevoTLDP.obtenerDatosTLDP().ponerEtiqueta(TSwitchingMatrixEntry.SIN_DEFINIR);
-                        if (emc.obtenerEntranteEsLSPDEBackup()) {
+                        nuevoTLDP.obtenerDatosTLDP().ponerIPDestinoFinal(emc.getTailEndIPAddress());
+                        nuevoTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.getUpstreamTLDPSessionID());
+                        nuevoTLDP.obtenerDatosTLDP().ponerEtiqueta(TSwitchingMatrixEntry.UNDEFINED);
+                        if (emc.aBackupLSPHasBeenRequested()) {
                             nuevoTLDP.ponerSalidaPaquete(TPDUTLDP.ATRAS_BACKUP);
                         } else {
                             nuevoTLDP.ponerSalidaPaquete(TPDUTLDP.ATRAS);
@@ -923,14 +923,14 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                 }
                 if (nuevoTLDP != null) {
                     nuevoTLDP.obtenerDatosTLDP().ponerMensaje(TDatosTLDP.ELIMINACION_OK);
-                    nuevoTLDP.obtenerDatosTLDP().ponerIPDestinoFinal(emc.obtenerDestinoFinal());
-                    nuevoTLDP.obtenerDatosTLDP().ponerEtiqueta(TSwitchingMatrixEntry.SIN_DEFINIR);
-                    if (emc.obtenerPuertoSalida() == puerto) {
-                        nuevoTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.obtenerIDLDPPropio());
+                    nuevoTLDP.obtenerDatosTLDP().ponerIPDestinoFinal(emc.getTailEndIPAddress());
+                    nuevoTLDP.obtenerDatosTLDP().ponerEtiqueta(TSwitchingMatrixEntry.UNDEFINED);
+                    if (emc.getOutgoingPortID() == puerto) {
+                        nuevoTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.getLocalTLDPSessionID());
                         nuevoTLDP.ponerSalidaPaquete(TPDUTLDP.ADELANTE);
-                    } else if (emc.obtenerPuertoEntrada() == puerto) {
-                        nuevoTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.obtenerIDLDPAntecesor());
-                        if (emc.obtenerEntranteEsLSPDEBackup()) {
+                    } else if (emc.getIncomingPortID() == puerto) {
+                        nuevoTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.getUpstreamTLDPSessionID());
+                        if (emc.aBackupLSPHasBeenRequested()) {
                             nuevoTLDP.ponerSalidaPaquete(TPDUTLDP.ATRAS_BACKUP);
                         } else {
                             nuevoTLDP.ponerSalidaPaquete(TPDUTLDP.ATRAS);
@@ -957,8 +957,8 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      */
     public void solicitarTLDP(TSwitchingMatrixEntry emc) {
         String IPLocal = this.getIPAddress();
-        String IPDestinoFinal = emc.obtenerDestinoFinal();
-        if (emc.obtenerEtiqueta() != TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA) {
+        String IPDestinoFinal = emc.getTailEndIPAddress();
+        if (emc.getOutgoingLabel() != TSwitchingMatrixEntry.LABEL_ASSIGNED) {
             String IPSalto = topologia.obtenerIPSalto(IPLocal, IPDestinoFinal);
             if (IPSalto != null) {
                 TPDUTLDP paqueteTLDP = null;
@@ -970,8 +970,8 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                 if (paqueteTLDP != null) {
                     paqueteTLDP.obtenerDatosTLDP().ponerIPDestinoFinal(IPDestinoFinal);
                     paqueteTLDP.obtenerDatosTLDP().ponerMensaje(TDatosTLDP.SOLICITUD_ETIQUETA);
-                    paqueteTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.obtenerIDLDPPropio());
-                    if (emc.obtenerEntranteEsLSPDEBackup()) {
+                    paqueteTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.getLocalTLDPSessionID());
+                    if (emc.aBackupLSPHasBeenRequested()) {
                         paqueteTLDP.ponerEsParaBackup(true);
                     } else {
                         paqueteTLDP.ponerEsParaBackup(false);
@@ -1001,9 +1001,9 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      */
     public void eliminarTLDP(TSwitchingMatrixEntry emc, int puerto) {
         if (emc != null) {
-            emc.ponerEtiqueta(TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA);
+            emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
             String IPLocal = this.getIPAddress();
-            String IPDestinoFinal = emc.obtenerDestinoFinal();
+            String IPDestinoFinal = emc.getTailEndIPAddress();
             String IPSalto = puertos.getIPOfNodeLinkedTo(puerto);
             if (IPSalto != null) {
                 TPDUTLDP paqueteTLDP = null;
@@ -1015,12 +1015,12 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                 if (paqueteTLDP != null) {
                     paqueteTLDP.obtenerDatosTLDP().ponerIPDestinoFinal(IPDestinoFinal);
                     paqueteTLDP.obtenerDatosTLDP().ponerMensaje(TDatosTLDP.ELIMINACION_ETIQUETA);
-                    if (emc.obtenerPuertoSalida() == puerto) {
-                        paqueteTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.obtenerIDLDPPropio());
+                    if (emc.getOutgoingPortID() == puerto) {
+                        paqueteTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.getLocalTLDPSessionID());
                         paqueteTLDP.ponerSalidaPaquete(TPDUTLDP.ADELANTE);
-                    } else if (emc.obtenerPuertoEntrada() == puerto) {
-                        paqueteTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.obtenerIDLDPAntecesor());
-                        if (emc.obtenerEntranteEsLSPDEBackup()) {
+                    } else if (emc.getIncomingPortID() == puerto) {
+                        paqueteTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.getUpstreamTLDPSessionID());
+                        if (emc.aBackupLSPHasBeenRequested()) {
                             paqueteTLDP.ponerSalidaPaquete(TPDUTLDP.ATRAS_BACKUP);
                         } else {
                             paqueteTLDP.ponerSalidaPaquete(TPDUTLDP.ATRAS);
@@ -1050,8 +1050,8 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     public void solicitarTLDPTrasTimeout(TSwitchingMatrixEntry emc) {
         if (emc != null) {
             String IPLocal = this.getIPAddress();
-            String IPDestinoFinal = emc.obtenerDestinoFinal();
-            String IPSalto = puertos.getIPOfNodeLinkedTo(emc.obtenerPuertoSalida());
+            String IPDestinoFinal = emc.getTailEndIPAddress();
+            String IPSalto = puertos.getIPOfNodeLinkedTo(emc.getOutgoingPortID());
             if (IPSalto != null) {
                 TPDUTLDP paqueteTLDP = null;
                 try {
@@ -1062,14 +1062,14 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                 if (paqueteTLDP != null) {
                     paqueteTLDP.obtenerDatosTLDP().ponerIPDestinoFinal(IPDestinoFinal);
                     paqueteTLDP.obtenerDatosTLDP().ponerMensaje(TDatosTLDP.SOLICITUD_ETIQUETA);
-                    paqueteTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.obtenerIDLDPPropio());
-                    if (emc.obtenerEntranteEsLSPDEBackup()) {
+                    paqueteTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.getLocalTLDPSessionID());
+                    if (emc.aBackupLSPHasBeenRequested()) {
                         paqueteTLDP.ponerEsParaBackup(true);
                     } else {
                         paqueteTLDP.ponerEsParaBackup(false);
                     }
                     paqueteTLDP.ponerSalidaPaquete(TPDUTLDP.ADELANTE);
-                    TPort pSalida = puertos.getPort(emc.obtenerPuertoSalida());
+                    TPort pSalida = puertos.getPort(emc.getOutgoingPortID());
                     if (pSalida != null) {
                         pSalida.putPacketOnLink(paqueteTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
@@ -1102,8 +1102,8 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @since 1.0
      */
     public void eliminarTLDPTrasTimeout(TSwitchingMatrixEntry emc){
-        eliminarTLDP(emc, emc.obtenerPuertoEntrada());
-        eliminarTLDP(emc, emc.obtenerPuertoSalida());
+        eliminarTLDP(emc, emc.getIncomingPortID());
+        eliminarTLDP(emc, emc.getOutgoingPortID());
     }
     
     /**
@@ -1112,35 +1112,35 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      */
     public void decrementarContadores() {
         TSwitchingMatrixEntry emc = null;
-        this.matrizConmutacion.obtenerCerrojo().lock();
-        Iterator it = this.matrizConmutacion.obtenerIteradorEntradas();
+        this.matrizConmutacion.getMonitor().lock();
+        Iterator it = this.matrizConmutacion.getEntriesIterator();
         while (it.hasNext()) {
             emc = (TSwitchingMatrixEntry) it.next();
             if (emc != null) {
-                emc.decrementarTimeOut(this.obtenerDuracionTic());
-                if (emc.obtenerEtiqueta() == TSwitchingMatrixEntry.SOLICITANDO_ETIQUETA) {
-                    if (emc.hacerPeticionDeNuevo()) {
-                        emc.reestablecerTimeOut();
-                        emc.decrementarIntentos();
+                emc.decreaseTimeOut(this.obtenerDuracionTic());
+                if (emc.getOutgoingLabel() == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+                    if (emc.retryExpiredTLDPRequests()) {
+                        emc.resetTimeOut();
+                        emc.decreaseAttempts();
                         solicitarTLDPTrasTimeout(emc);
                     }
-                } else if (emc.obtenerEtiqueta() == TSwitchingMatrixEntry.ELIMINANDO_ETIQUETA) {
-                    if (emc.hacerPeticionDeNuevo()) {
-                        emc.reestablecerTimeOut();
-                        emc.decrementarIntentos();
+                } else if (emc.getOutgoingLabel() == TSwitchingMatrixEntry.REMOVING_LABEL) {
+                    if (emc.retryExpiredTLDPRequests()) {
+                        emc.resetTimeOut();
+                        emc.decreaseAttempts();
                         eliminarTLDPTrasTimeout(emc);
                     } else {
-                        if (!emc.quedanIntentos()) {
+                        if (!emc.areThereAvailableAttempts()) {
                             it.remove();
                         }
                     }
                 } else {
-                    emc.reestablecerTimeOut();
-                    emc.reestablecerIntentos();
+                    emc.resetTimeOut();
+                    emc.resetAttempts();
                 }
             }
         }
-        this.matrizConmutacion.obtenerCerrojo().unLock();
+        this.matrizConmutacion.getMonitor().unLock();
     }
     
     /**
@@ -1162,16 +1162,16 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
             int enlaceOrigen = TLink.EXTERNAL;
             int enlaceDestino = TLink.INTERNAL;
             emc = new TSwitchingMatrixEntry();
-            emc.ponerIDLDPAntecesor(IdTLDPAntecesor);
-            emc.ponerDestinoFinal(IPDestinoFinal);
-            emc.ponerPuertoEntrada(pEntrada);
-            emc.ponerEtiqueta(TSwitchingMatrixEntry.SIN_DEFINIR);
-            emc.ponerLabelFEC(TSwitchingMatrixEntry.SIN_DEFINIR);
-            emc.ponerEntranteEsLSPDEBackup(paqueteSolicitud.obtenerEsParaBackup());
+            emc.setUpstreamTLDPSessionID(IdTLDPAntecesor);
+            emc.setTailEndIPAddress(IPDestinoFinal);
+            emc.setIncomingPortID(pEntrada);
+            emc.setOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
+            emc.setLabelOrFEC(TSwitchingMatrixEntry.UNDEFINED);
+            emc.setEntryIsForBackupLSP(paqueteSolicitud.obtenerEsParaBackup());
             if (puertoSalida != null) {
-                emc.ponerPuertoSalida(puertoSalida.getPortID());
+                emc.setOutgoingPortID(puertoSalida.getPortID());
             } else {
-                emc.ponerPuertoSalida(TSwitchingMatrixEntry.SIN_DEFINIR);
+                emc.setOutgoingPortID(TSwitchingMatrixEntry.UNDEFINED);
             }
             if (puertoEntrada != null) {
                 enlaceOrigen = puertoEntrada.getLink().getLinkType();
@@ -1180,28 +1180,28 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                 enlaceDestino = puertoSalida.getLink().getLinkType();
             }
             if ((enlaceOrigen == TLink.EXTERNAL) && (enlaceDestino == TLink.EXTERNAL)) {
-                emc.ponerTipo(TSwitchingMatrixEntry.FEC);
-                emc.ponerOperacion(TSwitchingMatrixEntry.NOOP);
+                emc.setEntryType(TSwitchingMatrixEntry.FEC_ENTRY);
+                emc.setLabelStackOperation(TSwitchingMatrixEntry.NOOP);
             } else if ((enlaceOrigen == TLink.EXTERNAL) && (enlaceDestino == TLink.INTERNAL)) {
-                emc.ponerTipo(TSwitchingMatrixEntry.FEC);
-                emc.ponerOperacion(TSwitchingMatrixEntry.PONER_ETIQUETA);
+                emc.setEntryType(TSwitchingMatrixEntry.FEC_ENTRY);
+                emc.setLabelStackOperation(TSwitchingMatrixEntry.PUSH_LABEL);
             } else if ((enlaceOrigen == TLink.INTERNAL) && (enlaceDestino == TLink.EXTERNAL)) {
-                emc.ponerTipo(TSwitchingMatrixEntry.LABEL);
-                emc.ponerOperacion(TSwitchingMatrixEntry.QUITAR_ETIQUETA);
+                emc.setEntryType(TSwitchingMatrixEntry.LABEL_ENTRY);
+                emc.setLabelStackOperation(TSwitchingMatrixEntry.POP_LABEL);
             } else if ((enlaceOrigen == TLink.INTERNAL) && (enlaceDestino == TLink.INTERNAL)) {
-                emc.ponerTipo(TSwitchingMatrixEntry.LABEL);
-                emc.ponerOperacion(TSwitchingMatrixEntry.CAMBIAR_ETIQUETA);
+                emc.setEntryType(TSwitchingMatrixEntry.LABEL_ENTRY);
+                emc.setLabelStackOperation(TSwitchingMatrixEntry.SWAP_LABEL);
             }
             if (soyLERDeSalida(IPDestinoFinal)) {
-                emc.ponerLabelFEC(matrizConmutacion.obtenerEtiqueta());
-                emc.ponerEtiqueta(TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA);
+                emc.setLabelOrFEC(matrizConmutacion.getNewLabel());
+                emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_ASSIGNED);
             }
             try {
-                emc.ponerIDLDPPropio(gIdentLDP.obtenerNuevo());
+                emc.setLocalTLDPSessionID(gIdentLDP.obtenerNuevo());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            matrizConmutacion.insertar(emc);
+            matrizConmutacion.addEntry(emc);
         }
         return emc;
     }
@@ -1225,42 +1225,42 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
             int enlaceOrigen = TLink.EXTERNAL;
             int enlaceDestino = TLink.INTERNAL;
             emc = new TSwitchingMatrixEntry();
-            emc.ponerIDLDPAntecesor(TSwitchingMatrixEntry.SIN_DEFINIR);
-            emc.ponerDestinoFinal(IPDestinoFinal);
-            emc.ponerPuertoEntrada(pEntrada);
-            emc.ponerEtiqueta(TSwitchingMatrixEntry.SIN_DEFINIR);
-            emc.ponerLabelFEC(clasificarPaquete(paqueteIPv4));
-            emc.ponerEntranteEsLSPDEBackup(false);
+            emc.setUpstreamTLDPSessionID(TSwitchingMatrixEntry.UNDEFINED);
+            emc.setTailEndIPAddress(IPDestinoFinal);
+            emc.setIncomingPortID(pEntrada);
+            emc.setOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
+            emc.setLabelOrFEC(clasificarPaquete(paqueteIPv4));
+            emc.setEntryIsForBackupLSP(false);
             if (puertoSalida != null) {
-                emc.ponerPuertoSalida(puertoSalida.getPortID());
+                emc.setOutgoingPortID(puertoSalida.getPortID());
                 enlaceDestino = puertoSalida.getLink().getLinkType();
             } else {
-                emc.ponerPuertoSalida(TSwitchingMatrixEntry.SIN_DEFINIR);
+                emc.setOutgoingPortID(TSwitchingMatrixEntry.UNDEFINED);
             }
             if (puertoEntrada != null) {
                 enlaceOrigen = puertoEntrada.getLink().getLinkType();
             }
             if ((enlaceOrigen == TLink.EXTERNAL) && (enlaceDestino == TLink.EXTERNAL)) {
-                emc.ponerTipo(TSwitchingMatrixEntry.FEC);
-                emc.ponerOperacion(TSwitchingMatrixEntry.NOOP);
+                emc.setEntryType(TSwitchingMatrixEntry.FEC_ENTRY);
+                emc.setLabelStackOperation(TSwitchingMatrixEntry.NOOP);
             } else if ((enlaceOrigen == TLink.EXTERNAL) && (enlaceDestino == TLink.INTERNAL)) {
-                emc.ponerTipo(TSwitchingMatrixEntry.FEC);
-                emc.ponerOperacion(TSwitchingMatrixEntry.PONER_ETIQUETA);
+                emc.setEntryType(TSwitchingMatrixEntry.FEC_ENTRY);
+                emc.setLabelStackOperation(TSwitchingMatrixEntry.PUSH_LABEL);
             } else if ((enlaceOrigen == TLink.INTERNAL) && (enlaceDestino == TLink.EXTERNAL)) {
                 // No es posible
             } else if ((enlaceOrigen == TLink.INTERNAL) && (enlaceDestino == TLink.INTERNAL)) {
                 // No es posible
             }
             if (soyLERDeSalida(IPDestinoFinal)) {
-                emc.ponerLabelFEC(matrizConmutacion.obtenerEtiqueta());
-                emc.ponerEtiqueta(TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA);
+                emc.setLabelOrFEC(matrizConmutacion.getNewLabel());
+                emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_ASSIGNED);
             }
             try {
-                emc.ponerIDLDPPropio(gIdentLDP.obtenerNuevo());
+                emc.setLocalTLDPSessionID(gIdentLDP.obtenerNuevo());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            matrizConmutacion.insertar(emc);
+            matrizConmutacion.addEntry(emc);
         }
         return emc;
     }
@@ -1284,44 +1284,44 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
             int enlaceOrigen = TLink.EXTERNAL;
             int enlaceDestino = TLink.INTERNAL;
             emc = new TSwitchingMatrixEntry();
-            emc.ponerIDLDPAntecesor(TSwitchingMatrixEntry.SIN_DEFINIR);
-            emc.ponerDestinoFinal(IPDestinoFinal);
-            emc.ponerPuertoEntrada(pEntrada);
-            emc.ponerEtiqueta(TSwitchingMatrixEntry.SIN_DEFINIR);
-            emc.ponerEntranteEsLSPDEBackup(false);
-            emc.ponerLabelFEC(paqueteMPLS.getLabelStack().getTop().getLabelField());
+            emc.setUpstreamTLDPSessionID(TSwitchingMatrixEntry.UNDEFINED);
+            emc.setTailEndIPAddress(IPDestinoFinal);
+            emc.setIncomingPortID(pEntrada);
+            emc.setOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
+            emc.setEntryIsForBackupLSP(false);
+            emc.setLabelOrFEC(paqueteMPLS.getLabelStack().getTop().getLabelField());
             if (puertoSalida != null) {
-                emc.ponerPuertoSalida(puertoSalida.getPortID());
+                emc.setOutgoingPortID(puertoSalida.getPortID());
                 enlaceDestino = puertoSalida.getLink().getLinkType();
             } else {
-                emc.ponerPuertoSalida(TSwitchingMatrixEntry.SIN_DEFINIR);
+                emc.setOutgoingPortID(TSwitchingMatrixEntry.UNDEFINED);
             }
             if (puertoEntrada != null) {
                 enlaceOrigen = puertoEntrada.getLink().getLinkType();
             }
             if ((enlaceOrigen == TLink.EXTERNAL) && (enlaceDestino == TLink.EXTERNAL)) {
-                emc.ponerTipo(TSwitchingMatrixEntry.LABEL);
-                emc.ponerOperacion(TSwitchingMatrixEntry.NOOP);
+                emc.setEntryType(TSwitchingMatrixEntry.LABEL_ENTRY);
+                emc.setLabelStackOperation(TSwitchingMatrixEntry.NOOP);
             } else if ((enlaceOrigen == TLink.EXTERNAL) && (enlaceDestino == TLink.INTERNAL)) {
-                emc.ponerTipo(TSwitchingMatrixEntry.LABEL);
-                emc.ponerOperacion(TSwitchingMatrixEntry.PONER_ETIQUETA);
+                emc.setEntryType(TSwitchingMatrixEntry.LABEL_ENTRY);
+                emc.setLabelStackOperation(TSwitchingMatrixEntry.PUSH_LABEL);
             } else if ((enlaceOrigen == TLink.INTERNAL) && (enlaceDestino == TLink.EXTERNAL)) {
-                emc.ponerTipo(TSwitchingMatrixEntry.LABEL);
-                emc.ponerOperacion(TSwitchingMatrixEntry.QUITAR_ETIQUETA);
+                emc.setEntryType(TSwitchingMatrixEntry.LABEL_ENTRY);
+                emc.setLabelStackOperation(TSwitchingMatrixEntry.POP_LABEL);
             } else if ((enlaceOrigen == TLink.INTERNAL) && (enlaceDestino == TLink.INTERNAL)) {
-                emc.ponerTipo(TSwitchingMatrixEntry.LABEL);
-                emc.ponerOperacion(TSwitchingMatrixEntry.CAMBIAR_ETIQUETA);
+                emc.setEntryType(TSwitchingMatrixEntry.LABEL_ENTRY);
+                emc.setLabelStackOperation(TSwitchingMatrixEntry.SWAP_LABEL);
             }
             if (soyLERDeSalida(IPDestinoFinal)) {
-                emc.ponerLabelFEC(matrizConmutacion.obtenerEtiqueta());
-                emc.ponerEtiqueta(TSwitchingMatrixEntry.ETIQUETA_CONCEDIDA);
+                emc.setLabelOrFEC(matrizConmutacion.getNewLabel());
+                emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_ASSIGNED);
             }
             try {
-                emc.ponerIDLDPPropio(gIdentLDP.obtenerNuevo());
+                emc.setLocalTLDPSessionID(gIdentLDP.obtenerNuevo());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            matrizConmutacion.insertar(emc);
+            matrizConmutacion.addEntry(emc);
         }
         return emc;
     }
@@ -1350,7 +1350,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         TEtiquetaMPLS empls = new TEtiquetaMPLS();
         empls.ponerBoS(true);
         empls.ponerEXP(0);
-        empls.setLabelField(emc.obtenerEtiqueta());
+        empls.setLabelField(emc.getOutgoingLabel());
         empls.ponerTTL(paqueteIPv4.getHeader().obtenerTTL()-1);
         paqueteMPLS.getLabelStack().ponerEtiqueta(empls);
         paqueteIPv4 = null;
@@ -1442,12 +1442,12 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     
     /**
      * Este m�todo toma como parametro un paquete, supuestamente sin etiquetar, y lo
-     * clasifica. Esto significa que determina el FEC al que pertenece el paquete.
-     * Este valor se calcula como el c�digo HASH practicado a la concatenaci�n de la IP
-     * de origen y la IP de destino. En la pr�ctica esto significa que paquetes con el
-     * mismo origen y con el mismo destino pertenecer�n al mismo FEC.
+     * clasifica. Esto significa que determina el FEC_ENTRY al que pertenece el paquete.
+ Este valor se calcula como el c�digo HASH practicado a la concatenaci�n de la IP
+ de origen y la IP de destino. En la pr�ctica esto significa que paquetes con el
+ mismo origen y con el mismo destino pertenecer�n al mismo FEC_ENTRY.
      * @param paquete El paquete que se desea clasificar.
-     * @return El FEC al que pertenece el paquete pasado por par�metros.
+     * @return El FEC_ENTRY al que pertenece el paquete pasado por par�metros.
      * @since 1.0
      */
     public int clasificarPaquete(TPDU paquete) {
@@ -1484,7 +1484,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     public long obtenerPeso() {
         long peso = 0;
         long pesoC = (long) (this.puertos.getCongestionLevel() * (0.7));
-        long pesoMC = (long) ((10*this.matrizConmutacion.obtenerNumeroEntradas())* (0.3));
+        long pesoMC = (long) ((10*this.matrizConmutacion.getNumberOfEntries())* (0.3));
         peso = pesoC + pesoMC;
         return peso;
     }
