@@ -42,12 +42,11 @@ public class TSwitchingMatrix {
     }
 
     /**
-     * Este m�todo devuelve el monitor de la clase, que permitir� realizar
-     * operaciones sobre la switchingMatrix de conmutaci�n sin peligro de
-     * accesos concurrentes mal llevados a cabo.
+     * This method returns the monitor of the class, that will allow operations
+     * on the switching matrix avoiding the risk of concurrent accesses.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return El monitor que hace de monitor para operar en esta clase.
+     * @return The monitor of the class.
      * @since 1.0
      */
     public TMonitor getMonitor() {
@@ -55,29 +54,11 @@ public class TSwitchingMatrix {
     }
 
     /**
-     * Este m�todo vac�a todas las entradas existentes en la switchingMatrix de
-     * conmutaci�n, dej�ndola inicializada como antes del proceso de simulaci�n.
+     * This method add a new switching entry to the switching matrix.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
-     */
-    public void clear() {
-        this.monitor.lock();
-        Iterator it = this.switchingMatrix.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
-        }
-        this.monitor.unLock();
-    }
-
-    /**
-     * Este m�todo inserta una nueva entrada en la switchingMatrix de
-     * conmutaci�n.
-     *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param switchingMatrixEntry La nueva entrada que deseamos addEntry en la
-     * switchingMatrix de conmutaci�n.
+     * @param switchingMatrixEntry The entry to be added to the switching
+     * matrix.
      * @since 1.0
      */
     public void addEntry(TSwitchingMatrixEntry switchingMatrixEntry) {
@@ -87,24 +68,23 @@ public class TSwitchingMatrix {
     }
 
     /**
-     * Este m�todo permite acceder a una entrada concreta de la switchingMatrix
-     * de conmutaci�n.
+     * This method gives access to a specific switching entry of the switching
+     * matrix using the values specified as arguments to do that.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param incomingPortID El puerto de la entrada de la switchingMatrix que
-     * buscamos.
-     * @param labelOrFEC El valor de la labelAux de entrada o del campo
-     * FEC_ENTRY de la entrada de la switchingMatrix que buscamos.
-     * @param entryType El tipo de entrada (ILM o FTN) que estamos buscando.
-     * @return Devuelve la entrada de la switchingMatrix de conmutaci�n que
-     * concuerda con los parametros de b�squeda, si la encuentra, o null, en
-     * caso contrario.
+     * @param incomingPortID The incoming port of field of the wanted switching
+     * entry.
+     * @param labelOrFEC The labelOrFEC field of the wanted switching entry.
+     * @param entryType The entry type (ILM or FTN) field of the wanted
+     * switching entry.
+     * @return The switching entry corresponding to the values specified as
+     * arguments (if exist) or NULL on the contrary.
      * @since 1.0
      */
     public TSwitchingMatrixEntry getEntry(int incomingPortID, int labelOrFEC, int entryType) {
         this.monitor.lock();
         Iterator iterator = this.switchingMatrix.iterator();
-        TSwitchingMatrixEntry switchingMatrixEntryAux = null;
+        TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
             switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
             if (switchingMatrixEntryAux.getLabelOrFEC() == labelOrFEC) {
@@ -121,21 +101,20 @@ public class TSwitchingMatrix {
     }
 
     /**
-     * Este m�todo permite acceder a una entrada concreta de la switchingMatrix
-     * de conmutaci�n, que debe tener un identificador de sesi�n TLDP propio
-     * ex�ctamente igua al indicado.
+     * This method gives access to a specific switching entry of the switching
+     * matrix using the value specified as an argument to do that.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param localTLDPSessionID Identificador TLDP propio que asignamos en su
-     * momento a la entrada de la switchingMatrix de conmutaci�n que buscamos.
-     * @return La entrada de la switchingMatrix de conmutaci�n coincidente, en
-     * caso de encontrarla, y null en caso contrario.
+     * @param localTLDPSessionID Local TLDP session ID field of the wanted
+     * switching entry.
+     * @return The switching entry corresponding to the value specified as an
+     * argument (if exist) or NULL on the contrary.
      * @since 1.0
      */
-    public TSwitchingMatrixEntry getEntryHavingLocalTLDPSessionID(int localTLDPSessionID) {
+    public TSwitchingMatrixEntry getEntry(int localTLDPSessionID) {
         this.monitor.lock();
         Iterator iterator = this.switchingMatrix.iterator();
-        TSwitchingMatrixEntry switchingMatrixEntryAux = null;
+        TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
             switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
             if (switchingMatrixEntryAux.getLocalTLDPSessionID() == localTLDPSessionID) {
@@ -148,24 +127,22 @@ public class TSwitchingMatrix {
     }
 
     /**
-     * Este m�todo da acceso a una entrada de conmutaci�n que provenga de un
-     * nodo antecesor concreto.
+     * This method gives access to a specific switching entry of the switching
+     * matrix using the values specified as arguments to do that.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param upstreamTLDPSessionID El identificador de sesi�n TLDP que el nodo
-     * antecesor especifico para la entrada que estamos buscando.
-     * @param incomingPortID El puerto de entrada asociado a la entrada TLDP que
-     * estamos buscando. Necesario porque s�lo con el identificador TLDP del
-     * antecesor no vale ya que distintos antecesores pueden otorgar el mismo
-     * identificador de sesi�n TLDP.
-     * @return La entrada de la switchingMatrix de conmutaci�n buscada, si la
-     * encuentra, o null en caso contrario.
+     * @param upstreamTLDPSessionID Upstream TLDP session ID field of the wanted
+     * switching entry.
+     * @param incomingPortID The incoming port of field of the wanted switching
+     * entry.
+     * @return The switching entry corresponding to the values specified as
+     * arguments (if exist) or NULL on the contrary.
      * @since 1.0
      */
-    public TSwitchingMatrixEntry getEntryHavinUpstreamTLDPSessionID(int upstreamTLDPSessionID, int incomingPortID) {
+    public TSwitchingMatrixEntry getEntry(int upstreamTLDPSessionID, int incomingPortID) {
         this.monitor.lock();
         Iterator iterator = this.switchingMatrix.iterator();
-        TSwitchingMatrixEntry switchingMatrixEntryAux = null;
+        TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
             switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
             if (switchingMatrixEntryAux.getUpstreamTLDPSessionID() == upstreamTLDPSessionID) {
@@ -180,23 +157,23 @@ public class TSwitchingMatrix {
     }
 
     /**
-     * Este m�todo sirve para ver si hay un acierto al buscar una entrada de la
-     * switchingMatrix de conmutaci�n concreta o no.
+     * This method check wheter a specific sitching entry (identified by the
+     * values passed as arguments) exist in the switching matrix or not.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param incomingPortID El puerto de la entrada de la switchingMatrix que
-     * buscamos.
-     * @param labelOrFEC El valor de la labelAux de entrada o del campo
-     * FEC_ENTRY de la entrada de la switchingMatrix que buscamos.
-     * @param entryType El tipo de entrada (ILM o FTN) que estamos buscando.
-     * @return Devuelve true si existe una entrada coincidente en la
-     * switchingMatrix de conmutaci�n y false en caso contrario.
+     * @param incomingPortID The incoming port of field of the wanted switching
+     * entry.
+     * @param labelOrFEC The labelOrFEC field of the wanted switching entry.
+     * @param entryType The entry type (ILM or FTN) field of the wanted
+     * switching entry.
+     * @return TRUE, if the wanted switching entry exist in the switching
+     * matrix. Otherwise, returns FALSE.
      * @since 1.0
      */
     public boolean existsEntry(int incomingPortID, int labelOrFEC, int entryType) {
         this.monitor.lock();
         Iterator iterator = this.switchingMatrix.iterator();
-        TSwitchingMatrixEntry switchingMatrixEntryAux = null;
+        TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
             switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
             if (switchingMatrixEntryAux.getLabelOrFEC() == labelOrFEC) {
@@ -213,22 +190,22 @@ public class TSwitchingMatrix {
     }
 
     /**
-     * Este m�todo elimina una entrada concreta de la switchingMatrix de
-     * conmutaci�n.
+     * This method removes a specific switching entry of the switching matrix
+     * using the value specified as an argument to do that.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param incomingPortID El puerto de la entrada de la switchingMatrix que
-     * queremos borrar.
-     * @param labelOrFEC El valor de la labelAux de entrada o del campo
-     * FEC_ENTRY de la entrada de la switchingMatrix que queremos borrar.
-     * @param entryType El tipo de entrada (ILM o FTN) de la entrada de la
-     * switchingMatrix que deseamos borrar.
+     * @param incomingPortID The incoming port of field of the switching entry
+     * to be removed.
+     * @param labelOrFEC The labelOrFEC field of the switching entry to be
+     * removed.
+     * @param entryType The entry type (ILM or FTN) field of the switching entry
+     * to be removed.
      * @since 1.0
      */
     public void removeEntry(int incomingPortID, int labelOrFEC, int entryType) {
         this.monitor.lock();
         Iterator iterator = this.switchingMatrix.iterator();
-        TSwitchingMatrixEntry switchingMatrixEntryAux = null;
+        TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
             switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
             if (switchingMatrixEntryAux.getLabelOrFEC() == labelOrFEC) {
@@ -243,20 +220,20 @@ public class TSwitchingMatrix {
     }
 
     /**
-     * Este m�todo elimina una entrada concreta de la switchingMatrix de
-     * conmutaci�n.
+     * This method removes a specific switching entry of the switching matrix
+     * using the value specified as an argument to do that.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param localTLDPSessionID El identificador TLDP propio de la entrada de
-     * la switchingMatrix que deseamos eliminar.
-     * @param incomingPortID El puerto de entrada de la entrada de la
-     * switchingMatrix de conmutaci�n que queremos eliminar.
+     * @param localTLDPSessionID Local TLDP session ID field of the switching
+     * entry to be removed.
+     * @param incomingPortID The incoming port of field of the switching entry
+     * to be removed.
      * @since 1.0
      */
-    public void removeEntryHavingLocalTLDPSessionID(int localTLDPSessionID, int incomingPortID) {
+    public void removeEntry(int localTLDPSessionID, int incomingPortID) {
         this.monitor.lock();
         Iterator iterator = this.switchingMatrix.iterator();
-        TSwitchingMatrixEntry switchingMatrixEntryAux = null;
+        TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
             switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
             if (switchingMatrixEntryAux.getLocalTLDPSessionID() == localTLDPSessionID) {
@@ -269,25 +246,28 @@ public class TSwitchingMatrix {
     }
 
     /**
-     * Este m�todo obtiene la operaci�n que hay que realizar sobre la pila de
-     * etiquetas de los paquetes de un flujo concreto, seg�n la entrada de la
-     * switchingMatrix de conmutaci�n asociada a ese flujo.
+     * This method gets the operation that has to be done over the top of the
+     * label stack as stored in the switching entry identified by the values
+     * specified as arguments.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param incomingPortID El puerto de la entrada de la switchingMatrix que
-     * queremos consultar.
-     * @param labelOrFEC El valor de la labelAux de entrada o del campo
-     * FEC_ENTRY de la entrada de la switchingMatrix que queremos consultar.
-     * @param entryType El tipo de entrada (ILM o FTN) de la entrada que
-     * queremos consultar.
-     * @return Devuelve la operaci�n a realizar sobre la pila de etiquetas. Es
-     * una de las constantes definidas en TSwitchingMatrixEntry.
+     * @param incomingPortID The incoming port of field of the switching entry
+     * whose label stack operation is wanted.
+     * @param labelOrFEC The labelOrFEC field of the switching entry whose label
+     * stack operation is wanted.
+     * @param entryType The entry type (ILM or FTN) field of the switching entry
+     * whose label stack operation is wanted.
+     * @return the operation to be done over the top of the label stack as
+     * defined in the switching entry identified by the values specified as
+     * arguments. Operations are defined in TSwitchingMatrixEntry class
+     * (TSwitchingMatrixEntry.PUSH_LABEL, TSwitchingMatrixEntry.POP_LABEL,
+     * TSwitchingMatrixEntry.SWAP_LABEL and TSwitchingMatrixEntry.NOOP).
      * @since 1.0
      */
     public int getLabelStackOperation(int incomingPortID, int labelOrFEC, int entryType) {
         this.monitor.lock();
         Iterator iterator = this.switchingMatrix.iterator();
-        TSwitchingMatrixEntry switchingMatrixEntryAux = null;
+        TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
             switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
             if (switchingMatrixEntryAux.getLabelOrFEC() == labelOrFEC) {
@@ -304,25 +284,26 @@ public class TSwitchingMatrix {
     }
 
     /**
-     * Este m�todo obtiene la labelAux de salida para los paquetes de un flujo
-     * concreto, seg�n la entrada de la switchingMatrix de conmutaci�n asociada
-     * a ese flujo.
+     * This method gets the outgoing label that has to be used when forwarding a
+     * packet as stored in the switching entry identified by the values
+     * specified as arguments.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param incomingPortID El puerto de la entrada de la switchingMatrix que
-     * queremos consultar.
-     * @param labelOrFEC El valor de la labelAux de entrada o del campo
-     * FEC_ENTRY de la entrada de la switchingMatrix que queremos consultar.
-     * @param entryType El tipo de entrada (ILM o FTN) de la entrada de la
-     * switchingMatrix que queremos consultar.
-     * @return La labelAux de salida que hay que poner a los paquetes del flujo
-     * asociado a la entrada de la switchingMatrix que hemos especificado.
+     * @param incomingPortID The incoming port of field of the switching entry
+     * whose label stack operation is wanted.
+     * @param labelOrFEC The labelOrFEC field of the switching entry whose label
+     * stack operation is wanted.
+     * @param entryType The entry type (ILM or FTN) field of the switching entry
+     * whose label stack operation is wanted.
+     * @return the outgoing label that has to be used when forwarding a packet
+     * as stored in the switching entry identified by the values specified as
+     * arguments.
      * @since 1.0
      */
     public int getOutgoingLabel(int incomingPortID, int labelOrFEC, int entryType) {
         this.monitor.lock();
         Iterator iterator = this.switchingMatrix.iterator();
-        TSwitchingMatrixEntry switchingMatrixEntryAux = null;
+        TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
             switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
             if (switchingMatrixEntryAux.getLabelOrFEC() == labelOrFEC) {
@@ -339,19 +320,20 @@ public class TSwitchingMatrix {
     }
 
     /**
-     * Este m�todo obtiene el puerto de salida de los paquetes de un flujo
-     * concreto, seg�n la entrada de la switchingMatrix de conmutaci�n asociada
-     * a ese flujo.
+     * This method gets the outgoing port that has to be used when forwarding a
+     * packet as stored in the switching entry identified by the values
+     * specified as arguments.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param incomingPortID El puerto de la entrada de la switchingMatrix que
-     * quermos consultar.
-     * @param labelOrFEC El valor de la labelAux de entrada o del campo
-     * FEC_ENTRY de la entrada de la switchingMatrix que queremos consultar.
-     * @param entryType El tipo de entrada (ILM o FTN) de la entrada de la
-     * switchingMatrix que queremos consultar.
-     * @return El puerto de salida para los paquetes del flujo asociado a la
-     * entrada de la switchingMatrix especificada.
+     * @param incomingPortID The incoming port of field of the switching entry
+     * whose label stack operation is wanted.
+     * @param labelOrFEC The labelOrFEC field of the switching entry whose label
+     * stack operation is wanted.
+     * @param entryType The entry type (ILM or FTN) field of the switching entry
+     * whose label stack operation is wanted.
+     * @return the outgoing port that has to be used when forwarding a packet as
+     * stored in the switching entry identified by the values specified as
+     * arguments.
      * @since 1.0
      */
     public int getOutgoingPortID(int incomingPortID, int labelOrFEC, int entryType) {
@@ -374,20 +356,19 @@ public class TSwitchingMatrix {
     }
 
     /**
-     * Este m�todo comprueba si hay alguna entrada cuya labelAux de entrada
-     * coincide con la epecificada.
+     * This method check wheter a given label is already used by any switching
+     * entry in the switching matrix.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param label Etiqueta que debe tener la entrada de la switchingMatrix que
-     * estamos buscando.
-     * @return true si existe una entrada de la switchingMatrix con esa labelAux
-     * de entrada, si no, false.
+     * @param label The label we whant to check.
+     * @return TRUE if any switching entry in the switching matrix is using the
+     * specified label. Otherwise returns FALSE.
      * @since 1.0
      */
-    public boolean existsEntryHavingLabel(int label) {
+    public boolean labelIsAlreadyUsed(int label) {
         this.monitor.lock();
         Iterator iterator = this.switchingMatrix.iterator();
-        TSwitchingMatrixEntry switchingMatrixEntryAux = null;
+        TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
             switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
             if (switchingMatrixEntryAux.getLabelOrFEC() == label) {
@@ -402,34 +383,34 @@ public class TSwitchingMatrix {
     }
 
     /**
-     * Este m�todo devuelve una labelAux de 20 bits �nica. Generalmente para
-     * responder a una petici�n de labelAux realizada por otro nodo antecesor.
+     * This method generates and returns a new 20-bits label tha is not used by
+     * any other switching entry in the switching matrix.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return Una labelAux para recibir tr�fico, si es posible, o la constante
-     * ETIQUETA_NO_DISPONIBLE, en caso de que se haya agotado el espacio de
-     * etiquetas del nodo.
+     * @return a new 20-bits label that is not used by any other switching entry
+     * in the switching matrix, if possible. If the label space is completely
+     * used and is not possible to return a new label, this returns
+     * TSwitchingMatrixEntry.LABEL_UNAVAILABLE.
      * @since 1.0
      */
     public int getNewLabel() {
-        int labelAux = 16;
-        while (labelAux <= 1048575) {
-            if (!existsEntryHavingLabel(labelAux)) {
+        int labelAux = TSwitchingMatrixEntry.FIRST_UNRESERVED_LABEL;
+        while (labelAux <= TSwitchingMatrixEntry.LABEL_SPACE) {
+            if (!labelIsAlreadyUsed(labelAux)) {
                 return labelAux;
             } else {
                 labelAux++;
             }
         }
-        return TSwitchingMatrixEntry.LABEL_DENIED;
+        return TSwitchingMatrixEntry.LABEL_UNAVAILABLE;
     }
 
     /**
-     * Este m�todo obtiene acceso a todas las entradas de la matr�z de
-     * conmutaci�n v�a el iterador de la lista enlazada que las contiene.
+     * This method returns the switching entries iterator for this switching
+     * matrix.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return El iterador de la lista enlazada que contiene las entradas de la
-     * switchingMatrix de conmutaci�n.
+     * @return the switching entries iterator for this switching matrix.
      * @since 1.0
      */
     public Iterator getEntriesIterator() {
@@ -437,11 +418,12 @@ public class TSwitchingMatrix {
     }
 
     /**
-     * Este m�todo obtiene el n�mero de entradas que hay en la switchingMatrix
-     * de conmutaci�n.
+     * This method returns the number of switching entries currently stored in
+     * this switching matrix.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return N�mero de entradas de la switchingMatrix de conmutacion.
+     * @return the number of switching entries currently stored in this
+     * switching matrix.
      * @since 1.0
      */
     public int getNumberOfEntries() {
@@ -449,8 +431,8 @@ public class TSwitchingMatrix {
     }
 
     /**
-     * Este m�todo reinicia la switchingMatrix de conmutaci�n y la deja como si
-     * acabase de ser creada por el constructor de la clase.
+     * This method clear all switching entries in stored in the switching
+     * matrix, as when created by the constructor.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0

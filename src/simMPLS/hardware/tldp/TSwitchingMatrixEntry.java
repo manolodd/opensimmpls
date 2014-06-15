@@ -590,6 +590,10 @@ public class TSwitchingMatrixEntry {
      */
     public static final int NOOP = -13;
 
+    public static final int LABEL_SPACE = 1048575;
+    public static final int FIRST_UNRESERVED_LABEL = 16;
+    
+    
     /**
      * Esta constante indica que a�n no se ha configurado el valor de la
      * etiqueta en una entrada de la matriz, pero se est� en espera de que el
@@ -604,7 +608,7 @@ public class TSwitchingMatrixEntry {
      *
      * @since 1.0
      */
-    public static final int LABEL_DENIED = -31;
+    public static final int LABEL_UNAVAILABLE = -31;
     /**
      * Esta constante indica que para una entrada concreta de la matriz, el nodo
      * adyacente ha concedido la etiqueta para recibir tr�fico.
