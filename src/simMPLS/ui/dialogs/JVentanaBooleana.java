@@ -16,7 +16,7 @@
  */
 package simMPLS.ui.dialogs;
 
-import simMPLS.ui.utils.TDispensadorDeImagenes;
+import simMPLS.ui.utils.TImagesBroker;
 
 /**
  * Esta clase implementa una ventana que muestra un mensaje de advertencia al
@@ -35,7 +35,7 @@ public class JVentanaBooleana extends javax.swing.JDialog {
      * @param di Dispensador de im�genes global de la aplicaci�n.
      * @since 1.0
      */
-    public JVentanaBooleana(java.awt.Frame parent, boolean modal, TDispensadorDeImagenes di) {
+    public JVentanaBooleana(java.awt.Frame parent, boolean modal, TImagesBroker di) {
         super(parent, modal);
         dispensadorDeImagenes = di;
         initComponents();
@@ -68,11 +68,11 @@ public class JVentanaBooleana extends javax.swing.JDialog {
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.INTERROGACION));
+        jLabel1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.INTERROGACION));
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, -1, -1));
 
         jButton1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton1.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ACEPTAR));
+        jButton1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR));
         jButton1.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaBooleana.mnemonico.si").charAt(0));
         jButton1.setText(bundle.getString("JVentanaBooleana.Si")); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -83,7 +83,7 @@ public class JVentanaBooleana extends javax.swing.JDialog {
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 80, 105, -1));
 
         jButton2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton2.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.CANCELAR));
+        jButton2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.CANCELAR));
         jButton2.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaBooleana.mnemonico.no").charAt(0));
         jButton2.setText(bundle.getString("JVentanaBooleana.No")); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -149,7 +149,7 @@ public class JVentanaBooleana extends javax.swing.JDialog {
     }    
 
     private boolean respuesta;
-    private TDispensadorDeImagenes dispensadorDeImagenes;
+    private TImagesBroker dispensadorDeImagenes;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

@@ -164,7 +164,7 @@
       <Font name="Dialog" size="12" style="0"/>
     </Property>
     <Property name="frameIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-      <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ICONO_VENTANA_INTERNA_MENU)" type="code"/>
+      <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.ICONO_VENTANA_INTERNA_MENU)" type="code"/>
     </Property>
     <Property name="normalBounds" type="java.awt.Rectangle" editor="org.netbeans.beaninfo.editors.RectangleEditor">
       <Rectangle value="[10, 10, 100, 100]"/>
@@ -204,7 +204,7 @@
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaHija.Tab.Disenio" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.DISENIO)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.DISENIO)" type="code"/>
                 </Property>
                 <Property name="tabToolTip" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaHija.A_panel_to_design_network_topology" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -236,7 +236,7 @@
                 <Component class="javax.swing.JLabel" name="iconoEmisor">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.EMISOR_MENU)" type="code"/>
+                      <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.EMISOR_MENU)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                       <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaHija.Topic.Emisor" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -251,7 +251,7 @@
                 <Component class="javax.swing.JLabel" name="iconoReceptor">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.RECEPTOR_MENU)" type="code"/>
+                      <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.RECEPTOR_MENU)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                       <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaHija.Topic.Receptor" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -266,7 +266,7 @@
                 <Component class="javax.swing.JLabel" name="iconoLER">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LER_MENU)" type="code"/>
+                      <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.LER_MENU)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                       <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaHija.Topic.LER" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -281,7 +281,7 @@
                 <Component class="javax.swing.JLabel" name="iconoLERA">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LERA_MENU)" type="code"/>
+                      <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.LERA_MENU)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                       <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaHija.Topic.LERActivo" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -296,7 +296,7 @@
                 <Component class="javax.swing.JLabel" name="iconoLSR">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LSR_MENU)" type="code"/>
+                      <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.LSR_MENU)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                       <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaHija.Topic.LSR" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -311,7 +311,7 @@
                 <Component class="javax.swing.JLabel" name="iconoLSRA">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LSRA_MENU)" type="code"/>
+                      <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.LSRA_MENU)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                       <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaHija.Topic.LSRActivo" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -326,7 +326,7 @@
                 <Component class="javax.swing.JLabel" name="iconoEnlace">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ENLACE_MENU)" type="code"/>
+                      <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.ENLACE_MENU)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                       <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaHija.Topic.Enlace" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -391,7 +391,7 @@
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaHija.Tab.Simulacion" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.SIMULACION)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.SIMULACION)" type="code"/>
                 </Property>
                 <Property name="tabToolTip" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaHija.A_panel_to_generate_and_play_simulation." replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -423,7 +423,7 @@
                 <Component class="javax.swing.JLabel" name="iconoComenzar">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.BOTON_GENERAR)" type="code"/>
+                      <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.BOTON_GENERAR)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                       <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaHija.Topic.Generar" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -438,7 +438,7 @@
                 <Component class="javax.swing.JLabel" name="iconoFinalizar">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.BOTON_PARAR)" type="code"/>
+                      <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.BOTON_PARAR)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                       <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaHija.Topic.Finalizar" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -454,7 +454,7 @@
                 <Component class="javax.swing.JLabel" name="iconoReanudar">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.BOTON_COMENZAR)" type="code"/>
+                      <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.BOTON_COMENZAR)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                       <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaHija.Topic.Simulacion" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -470,7 +470,7 @@
                 <Component class="javax.swing.JLabel" name="iconoPausar">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.BOTON_PAUSA)" type="code"/>
+                      <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.BOTON_PAUSA)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                       <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaHija.Topic.Detener" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -577,7 +577,7 @@
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="JVentanaHija.Analisis" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ANALISIS)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.ANALISIS)" type="code"/>
                 </Property>
                 <Property name="tabToolTip" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="JVentanaHija.Analisis.Tooltip" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -771,7 +771,7 @@
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaHija.Options" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.OPCIONES)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.OPCIONES)" type="code"/>
                 </Property>
                 <Property name="tabToolTip" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaHija.Options_about_the_scene" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>

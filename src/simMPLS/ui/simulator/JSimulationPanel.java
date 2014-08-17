@@ -36,7 +36,7 @@ import simMPLS.scenario.TSimulationEvent;
 import simMPLS.scenario.TTopology;
 import simMPLS.scenario.TLink;
 import simMPLS.scenario.TNode;
-import simMPLS.ui.utils.TDispensadorDeImagenes;
+import simMPLS.ui.utils.TImagesBroker;
 import simMPLS.utils.TOpenSimMPLSEvent;
 import simMPLS.utils.TMonitor;
 
@@ -64,7 +64,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
      * @param di Dispensador de im�genes de donde el panel tomar� las im�genes que necesite
      * mostrar en pantalla.
      */    
-    public JSimulationPanel(TDispensadorDeImagenes di) {
+    public JSimulationPanel(TImagesBroker di) {
         dispensadorDeImagenes = di;
         initComponents();
     }
@@ -188,7 +188,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
      * @since 1.0
      * @param di El dispensador de im�genes.
      */    
-    public void ponerDispensadorDeImagenes(TDispensadorDeImagenes di) {
+    public void ponerDispensadorDeImagenes(TImagesBroker di) {
         dispensadorDeImagenes = di;
     }
 
@@ -372,44 +372,44 @@ public class JSimulationPanel extends javax.swing.JPanel {
             switch (tipo) {
                 case TNode.SENDER: {
                     if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR), posicion.x, posicion.y, null);
                     else
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR_MOVIENDOSE), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.RECEIVER: {
                     if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.RECEPTOR), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR), posicion.x, posicion.y, null);
                     else
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.RECEPTOR_MOVIENDOSE), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.LER: {
                     if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LER), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LER), posicion.x, posicion.y, null);
                     else
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LER_MOVIENDOSE), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LER_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.LERA: {
                     if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LERA), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LERA), posicion.x, posicion.y, null);
                     else
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LERA_MOVIENDOSE), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LERA_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.LSR: {
                     if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSR), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSR), posicion.x, posicion.y, null);
                     else
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSR_MOVIENDOSE), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.LSRA: {
                     if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSRA), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA), posicion.x, posicion.y, null);
                     else
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSRA_MOVIENDOSE), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
             }
@@ -495,34 +495,34 @@ public class JSimulationPanel extends javax.swing.JPanel {
                         TLink et = (TLink) ept.obtenerFuente();
                         Point p = et.obtenerCoordenadasPaquete(ept.obtenerPorcentajeTransito());
                         if (ept.obtenerTipoPaquete() == TPDU.GPSRP) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_GOS), p.x-14, p.y-14, null);
+                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_GOS), p.x-14, p.y-14, null);
                         } else if (ept.obtenerTipoPaquete() == TPDU.TLDP) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_LDP), p.x-8, p.y-8, null);
+                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_LDP), p.x-8, p.y-8, null);
                         } else if (ept.obtenerTipoPaquete() == TPDU.IPV4) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_IPV4), p.x-8, p.y-8, null);
+                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_IPV4), p.x-8, p.y-8, null);
                         } else if (ept.obtenerTipoPaquete() == TPDU.IPV4_GOS) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_IPV4_GOS), p.x-8, p.y-8, null);
+                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_IPV4_GOS), p.x-8, p.y-8, null);
                         } else if (ept.obtenerTipoPaquete() == TPDU.MPLS) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_MPLS), p.x-8, p.y-8, null);
+                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_MPLS), p.x-8, p.y-8, null);
                         } else if (ept.obtenerTipoPaquete() == TPDU.MPLS_GOS) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_MPLS_GOS), p.x-8, p.y-8, null);
+                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_MPLS_GOS), p.x-8, p.y-8, null);
                         }
                     } else if (evento.getSubtype() == TSimulationEvent.PACKET_DISCARDED) {
                         TSEPacketDiscarded epd = (TSEPacketDiscarded) evento;
                         TNode nt = (TNode) epd.obtenerFuente();
                         Point p = nt.obtenerPosicion();
                         if (epd.obtenerTipoPaquete() == TPDU.GPSRP) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_GOS_CAE), p.x, p.y+24, null);
+                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_GOS_CAE), p.x, p.y+24, null);
                         } else if (epd.obtenerTipoPaquete() == TPDU.TLDP) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_LDP_CAE), p.x, p.y+24, null);
+                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_LDP_CAE), p.x, p.y+24, null);
                         } else if (epd.obtenerTipoPaquete() == TPDU.IPV4) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_IPV4_CAE), p.x, p.y+24, null);
+                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_IPV4_CAE), p.x, p.y+24, null);
                         } else if (epd.obtenerTipoPaquete() == TPDU.IPV4_GOS) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_IPV4_GOS_CAE), p.x, p.y+24, null);
+                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_IPV4_GOS_CAE), p.x, p.y+24, null);
                         } else if (epd.obtenerTipoPaquete() == TPDU.MPLS) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_MPLS_CAE), p.x, p.y+24, null);
+                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_MPLS_CAE), p.x, p.y+24, null);
                         } else if (epd.obtenerTipoPaquete() == TPDU.MPLS_GOS) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_MPLS_GOS_CAE), p.x, p.y+24, null);
+                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_MPLS_GOS_CAE), p.x, p.y+24, null);
                         }
                     } else if (evento.getSubtype() == TSimulationEvent.LSP_ESTABLISHED) {
                         // Algo se har�.
@@ -530,27 +530,27 @@ public class JSimulationPanel extends javax.swing.JPanel {
                         TSEPacketGenerated epg = (TSEPacketGenerated) evento;
                         TNode nt = (TNode) epg.obtenerFuente();
                         Point p = nt.obtenerPosicion();
-                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PAQUETE_GENERADO), p.x+8, p.y-16, null);
+                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PAQUETE_GENERADO), p.x+8, p.y-16, null);
                     } else if (evento.getSubtype() == TSimulationEvent.PACKET_SENT) {
                         TSEPacketSent epe = (TSEPacketSent) evento;
                         TNode nt = (TNode) epe.obtenerFuente();
                         Point p = nt.obtenerPosicion();
-                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PAQUETE_EMITIDO), p.x+24, p.y-16, null);
+                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PAQUETE_EMITIDO), p.x+24, p.y-16, null);
                     } else if (evento.getSubtype() == TSimulationEvent.PACKET_RECEIVED) {
                         TSEPacketReceived epr = (TSEPacketReceived) evento;
                         TNode nt = (TNode) epr.obtenerFuente();
                         Point p = nt.obtenerPosicion();
-                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PAQUETE_RECIBIDO), p.x-8, p.y-16, null);
+                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PAQUETE_RECIBIDO), p.x-8, p.y-16, null);
                     } else if (evento.getSubtype() == TSimulationEvent.PACKET_SWITCHED) {
                         TSEPacketSwitched epr = (TSEPacketSwitched) evento;
                         TNode nt = (TNode) epr.obtenerFuente();
                         Point p = nt.obtenerPosicion();
-                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PAQUETE_CONMUTADO), p.x+40, p.y-16, null);
+                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PAQUETE_CONMUTADO), p.x+40, p.y-16, null);
                     } else if (evento.getSubtype() == TSimulationEvent.PACKET_ROUTED) {
                         TSEPacketRouted epr = (TSEPacketRouted) evento;
                         TNode nt = (TNode) epr.obtenerFuente();
                         Point p = nt.obtenerPosicion();
-                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PAQUETE_CONMUTADO), p.x+40, p.y-16, null);
+                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PAQUETE_CONMUTADO), p.x+40, p.y-16, null);
                     }
                 }
             }
@@ -582,49 +582,49 @@ public class JSimulationPanel extends javax.swing.JPanel {
                         long cong = enc.obtenerPorcentajeCongestion();
                         if ((cong >= 50) && (cong < 75)) {
                             if (tipo == TNode.SENDER) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR_CONGESTIONADO_20), p.x, p.y, null);
+                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR_CONGESTIONADO_20), p.x, p.y, null);
                             } else if (tipo == TNode.RECEIVER) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.RECEPTOR_CONGESTIONADO_20), p.x, p.y, null);
+                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR_CONGESTIONADO_20), p.x, p.y, null);
                             } else if (tipo == TNode.LER) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LER_CONGESTIONADO_20), p.x, p.y, null);
+                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LER_CONGESTIONADO_20), p.x, p.y, null);
                             } else if (tipo == TNode.LERA) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LERA_CONGESTIONADO_20), p.x, p.y, null);
+                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LERA_CONGESTIONADO_20), p.x, p.y, null);
                             } else if (tipo == TNode.LSR) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSR_CONGESTIONADO_20), p.x, p.y, null);
+                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSR_CONGESTIONADO_20), p.x, p.y, null);
                             } else if (tipo == TNode.LSRA) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSRA_CONGESTIONADO_20), p.x, p.y, null);
+                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA_CONGESTIONADO_20), p.x, p.y, null);
                             }
                         } else if ((cong >= 75) && (cong < 95)) {
                             if (tipo == TNode.SENDER) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR_CONGESTIONADO_60), p.x, p.y, null);
+                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR_CONGESTIONADO_60), p.x, p.y, null);
                             } else if (tipo == TNode.RECEIVER) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.RECEPTOR_CONGESTIONADO_60), p.x, p.y, null);
+                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR_CONGESTIONADO_60), p.x, p.y, null);
                             } else if (tipo == TNode.LER) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LER_CONGESTIONADO_60), p.x, p.y, null);
+                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LER_CONGESTIONADO_60), p.x, p.y, null);
                             } else if (tipo == TNode.LERA) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LERA_CONGESTIONADO_60), p.x, p.y, null);
+                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LERA_CONGESTIONADO_60), p.x, p.y, null);
                             } else if (tipo == TNode.LSR) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSR_CONGESTIONADO_60), p.x, p.y, null);
+                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSR_CONGESTIONADO_60), p.x, p.y, null);
                             } else if (tipo == TNode.LSRA) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSRA_CONGESTIONADO_60), p.x, p.y, null);
+                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA_CONGESTIONADO_60), p.x, p.y, null);
                             }
                         } else if (cong >= 95) {
                             if (tipo == TNode.SENDER) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR_CONGESTIONADO), p.x, p.y, null);
+                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR_CONGESTIONADO), p.x, p.y, null);
                             } else if (tipo == TNode.RECEIVER) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.RECEPTOR_CONGESTIONADO), p.x, p.y, null);
+                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR_CONGESTIONADO), p.x, p.y, null);
                             } else if (tipo == TNode.LER) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LER_CONGESTIONADO), p.x, p.y, null);
+                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LER_CONGESTIONADO), p.x, p.y, null);
                             } else if (tipo == TNode.LERA) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LERA_CONGESTIONADO), p.x, p.y, null);
+                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LERA_CONGESTIONADO), p.x, p.y, null);
                             } else if (tipo == TNode.LSR) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSR_CONGESTIONADO), p.x, p.y, null);
+                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSR_CONGESTIONADO), p.x, p.y, null);
                             } else if (tipo == TNode.LSRA) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSRA_CONGESTIONADO), p.x, p.y, null);
+                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA_CONGESTIONADO), p.x, p.y, null);
                             }
                         }
                         if (nt.obtenerPasosSinEmitir() > TNode.MAX_PASOS_SIN_EMITIR) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.TRABAJANDO), p.x, p.y, null);
+                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.TRABAJANDO), p.x, p.y, null);
                         }
                     }
                 }
@@ -653,11 +653,11 @@ public class JSimulationPanel extends javax.swing.JPanel {
                     if (evento.getSubtype() == TSimulationEvent.LINK_BROKEN) {
                         TLink ent = (TLink) evento.obtenerFuente();
                         Point p = ent.obtenerCoordenadasPaquete(50);
-                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.ENLACE_CAIDO), p.x-41, p.y-41, null);
+                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.ENLACE_CAIDO), p.x-41, p.y-41, null);
                     } else if (evento.getSubtype() == TSimulationEvent.LINK_RECOVERED) {
                         TLink ent = (TLink) evento.obtenerFuente();
                         Point p = ent.obtenerCoordenadasPaquete(50);
-                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.ENLACE_RECUPERADO), p.x-41, p.y-41, null);
+                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.ENLACE_RECUPERADO), p.x-41, p.y-41, null);
                     }
                 }
             }
@@ -750,15 +750,15 @@ public class JSimulationPanel extends javax.swing.JPanel {
             g2D.fillRect(xInicio, yInicio, anchoTotal, alto);
             g2D.setColor(Color.BLACK);
             g2D.drawRect(xInicio, yInicio, anchoTotal, alto);
-            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_IPV4), xInicio+5, yInicio+5, null);
+            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_IPV4), xInicio+5, yInicio+5, null);
             g2D.drawString(this.PAQUETE_IPV4, xInicio+23, yInicio+18);
-            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_IPV4_GOS), xInicio+5, yInicio+23, null);
+            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_IPV4_GOS), xInicio+5, yInicio+23, null);
             g2D.drawString(this.PAQUETE_IPV4_GOS, xInicio+23, yInicio+36);
-            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_MPLS), xInicio+5, yInicio+41, null);
+            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_MPLS), xInicio+5, yInicio+41, null);
             g2D.drawString(this.PAQUETE_MPLS, xInicio+23, yInicio+54);
-            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_MPLS_GOS), xInicio+5, yInicio+59, null);
+            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_MPLS_GOS), xInicio+5, yInicio+59, null);
             g2D.drawString(this.PAQUETE_MPLS_GOS, xInicio+23, yInicio+72);
-            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PDU_LDP), xInicio+5, yInicio+77, null);
+            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_LDP), xInicio+5, yInicio+77, null);
             g2D.drawString(this.PAQUETE_TLDP, xInicio+23, yInicio+90);
             g2D.setColor(Color.LIGHT_GRAY);
             g2D.drawOval(xInicio+5, yInicio+95, 13, 13);
@@ -774,13 +774,13 @@ public class JSimulationPanel extends javax.swing.JPanel {
             g2D.drawString(this.PAQUETE_GPSRP, xInicio+23, yInicio+108);
             xInicio = xInicio + 5 + 13 + 5 + ancho + 20 - 5;
 
-            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PAQUETE_RECIBIDO), xInicio+5, yInicio+5, null);
+            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PAQUETE_RECIBIDO), xInicio+5, yInicio+5, null);
             g2D.drawString(this.PAQUETE_RECIBIDO, xInicio+23, yInicio+18);
-            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PAQUETE_GENERADO), xInicio+5, yInicio+23, null);
+            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PAQUETE_GENERADO), xInicio+5, yInicio+23, null);
             g2D.drawString(this.PAQUETE_GENERADO, xInicio+23, yInicio+36);
-            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PAQUETE_EMITIDO), xInicio+5, yInicio+41, null);
+            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PAQUETE_EMITIDO), xInicio+5, yInicio+41, null);
             g2D.drawString(this.PAQUETE_ENVIADO, xInicio+23, yInicio+54);
-            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.PAQUETE_CONMUTADO), xInicio+5, yInicio+59, null);
+            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PAQUETE_CONMUTADO), xInicio+5, yInicio+59, null);
             g2D.drawString(this.PAQUETE_CONMUTADO, xInicio+23, yInicio+72);
             float dash1[] = {5.0f};
             BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash1, 0.0f);
@@ -856,7 +856,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
     /**
      * @since 1.0
      */    
-    private TDispensadorDeImagenes dispensadorDeImagenes;
+    private TImagesBroker dispensadorDeImagenes;
     /**
      * @since 1.0
      */    

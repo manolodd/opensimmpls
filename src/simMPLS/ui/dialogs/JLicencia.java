@@ -17,7 +17,7 @@
 package simMPLS.ui.dialogs;
 
 import java.awt.event.*;
-import simMPLS.ui.utils.TDispensadorDeImagenes;
+import simMPLS.ui.utils.TImagesBroker;
 
 /** Esta clase implementa una ventana que muestra la licencia GPL bajo la cual est�
  * liberado el Open SimMPLS y adem�s el certificado OSI del mismo.
@@ -38,7 +38,7 @@ public class JLicencia extends javax.swing.JDialog {
      * programa a�n sin haber cerrado esta ventana.
      * @since 1.0
      */
-    public JLicencia(java.awt.Frame parent, boolean modal, TDispensadorDeImagenes di) {
+    public JLicencia(java.awt.Frame parent, boolean modal, TImagesBroker di) {
         super(parent, modal);
         dispensadorDeImagenes = di;
         initComponents();
@@ -83,7 +83,7 @@ public class JLicencia extends javax.swing.JDialog {
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 130, 465, 210));
 
         jButton1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton1.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ACEPTAR));
+        jButton1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR));
         jButton1.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaLicencia.ResaltadoBoton").charAt(0));
         jButton1.setText(bundle.getString("OK")); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -93,7 +93,7 @@ public class JLicencia extends javax.swing.JDialog {
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 360, 100, -1));
 
-        jLabel1.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.OSI_CERTIFIED)
+        jLabel1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.OSI_CERTIFIED)
         );
         jLabel1.setDoubleBuffered(true);
         jLabel1.setFocusable(false);
@@ -126,7 +126,7 @@ public class JLicencia extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_closeDialog
     
-    private TDispensadorDeImagenes dispensadorDeImagenes;
+    private TImagesBroker dispensadorDeImagenes;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

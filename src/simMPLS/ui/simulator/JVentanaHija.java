@@ -54,7 +54,7 @@ import simMPLS.ui.dialogs.JVentanaLERA;
 import simMPLS.ui.dialogs.JVentanaLSR;
 import simMPLS.ui.dialogs.JVentanaLSRA;
 import simMPLS.ui.dialogs.JVentanaReceptor;
-import simMPLS.ui.utils.TDispensadorDeImagenes;
+import simMPLS.ui.utils.TImagesBroker;
 import simMPLS.utils.JFiltroOSM;
 import simMPLS.utils.TProgressEventListener;
 
@@ -74,7 +74,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
      * @param di Dispensador de im�genes de donde se obtendr�n todas las im�genes que se
      * necesiten.
      */
-    public JVentanaHija(JSimulador padre, TDispensadorDeImagenes di) {
+    public JVentanaHija(JSimulador padre, TImagesBroker di) {
         dispensadorDeImagenes = di;
         VentanaPadre = padre;
         initComponents();
@@ -91,7 +91,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
      * @param di Dispensador de im�genes de donde se obtendr�n todas las im�genes que se
      * necesiten.
      */
-    public JVentanaHija(JSimulador padre, TDispensadorDeImagenes di, java.lang.String titulo) {
+    public JVentanaHija(JSimulador padre, TImagesBroker di, java.lang.String titulo) {
         dispensadorDeImagenes = di;
         VentanaPadre = padre;
         initComponents();
@@ -109,7 +109,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
      * escenario y todos sus datos.
      * @since 1.0
      */    
-    public JVentanaHija(JSimulador padre, TDispensadorDeImagenes di, TScenario esc) {
+    public JVentanaHija(JSimulador padre, TImagesBroker di, TScenario esc) {
         dispensadorDeImagenes = di;
         VentanaPadre = padre;
         initComponents();
@@ -335,7 +335,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Titulo"));
         setFont(new java.awt.Font("Dialog", 0, 12));
-        setFrameIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ICONO_VENTANA_INTERNA_MENU));
+        setFrameIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ICONO_VENTANA_INTERNA_MENU));
         setNormalBounds(new java.awt.Rectangle(10, 10, 100, 100));
         setPreferredSize(new java.awt.Dimension(100, 100));
         setVisible(true);
@@ -347,7 +347,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         panelBotonesDisenio.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         panelBotonesDisenio.setBorder(new javax.swing.border.EtchedBorder());
-        iconoEmisor.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.EMISOR_MENU));
+        iconoEmisor.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.EMISOR_MENU));
         iconoEmisor.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Topic.Emisor"));
         iconoEmisor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -363,7 +363,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         panelBotonesDisenio.add(iconoEmisor);
 
-        iconoReceptor.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.RECEPTOR_MENU));
+        iconoReceptor.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.RECEPTOR_MENU));
         iconoReceptor.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Topic.Receptor"));
         iconoReceptor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -379,7 +379,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         panelBotonesDisenio.add(iconoReceptor);
 
-        iconoLER.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LER_MENU));
+        iconoLER.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LER_MENU));
         iconoLER.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Topic.LER"));
         iconoLER.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -395,7 +395,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         panelBotonesDisenio.add(iconoLER);
 
-        iconoLERA.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LERA_MENU));
+        iconoLERA.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LERA_MENU));
         iconoLERA.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Topic.LERActivo"));
         iconoLERA.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -411,7 +411,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         panelBotonesDisenio.add(iconoLERA);
 
-        iconoLSR.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LSR_MENU));
+        iconoLSR.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSR_MENU));
         iconoLSR.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Topic.LSR"));
         iconoLSR.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -427,7 +427,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         panelBotonesDisenio.add(iconoLSR);
 
-        iconoLSRA.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LSRA_MENU));
+        iconoLSRA.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSRA_MENU));
         iconoLSRA.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Topic.LSRActivo"));
         iconoLSRA.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -443,7 +443,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         panelBotonesDisenio.add(iconoLSRA);
 
-        iconoEnlace.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ENLACE_MENU));
+        iconoEnlace.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ENLACE_MENU));
         iconoEnlace.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Topic.Enlace"));
         iconoEnlace.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -490,14 +490,14 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         panelDisenioSuperior.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Tab.Disenio"), dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.DISENIO), panelDisenioSuperior, java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.A_panel_to_design_network_topology"));
+        jTabbedPane1.addTab(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Tab.Disenio"), dispensadorDeImagenes.obtenerIcono(TImagesBroker.DISENIO), panelDisenioSuperior, java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.A_panel_to_design_network_topology"));
 
         panelSimulacionSuperior.setLayout(new java.awt.BorderLayout());
 
         panelBotonesSimulacion.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         panelBotonesSimulacion.setBorder(new javax.swing.border.EtchedBorder());
-        iconoComenzar.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.BOTON_GENERAR));
+        iconoComenzar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_GENERAR));
         iconoComenzar.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Topic.Generar"));
         iconoComenzar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -513,7 +513,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         panelBotonesSimulacion.add(iconoComenzar);
 
-        iconoFinalizar.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.BOTON_PARAR));
+        iconoFinalizar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_PARAR));
         iconoFinalizar.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Topic.Finalizar"));
         iconoFinalizar.setEnabled(false);
         iconoFinalizar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -530,7 +530,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         panelBotonesSimulacion.add(iconoFinalizar);
 
-        iconoReanudar.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.BOTON_COMENZAR));
+        iconoReanudar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_COMENZAR));
         iconoReanudar.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Topic.Simulacion"));
         iconoReanudar.setEnabled(false);
         iconoReanudar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -547,7 +547,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         panelBotonesSimulacion.add(iconoReanudar);
 
-        iconoPausar.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.BOTON_PAUSA));
+        iconoPausar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_PAUSA));
         iconoPausar.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Topic.Detener"));
         iconoPausar.setEnabled(false);
         iconoPausar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -619,7 +619,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         panelSimulacionSuperior.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Tab.Simulacion"), dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.SIMULACION), panelSimulacionSuperior, java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.A_panel_to_generate_and_play_simulation."));
+        jTabbedPane1.addTab(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Tab.Simulacion"), dispensadorDeImagenes.obtenerIcono(TImagesBroker.SIMULACION), panelSimulacionSuperior, java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.A_panel_to_generate_and_play_simulation."));
 
         panelAnalisisSuperior.setLayout(new java.awt.BorderLayout());
 
@@ -698,7 +698,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         panelAnalisisSuperior.add(jScrollPane4, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.Analisis"), dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ANALISIS), panelAnalisisSuperior, java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.Analisis.Tooltip"));
+        jTabbedPane1.addTab(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.Analisis"), dispensadorDeImagenes.obtenerIcono(TImagesBroker.ANALISIS), panelAnalisisSuperior, java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.Analisis.Tooltip"));
 
         panelOpcionesSuperior.setLayout(new java.awt.BorderLayout());
 
@@ -910,7 +910,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         panelOpcionesSuperior.add(jScrollPane3, java.awt.BorderLayout.NORTH);
 
-        jTabbedPane1.addTab(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Options"), dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.OPCIONES), panelOpcionesSuperior, java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Options_about_the_scene"));
+        jTabbedPane1.addTab(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Options"), dispensadorDeImagenes.obtenerIcono(TImagesBroker.OPCIONES), panelOpcionesSuperior, java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Options_about_the_scene"));
 
         getContentPane().add(jTabbedPane1, java.awt.BorderLayout.CENTER);
 
@@ -1709,7 +1709,7 @@ private void clicEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:even
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDelIconoPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoPausar
-    iconoPausar.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.BOTON_PAUSA));
+    iconoPausar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_PAUSA));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDelIconoPausar
 
@@ -1719,7 +1719,7 @@ private void ratonSaleDelIconoPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoPausar
-    iconoPausar.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.BOTON_PAUSA_BRILLO));
+    iconoPausar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_PAUSA_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoPausar
 
@@ -1729,7 +1729,7 @@ private void ratonEntraEnIconoPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDelIconoFinalizar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoFinalizar
-    iconoFinalizar.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.BOTON_PARAR));
+    iconoFinalizar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_PARAR));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDelIconoFinalizar
 
@@ -1739,7 +1739,7 @@ private void ratonSaleDelIconoFinalizar(java.awt.event.MouseEvent evt) {//GEN-FI
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoFinalizar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoFinalizar
-    iconoFinalizar.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.BOTON_PARAR_BRILLO));
+    iconoFinalizar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_PARAR_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoFinalizar
 
@@ -1749,7 +1749,7 @@ private void ratonEntraEnIconoFinalizar(java.awt.event.MouseEvent evt) {//GEN-FI
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDelIconoReanudar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoReanudar
-    iconoReanudar.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.BOTON_COMENZAR));
+    iconoReanudar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_COMENZAR));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDelIconoReanudar
 
@@ -1759,7 +1759,7 @@ private void ratonSaleDelIconoReanudar(java.awt.event.MouseEvent evt) {//GEN-FIR
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoReanudar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoReanudar
-    iconoReanudar.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.BOTON_COMENZAR_BRILLO));
+    iconoReanudar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_COMENZAR_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoReanudar
 
@@ -1769,7 +1769,7 @@ private void ratonEntraEnIconoReanudar(java.awt.event.MouseEvent evt) {//GEN-FIR
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDelIconoComenzar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoComenzar
-    iconoComenzar.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.BOTON_GENERAR));
+    iconoComenzar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_GENERAR));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDelIconoComenzar
 
@@ -1779,7 +1779,7 @@ private void ratonSaleDelIconoComenzar(java.awt.event.MouseEvent evt) {//GEN-FIR
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoComenzar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoComenzar
-    iconoComenzar.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.BOTON_GENERAR_BRILLO));
+    iconoComenzar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_GENERAR_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoComenzar
 
@@ -1823,7 +1823,7 @@ private void clicEnAniadirLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
  * @param evt El evento que hace que se dispare este m�todo
  */
 private void ratonSaleDeIconoEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoEnlace
-    iconoEnlace.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ENLACE_MENU));
+    iconoEnlace.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ENLACE_MENU));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDeIconoEnlace
 
@@ -1833,7 +1833,7 @@ private void ratonSaleDeIconoEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoEnlace
-    iconoEnlace.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ENLACE_MENU_BRILLO));
+    iconoEnlace.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ENLACE_MENU_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoEnlace
 
@@ -1843,7 +1843,7 @@ private void ratonEntraEnIconoEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDeIconoLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLSRA
-    iconoLSRA.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LSRA_MENU));
+    iconoLSRA.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSRA_MENU));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDeIconoLSRA
 
@@ -1853,7 +1853,7 @@ private void ratonSaleDeIconoLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLSRA
-    iconoLSRA.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LSRA_MENU_BRILLO));
+    iconoLSRA.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSRA_MENU_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoLSRA
 
@@ -1863,7 +1863,7 @@ private void ratonEntraEnIconoLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDeIconoLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLSR
-    iconoLSR.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LSR_MENU));
+    iconoLSR.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSR_MENU));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDeIconoLSR
 
@@ -1873,7 +1873,7 @@ private void ratonSaleDeIconoLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLSR
-    iconoLSR.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LSR_MENU_BRILLO));
+    iconoLSR.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSR_MENU_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoLSR
 
@@ -1883,7 +1883,7 @@ private void ratonEntraEnIconoLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDeIconoLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLERA
-    iconoLERA.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LERA_MENU));
+    iconoLERA.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LERA_MENU));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDeIconoLERA
 
@@ -1893,7 +1893,7 @@ private void ratonSaleDeIconoLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLERA
-    iconoLERA.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LERA_MENU_BRILLO));
+    iconoLERA.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LERA_MENU_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoLERA
 
@@ -1903,7 +1903,7 @@ private void ratonEntraEnIconoLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDeIconoLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLER
-    iconoLER.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LER_MENU));
+    iconoLER.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LER_MENU));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDeIconoLER
 
@@ -1913,7 +1913,7 @@ private void ratonSaleDeIconoLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLER
-    iconoLER.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LER_MENU_BRILLO));
+    iconoLER.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LER_MENU_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoLER
 
@@ -1923,7 +1923,7 @@ private void ratonEntraEnIconoLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDeIconoReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoReceptor
-    iconoReceptor.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.RECEPTOR_MENU));
+    iconoReceptor.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.RECEPTOR_MENU));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDeIconoReceptor
 
@@ -1933,7 +1933,7 @@ private void ratonSaleDeIconoReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRS
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoReceptor
-    iconoReceptor.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.RECEPTOR_MENU_BRILLO));
+    iconoReceptor.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.RECEPTOR_MENU_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoReceptor
 
@@ -1943,7 +1943,7 @@ private void ratonEntraEnIconoReceptor(java.awt.event.MouseEvent evt) {//GEN-FIR
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDeIconoEmisor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoEmisor
-    iconoEmisor.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.EMISOR_MENU));
+    iconoEmisor.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.EMISOR_MENU));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDeIconoEmisor
 
@@ -1953,7 +1953,7 @@ private void ratonSaleDeIconoEmisor(java.awt.event.MouseEvent evt) {//GEN-FIRST:
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoEmisor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoEmisor
-    iconoEmisor.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.EMISOR_MENU_BRILLO));
+    iconoEmisor.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.EMISOR_MENU_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoEmisor
 
@@ -2366,17 +2366,17 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             this.panelAnalisis.add(this.panelFijo, gbc);
             if (nt != null) {
                 if (nt.getNodeType() == TNode.SENDER) {
-                    this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.EMISOR));
+                    this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.EMISOR));
                 } else if (nt.getNodeType() == TNode.RECEIVER) {
-                    this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.RECEPTOR));
+                    this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.RECEPTOR));
                 } else if (nt.getNodeType() == TNode.LER) {
-                    this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LER));
+                    this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.LER));
                 } else if (nt.getNodeType() == TNode.LERA) {
-                    this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LERA));
+                    this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.LERA));
                 } else if (nt.getNodeType() == TNode.LSR) {
-                    this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LSR));
+                    this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSR));
                 } else if (nt.getNodeType() == TNode.LSRA) {
-                    this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LSRA));
+                    this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSRA));
                 }
 
                 int numeroGraficos = nt.getStats().obtenerNumeroGraficas();
@@ -2567,7 +2567,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
      * distintas instancias.
      * @since 1.0
      */
-    private TDispensadorDeImagenes dispensadorDeImagenes;
+    private TImagesBroker dispensadorDeImagenes;
     /** Este atributo es una referencia a la ventana padre que recoge dentro de si a
      * esta ventana hija.
      * @since 1.0

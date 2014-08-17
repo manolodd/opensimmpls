@@ -16,7 +16,7 @@
  */
 package simMPLS.ui.dialogs;
 
-import simMPLS.ui.utils.TDispensadorDeImagenes;
+import simMPLS.ui.utils.TImagesBroker;
 
 /** Esta clase implementa una ventana que muestra un mensaje de error al
  * usuario y que muestra adem�s un icono de error.
@@ -34,7 +34,7 @@ public class JVentanaError extends javax.swing.JDialog {
      * @param di Dispensador de im�genes global de la aplicaci�n.
      * @since 1.0
      */
-    public JVentanaError(java.awt.Frame parent, boolean modal, TDispensadorDeImagenes di) {
+    public JVentanaError(java.awt.Frame parent, boolean modal, TImagesBroker di) {
         super(parent, modal);
         dispensadorDeImagenes = di;
         initComponents();
@@ -64,11 +64,11 @@ public class JVentanaError extends javax.swing.JDialog {
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ERROR));
+        jLabel1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ERROR));
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, -1, -1));
 
         jButton1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton1.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ACEPTAR));
+        jButton1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR));
         jButton1.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaError.ResaltadoBoton").charAt(0));
         jButton1.setText(bundle.getString("OK")); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -117,7 +117,7 @@ public class JVentanaError extends javax.swing.JDialog {
         jTextPane1.setText(texto);
     }
     
-    private TDispensadorDeImagenes dispensadorDeImagenes;
+    private TImagesBroker dispensadorDeImagenes;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

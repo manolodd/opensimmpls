@@ -16,7 +16,7 @@
  */
 package simMPLS.ui.dialogs;
 
-import simMPLS.ui.utils.TDispensadorDeImagenes;
+import simMPLS.ui.utils.TImagesBroker;
 
 /** Implementa una ventana con la imagen del programa de fondo.
  * Se usa para mostrar informaci�n sobre el programa cuando sea
@@ -35,7 +35,7 @@ public class JSobre extends javax.swing.JDialog {
      * interfaz hasta que sea cerrada. FALSE indica que esto no es as�.
      * @param di Dispensador de im�genes global de la aplicaci�n.
      */    
-    public JSobre(java.awt.Frame parent, boolean modal, TDispensadorDeImagenes di) {
+    public JSobre(java.awt.Frame parent, boolean modal, TImagesBroker di) {
         super(parent, modal);
         dispensadorDeImagenes = di;
         initComponents();
@@ -60,7 +60,7 @@ public class JSobre extends javax.swing.JDialog {
         });
 
         Imagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Imagen.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.SPLASH));
+        Imagen.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.SPLASH));
         getContentPane().add(Imagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 300));
 
         pack();
@@ -78,7 +78,7 @@ public class JSobre extends javax.swing.JDialog {
     }//GEN-LAST:event_cerrarVentana
 
 
-    private TDispensadorDeImagenes dispensadorDeImagenes;
+    private TImagesBroker dispensadorDeImagenes;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Imagen;
     // End of variables declaration//GEN-END:variables

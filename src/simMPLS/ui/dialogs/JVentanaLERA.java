@@ -22,7 +22,7 @@ import javax.swing.*;
 import simMPLS.scenario.TLERANode;
 import simMPLS.scenario.TTopology;
 import simMPLS.ui.simulator.JPanelDisenio;
-import simMPLS.ui.utils.TDispensadorDeImagenes;
+import simMPLS.ui.utils.TImagesBroker;
 
 /**
  * Esta clase implementa una ventana que nos permite configurar un nodo LER
@@ -44,7 +44,7 @@ public class JVentanaLERA extends javax.swing.JDialog {
      * de usuario hasta que se cierre. FALSE indica que esto no es asi.
      * @since 1.0
      */
-    public JVentanaLERA(TTopology t, JPanelDisenio pad, TDispensadorDeImagenes di, java.awt.Frame parent, boolean modal) {
+    public JVentanaLERA(TTopology t, JPanelDisenio pad, TImagesBroker di, java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         ventanaPadre = parent;
         dispensadorDeImagenes = di;
@@ -137,7 +137,7 @@ public class JVentanaLERA extends javax.swing.JDialog {
         panelPestanias.setFont(new java.awt.Font("Dialog", 0, 12));
         panelGeneral.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        iconoLER.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LERA));
+        iconoLER.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LERA));
         iconoLER.setText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("LERA.Descripcion"));
         panelGeneral.add(iconoLER, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
@@ -194,7 +194,7 @@ public class JVentanaLERA extends javax.swing.JDialog {
 
         panelRapido.add(selectorDeGenerarEstadisticasSencillo, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, -1, -1));
 
-        iconoEnlace1.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ASISTENTE));
+        iconoEnlace1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ASISTENTE));
         iconoEnlace1.setText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaLERA.ConfiguracionRapida"));
         panelRapido.add(iconoEnlace1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
@@ -227,7 +227,7 @@ public class JVentanaLERA extends javax.swing.JDialog {
 
         panelAvanzado.add(selectorDeGenerarEstadisticasAvanzado, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, -1, -1));
 
-        iconoEnlace2.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.AVANZADA));
+        iconoEnlace2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.AVANZADA));
         iconoEnlace2.setText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaLERA.ConfiguracionAvanzada"));
         panelAvanzado.add(iconoEnlace2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
@@ -310,7 +310,7 @@ public class JVentanaLERA extends javax.swing.JDialog {
         panelBotones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton2.setFont(new java.awt.Font("Dialog", 0, 12));
-        jButton2.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ACEPTAR));
+        jButton2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR));
         jButton2.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaLER.botones.mne.Aceptar").charAt(0));
         jButton2.setText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaLER.boton.Ok"));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -322,7 +322,7 @@ public class JVentanaLERA extends javax.swing.JDialog {
         panelBotones.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 115, -1));
 
         jButton3.setFont(new java.awt.Font("Dialog", 0, 12));
-        jButton3.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.CANCELAR));
+        jButton3.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.CANCELAR));
         jButton3.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaLER.botones.mne.Cancelar").charAt(0));
         jButton3.setText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaLER.boton.Cancel"));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -490,7 +490,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
         }
     }
     
-    private TDispensadorDeImagenes dispensadorDeImagenes;
+    private TImagesBroker dispensadorDeImagenes;
     private Frame ventanaPadre;
     private JPanelDisenio pd;
     private TLERANode configLERA;

@@ -24,7 +24,7 @@ import simMPLS.scenario.TSenderNode;
 import simMPLS.scenario.TTopology;
 import simMPLS.scenario.TNode;
 import simMPLS.ui.simulator.JPanelDisenio;
-import simMPLS.ui.utils.TDispensadorDeImagenes;
+import simMPLS.ui.utils.TImagesBroker;
 
 /**
  * Esta clase implementa una ventana de configuraci�n de un nodo emisor de la
@@ -45,7 +45,7 @@ public class JVentanaEmisor extends javax.swing.JDialog {
      * la interfaz hasta que se cierre. FALSE indica todo lo contrario.
      * @since 1.0
      */
-    public JVentanaEmisor(TTopology t, JPanelDisenio pad, TDispensadorDeImagenes di, java.awt.Frame parent, boolean modal) {
+    public JVentanaEmisor(TTopology t, JPanelDisenio pad, TImagesBroker di, java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         ventanaPadre = parent;
         dispensadorDeImagenes = di;
@@ -168,7 +168,7 @@ public class JVentanaEmisor extends javax.swing.JDialog {
         panelPestanias.setFont(new java.awt.Font("Dialog", 0, 12));
         panelGeneral.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        iconoEmisor.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.EMISOR));
+        iconoEmisor.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.EMISOR));
         iconoEmisor.setText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaEmisor.DescripcionNodo"));
         panelGeneral.add(iconoEmisor, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
@@ -227,7 +227,7 @@ public class JVentanaEmisor extends javax.swing.JDialog {
 
         panelRapido.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        iconoEnlace1.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ASISTENTE));
+        iconoEnlace1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ASISTENTE));
         iconoEnlace1.setText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaEmisor.configuracionRapida"));
         panelRapido.add(iconoEnlace1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
@@ -262,7 +262,7 @@ public class JVentanaEmisor extends javax.swing.JDialog {
 
         panelAvanzado.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        iconoEnlace2.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.AVANZADA));
+        iconoEnlace2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.AVANZADA));
         iconoEnlace2.setText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaEmisor.ConfiguracionAvanzada"));
         panelAvanzado.add(iconoEnlace2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
@@ -404,7 +404,7 @@ public class JVentanaEmisor extends javax.swing.JDialog {
         panelBotones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton2.setFont(new java.awt.Font("Dialog", 0, 12));
-        jButton2.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ACEPTAR));
+        jButton2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR));
         jButton2.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaEmisor.botones.Aceptar").charAt(0));
         jButton2.setText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaEmisor.Boton.Aceptar.Texto"));
         jButton2.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaEmisor.tooltip.Aceptar"));
@@ -417,7 +417,7 @@ public class JVentanaEmisor extends javax.swing.JDialog {
         panelBotones.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 110, -1));
 
         jButton3.setFont(new java.awt.Font("Dialog", 0, 12));
-        jButton3.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.CANCELAR));
+        jButton3.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.CANCELAR));
         jButton3.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaEmisor.botones.Cancelar").charAt(0));
         jButton3.setText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaEmisor.Boton.Cancelar.Texto"));
         jButton3.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaEmisor.tooltip.Cancelar"));
@@ -680,7 +680,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             }
     }
 
-    private TDispensadorDeImagenes dispensadorDeImagenes;
+    private TImagesBroker dispensadorDeImagenes;
     private Frame ventanaPadre;
     private JPanelDisenio pd;
     private TSenderNode emisor;

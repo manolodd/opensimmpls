@@ -19,7 +19,7 @@ package simMPLS.ui.dialogs;
 import java.awt.*;
 import javax.swing.*;
 import simMPLS.io.net.TSMTP;
-import simMPLS.ui.utils.TDispensadorDeImagenes;
+import simMPLS.ui.utils.TImagesBroker;
 
 /**
  * Esta clase implementa una ventana gracias a la cual el usuario de la aplicaci�n
@@ -39,7 +39,7 @@ public class JVentanaComentario extends javax.swing.JDialog {
      * parte de la interfaz hasta que se cierre. FALSE indica que esto no es asi.
      * @since 1.0
      */
-    public JVentanaComentario(TDispensadorDeImagenes di, java.awt.Frame parent, boolean modal) {
+    public JVentanaComentario(TImagesBroker di, java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         ventanaPadre = parent;
         dispensadorDeImagenes = di;
@@ -96,7 +96,7 @@ public class JVentanaComentario extends javax.swing.JDialog {
         panelBotones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton2.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.SOBRE_EMAIL));
+        jButton2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.SOBRE_EMAIL));
         jButton2.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaComentario.mnemonico.enviar").charAt(0));
         jButton2.setText(bundle.getString("JVentanaComentario.Send")); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -107,7 +107,7 @@ public class JVentanaComentario extends javax.swing.JDialog {
         panelBotones.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 110, -1));
 
         jButton3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton3.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.CANCELAR));
+        jButton3.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.CANCELAR));
         jButton3.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaComentario.mnemonico.cancelar").charAt(0));
         jButton3.setText(bundle.getString("JVentanaComentario.Cancel")); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -119,7 +119,7 @@ public class JVentanaComentario extends javax.swing.JDialog {
 
         panelPrincipal.add(panelBotones, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 255, 400, 55));
 
-        jLabel1.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.COMENTARIO));
+        jLabel1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.COMENTARIO));
         jLabel1.setText(bundle.getString("JVentanaComentario.tooltip.send")); // NOI18N
         panelPrincipal.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, -1, -1));
 
@@ -239,7 +239,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
      */    
     public static final int REMITE_VACIO = 3;
 
-    private TDispensadorDeImagenes dispensadorDeImagenes;
+    private TImagesBroker dispensadorDeImagenes;
     private Frame ventanaPadre;
     private TSMTP enviadorDeCorreo;
     // Variables declaration - do not modify//GEN-BEGIN:variables

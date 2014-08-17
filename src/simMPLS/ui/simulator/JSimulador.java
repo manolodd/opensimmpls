@@ -28,7 +28,7 @@ import simMPLS.ui.dialogs.JVentanaAyuda;
 import simMPLS.ui.dialogs.JVentanaBooleana;
 import simMPLS.ui.dialogs.JVentanaComentario;
 import simMPLS.ui.dialogs.JVentanaError;
-import simMPLS.ui.utils.TDispensadorDeImagenes;
+import simMPLS.ui.utils.TImagesBroker;
 import simMPLS.utils.JFiltroOSM;
 import simMPLS.utils.TIdentificador;
 
@@ -48,7 +48,7 @@ public class JSimulador extends javax.swing.JFrame {
      * @param di El dispensador de im�genes que se encargar� de precargar las im�genes necesarias
      * en el simulador, ahorrando tiempo y mejorando el rendimiento de la aplicaci�n.
      */
-    public JSimulador(TDispensadorDeImagenes di) {
+    public JSimulador(TImagesBroker di) {
         dispensadorDeImagenes = di;
         initComponents();
         initComponents2();
@@ -96,7 +96,7 @@ public class JSimulador extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes"); // NOI18N
         setTitle(bundle.getString("Open_SimMPLS")); // NOI18N
-        setIconImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.SPLASH_MENU));
+        setIconImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.SPLASH_MENU));
         setName(bundle.getString("simulator")); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -116,7 +116,7 @@ public class JSimulador extends javax.swing.JFrame {
 
         nuevoMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         nuevoMenuItem.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        nuevoMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.NUEVO_MENU));
+        nuevoMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.NUEVO_MENU));
         nuevoMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("Menu.Letra_resaltada.Nuevo").charAt(0));
         nuevoMenuItem.setText(bundle.getString("New")); // NOI18N
         nuevoMenuItem.setDoubleBuffered(true);
@@ -128,7 +128,7 @@ public class JSimulador extends javax.swing.JFrame {
         submenuEscenario.add(nuevoMenuItem);
 
         abrirMenuItem.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        abrirMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ABRIR_MENU));
+        abrirMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ABRIR_MENU));
         abrirMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("Menu.Letra_resaltada.Abrir").charAt(0));
         abrirMenuItem.setText(bundle.getString("Open")); // NOI18N
         abrirMenuItem.setDoubleBuffered(true);
@@ -141,7 +141,7 @@ public class JSimulador extends javax.swing.JFrame {
 
         cerrarMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         cerrarMenuItem.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        cerrarMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.CERRAR_MENU));
+        cerrarMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.CERRAR_MENU));
         cerrarMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("Menu.Letra_resaltada.Cerrar").charAt(0));
         cerrarMenuItem.setText(bundle.getString("Close")); // NOI18N
         cerrarMenuItem.setDoubleBuffered(true);
@@ -154,7 +154,7 @@ public class JSimulador extends javax.swing.JFrame {
         submenuEscenario.add(cerrarMenuItem);
 
         guardarMenuItem.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        guardarMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.GUARDAR_MENU));
+        guardarMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.GUARDAR_MENU));
         guardarMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("Menu.Letra_resaltada.Guardar").charAt(0));
         guardarMenuItem.setText(bundle.getString("Save")); // NOI18N
         guardarMenuItem.setDoubleBuffered(true);
@@ -167,7 +167,7 @@ public class JSimulador extends javax.swing.JFrame {
         submenuEscenario.add(guardarMenuItem);
 
         guardarComoMenuItem.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        guardarComoMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.GUARDAR_COMO_MENU));
+        guardarComoMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.GUARDAR_COMO_MENU));
         guardarComoMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("Menu.Letra_resaltada.Guardar_como").charAt(0));
         guardarComoMenuItem.setText(bundle.getString("Save_as...")); // NOI18N
         guardarComoMenuItem.setDoubleBuffered(true);
@@ -182,7 +182,7 @@ public class JSimulador extends javax.swing.JFrame {
 
         salirMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         salirMenuItem.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        salirMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.SALIR_MENU));
+        salirMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.SALIR_MENU));
         salirMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("Menu.Letra_resaltada.Salir").charAt(0));
         salirMenuItem.setText(bundle.getString("Exit")); // NOI18N
         salirMenuItem.setDoubleBuffered(true);
@@ -201,7 +201,7 @@ public class JSimulador extends javax.swing.JFrame {
         submenuVista.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
 
         mosaicoHorizontalMenuItem.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        mosaicoHorizontalMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.VISTA_HORIZONTAL));
+        mosaicoHorizontalMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.VISTA_HORIZONTAL));
         mosaicoHorizontalMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("SubmenuVista.MosaicoHorixontal.Resaltado").charAt(0));
         mosaicoHorizontalMenuItem.setText(bundle.getString("SubmenuVista.MosaicoHorizontal")); // NOI18N
         mosaicoHorizontalMenuItem.setDoubleBuffered(true);
@@ -214,7 +214,7 @@ public class JSimulador extends javax.swing.JFrame {
         submenuVista.add(mosaicoHorizontalMenuItem);
 
         mosaicoVerticalMenuItem.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        mosaicoVerticalMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.VISTA_VERTICAL));
+        mosaicoVerticalMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.VISTA_VERTICAL));
         mosaicoVerticalMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("SubmenuVista.MosaicoVertical.Resaltado").charAt(0));
         mosaicoVerticalMenuItem.setText(bundle.getString("SubmenuVista.MosaicoVertical")); // NOI18N
         mosaicoVerticalMenuItem.setDoubleBuffered(true);
@@ -227,7 +227,7 @@ public class JSimulador extends javax.swing.JFrame {
         submenuVista.add(mosaicoVerticalMenuItem);
 
         cascadaMenuItem.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        cascadaMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.VISTA_CASCADA));
+        cascadaMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.VISTA_CASCADA));
         cascadaMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("SubmenuVista.Cascadal.Resaltado").charAt(0));
         cascadaMenuItem.setText(bundle.getString("SubmenuVista.Cascada")); // NOI18N
         cascadaMenuItem.setDoubleBuffered(true);
@@ -240,7 +240,7 @@ public class JSimulador extends javax.swing.JFrame {
         submenuVista.add(cascadaMenuItem);
 
         iconosMenuItem.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        iconosMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.VISTA_ICONOS));
+        iconosMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.VISTA_ICONOS));
         iconosMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("SubmenuVista.Iconos.Resaltado").charAt(0));
         iconosMenuItem.setText(bundle.getString("SubmenuVista.Iconos")); // NOI18N
         iconosMenuItem.setDoubleBuffered(true);
@@ -261,7 +261,7 @@ public class JSimulador extends javax.swing.JFrame {
 
         tutorialMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         tutorialMenuItem.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        tutorialMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.TUTORIAL_MENU));
+        tutorialMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.TUTORIAL_MENU));
         tutorialMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("Menu.Letra_resaltada.Contenidos").charAt(0));
         tutorialMenuItem.setText(bundle.getString("Contents")); // NOI18N
         tutorialMenuItem.setDoubleBuffered(true);
@@ -274,7 +274,7 @@ public class JSimulador extends javax.swing.JFrame {
         submenuAyuda.add(jSeparator2);
 
         licenciaMenuItem.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        licenciaMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LICENCIA_MENU));
+        licenciaMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LICENCIA_MENU));
         licenciaMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("Menu.Letra_resaltada.Licencia").charAt(0));
         licenciaMenuItem.setText(bundle.getString("License")); // NOI18N
         licenciaMenuItem.setToolTipText(bundle.getString("License")); // NOI18N
@@ -287,7 +287,7 @@ public class JSimulador extends javax.swing.JFrame {
         submenuAyuda.add(licenciaMenuItem);
 
         comentarioMenuItem1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        comentarioMenuItem1.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.COMENTARIO_MENU));
+        comentarioMenuItem1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.COMENTARIO_MENU));
         comentarioMenuItem1.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("Menu.Letra_resaltada.Comentario").charAt(0));
         comentarioMenuItem1.setText(bundle.getString("Contact_the_authors")); // NOI18N
         comentarioMenuItem1.setToolTipText(bundle.getString("License")); // NOI18N
@@ -300,7 +300,7 @@ public class JSimulador extends javax.swing.JFrame {
         submenuAyuda.add(comentarioMenuItem1);
 
         sobreMenuItem.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        sobreMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.SPLASH_MENU));
+        sobreMenuItem.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.SPLASH_MENU));
         sobreMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("Menu.Letra_resaltada.Sobre").charAt(0));
         sobreMenuItem.setText(bundle.getString("About")); // NOI18N
         sobreMenuItem.setDoubleBuffered(true);
@@ -725,7 +725,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
     /**
      * @since 1.0
      */    
-    private TDispensadorDeImagenes dispensadorDeImagenes;
+    private TImagesBroker dispensadorDeImagenes;
     /**
      * @since 1.0
      */    

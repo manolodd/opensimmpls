@@ -16,7 +16,7 @@
  */
 package simMPLS.ui.dialogs;
 
-import simMPLS.ui.utils.TDispensadorDeImagenes;
+import simMPLS.ui.utils.TImagesBroker;
 
 /** Esta clase implementa una ventana que muestra una pregunta al usuario y espera
  * una respuesta de stipo SI/NO (true/false). Es polivalente.
@@ -35,7 +35,7 @@ public class JVentanaAdvertencia extends javax.swing.JDialog {
      * @param di Disepnsador de im�genes global de la aplicaci�n.
      * @since 1.0
      */
-    public JVentanaAdvertencia(java.awt.Frame parent, boolean modal, TDispensadorDeImagenes di) {
+    public JVentanaAdvertencia(java.awt.Frame parent, boolean modal, TImagesBroker di) {
         super(parent, modal);
         dispensadorDeImagenes = di;
         initComponents();
@@ -65,11 +65,11 @@ public class JVentanaAdvertencia extends javax.swing.JDialog {
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ADVERTENCIA));
+        jLabel1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ADVERTENCIA));
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, -1, -1));
 
         jButton1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton1.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ACEPTAR));
+        jButton1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR));
         jButton1.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaAdvertencia.ResaltadoBoton").charAt(0));
         jButton1.setText(bundle.getString("OK")); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -123,7 +123,7 @@ public class JVentanaAdvertencia extends javax.swing.JDialog {
      * mostrarlas.
      * @since 1.0
      */    
-    private TDispensadorDeImagenes dispensadorDeImagenes;
+    private TImagesBroker dispensadorDeImagenes;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

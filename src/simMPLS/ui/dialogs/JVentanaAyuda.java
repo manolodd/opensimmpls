@@ -16,7 +16,7 @@
  */
 package simMPLS.ui.dialogs;
 
-import simMPLS.ui.utils.TDispensadorDeImagenes;
+import simMPLS.ui.utils.TImagesBroker;
 
 /**
  * Esta clase implementa una vetnana donde se mostrar� la ayuda de la aplicaci�n o
@@ -36,7 +36,7 @@ public class JVentanaAyuda extends javax.swing.JDialog {
      * @param modal TRUE indica que esta ventana estar� en primer plano hasta que se cierre,
      * impidiendo que se pueda seleccionar ninguna otra. FALSE, lo contrario.
      */
-    public JVentanaAyuda(java.awt.Frame parent, boolean modal, TDispensadorDeImagenes di) {
+    public JVentanaAyuda(java.awt.Frame parent, boolean modal, TImagesBroker di) {
         super(parent, modal);
         dispensadorDeImagenes = di;
         initComponents();
@@ -93,11 +93,11 @@ public class JVentanaAyuda extends javax.swing.JDialog {
         jLabel3.setText(bundle.getString("JVentanaAyuda.At_the_present_time,_Open_SimMPLS_1.0_help_documentation")); // NOI18N
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 420, -1));
 
-        jLabel2.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.CAPTURAWEB));
+        jLabel2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.CAPTURAWEB));
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 190, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jLabel1.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.TUTORIAL));
+        jLabel1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.TUTORIAL));
         jLabel1.setText(bundle.getString("JVentanaAyuda.Open_SimMPLS_1.0_Help")); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 360, -1));
 
@@ -109,7 +109,7 @@ public class JVentanaAyuda extends javax.swing.JDialog {
 
         jPanel2.setOpaque(false);
 
-        jButton1.setIcon(dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ACEPTAR));
+        jButton1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR));
         jButton1.setMnemonic(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaAyuda.OK.Mnemonico").charAt(0));
         jButton1.setText(bundle.getString("VentanaAyuda.OK")); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -143,5 +143,5 @@ public class JVentanaAyuda extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
-    private TDispensadorDeImagenes dispensadorDeImagenes;
+    private TImagesBroker dispensadorDeImagenes;
 }

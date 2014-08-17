@@ -74,7 +74,7 @@
                 <Component class="javax.swing.JLabel" name="iconoLER">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.LER)" type="code"/>
+                      <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.LER)" type="code"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                       <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaLER.descripcion" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -233,7 +233,7 @@
                 <Component class="javax.swing.JLabel" name="iconoEnlace1">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ASISTENTE)" type="code"/>
+                      <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.ASISTENTE)" type="code"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                       <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaLER.ConfiguracionRapida" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -324,7 +324,7 @@
                 <Component class="javax.swing.JLabel" name="iconoEnlace2">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.AVANZADA)" type="code"/>
+                      <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.AVANZADA)" type="code"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                       <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaLER.ConfiguracionAvanzada" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -461,7 +461,7 @@
                   <Font name="Dialog" size="12" style="0"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.ACEPTAR)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.ACEPTAR)" type="code"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaLER.botones.mne.Aceptar" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -485,7 +485,7 @@
                   <Font name="Dialog" size="12" style="0"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(TDispensadorDeImagenes.CANCELAR)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.CANCELAR)" type="code"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaLER.botones.mne.Cancelar" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>

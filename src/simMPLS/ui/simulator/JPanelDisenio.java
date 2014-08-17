@@ -26,7 +26,7 @@ import javax.swing.*;
 import simMPLS.scenario.TTopology;
 import simMPLS.scenario.TLink;
 import simMPLS.scenario.TNode;
-import simMPLS.ui.utils.TDispensadorDeImagenes;
+import simMPLS.ui.utils.TImagesBroker;
 
 /**
  * Esta clase implementa un panel donde se puede dise�ar la topolog�a que luego va
@@ -51,7 +51,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
      * @param di El dispensador de im�genes. De �l tomar� el panel todas las im�genes que tenga
      * que mostrar en la pantalla.
      */    
-    public JPanelDisenio(TDispensadorDeImagenes di) {
+    public JPanelDisenio(TImagesBroker di) {
         dispensadorDeImagenes = di;
         initComponents();
     }
@@ -62,7 +62,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
      * @since 1.0
      * @param di El dispensador de im�genes.
      */    
-    public void ponerDispensadorDeImagenes(TDispensadorDeImagenes di) {
+    public void ponerDispensadorDeImagenes(TImagesBroker di) {
         dispensadorDeImagenes = di;
     }
 
@@ -210,44 +210,44 @@ public class JPanelDisenio extends javax.swing.JPanel {
             switch (tipo) {
                 case TNode.SENDER: {
                     if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR), posicion.x, posicion.y, null);
                     else
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.EMISOR_MOVIENDOSE), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.RECEIVER: {
                     if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.RECEPTOR), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR), posicion.x, posicion.y, null);
                     else
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.RECEPTOR_MOVIENDOSE), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.LER: {
                     if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LER), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LER), posicion.x, posicion.y, null);
                     else
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LER_MOVIENDOSE), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LER_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.LERA: {
                     if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LERA), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LERA), posicion.x, posicion.y, null);
                     else
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LERA_MOVIENDOSE), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LERA_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.LSR: {
                     if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSR), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSR), posicion.x, posicion.y, null);
                     else
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSR_MOVIENDOSE), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.LSRA: {
                     if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSRA), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA), posicion.x, posicion.y, null);
                     else
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TDispensadorDeImagenes.LSRA_MOVIENDOSE), posicion.x, posicion.y, null);
+                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
             }
@@ -298,7 +298,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
     /**
      * @since 1.0
      */    
-    private TDispensadorDeImagenes dispensadorDeImagenes;
+    private TImagesBroker dispensadorDeImagenes;
     /**
      * @since 1.0
      */    

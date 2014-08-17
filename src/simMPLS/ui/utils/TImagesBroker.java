@@ -27,7 +27,7 @@ import javax.swing.*;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TDispensadorDeImagenes {
+public class TImagesBroker {
 
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un s�mbolo de "abrir".
@@ -779,7 +779,7 @@ public class TDispensadorDeImagenes {
      * TDispensadorDeImagenes.
      * @since 1.0
      */
-    public TDispensadorDeImagenes() {
+    public TImagesBroker() {
         imagen = new ImageIcon[NUMERO_DE_IMAGENES];
         try {
             cargarImagenes();

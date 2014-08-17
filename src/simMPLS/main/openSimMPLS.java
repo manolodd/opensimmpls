@@ -16,7 +16,7 @@
  */
 package simMPLS.main;
 
-import simMPLS.ui.utils.TDispensadorDeImagenes;
+import simMPLS.ui.utils.TImagesBroker;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import simMPLS.ui.simulator.JSimulador;
@@ -99,7 +99,7 @@ public class openSimMPLS {
         splash = new simMPLS.ui.splash.JSplash();
         splash.show();
         splash.ponerTexto(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("Loading_icons..."));
-        dispensadorDeImagenes = new TDispensadorDeImagenes();
+        dispensadorDeImagenes = new TImagesBroker();
         splash.ponerTexto(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("openSimMPLS.generandoInterfaz"));
         simulador = new JSimulador(dispensadorDeImagenes);
         java.awt.Dimension tamPantalla = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -116,7 +116,7 @@ public class openSimMPLS {
      *
      * @since 1.0
      */
-    private static TDispensadorDeImagenes dispensadorDeImagenes;
+    private static TImagesBroker dispensadorDeImagenes;
     /**
      * Imagen con el logo y la informaci�n del programa. Se presentar� al inicio
      * de la aplicaci�n y mientras �sta est� haciendo cosas de fondo.
