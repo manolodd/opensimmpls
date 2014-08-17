@@ -958,13 +958,13 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
             if (emc != null) {
                 emc.decreaseTimeOut(this.obtenerDuracionTic());
                 if (emc.getOutgoingLabel() == TSwitchingMatrixEntry.LABEL_REQUESTED) {
-                    if (emc.retryExpiredTLDPRequest()) {
+                    if (emc.shouldRetryExpiredTLDPRequest()) {
                         emc.resetTimeOut();
                         emc.decreaseAttempts();
                         solicitarTLDPTrasTimeout(emc);
                     }
                 } else if (emc.getOutgoingLabel() == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                    if (emc.retryExpiredTLDPRequest()) {
+                    if (emc.shouldRetryExpiredTLDPRequest()) {
                         emc.resetTimeOut();
                         emc.decreaseAttempts();
                         eliminarTLDPTrasTimeout(emc);

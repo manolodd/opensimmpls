@@ -236,7 +236,7 @@ public class TSwitchingMatrixEntry {
      * @return TRUE, if the request of this entry should be retried. Otherwise
      * returns FALSE..
      */
-    public boolean retryExpiredTLDPRequest() {
+    public boolean shouldRetryExpiredTLDPRequest() {
         if (areThereAvailableAttempts()) {
             if (timeout == 0) {
                 if ((this.label == TSwitchingMatrixEntry.LABEL_REQUESTED) || (this.label == TSwitchingMatrixEntry.REMOVING_LABEL)) {
