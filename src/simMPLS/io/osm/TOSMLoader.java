@@ -16,36 +16,28 @@
  */
 package simMPLS.io.osm;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.zip.CRC32;
-import simMPLS.scenario.TExternalLink;
 import simMPLS.scenario.TInternalLink;
-import simMPLS.scenario.TLERANode;
+import simMPLS.scenario.TExternalLink;
+import simMPLS.scenario.TScenario;
 import simMPLS.scenario.TLERNode;
+import simMPLS.scenario.TSenderNode;
+import simMPLS.scenario.TReceiverNode;
 import simMPLS.scenario.TLSRANode;
 import simMPLS.scenario.TLSRNode;
-import simMPLS.scenario.TReceiverNode;
-import simMPLS.scenario.TScenario;
-import simMPLS.scenario.TSenderNode;
+import simMPLS.scenario.TLERANode;
+import java.io.*;
+import java.util.zip.*;
 
 /**
  * Esta clase implementa un cargador de ficheros *.OSM, de Open SimMPLS 1.0
- *
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A
- * href="http://www.ManoloDominguez.com"
- * target="_blank">http://www.ManoloDominguez.com</A>
+ * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @since 1.0
  */
 public class TOSMLoader {
-
+    
     /**
      * Crea una nueva instancia de TCargadorOSM
-     *
      * @since 1.0
      */
     public TOSMLoader() {
@@ -53,18 +45,16 @@ public class TOSMLoader {
         flujoDeEntrada = null;
         entrada = null;
         crc = new CRC32();
-        posicion = TOSMLoader.NINGUNO;
-    }
-
+        posicion = this.NINGUNO;
+}
+    
     /**
      * Este m�todo carga desde el disco, del fichero especificado, un escenario.
-     *
-     * @param ficheroEntrada El fichero de disco que el cargador debe leer para
-     * crear en memoria el escenario.
-     * @return TRUE, si el escenario se ha cargado correctamente. FALSE en caso
-     * contrario.
+     * @param ficheroEntrada El fichero de disco que el cargador debe leer para crear en memoria el
+     * escenario.
+     * @return TRUE, si el escenario se ha cargado correctamente. FALSE en caso contrario.
      * @since 1.0
-     */
+     */    
     public boolean cargar(File ficheroEntrada) {
         if (this.ficheroEsCorrecto(ficheroEntrada)) {
             String cadena = "";
@@ -72,50 +62,51 @@ public class TOSMLoader {
             escenario.ponerGuardado(true);
             escenario.ponerModificado(false);
             try {
-                if (ficheroEntrada.exists()) {
+                if(ficheroEntrada.exists()) {
                     flujoDeEntrada = new FileInputStream(ficheroEntrada);
                     entrada = new BufferedReader(new InputStreamReader(flujoDeEntrada));
                     while ((cadena = entrada.readLine()) != null) {
                         if ((!cadena.equals("")) && (!cadena.startsWith("//")) && (!cadena.startsWith("@CRC#"))) {
-                            if (posicion == TOSMLoader.NINGUNO) {
+                            if (posicion == this.NINGUNO) {
                                 if (cadena.startsWith("@?Escenario")) {
-                                    this.posicion = TOSMLoader.ESCENARIO;
+                                    this.posicion = this.ESCENARIO;
                                 } else if (cadena.startsWith("@?Topologia")) {
-                                    this.posicion = TOSMLoader.TOPOLOGIA;
+                                    this.posicion = this.TOPOLOGIA;
                                 } else if (cadena.startsWith("@?Simulacion")) {
-                                    this.posicion = TOSMLoader.SIMULACION;
+                                    this.posicion = this.SIMULACION;
                                 } else if (cadena.startsWith("@?Analisis")) {
-                                    this.posicion = TOSMLoader.ANALISIS;
-                                }
-                            } else if (posicion == TOSMLoader.ESCENARIO) {
+                                    this.posicion = this.ANALISIS;
+                                } 
+                            } else if (posicion == this.ESCENARIO) {
                                 cargarEscenario(cadena);
-                            } else if (posicion == TOSMLoader.TOPOLOGIA) {
+                            } else if (posicion == this.TOPOLOGIA) {
                                 cargarTopologia(cadena);
-                            } else if (posicion == TOSMLoader.SIMULACION) {
+                            } else if (posicion == this.SIMULACION) {
                                 if (cadena.startsWith("@!Simulacion")) {
-                                    this.posicion = TOSMLoader.NINGUNO;
+                                    this.posicion = this.NINGUNO;
                                 }
-                            } else if (posicion == TOSMLoader.ANALISIS) {
+                            } else if (posicion == this.ANALISIS) {
                                 if (cadena.startsWith("@!Analisis")) {
-                                    this.posicion = TOSMLoader.NINGUNO;
-                                }
+                                    this.posicion = this.NINGUNO;
+                                } 
                             }
                         }
                     }
                     flujoDeEntrada.close();
                     entrada.close();
                 }
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 return false;
             }
             return true;
         }
         return false;
     }
-
+    
     private void cargarTopologia(String cadena) {
         if (cadena.startsWith("@!Topologia")) {
-            this.posicion = TOSMLoader.NINGUNO;
+            this.posicion = this.NINGUNO;
         } else if (cadena.startsWith("#Receptor#")) {
             TReceiverNode receptor = new TReceiverNode(0, "10.0.0.1", escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
             if (receptor.desSerializar(cadena)) {
@@ -183,7 +174,7 @@ public class TOSMLoader {
 
     private void cargarEscenario(String cadena) {
         if (cadena.startsWith("@!Escenario")) {
-            this.posicion = TOSMLoader.NINGUNO;
+            this.posicion = this.NINGUNO;
         } else if (cadena.startsWith("#Titulo#")) {
             if (!this.escenario.deserializarTitulo(cadena)) {
                 this.escenario.ponerTitulo("");
@@ -203,25 +194,24 @@ public class TOSMLoader {
             }
         }
     }
-
+    
     /**
-     * Este m�todo devuelve el escenario que el cargador ha creado en memoria
-     * tras leer elfichero asociado en disco.
-     *
+     * Este m�todo devuelve el escenario que el cargador ha creado en memoria tras leer
+     * elfichero asociado en disco.
      * @return El escenario correctamente creado en memoria.
      * @since 1.0
-     */
+     */    
     public TScenario obtenerEscenario() {
         return escenario;
     }
-
+    
     private boolean ficheroEsCorrecto(File f) {
         String CRCDelFichero = "";
         String CRCCalculado = "@CRC#";
         crc.reset();
         String cadena = "";
         try {
-            if (f.exists()) {
+            if(f.exists()) {
                 FileInputStream fEntrada = new FileInputStream(f);
                 BufferedReader ent = new BufferedReader(new InputStreamReader(fEntrada));
                 while ((cadena = ent.readLine()) != null) {
@@ -245,14 +235,15 @@ public class TOSMLoader {
                     return false;
                 }
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             crc.reset();
             return false;
         }
         crc.reset();
         return false;
     }
-
+    
     private static final int NINGUNO = 0;
     private static final int ESCENARIO = 1;
     private static final int TOPOLOGIA = 2;

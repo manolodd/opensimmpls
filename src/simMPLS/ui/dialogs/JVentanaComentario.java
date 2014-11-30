@@ -157,9 +157,9 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
     int estado = comprobarDatos();
     if (estado == CORRECTO) {
-        int estadoConexion = enviadorDeCorreo.iniciarSMTP(this.servidor.getText(), this.remitente.getText());
-        if (estadoConexion != TSMTP.ERROR_CONECTANDO) {
-            int estadoEnvio = enviadorDeCorreo.enviarNotificacion(this.comentario.getText());
+        int estadoConexion = enviadorDeCorreo.configure(this.servidor.getText(), this.remitente.getText());
+        if (estadoConexion != TSMTP.CONNECTION_ERROR) {
+            int estadoEnvio = enviadorDeCorreo.sendNotification(this.comentario.getText());
             if (estadoEnvio != 0) {
                 JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
                 va.mostrarMensaje(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaComentario.ErrorEnviando"));
