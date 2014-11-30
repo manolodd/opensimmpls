@@ -238,7 +238,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * @return La representaci�n textual del nodo.
      * @since 1.0
      */    
-    public String serializar() {
+    public String marshall() {
         String cadena = "#Receptor#";
         cadena += this.getID();
         cadena += "#";

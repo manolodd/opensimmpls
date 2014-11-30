@@ -32,7 +32,6 @@ import simMPLS.scenario.TActiveLSRNode;
 import simMPLS.scenario.TLSRNode;
 import simMPLS.scenario.TActiveLERNode;
 
-
 /**
  * This class implements a class that loads a scenario from disk in OSM (Open
  * SimMPLS format).
@@ -41,9 +40,12 @@ import simMPLS.scenario.TActiveLERNode;
  * @version 1.1
  */
 public class TOSMLoader {
-    
+
     /**
-     * Crea una nueva instancia de TCargadorOSM
+     * This method is the constructor of the class. It creates a new instance of
+     * TOSMLoader.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      */
     public TOSMLoader() {
@@ -52,15 +54,16 @@ public class TOSMLoader {
         this.input = null;
         this.scenarioCRC = new CRC32();
         this.position = TOSMLoader.NONE;
-}
-    
+    }
+
     /**
-     * Este m�todo carga desde el disco, del fichero especificado, un scenario.
-     * @param inputFile El fichero de disco que el cargador debe leer para crear en memoria el
- scenario.
-     * @return TRUE, si el scenario se ha cargado correctamente. FALSE en caso contrario.
+     * This method loads an scenario description from a file formated as OSM.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param inputFile The file where a scenario description is stored.
+     * @return true, if the file can be correctly loaded. False on the contrary.
      * @since 1.0
-     */    
+     */
     public boolean cargar(File inputFile) {
         if (this.fileIsValid(inputFile)) {
             String stringAux = "";
@@ -68,7 +71,7 @@ public class TOSMLoader {
             this.scenario.setSaved(true);
             this.scenario.setModified(false);
             try {
-                if(inputFile.exists()) {
+                if (inputFile.exists()) {
                     this.inputStream = new FileInputStream(inputFile);
                     this.input = new BufferedReader(new InputStreamReader(this.inputStream));
                     while ((stringAux = this.input.readLine()) != null) {
@@ -82,9 +85,9 @@ public class TOSMLoader {
                                     this.position = TOSMLoader.SIMULATION;
                                 } else if (stringAux.startsWith("@?Analisis")) {
                                     this.position = TOSMLoader.ANALISYS;
-                                } 
+                                }
                             } else if (position == TOSMLoader.SCENARIO) {
-                                cargarEscenario(stringAux);
+                                loadScenario(stringAux);
                             } else if (position == TOSMLoader.TOPOLOGY) {
                                 loadTopology(stringAux);
                             } else if (position == TOSMLoader.SIMULATION) {
@@ -94,22 +97,21 @@ public class TOSMLoader {
                             } else if (position == TOSMLoader.ANALISYS) {
                                 if (stringAux.startsWith("@!Analisis")) {
                                     this.position = TOSMLoader.NONE;
-                                } 
+                                }
                             }
                         }
                     }
                     this.inputStream.close();
                     this.input.close();
                 }
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 return false;
             }
             return true;
         }
         return false;
     }
-    
+
     private void loadTopology(String topologyString) {
         if (topologyString.startsWith("@!Topologia")) {
             this.position = TOSMLoader.NONE;
@@ -178,78 +180,79 @@ public class TOSMLoader {
         }
     }
 
-    private void cargarEscenario(String cadena) {
-        if (cadena.startsWith("@!Escenario")) {
+    private void loadScenario(String scenarioString) {
+        if (scenarioString.startsWith("@!Escenario")) {
             this.position = TOSMLoader.NONE;
-        } else if (cadena.startsWith("#Titulo#")) {
-            if (!this.scenario.deserializarTitulo(cadena)) {
-                this.scenario.ponerTitulo("");
+        } else if (scenarioString.startsWith("#Titulo#")) {
+            if (!this.scenario.unmarshallTitle(scenarioString)) {
+                this.scenario.setTitle("");
             }
-        } else if (cadena.startsWith("#Autor#")) {
-            if (!this.scenario.deserializarAutor(cadena)) {
-                this.scenario.ponerAutor("");
+        } else if (scenarioString.startsWith("#Autor#")) {
+            if (!this.scenario.unmarshallAuthor(scenarioString)) {
+                this.scenario.setAuthor("");
             }
-        } else if (cadena.startsWith("#Descripcion#")) {
-            if (!this.scenario.deserializarDescripcion(cadena)) {
-                this.scenario.ponerDescripcion("");
+        } else if (scenarioString.startsWith("#Descripcion#")) {
+            if (!this.scenario.unmarshallDescription(scenarioString)) {
+                this.scenario.setDescription("");
             }
-        } else if (cadena.startsWith("#Temporizacion#")) {
-            if (!this.scenario.obtenerSimulacion().deserializarParametrosTemporales(cadena)) {
-                this.scenario.obtenerSimulacion().ponerDuracion(500);
-                this.scenario.obtenerSimulacion().ponerPaso(1);
+        } else if (scenarioString.startsWith("#Temporizacion#")) {
+            if (!this.scenario.getSimulation().unmarshallTimeParameters(scenarioString)) {
+                this.scenario.getSimulation().setDuration(500);
+                this.scenario.getSimulation().setStep(1);
             }
         }
     }
-    
+
     /**
-     * Este m�todo devuelve el scenario que el cargador ha creado en memoria tras leer
- elfichero asociado en disco.
-     * @return El scenario correctamente creado en memoria.
+     * This method gets the scenario that has been loaded from file.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TScenario, the scenario loaded from a file. Null if no scenario
+     * has been loaded.
      * @since 1.0
-     */    
-    public TScenario obtenerEscenario() {
+     */
+    public TScenario getScenario() {
         return this.scenario;
     }
-    
+
     private boolean fileIsValid(File f) {
-        String CRCDelFichero = "";
-        String CRCCalculado = "@CRC#";
+        String inputFileCRC = "";
+        String computedFileCRC = "@CRC#";
         this.scenarioCRC.reset();
-        String cadena = "";
+        String auxString = "";
         try {
-            if(f.exists()) {
-                FileInputStream fEntrada = new FileInputStream(f);
-                BufferedReader ent = new BufferedReader(new InputStreamReader(fEntrada));
-                while ((cadena = ent.readLine()) != null) {
-                    if ((!cadena.equals("")) && (!cadena.startsWith("//"))) {
-                        if (cadena.startsWith("@CRC#")) {
-                            CRCDelFichero = cadena;
+            if (f.exists()) {
+                FileInputStream inputFile = new FileInputStream(f);
+                BufferedReader ent = new BufferedReader(new InputStreamReader(inputFile));
+                while ((auxString = ent.readLine()) != null) {
+                    if ((!auxString.equals("")) && (!auxString.startsWith("//"))) {
+                        if (auxString.startsWith("@CRC#")) {
+                            inputFileCRC = auxString;
                         } else {
-                            this.scenarioCRC.update(cadena.getBytes());
+                            this.scenarioCRC.update(auxString.getBytes());
                         }
                     }
                 }
-                fEntrada.close();
+                inputFile.close();
                 ent.close();
-                if (CRCDelFichero.equals("")) {
+                if (inputFileCRC.equals("")) {
                     return true;
                 } else {
-                    CRCCalculado += Long.toString(this.scenarioCRC.getValue());
-                    if (CRCCalculado.equals(CRCDelFichero)) {
+                    computedFileCRC += Long.toString(this.scenarioCRC.getValue());
+                    if (computedFileCRC.equals(inputFileCRC)) {
                         return true;
                     }
                     return false;
                 }
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             this.scenarioCRC.reset();
             return false;
         }
         this.scenarioCRC.reset();
         return false;
     }
-    
+
     private static final int NONE = 0;
     private static final int SCENARIO = 1;
     private static final int TOPOLOGY = 2;

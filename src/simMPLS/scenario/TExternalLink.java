@@ -240,7 +240,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * @return El equivalente en texto del enlace externo completo.
      * @since 1.0
      */    
-    public String serializar() {
+    public String marshall() {
         String cadena = "#EnlaceExterno#";
         cadena += this.getID();
         cadena += "#";

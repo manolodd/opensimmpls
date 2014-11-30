@@ -700,7 +700,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * contrario.
      * @since 1.0
      */    
-    public String serializar() {
+    public String marshall() {
         String cadena = "#Emisor#";
         cadena += this.getID();
         cadena += "#";

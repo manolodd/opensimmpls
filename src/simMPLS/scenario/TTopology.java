@@ -83,7 +83,7 @@ public class TTopology {
         conjuntoNodos.add(nodo);
         relojTopologia.addTimerEventListener(nodo);
         try {
-            nodo.addListenerSimulacion(escenarioPadre.obtenerSimulacion().obtenerRecolector());
+            nodo.addListenerSimulacion(escenarioPadre.getSimulation().obtenerRecolector());
         } catch (ESimulationSingleSubscriber e) {System.out.println(e.toString());}
     }
     
@@ -333,7 +333,7 @@ public class TTopology {
         conjuntoEnlaces.add(enlace);
         relojTopologia.addTimerEventListener(enlace);
         try {
-            enlace.addListenerSimulacion(escenarioPadre.obtenerSimulacion().obtenerRecolector());
+            enlace.addListenerSimulacion(escenarioPadre.getSimulation().obtenerRecolector());
         } catch (ESimulationSingleSubscriber e) {System.out.println(e.toString());}
     }
 
@@ -510,7 +510,7 @@ public class TTopology {
      * @return El iterador de los nodos de la topologia.
      * @since 1.0
      */    
-    public Iterator obtenerIteradorNodos() {
+    public Iterator getNodesIterator() {
         return conjuntoNodos.iterator();
     }
 
@@ -520,7 +520,7 @@ public class TTopology {
      * @return El iterador de los enlaces de la topolog�a.
      * @since 1.0
      */    
-    public Iterator obtenerIteradorEnlaces() {
+    public Iterator getLinksIterator() {
         return conjuntoEnlaces.iterator();
     }
 
@@ -530,7 +530,7 @@ public class TTopology {
      * @since 1.0
      */    
     public void eliminarTodo() {
-        Iterator it = this.obtenerIteradorEnlaces();
+        Iterator it = this.getLinksIterator();
         TNode n;
         TLink e;
         while (it.hasNext()) {
@@ -539,7 +539,7 @@ public class TTopology {
             e.ponerPurgar(true);
             it.remove();
         }
-        it = this.obtenerIteradorNodos();
+        it = this.getNodesIterator();
         while (it.hasNext()) {
             n = (TNode) it.next();
             n.ponerPurgar(true);
@@ -581,7 +581,7 @@ public class TTopology {
      * @since 1.0
      */    
     public int obtenerMinimoDelay() {
-        Iterator it = this.obtenerIteradorEnlaces();
+        Iterator it = this.getLinksIterator();
         TLink e;
         int minimoDelay = 0;
         int delayAux=0;
@@ -717,7 +717,7 @@ public class TTopology {
         int equivalencia[] = new int[numNodosActual];
         int i=0;
         TNode nt = null;
-        Iterator it = this.obtenerIteradorNodos();
+        Iterator it = this.getNodesIterator();
         while (it.hasNext()) {
             nt = (TNode) it.next();
             equivalencia[i] = nt.getID();
@@ -869,7 +869,7 @@ public class TTopology {
         int equivalencia[] = new int[numNodosActual];
         int i=0;
         TNode nt = null;
-        Iterator it = this.obtenerIteradorNodos();
+        Iterator it = this.getNodesIterator();
         while (it.hasNext()) {
             nt = (TNode) it.next();
             equivalencia[i] = nt.getID();
@@ -966,7 +966,7 @@ public class TTopology {
         int equivalencia[] = new int[numNodosActual];
         int i=0;
         TNode nt = null;
-        Iterator it = this.obtenerIteradorNodos();
+        Iterator it = this.getNodesIterator();
         while (it.hasNext()) {
             nt = (TNode) it.next();
             equivalencia[i] = nt.getID();

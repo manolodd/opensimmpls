@@ -283,7 +283,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @return La euivalencia en texto del elemento.
      * @since 1.0
      */    
-    public abstract String serializar();
+    public abstract String marshall();
     /**
      * Este m�todo toma una cadena de texto que representa un elemento serializado, y
      * con ella configura correctamente el elemento.

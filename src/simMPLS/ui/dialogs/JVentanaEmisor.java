@@ -68,7 +68,7 @@ public class JVentanaEmisor extends javax.swing.JDialog {
         emisor = null;
         coordenadaX.setText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaEmisor.X=_") + panelCoordenadas.obtenerXReal());
         coordenadaY.setText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaEmisor.Y=_") + panelCoordenadas.obtenerYReal());
-        Iterator it = topo.obtenerIteradorNodos();
+        Iterator it = topo.getNodesIterator();
         selectorDelReceptor.removeAllItems();
         selectorDelReceptor.addItem("");
         TNode nt;

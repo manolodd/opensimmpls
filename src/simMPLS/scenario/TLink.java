@@ -555,7 +555,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return Representaci�n textual del enlace.
      * @since 1.0
      */    
-    public abstract String serializar();
+    public abstract String marshall();
     /**
      * Este m�todo deserializa un enlace y lo construye en memoria.
      * @param elemento Enlace serializado.

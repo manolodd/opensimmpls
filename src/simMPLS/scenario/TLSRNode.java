@@ -1136,7 +1136,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * @return Una cadena de texto que representa al nodo.
      * @since 1.0
      */
-    public String serializar() {
+    public String marshall() {
         String cadena = "#LSR#";
         cadena += this.getID();
         cadena += "#";

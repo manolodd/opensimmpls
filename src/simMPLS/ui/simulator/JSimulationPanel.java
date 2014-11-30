@@ -218,7 +218,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
      * @since 1.0
      */    
     private void dibujarDominio(Graphics2D g2Dbuf) {
-        Iterator itd = topologia.obtenerIteradorNodos();
+        Iterator itd = topologia.getNodesIterator();
         TNode nd;
         Polygon pol = new Polygon();
         int vertices = 0;
@@ -259,7 +259,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
      * @since 1.0
      */    
     private void dibujarEnlaces(Graphics2D g2Dbuf) {
-        Iterator ite = topologia.obtenerIteradorEnlaces();
+        Iterator ite = topologia.getLinksIterator();
         while (ite.hasNext()) {
             TLink enlace = (TLink) ite.next();
             Point inicio = enlace.getEnd1().obtenerPosicion();
@@ -356,7 +356,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
     private void dibujarNodos(Graphics2D g2Dbuf) {
         maxX = 10;
         maxY = 10;
-        Iterator ite = topologia.obtenerIteradorNodos();
+        Iterator ite = topologia.getNodesIterator();
         while (ite.hasNext()) {
             TNode nodo = (TNode) ite.next();
             Point posicion = nodo.obtenerPosicion();

@@ -1579,7 +1579,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @return Una cadena de texto que representa un a este LER.
      * @since 1.0
      */
-    public String serializar() {
+    public String marshall() {
         String cadena = "#LER#";
         cadena += this.getID();
         cadena += "#";

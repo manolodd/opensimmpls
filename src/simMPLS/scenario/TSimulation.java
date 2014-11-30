@@ -64,7 +64,7 @@ public class TSimulation {
      * @param d Duraci�n total de la simulaci�n en nanosegundos.
      * @since 1.0
      */    
-    public void ponerDuracion(long d) {
+    public void setDuration(long d) {
         this.duracion = d;
     }
     
@@ -73,7 +73,7 @@ public class TSimulation {
      * @param p Duraci�n del paso de simulaci�n en nanosegundos.
      * @since 1.0
      */    
-    public void ponerPaso(long p) {
+    public void setStep(long p) {
         this.paso = p;
     }
     
@@ -101,7 +101,7 @@ public class TSimulation {
      * @return Un texto que representa a la instancia actual.
      * @since 1.0
      */    
-    public String serializarParametrosTemporales() {
+    public String marshallTimeParameters() {
         String serializada = "#Temporizacion#";
         serializada += this.duracion+"#";
         serializada += this.paso+"#";
@@ -115,7 +115,7 @@ public class TSimulation {
      * @return TRUE, si se ha conseguido serializar correctamente. FALSE en caso contrario.
      * @since 1.0
      */    
-    public boolean deserializarParametrosTemporales(String pt) {
+    public boolean unmarshallTimeParameters(String pt) {
         String valores[] = pt.split("#");
         if (valores.length != 4) {
             return false;

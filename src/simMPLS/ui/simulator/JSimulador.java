@@ -342,7 +342,7 @@ public class JSimulador extends javax.swing.JFrame {
                     if (cargado) {
                         try {
                             TScenario esc = new TScenario();
-                            esc = cargador.obtenerEscenario();
+                            esc = cargador.getScenario();
                             String tit = esc.obtenerFichero().getName();
                             numVentanasAbiertas++;
                             activarOpciones();

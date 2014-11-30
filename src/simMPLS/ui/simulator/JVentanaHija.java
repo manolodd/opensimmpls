@@ -59,8 +59,8 @@ import simMPLS.utils.JFiltroOSM;
 import simMPLS.utils.TProgressEventListener;
 
 /**
- * Esta clase implementa una ventana que almacenar� un escenario completo y dar�
- * soporte a la simulaci�n, an�lisis y dise�o de la topologia.
+ * Esta clase implementa una ventana que save� un escenario completo y dar�
+ soporte a la simulaci�n, an�lisis y dise�o de la topologia.
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
@@ -85,8 +85,8 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
      * Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * JVentanaHija.
      * @since 1.0
-     * @param titulo T�tulo que deseamos que tenga la ventana hija. Se usar� tambi�n para almacenar el
-     * escenario en disco.
+     * @param titulo T�tulo que deseamos que tenga la ventana hija. Se usar� tambi�n para save el
+ escenario en disco.
      * @param padre Ventana padre dentro de la cual se va a ubicar este ventana hija.
      * @param di Dispensador de im�genes de donde se obtendr�n todas las im�genes que se
      * necesiten.
@@ -1171,8 +1171,8 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             this.etiquetaDuracionMs.setText(this.duracionMs.getValue() + java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija._ms."));
             this.etiquetaDuracionNs.setText(this.duracionNs.getValue() + java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija._ns."));
             this.etiquetaPasoNs.setText(this.pasoNs.getValue() + java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija._ns."));
-            escenario.obtenerSimulacion().ponerDuracion(new TTimestamp(duracionMs.getValue(), duracionNs.getValue()).getTotalAsNanoseconds());
-            escenario.obtenerSimulacion().ponerPaso(pasoNs.getValue());
+            escenario.getSimulation().setDuration(new TTimestamp(duracionMs.getValue(), duracionNs.getValue()).getTotalAsNanoseconds());
+            escenario.getSimulation().setStep(pasoNs.getValue());
         }
     }
     
@@ -1222,7 +1222,7 @@ private void mlsPorTicCambiado(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:e
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void clicEnPopUpDisenioFondoOcultarNombreEnlaces(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoOcultarNombreEnlaces
-    Iterator it = escenario.getTopology().obtenerIteradorEnlaces();
+    Iterator it = escenario.getTopology().getLinksIterator();
     TLink enlaceAux;
     while (it.hasNext()) {
         enlaceAux = (TLink) it.next();
@@ -1238,7 +1238,7 @@ private void clicEnPopUpDisenioFondoOcultarNombreEnlaces(java.awt.event.ActionEv
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void clicEnPopUpDisenioFondoVerNombreEnlaces(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoVerNombreEnlaces
-    Iterator it = escenario.getTopology().obtenerIteradorEnlaces();
+    Iterator it = escenario.getTopology().getLinksIterator();
     TLink enlaceAux;
     while (it.hasNext()) {
         enlaceAux = (TLink) it.next();
@@ -1254,7 +1254,7 @@ private void clicEnPopUpDisenioFondoVerNombreEnlaces(java.awt.event.ActionEvent 
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void clicEnPopUpDisenioFondoOcultarNombreNodos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoOcultarNombreNodos
-    Iterator it = escenario.getTopology().obtenerIteradorNodos();
+    Iterator it = escenario.getTopology().getNodesIterator();
     TNode nodoAux;
     while (it.hasNext()) {
         nodoAux = (TNode) it.next();
@@ -1270,7 +1270,7 @@ private void clicEnPopUpDisenioFondoOcultarNombreNodos(java.awt.event.ActionEven
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void clicEnPopUpDisenioFondoVerNombreNodos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoVerNombreNodos
-    Iterator it = escenario.getTopology().obtenerIteradorNodos();
+    Iterator it = escenario.getTopology().getNodesIterator();
     TNode nodoAux;
     while (it.hasNext()) {
         nodoAux = (TNode) it.next();
@@ -1306,8 +1306,8 @@ private void clicEnPopUpDisenioFondoEliminar(java.awt.event.ActionEvent evt) {//
  */
 public void ponerEscenario(TScenario esc) {
     this.controlTemporizacionDesactivado = true;
-    long durac = esc.obtenerSimulacion().obtenerDuracion();
-    long pas = esc.obtenerSimulacion().obtenerPaso();
+    long durac = esc.getSimulation().obtenerDuracion();
+    long pas = esc.getSimulation().obtenerPaso();
     escenario = esc;
     panelDisenio.ponerTopologia(esc.getTopology());
     panelSimulacion.ponerTopologia(esc.getTopology());
@@ -1321,10 +1321,10 @@ public void ponerEscenario(TScenario esc) {
     }
     this.duracionMs.setValue((int)(durac/1000000));
     this.duracionNs.setValue((int) (durac-(this.duracionMs.getValue()*1000000)));
-    this.pasoNs.setMaximum((int) esc.obtenerSimulacion().obtenerDuracion());
+    this.pasoNs.setMaximum((int) esc.getSimulation().obtenerDuracion());
     this.pasoNs.setValue((int) pas);
-    esc.obtenerSimulacion().ponerDuracion(durac);
-    esc.obtenerSimulacion().ponerPaso(pas);
+    esc.getSimulation().setDuration(durac);
+    esc.getSimulation().setStep(pas);
     this.etiquetaMlsPorTic.setText(this.mlsPorTic.getValue() + java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.Simulacion.EtiquetaMsTic"));
     this.etiquetaDuracionMs.setText(this.duracionMs.getValue() + java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija._ms."));
     this.etiquetaDuracionNs.setText(this.duracionNs.getValue() + java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija._ns."));
@@ -1998,7 +1998,7 @@ private void clicEnAniadirReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
  */
 private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirEmisorDeTrafico
     TTopology t = escenario.getTopology();
-    Iterator it = t.obtenerIteradorNodos();
+    Iterator it = t.getNodesIterator();
     TNode nt;
     boolean hayDestino = false;
     while (it.hasNext()) {
@@ -2128,7 +2128,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
         TLink et = null;
         this.selectorElementoEstadisticas.removeAllItems();
         this.selectorElementoEstadisticas.addItem("");
-        it = this.escenario.getTopology().obtenerIteradorNodos();
+        it = this.escenario.getTopology().getNodesIterator();
         while (it.hasNext()) {
             nt = (TNode) it.next();
             if (nt.obtenerEstadisticas()) {
@@ -2232,7 +2232,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             vb.mostrarPregunta(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.PreguntaEmpotrarCRC"));
             vb.show();
             boolean conCRC = vb.obtenerRespuesta();
-            boolean correcto = almacenador.almacenar(escenario.obtenerFichero(), conCRC);
+            boolean correcto = almacenador.save(escenario.obtenerFichero(), conCRC);
             if (correcto) {
                 this.escenario.setModified(false);
                 this.escenario.setSaved(true);
@@ -2285,7 +2285,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
                 vb2.mostrarPregunta(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.PreguntaEmpotrarCRC"));
                 vb2.show();
                 boolean conCRC = vb2.obtenerRespuesta();
-                boolean correcto = almacenador.almacenar(escenario.obtenerFichero(), conCRC);
+                boolean correcto = almacenador.save(escenario.obtenerFichero(), conCRC);
                 if (correcto) {
                     this.escenario.setModified(false);
                     this.escenario.setSaved(true);
@@ -2311,7 +2311,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             vb.mostrarPregunta(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.PreguntaEmpotrarCRC"));
             vb.show();
             boolean conCRC = vb.obtenerRespuesta();
-            boolean correcto = almacenador.almacenar(escenario.obtenerFichero(), conCRC);
+            boolean correcto = almacenador.save(escenario.obtenerFichero(), conCRC);
             if (correcto) {
                 this.escenario.setModified(false);
                 this.escenario.setSaved(true);
@@ -2541,9 +2541,9 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
      * @since 1.0
      */    
     private void anotarDatosDeEscenario() {
-        this.escenario.ponerTitulo(this.nombreEscenario.getText());
-        this.escenario.ponerAutor(this.nombreAutor.getText());
-        this.escenario.ponerDescripcion(this.descripcionEscenario.getText());
+        this.escenario.setTitle(this.nombreEscenario.getText());
+        this.escenario.setAuthor(this.nombreAutor.getText());
+        this.escenario.setDescription(this.descripcionEscenario.getText());
     }
     
     /** Este atributo es el objeto encargado de actualizar la barra de progreso del

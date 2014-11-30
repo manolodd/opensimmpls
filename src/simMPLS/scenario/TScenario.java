@@ -71,7 +71,7 @@ public class TScenario {
      * @param t T�tulo del escenario
      * @since 1.0
      */    
-    public void ponerTitulo(String t) {
+    public void setTitle(String t) {
         this.titulo = t;
     }
 
@@ -89,7 +89,7 @@ public class TScenario {
      * @param a Autor del escenario.
      * @since 1.0
      */    
-    public void ponerAutor(String a) {
+    public void setAuthor(String a) {
         this.autor = a;
     }
     
@@ -107,7 +107,7 @@ public class TScenario {
      * @param d Descripci�n del escenario.
      * @since 1.0
      */    
-    public void ponerDescripcion(String d) {
+    public void setDescription(String d) {
         this.descripcion = d;
     }
     
@@ -126,7 +126,7 @@ public class TScenario {
      * @return La representaci�n serializada del t�tulo.
      * @since 1.0
      */    
-    public String serializarTitulo() {
+    public String marshallTitle() {
         String cadena = "#Titulo#";
         if (this.obtenerTitulo().replace('#', ' ').equals("")) {
             cadena += java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEscenario.SinDefinir");
@@ -143,7 +143,7 @@ public class TScenario {
      * @since 1.0
      * @return La representaci�n serializada del autor
      */    
-    public String serializarAutor() {
+    public String marshallAuthor() {
         String cadena = "#Autor#";
         if (this.obtenerAutor().replace('#', ' ').equals("")) {
             cadena += java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEscenario.SinDefinir");
@@ -160,7 +160,7 @@ public class TScenario {
      * @since 1.0
      * @return Representaci�n serializada de la descripci�n.
      */    
-    public String serializarDescripcion() {
+    public String marshallDescription() {
         String cadena = "#Descripcion#";
         if (this.obtenerDescripcion().replace('#', ' ').equals("")) {
             cadena += java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEscenario.SinDefinir");
@@ -178,13 +178,13 @@ public class TScenario {
      * @param titulo Titulo serializado.
      * @return TRUE, si se ha deserializado sin problemas. FALSE, en caso contrario.
      */    
-    public boolean deserializarTitulo(String titulo) {
+    public boolean unmarshallTitle(String titulo) {
         String valores[] = titulo.split("#");
         if (valores.length != 3) {
             return false;
         }
         if (valores[2] != null) {
-            this.ponerTitulo(valores[2]);
+            this.setTitle(valores[2]);
         }
         return true;
     }
@@ -196,13 +196,13 @@ public class TScenario {
      * @param autor Autor serializado.
      * @return TRUE, si se ha deserializado correctamente. FALSE en caso contrario.
      */    
-    public boolean deserializarAutor(String autor) {
+    public boolean unmarshallAuthor(String autor) {
         String valores[] = autor.split("#");
         if (valores.length != 3) {
             return false;
         }
         if (valores[2] != null) {
-            this.ponerAutor(valores[2]);
+            this.setAuthor(valores[2]);
         }
         return true;
     }
@@ -214,13 +214,13 @@ public class TScenario {
      * @param descripcion Descripci�n serializada.
      * @return TRUE, si se ha deserializado correctamente. FALSE en caso contrario.
      */    
-    public boolean deserializarDescripcion(String descripcion) {
+    public boolean unmarshallDescription(String descripcion) {
         String valores[] = descripcion.split("#");
         if (valores.length != 3) {
             return false;
         }
         if (valores[2] != null) {
-            this.ponerDescripcion(valores[2]);
+            this.setDescription(valores[2]);
         } 
         return true;
     }
@@ -258,7 +258,7 @@ public class TScenario {
      * @return Simulaci�n del escenario.
      * @since 1.0
      */    
-    public TSimulation obtenerSimulacion() {
+    public TSimulation getSimulation() {
         return simulacion;
     }
 

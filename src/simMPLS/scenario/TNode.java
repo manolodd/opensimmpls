@@ -381,7 +381,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @return La cadena de texto que representa al nodo.
      * @since 1.0
      */    
-    public abstract String serializar();
+    public abstract String marshall();
     
     /**
      * Este m�todo toma un nodo serializado y lo deserializa.

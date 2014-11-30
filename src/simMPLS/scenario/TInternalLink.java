@@ -317,7 +317,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @return El equivalente en texto del enlace interno completo.
      * @since 1.0
      */    
-    public String serializar() {
+    public String marshall() {
         String cadena = "#EnlaceInterno#";
         cadena += this.getID();
         cadena += "#";

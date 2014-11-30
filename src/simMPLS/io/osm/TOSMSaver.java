@@ -6,7 +6,7 @@
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This program is distributed auxIterator the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -16,138 +16,147 @@
  */
 package simMPLS.io.osm;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.Iterator;
+import java.util.zip.CRC32;
 import simMPLS.scenario.TScenario;
 import simMPLS.scenario.TLink;
 import simMPLS.scenario.TNode;
-import java.io.*;
-import java.util.zip.*;
-import java.util.*;
 
 /**
- * Esta clase implementa un cargador de escenarios de openSimMPLS 1.0
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @since 1.0
+ * This class implements a class that stores a scenario to disk in OSM (Open
+ * SimMPLS format).
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public class TOSMSaver {
-    
+
     /**
-     * Este m�todo crea una nueva instancia de TAlmacenadorOSM.
-     * @param e Escenario que se desea almacenar en disco.
+     * This method is the constructor of the class. It creates a new instance of
+     * TOSMSaver.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param scenario The TScenario object to be stored in disk.
      * @since 1.0
      */
-    public TOSMSaver(TScenario e) {
-        escenario = e;
-        flujoDeSalida = null;
-        salida = null;
-        crc = new CRC32();
+    public TOSMSaver(TScenario scenario) {
+        this.scenario = scenario;
+        this.outputStream = null;
+        this.output = null;
+        this.scenarioCRC = new CRC32();
     }
-    
+
     /**
-     * Este m�todo almacena el escenario en disco, en el fichero especificado.
-     * @return TRUE, si se ha almacenado correctamente. FALSE en caso contrario.
+     * This method saves a scenario to a disk file.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param outputFile The file where the scenario will be stored.
+     * @param createCRC If true, a CRC hash of the file will be computed to
+     * assure no manual modifications. If false, no CRC will be computed.
+     * @return True, if the scenario can be saved successful. Otherwise, returns
+     * false.
      * @since 1.0
-     * @param conCRC TRUE indica que se almacene en el fichero un c�digo CRC para comprobar la
-     * integridad.
-     * @param ficheroSalida El fichero de disco en el que se desea almacenar el escenario.
-     */    
-    public boolean almacenar(File ficheroSalida, boolean conCRC) {
+     */
+    public boolean save(File outputFile, boolean createCRC) {
         try {
-            TNode nt;
-            TLink et;
-            Iterator in;
-            flujoDeSalida = new FileOutputStream(ficheroSalida);
-            salida = new PrintStream(flujoDeSalida);
-            salida.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.asteriscos"));
-            salida.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.GeneradoPor"));
-            salida.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.blanco"));
-            salida.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.NoSeDebeModificarEsteFichero"));
-            salida.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.PorqueIncorporaUnCodigoCRCParaQue"));
-            salida.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.SimuladorPuedaComprobarSuIntegridad"));
-            salida.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.ElSimuladorLoPodriaDetectarComoUn"));
-            salida.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.FicheroCorrupto"));
-            salida.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.asteriscos"));
-            salida.println();
-            salida.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.asteriscos"));
-            salida.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.DefinicionGlobalDelEscenario"));
-            salida.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.asteriscos"));
-            salida.println();
-            salida.println("@?Escenario");
-            crc.update("@?Escenario".getBytes());
-            salida.println();
-            salida.println(this.escenario.serializarTitulo());
-            crc.update(this.escenario.serializarTitulo().getBytes());
-            salida.println(this.escenario.serializarAutor());
-            crc.update(this.escenario.serializarAutor().getBytes());
-            salida.println(this.escenario.serializarDescripcion());
-            crc.update(this.escenario.serializarDescripcion().getBytes());
-            salida.println(this.escenario.obtenerSimulacion().serializarParametrosTemporales());
-            crc.update(this.escenario.obtenerSimulacion().serializarParametrosTemporales().getBytes());
-            salida.println();
-            salida.println("@!Escenario");
-            crc.update("@!Escenario".getBytes());
-            salida.println();
-            salida.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.asteriscos"));
-            salida.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.DefinicionDeLaTopologiaDelEscenario"));
-            salida.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.asteriscos"));
-            salida.println();
-            salida.println("@?Topologia");
-            salida.println();
-            crc.update("@?Topologia".getBytes());
-            // Volcamos los receptores.
-            in = escenario.getTopology().obtenerIteradorNodos();
-            while (in.hasNext()) {
-                nt = (TNode) in.next();
-                if (nt != null) {
-                    if (nt.getNodeType() == TNode.RECEIVER) {
-                        salida.println(nt.serializar());
-                        crc.update(nt.serializar().getBytes());
+            TNode auxNode;
+            TLink auxLink;
+            Iterator auxIterator;
+            this.outputStream = new FileOutputStream(outputFile);
+            this.output = new PrintStream(this.outputStream);
+            this.output.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.asteriscos"));
+            this.output.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.GeneradoPor"));
+            this.output.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.blanco"));
+            this.output.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.NoSeDebeModificarEsteFichero"));
+            this.output.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.PorqueIncorporaUnCodigoCRCParaQue"));
+            this.output.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.SimuladorPuedaComprobarSuIntegridad"));
+            this.output.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.ElSimuladorLoPodriaDetectarComoUn"));
+            this.output.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.FicheroCorrupto"));
+            this.output.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.asteriscos"));
+            this.output.println();
+            this.output.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.asteriscos"));
+            this.output.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.DefinicionGlobalDelEscenario"));
+            this.output.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.asteriscos"));
+            this.output.println();
+            this.output.println("@?Escenario");
+            this.scenarioCRC.update("@?Escenario".getBytes());
+            this.output.println();
+            this.output.println(this.scenario.marshallTitle());
+            this.scenarioCRC.update(this.scenario.marshallTitle().getBytes());
+            this.output.println(this.scenario.marshallAuthor());
+            this.scenarioCRC.update(this.scenario.marshallAuthor().getBytes());
+            this.output.println(this.scenario.marshallDescription());
+            this.scenarioCRC.update(this.scenario.marshallDescription().getBytes());
+            this.output.println(this.scenario.getSimulation().marshallTimeParameters());
+            this.scenarioCRC.update(this.scenario.getSimulation().marshallTimeParameters().getBytes());
+            this.output.println();
+            this.output.println("@!Escenario");
+            this.scenarioCRC.update("@!Escenario".getBytes());
+            this.output.println();
+            this.output.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.asteriscos"));
+            this.output.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.DefinicionDeLaTopologiaDelEscenario"));
+            this.output.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.asteriscos"));
+            this.output.println();
+            this.output.println("@?Topologia");
+            this.output.println();
+            this.scenarioCRC.update("@?Topologia".getBytes());
+            // Saving traffic receivers.
+            auxIterator = this.scenario.getTopology().getNodesIterator();
+            while (auxIterator.hasNext()) {
+                auxNode = (TNode) auxIterator.next();
+                if (auxNode != null) {
+                    if (auxNode.getNodeType() == TNode.RECEIVER) {
+                        this.output.println(auxNode.marshall());
+                        this.scenarioCRC.update(auxNode.marshall().getBytes());
                     }
                 }
             }
-            // Volcamos el resto de nodos despu�s
-            in = escenario.getTopology().obtenerIteradorNodos();
-            while (in.hasNext()) {
-                nt = (TNode) in.next();
-                if (nt != null) {
-                    if (nt.getNodeType() != TNode.RECEIVER) {
-                        salida.println(nt.serializar());
-                        crc.update(nt.serializar().getBytes());
+            // Saving other nodes.
+            auxIterator = this.scenario.getTopology().getNodesIterator();
+            while (auxIterator.hasNext()) {
+                auxNode = (TNode) auxIterator.next();
+                if (auxNode != null) {
+                    if (auxNode.getNodeType() != TNode.RECEIVER) {
+                        this.output.println(auxNode.marshall());
+                        this.scenarioCRC.update(auxNode.marshall().getBytes());
                     }
                 }
             }
-            // Volcamos al final los enlaces
-            in = escenario.getTopology().obtenerIteradorEnlaces();
-            while (in.hasNext()) {
-                et = (TLink) in.next();
-                if (et != null) {
-                    salida.println(et.serializar());
-                    crc.update(et.serializar().getBytes());
+            // Saving links
+            auxIterator = this.scenario.getTopology().getLinksIterator();
+            while (auxIterator.hasNext()) {
+                auxLink = (TLink) auxIterator.next();
+                if (auxLink != null) {
+                    this.output.println(auxLink.marshall());
+                    this.scenarioCRC.update(auxLink.marshall().getBytes());
                 }
             }
-            salida.println();
-            salida.println("@!Topologia");
-            crc.update("@!Topologia".getBytes());
-            if (conCRC) {
-                String cadenaCrc = Long.toString(crc.getValue());
-                salida.println();
-                salida.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.asteriscos"));
-                salida.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.CodigoCRCParaLaIntegridadDelFichero"));
-                salida.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.asteriscos"));
-                salida.println();
-                salida.println("@CRC#" + cadenaCrc);
+            this.output.println();
+            this.output.println("@!Topologia");
+            this.scenarioCRC.update("@!Topologia".getBytes());
+            if (createCRC) {
+                String auxCRCHash = Long.toString(this.scenarioCRC.getValue());
+                this.output.println();
+                this.output.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.asteriscos"));
+                this.output.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.CodigoCRCParaLaIntegridadDelFichero"));
+                this.output.println(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TAlmacenadorOSM.asteriscos"));
+                this.output.println();
+                this.output.println("@CRC#" + auxCRCHash);
             }
-            flujoDeSalida.close();
-            salida.close();
-        }
-        catch (IOException e) {
+            this.outputStream.close();
+            this.output.close();
+        } catch (IOException e) {
             return false;
         }
         return true;
     }
-    
-    private CRC32 crc;
-    private TScenario escenario;
-    private FileOutputStream flujoDeSalida;
-    private PrintStream salida;
+
+    private CRC32 scenarioCRC;
+    private TScenario scenario;
+    private FileOutputStream outputStream;
+    private PrintStream output;
 }

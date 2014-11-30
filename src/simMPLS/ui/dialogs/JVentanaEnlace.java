@@ -295,7 +295,7 @@ private void clicEnCambioNodoDerecho(java.awt.event.ActionEvent evt) {//GEN-FIRS
     this.selectorPuertoDerecho.setSelectedIndex(0);
     if (this.selectorExtremoDerecho.getSelectedIndex() != 0) {
         TNode seleccionado = topo.obtenerPrimerNodoLlamado((String) selectorExtremoDerecho.getSelectedItem());
-        Iterator it = topo.obtenerIteradorNodos();
+        Iterator it = topo.getNodesIterator();
         TNode nt;
         if (seleccionado != null) {
 //          Actualizar los puertos de dicho nodo
@@ -321,7 +321,7 @@ private void clicEnCambioNodoIzquierdo(java.awt.event.ActionEvent evt) {//GEN-FI
     this.selectorPuertoDerecho.setSelectedIndex(0);
     if (this.selectorExtremoIzquierdo.getSelectedIndex() != 0) {
         TNode seleccionado = topo.obtenerPrimerNodoLlamado((String) selectorExtremoIzquierdo.getSelectedItem());
-        Iterator it = topo.obtenerIteradorNodos();
+        Iterator it = topo.getNodesIterator();
         TNode nt;
         if (seleccionado != null) {
 //          Actualizar los puertos de dicho nodo
@@ -386,7 +386,7 @@ private void clicEnCambioNodoIzquierdo(java.awt.event.ActionEvent evt) {//GEN-FI
  * @since 1.0
  */
 public void cargarNodosPorDefecto() {
-    Iterator it = topo.obtenerIteradorNodos();
+    Iterator it = topo.getNodesIterator();
     TNode nt;
     while (it.hasNext()) {
         nt = (TNode) it.next();
