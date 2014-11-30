@@ -16,23 +16,30 @@
  */
 package simMPLS.io.osm;
 
-import simMPLS.scenario.TScenario;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.Iterator;
+import java.util.zip.CRC32;
 import simMPLS.scenario.TLink;
 import simMPLS.scenario.TNode;
-import java.io.*;
-import java.util.zip.*;
-import java.util.*;
+import simMPLS.scenario.TScenario;
 
 /**
  * Esta clase implementa un cargador de escenarios de openSimMPLS 1.0
+ *
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
+ * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A
+ * href="http://www.ManoloDominguez.com"
+ * target="_blank">http://www.ManoloDominguez.com</A>
  * @since 1.0
  */
 public class TOSMSaver {
-    
+
     /**
      * Este m�todo crea una nueva instancia de TAlmacenadorOSM.
+     *
      * @param e Escenario que se desea almacenar en disco.
      * @since 1.0
      */
@@ -42,15 +49,17 @@ public class TOSMSaver {
         salida = null;
         crc = new CRC32();
     }
-    
+
     /**
      * Este m�todo almacena el escenario en disco, en el fichero especificado.
+     *
      * @return TRUE, si se ha almacenado correctamente. FALSE en caso contrario.
      * @since 1.0
-     * @param conCRC TRUE indica que se almacene en el fichero un c�digo CRC para comprobar la
-     * integridad.
-     * @param ficheroSalida El fichero de disco en el que se desea almacenar el escenario.
-     */    
+     * @param conCRC TRUE indica que se almacene en el fichero un c�digo CRC
+     * para comprobar la integridad.
+     * @param ficheroSalida El fichero de disco en el que se desea almacenar el
+     * escenario.
+     */
     public boolean almacenar(File ficheroSalida, boolean conCRC) {
         try {
             TNode nt;
@@ -139,13 +148,12 @@ public class TOSMSaver {
             }
             flujoDeSalida.close();
             salida.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             return false;
         }
         return true;
     }
-    
+
     private CRC32 crc;
     private TScenario escenario;
     private FileOutputStream flujoDeSalida;
