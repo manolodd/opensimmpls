@@ -292,7 +292,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * caso contrario.
      * @since 1.0
      */    
-    public abstract boolean desSerializar(String elemento);
+    public abstract boolean unmarshall(String elemento);
     /**
      * Este m�todo reinicia los atributos del elemento como si acabase de ser creado en
      * el constructor.

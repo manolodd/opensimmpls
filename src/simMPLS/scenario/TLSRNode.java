@@ -1168,7 +1168,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * @return TRUE, si se ha conseguido deserializar correctamente. FALSE en caso contrario.
      * @since 1.0
      */
-    public boolean desSerializar(String elemento) {
+    public boolean unmarshall(String elemento) {
         String valores[] = elemento.split("#");
         if (valores.length != 12) {
             return false;

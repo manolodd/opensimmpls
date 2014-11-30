@@ -268,7 +268,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * @return TRUE, si se deserializa correctamente, FALSE en caso contrario.
      * @since 1.0
      */    
-    public boolean desSerializar(String elemento) {
+    public boolean unmarshall(String elemento) {
         TLinkConfig configEnlace = new TLinkConfig();
         String valores[] = elemento.split("#");
         if (valores.length != 10) {

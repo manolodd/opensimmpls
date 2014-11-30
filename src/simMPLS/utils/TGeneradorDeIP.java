@@ -101,7 +101,7 @@ public class TGeneradorDeIP {
      * @param IPStr Direcci�n IP a partir de la cual queremos que siga generando el generador.
      * @since 1.0
      */
-    public void ponerValorSiMayor(String IPStr) {
+    public void setValueIfGreater(String IPStr) {
         if (esIPValida(IPStr)) {
             String octetos[] = IPStr.split("[.]");
             int octetoAux2 = Integer.valueOf(octetos[1]).intValue();

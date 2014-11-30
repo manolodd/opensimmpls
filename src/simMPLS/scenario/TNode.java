@@ -389,7 +389,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @return TRUE, si se consigue deserializar sin problemas. FALSe en caso contrario.
      * @since 1.0
      */    
-    public abstract boolean desSerializar(String elemento);
+    public abstract boolean unmarshall(String elemento);
     
     /**
      * Este m�todo permite acceder directamente a las estad�sticas del nodo.

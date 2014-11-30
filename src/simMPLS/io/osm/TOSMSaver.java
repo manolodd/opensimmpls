@@ -95,7 +95,7 @@ public class TOSMSaver {
             salida.println();
             crc.update("@?Topologia".getBytes());
             // Volcamos los receptores.
-            in = escenario.obtenerTopologia().obtenerIteradorNodos();
+            in = escenario.getTopology().obtenerIteradorNodos();
             while (in.hasNext()) {
                 nt = (TNode) in.next();
                 if (nt != null) {
@@ -106,7 +106,7 @@ public class TOSMSaver {
                 }
             }
             // Volcamos el resto de nodos despu�s
-            in = escenario.obtenerTopologia().obtenerIteradorNodos();
+            in = escenario.getTopology().obtenerIteradorNodos();
             while (in.hasNext()) {
                 nt = (TNode) in.next();
                 if (nt != null) {
@@ -117,7 +117,7 @@ public class TOSMSaver {
                 }
             }
             // Volcamos al final los enlaces
-            in = escenario.obtenerTopologia().obtenerIteradorEnlaces();
+            in = escenario.getTopology().obtenerIteradorEnlaces();
             while (in.hasNext()) {
                 et = (TLink) in.next();
                 if (et != null) {

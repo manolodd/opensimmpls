@@ -266,7 +266,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * @return TRUE, si se ha podido deserializar correctamente. FALSE en caso contrario.
      * @since 1.0
      */    
-    public boolean desSerializar(String elemento) {
+    public boolean unmarshall(String elemento) {
         String valores[] = elemento.split("#");
         if (valores.length != 10) {
             return false;

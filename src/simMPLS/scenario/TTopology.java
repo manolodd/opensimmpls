@@ -79,7 +79,7 @@ public class TTopology {
      * @param nodo Nodo que queremos insertar.
      * @since 1.0
      */    
-    public void insertarNodo(TNode nodo) {
+    public void addNode(TNode nodo) {
         conjuntoNodos.add(nodo);
         relojTopologia.addTimerEventListener(nodo);
         try {
@@ -305,7 +305,7 @@ public class TTopology {
                     nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
                 }
                 else if (nodo.getNodeType() == TNode.LERA) {
-                    TLERANode nodoTrasCast = (TLERANode) nodoBuscado;
+                    TActiveLERNode nodoTrasCast = (TActiveLERNode) nodoBuscado;
                     nodoTrasCast.ponerNombre(nodo.obtenerNombre());
                     nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
                 }
@@ -315,7 +315,7 @@ public class TTopology {
                     nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
                 }
                 else if (nodo.getNodeType() == TNode.LSRA) {
-                    TLSRANode nodoTrasCast = (TLSRANode) nodoBuscado;
+                    TActiveLSRNode nodoTrasCast = (TActiveLSRNode) nodoBuscado;
                     nodoTrasCast.ponerNombre(nodo.obtenerNombre());
                     nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
                 }
@@ -329,7 +329,7 @@ public class TTopology {
      * @param enlace Enlace que deseamos insertar.
      * @since 1.0
      */    
-    public void insertarEnlace(TLink enlace) {
+    public void addLink(TLink enlace) {
         conjuntoEnlaces.add(enlace);
         relojTopologia.addTimerEventListener(enlace);
         try {
@@ -657,7 +657,7 @@ public class TTopology {
      * @return El generador de identificadores para eventos de la topologia.
      * @since 1.0
      */    
-    public TLongIdentifier obtenerGeneradorIDEvento() {
+    public TLongIdentifier getEventIDGenerator() {
         return this.IDEvento;
     }
 
@@ -677,7 +677,7 @@ public class TTopology {
      * @return El generador de identificadores de elementos.
      * @since 1.0
      */    
-    public TIdentificador obtenerGeneradorIdentificadorElmto() {
+    public TIdentificador getItemIdentifierGenerator() {
         return generaIdentificador;
     }
 
@@ -695,7 +695,7 @@ public class TTopology {
      * @return El generador de direcciones IP de la topolog�a.
      * @since 1.0
      */    
-    public TGeneradorDeIP obtenerGeneradorIP() {
+    public TGeneradorDeIP getIPAddressGenerator() {
         return generadorIP;
     }
 

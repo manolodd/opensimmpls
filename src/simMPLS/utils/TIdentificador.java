@@ -70,7 +70,7 @@ public class TIdentificador {
      * @since 1.0
      * @param i El valor de partida con el cual deseamos iniciar el contador.
      */
-    synchronized public void ponerIdentificadorSiMayor(int i) {
+    synchronized public void setIDIfGreater(int i) {
         if (i > identificador)
             identificador = i;
     }

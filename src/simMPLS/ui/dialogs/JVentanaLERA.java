@@ -19,7 +19,7 @@ package simMPLS.ui.dialogs;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import simMPLS.scenario.TLERANode;
+import simMPLS.scenario.TActiveLERNode;
 import simMPLS.scenario.TTopology;
 import simMPLS.ui.simulator.JPanelDisenio;
 import simMPLS.ui.utils.TImagesBroker;
@@ -425,7 +425,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     configLERA.ponerMostrarNombre(verNombre.isSelected());
     configLERA.ponerEstadisticas(this.selectorDeGenerarEstadisticasSencillo.isSelected());
     int error = configLERA.comprobar(topo, this.reconfigurando);
-    if (error != TLERANode.CORRECTA) {
+    if (error != TActiveLERNode.CORRECTA) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
         va.mostrarMensaje(configLERA.obtenerMensajeError(error));
         va.show();
@@ -466,7 +466,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
      * @param recfg TRUE indica que estamos reconfigurando el LER. FALSE indica que el LER se ha
      * insertado nuevo en la topolog�a.
      */
-    public void ponerConfiguracion(TLERANode tnlera, boolean recfg) {
+    public void ponerConfiguracion(TActiveLERNode tnlera, boolean recfg) {
         configLERA = tnlera;
         reconfigurando = recfg;
         if (reconfigurando) {
@@ -493,7 +493,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
     private TImagesBroker dispensadorDeImagenes;
     private Frame ventanaPadre;
     private JPanelDisenio pd;
-    private TLERANode configLERA;
+    private TActiveLERNode configLERA;
     private TTopology topo;
     
     private boolean BKUPMostrarNombre;

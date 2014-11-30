@@ -16,23 +16,29 @@
  */
 package simMPLS.io.osm;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.zip.CRC32;
 import simMPLS.scenario.TInternalLink;
 import simMPLS.scenario.TExternalLink;
 import simMPLS.scenario.TScenario;
 import simMPLS.scenario.TLERNode;
 import simMPLS.scenario.TSenderNode;
 import simMPLS.scenario.TReceiverNode;
-import simMPLS.scenario.TLSRANode;
+import simMPLS.scenario.TActiveLSRNode;
 import simMPLS.scenario.TLSRNode;
-import simMPLS.scenario.TLERANode;
-import java.io.*;
-import java.util.zip.*;
+import simMPLS.scenario.TActiveLERNode;
+
 
 /**
- * Esta clase implementa un cargador de ficheros *.OSM, de Open SimMPLS 1.0
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @since 1.0
+ * This class implements a class that loads a scenario from disk in OSM (Open
+ * SimMPLS format).
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public class TOSMLoader {
     
@@ -41,59 +47,59 @@ public class TOSMLoader {
      * @since 1.0
      */
     public TOSMLoader() {
-        escenario = new TScenario();
-        flujoDeEntrada = null;
-        entrada = null;
-        crc = new CRC32();
-        posicion = this.NINGUNO;
+        this.scenario = new TScenario();
+        this.inputStream = null;
+        this.input = null;
+        this.scenarioCRC = new CRC32();
+        this.position = TOSMLoader.NONE;
 }
     
     /**
-     * Este m�todo carga desde el disco, del fichero especificado, un escenario.
-     * @param ficheroEntrada El fichero de disco que el cargador debe leer para crear en memoria el
-     * escenario.
-     * @return TRUE, si el escenario se ha cargado correctamente. FALSE en caso contrario.
+     * Este m�todo carga desde el disco, del fichero especificado, un scenario.
+     * @param inputFile El fichero de disco que el cargador debe leer para crear en memoria el
+ scenario.
+     * @return TRUE, si el scenario se ha cargado correctamente. FALSE en caso contrario.
      * @since 1.0
      */    
-    public boolean cargar(File ficheroEntrada) {
-        if (this.ficheroEsCorrecto(ficheroEntrada)) {
-            String cadena = "";
-            escenario.ponerFichero(ficheroEntrada);
-            escenario.ponerGuardado(true);
-            escenario.ponerModificado(false);
+    public boolean cargar(File inputFile) {
+        if (this.fileIsValid(inputFile)) {
+            String stringAux = "";
+            this.scenario.setFile(inputFile);
+            this.scenario.setSaved(true);
+            this.scenario.setModified(false);
             try {
-                if(ficheroEntrada.exists()) {
-                    flujoDeEntrada = new FileInputStream(ficheroEntrada);
-                    entrada = new BufferedReader(new InputStreamReader(flujoDeEntrada));
-                    while ((cadena = entrada.readLine()) != null) {
-                        if ((!cadena.equals("")) && (!cadena.startsWith("//")) && (!cadena.startsWith("@CRC#"))) {
-                            if (posicion == this.NINGUNO) {
-                                if (cadena.startsWith("@?Escenario")) {
-                                    this.posicion = this.ESCENARIO;
-                                } else if (cadena.startsWith("@?Topologia")) {
-                                    this.posicion = this.TOPOLOGIA;
-                                } else if (cadena.startsWith("@?Simulacion")) {
-                                    this.posicion = this.SIMULACION;
-                                } else if (cadena.startsWith("@?Analisis")) {
-                                    this.posicion = this.ANALISIS;
+                if(inputFile.exists()) {
+                    this.inputStream = new FileInputStream(inputFile);
+                    this.input = new BufferedReader(new InputStreamReader(this.inputStream));
+                    while ((stringAux = this.input.readLine()) != null) {
+                        if ((!stringAux.equals("")) && (!stringAux.startsWith("//")) && (!stringAux.startsWith("@CRC#"))) {
+                            if (this.position == TOSMLoader.NONE) {
+                                if (stringAux.startsWith("@?Escenario")) {
+                                    this.position = TOSMLoader.SCENARIO;
+                                } else if (stringAux.startsWith("@?Topologia")) {
+                                    this.position = TOSMLoader.TOPOLOGY;
+                                } else if (stringAux.startsWith("@?Simulacion")) {
+                                    this.position = TOSMLoader.SIMULATION;
+                                } else if (stringAux.startsWith("@?Analisis")) {
+                                    this.position = TOSMLoader.ANALISYS;
                                 } 
-                            } else if (posicion == this.ESCENARIO) {
-                                cargarEscenario(cadena);
-                            } else if (posicion == this.TOPOLOGIA) {
-                                cargarTopologia(cadena);
-                            } else if (posicion == this.SIMULACION) {
-                                if (cadena.startsWith("@!Simulacion")) {
-                                    this.posicion = this.NINGUNO;
+                            } else if (position == TOSMLoader.SCENARIO) {
+                                cargarEscenario(stringAux);
+                            } else if (position == TOSMLoader.TOPOLOGY) {
+                                loadTopology(stringAux);
+                            } else if (position == TOSMLoader.SIMULATION) {
+                                if (stringAux.startsWith("@!Simulacion")) {
+                                    this.position = TOSMLoader.NONE;
                                 }
-                            } else if (posicion == this.ANALISIS) {
-                                if (cadena.startsWith("@!Analisis")) {
-                                    this.posicion = this.NINGUNO;
+                            } else if (position == TOSMLoader.ANALISYS) {
+                                if (stringAux.startsWith("@!Analisis")) {
+                                    this.position = TOSMLoader.NONE;
                                 } 
                             }
                         }
                     }
-                    flujoDeEntrada.close();
-                    entrada.close();
+                    this.inputStream.close();
+                    this.input.close();
                 }
             }
             catch (IOException e) {
@@ -104,111 +110,111 @@ public class TOSMLoader {
         return false;
     }
     
-    private void cargarTopologia(String cadena) {
-        if (cadena.startsWith("@!Topologia")) {
-            this.posicion = this.NINGUNO;
-        } else if (cadena.startsWith("#Receptor#")) {
-            TReceiverNode receptor = new TReceiverNode(0, "10.0.0.1", escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
-            if (receptor.desSerializar(cadena)) {
-                escenario.obtenerTopologia().insertarNodo(receptor);
-                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(receptor.getID());
-                escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(receptor.getIPAddress());
+    private void loadTopology(String topologyString) {
+        if (topologyString.startsWith("@!Topologia")) {
+            this.position = TOSMLoader.NONE;
+        } else if (topologyString.startsWith("#Receptor#")) {
+            TReceiverNode receiver = new TReceiverNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            if (receiver.unmarshall(topologyString)) {
+                this.scenario.getTopology().addNode(receiver);
+                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(receiver.getID());
+                this.scenario.getTopology().getIPAddressGenerator().setValueIfGreater(receiver.getIPAddress());
             }
-            receptor = null;
-        } else if (cadena.startsWith("#Emisor#")) {
-            TSenderNode emisor = new TSenderNode(0, "10.0.0.1", escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
-            if (emisor.desSerializar(cadena)) {
-                escenario.obtenerTopologia().insertarNodo(emisor);
-                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(emisor.getID());
-                escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(emisor.getIPAddress());
+            receiver = null;
+        } else if (topologyString.startsWith("#Emisor#")) {
+            TSenderNode sender = new TSenderNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            if (sender.unmarshall(topologyString)) {
+                this.scenario.getTopology().addNode(sender);
+                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(sender.getID());
+                this.scenario.getTopology().getIPAddressGenerator().setValueIfGreater(sender.getIPAddress());
             }
-            emisor = null;
-        } else if (cadena.startsWith("#LER#")) {
-            TLERNode ler = new TLERNode(0, "10.0.0.1", escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
-            if (ler.desSerializar(cadena)) {
-                escenario.obtenerTopologia().insertarNodo(ler);
-                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(ler.getID());
-                escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(ler.getIPAddress());
+            sender = null;
+        } else if (topologyString.startsWith("#LER#")) {
+            TLERNode ler = new TLERNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            if (ler.unmarshall(topologyString)) {
+                this.scenario.getTopology().addNode(ler);
+                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(ler.getID());
+                this.scenario.getTopology().getIPAddressGenerator().setValueIfGreater(ler.getIPAddress());
             }
             ler = null;
-        } else if (cadena.startsWith("#LERA#")) {
-            TLERANode lera = new TLERANode(0, "10.0.0.1", escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
-            if (lera.desSerializar(cadena)) {
-                escenario.obtenerTopologia().insertarNodo(lera);
-                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(lera.getID());
-                escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(lera.getIPAddress());
+        } else if (topologyString.startsWith("#LERA#")) {
+            TActiveLERNode activeLER = new TActiveLERNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            if (activeLER.unmarshall(topologyString)) {
+                this.scenario.getTopology().addNode(activeLER);
+                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(activeLER.getID());
+                this.scenario.getTopology().getIPAddressGenerator().setValueIfGreater(activeLER.getIPAddress());
             }
-            lera = null;
-        } else if (cadena.startsWith("#LSR#")) {
-            TLSRNode lsr = new TLSRNode(0, "10.0.0.1", escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
-            if (lsr.desSerializar(cadena)) {
-                escenario.obtenerTopologia().insertarNodo(lsr);
-                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(lsr.getID());
-                escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(lsr.getIPAddress());
+            activeLER = null;
+        } else if (topologyString.startsWith("#LSR#")) {
+            TLSRNode lsr = new TLSRNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            if (lsr.unmarshall(topologyString)) {
+                this.scenario.getTopology().addNode(lsr);
+                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(lsr.getID());
+                this.scenario.getTopology().getIPAddressGenerator().setValueIfGreater(lsr.getIPAddress());
             }
             lsr = null;
-        } else if (cadena.startsWith("#LSRA#")) {
-            TLSRANode lsra = new TLSRANode(0, "10.0.0.1", escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
-            if (lsra.desSerializar(cadena)) {
-                escenario.obtenerTopologia().insertarNodo(lsra);
-                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(lsra.getID());
-                escenario.obtenerTopologia().obtenerGeneradorIP().ponerValorSiMayor(lsra.getIPAddress());
+        } else if (topologyString.startsWith("#LSRA#")) {
+            TActiveLSRNode activeLSR = new TActiveLSRNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            if (activeLSR.unmarshall(topologyString)) {
+                this.scenario.getTopology().addNode(activeLSR);
+                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(activeLSR.getID());
+                this.scenario.getTopology().getIPAddressGenerator().setValueIfGreater(activeLSR.getIPAddress());
             }
-            lsra = null;
-        } else if (cadena.startsWith("#EnlaceExterno#")) {
-            TExternalLink externo = new TExternalLink(0, escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
-            if (externo.desSerializar(cadena)) {
-                escenario.obtenerTopologia().insertarEnlace(externo);
-                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(externo.getID());
+            activeLSR = null;
+        } else if (topologyString.startsWith("#EnlaceExterno#")) {
+            TExternalLink externalLink = new TExternalLink(0, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            if (externalLink.unmarshall(topologyString)) {
+                this.scenario.getTopology().addLink(externalLink);
+                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(externalLink.getID());
             }
-            externo = null;
-        } else if (cadena.startsWith("#EnlaceInterno#")) {
-            TInternalLink interno = new TInternalLink(0, escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
-            if (interno.desSerializar(cadena)) {
-                escenario.obtenerTopologia().insertarEnlace(interno);
-                escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().ponerIdentificadorSiMayor(interno.getID());
+            externalLink = null;
+        } else if (topologyString.startsWith("#EnlaceInterno#")) {
+            TInternalLink internalLink = new TInternalLink(0, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            if (internalLink.unmarshall(topologyString)) {
+                this.scenario.getTopology().addLink(internalLink);
+                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(internalLink.getID());
             }
-            interno = null;
+            internalLink = null;
         }
     }
 
     private void cargarEscenario(String cadena) {
         if (cadena.startsWith("@!Escenario")) {
-            this.posicion = this.NINGUNO;
+            this.position = TOSMLoader.NONE;
         } else if (cadena.startsWith("#Titulo#")) {
-            if (!this.escenario.deserializarTitulo(cadena)) {
-                this.escenario.ponerTitulo("");
+            if (!this.scenario.deserializarTitulo(cadena)) {
+                this.scenario.ponerTitulo("");
             }
         } else if (cadena.startsWith("#Autor#")) {
-            if (!this.escenario.deserializarAutor(cadena)) {
-                this.escenario.ponerAutor("");
+            if (!this.scenario.deserializarAutor(cadena)) {
+                this.scenario.ponerAutor("");
             }
         } else if (cadena.startsWith("#Descripcion#")) {
-            if (!this.escenario.deserializarDescripcion(cadena)) {
-                this.escenario.ponerDescripcion("");
+            if (!this.scenario.deserializarDescripcion(cadena)) {
+                this.scenario.ponerDescripcion("");
             }
         } else if (cadena.startsWith("#Temporizacion#")) {
-            if (!this.escenario.obtenerSimulacion().deserializarParametrosTemporales(cadena)) {
-                this.escenario.obtenerSimulacion().ponerDuracion(500);
-                this.escenario.obtenerSimulacion().ponerPaso(1);
+            if (!this.scenario.obtenerSimulacion().deserializarParametrosTemporales(cadena)) {
+                this.scenario.obtenerSimulacion().ponerDuracion(500);
+                this.scenario.obtenerSimulacion().ponerPaso(1);
             }
         }
     }
     
     /**
-     * Este m�todo devuelve el escenario que el cargador ha creado en memoria tras leer
-     * elfichero asociado en disco.
-     * @return El escenario correctamente creado en memoria.
+     * Este m�todo devuelve el scenario que el cargador ha creado en memoria tras leer
+ elfichero asociado en disco.
+     * @return El scenario correctamente creado en memoria.
      * @since 1.0
      */    
     public TScenario obtenerEscenario() {
-        return escenario;
+        return this.scenario;
     }
     
-    private boolean ficheroEsCorrecto(File f) {
+    private boolean fileIsValid(File f) {
         String CRCDelFichero = "";
         String CRCCalculado = "@CRC#";
-        crc.reset();
+        this.scenarioCRC.reset();
         String cadena = "";
         try {
             if(f.exists()) {
@@ -219,7 +225,7 @@ public class TOSMLoader {
                         if (cadena.startsWith("@CRC#")) {
                             CRCDelFichero = cadena;
                         } else {
-                            crc.update(cadena.getBytes());
+                            this.scenarioCRC.update(cadena.getBytes());
                         }
                     }
                 }
@@ -228,7 +234,7 @@ public class TOSMLoader {
                 if (CRCDelFichero.equals("")) {
                     return true;
                 } else {
-                    CRCCalculado += Long.toString(crc.getValue());
+                    CRCCalculado += Long.toString(this.scenarioCRC.getValue());
                     if (CRCCalculado.equals(CRCDelFichero)) {
                         return true;
                     }
@@ -237,22 +243,22 @@ public class TOSMLoader {
             }
         }
         catch (IOException e) {
-            crc.reset();
+            this.scenarioCRC.reset();
             return false;
         }
-        crc.reset();
+        this.scenarioCRC.reset();
         return false;
     }
     
-    private static final int NINGUNO = 0;
-    private static final int ESCENARIO = 1;
-    private static final int TOPOLOGIA = 2;
-    private static final int SIMULACION = 3;
-    private static final int ANALISIS = 4;
+    private static final int NONE = 0;
+    private static final int SCENARIO = 1;
+    private static final int TOPOLOGY = 2;
+    private static final int SIMULATION = 3;
+    private static final int ANALISYS = 4;
 
-    private int posicion;
-    private CRC32 crc;
-    private TScenario escenario;
-    private FileInputStream flujoDeEntrada;
-    private BufferedReader entrada;
+    private int position;
+    private CRC32 scenarioCRC;
+    private TScenario scenario;
+    private FileInputStream inputStream;
+    private BufferedReader input;
 }

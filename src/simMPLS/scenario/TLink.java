@@ -562,7 +562,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return TRUE, si todo va bien. FALSE si no se ha podido deserializar el enlace.
      * @since 1.0
      */    
-    public abstract boolean desSerializar(String elemento);
+    public abstract boolean unmarshall(String elemento);
     /**
      * Este m�todo establece si el enlace est� ca�o o no.
      * @param ec TRUE, si el enlace debe aparecer como caido. FALSE en caso contrario.

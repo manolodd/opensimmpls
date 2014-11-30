@@ -20,9 +20,9 @@ import java.util.Iterator;
 import java.util.TreeSet;
 import simMPLS.scenario.TExternalLink;
 import simMPLS.scenario.TInternalLink;
-import simMPLS.scenario.TLERANode;
+import simMPLS.scenario.TActiveLERNode;
 import simMPLS.scenario.TLERNode;
-import simMPLS.scenario.TLSRANode;
+import simMPLS.scenario.TActiveLSRNode;
 import simMPLS.scenario.TLSRNode;
 import simMPLS.scenario.TLink;
 import simMPLS.scenario.TNode;
@@ -247,7 +247,7 @@ public class TTimer implements Runnable {
                     break;
                 }
                 case TNode.LERA: {
-                    nodeAux = (TLERANode) nodeAux;
+                    nodeAux = (TActiveLERNode) nodeAux;
                     break;
                 }
                 case TNode.LSR: {
@@ -255,7 +255,7 @@ public class TTimer implements Runnable {
                     break;
                 }
                 case TNode.LSRA: {
-                    nodeAux = (TLSRANode) nodeAux;
+                    nodeAux = (TActiveLSRNode) nodeAux;
                     break;
                 }
                 case TNode.RECEIVER: {

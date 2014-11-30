@@ -31,9 +31,9 @@ import simMPLS.hardware.timer.TTimestamp;
 import simMPLS.io.osm.TOSMSaver;
 import simMPLS.scenario.TExternalLink;
 import simMPLS.scenario.TInternalLink;
-import simMPLS.scenario.TLERANode;
+import simMPLS.scenario.TActiveLERNode;
 import simMPLS.scenario.TLERNode;
-import simMPLS.scenario.TLSRANode;
+import simMPLS.scenario.TActiveLSRNode;
 import simMPLS.scenario.TLSRNode;
 import simMPLS.scenario.TLinkConfig;
 import simMPLS.scenario.TReceiverNode;
@@ -129,13 +129,13 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         Dimension tamFrame=this.getSize();
         this.setLocation((tamPantalla.width-tamFrame.width)/2, (tamPantalla.height-tamFrame.height)/2);
         escenario = new TScenario();
-        panelDisenio.ponerTopologia(escenario.obtenerTopologia());
-        panelSimulacion.ponerTopologia(escenario.obtenerTopologia());
+        panelDisenio.ponerTopologia(escenario.getTopology());
+        panelSimulacion.ponerTopologia(escenario.getTopology());
         nodoSeleccionado = null;
         elementoDisenioClicDerecho = null;
         aProgresoGeneracion = new TProgressEventListener(barraDeProgreso);
         try {
-            escenario.obtenerTopologia().obtenerReloj().addProgressEventListener(aProgresoGeneracion);
+            escenario.getTopology().obtenerReloj().addProgressEventListener(aProgresoGeneracion);
         } catch (EProgressEventGeneratorOnlyAllowASingleListener e) {
             e.printStackTrace();
         }
@@ -919,7 +919,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
     private void ratonPulsadoYSoltadoEnPanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonPulsadoYSoltadoEnPanelSimulacion
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            TTopologyElement et = escenario.obtenerTopologia().obtenerElementoEnPosicion(evt.getPoint());
+            TTopologyElement et = escenario.getTopology().obtenerElementoEnPosicion(evt.getPoint());
             if (et != null) {
                 if (et.getElementType() == TTopologyElement.NODO) {
                     TNode nt = (TNode) et;
@@ -1022,7 +1022,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
     private void ratonArrastradoEnPanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonArrastradoEnPanelSimulacion
     if (evt.getModifiersEx() == java.awt.event.InputEvent.BUTTON1_DOWN_MASK) {
             if (nodoSeleccionado != null) {
-                TTopology topo = escenario.obtenerTopologia();
+                TTopology topo = escenario.getTopology();
                 Point p2 = evt.getPoint();
                 if (p2.x < 0)
                     p2.x = 0;
@@ -1034,7 +1034,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                     p2.y = panelDisenio.getSize().height;
                 nodoSeleccionado.ponerPosicion(new Point(p2.x, p2.y));
                 panelSimulacion.repaint();
-                this.escenario.ponerModificado(true);
+                this.escenario.setModified(true);
             }
         }
     }//GEN-LAST:event_ratonArrastradoEnPanelSimulacion
@@ -1051,7 +1051,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             if (nodoSeleccionado != null) {
                 nodoSeleccionado.ponerEstado(TNode.DESELECCIONADO);
                 nodoSeleccionado = null;
-                this.escenario.ponerModificado(true);
+                this.escenario.setModified(true);
             }
             panelSimulacion.repaint();
         }
@@ -1066,7 +1066,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
      */    
     private void clicEnPanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnPanelSimulacion
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            TTopology topo = escenario.obtenerTopologia();
+            TTopology topo = escenario.getTopology();
             TTopologyElement et = topo.obtenerElementoEnPosicion(evt.getPoint());
             if (et != null) {
                 this.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -1075,7 +1075,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                     nodoSeleccionado = nt;
                     if (nodoSeleccionado != null) {
                         nodoSeleccionado.ponerEstado(TNode.SELECCIONADO);
-                        this.escenario.ponerModificado(true);
+                        this.escenario.setModified(true);
                     }
                 }
             } else {
@@ -1098,27 +1098,27 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             if (elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODO) {
                 TNode nt = (TNode) elementoDisenioClicDerecho;
                 if (nt.getNodeType() == TNode.SENDER) {
-                    JVentanaEmisor ve = new JVentanaEmisor(escenario.obtenerTopologia(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+                    JVentanaEmisor ve = new JVentanaEmisor(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     ve.ponerConfiguracion((TSenderNode) nt, true);
                     ve.show();
                 } else if (nt.getNodeType() == TNode.LER) {
-                    JVentanaLER vler = new JVentanaLER(escenario.obtenerTopologia(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+                    JVentanaLER vler = new JVentanaLER(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     vler.ponerConfiguracion((TLERNode) nt, true);
                     vler.show();
                 } else if (nt.getNodeType() == TNode.LERA) {
-                    JVentanaLERA vlera = new JVentanaLERA(escenario.obtenerTopologia(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
-                    vlera.ponerConfiguracion((TLERANode) nt, true);
+                    JVentanaLERA vlera = new JVentanaLERA(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+                    vlera.ponerConfiguracion((TActiveLERNode) nt, true);
                     vlera.show();
                 } else if (nt.getNodeType() == TNode.LSR) {
-                    JVentanaLSR vlsr = new JVentanaLSR(escenario.obtenerTopologia(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+                    JVentanaLSR vlsr = new JVentanaLSR(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     vlsr.ponerConfiguracion((TLSRNode) nt, true);
                     vlsr.show();
                 } else if (nt.getNodeType() == TNode.LSRA) {
-                    JVentanaLSRA vlsra = new JVentanaLSRA(escenario.obtenerTopologia(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
-                    vlsra.ponerConfiguracion((TLSRANode) nt, true);
+                    JVentanaLSRA vlsra = new JVentanaLSRA(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+                    vlsra.ponerConfiguracion((TActiveLSRNode) nt, true);
                     vlsra.show();
                 } else if (nt.getNodeType() == TNode.RECEIVER) {
-                    JVentanaReceptor vr = new JVentanaReceptor(escenario.obtenerTopologia(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+                    JVentanaReceptor vr = new JVentanaReceptor(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     vr.ponerConfiguracion((TReceiverNode) nt, true);
                     vr.show();
                 }
@@ -1127,25 +1127,25 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             } else {
                 TLink ent = (TLink) elementoDisenioClicDerecho;
                 TLinkConfig tceAux = ent.obtenerConfiguracion();
-                JVentanaEnlace ve = new JVentanaEnlace(escenario.obtenerTopologia(), dispensadorDeImagenes, VentanaPadre, true);
+                JVentanaEnlace ve = new JVentanaEnlace(escenario.getTopology(), dispensadorDeImagenes, VentanaPadre, true);
                 ve.ponerConfiguracion(tceAux, true);
                 ve.show();
                 if (ent.getLinkType() == TLink.EXTERNAL) {
                     TExternalLink ext = (TExternalLink) ent;
-                    ext.configurar(tceAux, this.escenario.obtenerTopologia(), true);
+                    ext.configurar(tceAux, this.escenario.getTopology(), true);
                 } else if (ent.getLinkType() == TLink.INTERNAL) {
                     TInternalLink inte = (TInternalLink) ent;
-                    inte.configurar(tceAux, this.escenario.obtenerTopologia(), true);
+                    inte.configurar(tceAux, this.escenario.getTopology(), true);
                 }
                 elementoDisenioClicDerecho = null;
                 panelDisenio.repaint();
-                int minimoDelay = this.escenario.obtenerTopologia().obtenerMinimoDelay();
+                int minimoDelay = this.escenario.getTopology().obtenerMinimoDelay();
                 int pasoActual = this.pasoNs.getValue();
                 if (pasoActual > minimoDelay) {
                     this.pasoNs.setValue(minimoDelay);
                 }
             }
-            this.escenario.ponerModificado(true);
+            this.escenario.setModified(true);
         }
     }//GEN-LAST:event_clicEnPropiedadesPopUpDisenioElemento
     
@@ -1162,7 +1162,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                 duracionNs.setMinimum(0);
             }
             int duracionTotal = duracionMs.getValue()*1000000 + this.duracionNs.getValue();
-            int minDelay = escenario.obtenerTopologia().obtenerMinimoDelay();
+            int minDelay = escenario.getTopology().obtenerMinimoDelay();
             if (minDelay < duracionTotal) {
                 pasoNs.setMaximum(minDelay);
             } else {
@@ -1183,7 +1183,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
      */
 private void clicEnPasoNs(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_clicEnPasoNs
     controlarParametrosTemporales();
-    this.escenario.ponerModificado(true);
+    this.escenario.setModified(true);
 }//GEN-LAST:event_clicEnPasoNs
 
 /** Este m�todo se llama autom�ticamente cuando se cambia la duraci�n de la
@@ -1193,7 +1193,7 @@ private void clicEnPasoNs(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_
  */
 private void clicEnDuracionNs(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_clicEnDuracionNs
     controlarParametrosTemporales();
-    this.escenario.ponerModificado(true);
+    this.escenario.setModified(true);
 }//GEN-LAST:event_clicEnDuracionNs
 
 /** Este m�todo se llama autom�ticamente cuando se cambia la duraci�n de la
@@ -1203,7 +1203,7 @@ private void clicEnDuracionNs(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:ev
  */
 private void clicEnDuracionMs(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_clicEnDuracionMs
     controlarParametrosTemporales();
-    this.escenario.ponerModificado(true);
+    this.escenario.setModified(true);
 }//GEN-LAST:event_clicEnDuracionMs
 
 /** Este m�todo se llama autom�ticamente cuando se cambia el tiempo que se detendr�
@@ -1222,14 +1222,14 @@ private void mlsPorTicCambiado(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:e
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void clicEnPopUpDisenioFondoOcultarNombreEnlaces(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoOcultarNombreEnlaces
-    Iterator it = escenario.obtenerTopologia().obtenerIteradorEnlaces();
+    Iterator it = escenario.getTopology().obtenerIteradorEnlaces();
     TLink enlaceAux;
     while (it.hasNext()) {
         enlaceAux = (TLink) it.next();
         enlaceAux.ponerMostrarNombre(false);
     }
     panelDisenio.repaint();
-    this.escenario.ponerModificado(true);
+    this.escenario.setModified(true);
 }//GEN-LAST:event_clicEnPopUpDisenioFondoOcultarNombreEnlaces
 
 /** Este m�todo se ejecuta cuando se hace clic en la opci�n de ver el nombre de
@@ -1238,14 +1238,14 @@ private void clicEnPopUpDisenioFondoOcultarNombreEnlaces(java.awt.event.ActionEv
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void clicEnPopUpDisenioFondoVerNombreEnlaces(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoVerNombreEnlaces
-    Iterator it = escenario.obtenerTopologia().obtenerIteradorEnlaces();
+    Iterator it = escenario.getTopology().obtenerIteradorEnlaces();
     TLink enlaceAux;
     while (it.hasNext()) {
         enlaceAux = (TLink) it.next();
         enlaceAux.ponerMostrarNombre(true);
     }
     panelDisenio.repaint();
-    this.escenario.ponerModificado(true);
+    this.escenario.setModified(true);
 }//GEN-LAST:event_clicEnPopUpDisenioFondoVerNombreEnlaces
 
 /** Este m�todo se ejecuta cuando se hace clic en la opci�n de ocultar el nombre de
@@ -1254,14 +1254,14 @@ private void clicEnPopUpDisenioFondoVerNombreEnlaces(java.awt.event.ActionEvent 
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void clicEnPopUpDisenioFondoOcultarNombreNodos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoOcultarNombreNodos
-    Iterator it = escenario.obtenerTopologia().obtenerIteradorNodos();
+    Iterator it = escenario.getTopology().obtenerIteradorNodos();
     TNode nodoAux;
     while (it.hasNext()) {
         nodoAux = (TNode) it.next();
         nodoAux.ponerMostrarNombre(false);
     }
     panelDisenio.repaint();
-    this.escenario.ponerModificado(true);
+    this.escenario.setModified(true);
 }//GEN-LAST:event_clicEnPopUpDisenioFondoOcultarNombreNodos
 
 /** Este m�todo se ejecuta cuando se hace clic en la opci�n de ver el nombre de
@@ -1270,14 +1270,14 @@ private void clicEnPopUpDisenioFondoOcultarNombreNodos(java.awt.event.ActionEven
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void clicEnPopUpDisenioFondoVerNombreNodos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoVerNombreNodos
-    Iterator it = escenario.obtenerTopologia().obtenerIteradorNodos();
+    Iterator it = escenario.getTopology().obtenerIteradorNodos();
     TNode nodoAux;
     while (it.hasNext()) {
         nodoAux = (TNode) it.next();
         nodoAux.ponerMostrarNombre(true);
     }
     panelDisenio.repaint();
-    this.escenario.ponerModificado(true);
+    this.escenario.setModified(true);
 }//GEN-LAST:event_clicEnPopUpDisenioFondoVerNombreNodos
 
 /** Este m�todo se ejecuta cuando se hace clic en la opci�n de eliminar todo el
@@ -1291,10 +1291,10 @@ private void clicEnPopUpDisenioFondoEliminar(java.awt.event.ActionEvent evt) {//
     vb.show();
     boolean respuesta = vb.obtenerRespuesta();
     if (respuesta) {
-        escenario.obtenerTopologia().eliminarTodo();
+        escenario.getTopology().eliminarTodo();
         panelDisenio.repaint();
     }
-    this.escenario.ponerModificado(true);
+    this.escenario.setModified(true);
 }//GEN-LAST:event_clicEnPopUpDisenioFondoEliminar
 
 /**
@@ -1309,13 +1309,13 @@ public void ponerEscenario(TScenario esc) {
     long durac = esc.obtenerSimulacion().obtenerDuracion();
     long pas = esc.obtenerSimulacion().obtenerPaso();
     escenario = esc;
-    panelDisenio.ponerTopologia(esc.obtenerTopologia());
-    panelSimulacion.ponerTopologia(esc.obtenerTopologia());
+    panelDisenio.ponerTopologia(esc.getTopology());
+    panelSimulacion.ponerTopologia(esc.getTopology());
     nodoSeleccionado = null;
     elementoDisenioClicDerecho = null;
     aProgresoGeneracion = new TProgressEventListener(barraDeProgreso);
     try {
-        esc.obtenerTopologia().obtenerReloj().addProgressEventListener(aProgresoGeneracion);
+        esc.getTopology().obtenerReloj().addProgressEventListener(aProgresoGeneracion);
     } catch (EProgressEventGeneratorOnlyAllowASingleListener e) {
         e.printStackTrace();
     }
@@ -1346,26 +1346,26 @@ public void ponerEscenario(TScenario esc) {
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirEnlace
-    if (escenario.obtenerTopologia().obtenerNumeroDeNodos() < 2) {
+    if (escenario.getTopology().obtenerNumeroDeNodos() < 2) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(VentanaPadre, true, dispensadorDeImagenes);
         va.mostrarMensaje(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.ErrorAlMenosDosNodos"));
         va.show();
     } else {
         TLinkConfig config = new TLinkConfig();
-        JVentanaEnlace venlace = new JVentanaEnlace(escenario.obtenerTopologia(), dispensadorDeImagenes, VentanaPadre, true);
+        JVentanaEnlace venlace = new JVentanaEnlace(escenario.getTopology(), dispensadorDeImagenes, VentanaPadre, true);
         venlace.ponerConfiguracion(config, false);
         venlace.cargarNodosPorDefecto();
         venlace.show();
         if (config.obtenerValida()) {
             try {
                 if (config.obtenerTipo() == TLink.INTERNAL) {
-                    TInternalLink enlaceInterno = new TInternalLink(escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().obtenerNuevo(), escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
-                    enlaceInterno.configurar(config, escenario.obtenerTopologia(), false);
-                    escenario.obtenerTopologia().insertarEnlace(enlaceInterno);
+                    TInternalLink enlaceInterno = new TInternalLink(escenario.getTopology().getItemIdentifierGenerator().obtenerNuevo(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
+                    enlaceInterno.configurar(config, escenario.getTopology(), false);
+                    escenario.getTopology().addLink(enlaceInterno);
                 } else {
-                    TExternalLink enlaceExterno = new TExternalLink(escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().obtenerNuevo(), escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
-                    enlaceExterno.configurar(config, escenario.obtenerTopologia(), false);
-                    escenario.obtenerTopologia().insertarEnlace(enlaceExterno);
+                    TExternalLink enlaceExterno = new TExternalLink(escenario.getTopology().getItemIdentifierGenerator().obtenerNuevo(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
+                    enlaceExterno.configurar(config, escenario.getTopology(), false);
+                    escenario.getTopology().addLink(enlaceExterno);
                 }
                 panelDisenio.repaint();
             } catch (Exception e) {
@@ -1374,7 +1374,7 @@ private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
                 err.mostrarMensaje(e.toString());
                 err.show();
             };
-            this.escenario.ponerModificado(true);
+            this.escenario.setModified(true);
         } else {
             config = null;
         }
@@ -1397,29 +1397,29 @@ private void clicEnPopUpDisenioEliminar(java.awt.event.ActionEvent evt) {//GEN-F
             if (elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODO) {
                 TNode nt = (TNode) elementoDisenioClicDerecho;
                 if (nt.getNodeType() == TNode.RECEIVER) {
-                    if (this.escenario.obtenerTopologia().hayTraficoDirigidoAMi((TReceiverNode) nt)) {
+                    if (this.escenario.getTopology().hayTraficoDirigidoAMi((TReceiverNode) nt)) {
                         JVentanaAdvertencia va;
                         va = new JVentanaAdvertencia(VentanaPadre, true, dispensadorDeImagenes);
                         va.mostrarMensaje(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.NoPuedoBorrarReceptor"));
                         va.show();
                         elementoDisenioClicDerecho = null;
                     } else {
-                        escenario.obtenerTopologia().eliminarNodo(nt);
+                        escenario.getTopology().eliminarNodo(nt);
                         elementoDisenioClicDerecho = null;
                         panelDisenio.repaint();
                     }
                 } else {
-                    escenario.obtenerTopologia().eliminarNodo(nt);
+                    escenario.getTopology().eliminarNodo(nt);
                     elementoDisenioClicDerecho = null;
                     panelDisenio.repaint();
                 }
             } else {
                 TLink ent = (TLink) elementoDisenioClicDerecho;
-                escenario.obtenerTopologia().eliminarEnlace(ent);
+                escenario.getTopology().eliminarEnlace(ent);
                 elementoDisenioClicDerecho = null;
                 panelDisenio.repaint();
             }
-            this.escenario.ponerModificado(true);
+            this.escenario.setModified(true);
         }
     }
     
@@ -1444,7 +1444,7 @@ private void clicEnPopUpDisenioVerNombre(java.awt.event.ActionEvent evt) {//GEN-
             elementoDisenioClicDerecho = null;
             panelDisenio.repaint();
         }
-        this.escenario.ponerModificado(true);
+        this.escenario.setModified(true);
     }
 }//GEN-LAST:event_clicEnPopUpDisenioVerNombre
 
@@ -1455,7 +1455,7 @@ private void clicEnPopUpDisenioVerNombre(java.awt.event.ActionEvent evt) {//GEN-
  */
 private void clicDerechoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicDerechoEnPanelDisenio
     if (evt.getButton() == MouseEvent.BUTTON3) {
-        TTopologyElement et = escenario.obtenerTopologia().obtenerElementoEnPosicion(evt.getPoint());
+        TTopologyElement et = escenario.getTopology().obtenerElementoEnPosicion(evt.getPoint());
         if (et == null) {
             diseFondoPopUp.show(this, evt.getX()+7, evt.getY()-27);
         }
@@ -1484,21 +1484,21 @@ private void clicDerechoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void clicEnAniadirLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLSRA
-    TLSRANode lsra = null;
+    TActiveLSRNode lsra = null;
     try {
-        lsra = new TLSRANode(escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().obtenerNuevo(), escenario.obtenerTopologia().obtenerGeneradorIP().obtenerIP(), escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
+        lsra = new TActiveLSRNode(escenario.getTopology().getItemIdentifierGenerator().obtenerNuevo(), escenario.getTopology().getIPAddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
     } catch (Exception e) {
         JVentanaError err;
         err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
         err.mostrarMensaje(e.toString());
         err.show();
     }
-    JVentanaLSRA vlsra = new JVentanaLSRA(escenario.obtenerTopologia(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+    JVentanaLSRA vlsra = new JVentanaLSRA(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
     vlsra.ponerConfiguracion(lsra, false);
     vlsra.show();
     if (lsra.estaBienConfigurado()) {
         try {
-            escenario.obtenerTopologia().insertarNodo(lsra);
+            escenario.getTopology().addNode(lsra);
             panelDisenio.repaint();
         } catch (Exception e) {
             JVentanaError err;
@@ -1506,7 +1506,7 @@ private void clicEnAniadirLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
             err.mostrarMensaje(e.toString());
             err.show();
         };
-        this.escenario.ponerModificado(true);
+        this.escenario.setModified(true);
     } else {
         lsra = null;
     }
@@ -1520,19 +1520,19 @@ private void clicEnAniadirLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
 private void clicEnAniadirLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLSR
     TLSRNode lsr = null;
     try {
-        lsr = new TLSRNode(escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().obtenerNuevo(), escenario.obtenerTopologia().obtenerGeneradorIP().obtenerIP(), escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
+        lsr = new TLSRNode(escenario.getTopology().getItemIdentifierGenerator().obtenerNuevo(), escenario.getTopology().getIPAddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
     } catch (Exception e) {
         JVentanaError err;
         err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
         err.mostrarMensaje(e.toString());
         err.show();
     }
-    JVentanaLSR vlsr = new JVentanaLSR(escenario.obtenerTopologia(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+    JVentanaLSR vlsr = new JVentanaLSR(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
     vlsr.ponerConfiguracion(lsr, false);
     vlsr.show();
     if (lsr.estaBienConfigurado()) {
         try {
-            escenario.obtenerTopologia().insertarNodo(lsr);
+            escenario.getTopology().addNode(lsr);
             panelDisenio.repaint();
         } catch (Exception e) {
             JVentanaError err;
@@ -1540,7 +1540,7 @@ private void clicEnAniadirLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
             err.mostrarMensaje(e.toString());
             err.show();
         };
-        this.escenario.ponerModificado(true);
+        this.escenario.setModified(true);
     } else {
         lsr = null;
     }
@@ -1552,21 +1552,21 @@ private void clicEnAniadirLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void clicEnAniadirLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLERA
-    TLERANode lera = null;
+    TActiveLERNode lera = null;
     try {
-        lera = new TLERANode(escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().obtenerNuevo(), escenario.obtenerTopologia().obtenerGeneradorIP().obtenerIP(), escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
+        lera = new TActiveLERNode(escenario.getTopology().getItemIdentifierGenerator().obtenerNuevo(), escenario.getTopology().getIPAddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
     } catch (Exception e) {
         JVentanaError err;
         err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
         err.mostrarMensaje(e.toString());
         err.show();
     }
-    JVentanaLERA vlera = new JVentanaLERA(escenario.obtenerTopologia(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+    JVentanaLERA vlera = new JVentanaLERA(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
     vlera.ponerConfiguracion(lera, false);
     vlera.show();
     if (lera.estaBienConfigurado()) {
         try {
-            escenario.obtenerTopologia().insertarNodo(lera);
+            escenario.getTopology().addNode(lera);
             panelDisenio.repaint();
         } catch (Exception e) {
             JVentanaError err;
@@ -1574,7 +1574,7 @@ private void clicEnAniadirLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
             err.mostrarMensaje(e.toString());
             err.show();
         };
-        this.escenario.ponerModificado(true);
+        this.escenario.setModified(true);
     } else {
         lera = null;
     }
@@ -1588,7 +1588,7 @@ private void clicEnAniadirLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonSobrePanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSobrePanelSimulacion
-    TTopology topo = escenario.obtenerTopologia();
+    TTopology topo = escenario.getTopology();
     TTopologyElement et = topo.obtenerElementoEnPosicion(evt.getPoint());
     if (et != null) {
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -1626,7 +1626,7 @@ private void ratonSobrePanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIR
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void ratonSobrePanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSobrePanelDisenio
-    TTopology topo = escenario.obtenerTopologia();
+    TTopology topo = escenario.getTopology();
     TTopologyElement et = topo.obtenerElementoEnPosicion(evt.getPoint());
     if (et != null) {
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -1652,7 +1652,7 @@ private void ratonSobrePanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:
 private void arrastrandoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_arrastrandoEnPanelDisenio
     if (evt.getModifiersEx() == java.awt.event.InputEvent.BUTTON1_DOWN_MASK) {
         if (nodoSeleccionado != null) {
-            TTopology topo = escenario.obtenerTopologia();
+            TTopology topo = escenario.getTopology();
             Point p2 = evt.getPoint();
             if (p2.x < 0)
                 p2.x = 0;
@@ -1664,7 +1664,7 @@ private void arrastrandoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
                 p2.y = panelDisenio.getSize().height;
             nodoSeleccionado.ponerPosicion(new Point(p2.x, p2.y));
             panelDisenio.repaint();
-            this.escenario.ponerModificado(true);
+            this.escenario.setModified(true);
         }
     }
 }//GEN-LAST:event_arrastrandoEnPanelDisenio
@@ -1680,7 +1680,7 @@ private void clicSoltadoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
         if (nodoSeleccionado != null) {
             nodoSeleccionado.ponerEstado(TNode.DESELECCIONADO);
             nodoSeleccionado = null;
-            this.escenario.ponerModificado(true);
+            this.escenario.setModified(true);
         }
         panelDisenio.repaint();
     }
@@ -1693,11 +1693,11 @@ private void clicSoltadoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
  */
 private void clicEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnPanelDisenio
     if (evt.getButton() == MouseEvent.BUTTON1) {
-        TTopology topo = escenario.obtenerTopologia();
+        TTopology topo = escenario.getTopology();
         nodoSeleccionado = topo.obtenerNodoEnPosicion(evt.getPoint());
         if (nodoSeleccionado != null) {
             nodoSeleccionado.ponerEstado(TNode.SELECCIONADO);
-            this.escenario.ponerModificado(true);
+            this.escenario.setModified(true);
         }
         panelDisenio.repaint();
     }
@@ -1791,19 +1791,19 @@ private void ratonEntraEnIconoComenzar(java.awt.event.MouseEvent evt) {//GEN-FIR
 private void clicEnAniadirLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLER
     TLERNode ler = null;
     try {
-        ler = new TLERNode(escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().obtenerNuevo(), escenario.obtenerTopologia().obtenerGeneradorIP().obtenerIP(), escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
+        ler = new TLERNode(escenario.getTopology().getItemIdentifierGenerator().obtenerNuevo(), escenario.getTopology().getIPAddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
     } catch (Exception e) {
         JVentanaError err;
         err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
         err.mostrarMensaje(e.toString());
         err.show();
     }
-    JVentanaLER vler = new JVentanaLER(escenario.obtenerTopologia(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+    JVentanaLER vler = new JVentanaLER(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
     vler.ponerConfiguracion(ler, false);
     vler.show();
     if (ler.estaBienConfigurado()) {
         try {
-            escenario.obtenerTopologia().insertarNodo(ler);
+            escenario.getTopology().addNode(ler);
             panelDisenio.repaint();
         } catch (Exception e) {
             JVentanaError err;
@@ -1811,7 +1811,7 @@ private void clicEnAniadirLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
             err.mostrarMensaje(e.toString());
             err.show();
         };
-        this.escenario.ponerModificado(true);
+        this.escenario.setModified(true);
     } else {
         ler = null;
     }
@@ -1965,19 +1965,19 @@ private void ratonEntraEnIconoEmisor(java.awt.event.MouseEvent evt) {//GEN-FIRST
 private void clicEnAniadirReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirReceptor
     TReceiverNode receptor = null;
     try {
-        receptor = new TReceiverNode(escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().obtenerNuevo(), escenario.obtenerTopologia().obtenerGeneradorIP().obtenerIP(), escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
+        receptor = new TReceiverNode(escenario.getTopology().getItemIdentifierGenerator().obtenerNuevo(), escenario.getTopology().getIPAddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
     } catch (Exception e) {
         JVentanaError err;
         err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
         err.mostrarMensaje(e.toString());
         err.show();
     }
-    JVentanaReceptor vr = new JVentanaReceptor(escenario.obtenerTopologia(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+    JVentanaReceptor vr = new JVentanaReceptor(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
     vr.ponerConfiguracion(receptor, false);
     vr.show();
     if (receptor.estaBienConfigurado()) {
         try {
-            escenario.obtenerTopologia().insertarNodo(receptor);
+            escenario.getTopology().addNode(receptor);
             panelDisenio.repaint();
         } catch (Exception e) {
             JVentanaError err;
@@ -1985,7 +1985,7 @@ private void clicEnAniadirReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
             err.mostrarMensaje(e.toString());
             err.show();
         };
-        this.escenario.ponerModificado(true);
+        this.escenario.setModified(true);
     } else {
         receptor = null;
     }
@@ -1997,7 +1997,7 @@ private void clicEnAniadirReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirEmisorDeTrafico
-    TTopology t = escenario.obtenerTopologia();
+    TTopology t = escenario.getTopology();
     Iterator it = t.obtenerIteradorNodos();
     TNode nt;
     boolean hayDestino = false;
@@ -2013,19 +2013,19 @@ private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-
     } else {
         TSenderNode emisor = null;
         try {
-            emisor = new TSenderNode(escenario.obtenerTopologia().obtenerGeneradorIdentificadorElmto().obtenerNuevo(), escenario.obtenerTopologia().obtenerGeneradorIP().obtenerIP(), escenario.obtenerTopologia().obtenerGeneradorIDEvento(), escenario.obtenerTopologia());
+            emisor = new TSenderNode(escenario.getTopology().getItemIdentifierGenerator().obtenerNuevo(), escenario.getTopology().getIPAddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
         } catch (Exception e) {
             JVentanaError err;
             err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
             err.mostrarMensaje(e.toString());
             err.show();
         }
-        JVentanaEmisor ve = new JVentanaEmisor(escenario.obtenerTopologia(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+        JVentanaEmisor ve = new JVentanaEmisor(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
         ve.ponerConfiguracion(emisor, false);
         ve.show();
         if (emisor.estaBienConfigurado()) {
             try {
-                escenario.obtenerTopologia().insertarNodo(emisor);
+                escenario.getTopology().addNode(emisor);
                 panelDisenio.repaint();
             } catch (Exception e) {
                 JVentanaError err;
@@ -2033,7 +2033,7 @@ private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-
                 err.mostrarMensaje(e.toString());
                 err.show();
             };
-            this.escenario.ponerModificado(true);
+            this.escenario.setModified(true);
         } else {
             emisor = null;
         }
@@ -2047,7 +2047,7 @@ private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-
  */
 private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicAlPausar
         if (iconoPausar.isEnabled()) {
-            this.escenario.obtenerTopologia().obtenerReloj().setPaused(true);
+            this.escenario.getTopology().obtenerReloj().setPaused(true);
             activarOpcionesAlDetener();
         }
 }//GEN-LAST:event_clicAlPausar
@@ -2059,7 +2059,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
      */
     private void clicEnFinalizar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnFinalizar
         if (iconoFinalizar.isEnabled()) {
-            this.escenario.obtenerTopologia().obtenerReloj().reset();
+            this.escenario.getTopology().obtenerReloj().reset();
             this.crearTraza.setEnabled(true);
             this.panelSimulacion.ponerFicheroTraza(null);
             activarOpcionesAlFinalizar();
@@ -2074,8 +2074,8 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
     private void clicEnReanudar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnReanudar
         if (iconoReanudar.isEnabled()) {
             activarOpcionesAlComenzar();
-            this.escenario.obtenerTopologia().obtenerReloj().setPaused(false);
-            this.escenario.obtenerTopologia().obtenerReloj().restart();
+            this.escenario.getTopology().obtenerReloj().setPaused(false);
+            this.escenario.getTopology().obtenerReloj().restart();
         }
     }//GEN-LAST:event_clicEnReanudar
     
@@ -2090,12 +2090,12 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             escenario.ponerDuracionSimulacion(new TTimestamp(duracionMs.getValue(), duracionNs.getValue()));
             escenario.ponerPasoSimulacion(pasoNs.getValue());
             crearListaElementosEstadistica();
-            this.escenario.ponerModificado(true);
-            this.escenario.obtenerTopologia().obtenerReloj().reset();
+            this.escenario.setModified(true);
+            this.escenario.getTopology().obtenerReloj().reset();
             panelSimulacion.reset();
             panelSimulacion.repaint();
             escenario.generarSimulacion();
-            int minimoDelay = this.escenario.obtenerTopologia().obtenerMinimoDelay();
+            int minimoDelay = this.escenario.getTopology().obtenerMinimoDelay();
             int pasoActual = this.pasoNs.getValue();
             if (pasoActual > minimoDelay) {
                 this.pasoNs.setValue(minimoDelay);
@@ -2128,7 +2128,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
         TLink et = null;
         this.selectorElementoEstadisticas.removeAllItems();
         this.selectorElementoEstadisticas.addItem("");
-        it = this.escenario.obtenerTopologia().obtenerIteradorNodos();
+        it = this.escenario.getTopology().obtenerIteradorNodos();
         while (it.hasNext()) {
             nt = (TNode) it.next();
             if (nt.obtenerEstadisticas()) {
@@ -2224,8 +2224,8 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
                 }
             }
             dialogoGuardar.setSelectedFile(new File(nombreFich));
-            escenario.ponerFichero(dialogoGuardar.getSelectedFile());
-            this.escenario.ponerGuardado(true);
+            escenario.setFile(dialogoGuardar.getSelectedFile());
+            this.escenario.setSaved(true);
             this.setTitle(this.escenario.obtenerFichero().getName());
             TOSMSaver almacenador = new TOSMSaver(escenario);
             JVentanaBooleana vb = new JVentanaBooleana(this.VentanaPadre, true, this.dispensadorDeImagenes);
@@ -2234,8 +2234,8 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             boolean conCRC = vb.obtenerRespuesta();
             boolean correcto = almacenador.almacenar(escenario.obtenerFichero(), conCRC);
             if (correcto) {
-                this.escenario.ponerModificado(false);
-                this.escenario.ponerGuardado(true);
+                this.escenario.setModified(false);
+                this.escenario.setSaved(true);
             }
         }
     }
@@ -2252,13 +2252,13 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
         anotarDatosDeEscenario();
         
         // Detengo la simulaci�n antes de cerrar, si es necesario.
-        if (this.escenario.obtenerTopologia().obtenerReloj().isRunning()) {
+        if (this.escenario.getTopology().obtenerReloj().isRunning()) {
             panelSimulacion.reset();
             panelSimulacion.repaint();
             escenario.reset();
             escenario.ponerDuracionSimulacion(new TTimestamp(duracionMs.getValue(), duracionNs.getValue()));
             escenario.ponerPasoSimulacion(pasoNs.getValue());
-            this.escenario.obtenerTopologia().obtenerReloj().setPaused(false);
+            this.escenario.getTopology().obtenerReloj().setPaused(false);
             activarOpcionesAlFinalizar();
         }
         
@@ -2287,8 +2287,8 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
                 boolean conCRC = vb2.obtenerRespuesta();
                 boolean correcto = almacenador.almacenar(escenario.obtenerFichero(), conCRC);
                 if (correcto) {
-                    this.escenario.ponerModificado(false);
-                    this.escenario.ponerGuardado(true);
+                    this.escenario.setModified(false);
+                    this.escenario.setSaved(true);
                 }
             }
         }
@@ -2313,11 +2313,11 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             boolean conCRC = vb.obtenerRespuesta();
             boolean correcto = almacenador.almacenar(escenario.obtenerFichero(), conCRC);
             if (correcto) {
-                this.escenario.ponerModificado(false);
-                this.escenario.ponerGuardado(true);
+                this.escenario.setModified(false);
+                this.escenario.setSaved(true);
             }
-            this.escenario.ponerModificado(false);
-            this.escenario.ponerGuardado(true);
+            this.escenario.setModified(false);
+            this.escenario.setSaved(true);
         }
     }
     
@@ -2328,7 +2328,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             this.etiquetaEstadisticasNombreAutor.setText(this.nombreAutor.getText());
             this.areaEstadisticasDescripcion.setText(this.descripcionEscenario.getText());
             this.etiquetaNombreElementoEstadistica.setText(nombre);
-            TNode nt = this.escenario.obtenerTopologia().obtenerPrimerNodoLlamado(nombre);
+            TNode nt = this.escenario.getTopology().obtenerPrimerNodoLlamado(nombre);
             gbc = new java.awt.GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 0;

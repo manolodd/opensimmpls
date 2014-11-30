@@ -19,7 +19,7 @@ package simMPLS.ui.dialogs;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import simMPLS.scenario.TLSRANode;
+import simMPLS.scenario.TActiveLSRNode;
 import simMPLS.scenario.TTopology;
 import simMPLS.ui.simulator.JPanelDisenio;
 import simMPLS.ui.utils.TImagesBroker;
@@ -423,7 +423,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     configLSRA.ponerEstadisticas(this.selectorDeGenerarEstadisticasSencillo.isSelected());
     configLSRA.ponerMostrarNombre(verNombre.isSelected());
     int error = configLSRA.comprobar(topo, this.reconfigurando);
-    if (error != TLSRANode.CORRECTA) {
+    if (error != TActiveLSRNode.CORRECTA) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
         va.mostrarMensaje(configLSRA.obtenerMensajeError(error));
         va.show();
@@ -464,7 +464,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
      * @param recfg TRUE indica que vamos a reconfigurar el nodo LSR. FALSE indica que el nodo LSR
      * est� siendo insertado nuevo en la topolog�a.
      */    
-    public void ponerConfiguracion(TLSRANode tnlsra, boolean recfg) {
+    public void ponerConfiguracion(TActiveLSRNode tnlsra, boolean recfg) {
         configLSRA = tnlsra;
         reconfigurando = recfg;
         if (reconfigurando) {
@@ -491,7 +491,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
     private TImagesBroker dispensadorDeImagenes;
     private Frame ventanaPadre;
     private JPanelDisenio pd;
-    private TLSRANode configLSRA;
+    private TActiveLSRNode configLSRA;
     private TTopology topo;
     
     private boolean BKUPMostrarNombre;

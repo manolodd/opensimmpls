@@ -240,7 +240,7 @@ public class TScenario {
      * @return Topolog�a del escenario.
      * @since 1.0
      */    
-    public TTopology obtenerTopologia() {
+    public TTopology getTopology() {
         return topologia;
     }
 
@@ -317,7 +317,7 @@ public class TScenario {
      * @param f Fichero de disco que almacena el escenario.
      * @since 1.0
      */    
-    public void ponerFichero(File f) {
+    public void setFile(File f) {
         ficheroEscenario = f;
     }
     
@@ -337,7 +337,7 @@ public class TScenario {
      * contrario.
      * @since 1.0
      */    
-    public void ponerGuardado(boolean g) {
+    public void setSaved(boolean g) {
         guardado = g;
     }
      
@@ -358,7 +358,7 @@ public class TScenario {
      * contrario.
      * @since 1.0
      */    
-    public void ponerModificado(boolean m) {
+    public void setModified(boolean m) {
         modificado = m;
     }
     
