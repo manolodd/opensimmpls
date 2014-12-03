@@ -23,14 +23,14 @@ package simMPLS.protocols;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TDatosTCP {
+public class TTCPPayload {
     
     /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * TDatosTCP.
      * @param t El tama�o que ocupar� el paquete TCP, en bytes.
      * @since 1.0
      */
-    public TDatosTCP(int t) {
+    public TTCPPayload(int t) {
         tamanio = 20;   // Tama�o de la cabecera TCP
         tamanio += t;
     }

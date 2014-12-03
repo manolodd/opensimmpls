@@ -17,10 +17,10 @@
 package simMPLS.scenario;
 
 import simMPLS.hardware.timer.TTimer;
-import simMPLS.utils.TGeneradorDeIP;
+import simMPLS.utils.TIPGenerator;
 import simMPLS.utils.TMonitor;
-import simMPLS.utils.TIdentificador;
-import simMPLS.utils.TLongIdentifier;
+import simMPLS.utils.TIDGenerator;
+import simMPLS.utils.TLongIDGenerator;
 import java.awt.*;
 import java.util.*;
 
@@ -42,9 +42,9 @@ public class TTopology {
         conjuntoEnlaces = new TreeSet();
         relojTopologia = new TTimer();
         escenarioPadre = e;
-        IDEvento = new TLongIdentifier();
-        generaIdentificador = new TIdentificador();
-        generadorIP = new TGeneradorDeIP();
+        IDEvento = new TLongIDGenerator();
+        generaIdentificador = new TIDGenerator();
+        generadorIP = new TIPGenerator();
         cerrojoFloyd = new TMonitor();
         cerrojoRABAN = new TMonitor();
     }
@@ -657,7 +657,7 @@ public class TTopology {
      * @return El generador de identificadores para eventos de la topologia.
      * @since 1.0
      */    
-    public TLongIdentifier getEventIDGenerator() {
+    public TLongIDGenerator getEventIDGenerator() {
         return this.IDEvento;
     }
 
@@ -667,7 +667,7 @@ public class TTopology {
      * @param gie El generador de identificadores de elementos.
      * @since 1.0
      */    
-    public void ponerGeneradorIdentificadorElmto(TIdentificador gie) {
+    public void ponerGeneradorIdentificadorElmto(TIDGenerator gie) {
         generaIdentificador = gie;
     }
 
@@ -677,7 +677,7 @@ public class TTopology {
      * @return El generador de identificadores de elementos.
      * @since 1.0
      */    
-    public TIdentificador getItemIdentifierGenerator() {
+    public TIDGenerator getItemIdentifierGenerator() {
         return generaIdentificador;
     }
 
@@ -686,7 +686,7 @@ public class TTopology {
      * @param gip Generador de direcciones IP de la topolog�a.
      * @since 1.0
      */    
-    public void ponerGeneradorIP(TGeneradorDeIP gip) {
+    public void ponerGeneradorIP(TIPGenerator gip) {
         generadorIP = gip;
     }
 
@@ -695,7 +695,7 @@ public class TTopology {
      * @return El generador de direcciones IP de la topolog�a.
      * @since 1.0
      */    
-    public TGeneradorDeIP getIPAddressGenerator() {
+    public TIPGenerator getIPAddressGenerator() {
         return generadorIP;
     }
 
@@ -1071,9 +1071,9 @@ public class TTopology {
     private TreeSet conjuntoEnlaces;
     private TTimer relojTopologia;
     private TScenario escenarioPadre;
-    private TLongIdentifier IDEvento;
-    private TIdentificador generaIdentificador;
-    private TGeneradorDeIP generadorIP;
+    private TLongIDGenerator IDEvento;
+    private TIDGenerator generaIdentificador;
+    private TIPGenerator generadorIP;
     private TMonitor cerrojoFloyd;
     private TMonitor cerrojoRABAN;
 }

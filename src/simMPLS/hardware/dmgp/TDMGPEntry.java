@@ -16,7 +16,7 @@
  */
 package simMPLS.hardware.dmgp;
 
-import simMPLS.protocols.TPDUMPLS;
+import simMPLS.protocols.TMPLSPDU;
 
 /**
  * This class implements an entry of the DMGP memory. It stores a GoS packet and
@@ -73,7 +73,7 @@ public class TDMGPEntry implements Comparable {
      * @return The stored GoS packet.
      * @since 1.0
      */
-    public TPDUMPLS getPacket() {
+    public TMPLSPDU getPacket() {
         return this.packet.obtenerCopia();
     }
 
@@ -84,7 +84,7 @@ public class TDMGPEntry implements Comparable {
      * @param p The packet to be inserted in this entry.
      * @since 1.0
      */
-    public void setPacket(TPDUMPLS p) {
+    public void setPacket(TMPLSPDU p) {
         this.packet = p.obtenerCopia();
         this.flowID = p.getHeader().obtenerIPOrigen().hashCode();
         this.packetID = p.getHeader().obtenerClavePrimaria();
@@ -130,5 +130,5 @@ public class TDMGPEntry implements Comparable {
     private int flowID;
     private int packetID;
     private int order;
-    private TPDUMPLS packet;
+    private TMPLSPDU packet;
 }

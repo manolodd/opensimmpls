@@ -21,7 +21,7 @@ import java.util.LinkedList;
 import simMPLS.scenario.TSEPacketReceived;
 import simMPLS.scenario.TStats;
 import simMPLS.scenario.TNode;
-import simMPLS.protocols.TPDU;
+import simMPLS.protocols.TAbstractPDU;
 
 /**
  * This class implements a I/O port that follow a FIFO scheme to dispatch
@@ -71,7 +71,7 @@ public class TFIFOPort extends TPort {
      * @since 1.0
      */
     @Override
-    public void discardPacket(TPDU packet) {
+    public void discardPacket(TAbstractPDU packet) {
         this.getPortSet().getParentNode().discardPacket(packet);
     }
 
@@ -83,7 +83,7 @@ public class TFIFOPort extends TPort {
      * @since 1.0
      */
     @Override
-    public void addPacket(TPDU packet) {
+    public void addPacket(TAbstractPDU packet) {
         TFIFOPortSet parentPortSetAux = (TFIFOPortSet) this.parentPortSet;
         parentPortSetAux.portSetMonitor.lock();
         this.monitor.lock();
@@ -130,7 +130,7 @@ public class TFIFOPort extends TPort {
      * @since 1.0
      */
     @Override
-    public void reEnqueuePacket(TPDU packet) {
+    public void reEnqueuePacket(TAbstractPDU packet) {
         TFIFOPortSet parentPortSetAux = (TFIFOPortSet) this.parentPortSet;
         parentPortSetAux.portSetMonitor.lock();
         this.monitor.lock();
@@ -166,11 +166,11 @@ public class TFIFOPort extends TPort {
      * @since 1.0
      */
     @Override
-    public TPDU getPacket() {
+    public TAbstractPDU getPacket() {
         TFIFOPortSet parentPortSetAux = (TFIFOPortSet) this.parentPortSet;
         parentPortSetAux.portSetMonitor.lock();
         this.monitor.lock();
-        this.packetRead = (TPDU) this.buffer.removeFirst();
+        this.packetRead = (TAbstractPDU) this.buffer.removeFirst();
         if (!this.isUnlimitedBuffer) {
             parentPortSetAux.decreasePortSetOccupancySize(this.packetRead.getSize());
         }
@@ -194,7 +194,7 @@ public class TFIFOPort extends TPort {
     @Override
     public boolean canSwitchPacket(int octets) {
         this.monitor.lock();
-        this.packetRead = (TPDU) this.buffer.getFirst();
+        this.packetRead = (TAbstractPDU) this.buffer.getFirst();
         this.monitor.unLock();
         if (this.packetRead.getSize() <= octets) {
             return true;
@@ -250,10 +250,10 @@ public class TFIFOPort extends TPort {
         if (this.isUnlimitedBuffer) {
             this.monitor.lock();
             int occupancy = 0;
-            TPDU packet = null;
+            TAbstractPDU packet = null;
             Iterator iterator = this.buffer.iterator();
             while (iterator.hasNext()) {
-                packet = (TPDU) iterator.next();
+                packet = (TAbstractPDU) iterator.next();
                 if (packet != null) {
                     occupancy += packet.getSize();
                 }
@@ -297,6 +297,6 @@ public class TFIFOPort extends TPort {
     }
 
     private LinkedList buffer;
-    private TPDU packetRead;
+    private TAbstractPDU packetRead;
     private boolean isUnlimitedBuffer;
 }

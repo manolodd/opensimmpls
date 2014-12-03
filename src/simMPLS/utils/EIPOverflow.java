@@ -23,12 +23,12 @@ package simMPLS.utils;
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  */
-public class EDesbordeDeIP extends Exception {
+public class EIPOverflow extends Exception {
     
     /** Este es el constructor de la clase. Crea una nueva instancia de EDesbordeDeIP.
      * @since 1.0
      */
-    public EDesbordeDeIP() {
+    public EIPOverflow() {
     }
     
     /** Devuelve una cadena de texto explicando el motivo de la excepci�n.

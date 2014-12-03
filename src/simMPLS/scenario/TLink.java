@@ -16,12 +16,12 @@
  */
 package simMPLS.scenario;
 
-import simMPLS.protocols.TPDU;
+import simMPLS.protocols.TAbstractPDU;
 import simMPLS.hardware.timer.TTimerEvent;
 import simMPLS.hardware.timer.ITimerEventListener;
 import simMPLS.hardware.ports.TPortSet;
 import simMPLS.utils.TMonitor;
-import simMPLS.utils.TLongIdentifier;
+import simMPLS.utils.TLongIDGenerator;
 import java.awt.*;
 import java.util.*;
 import org.jfree.data.*;
@@ -44,7 +44,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @param t Topolog�a a la que pertenece el enlace.
      * @since 1.0
      */
-    public TLink(int identificador, TLongIdentifier il, TTopology t) {
+    public TLink(int identificador, TLongIDGenerator il, TTopology t) {
         super(TTopologyElement.LINK, il);
         id = identificador;
         extremo1 = null;
@@ -415,7 +415,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @param destino Nodo destino del paquete en el enlace.
      * @since 1.0
      */
-    public void carryPacket(TPDU paquete, int destino) {
+    public void carryPacket(TAbstractPDU paquete, int destino) {
         cerrojo.lock();
         buffer.add(new TLinkBufferEntry(paquete, this.obtenerDelay(), destino));
         cerrojo.unLock();

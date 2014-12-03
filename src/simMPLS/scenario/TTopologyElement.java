@@ -19,7 +19,7 @@ package simMPLS.scenario;
 import simMPLS.hardware.timer.TTimerEvent;
 import simMPLS.hardware.timer.ITimerEventListener;
 import simMPLS.hardware.simulationcollector.TSimulationCollector;
-import simMPLS.utils.TLongIdentifier;
+import simMPLS.utils.TLongIDGenerator;
 import java.awt.*;
 import org.jfree.chart.*;
 import org.jfree.data.*;
@@ -39,7 +39,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @param il generador de identificadores de eventos.
      * @since 1.0
      */
-    public TTopologyElement(int tipo, TLongIdentifier il) {
+    public TTopologyElement(int tipo, TLongIDGenerator il) {
         tipoElemento = tipo;
         eliminarDelReloj = false;
         hilo = null;
@@ -325,7 +325,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * asignar un identificador unico a cada evento que genere.
      * @since 1.0
      */    
-    public TLongIdentifier longIdentifierGenerator;
+    public TLongIDGenerator longIdentifierGenerator;
     /**
      * Este atributo almacena en cada momento los nanosegundos de los que dispone el
      * elemento para realizar las operaciones que necesite.

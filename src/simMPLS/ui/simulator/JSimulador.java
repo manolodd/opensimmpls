@@ -30,7 +30,7 @@ import simMPLS.ui.dialogs.JVentanaComentario;
 import simMPLS.ui.dialogs.JVentanaError;
 import simMPLS.ui.utils.TImagesBroker;
 import simMPLS.utils.JFiltroOSM;
-import simMPLS.utils.TIdentificador;
+import simMPLS.utils.TIDGenerator;
 
 /**
  * Esta clase implementa un simulador completo para simular, valga la redundancia,
@@ -60,7 +60,7 @@ public class JSimulador extends javax.swing.JFrame {
      * @since 1.0
      */    
     public void initComponents2() {
-        GeneradorId = new TIdentificador();
+        GeneradorId = new TIDGenerator();
         numVentanasAbiertas = 0;
     }
     
@@ -729,7 +729,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
     /**
      * @since 1.0
      */    
-    private TIdentificador GeneradorId;
+    private TIDGenerator GeneradorId;
     /**
      * @since 1.0
      */    

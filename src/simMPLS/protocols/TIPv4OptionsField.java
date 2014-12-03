@@ -22,13 +22,13 @@ package simMPLS.protocols;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TCampoOpcionesIPv4 {
+public class TIPv4OptionsField {
     
     /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * TCampoOpcionesIPv4.
      * @since 1.0
      */
-    public TCampoOpcionesIPv4() {
+    public TIPv4OptionsField() {
         nivelGoS = 0;
         nodosPasados = new String[this.MAX_IPS];
         int i = 0;

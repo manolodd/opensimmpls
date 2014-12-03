@@ -21,7 +21,7 @@ package simMPLS.protocols;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TPDUIPv4 extends TPDU {
+public class TIPv4PDU extends TAbstractPDU {
     
     /** Este m�todo es el constructor de la clase. Crea una nueva instancia de TPDUIPv4
      * con los par�metros especificados.
@@ -31,9 +31,9 @@ public class TPDUIPv4 extends TPDU {
      * @param tamDatos El tama�o de los datos el paquete, en bytes.
      * @since 1.0
      */
-    public TPDUIPv4(long id, String ipo, String ipd, int tamDatos) {
+    public TIPv4PDU(long id, String ipo, String ipd, int tamDatos) {
         super(id, ipo, ipd);
-        datos = new TDatosTCP(tamDatos);
+        datos = new TTCPPayload(tamDatos);
         subtipo = super.IPV4;
     }
     
@@ -60,7 +60,7 @@ public class TPDUIPv4 extends TPDU {
      * @return La carga �til del paquete IPv4.
      * @since 1.0
      */
-    public TDatosTCP obtenerDatos() {
+    public TTCPPayload obtenerDatos() {
         return datos;
     }
     
@@ -69,7 +69,7 @@ public class TPDUIPv4 extends TPDU {
      * @param d La nueva carga �til (datos) que queremos para el paquete IPv4.
      * @since 1.0
      */
-    public void ponerDatos(TDatosTCP d) {
+    public void ponerDatos(TTCPPayload d) {
         datos = d;
     }
     
@@ -78,14 +78,14 @@ public class TPDUIPv4 extends TPDU {
      * @return La cabecera IPv4 del paquete.
      * @since 1.0
      */
-    public TCabeceraIPv4 getHeader() {
+    public TIPv4Header getHeader() {
         return super.getHeader();
     }
     
     /**
      * Este m�todo permite obtener el subtipo de paquete IPv4, es decir, si el paquete
      * est� o no marcado con GoS.
-     * @return El subtipo del paquete IPv4. Una de las cosntantes definidas en la clase TPDU.
+     * @return El subtipo del paquete IPv4. Una de las cosntantes definidas en la clase TAbstractPDU.
      * @since 1.0
      */
     public int getSubtype() {
@@ -95,7 +95,7 @@ public class TPDUIPv4 extends TPDU {
     /**
      * Este m�todo poermite establecer el subtipo de paquete IPv4, es decir, si el
      * paquete est� o no marcado con GoS.
-     * @param st El subtipo del paquete. Una de las constantes definidas en la clase TPDU.
+     * @param st El subtipo del paquete. Una de las constantes definidas en la clase TAbstractPDU.
      * @since 1.0
      */
     public void ponerSubtipo(int st) {
@@ -106,7 +106,7 @@ public class TPDUIPv4 extends TPDU {
      * paquetes con distinto tama�o.
      * @since 1.0
      */
-    private TDatosTCP datos;
+    private TTCPPayload datos;
     /**
      * Este atributo almacenar� el subtipo de paquete IPv4 de que se trata.
      * @since 1.0

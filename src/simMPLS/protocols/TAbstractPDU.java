@@ -23,7 +23,7 @@ package simMPLS.protocols;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public abstract class TPDU implements Comparable {
+public abstract class TAbstractPDU implements Comparable {
     
     /** Este m�todo es el constructor de la clase. Crea una nueva instancia de TPDu en
      * base a los valores pasados por par�metro.
@@ -32,9 +32,9 @@ public abstract class TPDU implements Comparable {
      * @param ipd Direcci�n IP destino del paquete.
      * @since 1.0
      */
-    public TPDU(long ident, String ipo, String ipd) {
+    public TAbstractPDU(long ident, String ipo, String ipd) {
         identificador = ident;
-        cabecera = new TCabeceraIPv4(ipo, ipd);
+        cabecera = new TIPv4Header(ipo, ipd);
     }
     
     /** Este m�todo nos permite obtener el valor del atributo privado de la clase,
@@ -59,7 +59,7 @@ public abstract class TPDU implements Comparable {
      * @return La cabecera IPv4 del paquete, para poder utilizar sus m�todos de forma directa.
      * @since 1.0
      */
-    public TCabeceraIPv4 getHeader() {
+    public TIPv4Header getHeader() {
         return cabecera;
     }
     
@@ -67,12 +67,12 @@ public abstract class TPDU implements Comparable {
      * @param c La nueva cabecera IPv4 que deseamos establecer para este paquete.
      * @since 1.0
      */
-    public void ponerCabecera(TCabeceraIPv4 c) {
+    public void ponerCabecera(TIPv4Header c) {
         cabecera = c;
     }
     
-    /** Este m�todo compara dos objetos del tipo TPDU para ver si son mayores, menores o
-     * iguales seg�n el tipo de clasificaci�n seleccionado. Es la implementaci�n de la
+    /** Este m�todo compara dos objetos del tipo TAbstractPDU para ver si son mayores, menores o
+ iguales seg�n el tipo de clasificaci�n seleccionado. Es la implementaci�n de la
      * interfaz Comparable.
      * @param o El otro paquete con el que vamos a compararnos.
      * @return -1, 0 o 1 dependiendo de si el paquete pasado por par�metro es mayor, igual o
@@ -80,7 +80,7 @@ public abstract class TPDU implements Comparable {
      * @since 1.0
      */
     public int compareTo(Object o) {
-        TPDU pdu = (TPDU) o;
+        TAbstractPDU pdu = (TAbstractPDU) o;
         if (this.obtenerIdentificador() > pdu.obtenerIdentificador()) {
             return 1;
         } else if (this.obtenerIdentificador() == pdu.obtenerIdentificador()) {
@@ -214,5 +214,5 @@ public abstract class TPDU implements Comparable {
      * ellos llevar�n una cabecera IPv4, que es esta.
      * @since 1.0
      */
-    TCabeceraIPv4 cabecera;
+    TIPv4Header cabecera;
 }

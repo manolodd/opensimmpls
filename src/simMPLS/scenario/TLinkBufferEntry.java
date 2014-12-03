@@ -16,7 +16,7 @@
  */
 package simMPLS.scenario;
 
-import simMPLS.protocols.TPDU;
+import simMPLS.protocols.TAbstractPDU;
 
 /**
  * Esta clase implementa una entrada dentro del buffer de un enlace. El buffer del
@@ -37,7 +37,7 @@ public class TLinkBufferEntry implements Comparable {
      * enlaces son full duplex.
      * @since 1.0
      */
-    public TLinkBufferEntry(TPDU p, long tiempoEspera, int dest) {
+    public TLinkBufferEntry(TAbstractPDU p, long tiempoEspera, int dest) {
         te = tiempoEspera;
         teInicial = tiempoEspera;
         paquete = p;
@@ -54,7 +54,7 @@ public class TLinkBufferEntry implements Comparable {
      */    
     public int compareTo(Object o) {
         TLinkBufferEntry ebe = (TLinkBufferEntry) o;
-        TPDU pdu = ebe.obtenerPaquete();
+        TAbstractPDU pdu = ebe.obtenerPaquete();
         return this.paquete.compareTo(pdu);
     }
 
@@ -63,7 +63,7 @@ public class TLinkBufferEntry implements Comparable {
      * @return Paquete de la entrada del buffer.
      * @since 1.0
      */    
-    public TPDU obtenerPaquete() {
+    public TAbstractPDU obtenerPaquete() {
         return paquete;
     }
 
@@ -83,7 +83,7 @@ public class TLinkBufferEntry implements Comparable {
      * @param p Paquete que deseamos insertar en la entrada del buffer.
      * @since 1.0
      */    
-    public void ponerPaquete(TPDU p) {
+    public void ponerPaquete(TAbstractPDU p) {
         paquete = p;
     }
 
@@ -143,7 +143,7 @@ public class TLinkBufferEntry implements Comparable {
         return destino;
     }
     
-    private TPDU paquete;
+    private TAbstractPDU paquete;
     private int destino;
     private long te;
     private long teInicial;

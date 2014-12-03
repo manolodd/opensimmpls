@@ -18,7 +18,7 @@ package simMPLS.hardware.dmgp;
 
 import java.util.Iterator;
 import java.util.TreeSet;
-import simMPLS.protocols.TPDUMPLS;
+import simMPLS.protocols.TMPLSPDU;
 import simMPLS.utils.TRotaryIDGenerator;
 import simMPLS.utils.TMonitor;
 
@@ -115,7 +115,7 @@ public class TGPSRPRequestsMatrix {
      * @return The new created an inserted entry. Otherwise, NULL.
      * @since 1.0
      */
-    public TGPSRPRequestEntry addEntry(TPDUMPLS mplsPacket, int incomingPort) {
+    public TGPSRPRequestEntry addEntry(TMPLSPDU mplsPacket, int incomingPort) {
         this.monitor.lock();
         TGPSRPRequestEntry gpsrpRequestEntry = new TGPSRPRequestEntry(this.idGenerator.getNextID());
         gpsrpRequestEntry.setOutgoingPort(incomingPort);

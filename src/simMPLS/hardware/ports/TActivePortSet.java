@@ -18,7 +18,7 @@ package simMPLS.hardware.ports;
 
 import simMPLS.scenario.TLink;
 import simMPLS.scenario.TNode;
-import simMPLS.protocols.TPDU;
+import simMPLS.protocols.TAbstractPDU;
 
 /**
  * This class implements a set of active ports for a node.
@@ -272,8 +272,8 @@ public class TActivePortSet extends TPortSet {
      * @since 1.0
      */
     @Override
-    public TPDU getNextPacket() {
-        TPDU packetAux = null;
+    public TAbstractPDU getNextPacket() {
+        TAbstractPDU packetAux = null;
         // This modifies de value of this.nextPacketToBeRead
         // It also changes this.readPort and this.currentPriority
         this.runPriorityBasedNextPacketSelection();
@@ -329,7 +329,7 @@ public class TActivePortSet extends TPortSet {
      */
     @Override
     public boolean canSwitchPacket(int maxSwitchableOctects) {
-        TPDU auxPacket = null;
+        TAbstractPDU auxPacket = null;
         // This modifies de value of this.nextPacketToBeRead
         // It also changes this.readPort and this.currentPriority
         this.runPriorityBasedNextPacketSelection();
@@ -511,7 +511,7 @@ public class TActivePortSet extends TPortSet {
     // packet to be managed. This is because of the special priority-based
     // algorithm used by active nodes to prioritize packets depending on
     // several aspects. It need a revision to be optimized.
-    private TPDU nextPacketToBeRead;
+    private TAbstractPDU nextPacketToBeRead;
     private int[] ratioByPriority;
     private int[] currentByPriority;
     // end of comment

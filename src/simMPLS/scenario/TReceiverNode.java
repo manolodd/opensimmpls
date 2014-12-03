@@ -16,14 +16,14 @@
  */
 package simMPLS.scenario;
 
-import simMPLS.protocols.TPDU;
-import simMPLS.protocols.TPDUMPLS;
+import simMPLS.protocols.TAbstractPDU;
+import simMPLS.protocols.TMPLSPDU;
 import simMPLS.hardware.timer.TTimerEvent;
 import simMPLS.hardware.timer.ITimerEventListener;
 import simMPLS.hardware.ports.TFIFOPortSet;
 import simMPLS.hardware.ports.TPort;
 import simMPLS.hardware.ports.TPortSet;
-import simMPLS.utils.TLongIdentifier;
+import simMPLS.utils.TLongIDGenerator;
 import java.awt.*;
 import org.jfree.chart.*;
 import org.jfree.data.*;
@@ -44,7 +44,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * @param t Topologia dentro de la cual se encuentra el nodo.
      * @since 1.0
      */
-    public TReceiverNode(int identificador, String d, TLongIdentifier il, TTopology t) {
+    public TReceiverNode(int identificador, String d, TLongIDGenerator il, TTopology t) {
         super(identificador, d, il, t);
         this.ponerPuertos(super.NUM_PUERTOS_RECEPTOR);
         this.puertos.setUnlimitedBuffer(true);
@@ -102,7 +102,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
         TPort p = this.puertos.getPort(0);
         long idEvt = 0;
         int tipo = 0;
-        TPDU paquete = null;
+        TAbstractPDU paquete = null;
         TSEPacketReceived evt = null;
         if (p != null) {
             while (p.thereIsAPacketWaiting()) {
@@ -126,18 +126,18 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * @param deEntrada TRUE, si el paquete entra en el nodo. FALSE si el paquete sale del nodo.
      * @since 1.0
      */    
-    public void contabilizarPaquete(TPDU paquete, boolean deEntrada) {
+    public void contabilizarPaquete(TAbstractPDU paquete, boolean deEntrada) {
         if (deEntrada) {
-            if (paquete.getSubtype() == TPDU.MPLS) {
-            } else if (paquete.getSubtype() == TPDU.MPLS_GOS) {
-            } else if (paquete.getSubtype() == TPDU.IPV4) {
-            } else if (paquete.getSubtype() == TPDU.IPV4_GOS) {
+            if (paquete.getSubtype() == TAbstractPDU.MPLS) {
+            } else if (paquete.getSubtype() == TAbstractPDU.MPLS_GOS) {
+            } else if (paquete.getSubtype() == TAbstractPDU.IPV4) {
+            } else if (paquete.getSubtype() == TAbstractPDU.IPV4_GOS) {
             }
         } else {
-            if (paquete.getSubtype() == TPDU.MPLS) {
-            } else if (paquete.getSubtype() == TPDU.MPLS_GOS) {
-            } else if (paquete.getSubtype() == TPDU.IPV4) {
-            } else if (paquete.getSubtype() == TPDU.IPV4_GOS) {
+            if (paquete.getSubtype() == TAbstractPDU.MPLS) {
+            } else if (paquete.getSubtype() == TAbstractPDU.MPLS_GOS) {
+            } else if (paquete.getSubtype() == TAbstractPDU.IPV4) {
+            } else if (paquete.getSubtype() == TAbstractPDU.IPV4_GOS) {
             }
         }
     }
@@ -307,7 +307,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * @param paquete paquete que deseamos descartar.
      * @since 1.0
      */    
-    public void discardPacket(TPDU paquete) {
+    public void discardPacket(TAbstractPDU paquete) {
         // Un receptor no descarta paquetes, porque tiene un buffer 
         // ilimitado y no analiza el tr�fico. Lo recibe y ya est�.
         paquete = null;
@@ -320,7 +320,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     * @param pSalida Puerto por el que se enviar� la solicitud.
     * @since 1.0
     */    
-    public void runGoSPDUStoreAndRetransmitProtocol(TPDUMPLS paquete, int pSalida) {
+    public void runGoSPDUStoreAndRetransmitProtocol(TMPLSPDU paquete, int pSalida) {
     }
     
     /**

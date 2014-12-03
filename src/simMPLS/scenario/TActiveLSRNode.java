@@ -16,13 +16,13 @@
  */
 package simMPLS.scenario;
 
-import simMPLS.protocols.TPDUGPSRP;
-import simMPLS.protocols.TPDUTLDP;
-import simMPLS.protocols.TDatosGPSRP;
-import simMPLS.protocols.TPDU;
-import simMPLS.protocols.TEtiquetaMPLS;
-import simMPLS.protocols.TPDUMPLS;
-import simMPLS.protocols.TDatosTLDP;
+import simMPLS.protocols.TGPSRPPDU;
+import simMPLS.protocols.TTLDPPDU;
+import simMPLS.protocols.TGPSRPPayload;
+import simMPLS.protocols.TAbstractPDU;
+import simMPLS.protocols.TMPLSLabel;
+import simMPLS.protocols.TMPLSPDU;
+import simMPLS.protocols.TTLDPPayload;
 import simMPLS.hardware.timer.TTimerEvent;
 import simMPLS.hardware.timer.ITimerEventListener;
 import simMPLS.hardware.ports.TActivePortSet;
@@ -34,8 +34,8 @@ import simMPLS.hardware.dmgp.TGPSRPRequestsMatrix;
 import simMPLS.hardware.dmgp.TGPSRPRequestEntry;
 import simMPLS.hardware.ports.TPort;
 import simMPLS.hardware.ports.TPortSet;
-import simMPLS.utils.TIdentificador;
-import simMPLS.utils.TLongIdentifier;
+import simMPLS.utils.TIDGenerator;
+import simMPLS.utils.TLongIDGenerator;
 import java.awt.*;
 import java.util.*;
 import org.jfree.chart.*;
@@ -57,12 +57,12 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param t Topolog�a dentro de la cual se encuentra el nodo.
      * @since 1.0
      */
-    public TActiveLSRNode(int identificador, String d, TLongIdentifier il, TTopology t) {
+    public TActiveLSRNode(int identificador, String d, TLongIDGenerator il, TTopology t) {
         super(identificador, d, il, t);
         this.ponerPuertos(super.NUM_PUERTOS_LSRA);
         matrizConmutacion = new TSwitchingMatrix();
-        gIdent = new TLongIdentifier();
-        gIdentLDP = new TIdentificador();
+        gIdent = new TLongIDGenerator();
+        gIdentLDP = new TIDGenerator();
         potenciaEnMb = 512;
         dmgp = new TDMGP();
         peticionesGPSRP = new TGPSRPRequestsMatrix();
@@ -350,19 +350,19 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     public void conmutarPaquete() {
         boolean conmute = false;
         int puertoLeido = 0;
-        TPDU paquete = null;
+        TAbstractPDU paquete = null;
         int octetosQuePuedoMandar = this.obtenerOctetosTransmitibles();
         while (this.obtenerPuertos().canSwitchPacket(octetosQuePuedoMandar)) {
             conmute = true;
             paquete = this.puertos.getNextPacket();
             puertoLeido = puertos.getReadPort();
             if (paquete != null) {
-                if (paquete.getType() == TPDU.TLDP) {
-                    conmutarTLDP((TPDUTLDP) paquete, puertoLeido);
-                } else if (paquete.getType() == TPDU.MPLS) {
-                    conmutarMPLS((TPDUMPLS) paquete, puertoLeido);
-                } else if (paquete.getType() == TPDU.GPSRP) {
-                    conmutarGPSRP((TPDUGPSRP) paquete, puertoLeido);
+                if (paquete.getType() == TAbstractPDU.TLDP) {
+                    conmutarTLDP((TTLDPPDU) paquete, puertoLeido);
+                } else if (paquete.getType() == TAbstractPDU.MPLS) {
+                    conmutarMPLS((TMPLSPDU) paquete, puertoLeido);
+                } else if (paquete.getType() == TAbstractPDU.GPSRP) {
+                    conmutarGPSRP((TGPSRPPDU) paquete, puertoLeido);
                 } else {
                     this.nsDisponibles += obtenerNsUsadosTotalOctetos(paquete.getSize());
                     discardPacket(paquete);
@@ -384,7 +384,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param pEntrada Puerto por el que ha llegado el paquete.
      * @since 1.0
      */
-    public void conmutarGPSRP(TPDUGPSRP paquete, int pEntrada) {
+    public void conmutarGPSRP(TGPSRPPDU paquete, int pEntrada) {
         if (paquete != null) {
             int mensaje = paquete.obtenerDatosGPSRP().obtenerMensaje();
             int flujo = paquete.obtenerDatosGPSRP().obtenerFlujo();
@@ -392,11 +392,11 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             String IPDestinoFinal = paquete.getHeader().obtenerIPDestino();
             TActivePort pSalida = null;
             if (IPDestinoFinal.equals(this.getIPAddress())) {
-                if (mensaje == TDatosGPSRP.SOLICITUD_RETRANSMISION) {
+                if (mensaje == TGPSRPPayload.SOLICITUD_RETRANSMISION) {
                     this.atenderPeticionGPSRP(paquete, pEntrada);
-                } else if (mensaje == TDatosGPSRP.RETRANSMISION_NO) {
+                } else if (mensaje == TGPSRPPayload.RETRANSMISION_NO) {
                     this.atenderDenegacionGPSRP(paquete, pEntrada);
-                } else if (mensaje == TDatosGPSRP.RETRANSMISION_OK) {
+                } else if (mensaje == TGPSRPPayload.RETRANSMISION_OK) {
                     this.atenderAceptacionGPSRP(paquete, pEntrada);
                 }
             } else {
@@ -405,7 +405,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 if (pSalida != null) {
                     pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     try {
-                        this.generarEventoSimulacion(new TSEPacketRouted(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.GPSRP));
+                        this.generarEventoSimulacion(new TSEPacketRouted(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -422,10 +422,10 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param pEntrada Puerto por el que ha llegado el paquete.
      * @since 1.0
      */
-    public void atenderPeticionGPSRP(TPDUGPSRP paquete, int pEntrada) {
+    public void atenderPeticionGPSRP(TGPSRPPDU paquete, int pEntrada) {
         int idFlujo = paquete.obtenerDatosGPSRP().obtenerFlujo();
         int idPaquete = paquete.obtenerDatosGPSRP().obtenerIdPaquete();
-        TPDUMPLS paqueteBuscado = (TPDUMPLS) dmgp.getPacket(idFlujo, idPaquete);
+        TMPLSPDU paqueteBuscado = (TMPLSPDU) dmgp.getPacket(idFlujo, idPaquete);
         if (paqueteBuscado != null) {
             this.aceptarGPSRP(paquete, pEntrada);
             TActivePort puertoSalida = (TActivePort) this.puertos.getPort(pEntrada);
@@ -448,7 +448,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param pEntrada Puerto por el que ha llegado el paquete.
      * @since 1.0
      */
-    public void atenderDenegacionGPSRP(TPDUGPSRP paquete, int pEntrada) {
+    public void atenderDenegacionGPSRP(TGPSRPPDU paquete, int pEntrada) {
         int idf = paquete.obtenerDatosGPSRP().obtenerFlujo();
         int idp = paquete.obtenerDatosGPSRP().obtenerIdPaquete();
         TGPSRPRequestEntry ep = peticionesGPSRP.getEntry(idf, idp);
@@ -474,7 +474,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param pEntrada Puerto por el que ha llegado el paquete.
      * @since 1.0
      */
-    public void atenderAceptacionGPSRP(TPDUGPSRP paquete, int pEntrada) {
+    public void atenderAceptacionGPSRP(TGPSRPPDU paquete, int pEntrada) {
         int idf = paquete.obtenerDatosGPSRP().obtenerFlujo();
         int idp = paquete.obtenerDatosGPSRP().obtenerIdPaquete();
         peticionesGPSRP.removeEntry(idf, idp);
@@ -486,26 +486,26 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param pSalida Puerto por el que se debe encaminar la petici�n.
      * @since 1.0
      */
-    public void runGoSPDUStoreAndRetransmitProtocol(TPDUMPLS paquete, int pSalida) {
+    public void runGoSPDUStoreAndRetransmitProtocol(TMPLSPDU paquete, int pSalida) {
         TGPSRPRequestEntry ep = null;
         ep = this.peticionesGPSRP.addEntry(paquete, pSalida);
         if (ep != null) {
             TActivePort puertoSalida = (TActivePort) puertos.getPort(pSalida);
-            TPDUGPSRP paqueteGPSRP = null;
+            TGPSRPPDU paqueteGPSRP = null;
             String IPDestino = ep.getCrossedNodeIP();
             if (IPDestino != null) {
                 try {
-                    paqueteGPSRP = new TPDUGPSRP(gIdent.getNextID(), this.getIPAddress(), IPDestino);
+                    paqueteGPSRP = new TGPSRPPDU(gIdent.getNextID(), this.getIPAddress(), IPDestino);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 paqueteGPSRP.obtenerDatosGPSRP().ponerFlujo(ep.getFlowID());
                 paqueteGPSRP.obtenerDatosGPSRP().ponerIdPaquete(ep.getPacketID());
-                paqueteGPSRP.obtenerDatosGPSRP().ponerMensaje(TDatosGPSRP.SOLICITUD_RETRANSMISION);
+                paqueteGPSRP.obtenerDatosGPSRP().ponerMensaje(TGPSRPPayload.SOLICITUD_RETRANSMISION);
                 puertoSalida.putPacketOnLink(paqueteGPSRP, puertoSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                 try {
-                    this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.GPSRP, paqueteGPSRP.getSize()));
-                    this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.GPSRP));
+                    this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP, paqueteGPSRP.getSize()));
+                    this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -523,20 +523,20 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      */
     public void solicitarGPSRP(int idFlujo, int idPaquete, String IPDestino, int pSalida) {
         TActivePort puertoSalida = (TActivePort) puertos.getPort(pSalida);
-        TPDUGPSRP paqueteGPSRP = null;
+        TGPSRPPDU paqueteGPSRP = null;
         if (IPDestino != null) {
             try {
-                paqueteGPSRP = new TPDUGPSRP(gIdent.getNextID(), this.getIPAddress(), IPDestino);
+                paqueteGPSRP = new TGPSRPPDU(gIdent.getNextID(), this.getIPAddress(), IPDestino);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             paqueteGPSRP.obtenerDatosGPSRP().ponerFlujo(idFlujo);
             paqueteGPSRP.obtenerDatosGPSRP().ponerIdPaquete(idPaquete);
-            paqueteGPSRP.obtenerDatosGPSRP().ponerMensaje(TDatosGPSRP.SOLICITUD_RETRANSMISION);
+            paqueteGPSRP.obtenerDatosGPSRP().ponerMensaje(TGPSRPPayload.SOLICITUD_RETRANSMISION);
             puertoSalida.putPacketOnLink(paqueteGPSRP, puertoSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
             try {
-                this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.GPSRP, paqueteGPSRP.getSize()));
-                this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.GPSRP));
+                this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP, paqueteGPSRP.getSize()));
+                this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -549,22 +549,22 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param pSalida PPuerto de salida por el que se debe encaminar la denegaci�n.
      * @since 1.0
      */
-    public void denegarGPSRP(TPDUGPSRP paquete, int pSalida) {
+    public void denegarGPSRP(TGPSRPPDU paquete, int pSalida) {
         TActivePort puertoSalida = (TActivePort) this.puertos.getPort(pSalida);
         if (puertoSalida != null) {
-            TPDUGPSRP paqueteGPSRP = null;
+            TGPSRPPDU paqueteGPSRP = null;
             try {
-                paqueteGPSRP = new TPDUGPSRP(gIdent.getNextID(), this.getIPAddress(), paquete.getHeader().obtenerIPOrigen());
+                paqueteGPSRP = new TGPSRPPDU(gIdent.getNextID(), this.getIPAddress(), paquete.getHeader().obtenerIPOrigen());
             } catch (Exception e) {
                 e.printStackTrace();
             }
             paqueteGPSRP.obtenerDatosGPSRP().ponerFlujo(paquete.obtenerDatosGPSRP().obtenerFlujo());
             paqueteGPSRP.obtenerDatosGPSRP().ponerIdPaquete(paquete.obtenerDatosGPSRP().obtenerIdPaquete());
-            paqueteGPSRP.obtenerDatosGPSRP().ponerMensaje(TDatosGPSRP.RETRANSMISION_NO);
+            paqueteGPSRP.obtenerDatosGPSRP().ponerMensaje(TGPSRPPayload.RETRANSMISION_NO);
             puertoSalida.putPacketOnLink(paqueteGPSRP, puertoSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
             try {
-                this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.GPSRP, paqueteGPSRP.getSize()));
-                this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.GPSRP));
+                this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP, paqueteGPSRP.getSize()));
+                this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -579,22 +579,22 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param pSalida Puerto por el que se debe encaminar la aceptaci�n.
      * @since 1.0
      */
-    public void aceptarGPSRP(TPDUGPSRP paquete, int pSalida) {
+    public void aceptarGPSRP(TGPSRPPDU paquete, int pSalida) {
         TActivePort puertoSalida = (TActivePort) this.puertos.getPort(pSalida);
         if (puertoSalida != null) {
-            TPDUGPSRP paqueteGPSRP = null;
+            TGPSRPPDU paqueteGPSRP = null;
             try {
-                paqueteGPSRP = new TPDUGPSRP(gIdent.getNextID(), this.getIPAddress(), paquete.getHeader().obtenerIPOrigen());
+                paqueteGPSRP = new TGPSRPPDU(gIdent.getNextID(), this.getIPAddress(), paquete.getHeader().obtenerIPOrigen());
             } catch (Exception e) {
                 e.printStackTrace();
             }
             paqueteGPSRP.obtenerDatosGPSRP().ponerFlujo(paquete.obtenerDatosGPSRP().obtenerFlujo());
             paqueteGPSRP.obtenerDatosGPSRP().ponerIdPaquete(paquete.obtenerDatosGPSRP().obtenerIdPaquete());
-            paqueteGPSRP.obtenerDatosGPSRP().ponerMensaje(TDatosGPSRP.RETRANSMISION_OK);
+            paqueteGPSRP.obtenerDatosGPSRP().ponerMensaje(TGPSRPPayload.RETRANSMISION_OK);
             puertoSalida.putPacketOnLink(paqueteGPSRP, puertoSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
             try {
-                this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.GPSRP, paqueteGPSRP.getSize()));
-                this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.GPSRP));
+                this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP, paqueteGPSRP.getSize()));
+                this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -609,16 +609,16 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param pEntrada Puerto por el que se ha recibido el paquete TLDP.
      * @since 1.0
      */
-    public void conmutarTLDP(TPDUTLDP paquete, int pEntrada) {
-        if (paquete.obtenerDatosTLDP().obtenerMensaje() == TDatosTLDP.SOLICITUD_ETIQUETA) {
+    public void conmutarTLDP(TTLDPPDU paquete, int pEntrada) {
+        if (paquete.obtenerDatosTLDP().obtenerMensaje() == TTLDPPayload.SOLICITUD_ETIQUETA) {
             this.tratarSolicitudTLDP(paquete, pEntrada);
-        } else if (paquete.obtenerDatosTLDP().obtenerMensaje() == TDatosTLDP.SOLICITUD_OK) {
+        } else if (paquete.obtenerDatosTLDP().obtenerMensaje() == TTLDPPayload.SOLICITUD_OK) {
             this.tratarSolicitudOkTLDP(paquete, pEntrada);
-        } else if (paquete.obtenerDatosTLDP().obtenerMensaje() == TDatosTLDP.SOLICITUD_NO) {
+        } else if (paquete.obtenerDatosTLDP().obtenerMensaje() == TTLDPPayload.SOLICITUD_NO) {
             this.tratarSolicitudNoTLDP(paquete, pEntrada);
-        } else if (paquete.obtenerDatosTLDP().obtenerMensaje() == TDatosTLDP.ELIMINACION_ETIQUETA) {
+        } else if (paquete.obtenerDatosTLDP().obtenerMensaje() == TTLDPPayload.ELIMINACION_ETIQUETA) {
             this.tratarEliminacionTLDP(paquete, pEntrada);
-        } else if (paquete.obtenerDatosTLDP().obtenerMensaje() == TDatosTLDP.ELIMINACION_OK) {
+        } else if (paquete.obtenerDatosTLDP().obtenerMensaje() == TTLDPPayload.ELIMINACION_OK) {
             this.tratarEliminacionOkTLDP(paquete, pEntrada);
         }
     }
@@ -629,8 +629,8 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param pEntrada Puerto por el que se ha recibido el paquete MPLS.
      * @since 1.0
      */
-    public void conmutarMPLS(TPDUMPLS paquete, int pEntrada) {
-        TEtiquetaMPLS eMPLS = null;
+    public void conmutarMPLS(TMPLSPDU paquete, int pEntrada) {
+        TMPLSLabel eMPLS = null;
         TSwitchingMatrixEntry emc = null;
         boolean conEtiqueta1 = false;
         boolean requiereLSPDeRespaldo = false;
@@ -638,10 +638,10 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             eMPLS = paquete.getLabelStack().getTop();
             paquete.getLabelStack().borrarEtiqueta();
             conEtiqueta1 = true;
-            if ((eMPLS.getEXPField() == TPDU.EXP_LEVEL0_WITH_BACKUP_LSP) ||
-            (eMPLS.getEXPField() == TPDU.EXP_LEVEL1_WITH_BACKUP_LSP) ||
-            (eMPLS.getEXPField() == TPDU.EXP_LEVEL2_WITH_BACKUP_LSP) ||
-            (eMPLS.getEXPField() == TPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
+            if ((eMPLS.getEXPField() == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP) ||
+            (eMPLS.getEXPField() == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP) ||
+            (eMPLS.getEXPField() == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP) ||
+            (eMPLS.getEXPField() == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                 requiereLSPDeRespaldo = true;
             }
         }
@@ -686,7 +686,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     discardPacket(paquete);
                 } else {
                     if (operacion == TSwitchingMatrixEntry.PUSH_LABEL) {
-                        TEtiquetaMPLS empls = new TEtiquetaMPLS();
+                        TMPLSLabel empls = new TMPLSLabel();
                         empls.ponerBoS(false);
                         empls.ponerEXP(0);
                         empls.setLabelField(emc.getOutgoingLabel());
@@ -766,7 +766,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param pEntrada Puerto de entrada de la petici�n de etiqueta.
      * @since 1.0
      */
-    public void tratarSolicitudTLDP(TPDUTLDP paquete, int pEntrada) {
+    public void tratarSolicitudTLDP(TTLDPPDU paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
         emc = matrizConmutacion.getEntry(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP(), pEntrada);
         if (emc == null) {
@@ -801,9 +801,9 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param pEntrada Puerto por el que se recibi�n la eliminaci�n de etiqueta.
      * @since 1.0
      */
-    public void tratarEliminacionTLDP(TPDUTLDP paquete, int pEntrada) {
+    public void tratarEliminacionTLDP(TTLDPPDU paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
-        if (paquete.obtenerEntradaPaquete() == TPDUTLDP.ENTRADA) {
+        if (paquete.obtenerEntradaPaquete() == TTLDPPDU.ENTRADA) {
             emc = matrizConmutacion.getEntry(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP(), pEntrada);
         } else {
             emc = matrizConmutacion.getEntry(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP());
@@ -922,7 +922,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param pEntrada Puerto por el que se ha recibido la confirmaci�n de etiquetas.
      * @since 1.0
      */
-    public void tratarSolicitudOkTLDP(TPDUTLDP paquete, int pEntrada) {
+    public void tratarSolicitudOkTLDP(TTLDPPDU paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
         emc = matrizConmutacion.getEntry(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP());
         if (emc == null) {
@@ -991,7 +991,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param pEntrada Puerto por el que se ha recibido la denegaci�n de etiquetas.
      * @since 1.0
      */
-    public void tratarSolicitudNoTLDP(TPDUTLDP paquete, int pEntrada) {
+    public void tratarSolicitudNoTLDP(TTLDPPDU paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
         emc = matrizConmutacion.getEntry(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP());
         if (emc == null) {
@@ -1043,9 +1043,9 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param pEntrada Puerto por el que se ha recibido la confirmaci�n de eliminaci�n de etiqueta.
      * @since 1.0
      */
-    public void tratarEliminacionOkTLDP(TPDUTLDP paquete, int pEntrada) {
+    public void tratarEliminacionOkTLDP(TTLDPPDU paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
-        if (paquete.obtenerEntradaPaquete() == TPDUTLDP.ENTRADA) {
+        if (paquete.obtenerEntradaPaquete() == TTLDPPDU.ENTRADA) {
             emc = matrizConmutacion.getEntry(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP(), pEntrada);
         } else {
             emc = matrizConmutacion.getEntry(paquete.obtenerDatosTLDP().obtenerIdentificadorLDP());
@@ -1167,27 +1167,27 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 String IPLocal = this.getIPAddress();
                 String IPDestino = puertos.getIPOfNodeLinkedTo(emc.getIncomingPortID());
                 if (IPDestino != null) {
-                    TPDUTLDP nuevoTLDP = null;
+                    TTLDPPDU nuevoTLDP = null;
                     try {
-                        nuevoTLDP = new TPDUTLDP(gIdent.getNextID(), IPLocal, IPDestino);
+                        nuevoTLDP = new TTLDPPDU(gIdent.getNextID(), IPLocal, IPDestino);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     if (nuevoTLDP != null) {
-                        nuevoTLDP.obtenerDatosTLDP().ponerMensaje(TDatosTLDP.SOLICITUD_OK);
+                        nuevoTLDP.obtenerDatosTLDP().ponerMensaje(TTLDPPayload.SOLICITUD_OK);
                         nuevoTLDP.obtenerDatosTLDP().ponerIPDestinoFinal(emc.getTailEndIPAddress());
                         nuevoTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.getUpstreamTLDPSessionID());
                         nuevoTLDP.obtenerDatosTLDP().ponerEtiqueta(emc.getLabelOrFEC());
                         if (emc.aBackupLSPHasBeenRequested()) {
-                            nuevoTLDP.ponerSalidaPaquete(TPDUTLDP.ATRAS_BACKUP);
+                            nuevoTLDP.ponerSalidaPaquete(TTLDPPDU.ATRAS_BACKUP);
                         } else {
-                            nuevoTLDP.ponerSalidaPaquete(TPDUTLDP.ATRAS);
+                            nuevoTLDP.ponerSalidaPaquete(TTLDPPDU.ATRAS);
                         }
                         TPort pSalida = puertos.getPortWhereIsConectedANodeHavingIP(IPDestino);
                         pSalida.putPacketOnLink(nuevoTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
-                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP, nuevoTLDP.getSize()));
-                            this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP));
+                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP, nuevoTLDP.getSize()));
+                            this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -1209,27 +1209,27 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 String IPLocal = this.getIPAddress();
                 String IPDestino = puertos.getIPOfNodeLinkedTo(emc.getIncomingPortID());
                 if (IPDestino != null) {
-                    TPDUTLDP nuevoTLDP = null;
+                    TTLDPPDU nuevoTLDP = null;
                     try {
-                        nuevoTLDP = new TPDUTLDP(gIdent.getNextID(), IPLocal, IPDestino);
+                        nuevoTLDP = new TTLDPPDU(gIdent.getNextID(), IPLocal, IPDestino);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     if (nuevoTLDP != null) {
-                        nuevoTLDP.obtenerDatosTLDP().ponerMensaje(TDatosTLDP.SOLICITUD_NO);
+                        nuevoTLDP.obtenerDatosTLDP().ponerMensaje(TTLDPPayload.SOLICITUD_NO);
                         nuevoTLDP.obtenerDatosTLDP().ponerIPDestinoFinal(emc.getTailEndIPAddress());
                         nuevoTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.getUpstreamTLDPSessionID());
                         nuevoTLDP.obtenerDatosTLDP().ponerEtiqueta(TSwitchingMatrixEntry.UNDEFINED);
                         if (emc.aBackupLSPHasBeenRequested()) {
-                            nuevoTLDP.ponerSalidaPaquete(TPDUTLDP.ATRAS_BACKUP);
+                            nuevoTLDP.ponerSalidaPaquete(TTLDPPDU.ATRAS_BACKUP);
                         } else {
-                            nuevoTLDP.ponerSalidaPaquete(TPDUTLDP.ATRAS);
+                            nuevoTLDP.ponerSalidaPaquete(TTLDPPDU.ATRAS);
                         }
                         TPort pSalida = puertos.getPortWhereIsConectedANodeHavingIP(IPDestino);
                         pSalida.putPacketOnLink(nuevoTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
-                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP, nuevoTLDP.getSize()));
-                            this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP));
+                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP, nuevoTLDP.getSize()));
+                            this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -1251,35 +1251,35 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             String IPLocal = this.getIPAddress();
             String IPDestino = puertos.getIPOfNodeLinkedTo(puerto);
             if (IPDestino != null) {
-                TPDUTLDP nuevoTLDP = null;
+                TTLDPPDU nuevoTLDP = null;
                 try {
-                    nuevoTLDP = new TPDUTLDP(gIdent.getNextID(), IPLocal, IPDestino);
+                    nuevoTLDP = new TTLDPPDU(gIdent.getNextID(), IPLocal, IPDestino);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 if (nuevoTLDP != null) {
-                    nuevoTLDP.obtenerDatosTLDP().ponerMensaje(TDatosTLDP.ELIMINACION_OK);
+                    nuevoTLDP.obtenerDatosTLDP().ponerMensaje(TTLDPPayload.ELIMINACION_OK);
                     nuevoTLDP.obtenerDatosTLDP().ponerIPDestinoFinal(emc.getTailEndIPAddress());
                     nuevoTLDP.obtenerDatosTLDP().ponerEtiqueta(TSwitchingMatrixEntry.UNDEFINED);
                     if (emc.getOutgoingPortID() == puerto) {
                         nuevoTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.getLocalTLDPSessionID());
-                        nuevoTLDP.ponerSalidaPaquete(TPDUTLDP.ADELANTE);
+                        nuevoTLDP.ponerSalidaPaquete(TTLDPPDU.ADELANTE);
                     } else if (emc.getBackupOutgoingPortID() == puerto) {
                         nuevoTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.getLocalTLDPSessionID());
-                        nuevoTLDP.ponerSalidaPaquete(TPDUTLDP.ADELANTE);
+                        nuevoTLDP.ponerSalidaPaquete(TTLDPPDU.ADELANTE);
                     } else if (emc.getIncomingPortID() == puerto) {
                         nuevoTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.getUpstreamTLDPSessionID());
                         if (emc.aBackupLSPHasBeenRequested()) {
-                            nuevoTLDP.ponerSalidaPaquete(TPDUTLDP.ATRAS_BACKUP);
+                            nuevoTLDP.ponerSalidaPaquete(TTLDPPDU.ATRAS_BACKUP);
                         } else {
-                            nuevoTLDP.ponerSalidaPaquete(TPDUTLDP.ATRAS);
+                            nuevoTLDP.ponerSalidaPaquete(TTLDPPDU.ATRAS);
                         }
                     }
                     TPort pSalida = puertos.getPort(puerto);
                     pSalida.putPacketOnLink(nuevoTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     try {
-                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP, nuevoTLDP.getSize()));
-                        this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP));
+                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP, nuevoTLDP.getSize()));
+                        this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1299,29 +1299,29 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         String IPDestinoFinal = emc.getTailEndIPAddress();
         String IPSalto = topologia.obtenerIPSaltoRABAN(IPLocal, IPDestinoFinal);
         if (IPSalto != null) {
-            TPDUTLDP paqueteTLDP = null;
+            TTLDPPDU paqueteTLDP = null;
             try {
-                paqueteTLDP = new TPDUTLDP(gIdent.getNextID(), IPLocal, IPSalto);
+                paqueteTLDP = new TTLDPPDU(gIdent.getNextID(), IPLocal, IPSalto);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             if (paqueteTLDP != null) {
                 paqueteTLDP.obtenerDatosTLDP().ponerIPDestinoFinal(IPDestinoFinal);
-                paqueteTLDP.obtenerDatosTLDP().ponerMensaje(TDatosTLDP.SOLICITUD_ETIQUETA);
+                paqueteTLDP.obtenerDatosTLDP().ponerMensaje(TTLDPPayload.SOLICITUD_ETIQUETA);
                 paqueteTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.getLocalTLDPSessionID());
                 if (emc.aBackupLSPHasBeenRequested()) {
                     paqueteTLDP.ponerEsParaBackup(true);
                 } else {
                     paqueteTLDP.ponerEsParaBackup(false);
                 }
-                paqueteTLDP.ponerSalidaPaquete(TPDUTLDP.ADELANTE);
+                paqueteTLDP.ponerSalidaPaquete(TTLDPPDU.ADELANTE);
                 TPort pSalida = puertos.getPortWhereIsConectedANodeHavingIP(IPSalto);
                 if (pSalida != null) {
                     pSalida.putPacketOnLink(paqueteTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     emc.setOutgoingPortID(pSalida.getPortID());
                     try {
-                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP, paqueteTLDP.getSize()));
-                        this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP));
+                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP, paqueteTLDP.getSize()));
+                        this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1347,25 +1347,25 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     if (emc.getOutgoingLabel() > 15) {
                         emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.LABEL_REQUESTED);
                         if (IPSalto != null) {
-                            TPDUTLDP paqueteTLDP = null;
+                            TTLDPPDU paqueteTLDP = null;
                             try {
-                                paqueteTLDP = new TPDUTLDP(gIdent.getNextID(), IPLocal, IPSalto);
+                                paqueteTLDP = new TTLDPPDU(gIdent.getNextID(), IPLocal, IPSalto);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             if (paqueteTLDP != null) {
                                 paqueteTLDP.obtenerDatosTLDP().ponerIPDestinoFinal(IPDestinoFinal);
-                                paqueteTLDP.obtenerDatosTLDP().ponerMensaje(TDatosTLDP.SOLICITUD_ETIQUETA);
+                                paqueteTLDP.obtenerDatosTLDP().ponerMensaje(TTLDPPayload.SOLICITUD_ETIQUETA);
                                 paqueteTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.getLocalTLDPSessionID());
                                 paqueteTLDP.ponerEsParaBackup(true);
-                                paqueteTLDP.ponerSalidaPaquete(TPDUTLDP.ADELANTE);
+                                paqueteTLDP.ponerSalidaPaquete(TTLDPPDU.ADELANTE);
                                 TPort pSalida = puertos.getPortWhereIsConectedANodeHavingIP(IPSalto);
                                 emc.setBackupOutgoingPortID(pSalida.getPortID());
                                 if (pSalida != null) {
                                     pSalida.putPacketOnLink(paqueteTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                                     try {
-                                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP, paqueteTLDP.getSize()));
-                                        this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP));
+                                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP, paqueteTLDP.getSize()));
+                                        this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP));
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -1392,35 +1392,35 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             String IPDestinoFinal = emc.getTailEndIPAddress();
             String IPSalto = puertos.getIPOfNodeLinkedTo(puerto);
             if (IPSalto != null) {
-                TPDUTLDP paqueteTLDP = null;
+                TTLDPPDU paqueteTLDP = null;
                 try {
-                    paqueteTLDP = new TPDUTLDP(gIdent.getNextID(), IPLocal, IPSalto);
+                    paqueteTLDP = new TTLDPPDU(gIdent.getNextID(), IPLocal, IPSalto);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 if (paqueteTLDP != null) {
                     paqueteTLDP.obtenerDatosTLDP().ponerIPDestinoFinal(IPDestinoFinal);
-                    paqueteTLDP.obtenerDatosTLDP().ponerMensaje(TDatosTLDP.ELIMINACION_ETIQUETA);
+                    paqueteTLDP.obtenerDatosTLDP().ponerMensaje(TTLDPPayload.ELIMINACION_ETIQUETA);
                     if (emc.getOutgoingPortID() == puerto) {
                         paqueteTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.getLocalTLDPSessionID());
-                        paqueteTLDP.ponerSalidaPaquete(TPDUTLDP.ADELANTE);
+                        paqueteTLDP.ponerSalidaPaquete(TTLDPPDU.ADELANTE);
                     } else if (emc.getBackupOutgoingPortID() == puerto) {
                         paqueteTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.getLocalTLDPSessionID());
-                        paqueteTLDP.ponerSalidaPaquete(TPDUTLDP.ADELANTE);
+                        paqueteTLDP.ponerSalidaPaquete(TTLDPPDU.ADELANTE);
                     } else if (emc.getIncomingPortID() == puerto) {
                         paqueteTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.getUpstreamTLDPSessionID());
                         if (emc.aBackupLSPHasBeenRequested()) {
-                            paqueteTLDP.ponerSalidaPaquete(TPDUTLDP.ATRAS_BACKUP);
+                            paqueteTLDP.ponerSalidaPaquete(TTLDPPDU.ATRAS_BACKUP);
                         } else {
-                            paqueteTLDP.ponerSalidaPaquete(TPDUTLDP.ATRAS);
+                            paqueteTLDP.ponerSalidaPaquete(TTLDPPDU.ATRAS);
                         }
                     }
                     TPort pSalida = puertos.getPort(puerto);
                     if (pSalida != null) {
                         pSalida.putPacketOnLink(paqueteTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
-                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP, paqueteTLDP.getSize()));
-                            this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP));
+                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP, paqueteTLDP.getSize()));
+                            this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -1442,28 +1442,28 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             String IPDestinoFinal = emc.getTailEndIPAddress();
             String IPSalto = puertos.getIPOfNodeLinkedTo(emc.getOutgoingPortID());
             if (IPSalto != null) {
-                TPDUTLDP paqueteTLDP = null;
+                TTLDPPDU paqueteTLDP = null;
                 try {
-                    paqueteTLDP = new TPDUTLDP(gIdent.getNextID(), IPLocal, IPSalto);
+                    paqueteTLDP = new TTLDPPDU(gIdent.getNextID(), IPLocal, IPSalto);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 if (paqueteTLDP != null) {
                     paqueteTLDP.obtenerDatosTLDP().ponerIPDestinoFinal(IPDestinoFinal);
-                    paqueteTLDP.obtenerDatosTLDP().ponerMensaje(TDatosTLDP.SOLICITUD_ETIQUETA);
+                    paqueteTLDP.obtenerDatosTLDP().ponerMensaje(TTLDPPayload.SOLICITUD_ETIQUETA);
                     paqueteTLDP.obtenerDatosTLDP().ponerIdentificadorLDP(emc.getLocalTLDPSessionID());
                     if (emc.aBackupLSPHasBeenRequested()) {
                         paqueteTLDP.ponerEsParaBackup(true);
                     } else {
                         paqueteTLDP.ponerEsParaBackup(false);
                     }
-                    paqueteTLDP.ponerSalidaPaquete(TPDUTLDP.ADELANTE);
+                    paqueteTLDP.ponerSalidaPaquete(TTLDPPDU.ADELANTE);
                     TPort pSalida = puertos.getPort(emc.getOutgoingPortID());
                     if (pSalida != null) {
                         pSalida.putPacketOnLink(paqueteTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
-                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP, paqueteTLDP.getSize()));
-                            this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP));
+                            this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP, paqueteTLDP.getSize()));
+                            this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -1541,7 +1541,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @return La nueva entrada en la matriz de conmutaci�n, creda, insertada e inicializada.
      * @since 1.0
      */
-    public TSwitchingMatrixEntry crearEntradaAPartirDeTLDP(TPDUTLDP paqueteSolicitud, int pEntrada) {
+    public TSwitchingMatrixEntry crearEntradaAPartirDeTLDP(TTLDPPDU paqueteSolicitud, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
         int IdTLDPAntecesor = paqueteSolicitud.obtenerDatosTLDP().obtenerIdentificadorLDP();
         TPort puertoEntrada = puertos.getPort(pEntrada);
@@ -1579,7 +1579,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param paquete Paquete que queremos descartar.
      * @since 1.0
      */
-    public void discardPacket(TPDU paquete) {
+    public void discardPacket(TAbstractPDU paquete) {
         try {
             this.generarEventoSimulacion(new TSEPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
             this.estadisticas.addStatsEntry(paquete, TStats.DESCARTE);
@@ -1783,8 +1783,8 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     public static final int SOLO_ESPACIOS = 3;
     
     private TSwitchingMatrix matrizConmutacion;
-    private TLongIdentifier gIdent;
-    private TIdentificador gIdentLDP;
+    private TLongIDGenerator gIdent;
+    private TIDGenerator gIdentLDP;
     private int potenciaEnMb;
     private TDMGP dmgp;
     private TGPSRPRequestsMatrix peticionesGPSRP;

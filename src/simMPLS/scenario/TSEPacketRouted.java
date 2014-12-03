@@ -16,7 +16,7 @@
  */
 package simMPLS.scenario;
 
-import simMPLS.protocols.TPDU;
+import simMPLS.protocols.TAbstractPDU;
 
 /**
  * Esta clase implementa un evento que ser� usado para indicar que un paquete se ha
@@ -102,27 +102,27 @@ public class TSEPacketRouted extends TSimulationEvent {
     public String obtenerNombreTipoPaquete() {
         String strTipo = "";
         switch (tipoP) {
-            case TPDU.IPV4: {
+            case TAbstractPDU.IPV4: {
                 strTipo = "IPv4";
                 break;
             }
-            case TPDU.IPV4_GOS: {
+            case TAbstractPDU.IPV4_GOS: {
                 strTipo = "IPv4 con GoS";
                 break;
             }
-            case TPDU.MPLS: {
+            case TAbstractPDU.MPLS: {
                 strTipo = "MPLS";
                 break;
             }
-            case TPDU.MPLS_GOS: {
+            case TAbstractPDU.MPLS_GOS: {
                 strTipo = "MPLS con GoS";
                 break;
             }
-            case TPDU.TLDP: {
+            case TAbstractPDU.TLDP: {
                 strTipo = "LDP";
                 break;
             }
-            case TPDU.GPSRP: {
+            case TAbstractPDU.GPSRP: {
                 strTipo = "GPSRP";
                 break;
             }

@@ -22,7 +22,7 @@ package simMPLS.utils;
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  */
-public class TIdentificador {
+public class TIDGenerator {
     
     /** Atributo que contendr� el valor interno del generador de identificadores
      * num�ticos.
@@ -32,7 +32,7 @@ public class TIdentificador {
     /** Crea un nuevo generador de identificadores con el valor inicial 0.
      * @since 1.0
      */
-    public TIdentificador() {
+    public TIDGenerator() {
         identificador = 0;
     }
     
@@ -49,14 +49,14 @@ public class TIdentificador {
      * modifica el contador interno para que el siguiente generador sea distinto. El
      * m�todo est� <B>sincronizado</B>.
      * @return Un numero entero que ser� un identificador: no estar� repetido.
-     * @throws EIdentifierGeneratorOverflow Esta excepci�n se lanza cuando el contador interno del generador de
+     * @throws EIDGeneratorOverflow Esta excepci�n se lanza cuando el contador interno del generador de
      * identificadores se desborda. Es alto por lo que ngeneralmente no ocurrir�, pero
      * hay que capturar la excepci�n por si acaso.
      * @since 1.0
      */
-    synchronized public int obtenerNuevo() throws EIdentifierGeneratorOverflow {
+    synchronized public int obtenerNuevo() throws EIDGeneratorOverflow {
         if (identificador > 2147483646) {
-            throw new EIdentifierGeneratorOverflow();
+            throw new EIDGeneratorOverflow();
         } else {
             identificador++;
         }

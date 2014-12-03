@@ -22,13 +22,13 @@ package simMPLS.protocols;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TDatosTLDP {
+public class TTLDPPayload {
     
     /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * TDatosLDP.
      * @since 1.0
      */
-    public TDatosTLDP() {
+    public TTLDPPayload() {
         mensaje = this.SOLICITUD_ETIQUETA;
         ipDestinoFinal = "";
         label = 16;

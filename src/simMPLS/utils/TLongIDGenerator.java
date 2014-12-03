@@ -22,7 +22,7 @@ package simMPLS.utils;
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  */
-public class TLongIdentifier {
+public class TLongIDGenerator {
     
     /** Atributo que almacena el valor interno del generador de identificadores
      * num�ticos largos.
@@ -33,7 +33,7 @@ public class TLongIdentifier {
     /** Crea un nuevo generador de identificadores con el valor inicial 0.
      * @since 1.0
      */
-    public TLongIdentifier() {
+    public TLongIDGenerator() {
         identificador = 0;
     }
     
@@ -50,14 +50,14 @@ public class TLongIdentifier {
      * modifica el contador interno para que el siguiente generador sea distinto. El
      * m�todo est� <B>sincronizado</B>.
      * @return Un n�mero enterio que ser� un identificador largo: un entero largo �nico.
-     * @throws EIdentifierGeneratorOverflow Esta excepci�n se lanza cuando el contador interno del generador de
+     * @throws EIDGeneratorOverflow Esta excepci�n se lanza cuando el contador interno del generador de
      * identificadores se desborda. Es alto por lo que generalmente no ocurrir�, pero
      * hay que capturar la excepci�n por si acaso.
      * @since 1.0
      */
-    synchronized public long getNextID() throws EIdentifierGeneratorOverflow {
+    synchronized public long getNextID() throws EIDGeneratorOverflow {
         if (identificador > 9223372036854775806L) {
-            throw new EIdentifierGeneratorOverflow();
+            throw new EIDGeneratorOverflow();
         } else {
             identificador++;
         }

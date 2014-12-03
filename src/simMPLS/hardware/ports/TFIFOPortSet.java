@@ -18,7 +18,7 @@ package simMPLS.hardware.ports;
 
 import simMPLS.scenario.TLink;
 import simMPLS.scenario.TNode;
-import simMPLS.protocols.TPDU;
+import simMPLS.protocols.TAbstractPDU;
 
 /**
  * This class implements a set of ports for a node.
@@ -209,7 +209,7 @@ public class TFIFOPortSet extends TPortSet {
      * @since 1.0
      */
     @Override
-    public TPDU getNextPacket() {
+    public TAbstractPDU getNextPacket() {
         for (int i = 0; i < this.numberOfPorts; i++) {
             this.readPort = (this.readPort + 1) % this.numberOfPorts;
             if (this.ports[this.readPort].thereIsAPacketWaiting()) {

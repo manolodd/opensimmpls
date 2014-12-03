@@ -16,7 +16,7 @@
  */
 package simMPLS.scenario;
 
-import simMPLS.protocols.TPDU;
+import simMPLS.protocols.TAbstractPDU;
 import org.jfree.chart.*;
 import org.jfree.chart.labels.*;
 import org.jfree.chart.plot.*;
@@ -124,45 +124,45 @@ public class TReceiverStats extends TStats {
      * de �l o es descartado.
      * @since 1.0
      */    
-    public void addStatsEntry(TPDU paquete, int entrada) {
+    public void addStatsEntry(TAbstractPDU paquete, int entrada) {
         if (this.estadisticasActivas) {
             int tipoPaquete = paquete.getSubtype();
             int GoS = 0;
-            if (tipoPaquete == TPDU.GPSRP) {
+            if (tipoPaquete == TAbstractPDU.GPSRP) {
                 if (entrada == TStats.ENTRADA) {
                     this.tEGPSRP++;
                 }
-            } else if (tipoPaquete == TPDU.MPLS) {
+            } else if (tipoPaquete == TAbstractPDU.MPLS) {
                 if (entrada == TStats.ENTRADA) {
                     this.tEMPLS++;
                 }
-            } else if (tipoPaquete == TPDU.MPLS_GOS) {
+            } else if (tipoPaquete == TAbstractPDU.MPLS_GOS) {
                 GoS = paquete.getHeader().getOptionsField().getEncodedGoSLevel();
                 if (entrada == TStats.ENTRADA) {
-                    if ((GoS == TPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
+                    if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tEMPLS++;
-                    } else if ((GoS == TPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
+                    } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
                         this.tEMPLS_GOS1++;
-                    } else if ((GoS == TPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
+                    } else if ((GoS == TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
                         this.tEMPLS_GOS2++;
-                    } else if ((GoS == TPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
+                    } else if ((GoS == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.tEMPLS_GOS3++;
                     }
                 }
-            } else if (tipoPaquete == TPDU.IPV4) {
+            } else if (tipoPaquete == TAbstractPDU.IPV4) {
                 if (entrada == TStats.ENTRADA) {
                     this.tEIPV4++;
                 }
-            } else if (tipoPaquete == TPDU.IPV4_GOS) {
+            } else if (tipoPaquete == TAbstractPDU.IPV4_GOS) {
                 GoS = paquete.getHeader().getOptionsField().getEncodedGoSLevel();
                 if (entrada == TStats.ENTRADA) {
-                    if ((GoS == TPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
+                    if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tEIPV4++;
-                    } else if ((GoS == TPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
+                    } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
                         this.tEIPV4_GOS1++;
-                    } else if ((GoS == TPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
+                    } else if ((GoS == TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
                         this.tEIPV4_GOS2++;
-                    } else if ((GoS == TPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
+                    } else if ((GoS == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.tEIPV4_GOS3++;
                     }
                 }

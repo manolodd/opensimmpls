@@ -21,7 +21,7 @@ package simMPLS.protocols;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TPDUGPSRP extends TPDU {
+public class TGPSRPPDU extends TAbstractPDU {
     
     /** Este m�todo es el constructor de la clase. Crea una nueva instancia de un
      * paquete GPSRP bas�ndose en lo par�metros pasados.
@@ -30,10 +30,10 @@ public class TPDUGPSRP extends TPDU {
      * @param ipd Direcci�n IP destino del paquete.
      * @since 1.0
      */
-    public TPDUGPSRP(long id, String ipo, String ipd) {
+    public TGPSRPPDU(long id, String ipo, String ipd) {
         super(id, ipo, ipd);
-        datosTCP = new TDatosTCP(0);
-        datosGPSRP = new TDatosGPSRP();
+        datosTCP = new TTCPPayload(0);
+        datosGPSRP = new TGPSRPPayload();
     }
     
     /** Este m�todo devuelve el tama�o completo del paquete en bytes, para poder
@@ -63,7 +63,7 @@ public class TPDUGPSRP extends TPDU {
      * @return Los datos TCP de esta instancia.
      * @since 1.0
      */
-    public TDatosTCP obtenerDatosTCP() {
+    public TTCPPayload obtenerDatosTCP() {
         return datosTCP;
     }
     
@@ -72,7 +72,7 @@ public class TPDUGPSRP extends TPDU {
      * @return Los datos GPSRP de esta instancia.
      * @since 1.0
      */
-    public TDatosGPSRP obtenerDatosGPSRP() {
+    public TGPSRPPayload obtenerDatosGPSRP() {
         return datosGPSRP;
     }
     
@@ -81,7 +81,7 @@ public class TPDUGPSRP extends TPDU {
      * @return La cabecera IP del paquete.
      * @since 1.0
      */
-    public TCabeceraIPv4 getHeader() {
+    public TIPv4Header getHeader() {
         return super.getHeader();
     }
     
@@ -89,7 +89,7 @@ public class TPDUGPSRP extends TPDU {
      * Este m�todo permite obtener el subtipo del paquete GPSRP. En esta versi�n el
      * paquete GPSRP no tiene subtipos. Implementa este m�todo para dejar de ser una
      * clase abstracta.
-     * @return TPDU.TLDP
+     * @return TAbstractPDU.TLDP
      * @since 1.0
      */
     public int getSubtype() {
@@ -110,10 +110,10 @@ public class TPDUGPSRP extends TPDU {
      * al paquete.
      * @since 1.0
      */
-    private TDatosTCP datosTCP;
+    private TTCPPayload datosTCP;
     /** Este atributo privado simula los datos del paquete GPSRP, de donde se puede
      * obtener los mensajes de retransmisi�n necesarios.
      * @since 1.0
      */
-    private TDatosGPSRP datosGPSRP;
+    private TGPSRPPayload datosGPSRP;
 }

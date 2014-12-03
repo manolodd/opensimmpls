@@ -22,17 +22,17 @@ package simMPLS.protocols;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TCabeceraIPv4 {
+public class TIPv4Header {
     
     /** Este m�todo es el constructor de la clase. Crea una nueva instancia de TCabeceraIPv4.
      * @param ipo Direcci�n IP origen.
      * @param ipd Direcci�n IP destino.
      * @since 1.0
      */
-    public TCabeceraIPv4(String ipo, String ipd) {
+    public TIPv4Header(String ipo, String ipd) {
         IPOrigen = ipo;
         IPDestino = ipd;
-        opciones = new TCampoOpcionesIPv4();
+        opciones = new TIPv4OptionsField();
         TTL = 255;
     }
     
@@ -117,7 +117,7 @@ public class TCabeceraIPv4 {
      * @return El campo opciones de la cabecera, completo.
      * @since 1.0
      */
-    public TCampoOpcionesIPv4 getOptionsField() {
+    public TIPv4OptionsField getOptionsField() {
         return opciones;
     }
     
@@ -136,5 +136,5 @@ public class TCabeceraIPv4 {
     /** Atributo que implementa una codificaci�n del campo opciones de IPv4.
      * @since 1.0
      */
-    private TCampoOpcionesIPv4 opciones;
+    private TIPv4OptionsField opciones;
 }

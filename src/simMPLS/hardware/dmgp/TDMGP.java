@@ -18,8 +18,8 @@ package simMPLS.hardware.dmgp;
 
 import java.util.Iterator;
 import java.util.TreeSet;
-import simMPLS.protocols.TPDU;
-import simMPLS.protocols.TPDUMPLS;
+import simMPLS.protocols.TAbstractPDU;
+import simMPLS.protocols.TMPLSPDU;
 import simMPLS.utils.TRotaryIDGenerator;
 import simMPLS.utils.TMonitor;
 
@@ -79,8 +79,8 @@ public class TDMGP {
      * @return The packet, if in the DMGP. NULL on the contrary.
      * @since 1.0
      */
-    public TPDUMPLS getPacket(int flowID, int packetID) {
-        TPDUMPLS wantedPacket = null;
+    public TMPLSPDU getPacket(int flowID, int packetID) {
+        TMPLSPDU wantedPacket = null;
         TDMGPFlowEntry dmgpFlowEntry = this.getFlow(flowID);
         if (dmgpFlowEntry != null) {
             this.monitor.lock();
@@ -106,7 +106,7 @@ public class TDMGP {
      * @param packet The packet to be inserted into the DMGP memory.
      * @since 1.0
      */
-    public void addPacket(TPDUMPLS packet) {
+    public void addPacket(TMPLSPDU packet) {
         TDMGPFlowEntry dmgpFlowEntry = this.getFlow(packet);
         if (dmgpFlowEntry == null) {
             dmgpFlowEntry = this.createFlow(packet);
@@ -140,7 +140,7 @@ public class TDMGP {
         return (this.totalDMGPSizeInKB * 1024);
     }
 
-    private TDMGPFlowEntry getFlow(TPDU packet) {
+    private TDMGPFlowEntry getFlow(TAbstractPDU packet) {
         TDMGPFlowEntry dmgpFlowEntry = null;
         int flowID = packet.getHeader().obtenerIPOrigen().hashCode();
         dmgpFlowEntry = getFlow(flowID);
@@ -162,7 +162,7 @@ public class TDMGP {
         return null;
     }
 
-    private TDMGPFlowEntry createFlow(TPDU packet) {
+    private TDMGPFlowEntry createFlow(TAbstractPDU packet) {
         this.monitor.lock();
         TDMGPFlowEntry dmgpFlowEntry = null;
         int flowID = packet.getHeader().obtenerIPOrigen().hashCode();
@@ -187,7 +187,7 @@ public class TDMGP {
         return null;
     }
 
-    private int getOctectsToBeAssigned(TPDU packet) {
+    private int getOctectsToBeAssigned(TAbstractPDU packet) {
         int reservedPercentage = getRequestedPercentage(packet);
         int reservedOctects = 0;
         if (this.totalAvailablePercentage > 0) {
@@ -202,7 +202,7 @@ public class TDMGP {
         return 0;
     }
 
-    private int getPercentageToBeAssigned(TPDU packet) {
+    private int getPercentageToBeAssigned(TAbstractPDU packet) {
         int reservedPercentage = getRequestedPercentage(packet);
         if (this.totalAvailablePercentage > 0) {
             if (this.totalAvailablePercentage > reservedPercentage) {
@@ -214,35 +214,35 @@ public class TDMGP {
         return 0;
     }
 
-    private int getRequestedPercentage(TPDU packet) {
+    private int getRequestedPercentage(TAbstractPDU packet) {
         int packetGoSLevel = 0;
         if (packet.getHeader().getOptionsField().isUsed()) {
             packetGoSLevel = packet.getHeader().getOptionsField().getEncodedGoSLevel();
         } else {
             return 0;
         }
-        if (packetGoSLevel == TPDU.EXP_LEVEL3_WITH_BACKUP_LSP) {
+        if (packetGoSLevel == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP) {
             return 12;
         }
-        if (packetGoSLevel == TPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) {
+        if (packetGoSLevel == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) {
             return 12;
         }
-        if (packetGoSLevel == TPDU.EXP_LEVEL2_WITH_BACKUP_LSP) {
+        if (packetGoSLevel == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP) {
             return 8;
         }
-        if (packetGoSLevel == TPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) {
+        if (packetGoSLevel == TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) {
             return 8;
         }
-        if (packetGoSLevel == TPDU.EXP_LEVEL1_WITH_BACKUP_LSP) {
+        if (packetGoSLevel == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP) {
             return 4;
         }
-        if (packetGoSLevel == TPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) {
+        if (packetGoSLevel == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) {
             return 4;
         }
-        if (packetGoSLevel == TPDU.EXP_LEVEL0_WITH_BACKUP_LSP) {
+        if (packetGoSLevel == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP) {
             return 0;
         }
-        if (packetGoSLevel == TPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
+        if (packetGoSLevel == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
             return 0;
         }
         return 1;

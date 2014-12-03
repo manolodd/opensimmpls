@@ -23,14 +23,14 @@ package simMPLS.protocols;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TDatosGPSRP {
+public class TGPSRPPayload {
     
     /**
      * Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * TDatosGPSRP.
      * @since 1.0
      */
-    public TDatosGPSRP() {
+    public TGPSRPPayload() {
         mensaje = this.SOLICITUD_RETRANSMISION;
         flujo = 0;
         idPaquete = 0;

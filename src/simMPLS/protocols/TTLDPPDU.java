@@ -21,7 +21,7 @@ package simMPLS.protocols;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TPDUTLDP extends TPDU {
+public class TTLDPPDU extends TAbstractPDU {
     
     /** Este m�todo es el constructor de la clase. Crea una nueva instancia de un
      * paquete TLDP bas�ndose en lo par�metros pasados.
@@ -30,10 +30,10 @@ public class TPDUTLDP extends TPDU {
      * @param ipd Direcci�n IP destino del paquete.
      * @since 1.0
      */
-    public TPDUTLDP(long id, String ipo, String ipd) {
+    public TTLDPPDU(long id, String ipo, String ipd) {
         super(id, ipo, ipd);
-        datosTCP = new TDatosTCP(0);
-        datosTLDP = new TDatosTLDP();
+        datosTCP = new TTCPPayload(0);
+        datosTLDP = new TTLDPPayload();
         tipoLSP = false;
         entradaPaquete = this.ADELANTE;
     }
@@ -65,7 +65,7 @@ public class TPDUTLDP extends TPDU {
      * @return Los datos TCP de esta instancia.
      * @since 1.0
      */
-    public TDatosTCP obtenerDatosTCP() {
+    public TTCPPayload obtenerDatosTCP() {
         return datosTCP;
     }
     
@@ -74,7 +74,7 @@ public class TPDUTLDP extends TPDU {
      * @return Los datos TLDP de esta instancia.
      * @since 1.0
      */
-    public TDatosTLDP obtenerDatosTLDP() {
+    public TTLDPPayload obtenerDatosTLDP() {
         return datosTLDP;
     }
     
@@ -83,7 +83,7 @@ public class TPDUTLDP extends TPDU {
      * @return La cabecera IP del paquete.
      * @since 1.0
      */
-    public TCabeceraIPv4 getHeader() {
+    public TIPv4Header getHeader() {
         return super.getHeader();
     }
     
@@ -91,7 +91,7 @@ public class TPDUTLDP extends TPDU {
      * Este m�todo permite obtener el subtipo del paquete TLDP. En esta versi�n el
      * paquete TLDP no tiene subtipos. Implementa este m�todo para dejar de ser una
      * clase abstracta.
-     * @return TPDU.TLDP
+     * @return TAbstractPDU.TLDP
      * @since 1.0
      */
     public int getSubtype() {
@@ -202,12 +202,12 @@ public class TPDUTLDP extends TPDU {
      * al paquete.
      * @since 1.0
      */
-    private TDatosTCP datosTCP;
+    private TTCPPayload datosTCP;
     /** Este atributo privado simula los datos del paquete TLDP, de donde se puede
      * obtener los mensajes de se�alizaci�n necesarios.
      * @since 1.0
      */
-    private TDatosTLDP datosTLDP;
+    private TTLDPPayload datosTLDP;
     
     private boolean tipoLSP;
 }

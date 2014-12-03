@@ -16,7 +16,7 @@
  */
 package simMPLS.hardware.ports;
 
-import simMPLS.protocols.TPDU;
+import simMPLS.protocols.TAbstractPDU;
 
 /**
  * This class implement an active port buffer entry. It is needed to prioritize
@@ -40,7 +40,7 @@ public class TActivePortBufferEntry implements Comparable {
      * following a FIFO packet dispatching.
      * @param packet The packet itself.
      */
-    public TActivePortBufferEntry(int priority, int incomingOrder, TPDU packet) {
+    public TActivePortBufferEntry(int priority, int incomingOrder, TAbstractPDU packet) {
         this.priority = priority;
         this.incomingOrder = incomingOrder;
         this.packet = packet;
@@ -105,7 +105,7 @@ public class TActivePortBufferEntry implements Comparable {
      * @return The packet itself.
      * @since 1.0
      */
-    public TPDU getPacket() {
+    public TAbstractPDU getPacket() {
         return this.packet;
     }
 
@@ -115,5 +115,5 @@ public class TActivePortBufferEntry implements Comparable {
 
     private int priority;
     private int incomingOrder;
-    private TPDU packet;
+    private TAbstractPDU packet;
 }

@@ -16,8 +16,8 @@
  */
 package simMPLS.protocols;
 
-import simMPLS.utils.EIdentifierGeneratorOverflow;
-import simMPLS.utils.TIdentificador;
+import simMPLS.utils.EIDGeneratorOverflow;
+import simMPLS.utils.TIDGenerator;
 import java.util.*;
 
 /** Esta clase implementa la pila de etiquetas de un paquete MPLS.
@@ -25,15 +25,15 @@ import java.util.*;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TPilaEtiquetasMPLS {
+public class TMPLSLabelStack {
     
     /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * TPilaEtiquetasMPLS, vac�a.
      * @since 1.0
      */
-    public TPilaEtiquetasMPLS() {
+    public TMPLSLabelStack() {
         pila = new LinkedList();
-        generaID = new TIdentificador();
+        generaID = new TIDGenerator();
     }
     
     /** Este m�todo devuelve el tama�o completo de la pila de etiquetas, en bytes.
@@ -48,10 +48,10 @@ public class TPilaEtiquetasMPLS {
      * @param etiqueta Etiqueta que deseamos insertar en la pila de etiquetas MPLS.
      * @since 1.0
      */
-    public void ponerEtiqueta(TEtiquetaMPLS etiqueta) {
+    public void ponerEtiqueta(TMPLSLabel etiqueta) {
         try {
             etiqueta.ponerIdentificador(generaID.obtenerNuevo());
-        } catch (EIdentifierGeneratorOverflow e) {
+        } catch (EIDGeneratorOverflow e) {
             e.printStackTrace();
         }
         pila.addLast(etiqueta);
@@ -62,8 +62,8 @@ public class TPilaEtiquetasMPLS {
      * @return Etiqueta en la cima de la pila de etiquetas MPLS.
      * @since 1.0
      */
-    public TEtiquetaMPLS getTop() {
-        return (TEtiquetaMPLS) pila.getLast();
+    public TMPLSLabel getTop() {
+        return (TMPLSLabel) pila.getLast();
     }
     
     /** Este m�todo elimina la etiqueta que se encuentra en la cima de la pila de
@@ -79,11 +79,11 @@ public class TPilaEtiquetasMPLS {
      * @param etiqueta nueva etiqueta que sustituir� a la de la cima de la pila de etiquetas.
      * @since 1.0
      */
-    public void cambiarEtiqueta(TEtiquetaMPLS etiqueta) {
+    public void cambiarEtiqueta(TMPLSLabel etiqueta) {
         this.borrarEtiqueta();
         try {
             etiqueta.ponerIdentificador(generaID.obtenerNuevo());
-        } catch (EIdentifierGeneratorOverflow e) {
+        } catch (EIDGeneratorOverflow e) {
             e.printStackTrace();
         }
         pila.addLast(etiqueta);
@@ -109,5 +109,5 @@ public class TPilaEtiquetasMPLS {
      * identificador distinto a cada etiqueta y poder ordenarlas as� en la pila.
      * @since 1.0
      */
-    private TIdentificador generaID;
+    private TIDGenerator generaID;
 }

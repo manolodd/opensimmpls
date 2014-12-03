@@ -18,7 +18,7 @@ package simMPLS.hardware.ports;
 
 import simMPLS.scenario.TLink;
 import simMPLS.scenario.TStats;
-import simMPLS.protocols.TPDU;
+import simMPLS.protocols.TAbstractPDU;
 import simMPLS.utils.TMonitor;
 
 /**
@@ -143,7 +143,7 @@ public abstract class TPort {
      * packet has to be delivered to the end 2.
      * @since 1.0
      */
-    public void putPacketOnLink(TPDU packet, int endID) {
+    public void putPacketOnLink(TAbstractPDU packet, int endID) {
         if (this.link != null) {
             if (!this.link.linkIsBroken()) {
                 if (this.link.getLinkType() == TLink.INTERNAL) {
@@ -152,7 +152,7 @@ public abstract class TPort {
                         this.getPortSet().getParentNode().getStats().addStatsEntry(packet, TStats.SALIDA);
                     }
                 } else {
-                    if ((packet.getType() != TPDU.GPSRP) && (packet.getType() != TPDU.TLDP)) {
+                    if ((packet.getType() != TAbstractPDU.GPSRP) && (packet.getType() != TAbstractPDU.TLDP)) {
                         this.link.carryPacket(packet, endID);
                         if (this.getPortSet().getParentNode().getStats() != null) {
                             this.getPortSet().getParentNode().getStats().addStatsEntry(packet, TStats.SALIDA);
@@ -173,7 +173,7 @@ public abstract class TPort {
      * @param packet The packet to be discarded from the buffer.
      * @since 1.0
      */
-    public abstract void discardPacket(TPDU packet);
+    public abstract void discardPacket(TAbstractPDU packet);
 
     /**
      * This method, when implemented, will put a new packet in the buffer of the
@@ -183,7 +183,7 @@ public abstract class TPort {
      * @param packet Packet to be inserted in the buffer of the port.
      * @since 1.0
      */
-    public abstract void addPacket(TPDU packet);
+    public abstract void addPacket(TAbstractPDU packet);
 
     /**
      * This method, when implemented, will put a new packet in the buffer of the
@@ -194,7 +194,7 @@ public abstract class TPort {
      * @param packet The packet to be inserted in the buffer of the port.
      * @since 1.0
      */
-    public abstract void reEnqueuePacket(TPDU packet);
+    public abstract void reEnqueuePacket(TAbstractPDU packet);
 
     /**
      * This method, when implemented, wil read and return the next packet of the
@@ -204,7 +204,7 @@ public abstract class TPort {
      * @return The read packet
      * @since 1.0
      */
-    public abstract TPDU getPacket();
+    public abstract TAbstractPDU getPacket();
 
     /**
      * This method, when implemented, will compute whether it is possible or not

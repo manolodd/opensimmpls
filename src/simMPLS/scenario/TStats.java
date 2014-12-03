@@ -16,7 +16,7 @@
  */
 package simMPLS.scenario;
 
-import simMPLS.protocols.TPDU;
+import simMPLS.protocols.TAbstractPDU;
 import org.jfree.chart.*;
 import org.jfree.chart.labels.*;
 import org.jfree.chart.plot.*;
@@ -128,7 +128,7 @@ public abstract class TStats {
      * o ha sido descartado.
      * @since 1.0
      */    
-    public abstract void addStatsEntry(TPDU paquete, int entrada);
+    public abstract void addStatsEntry(TAbstractPDU paquete, int entrada);
     /**
      * Este m�todo a�ade los datos modificados desde la �ltima vez que se llam� a este
      * m�todo, en las estad�sticas.

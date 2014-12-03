@@ -22,13 +22,13 @@ package simMPLS.utils;
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  */
-public class EIdentifierGeneratorOverflow extends Exception {
+public class EIDGeneratorOverflow extends Exception {
     
     /** Es el constructor de la clase. Crea una nueva instancia de
      * EDesbordeDelidentificador.
      * @since 1.0
      */
-    public EIdentifierGeneratorOverflow() {
+    public EIDGeneratorOverflow() {
     }
     
     /** Devuelve una descripci�n textual de por qu� se ha producido la excepci�n.

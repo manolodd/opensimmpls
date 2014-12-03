@@ -16,10 +16,10 @@
  */
 package simMPLS.scenario;
 
-import simMPLS.protocols.TPDU;
+import simMPLS.protocols.TAbstractPDU;
 import simMPLS.hardware.timer.ITimerEventListener;
-import simMPLS.utils.EIdentifierGeneratorOverflow;
-import simMPLS.utils.TLongIdentifier;
+import simMPLS.utils.EIDGeneratorOverflow;
+import simMPLS.utils.TLongIDGenerator;
 import java.util.*;
 import org.jfree.chart.*;
 import org.jfree.data.*;
@@ -40,7 +40,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @param t Topologia en la que se encuentra este enlace interno.
      * @since 1.0
      */
-    public TInternalLink(int identificador, TLongIdentifier il, TTopology t) {
+    public TInternalLink(int identificador, TLongIDGenerator il, TTopology t) {
         super(identificador, il, t);
         numeroDeLSPs = 0;
         numeroDeLSPsDeBackup = 0;
@@ -83,7 +83,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
                 this.numeroDeLSPsDeBackup = 0;
                 this.generarEventoSimulacion(new TSELinkBroken(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
                 this.cerrojo.lock();
-                TPDU paquete = null;
+                TAbstractPDU paquete = null;
                 TLinkBufferEntry ebe = null;
                 Iterator it = this.buffer.iterator();
                 while (it.hasNext()) {
@@ -99,13 +99,13 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
                     it.remove();
                 }
                 this.cerrojo.unLock();
-            } catch (EIdentifierGeneratorOverflow e) {
+            } catch (EIDGeneratorOverflow e) {
                 e.printStackTrace(); 
             }
         } else {
             try {
                 this.generarEventoSimulacion(new TSELinkRecovered(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
-            } catch (EIdentifierGeneratorOverflow e) {
+            } catch (EIDGeneratorOverflow e) {
                 e.printStackTrace(); 
             }
         }
@@ -207,14 +207,14 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
             if (ebe.obtenerDestino() == 1)
                 pctj = 100 - pctj;
             try {
-                if (ebe.obtenerPaquete().getType() == TPDU.TLDP) {
-                    this.generarEventoSimulacion(new TSEPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.TLDP, pctj));
-                } else if (ebe.obtenerPaquete().getType() == TPDU.MPLS) {
+                if (ebe.obtenerPaquete().getType() == TAbstractPDU.TLDP) {
+                    this.generarEventoSimulacion(new TSEPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP, pctj));
+                } else if (ebe.obtenerPaquete().getType() == TAbstractPDU.MPLS) {
                     this.generarEventoSimulacion(new TSEPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), ebe.obtenerPaquete().getSubtype(), pctj));
-                } else if (ebe.obtenerPaquete().getType() == TPDU.GPSRP) {
-                    this.generarEventoSimulacion(new TSEPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TPDU.GPSRP, pctj));
+                } else if (ebe.obtenerPaquete().getType() == TAbstractPDU.GPSRP) {
+                    this.generarEventoSimulacion(new TSEPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP, pctj));
                 }
-            } catch (EIdentifierGeneratorOverflow e) {
+            } catch (EIDGeneratorOverflow e) {
                 e.printStackTrace(); 
             }
         }

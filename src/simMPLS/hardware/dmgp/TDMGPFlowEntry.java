@@ -18,7 +18,7 @@ package simMPLS.hardware.dmgp;
 
 import java.util.Iterator;
 import java.util.TreeSet;
-import simMPLS.protocols.TPDUMPLS;
+import simMPLS.protocols.TMPLSPDU;
 import simMPLS.utils.TRotaryIDGenerator;
 import simMPLS.utils.TMonitor;
 
@@ -193,7 +193,7 @@ public class TDMGPFlowEntry implements Comparable {
      * @param packet Packet of this flow to be inserted in the DMGP.
      * @since 1.0
      */
-    public void addPacket(TPDUMPLS packet) {
+    public void addPacket(TMPLSPDU packet) {
         this.monitor.lock();
         int availableOctects = this.assignedOctects - this.usedOctects;
         if (availableOctects >= packet.getSize()) {

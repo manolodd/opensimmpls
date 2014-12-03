@@ -18,7 +18,7 @@ package simMPLS.hardware.ports;
 
 import simMPLS.scenario.TLink;
 import simMPLS.scenario.TNode;
-import simMPLS.protocols.TPDU;
+import simMPLS.protocols.TAbstractPDU;
 import simMPLS.utils.TMonitor;
 
 /**
@@ -157,7 +157,7 @@ public abstract class TPortSet {
      * @return a new packet thas was waiting in one port of the port set.
      * @since 1.0
      */
-    public abstract TPDU getNextPacket();
+    public abstract TAbstractPDU getNextPacket();
 
     /**
      * This method, when implemented, will check whether there are packets

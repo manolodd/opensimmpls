@@ -22,14 +22,14 @@ package simMPLS.protocols;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TEtiquetaMPLS implements Comparable {
+public class TMPLSLabel implements Comparable {
     
     /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * TEtiquetaMPLS usando como identificador el pasado por par�metros.
      * @param id El identificador de la etiqueta, pasado por par�metro.
      * @since 1.0
      */
-    public TEtiquetaMPLS(int id) {
+    public TMPLSLabel(int id) {
         TTL = 256;
         label = 16;
         EXP = 0;
@@ -41,7 +41,7 @@ public class TEtiquetaMPLS implements Comparable {
      * TEtiquetaMPLS y le pone por defecto el identificador 0.
      * @since 1.0
      */
-    public TEtiquetaMPLS() {
+    public TMPLSLabel() {
         TTL = 256;
         label = 16;
         EXP = 0;
@@ -137,16 +137,16 @@ public class TEtiquetaMPLS implements Comparable {
         return BoS;
     }
     
-    /** Este m�todo compara esta instancia de TEtiquetaMPLS con otra del mismo tipo,
-     * para aclarar si es mayor, menor o igual, en base al orden que especifica este
-     * m�todo. Es la implementaci�n de la interfaz Comparable.
-     * @param o El objeto del tipo TEtiquetaMPLS con el que se va a comparar.
+    /** Este m�todo compara esta instancia de TMPLSLabel con otra del mismo tipo,
+ para aclarar si es mayor, menor o igual, en base al orden que especifica este
+ m�todo. Es la implementaci�n de la interfaz Comparable.
+     * @param o El objeto del tipo TMPLSLabel con el que se va a comparar.
      * @return -1, 0 � 1, dependiendo de si, de acuerdo con el orden establecido, esta
      * instancia es menor, igual o mayor que la especificada por par�metro.
      * @since 1.0
      */
     public int compareTo(Object o) {
-        TEtiquetaMPLS e2= (TEtiquetaMPLS) o;
+        TMPLSLabel e2= (TMPLSLabel) o;
         if (this.obtenerIdentificador() > e2.obtenerIdentificador()) {
             return 1;
         } else if (this.obtenerIdentificador() == e2.obtenerIdentificador()) {

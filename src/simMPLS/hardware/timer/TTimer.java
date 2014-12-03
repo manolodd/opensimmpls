@@ -29,9 +29,9 @@ import simMPLS.scenario.TNode;
 import simMPLS.scenario.TReceiverNode;
 import simMPLS.scenario.TSenderNode;
 import simMPLS.scenario.TTopologyElement;
-import simMPLS.utils.EIdentifierGeneratorOverflow;
+import simMPLS.utils.EIDGeneratorOverflow;
 import simMPLS.utils.TProgressEventListener;
-import simMPLS.utils.TLongIdentifier;
+import simMPLS.utils.TLongIDGenerator;
 
 /**
  * This class implements a timer that will govern the operation and
@@ -56,7 +56,7 @@ public class TTimer implements Runnable {
         this.timerEventListenerNodes = new TreeSet();
         this.timerEventListenerLInks = new TreeSet();
         this.progressEventListener = null;
-        this.longIdentifierGenerator = new TLongIdentifier();
+        this.longIdentifierGenerator = new TLongIDGenerator();
         this.currentTimestamp = new TTimestamp(0, 0);
         this.previousTimestamp = new TTimestamp(0, 0);
         this.finishTimestamp = new TTimestamp(0, 100000);
@@ -266,7 +266,7 @@ public class TTimer implements Runnable {
             try {
                 TTimerEvent timerEvent = new TTimerEvent(this, this.longIdentifierGenerator.getNextID(), startOfSimulationInterval, endOfSimulationInterval);
                 nodeAux.receiveTimerEvent(timerEvent);
-            } catch (EIdentifierGeneratorOverflow e) {
+            } catch (EIDGeneratorOverflow e) {
                 e.printStackTrace();
             }
         }
@@ -284,7 +284,7 @@ public class TTimer implements Runnable {
             }
             try {
                 linkAux.receiveTimerEvent(new TTimerEvent(this, this.longIdentifierGenerator.getNextID(), startOfSimulationInterval, endOfSimulationInterval));
-            } catch (EIdentifierGeneratorOverflow e) {
+            } catch (EIDGeneratorOverflow e) {
                 e.printStackTrace();
             }
         }
@@ -308,7 +308,7 @@ public class TTimer implements Runnable {
             if (this.progressEventListener != null) {
                 this.progressEventListener.receiveProgressEvent(new TProgressEvent(this, this.longIdentifierGenerator.getNextID(), computedProgress));
             }
-        } catch (EIdentifierGeneratorOverflow e) {
+        } catch (EIDGeneratorOverflow e) {
             e.printStackTrace();
         }
     }
@@ -499,7 +499,7 @@ public class TTimer implements Runnable {
     private TreeSet timerEventListenerNodes;
     private TreeSet timerEventListenerLInks;
     private TProgressEventListener progressEventListener;
-    private TLongIdentifier longIdentifierGenerator;
+    private TLongIDGenerator longIdentifierGenerator;
     private int tick;
     private Thread thread;
     private TTimestamp currentTimestamp;

@@ -19,25 +19,23 @@ package simMPLS.main;
 import simMPLS.ui.utils.TImagesBroker;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 import simMPLS.ui.simulator.JSimulador;
+import simMPLS.ui.splash.JSplash;
 
 /**
- * Clase principal del simulador. Desde aqu� se crea un nuevo simulador que
- * comenzar� a funcionar de inmediato.
+ * This class implements a new OpenSimMPLS network simulator. This is the main
+ * class, that should be executed to run the simulator.
  *
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A
- * href="http://www.ManoloDominguez.com"
- * target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public class openSimMPLS {
 
     /**
-     * Muestra en la consola un comunicado diciendo que el programa se encuentra
-     * licenciado bajo GPL v2.0 de la Free Software Foundation, como se indica
-     * en la propia licencia GPL que ha de hacerse.
+     * This method shows licensing information of OpenSimMPLS on console.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      */
     public static void mostrarGPL() {
@@ -70,12 +68,11 @@ public class openSimMPLS {
     }
 
     /**
-     * Funci�n principal de la aplicaci�n. Comprueba los argumentos pasados por
-     * l�nea de comandos e inicia el simulador si es necesario. Si no lo es,
-     * muestra la licencia bajo la cual est� liberado el programa.
+     * This method start OpenSimMPLS.
      *
-     * @param args Los argumentos pasados desde la linea de comandos.
-     * @since 0.9
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param args Arguments specified at command line.
+     * @since 1.0
      */
     public static void main(String args[]) {
         if (args.length > 0) {
@@ -93,42 +90,23 @@ public class openSimMPLS {
             if (!nimbusSet) {
                 UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
             }
-        } catch (Exception e) {
-            // Excepci�n capturada.
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            System.out.println("An error happened when starting OpenSimMPLS");
         }
         splash = new simMPLS.ui.splash.JSplash();
         splash.show();
         splash.ponerTexto(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("Loading_icons..."));
-        dispensadorDeImagenes = new TImagesBroker();
+        imagesBroker = new TImagesBroker();
         splash.ponerTexto(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("openSimMPLS.generandoInterfaz"));
-        simulador = new JSimulador(dispensadorDeImagenes);
+        simulator = new JSimulador(imagesBroker);
         java.awt.Dimension tamPantalla = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        simulador.setBounds(0, 0, tamPantalla.width, tamPantalla.height);
-        simulador.show();
+        simulator.setBounds(0, 0, tamPantalla.width, tamPantalla.height);
+        simulator.show();
         splash.dispose();
     }
 
     // Variables declaration - do not modify
-    /**
-     * Este atributo es un objeto que almacena todas las im�genes que se van a
-     * necesitar en el programa; de esta forma, aunque ocupan memoria no se
-     * cargan m�s que una vez, mejorando la velocidad global de Open SimMPLS.
-     *
-     * @since 1.0
-     */
-    private static TImagesBroker dispensadorDeImagenes;
-    /**
-     * Imagen con el logo y la informaci�n del programa. Se presentar� al inicio
-     * de la aplicaci�n y mientras �sta est� haciendo cosas de fondo.
-     *
-     * @since 1.0
-     */
-    private static simMPLS.ui.splash.JSplash splash;
-    /**
-     * Instancia del simulador que ver� el usuario en la pantalla y desde donde
-     * podr� hacer todo.
-     *
-     * @since 1.0
-     */
-    private static simMPLS.ui.simulator.JSimulador simulador;
+    private static TImagesBroker imagesBroker;
+    private static JSplash splash;
+    private static JSimulador simulator;
 }

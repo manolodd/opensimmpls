@@ -24,7 +24,7 @@ import java.util.*;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TPDUMPLS extends TPDU {
+public class TMPLSPDU extends TAbstractPDU {
     
     /** Este m�todo es el constructor de la clase. Crea una instancia nueva de TPDUMPLS
      * de acuerdo a los par�metros especificados.
@@ -34,10 +34,10 @@ public class TPDUMPLS extends TPDU {
      * @param tamDatos Tama�o de los datos TCP que incorpora el paquete MPLS en su interior, en bytes.
      * @since 1.0
      */
-    public TPDUMPLS(long id, String ipo, String ipd, int tamDatos) {
+    public TMPLSPDU(long id, String ipo, String ipd, int tamDatos) {
         super(id, ipo, ipd);
-        datosTCP = new TDatosTCP(tamDatos);
-        pilaEtiquetas = new TPilaEtiquetasMPLS();
+        datosTCP = new TTCPPayload(tamDatos);
+        pilaEtiquetas = new TMPLSLabelStack();
         subtipo = super.MPLS;
     }
 
@@ -48,12 +48,12 @@ public class TPDUMPLS extends TPDU {
      * @since 1.0
      * @return Una copia exacta de la instancia actual.
      */    
-    public TPDUMPLS obtenerCopia() {
+    public TMPLSPDU obtenerCopia() {
         long id = this.obtenerIdentificador();
         String IPo = new String(this.getHeader().obtenerIPOrigen());
         String IPd = new String(this.getHeader().obtenerIPDestino());
         int tamD = this.datosTCP.obtenerTamanio() - 20;
-        TPDUMPLS clon = new TPDUMPLS(id, IPo, IPd, tamD);
+        TMPLSPDU clon = new TMPLSPDU(id, IPo, IPd, tamD);
         if (this.getHeader().getOptionsField().isUsed()) {
             int nivelGoS = this.getHeader().getOptionsField().getEncodedGoSLevel();
             clon.getHeader().getOptionsField().ponerNivelGoS(nivelGoS);
@@ -71,21 +71,21 @@ public class TPDUMPLS extends TPDU {
                 }
             }
         }
-        TEtiquetaMPLS etiquetaActual = null;
-        TEtiquetaMPLS etiquetaNuevaLocal = null;
-        TEtiquetaMPLS etiquetaNuevaClon = null;
+        TMPLSLabel etiquetaActual = null;
+        TMPLSLabel etiquetaNuevaLocal = null;
+        TMPLSLabel etiquetaNuevaClon = null;
         LinkedList pilaEtiquetasLocal = new LinkedList();
         LinkedList pilaEtiquetasClon = new LinkedList();
         while (this.getLabelStack().obtenerTamanio() > 0) {
             etiquetaActual = this.getLabelStack().getTop();
             this.getLabelStack().borrarEtiqueta();
             int idEtiq = etiquetaActual.obtenerIdentificador();
-            etiquetaNuevaLocal = new TEtiquetaMPLS(idEtiq);
+            etiquetaNuevaLocal = new TMPLSLabel(idEtiq);
             etiquetaNuevaLocal.ponerBoS(etiquetaActual.obtenerBoS());
             etiquetaNuevaLocal.ponerEXP(etiquetaActual.getEXPField());
             etiquetaNuevaLocal.setLabelField(etiquetaActual.getLabelField());
             etiquetaNuevaLocal.ponerTTL(etiquetaActual.obtenerTTL());
-            etiquetaNuevaClon = new TEtiquetaMPLS(idEtiq);
+            etiquetaNuevaClon = new TMPLSLabel(idEtiq);
             etiquetaNuevaClon.ponerBoS(etiquetaActual.obtenerBoS());
             etiquetaNuevaClon.ponerEXP(etiquetaActual.getEXPField());
             etiquetaNuevaClon.setLabelField(etiquetaActual.getLabelField());
@@ -102,10 +102,10 @@ public class TPDUMPLS extends TPDU {
             }
         }
         while (pilaEtiquetasLocal.size() > 0) {
-            this.getLabelStack().ponerEtiqueta((TEtiquetaMPLS) pilaEtiquetasLocal.removeFirst());
+            this.getLabelStack().ponerEtiqueta((TMPLSLabel) pilaEtiquetasLocal.removeFirst());
         }
         while (pilaEtiquetasClon.size() > 0) {
-            clon.getLabelStack().ponerEtiqueta((TEtiquetaMPLS) pilaEtiquetasClon.removeFirst());
+            clon.getLabelStack().ponerEtiqueta((TMPLSLabel) pilaEtiquetasClon.removeFirst());
         }
         return clon;
     }
@@ -136,7 +136,7 @@ public class TPDUMPLS extends TPDU {
      * @return Los datos TCP que transporta este paquete MPLS.
      * @since 1.0
      */
-    public TDatosTCP obtenerDatosTCP() {
+    public TTCPPayload obtenerDatosTCP() {
         return datosTCP;
     }
     
@@ -145,7 +145,7 @@ public class TPDUMPLS extends TPDU {
      * @param d Los nuevos datos TCP que deseamos que tenga el paquete MPLS.
      * @since 1.0
      */
-    public void ponerDatosTCP(TDatosTCP d) {
+    public void ponerDatosTCP(TTCPPayload d) {
         datosTCP = d;
     }
     
@@ -154,14 +154,14 @@ public class TPDUMPLS extends TPDU {
      * @return La pila de etiquetas del paquete MPLS.
      * @since 1.0
      */
-    public TPilaEtiquetasMPLS getLabelStack() {
+    public TMPLSLabelStack getLabelStack() {
         return pilaEtiquetas;
     }
     
     /**
      * Este metodo permite establecer el subtipo de un paquete MPLS.
-     * @param st El subtipo. Una constante de la clase TPDU que indica si se trata de un paquete
-     * MPLS con garant�a de servicio o no.
+     * @param st El subtipo. Una constante de la clase TAbstractPDU que indica si se trata de un paquete
+ MPLS con garant�a de servicio o no.
      * @since 1.0
      */
     public void ponerSubtipo(int st) {
@@ -181,12 +181,12 @@ public class TPDUMPLS extends TPDU {
     /** Este atributo representa los datos TCP que est�n incorporados en el paquete.
      * @since 1.0
      */
-    private TDatosTCP datosTCP;
+    private TTCPPayload datosTCP;
     /** Este atributo privado representa la pila de etiquetas MPLS que  acompa�ana a la
      * cabecera de esta instancia del paquete MPLS.
      * @since 1.0
      */
-    private TPilaEtiquetasMPLS pilaEtiquetas;
+    private TMPLSLabelStack pilaEtiquetas;
     /**
      * Este atributo almacenar� el subtipo de paquete MPLS, que puede ser: Con o sin
      * GoS.

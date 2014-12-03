@@ -16,13 +16,13 @@
  */
 package simMPLS.scenario;
 
-import simMPLS.protocols.TPDU;
-import simMPLS.protocols.TPDUMPLS;
+import simMPLS.protocols.TAbstractPDU;
+import simMPLS.protocols.TMPLSPDU;
 import simMPLS.hardware.timer.TTimerEvent;
 import simMPLS.hardware.timer.ITimerEventListener;
 import simMPLS.hardware.ports.TPortSet;
 import simMPLS.utils.TMonitor;
-import simMPLS.utils.TLongIdentifier;
+import simMPLS.utils.TLongIDGenerator;
 import java.awt.*;
 import org.jfree.chart.*;
 import org.jfree.data.*;
@@ -44,7 +44,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @param il Generador de identificadores para los eventos que deba emitir el nodo.
      * @param t Topologia donde se encuentra el nodo inclu�do.
      */
-    public TNode(int identificador, String d, TLongIdentifier il, TTopology t) {
+    public TNode(int identificador, String d, TLongIDGenerator il, TTopology t) {
         super(TTopologyElement.NODO, il);
         posicion = new Point(0,0);
         id = identificador;
@@ -257,7 +257,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @param puerto Puerto del conjunto de puertos en el que deeamos depositar el paquete.
      * @since 1.0
      */    
-    public synchronized void ponerPaquete(TPDU paquete, int puerto) {
+    public synchronized void ponerPaquete(TAbstractPDU paquete, int puerto) {
         cerrojo.lock();
         this.puertos.getPort(puerto).addPacket(paquete);
         cerrojo.unLock();
@@ -295,7 +295,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @param paquete Paquete que deseamos descartar.
      * @since 1.0
      */    
-    public abstract void discardPacket(TPDU paquete);
+    public abstract void discardPacket(TAbstractPDU paquete);
     
     /**
      * Este m�todo permite acceder directamente a los puertos del nodo.
@@ -332,7 +332,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @param pSalida Puerto por el que se enviar� la solicitud.
      * @since 1.0
      */    
-    public abstract void runGoSPDUStoreAndRetransmitProtocol(TPDUMPLS paquete, int pSalida);
+    public abstract void runGoSPDUStoreAndRetransmitProtocol(TMPLSPDU paquete, int pSalida);
     
     /**
      * Este m�todo averigua si al nodo le quedan puertos libre o no.

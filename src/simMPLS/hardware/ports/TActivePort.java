@@ -21,8 +21,8 @@ import java.util.TreeSet;
 import simMPLS.scenario.TSEPacketReceived;
 import simMPLS.scenario.TStats;
 import simMPLS.scenario.TNode;
-import simMPLS.protocols.TPDU;
-import simMPLS.protocols.TPDUMPLS;
+import simMPLS.protocols.TAbstractPDU;
+import simMPLS.protocols.TMPLSPDU;
 import simMPLS.utils.TRotaryIDGenerator;
 import simMPLS.utils.TMonitor;
 
@@ -418,7 +418,7 @@ public class TActivePort extends TPort {
      * @since 1.0
      */
     @Override
-    public void discardPacket(TPDU packet) {
+    public void discardPacket(TAbstractPDU packet) {
         this.getPortSet().getParentNode().discardPacket(packet);
     }
 
@@ -430,7 +430,7 @@ public class TActivePort extends TPort {
      * @since 1.0
      */
     @Override
-    public void addPacket(TPDU packet) {
+    public void addPacket(TAbstractPDU packet) {
         TActivePortSet parentPortSetAux = (TActivePortSet) this.parentPortSet;
         parentPortSetAux.portSetMonitor.lock();
         monitor.lock();
@@ -486,7 +486,7 @@ public class TActivePort extends TPort {
      * EPCD algorithm request the parent parentNode to request the packet
      * retransmission.
      */
-    public boolean runEarlyPacketCatchAndDiscard(TPDU packet) {
+    public boolean runEarlyPacketCatchAndDiscard(TAbstractPDU packet) {
         TActivePortSet parentPortSetAux = (TActivePortSet) parentPortSet;
         long eventID = 0;
         int packetOrder = 0;
@@ -510,8 +510,8 @@ public class TActivePort extends TPort {
             }
             return true;
         } else {
-            if (packet.getSubtype() == TPDU.MPLS_GOS) {
-                parentPortSetAux.getParentNode().runGoSPDUStoreAndRetransmitProtocol((TPDUMPLS) packet, this.portID);
+            if (packet.getSubtype() == TAbstractPDU.MPLS_GOS) {
+                parentPortSetAux.getParentNode().runGoSPDUStoreAndRetransmitProtocol((TMPLSPDU) packet, this.portID);
             }
         }
         return false;
@@ -566,73 +566,73 @@ public class TActivePort extends TPort {
         }
     }
 
-    private int loadPacketPriority(TPDU packet) {
-        if (packet.getType() == TPDU.TLDP) {
+    private int loadPacketPriority(TAbstractPDU packet) {
+        if (packet.getType() == TAbstractPDU.TLDP) {
             return TActivePort.PRIORITY_10;
         }
-        if (packet.getType() == TPDU.GPSRP) {
+        if (packet.getType() == TAbstractPDU.GPSRP) {
             return TActivePort.PRIORITY_9;
         }
-        if (packet.getType() == TPDU.RLPRP) {
+        if (packet.getType() == TAbstractPDU.RLPRP) {
             return TActivePort.PRIORITY_8;
         }
-        if (packet.getType() == TPDU.MPLS) {
-            TPDUMPLS mplsPacket = (TPDUMPLS) packet;
+        if (packet.getType() == TAbstractPDU.MPLS) {
+            TMPLSPDU mplsPacket = (TMPLSPDU) packet;
             if (mplsPacket.getLabelStack().getTop().getLabelField() == 1) {
                 int EXP = mplsPacket.getLabelStack().getTop().getEXPField();
-                if (EXP == TPDU.EXP_LEVEL3_WITH_BACKUP_LSP) {
+                if (EXP == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP) {
                     return TActivePort.PRIORITY_7;
                 }
-                if (EXP == TPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) {
+                if (EXP == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) {
                     return TActivePort.PRIORITY_6;
                 }
-                if (EXP == TPDU.EXP_LEVEL2_WITH_BACKUP_LSP) {
+                if (EXP == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP) {
                     return TActivePort.PRIORITY_5;
                 }
-                if (EXP == TPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) {
+                if (EXP == TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) {
                     return TActivePort.PRIORITY_4;
                 }
-                if (EXP == TPDU.EXP_LEVEL1_WITH_BACKUP_LSP) {
+                if (EXP == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP) {
                     return TActivePort.PRIORITY_3;
                 }
-                if (EXP == TPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) {
+                if (EXP == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) {
                     return TActivePort.PRIORITY_2;
                 }
-                if (EXP == TPDU.EXP_LEVEL0_WITH_BACKUP_LSP) {
+                if (EXP == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP) {
                     return TActivePort.PRIORITY_1;
                 }
-                if (EXP == TPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
+                if (EXP == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
                     return TActivePort.WITHOUT_PRIORITY;
                 }
             } else {
                 return TActivePort.WITHOUT_PRIORITY;
             }
         }
-        if (packet.getType() == TPDU.IPV4) {
+        if (packet.getType() == TAbstractPDU.IPV4) {
             if (packet.getHeader().getOptionsField().isUsed()) {
                 int gosLevel = packet.getHeader().getOptionsField().getEncodedGoSLevel();
-                if (gosLevel == TPDU.EXP_LEVEL3_WITH_BACKUP_LSP) {
+                if (gosLevel == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP) {
                     return TActivePort.PRIORITY_7;
                 }
-                if (gosLevel == TPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) {
+                if (gosLevel == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) {
                     return TActivePort.PRIORITY_6;
                 }
-                if (gosLevel == TPDU.EXP_LEVEL2_WITH_BACKUP_LSP) {
+                if (gosLevel == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP) {
                     return TActivePort.PRIORITY_5;
                 }
-                if (gosLevel == TPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) {
+                if (gosLevel == TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) {
                     return TActivePort.PRIORITY_4;
                 }
-                if (gosLevel == TPDU.EXP_LEVEL1_WITH_BACKUP_LSP) {
+                if (gosLevel == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP) {
                     return TActivePort.PRIORITY_3;
                 }
-                if (gosLevel == TPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) {
+                if (gosLevel == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) {
                     return TActivePort.PRIORITY_2;
                 }
-                if (gosLevel == TPDU.EXP_LEVEL0_WITH_BACKUP_LSP) {
+                if (gosLevel == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP) {
                     return TActivePort.PRIORITY_1;
                 }
-                if (gosLevel == TPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
+                if (gosLevel == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
                     return TActivePort.WITHOUT_PRIORITY;
                 }
             } else {
@@ -652,7 +652,7 @@ public class TActivePort extends TPort {
      * @since 1.0
      */
     @Override
-    public void reEnqueuePacket(TPDU packet) {
+    public void reEnqueuePacket(TAbstractPDU packet) {
         TActivePortSet parentPortSetAux = (TActivePortSet) parentPortSet;
         parentPortSetAux.portSetMonitor.lock();
         this.monitor.lock();
@@ -693,7 +693,7 @@ public class TActivePort extends TPort {
      * @since 1.0
      */
     @Override
-    public TPDU getPacket() {
+    public TAbstractPDU getPacket() {
         TActivePortSet parentPortSetAux = (TActivePortSet) parentPortSet;
         parentPortSetAux.portSetMonitor.lock();
         this.monitor.lock();
@@ -819,7 +819,7 @@ public class TActivePort extends TPort {
         if (this.isUnlimitedBuffer) {
             this.monitor.lock();
             int occupancyAux = 0;
-            TPDU packet = null;
+            TAbstractPDU packet = null;
             TActivePortBufferEntry activePortBufferEntry = null;
 
             this.priority10Monitor.lock();
@@ -1107,10 +1107,10 @@ public class TActivePort extends TPort {
     private TreeSet priority10Buffer;
 
     private int selectedBuffer;
-    private TPDU packetRead;
+    private TAbstractPDU packetRead;
     private boolean isUnlimitedBuffer;
     private TRotaryIDGenerator rotaryIdentifierGenerator;
     private int[] maxReadsOfBuffer;
     private int[] currentReadsOfBuffer;
-    private TPDU nextPacketToBeRead;
+    private TAbstractPDU nextPacketToBeRead;
 }

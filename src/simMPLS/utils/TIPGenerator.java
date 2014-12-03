@@ -22,13 +22,13 @@ package simMPLS.utils;
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  */
-public class TGeneradorDeIP {
+public class TIPGenerator {
     
     /** Este m�todo es el constructor de la clase. Permite generar instancias de
      * TGeneradorDeIP.
      * @since 1.0
      */
-    public TGeneradorDeIP() {
+    public TIPGenerator() {
         octeto2 = 0;
         octeto3 = 0;
         octeto4 = 0;
@@ -124,14 +124,14 @@ public class TGeneradorDeIP {
     /** Este m�todo obtiene una direcci�n IP que ser� distinta a todas las ya generadas
      * por el mismo y distinta a todas las que les queda por generar. La IP pertenecer�
      * al rango 10.0.0.1 - 10.255.255.254.
-     * @throws EDesbordeDeIP Cuando el generador sobrepasa el rango de direcciones IP para el que est�
-     * preparado, se genera un excepci�n EDesbordeDeIP cada vez que se llama a este
-     * m�todo, indicando que el generador no puede cumplir sus funci�n.
+     * @throws EIPOverflow Cuando el generador sobrepasa el rango de direcciones IP para el que est�
+ preparado, se genera un excepci�n EIPOverflow cada vez que se llama a este
+ m�todo, indicando que el generador no puede cumplir sus funci�n.
      * @return Devuelve una representaci�n textual de la direcci�n IP generada, por ejemplo
      * "10.32.125.254".
      * @since 1.0
      */
-    public String obtenerIP() throws EDesbordeDeIP {
+    public String obtenerIP() throws EIPOverflow {
         if (octeto4 < 255) {
             octeto4++;
         } else {
@@ -144,7 +144,7 @@ public class TGeneradorDeIP {
                     octeto3 = 0;
                     octeto2++;
                 } else {
-                    throw new EDesbordeDeIP();
+                    throw new EIPOverflow();
                 }
             }
         }

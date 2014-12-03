@@ -16,7 +16,7 @@
  */
 package simMPLS.ui.simulator;
 
-import simMPLS.protocols.TPDU;
+import simMPLS.protocols.TAbstractPDU;
 import java.awt.*;
 import java.awt.Toolkit.*;
 import java.awt.image.*;
@@ -494,34 +494,34 @@ public class JSimulationPanel extends javax.swing.JPanel {
                         TSEPacketOnFly ept = (TSEPacketOnFly) evento;
                         TLink et = (TLink) ept.obtenerFuente();
                         Point p = et.obtenerCoordenadasPaquete(ept.obtenerPorcentajeTransito());
-                        if (ept.obtenerTipoPaquete() == TPDU.GPSRP) {
+                        if (ept.obtenerTipoPaquete() == TAbstractPDU.GPSRP) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_GOS), p.x-14, p.y-14, null);
-                        } else if (ept.obtenerTipoPaquete() == TPDU.TLDP) {
+                        } else if (ept.obtenerTipoPaquete() == TAbstractPDU.TLDP) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_LDP), p.x-8, p.y-8, null);
-                        } else if (ept.obtenerTipoPaquete() == TPDU.IPV4) {
+                        } else if (ept.obtenerTipoPaquete() == TAbstractPDU.IPV4) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_IPV4), p.x-8, p.y-8, null);
-                        } else if (ept.obtenerTipoPaquete() == TPDU.IPV4_GOS) {
+                        } else if (ept.obtenerTipoPaquete() == TAbstractPDU.IPV4_GOS) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_IPV4_GOS), p.x-8, p.y-8, null);
-                        } else if (ept.obtenerTipoPaquete() == TPDU.MPLS) {
+                        } else if (ept.obtenerTipoPaquete() == TAbstractPDU.MPLS) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_MPLS), p.x-8, p.y-8, null);
-                        } else if (ept.obtenerTipoPaquete() == TPDU.MPLS_GOS) {
+                        } else if (ept.obtenerTipoPaquete() == TAbstractPDU.MPLS_GOS) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_MPLS_GOS), p.x-8, p.y-8, null);
                         }
                     } else if (evento.getSubtype() == TSimulationEvent.PACKET_DISCARDED) {
                         TSEPacketDiscarded epd = (TSEPacketDiscarded) evento;
                         TNode nt = (TNode) epd.obtenerFuente();
                         Point p = nt.obtenerPosicion();
-                        if (epd.obtenerTipoPaquete() == TPDU.GPSRP) {
+                        if (epd.obtenerTipoPaquete() == TAbstractPDU.GPSRP) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_GOS_CAE), p.x, p.y+24, null);
-                        } else if (epd.obtenerTipoPaquete() == TPDU.TLDP) {
+                        } else if (epd.obtenerTipoPaquete() == TAbstractPDU.TLDP) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_LDP_CAE), p.x, p.y+24, null);
-                        } else if (epd.obtenerTipoPaquete() == TPDU.IPV4) {
+                        } else if (epd.obtenerTipoPaquete() == TAbstractPDU.IPV4) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_IPV4_CAE), p.x, p.y+24, null);
-                        } else if (epd.obtenerTipoPaquete() == TPDU.IPV4_GOS) {
+                        } else if (epd.obtenerTipoPaquete() == TAbstractPDU.IPV4_GOS) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_IPV4_GOS_CAE), p.x, p.y+24, null);
-                        } else if (epd.obtenerTipoPaquete() == TPDU.MPLS) {
+                        } else if (epd.obtenerTipoPaquete() == TAbstractPDU.MPLS) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_MPLS_CAE), p.x, p.y+24, null);
-                        } else if (epd.obtenerTipoPaquete() == TPDU.MPLS_GOS) {
+                        } else if (epd.obtenerTipoPaquete() == TAbstractPDU.MPLS_GOS) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_MPLS_GOS_CAE), p.x, p.y+24, null);
                         }
                     } else if (evento.getSubtype() == TSimulationEvent.LSP_ESTABLISHED) {
