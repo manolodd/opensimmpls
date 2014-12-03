@@ -41,8 +41,8 @@ public class TActivePort extends TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     * @param portID port number (the port identifier used to distinguish
-     * this port of other in the same active parentNode).
+     * @param portID port number (the port id used to distinguish
+ this port of other in the same active parentNode).
      * @param parentSetOfActivePorts A reference to the parent set of active
      * ports this active port belongs to.
      */

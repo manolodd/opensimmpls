@@ -67,7 +67,7 @@ public class TIPv4Header {
      * @return La direcci�n IP de origen.
      * @since 1.0
      */
-    public String obtenerIPOrigen() {
+    public String getOriginIP() {
         return IPOrigen;
     }
     

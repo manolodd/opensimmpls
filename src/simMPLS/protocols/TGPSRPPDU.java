@@ -25,7 +25,7 @@ public class TGPSRPPDU extends TAbstractPDU {
     
     /** Este m�todo es el constructor de la clase. Crea una nueva instancia de un
      * paquete GPSRP bas�ndose en lo par�metros pasados.
-     * @param id identificador �nico del paquete.
+     * @param id id �nico del paquete.
      * @param ipo Direcci�n IP origen del paquete.
      * @param ipd Direcci�n IP destino del paquete.
      * @since 1.0
@@ -76,9 +76,9 @@ public class TGPSRPPDU extends TAbstractPDU {
         return datosGPSRP;
     }
     
-    /** Este m�todo nos permite acceder a la cabecera IPv4 del paquete y poder hacer uso
-     * de sus m�todos de forma directa.
-     * @return La cabecera IP del paquete.
+    /** Este m�todo nos permite acceder a la header IPv4 del paquete y poder hacer uso
+ de sus m�todos de forma directa.
+     * @return La header IP del paquete.
      * @since 1.0
      */
     public TIPv4Header getHeader() {
@@ -102,7 +102,7 @@ public class TGPSRPPDU extends TAbstractPDU {
      * @param st No utilizado.
      * @since 1.0
      */
-    public void ponerSubtipo(int st) {
+    public void setSubtype(int st) {
         // No se hace nada
     }
     

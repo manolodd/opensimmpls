@@ -60,7 +60,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * a esta instancia del LER. Identifica el nodo como unico.
      * @param d Direcci�n IP �nica que tendr� el nodo.
      * @param il generador de identificadores largos. Se usa para que el LER pueda obtener un
-     * identificador unico para cada evento que genere.
+ id unico para cada evento que genere.
      * @param t Referencia a la topolog�a a la que pertenece el LER. Le permite hacer
      * comprobaciones, calcular rutas, etc�tera.
      * @since 1.0
@@ -595,7 +595,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         if (puertoSalida != null) {
             TGPSRPPDU paqueteGPSRP = null;
             try {
-                paqueteGPSRP = new TGPSRPPDU(gIdent.getNextID(), this.getIPAddress(), paquete.getHeader().obtenerIPOrigen());
+                paqueteGPSRP = new TGPSRPPDU(gIdent.getNextID(), this.getIPAddress(), paquete.getHeader().getOriginIP());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -625,7 +625,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         if (puertoSalida != null) {
             TGPSRPPDU paqueteGPSRP = null;
             try {
-                paqueteGPSRP = new TGPSRPPDU(gIdent.getNextID(), this.getIPAddress(), paquete.getHeader().obtenerIPOrigen());
+                paqueteGPSRP = new TGPSRPPDU(gIdent.getNextID(), this.getIPAddress(), paquete.getHeader().getOriginIP());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -707,7 +707,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                             etiquetaMPLS1.setLabelField(1);
                             etiquetaMPLS1.ponerTTL(paquete.getHeader().obtenerTTL());
                             paqueteMPLS.getLabelStack().ponerEtiqueta(etiquetaMPLS1);
-                            paqueteMPLS.ponerSubtipo(TAbstractPDU.MPLS_GOS);
+                            paqueteMPLS.setSubtype(TAbstractPDU.MPLS_GOS);
                             paqueteMPLS.getHeader().getOptionsField().ponerNodoAtravesado(this.getIPAddress());
                             dmgp.addPacket(paqueteMPLS);
                         }
@@ -1940,16 +1940,16 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     public TMPLSPDU crearPaqueteMPLS(TIPv4PDU paqueteIPv4, TSwitchingMatrixEntry emc) {
         TMPLSPDU paqueteMPLS = null;
         try {
-            paqueteMPLS = new TMPLSPDU(gIdent.getNextID(), paqueteIPv4.getHeader().obtenerIPOrigen(), paqueteIPv4.getHeader().obtenerIPDestino(), paqueteIPv4.getSize());
+            paqueteMPLS = new TMPLSPDU(gIdent.getNextID(), paqueteIPv4.getHeader().getOriginIP(), paqueteIPv4.getHeader().obtenerIPDestino(), paqueteIPv4.getSize());
         } catch (EIDGeneratorOverflow e) {
             e.printStackTrace(); 
         }
-        paqueteMPLS.ponerCabecera(paqueteIPv4.getHeader());
+        paqueteMPLS.setHeader(paqueteIPv4.getHeader());
         paqueteMPLS.ponerDatosTCP(paqueteIPv4.obtenerDatos());
         if (paqueteIPv4.getSubtype() == TAbstractPDU.IPV4) {
-            paqueteMPLS.ponerSubtipo(TAbstractPDU.MPLS);
+            paqueteMPLS.setSubtype(TAbstractPDU.MPLS);
         } else if (paqueteIPv4.getSubtype() == TAbstractPDU.IPV4_GOS) {
-            paqueteMPLS.ponerSubtipo(TAbstractPDU.MPLS_GOS);
+            paqueteMPLS.setSubtype(TAbstractPDU.MPLS_GOS);
         }
         TMPLSLabel empls = new TMPLSLabel();
         empls.ponerBoS(true);
@@ -1979,17 +1979,17 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     public TIPv4PDU crearPaqueteIPv4(TMPLSPDU paqueteMPLS, TSwitchingMatrixEntry emc) {
         TIPv4PDU paqueteIPv4 = null;
         try {
-            paqueteIPv4 = new TIPv4PDU(gIdent.getNextID(), paqueteMPLS.getHeader().obtenerIPOrigen(), paqueteMPLS.getHeader().obtenerIPDestino(), paqueteMPLS.obtenerDatosTCP().obtenerTamanio());
+            paqueteIPv4 = new TIPv4PDU(gIdent.getNextID(), paqueteMPLS.getHeader().getOriginIP(), paqueteMPLS.getHeader().obtenerIPDestino(), paqueteMPLS.obtenerDatosTCP().obtenerTamanio());
         } catch (EIDGeneratorOverflow e) {
             e.printStackTrace(); 
         }
-        paqueteIPv4.ponerCabecera(paqueteMPLS.getHeader());
+        paqueteIPv4.setHeader(paqueteMPLS.getHeader());
         paqueteIPv4.ponerDatos(paqueteMPLS.obtenerDatosTCP());
         paqueteIPv4.getHeader().ponerTTL(paqueteMPLS.getLabelStack().getTop().obtenerTTL());
         if (paqueteMPLS.getSubtype() == TAbstractPDU.MPLS) {
-            paqueteIPv4.ponerSubtipo(TAbstractPDU.IPV4);
+            paqueteIPv4.setSubtype(TAbstractPDU.IPV4);
         } else if (paqueteMPLS.getSubtype() == TAbstractPDU.MPLS_GOS) {
-            paqueteIPv4.ponerSubtipo(TAbstractPDU.IPV4_GOS);
+            paqueteIPv4.setSubtype(TAbstractPDU.IPV4_GOS);
         }
         try {
             this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paqueteIPv4.getSubtype(), paqueteIPv4.getSize()));
@@ -2044,7 +2044,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @since 1.0
      */    
     public int clasificarPaquete(TAbstractPDU paquete) {
-        String IPOrigen = paquete.getHeader().obtenerIPOrigen();
+        String IPOrigen = paquete.getHeader().getOriginIP();
         String IPDestino = paquete.getHeader().obtenerIPDestino();
         String cadenaFEC = cadenaFEC = IPOrigen + IPDestino;
         return cadenaFEC.hashCode();

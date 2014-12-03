@@ -554,7 +554,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         if (puertoSalida != null) {
             TGPSRPPDU paqueteGPSRP = null;
             try {
-                paqueteGPSRP = new TGPSRPPDU(gIdent.getNextID(), this.getIPAddress(), paquete.getHeader().obtenerIPOrigen());
+                paqueteGPSRP = new TGPSRPPDU(gIdent.getNextID(), this.getIPAddress(), paquete.getHeader().getOriginIP());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -584,7 +584,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         if (puertoSalida != null) {
             TGPSRPPDU paqueteGPSRP = null;
             try {
-                paqueteGPSRP = new TGPSRPPDU(gIdent.getNextID(), this.getIPAddress(), paquete.getHeader().obtenerIPOrigen());
+                paqueteGPSRP = new TGPSRPPDU(gIdent.getNextID(), this.getIPAddress(), paquete.getHeader().getOriginIP());
             } catch (Exception e) {
                 e.printStackTrace();
             }

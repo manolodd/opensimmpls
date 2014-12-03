@@ -292,11 +292,11 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
     
     /**
-     * Este m�todo obtiene el tama�o de la cabecera del sigueinte paquete que se
-     * generar�, independientemente del tipo de tr�fico del que se trate y de los
-     * valores de garant�a de Servicio con los que peuda estar marcado.
-     * @param paquete Paquete de cuya cabecera queremos conocer el tama�o.
-     * @return El tama�o de la cabecera.
+     * Este m�todo obtiene el tama�o de la header del sigueinte paquete que se
+ generar�, independientemente del tipo de tr�fico del que se trate y de los
+ valores de garant�a de Servicio con los que peuda estar marcado.
+     * @param paquete Paquete de cuya header queremos conocer el tama�o.
+     * @return El tama�o de la header.
      * @since 1.0
      */    
     public int obtenerTamanioCabeceraSiguientePaquete(TAbstractPDU paquete) {
@@ -547,7 +547,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                     return paquete;
                 } else {
                     TMPLSPDU paquete = new TMPLSPDU(gIdent.getNextID(), getIPAddress(), this.IPDestino, 0);
-                    paquete.ponerSubtipo(TAbstractPDU.MPLS_GOS);
+                    paquete.setSubtype(TAbstractPDU.MPLS_GOS);
                     paquete.getHeader().getOptionsField().ponerNivelGoS(valorGoS);
                     paquete.getHeader().getOptionsField().ponerIDPaqueteGoS(this.gIdGoS.getNextID());
                     TMPLSLabel etiquetaMPLSDeEmision = new TMPLSLabel();
@@ -570,7 +570,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                     return paquete;
                 } else {
                     TIPv4PDU paquete = new TIPv4PDU(gIdent.getNextID(), getIPAddress(), this.IPDestino, 0);
-                    paquete.ponerSubtipo(TAbstractPDU.IPV4_GOS);
+                    paquete.setSubtype(TAbstractPDU.IPV4_GOS);
                     paquete.getHeader().getOptionsField().ponerNivelGoS(valorGoS);
                     paquete.getHeader().getOptionsField().ponerIDPaqueteGoS(this.gIdGoS.getNextID());
                     return paquete;

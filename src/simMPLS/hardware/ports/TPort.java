@@ -35,8 +35,8 @@ public abstract class TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     * @param portID the identifier of the port. This is the unique identifier
-     * ti distinguish the port within the parent port set.
+     * @param portID the id of the port. This is the unique id
+ ti distinguish the port within the parent port set.
      * @param parentPortSet A reference to the parent port set this port belongs
      * to.
      */

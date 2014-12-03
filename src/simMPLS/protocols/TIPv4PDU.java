@@ -25,7 +25,7 @@ public class TIPv4PDU extends TAbstractPDU {
     
     /** Este m�todo es el constructor de la clase. Crea una nueva instancia de TPDUIPv4
      * con los par�metros especificados.
-     * @param id El identificador unico de cada paquete generado.
+     * @param id El id unico de cada paquete generado.
      * @param ipo La direcci�n IP origen del paquete.
      * @param ipd La direcci�n IP destino el paquete.
      * @param tamDatos El tama�o de los datos el paquete, en bytes.
@@ -73,9 +73,9 @@ public class TIPv4PDU extends TAbstractPDU {
         datos = d;
     }
     
-    /** Este m�todo nos devuelve la cabecera IPv4 del paquete para poder as� acceder a sus m�todos
-     * de forma directa.
-     * @return La cabecera IPv4 del paquete.
+    /** Este m�todo nos devuelve la header IPv4 del paquete para poder as� acceder a sus m�todos
+ de forma directa.
+     * @return La header IPv4 del paquete.
      * @since 1.0
      */
     public TIPv4Header getHeader() {
@@ -98,7 +98,7 @@ public class TIPv4PDU extends TAbstractPDU {
      * @param st El subtipo del paquete. Una de las constantes definidas en la clase TAbstractPDU.
      * @since 1.0
      */
-    public void ponerSubtipo(int st) {
+    public void setSubtype(int st) {
         subtipo = st;
     }
     

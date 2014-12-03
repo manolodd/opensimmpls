@@ -49,8 +49,8 @@ public class TMPLSPDU extends TAbstractPDU {
      * @return Una copia exacta de la instancia actual.
      */    
     public TMPLSPDU obtenerCopia() {
-        long id = this.obtenerIdentificador();
-        String IPo = new String(this.getHeader().obtenerIPOrigen());
+        long id = this.getID();
+        String IPo = new String(this.getHeader().getOriginIP());
         String IPd = new String(this.getHeader().obtenerIPDestino());
         int tamD = this.datosTCP.obtenerTamanio() - 20;
         TMPLSPDU clon = new TMPLSPDU(id, IPo, IPd, tamD);
@@ -164,7 +164,7 @@ public class TMPLSPDU extends TAbstractPDU {
  MPLS con garant�a de servicio o no.
      * @since 1.0
      */
-    public void ponerSubtipo(int st) {
+    public void setSubtype(int st) {
         subtipo = st;
     }
     
@@ -183,7 +183,7 @@ public class TMPLSPDU extends TAbstractPDU {
      */
     private TTCPPayload datosTCP;
     /** Este atributo privado representa la pila de etiquetas MPLS que  acompa�ana a la
-     * cabecera de esta instancia del paquete MPLS.
+ header de esta instancia del paquete MPLS.
      * @since 1.0
      */
     private TMPLSLabelStack pilaEtiquetas;

@@ -33,7 +33,7 @@ public class TSEPacketReceived extends TSimulationEvent {
      * @param inst Instante de tiempo en el que se produce el evento.
      * @param tam Tama�o del paquete  al que se refiere el evento.
      * @param emisor Elemento de la topologia que gener� el evento.
-     * @param id identificador �nico del evento.
+     * @param id id �nico del evento.
      * @param tipoPaquete Tipo del paquete que se ha recibido.
      */
     public TSEPacketReceived(Object emisor, long id, long inst, int tipoPaquete, int tam) {
