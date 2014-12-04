@@ -427,9 +427,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      */    
     public void conmutarGPSRP(TGPSRPPDU paquete, int pEntrada) {
         if (paquete != null) {
-            int mensaje = paquete.obtenerDatosGPSRP().obtenerMensaje();
-            int flujo = paquete.obtenerDatosGPSRP().obtenerFlujo();
-            int idPaquete = paquete.obtenerDatosGPSRP().obtenerIdPaquete();
+            int mensaje = paquete.getGPSRPPayload().obtenerMensaje();
+            int flujo = paquete.getGPSRPPayload().obtenerFlujo();
+            int idPaquete = paquete.getGPSRPPayload().obtenerIdPaquete();
             String IPDestinoFinal = paquete.getHeader().obtenerIPDestino();
             TFIFOPort pSalida = null;
             if (IPDestinoFinal.equals(this.getIPAddress())) {
@@ -464,8 +464,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @since 1.0
      */    
     public void atenderPeticionGPSRP(TGPSRPPDU paquete, int pEntrada) {
-        int idFlujo = paquete.obtenerDatosGPSRP().obtenerFlujo();
-        int idPaquete = paquete.obtenerDatosGPSRP().obtenerIdPaquete();
+        int idFlujo = paquete.getGPSRPPayload().obtenerFlujo();
+        int idPaquete = paquete.getGPSRPPayload().obtenerIdPaquete();
         TMPLSPDU paqueteBuscado = (TMPLSPDU) dmgp.getPacket(idFlujo, idPaquete);
         if (paqueteBuscado != null) {
             this.aceptarGPSRP(paquete, pEntrada);
@@ -490,8 +490,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @since 1.0
      */    
     public void atenderDenegacionGPSRP(TGPSRPPDU paquete, int pEntrada) {
-        int idf = paquete.obtenerDatosGPSRP().obtenerFlujo();
-        int idp = paquete.obtenerDatosGPSRP().obtenerIdPaquete();
+        int idf = paquete.getGPSRPPayload().obtenerFlujo();
+        int idp = paquete.getGPSRPPayload().obtenerIdPaquete();
         TGPSRPRequestEntry ep = peticionesGPSRP.getEntry(idf, idp);
         if (ep != null) {
             ep.forceTimeoutReset();
@@ -516,8 +516,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @since 1.0
      */    
     public void atenderAceptacionGPSRP(TGPSRPPDU paquete, int pEntrada) {
-        int idf = paquete.obtenerDatosGPSRP().obtenerFlujo();
-        int idp = paquete.obtenerDatosGPSRP().obtenerIdPaquete();
+        int idf = paquete.getGPSRPPayload().obtenerFlujo();
+        int idp = paquete.getGPSRPPayload().obtenerIdPaquete();
         peticionesGPSRP.removeEntry(idf, idp);
     }
     
@@ -540,9 +540,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                paqueteGPSRP.obtenerDatosGPSRP().ponerFlujo(ep.getFlowID());
-                paqueteGPSRP.obtenerDatosGPSRP().ponerIdPaquete(ep.getPacketID());
-                paqueteGPSRP.obtenerDatosGPSRP().ponerMensaje(TGPSRPPayload.SOLICITUD_RETRANSMISION);
+                paqueteGPSRP.getGPSRPPayload().ponerFlujo(ep.getFlowID());
+                paqueteGPSRP.getGPSRPPayload().ponerIdPaquete(ep.getPacketID());
+                paqueteGPSRP.getGPSRPPayload().ponerMensaje(TGPSRPPayload.SOLICITUD_RETRANSMISION);
                 puertoSalida.putPacketOnLink(paqueteGPSRP, puertoSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                 try {
                     this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP, paqueteGPSRP.getSize()));
@@ -571,9 +571,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            paqueteGPSRP.obtenerDatosGPSRP().ponerFlujo(idFlujo);
-            paqueteGPSRP.obtenerDatosGPSRP().ponerIdPaquete(idPaquete);
-            paqueteGPSRP.obtenerDatosGPSRP().ponerMensaje(TGPSRPPayload.SOLICITUD_RETRANSMISION);
+            paqueteGPSRP.getGPSRPPayload().ponerFlujo(idFlujo);
+            paqueteGPSRP.getGPSRPPayload().ponerIdPaquete(idPaquete);
+            paqueteGPSRP.getGPSRPPayload().ponerMensaje(TGPSRPPayload.SOLICITUD_RETRANSMISION);
             puertoSalida.putPacketOnLink(paqueteGPSRP, puertoSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
             try {
                 this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP, paqueteGPSRP.getSize()));
@@ -599,9 +599,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            paqueteGPSRP.obtenerDatosGPSRP().ponerFlujo(paquete.obtenerDatosGPSRP().obtenerFlujo());
-            paqueteGPSRP.obtenerDatosGPSRP().ponerIdPaquete(paquete.obtenerDatosGPSRP().obtenerIdPaquete());
-            paqueteGPSRP.obtenerDatosGPSRP().ponerMensaje(TGPSRPPayload.RETRANSMISION_NO);
+            paqueteGPSRP.getGPSRPPayload().ponerFlujo(paquete.getGPSRPPayload().obtenerFlujo());
+            paqueteGPSRP.getGPSRPPayload().ponerIdPaquete(paquete.getGPSRPPayload().obtenerIdPaquete());
+            paqueteGPSRP.getGPSRPPayload().ponerMensaje(TGPSRPPayload.RETRANSMISION_NO);
             puertoSalida.putPacketOnLink(paqueteGPSRP, puertoSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
             try {
                 this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP, paqueteGPSRP.getSize()));
@@ -629,9 +629,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            paqueteGPSRP.obtenerDatosGPSRP().ponerFlujo(paquete.obtenerDatosGPSRP().obtenerFlujo());
-            paqueteGPSRP.obtenerDatosGPSRP().ponerIdPaquete(paquete.obtenerDatosGPSRP().obtenerIdPaquete());
-            paqueteGPSRP.obtenerDatosGPSRP().ponerMensaje(TGPSRPPayload.RETRANSMISION_OK);
+            paqueteGPSRP.getGPSRPPayload().ponerFlujo(paquete.getGPSRPPayload().obtenerFlujo());
+            paqueteGPSRP.getGPSRPPayload().ponerIdPaquete(paquete.getGPSRPPayload().obtenerIdPaquete());
+            paqueteGPSRP.getGPSRPPayload().ponerMensaje(TGPSRPPayload.RETRANSMISION_OK);
             puertoSalida.putPacketOnLink(paqueteGPSRP, puertoSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
             try {
                 this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP, paqueteGPSRP.getSize()));
@@ -1979,7 +1979,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     public TIPv4PDU crearPaqueteIPv4(TMPLSPDU paqueteMPLS, TSwitchingMatrixEntry emc) {
         TIPv4PDU paqueteIPv4 = null;
         try {
-            paqueteIPv4 = new TIPv4PDU(gIdent.getNextID(), paqueteMPLS.getHeader().getOriginIP(), paqueteMPLS.getHeader().obtenerIPDestino(), paqueteMPLS.obtenerDatosTCP().obtenerTamanio());
+            paqueteIPv4 = new TIPv4PDU(gIdent.getNextID(), paqueteMPLS.getHeader().getOriginIP(), paqueteMPLS.getHeader().obtenerIPDestino(), paqueteMPLS.obtenerDatosTCP().setSize());
         } catch (EIDGeneratorOverflow e) {
             e.printStackTrace(); 
         }

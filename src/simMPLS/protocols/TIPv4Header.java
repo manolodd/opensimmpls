@@ -59,7 +59,7 @@ public class TIPv4Header {
      * @return El tama�o de la cabecera en bytes.
      * @since 1.0
      */
-    public int obtenerTamanio() {
+    public int getSize() {
         return (20 + opciones.obtenerTamanio());
     }
     

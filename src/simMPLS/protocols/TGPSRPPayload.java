@@ -81,7 +81,7 @@ public class TGPSRPPayload {
      * @return El tama�o en bytes del payload.
      * @since 1.0
      */
-    public int obtenerTamanio() {
+    public int setSize() {
         return 9;
     }
     

@@ -16,104 +16,113 @@
  */
 package simMPLS.protocols;
 
-/** Esta clase implementa un paquete GPSRP (GoS PDU Store and Retransmit Protocol).
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+/**
+ * This class implements a GPSRP (Guarantee of Service Store and Retransmit
+ * Protocol) packet. As defined in the proposal "Guarantee of Servico (GoS)
+ * Support over MPLS using Active Techniques".
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public class TGPSRPPDU extends TAbstractPDU {
-    
-    /** Este m�todo es el constructor de la clase. Crea una nueva instancia de un
-     * paquete GPSRP bas�ndose en lo par�metros pasados.
-     * @param id id �nico del paquete.
-     * @param ipo Direcci�n IP origen del paquete.
-     * @param ipd Direcci�n IP destino del paquete.
+
+    /**
+     * This method is the constructor of the class. It is create a new instance
+     * of TGPSRPPDU.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param id Packet identifier.
+     * @param originIP IP addres of this packet's sender.
+     * @param targetIP IP addres of this packet's receiver.
      * @since 1.0
      */
-    public TGPSRPPDU(long id, String ipo, String ipd) {
-        super(id, ipo, ipd);
-        datosTCP = new TTCPPayload(0);
-        datosGPSRP = new TGPSRPPayload();
+    public TGPSRPPDU(long id, String originIP, String targetIP) {
+        super(id, originIP, targetIP);
+        this.TCPPayload = new TTCPPayload(0);
+        this.GPSRPPayload = new TGPSRPPayload();
     }
-    
-    /** Este m�todo devuelve el tama�o completo del paquete en bytes, para poder
-     * realizar c�lculos en la simulaci�n.
-     * @return El tama�o completo del paquete en bytes.
+
+    /**
+     * This method returns the size of the packet in bytes (octects).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return Size of this packet in bytes (octects).
      * @since 1.0
      */
+    @Override
     public int getSize() {
-        int tam = 0;
-        tam += super.getHeader().obtenerTamanio(); // Cabecera IPv4
-        tam += this.datosTCP.obtenerTamanio(); // Cabecera TCP
-        tam += this.datosGPSRP.obtenerTamanio(); // Tamanio mensaje GPSRP
-        return (tam);
+        int auxSize = 0;
+        auxSize += super.getHeader().getSize(); // IPv4 header
+        auxSize += this.TCPPayload.setSize(); // TCP header
+        auxSize += this.GPSRPPayload.setSize(); // GPSRP packet size
+        return (auxSize);
     }
-    
-    /** Este m�todo devuelve la constante GPSRP, indicando que el paquete es de tipo
-     * GPSRP.
-     * @return La constante GPSRP.
+
+    /**
+     * This method returns the type of the packet, as defined by constants in
+     * TAbstractPDU class.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The type of this packet.
      * @since 1.0
      */
+    @Override
     public int getType() {
-        return super.GPSRP;
+        return TAbstractPDU.GPSRP;
     }
-    
-    /** Este m�todo nos permite el acceso a los datos TCP de este paquete, para poder
-     * acceder a sus m�todos de forma directa.
-     * @return Los datos TCP de esta instancia.
+
+    /**
+     * This method return the TCP payload of this packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TCP payload of this packet.
      * @since 1.0
      */
-    public TTCPPayload obtenerDatosTCP() {
-        return datosTCP;
+    public TTCPPayload getTCPPayload() {
+        return this.TCPPayload;
     }
-    
-    /** Este m�todo nos permite acceder a los datos GPSRP del paquete para hacer uso
-     * directamente de sus m�todos.
-     * @return Los datos GPSRP de esta instancia.
+
+    /**
+     * This method return the GPSRP payload of this packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return GPSRP payload (header) of this packet.
      * @since 1.0
      */
-    public TGPSRPPayload obtenerDatosGPSRP() {
-        return datosGPSRP;
+    public TGPSRPPayload getGPSRPPayload() {
+        return this.GPSRPPayload;
     }
-    
-    /** Este m�todo nos permite acceder a la header IPv4 del paquete y poder hacer uso
- de sus m�todos de forma directa.
-     * @return La header IP del paquete.
+
+    /**
+     * This method gets the IPv4 header of this packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The IPv4 header of this packet.
      * @since 1.0
      */
+    @Override
     public TIPv4Header getHeader() {
         return super.getHeader();
     }
-    
+
     /**
-     * Este m�todo permite obtener el subtipo del paquete GPSRP. En esta versi�n el
-     * paquete GPSRP no tiene subtipos. Implementa este m�todo para dejar de ser una
-     * clase abstracta.
-     * @return TAbstractPDU.TLDP
+     * This method returns the subtype of the packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The subtype of this packet. For instances of this class, it
+     * returns GPSRP, as defined in TAbstractPDU.
      * @since 1.0
      */
+    @Override
     public int getSubtype() {
-        return super.GPSRP;
+        return TAbstractPDU.GPSRP;
     }
-    
-    /**
-     * Este m�todo no hace nada. Existe porque es necesario implementarlo por ser
-     * abstracto en una clase superior.
-     * @param st No utilizado.
-     * @since 1.0
-     */
-    public void setSubtype(int st) {
-        // No se hace nada
+
+    @Override
+    public void setSubtype(int subtype) {
+        // Do nothing. FIX (remove).
     }
-    
-    /** Este atributo privado simula la carga aportada por el tama�o de los datos TCP
-     * al paquete.
-     * @since 1.0
-     */
-    private TTCPPayload datosTCP;
-    /** Este atributo privado simula los datos del paquete GPSRP, de donde se puede
-     * obtener los mensajes de retransmisi�n necesarios.
-     * @since 1.0
-     */
-    private TGPSRPPayload datosGPSRP;
+
+    private TTCPPayload TCPPayload;
+    private TGPSRPPayload GPSRPPayload;
 }

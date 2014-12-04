@@ -52,7 +52,7 @@ public class TMPLSPDU extends TAbstractPDU {
         long id = this.getID();
         String IPo = new String(this.getHeader().getOriginIP());
         String IPd = new String(this.getHeader().obtenerIPDestino());
-        int tamD = this.datosTCP.obtenerTamanio() - 20;
+        int tamD = this.datosTCP.setSize() - 20;
         TMPLSPDU clon = new TMPLSPDU(id, IPo, IPd, tamD);
         if (this.getHeader().getOptionsField().isUsed()) {
             int nivelGoS = this.getHeader().getOptionsField().getEncodedGoSLevel();
@@ -116,8 +116,8 @@ public class TMPLSPDU extends TAbstractPDU {
      */
     public int getSize() {
         int tam = 0;
-        tam += super.getHeader().obtenerTamanio();
-        tam += this.datosTCP.obtenerTamanio();
+        tam += super.getHeader().getSize();
+        tam += this.datosTCP.setSize();
         tam += (4 * this.pilaEtiquetas.obtenerTamanio());
         return (tam);
     }

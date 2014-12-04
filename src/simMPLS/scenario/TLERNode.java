@@ -347,9 +347,9 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      */
     public void conmutarGPSRP(TGPSRPPDU paquete, int pEntrada) {
         if (paquete != null) {
-            int mensaje = paquete.obtenerDatosGPSRP().obtenerMensaje();
-            int flujo = paquete.obtenerDatosGPSRP().obtenerFlujo();
-            int idPaquete = paquete.obtenerDatosGPSRP().obtenerIdPaquete();
+            int mensaje = paquete.getGPSRPPayload().obtenerMensaje();
+            int flujo = paquete.getGPSRPPayload().obtenerFlujo();
+            int idPaquete = paquete.getGPSRPPayload().obtenerIdPaquete();
             String IPDestinoFinal = paquete.getHeader().obtenerIPDestino();
             TFIFOPort pSalida = null;
             if (IPDestinoFinal.equals(this.getIPAddress())) {
@@ -1375,7 +1375,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     public TIPv4PDU crearPaqueteIPv4(TMPLSPDU paqueteMPLS, TSwitchingMatrixEntry emc) {
         TIPv4PDU paqueteIPv4 = null;
         try {
-            paqueteIPv4 = new TIPv4PDU(gIdent.getNextID(), paqueteMPLS.getHeader().getOriginIP(), paqueteMPLS.getHeader().obtenerIPDestino(), paqueteMPLS.obtenerDatosTCP().obtenerTamanio());
+            paqueteIPv4 = new TIPv4PDU(gIdent.getNextID(), paqueteMPLS.getHeader().getOriginIP(), paqueteMPLS.getHeader().obtenerIPDestino(), paqueteMPLS.obtenerDatosTCP().setSize());
         } catch (EIDGeneratorOverflow e) {
             e.printStackTrace();
         }

@@ -40,7 +40,7 @@ public class TTCPPayload {
      * @return El valor del atributo tamanio.
      * @since 1.0
      */
-    public int obtenerTamanio() {
+    public int setSize() {
         return tamanio;
     }
     

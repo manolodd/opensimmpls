@@ -43,7 +43,7 @@ public class TIPv4PDU extends TAbstractPDU {
      * @since 1.0
      */
     public int getSize() {
-        return (super.getHeader().obtenerTamanio() + datos.obtenerTamanio());
+        return (super.getHeader().getSize() + datos.setSize());
     }
     
     /** Este m�todo devuelve la constante IPV4, indicando que se trata de un paquete

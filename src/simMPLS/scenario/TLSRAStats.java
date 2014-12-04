@@ -163,7 +163,7 @@ public class TLSRAStats extends TStats {
                 }
             } else if (tipoPaquete == TAbstractPDU.GPSRP) {
                 TGPSRPPDU pGPSRP = (TGPSRPPDU) paquete;
-                int mensaje = pGPSRP.obtenerDatosGPSRP().obtenerMensaje();
+                int mensaje = pGPSRP.getGPSRPPayload().obtenerMensaje();
                 if (mensaje == TGPSRPPayload.SOLICITUD_RETRANSMISION) {
                     if (entrada == TStats.SALIDA) {
                         this.tSGPSRP++;

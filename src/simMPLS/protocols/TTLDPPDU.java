@@ -45,8 +45,8 @@ public class TTLDPPDU extends TAbstractPDU {
      */
     public int getSize() {
         int tam = 0;
-        tam += super.getHeader().obtenerTamanio(); // Cabecera IPv4
-        tam += this.datosTCP.obtenerTamanio(); // Cabecera TCP
+        tam += super.getHeader().getSize(); // Cabecera IPv4
+        tam += this.datosTCP.setSize(); // Cabecera TCP
         tam += this.datosTLDP.obtenerTamanio(); // Tamanio mensaje LDP
         return (tam);
     }

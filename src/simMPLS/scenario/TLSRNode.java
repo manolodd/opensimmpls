@@ -298,9 +298,9 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      */
     public void conmutarGPSRP(TGPSRPPDU paquete, int pEntrada) {
         if (paquete != null) {
-            int mensaje = paquete.obtenerDatosGPSRP().obtenerMensaje();
-            int flujo = paquete.obtenerDatosGPSRP().obtenerFlujo();
-            int idPaquete = paquete.obtenerDatosGPSRP().obtenerIdPaquete();
+            int mensaje = paquete.getGPSRPPayload().obtenerMensaje();
+            int flujo = paquete.getGPSRPPayload().obtenerFlujo();
+            int idPaquete = paquete.getGPSRPPayload().obtenerIdPaquete();
             String IPDestinoFinal = paquete.getHeader().obtenerIPDestino();
             TFIFOPort pSalida = null;
             if (IPDestinoFinal.equals(this.getIPAddress())) {
