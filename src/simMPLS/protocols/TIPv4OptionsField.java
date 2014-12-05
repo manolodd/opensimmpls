@@ -67,7 +67,7 @@ public class TIPv4OptionsField {
      * @param ngos Nivel de garant�a de servicio; Una de las constantes definidas en la clase TPDU.
      * @since 1.0
      */
-    public void ponerNivelGoS(int ngos) {
+    public void setEncodedGoSLevel(int ngos) {
         this.nivelGoS = ngos;
         this.campoUsado = true;
     }
@@ -105,7 +105,7 @@ public class TIPv4OptionsField {
      * @param id El identificador del paquete.
      * @since 1.0
      */
-    public void ponerIDPaqueteGoS(int id) {
+    public void setGoSPacketID(int id) {
         this.idUnico = id;
         this.campoUsado = true;
     }
@@ -115,7 +115,7 @@ public class TIPv4OptionsField {
      * @return El identificador del paquete.
      * @since 1.0
      */
-    public int obtenerIDPaqueteGoS() {
+    public int getGoSPacketID() {
         return this.idUnico;
     }
     
@@ -125,7 +125,7 @@ public class TIPv4OptionsField {
      * @param IPNodo La IP del nodo activo atravesado.
      * @since 1.0
      */
-    public void ponerNodoAtravesado(String IPNodo) {
+    public void setCrossedActiveNode(String IPNodo) {
         this.hayMarcasDePaso = true;
         this.campoUsado = true;
         if (this.nodosOcupados < MAX_IPS) {
@@ -147,7 +147,7 @@ public class TIPv4OptionsField {
      * contrario,
      * @since 1.0
      */
-    public boolean tieneMarcasDePaso() {
+    public boolean hasCrossedActiveNodes() {
         return this.hayMarcasDePaso;
     }
     
@@ -157,7 +157,7 @@ public class TIPv4OptionsField {
      * @return N�mero de IP de nodos activos atravesados que contiene el campo opciones.
      * @since 1.0
      */    
-    public int obtenerNumeroDeNodosActivosAtravesados() {
+    public int getNumberOfCrossedActiveNodes() {
         return this.nodosOcupados;
     }
     
@@ -168,7 +168,7 @@ public class TIPv4OptionsField {
      * @return IP del nodo activo deseado.
      * @since 1.0
      */    
-    public String obtenerActivoNodoAtravesado(int naa) {
+    public String getCrossedActiveNode(int naa) {
         if (naa < this.MAX_IPS) {
             return this.nodosPasados[naa];
         }

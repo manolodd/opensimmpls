@@ -16,181 +16,181 @@
  */
 package simMPLS.protocols;
 
-import java.util.*;
+import java.util.LinkedList;
 
-/** Esta clase implementa un paquete MPLS, con todos sus campos diferenciados y
- * accesibles.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+/**
+ * This class implements a MPLS packet.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public class TMPLSPDU extends TAbstractPDU {
-    
-    /** Este m�todo es el constructor de la clase. Crea una instancia nueva de TPDUMPLS
-     * de acuerdo a los par�metros especificados.
-     * @param id Identificador �nico del paquete.
-     * @param ipo Direcci�n IP origen del paquete.
-     * @param ipd Direcci�n IP del destino del paquete MPLS.
-     * @param tamDatos Tama�o de los datos TCP que incorpora el paquete MPLS en su interior, en bytes.
+
+    /**
+     * This method is the constructor of the class. It is create a new instance
+     * of TMPLSPDU.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param id Packet identifier.
+     * @param originIP IP addres of this packet's sender.
+     * @param targetIP IP addres of this packet's receiver.
+     * @param payloadSize The desired size for the payload of this MPLS packet,
+     * in bytes (octects).
      * @since 1.0
      */
-    public TMPLSPDU(long id, String ipo, String ipd, int tamDatos) {
-        super(id, ipo, ipd);
-        datosTCP = new TTCPPayload(tamDatos);
-        pilaEtiquetas = new TMPLSLabelStack();
-        subtipo = super.MPLS;
+    public TMPLSPDU(long id, String originIP, String targetIP, int payloadSize) {
+        super(id, originIP, targetIP);
+        this.TCPPayload = new TTCPPayload(payloadSize);
+        this.MPLSLabelStack = new TMPLSLabelStack();
     }
 
-    
     /**
-     * Este m�todo devuelve un paquete MPLS que es una r�plica exacta a la instancia
-     * actual.
+     * This method creates a clone of this MPLS packet.
+     *
      * @since 1.0
-     * @return Una copia exacta de la instancia actual.
-     */    
-    public TMPLSPDU obtenerCopia() {
-        long id = this.getID();
-        String IPo = new String(this.getHeader().getOriginIP());
-        String IPd = new String(this.getHeader().obtenerIPDestino());
-        int tamD = this.datosTCP.setSize() - 20;
-        TMPLSPDU clon = new TMPLSPDU(id, IPo, IPd, tamD);
-        if (this.getHeader().getOptionsField().isUsed()) {
-            int nivelGoS = this.getHeader().getOptionsField().getEncodedGoSLevel();
-            clon.getHeader().getOptionsField().ponerNivelGoS(nivelGoS);
-            int idGoS = this.getHeader().getOptionsField().obtenerIDPaqueteGoS();
-            clon.getHeader().getOptionsField().ponerIDPaqueteGoS(idGoS);
-            if (this.getHeader().getOptionsField().tieneMarcasDePaso()) {
-                int numMarcas = this.getHeader().getOptionsField().obtenerNumeroDeNodosActivosAtravesados();
-		int i=0;
-                String marcaActual = null;
-		for (i=0; i< numMarcas; i++) {
-                    marcaActual = this.getHeader().getOptionsField().obtenerActivoNodoAtravesado(i);
-                    if (marcaActual != null) {
-                        clon.getHeader().getOptionsField().ponerNodoAtravesado(new String(marcaActual));
+     * @return An exact copy of this MPLS packet.
+     */
+    public TMPLSPDU getAClon() {
+        long auxID = this.getID();
+        String auxOriginIP = this.getIPv4Header().getOriginIP();
+        String auxTargetIP = this.getIPv4Header().getTargetIP();
+        int auxTCPPayloadSize = this.TCPPayload.getSize() - 20;
+        TMPLSPDU clonedMPLSPDU = new TMPLSPDU(auxID, auxOriginIP, auxTargetIP, auxTCPPayloadSize);
+        if (this.getIPv4Header().getOptionsField().isUsed()) {
+            int auxGoSLevel = this.getIPv4Header().getOptionsField().getEncodedGoSLevel();
+            clonedMPLSPDU.getIPv4Header().getOptionsField().setEncodedGoSLevel(auxGoSLevel);
+            int auxGoSID = this.getIPv4Header().getOptionsField().getGoSPacketID();
+            clonedMPLSPDU.getIPv4Header().getOptionsField().setGoSPacketID(auxGoSID);
+            if (this.getIPv4Header().getOptionsField().hasCrossedActiveNodes()) {
+                int auxNumberOfCrossedActiveNodes = this.getIPv4Header().getOptionsField().getNumberOfCrossedActiveNodes();
+                int i = 0;
+                String auxCurrentCrossedActiveNodeTag = null;
+                for (i = 0; i < auxNumberOfCrossedActiveNodes; i++) {
+                    auxCurrentCrossedActiveNodeTag = this.getIPv4Header().getOptionsField().getCrossedActiveNode(i);
+                    if (auxCurrentCrossedActiveNodeTag != null) {
+                        clonedMPLSPDU.getIPv4Header().getOptionsField().setCrossedActiveNode(new String(auxCurrentCrossedActiveNodeTag));
                     }
                 }
             }
         }
-        TMPLSLabel etiquetaActual = null;
-        TMPLSLabel etiquetaNuevaLocal = null;
-        TMPLSLabel etiquetaNuevaClon = null;
-        LinkedList pilaEtiquetasLocal = new LinkedList();
-        LinkedList pilaEtiquetasClon = new LinkedList();
-        while (this.getLabelStack().obtenerTamanio() > 0) {
-            etiquetaActual = this.getLabelStack().getTop();
-            this.getLabelStack().borrarEtiqueta();
-            int idEtiq = etiquetaActual.obtenerIdentificador();
-            etiquetaNuevaLocal = new TMPLSLabel(idEtiq);
-            etiquetaNuevaLocal.ponerBoS(etiquetaActual.obtenerBoS());
-            etiquetaNuevaLocal.ponerEXP(etiquetaActual.getEXPField());
-            etiquetaNuevaLocal.setLabelField(etiquetaActual.getLabelField());
-            etiquetaNuevaLocal.ponerTTL(etiquetaActual.obtenerTTL());
-            etiquetaNuevaClon = new TMPLSLabel(idEtiq);
-            etiquetaNuevaClon.ponerBoS(etiquetaActual.obtenerBoS());
-            etiquetaNuevaClon.ponerEXP(etiquetaActual.getEXPField());
-            etiquetaNuevaClon.setLabelField(etiquetaActual.getLabelField());
-            etiquetaNuevaClon.ponerTTL(etiquetaActual.obtenerTTL());
-            if (pilaEtiquetasLocal.size() == 0) {
-                pilaEtiquetasLocal.add(etiquetaNuevaLocal);
+        TMPLSLabel currentLabel = null;
+        TMPLSLabel newLocalLabel = null;
+        TMPLSLabel newLabelForClonedPDU = null;
+        LinkedList localLabelStack = new LinkedList();
+        LinkedList labelStackForClonedPDU = new LinkedList();
+        while (this.getLabelStack().getSize() > 0) {
+            currentLabel = this.getLabelStack().getTop();
+            this.getLabelStack().popTop();
+            int auxLabelID = currentLabel.getID();
+            newLocalLabel = new TMPLSLabel(auxLabelID);
+            newLocalLabel.setBoS(currentLabel.getBoS());
+            newLocalLabel.setEXP(currentLabel.getEXP());
+            newLocalLabel.setLabel(currentLabel.getLabel());
+            newLocalLabel.setTTL(currentLabel.getTTL());
+            newLabelForClonedPDU = new TMPLSLabel(auxLabelID);
+            newLabelForClonedPDU.setBoS(currentLabel.getBoS());
+            newLabelForClonedPDU.setEXP(currentLabel.getEXP());
+            newLabelForClonedPDU.setLabel(currentLabel.getLabel());
+            newLabelForClonedPDU.setTTL(currentLabel.getTTL());
+            if (localLabelStack.size() == 0) {
+                localLabelStack.add(newLocalLabel);
             } else {
-                pilaEtiquetasLocal.addFirst(etiquetaNuevaLocal);
+                localLabelStack.addFirst(newLocalLabel);
             }
-            if (pilaEtiquetasClon.size() == 0) {
-                pilaEtiquetasClon.add(etiquetaNuevaClon);
+            if (labelStackForClonedPDU.size() == 0) {
+                labelStackForClonedPDU.add(newLabelForClonedPDU);
             } else {
-                pilaEtiquetasClon.addFirst(etiquetaNuevaClon);
+                labelStackForClonedPDU.addFirst(newLabelForClonedPDU);
             }
         }
-        while (pilaEtiquetasLocal.size() > 0) {
-            this.getLabelStack().ponerEtiqueta((TMPLSLabel) pilaEtiquetasLocal.removeFirst());
+        while (localLabelStack.size() > 0) {
+            this.getLabelStack().pushLabel((TMPLSLabel) localLabelStack.removeFirst());
         }
-        while (pilaEtiquetasClon.size() > 0) {
-            clon.getLabelStack().ponerEtiqueta((TMPLSLabel) pilaEtiquetasClon.removeFirst());
+        while (labelStackForClonedPDU.size() > 0) {
+            clonedMPLSPDU.getLabelStack().pushLabel((TMPLSLabel) labelStackForClonedPDU.removeFirst());
         }
-        return clon;
+        return clonedMPLSPDU;
     }
-    
-    /** Este m�todo nos devuelve el tama�o completo del paquete MPLS, en bytes.
-     * @return El tama�o completeo del paquete, en bytes.
+
+    /**
+     * This method returns the size of the packet in bytes (octects).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return Size of this packet in bytes (octects).
      * @since 1.0
      */
+    @Override
     public int getSize() {
-        int tam = 0;
-        tam += super.getHeader().getSize();
-        tam += this.datosTCP.setSize();
-        tam += (4 * this.pilaEtiquetas.obtenerTamanio());
-        return (tam);
+        int auxSize = 0;
+        auxSize += super.getIPv4Header().getSize();
+        auxSize += this.TCPPayload.getSize();
+        auxSize += (4 * this.MPLSLabelStack.getSize());
+        return (auxSize);
     }
-    
-    /** Este m�todo nos devuelve la constante MPLS, indicando que el paquete es de este
-     * tipo.
-     * @return La constante MPLS.
+
+    /**
+     * This method returns the type of the packet, as defined by constants in
+     * TAbstractPDU class.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The type of this packet.
      * @since 1.0
      */
+    @Override
     public int getType() {
-        return super.MPLS;
+        return TAbstractPDU.MPLS;
     }
-    
-    /** Este m�todo nos permite acceder directamente a los datos TCP que se encuentran
-     * en el interior del paquete y as� usar sus m�todos.
-     * @return Los datos TCP que transporta este paquete MPLS.
+
+    /**
+     * This method return the TCP payload of this packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TCP payload of this packet.
      * @since 1.0
      */
-    public TTCPPayload obtenerDatosTCP() {
-        return datosTCP;
+    public TTCPPayload getTCPPayload() {
+        return this.TCPPayload;
     }
-    
-    /** Este m�todo nos permite cambiar la carga TCP de este paquete MPLS de una forma
-     * r�pida y sencilla.
-     * @param d Los nuevos datos TCP que deseamos que tenga el paquete MPLS.
+
+    /**
+     * This method set the TCP payload of this packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param TCPPayload The TCP payload for this packet.
      * @since 1.0
      */
-    public void ponerDatosTCP(TTCPPayload d) {
-        datosTCP = d;
+    public void setTCPPayload(TTCPPayload TCPPayload) {
+        this.TCPPayload = TCPPayload;
     }
-    
-    /** Este m�todo nos permite el acceso directo a la pila de etiquetas MPLS, as�
-     * podremos usar sus m�todos directamente.
-     * @return La pila de etiquetas del paquete MPLS.
+
+    /**
+     * This method returns the label stack of this MPLS packet.
+     *
+     * @return The label stack of this MPLS packet.
      * @since 1.0
      */
     public TMPLSLabelStack getLabelStack() {
-        return pilaEtiquetas;
+        return this.MPLSLabelStack;
     }
-    
-    /**
-     * Este metodo permite establecer el subtipo de un paquete MPLS.
-     * @param st El subtipo. Una constante de la clase TAbstractPDU que indica si se trata de un paquete
- MPLS con garant�a de servicio o no.
-     * @since 1.0
-     */
+
+    @Override
     public void setSubtype(int st) {
-        subtipo = st;
+        // Do nothing. FIX (remove).
     }
-    
+
     /**
-     * Este m�todo permite obtener el subtipo de un paquete MPLS, es decir, si el
-     * paquete MPLS es o no un paquete con GoS.
-     * @return El subtipo el paquete MPLS.
+     * This method returns the subtype of the packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The subtype of this packet. For instances of this class, it
+     * returns MPLS, as defined in TAbstractPDU.
      * @since 1.0
      */
+    @Override
     public int getSubtype() {
-        return subtipo;
+        return TAbstractPDU.MPLS;
     }
-    
-    /** Este atributo representa los datos TCP que est�n incorporados en el paquete.
-     * @since 1.0
-     */
-    private TTCPPayload datosTCP;
-    /** Este atributo privado representa la pila de etiquetas MPLS que  acompa�ana a la
- header de esta instancia del paquete MPLS.
-     * @since 1.0
-     */
-    private TMPLSLabelStack pilaEtiquetas;
-    /**
-     * Este atributo almacenar� el subtipo de paquete MPLS, que puede ser: Con o sin
-     * GoS.
-     * @since 1.0
-     */
-    private int subtipo;
+
+    private TTCPPayload TCPPayload;
+    private TMPLSLabelStack MPLSLabelStack;
 }

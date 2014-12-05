@@ -501,7 +501,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         } else {
             if (paquete.getType() == TAbstractPDU.MPLS) {
                 paqueteMPLS = (TMPLSPDU) paquete;
-                paqueteMPLS.obtenerDatosTCP().ponerTamanio((int) tamanioDatos);
+                paqueteMPLS.getTCPPayload().setSize((int) tamanioDatos);
                 nsUsados = this.obtenerNsUsadosTotalOctetos(tamanioTotal);
                 this.nsDisponibles -= nsUsados;
                 if (this.nsDisponibles < 0)
@@ -512,7 +512,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                 return paqueteMPLS;
             } else if (paquete.getType() == TAbstractPDU.IPV4) {
                 paqueteIPv4 = (TIPv4PDU) paquete;
-                paqueteIPv4.obtenerDatos().ponerTamanio(tamanioDatos);
+                paqueteIPv4.getTCPPayload().setSize(tamanioDatos);
                 nsUsados = this.obtenerNsUsadosTotalOctetos(tamanioTotal);
                 this.nsDisponibles -= nsUsados;
                 if (this.nsDisponibles < 0)
@@ -539,29 +539,29 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                 if (valorGoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
                     TMPLSPDU paquete = new TMPLSPDU(gIdent.getNextID(), getIPAddress(), this.IPDestino, 0);
                     TMPLSLabel etiquetaMPLSDeEmision = new TMPLSLabel();
-                    etiquetaMPLSDeEmision.ponerBoS(true);
-                    etiquetaMPLSDeEmision.ponerEXP(0);
-                    etiquetaMPLSDeEmision.setLabelField(etiquetaDeEmision);
-                    etiquetaMPLSDeEmision.ponerTTL(paquete.getHeader().obtenerTTL());
-                    paquete.getLabelStack().ponerEtiqueta(etiquetaMPLSDeEmision);
+                    etiquetaMPLSDeEmision.setBoS(true);
+                    etiquetaMPLSDeEmision.setEXP(0);
+                    etiquetaMPLSDeEmision.setLabel(etiquetaDeEmision);
+                    etiquetaMPLSDeEmision.setTTL(paquete.getIPv4Header().obtenerTTL());
+                    paquete.getLabelStack().pushLabel(etiquetaMPLSDeEmision);
                     return paquete;
                 } else {
                     TMPLSPDU paquete = new TMPLSPDU(gIdent.getNextID(), getIPAddress(), this.IPDestino, 0);
                     paquete.setSubtype(TAbstractPDU.MPLS_GOS);
-                    paquete.getHeader().getOptionsField().ponerNivelGoS(valorGoS);
-                    paquete.getHeader().getOptionsField().ponerIDPaqueteGoS(this.gIdGoS.getNextID());
+                    paquete.getIPv4Header().getOptionsField().setEncodedGoSLevel(valorGoS);
+                    paquete.getIPv4Header().getOptionsField().setGoSPacketID(this.gIdGoS.getNextID());
                     TMPLSLabel etiquetaMPLSDeEmision = new TMPLSLabel();
-                    etiquetaMPLSDeEmision.ponerBoS(true);
-                    etiquetaMPLSDeEmision.ponerEXP(0);
-                    etiquetaMPLSDeEmision.setLabelField(etiquetaDeEmision);
-                    etiquetaMPLSDeEmision.ponerTTL(paquete.getHeader().obtenerTTL());
+                    etiquetaMPLSDeEmision.setBoS(true);
+                    etiquetaMPLSDeEmision.setEXP(0);
+                    etiquetaMPLSDeEmision.setLabel(etiquetaDeEmision);
+                    etiquetaMPLSDeEmision.setTTL(paquete.getIPv4Header().obtenerTTL());
                     TMPLSLabel etiquetaMPLS1 = new TMPLSLabel();
-                    etiquetaMPLS1.ponerBoS(false);
-                    etiquetaMPLS1.ponerEXP(valorGoS);
-                    etiquetaMPLS1.setLabelField(1);
-                    etiquetaMPLS1.ponerTTL(paquete.getHeader().obtenerTTL());
-                    paquete.getLabelStack().ponerEtiqueta(etiquetaMPLSDeEmision);
-                    paquete.getLabelStack().ponerEtiqueta(etiquetaMPLS1);
+                    etiquetaMPLS1.setBoS(false);
+                    etiquetaMPLS1.setEXP(valorGoS);
+                    etiquetaMPLS1.setLabel(1);
+                    etiquetaMPLS1.setTTL(paquete.getIPv4Header().obtenerTTL());
+                    paquete.getLabelStack().pushLabel(etiquetaMPLSDeEmision);
+                    paquete.getLabelStack().pushLabel(etiquetaMPLS1);
                     return paquete;
                 }
             } else {
@@ -571,8 +571,8 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                 } else {
                     TIPv4PDU paquete = new TIPv4PDU(gIdent.getNextID(), getIPAddress(), this.IPDestino, 0);
                     paquete.setSubtype(TAbstractPDU.IPV4_GOS);
-                    paquete.getHeader().getOptionsField().ponerNivelGoS(valorGoS);
-                    paquete.getHeader().getOptionsField().ponerIDPaqueteGoS(this.gIdGoS.getNextID());
+                    paquete.getIPv4Header().getOptionsField().setEncodedGoSLevel(valorGoS);
+                    paquete.getIPv4Header().getOptionsField().setGoSPacketID(this.gIdGoS.getNextID());
                     return paquete;
                 }
             }

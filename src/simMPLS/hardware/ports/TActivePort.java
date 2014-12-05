@@ -578,8 +578,8 @@ public class TActivePort extends TPort {
         }
         if (packet.getType() == TAbstractPDU.MPLS) {
             TMPLSPDU mplsPacket = (TMPLSPDU) packet;
-            if (mplsPacket.getLabelStack().getTop().getLabelField() == 1) {
-                int EXP = mplsPacket.getLabelStack().getTop().getEXPField();
+            if (mplsPacket.getLabelStack().getTop().getLabel() == 1) {
+                int EXP = mplsPacket.getLabelStack().getTop().getEXP();
                 if (EXP == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP) {
                     return TActivePort.PRIORITY_7;
                 }
@@ -609,8 +609,8 @@ public class TActivePort extends TPort {
             }
         }
         if (packet.getType() == TAbstractPDU.IPV4) {
-            if (packet.getHeader().getOptionsField().isUsed()) {
-                int gosLevel = packet.getHeader().getOptionsField().getEncodedGoSLevel();
+            if (packet.getIPv4Header().getOptionsField().isUsed()) {
+                int gosLevel = packet.getIPv4Header().getOptionsField().getEncodedGoSLevel();
                 if (gosLevel == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP) {
                     return TActivePort.PRIORITY_7;
                 }

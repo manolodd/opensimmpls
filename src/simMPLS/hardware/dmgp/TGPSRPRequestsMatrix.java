@@ -119,13 +119,13 @@ public class TGPSRPRequestsMatrix {
         this.monitor.lock();
         TGPSRPRequestEntry gpsrpRequestEntry = new TGPSRPRequestEntry(this.idGenerator.getNextID());
         gpsrpRequestEntry.setOutgoingPort(incomingPort);
-        gpsrpRequestEntry.setFlowID(mplsPacket.getHeader().getOriginIP().hashCode());
-        gpsrpRequestEntry.setPacketID(mplsPacket.getHeader().obtenerClavePrimaria());
-        int numberOfCrossedNodes = mplsPacket.getHeader().getOptionsField().obtenerNumeroDeNodosActivosAtravesados();
+        gpsrpRequestEntry.setFlowID(mplsPacket.getIPv4Header().getOriginIP().hashCode());
+        gpsrpRequestEntry.setPacketID(mplsPacket.getIPv4Header().obtenerClavePrimaria());
+        int numberOfCrossedNodes = mplsPacket.getIPv4Header().getOptionsField().getNumberOfCrossedActiveNodes();
         int i = 0;
         String nextIP = "";
         for (i = 0; i < numberOfCrossedNodes; i++) {
-            nextIP = mplsPacket.getHeader().getOptionsField().obtenerActivoNodoAtravesado(i);
+            nextIP = mplsPacket.getIPv4Header().getOptionsField().getCrossedActiveNode(i);
             if (nextIP != null) {
                 gpsrpRequestEntry.setCrossedNodeIP(nextIP);
             }

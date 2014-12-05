@@ -139,7 +139,7 @@ public class TSenderStats extends TStats {
                     this.tDMPLS++;
                 }
             } else if (tipoPaquete == TAbstractPDU.MPLS_GOS) {
-                GoS = paquete.getHeader().getOptionsField().getEncodedGoSLevel();
+                GoS = paquete.getIPv4Header().getOptionsField().getEncodedGoSLevel();
                 if (entrada == TStats.SALIDA) {
                     if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tSMPLS++;
@@ -168,7 +168,7 @@ public class TSenderStats extends TStats {
                     this.tDIPV4++;
                 }
             } else if (tipoPaquete == TAbstractPDU.IPV4_GOS) {
-                GoS = paquete.getHeader().getOptionsField().getEncodedGoSLevel();
+                GoS = paquete.getIPv4Header().getOptionsField().getEncodedGoSLevel();
                 if (entrada == TStats.SALIDA) {
                     if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tSIPV4++;

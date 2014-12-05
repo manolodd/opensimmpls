@@ -40,7 +40,7 @@ public class TTCPPayload {
      * @return El valor del atributo tamanio.
      * @since 1.0
      */
-    public int setSize() {
+    public int getSize() {
         return tamanio;
     }
     
@@ -48,7 +48,7 @@ public class TTCPPayload {
      * @param t El nuevo valor del atributo privado tamanio.
      * @since 1.0
      */
-    public void ponerTamanio(int t) {
+    public void setSize(int t) {
         tamanio = 20;   // Tama�o de la cabecera TCP.
         tamanio += t;
     }

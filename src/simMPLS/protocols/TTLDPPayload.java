@@ -39,7 +39,7 @@ public class TTLDPPayload {
      * @return El tama�o en bytes del payload.
      * @since 1.0
      */
-    public int obtenerTamanio() {
+    public int getSize() {
         return 9;
     }
     

@@ -62,7 +62,7 @@ public class TMPLSLabel implements Comparable {
      * @return El valor del identificador de la etiqueta MPLS.
      * @since 1.0
      */
-    public int obtenerIdentificador() {
+    public int getID() {
         return identificador;
     }
     
@@ -71,7 +71,7 @@ public class TMPLSLabel implements Comparable {
      * @param l El nuevo valor que deseamos para el campo label de la etiqueta MPLS.
      * @since 1.0
      */
-    public void setLabelField(int l) {
+    public void setLabel(int l) {
         label = l;
     }
     
@@ -79,7 +79,7 @@ public class TMPLSLabel implements Comparable {
      * @return El valor del atributo privado label, de la etiqueta MPLS.
      * @since 1.0
      */
-    public int getLabelField() {
+    public int getLabel() {
         return label;
     }
     
@@ -88,7 +88,7 @@ public class TMPLSLabel implements Comparable {
      * @param t El nuevo valor deseado para el atributo TTL.
      * @since 1.0
      */
-    public void ponerTTL(int t) {
+    public void setTTL(int t) {
         TTL = t;
     }
     
@@ -97,7 +97,7 @@ public class TMPLSLabel implements Comparable {
      * @return El valor del atributo TTL de la etiqueta MPLS.
      * @since 1.0
      */
-    public int obtenerTTL() {
+    public int getTTL() {
         return TTL;
     }
     
@@ -106,7 +106,7 @@ public class TMPLSLabel implements Comparable {
      * @param e El nuevo valor deseado para el atributo privado EXP de la etiqueta MPLS.
      * @since 1.0
      */
-    public void ponerEXP(int e) {
+    public void setEXP(int e) {
         EXP = e;
     }
     
@@ -115,7 +115,7 @@ public class TMPLSLabel implements Comparable {
      * @return El valor del atributo privado EXP de la etiqueta MPLS.
      * @since 1.0
      */
-    public int getEXPField() {
+    public int getEXP() {
         return EXP;
     }
     
@@ -124,7 +124,7 @@ public class TMPLSLabel implements Comparable {
      * @param b El nuevo valor para el campo BoS de la etiqueta MPLS.
      * @since 1.0
      */
-    public void ponerBoS(boolean b) {
+    public void setBoS(boolean b) {
         BoS = b;
     }
     
@@ -133,7 +133,7 @@ public class TMPLSLabel implements Comparable {
      * @return El valor del atributo privado BoS (Bottom of Stack) del a etiqueta MPLS.
      * @since 1.0
      */
-    public boolean obtenerBoS() {
+    public boolean getBoS() {
         return BoS;
     }
     
@@ -147,9 +147,9 @@ public class TMPLSLabel implements Comparable {
      */
     public int compareTo(Object o) {
         TMPLSLabel e2= (TMPLSLabel) o;
-        if (this.obtenerIdentificador() > e2.obtenerIdentificador()) {
+        if (this.getID() > e2.getID()) {
             return 1;
-        } else if (this.obtenerIdentificador() == e2.obtenerIdentificador()) {
+        } else if (this.getID() == e2.getID()) {
             return 0;
         } else {
             return -1;

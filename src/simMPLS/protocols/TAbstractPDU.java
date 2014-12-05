@@ -69,7 +69,7 @@ public abstract class TAbstractPDU implements Comparable {
      * @return The IPv4 header of this packet.
      * @since 1.0
      */
-    public TIPv4Header getHeader() {
+    public TIPv4Header getIPv4Header() {
         return this.IPv4Header;
     }
 
@@ -100,7 +100,7 @@ public abstract class TAbstractPDU implements Comparable {
         if (this.getID() > pdu.getID()) {
             return 1;
         } else if (this.getID() == pdu.getID()) {
-            return (this.getHeader().getOriginIP().compareTo(pdu.getHeader().getOriginIP()));
+            return (this.getIPv4Header().getOriginIP().compareTo(pdu.getIPv4Header().getOriginIP()));
         } else {
             return -1;
         }

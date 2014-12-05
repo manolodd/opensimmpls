@@ -47,7 +47,7 @@ public class TIPv4Header {
     public int obtenerClavePrimaria() {
         String clave = "";
         if (opciones.isUsed()) {
-            clave = this.IPOrigen + opciones.obtenerIDPaqueteGoS();
+            clave = this.IPOrigen + opciones.getGoSPacketID();
             return clave.hashCode();
         }
         return -1;
@@ -84,7 +84,7 @@ public class TIPv4Header {
      * @return La direcci�n IP de destino.
      * @since 1.0
      */
-    public String obtenerIPDestino() {
+    public String getTargetIP() {
         return IPDestino;
     }
     

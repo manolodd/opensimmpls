@@ -40,7 +40,7 @@ public class TMPLSLabelStack {
      * @return Tama�o completo de la pila de etiquetas, en bytes.
      * @since 1.0
      */
-    public int obtenerTamanio() {
+    public int getSize() {
         return pila.size();
     }
     
@@ -48,7 +48,7 @@ public class TMPLSLabelStack {
      * @param etiqueta Etiqueta que deseamos insertar en la pila de etiquetas MPLS.
      * @since 1.0
      */
-    public void ponerEtiqueta(TMPLSLabel etiqueta) {
+    public void pushLabel(TMPLSLabel etiqueta) {
         try {
             etiqueta.ponerIdentificador(generaID.obtenerNuevo());
         } catch (EIDGeneratorOverflow e) {
@@ -70,7 +70,7 @@ public class TMPLSLabelStack {
      * etiquetas.
      * @since 1.0
      */
-    public void borrarEtiqueta() {
+    public void popTop() {
         pila.removeLast();
     }
     
@@ -80,7 +80,7 @@ public class TMPLSLabelStack {
      * @since 1.0
      */
     public void cambiarEtiqueta(TMPLSLabel etiqueta) {
-        this.borrarEtiqueta();
+        this.popTop();
         try {
             etiqueta.ponerIdentificador(generaID.obtenerNuevo());
         } catch (EIDGeneratorOverflow e) {

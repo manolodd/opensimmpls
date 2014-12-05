@@ -32,10 +32,10 @@ public class TTLDPPDU extends TAbstractPDU {
      */
     public TTLDPPDU(long id, String ipo, String ipd) {
         super(id, ipo, ipd);
-        datosTCP = new TTCPPayload(0);
-        datosTLDP = new TTLDPPayload();
-        tipoLSP = false;
-        entradaPaquete = this.ADELANTE;
+        this.TCPPayload = new TTCPPayload(0);
+        this.TLDPPayload = new TTLDPPayload();
+        this.LSPType = false;
+        this.packetDirection = TTLDPPDU.DIRECTION_FORWARD;
     }
     
     /** Este m�todo devuelve el tama�o completo del paquete en bytes, para poder
@@ -44,11 +44,11 @@ public class TTLDPPDU extends TAbstractPDU {
      * @since 1.0
      */
     public int getSize() {
-        int tam = 0;
-        tam += super.getHeader().getSize(); // Cabecera IPv4
-        tam += this.datosTCP.setSize(); // Cabecera TCP
-        tam += this.datosTLDP.obtenerTamanio(); // Tamanio mensaje LDP
-        return (tam);
+        int auxSize = 0;
+        auxSize += super.getIPv4Header().getSize(); // IPv4 header
+        auxSize += this.TCPPayload.getSize(); // TCP header
+        auxSize += this.TLDPPayload.getSize(); // LDP payload
+        return (auxSize);
     }
     
     /** Este m�todo devuelve la constante TLDP, indicando que el paquete es de tipo
@@ -65,8 +65,8 @@ public class TTLDPPDU extends TAbstractPDU {
      * @return Los datos TCP de esta instancia.
      * @since 1.0
      */
-    public TTCPPayload obtenerDatosTCP() {
-        return datosTCP;
+    public TTCPPayload getTCPPayload() {
+        return this.TCPPayload;
     }
     
     /** Este m�todo nos permite acceder a los datos TLDP del paquete para hacer uso
@@ -74,8 +74,8 @@ public class TTLDPPDU extends TAbstractPDU {
      * @return Los datos TLDP de esta instancia.
      * @since 1.0
      */
-    public TTLDPPayload obtenerDatosTLDP() {
-        return datosTLDP;
+    public TTLDPPayload getTLDPPayload() {
+        return this.TLDPPayload;
     }
     
     /** Este m�todo nos permite acceder a la header IPv4 del paquete y poder hacer uso
@@ -83,8 +83,8 @@ public class TTLDPPDU extends TAbstractPDU {
      * @return La header IP del paquete.
      * @since 1.0
      */
-    public TIPv4Header getHeader() {
-        return super.getHeader();
+    public TIPv4Header getIPv4Header() {
+        return super.getIPv4Header();
     }
     
     /**
@@ -95,7 +95,7 @@ public class TTLDPPDU extends TAbstractPDU {
      * @since 1.0
      */
     public int getSubtype() {
-        return super.TLDP;
+        return TAbstractPDU.TLDP;
     }
     
     /**
@@ -117,8 +117,8 @@ public class TTLDPPDU extends TAbstractPDU {
      * un LSP de respaldo.
      * @since 1.0
      */    
-    public void ponerEsParaBackup(boolean tlsp) {
-        this.tipoLSP = tlsp;
+    public void setLSPType(boolean tlsp) {
+        this.LSPType = tlsp;
     }
     
     /**
@@ -130,84 +130,46 @@ public class TTLDPPDU extends TAbstractPDU {
      * un LSP de respaldo.
      * @since 1.0
      */    
-    public boolean obtenerEsParaBackup() {
-        return this.tipoLSP;
+    public boolean getLSPType() {
+        return this.LSPType;
     }
     
     /**
      * Este m�todo permite obtener por d�nde ha llegado el paquete TLDP al nodo.
      * @since 1.0
-     * @return ENTRADA, SALIDA o SALIDA_BACKUP, seg�n el lugar por donde haya llegado el nodo.
+     * @return CAME_BY_ENTRANCE, CAME_BY_EXIT o CAME_BY_BACKUP_EXIT, seg�n el lugar por donde haya llegado el nodo.
      */    
-    public int obtenerEntradaPaquete() {
-        if (this.entradaPaquete == this.ADELANTE)
-            return this.ENTRADA;
-        if (this.entradaPaquete == this.ATRAS)
-            return this.SALIDA;
-        if (this.entradaPaquete == this.ATRAS_BACKUP)
-            return this.SALIDA_BACKUP;
-        return this.ENTRADA;
+    public int getLocalOrigin() {
+        if (this.packetDirection == TTLDPPDU.DIRECTION_FORWARD)
+            return TTLDPPDU.CAME_BY_ENTRANCE;
+        if (this.packetDirection == TTLDPPDU.DIRECTION_BACKWARD)
+            return TTLDPPDU.CAME_BY_EXIT;
+        if (this.packetDirection == TTLDPPDU.DIRECTION_BACKWARD_BACKUP)
+            return TTLDPPDU.CAME_BY_BACKUP_EXIT;
+        return TTLDPPDU.CAME_BY_ENTRANCE;
     }
     
     /**
      * Este m�todo permite establecer por donde va a salir del nodo el paquete TLDP.
      * @since 1.0
-     * @param ep ADELANTE, ATRAS o ATRAS_BACKUP, dependiendo de por donde salga el paquete del
-     * nodo.
+     * @param localTarget DIRECTION_FORWARD, DIRECTION_BACKWARD o DIRECTION_BACKWARD_BACKUP, dependiendo de por donde salga el paquete del
+ nodo.
      */    
-    public void ponerSalidaPaquete(int ep) {
-        this.entradaPaquete = ep;
+    public void setLocalTarget(int localTarget) {
+        this.packetDirection = localTarget;
     }
     
-    /**
-     * Esta constante indica que el paquete TLDP ser� enviado bien por la salida de
-     * Backup o por la salida principal.
-     * @since 1.0
-     */    
-    public static final int ADELANTE = -1;
-    /**
-     * Esta constante indica que el paquete TLDP ser� enviado por la entrada pero por
-     * un LSP principal.
-     * @since 1.0
-     */    
-    public static final int ATRAS = -2;
-    /**
-     * Esta constante indica que el paquete TLDP ser� enviado por la entrada pero por
-     * un LSP de backup.
-     * @since 1.0
-     */    
-    public static final int ATRAS_BACKUP = -3;
-    /**
-     * Esta constante indica que el paquete TLDP ha llegado al nodo por el puerto de
-     * entrada.
-     * @since 1.0
-     */    
-    public static final int ENTRADA = -1;
-    /**
-     * Esta constante indica que el paquete TLDP ha llegado al nodo por el puerto de
-     * salida principal.
-     * @since 1.0
-     */    
-    public static final int SALIDA = -2;
-    /**
-     * Esta constante indica que el paquete TLDP ha llegado al nodo por el puerto de
-     * salida de backup.
-     * @since 1.0
-     */    
-    public static final int SALIDA_BACKUP = -3;
+    public static final int DIRECTION_FORWARD = -1;
+    public static final int DIRECTION_BACKWARD = -2;
+    public static final int DIRECTION_BACKWARD_BACKUP = -3;
     
-    private int entradaPaquete;
+    public static final int CAME_BY_ENTRANCE = -1;
+    public static final int CAME_BY_EXIT = -2;
+    public static final int CAME_BY_BACKUP_EXIT = -3;
     
-    /** Este atributo privado simula la carga aportada por el tama�o de los datos TCP
-     * al paquete.
-     * @since 1.0
-     */
-    private TTCPPayload datosTCP;
-    /** Este atributo privado simula los datos del paquete TLDP, de donde se puede
-     * obtener los mensajes de se�alizaci�n necesarios.
-     * @since 1.0
-     */
-    private TTLDPPayload datosTLDP;
+    private int packetDirection;
+    private TTCPPayload TCPPayload;
+    private TTLDPPayload TLDPPayload;
     
-    private boolean tipoLSP;
+    private boolean LSPType;
 }

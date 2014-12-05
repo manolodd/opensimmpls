@@ -142,7 +142,7 @@ public class TDMGP {
 
     private TDMGPFlowEntry getFlow(TAbstractPDU packet) {
         TDMGPFlowEntry dmgpFlowEntry = null;
-        int flowID = packet.getHeader().getOriginIP().hashCode();
+        int flowID = packet.getIPv4Header().getOriginIP().hashCode();
         dmgpFlowEntry = getFlow(flowID);
         return dmgpFlowEntry;
     }
@@ -165,7 +165,7 @@ public class TDMGP {
     private TDMGPFlowEntry createFlow(TAbstractPDU packet) {
         this.monitor.lock();
         TDMGPFlowEntry dmgpFlowEntry = null;
-        int flowID = packet.getHeader().getOriginIP().hashCode();
+        int flowID = packet.getIPv4Header().getOriginIP().hashCode();
         int percentageToBeAssigned = 0;
         int octectsToBeAssigned = 0;
         if (this.totalAssignedOctects < this.getDMGPSizeInOctects()) {
@@ -216,8 +216,8 @@ public class TDMGP {
 
     private int getRequestedPercentage(TAbstractPDU packet) {
         int packetGoSLevel = 0;
-        if (packet.getHeader().getOptionsField().isUsed()) {
-            packetGoSLevel = packet.getHeader().getOptionsField().getEncodedGoSLevel();
+        if (packet.getIPv4Header().getOptionsField().isUsed()) {
+            packetGoSLevel = packet.getIPv4Header().getOptionsField().getEncodedGoSLevel();
         } else {
             return 0;
         }

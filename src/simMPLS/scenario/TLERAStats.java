@@ -228,7 +228,7 @@ public class TLERAStats extends TStats {
                     this.tEMPLS++;
                 }
             } else if (tipoPaquete == TAbstractPDU.MPLS_GOS) {
-                GoS = paquete.getHeader().getOptionsField().getEncodedGoSLevel();
+                GoS = paquete.getIPv4Header().getOptionsField().getEncodedGoSLevel();
                 if (entrada == TStats.SALIDA) {
                     if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tSMPLS++;
@@ -270,7 +270,7 @@ public class TLERAStats extends TStats {
                     this.tEIPV4++;
                 }
             } else if (tipoPaquete == TAbstractPDU.IPV4_GOS) {
-                GoS = paquete.getHeader().getOptionsField().getEncodedGoSLevel();
+                GoS = paquete.getIPv4Header().getOptionsField().getEncodedGoSLevel();
                 if (entrada == TStats.SALIDA) {
                     if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tSIPV4++;

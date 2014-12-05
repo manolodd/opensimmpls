@@ -74,7 +74,7 @@ public class TDMGPEntry implements Comparable {
      * @since 1.0
      */
     public TMPLSPDU getPacket() {
-        return this.packet.obtenerCopia();
+        return this.packet.getAClon();
     }
 
     /**
@@ -85,9 +85,9 @@ public class TDMGPEntry implements Comparable {
      * @since 1.0
      */
     public void setPacket(TMPLSPDU p) {
-        this.packet = p.obtenerCopia();
-        this.flowID = p.getHeader().getOriginIP().hashCode();
-        this.packetID = p.getHeader().obtenerClavePrimaria();
+        this.packet = p.getAClon();
+        this.flowID = p.getIPv4Header().getOriginIP().hashCode();
+        this.packetID = p.getIPv4Header().obtenerClavePrimaria();
     }
 
     /**

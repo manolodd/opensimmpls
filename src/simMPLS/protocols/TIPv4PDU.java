@@ -16,100 +16,107 @@
  */
 package simMPLS.protocols;
 
-/** Esta clase implementa un paquete IPv4, con sus campos accesibles.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+/**
+ * This class implements a IPv4 packet.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public class TIPv4PDU extends TAbstractPDU {
-    
-    /** Este m�todo es el constructor de la clase. Crea una nueva instancia de TPDUIPv4
-     * con los par�metros especificados.
-     * @param id El id unico de cada paquete generado.
-     * @param ipo La direcci�n IP origen del paquete.
-     * @param ipd La direcci�n IP destino el paquete.
-     * @param tamDatos El tama�o de los datos el paquete, en bytes.
+
+    /**
+     * This method is the constructor of the class. It is create a new instance
+     * of TIPv4PDU.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param id Packet identifier.
+     * @param originIP IP addres of this packet's sender.
+     * @param targetIP IP addres of this packet's receiver.
+     * @param payloadSize The desired size for the payload of this IPv4 packet,
+     * in bytes (octects).
      * @since 1.0
      */
-    public TIPv4PDU(long id, String ipo, String ipd, int tamDatos) {
-        super(id, ipo, ipd);
-        datos = new TTCPPayload(tamDatos);
-        subtipo = super.IPV4;
+    public TIPv4PDU(long id, String originIP, String targetIP, int payloadSize) {
+        super(id, originIP, targetIP);
+        this.TCPPayload = new TTCPPayload(payloadSize);
     }
-    
-    /** Este m�todo devuelve el tama�o del paquete, tanto de la carga �til como del
-     * overhead, los campos,e tcetera. En bytes.
-     * @return El tama�o completo del paquete en bytes.
+
+    /**
+     * This method returns the size of the packet in bytes (octects).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return Size of this packet in bytes (octects).
      * @since 1.0
      */
+    @Override
     public int getSize() {
-        return (super.getHeader().getSize() + datos.setSize());
+        return (super.getIPv4Header().getSize() + this.TCPPayload.getSize());
     }
-    
-    /** Este m�todo devuelve la constante IPV4, indicando que se trata de un paquete
-     * IPv4.
-     * @return Devuelve la constante IPV4, indicando que se trata de un paquete IPv4.
+
+    /**
+     * This method returns the type of the packet, as defined by constants in
+     * TAbstractPDU class.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The type of this packet.
      * @since 1.0
      */
+    @Override
     public int getType() {
-        return super.IPV4;
+        return TAbstractPDU.IPV4;
     }
-    
-    /** Este m�todo nos permite acceder directamente a la carga �til del paquete y poder
-     * as� acceder directamente a sus m�todos.
-     * @return La carga �til del paquete IPv4.
-     * @since 1.0
-     */
-    public TTCPPayload obtenerDatos() {
-        return datos;
-    }
-    
-    /** Este m�todo nos permite cambiar la carga �til del paquete IPv4 de forma r�pida y
-     * sencilla.
-     * @param d La nueva carga �til (datos) que queremos para el paquete IPv4.
-     * @since 1.0
-     */
-    public void ponerDatos(TTCPPayload d) {
-        datos = d;
-    }
-    
-    /** Este m�todo nos devuelve la header IPv4 del paquete para poder as� acceder a sus m�todos
- de forma directa.
-     * @return La header IPv4 del paquete.
-     * @since 1.0
-     */
-    public TIPv4Header getHeader() {
-        return super.getHeader();
-    }
-    
+
     /**
-     * Este m�todo permite obtener el subtipo de paquete IPv4, es decir, si el paquete
-     * est� o no marcado con GoS.
-     * @return El subtipo del paquete IPv4. Una de las cosntantes definidas en la clase TAbstractPDU.
+     * This method return the TCP payload of this packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TCP payload of this packet.
      * @since 1.0
      */
+    public TTCPPayload getTCPPayload() {
+        return this.TCPPayload;
+    }
+
+    /**
+     * This method set the TCP payload of this packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param TCPPayload The TCP payload for this packet.
+     * @since 1.0
+     */
+    public void setTCPPayload(TTCPPayload TCPPayload) {
+        this.TCPPayload = TCPPayload;
+    }
+
+    /**
+     * This method gets the IPv4 header of this packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The IPv4 header of this packet.
+     * @since 1.0
+     */
+    @Override
+    public TIPv4Header getIPv4Header() {
+        return super.getIPv4Header();
+    }
+
+    /**
+     * This method returns the subtype of the packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The subtype of this packet. For instances of this class, it
+     * returns IPV4, as defined in TAbstractPDU.
+     * @since 1.0
+     */
+    @Override
     public int getSubtype() {
-        return this.subtipo;
+        return TAbstractPDU.IPV4;
     }
-    
-    /**
-     * Este m�todo poermite establecer el subtipo de paquete IPv4, es decir, si el
-     * paquete est� o no marcado con GoS.
-     * @param st El subtipo del paquete. Una de las constantes definidas en la clase TAbstractPDU.
-     * @since 1.0
-     */
-    public void setSubtype(int st) {
-        subtipo = st;
+
+    @Override
+    public void setSubtype(int subtype) {
+        // Do nothing. FIX (remove).
     }
-    
-    /** Este atributo simula la carga del paquete IPv4. Es utilizado para simular
-     * paquetes con distinto tama�o.
-     * @since 1.0
-     */
-    private TTCPPayload datos;
-    /**
-     * Este atributo almacenar� el subtipo de paquete IPv4 de que se trata.
-     * @since 1.0
-     */
-    private int subtipo;
+
+    private TTCPPayload TCPPayload;
 }
