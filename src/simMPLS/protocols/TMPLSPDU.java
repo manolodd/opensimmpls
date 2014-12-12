@@ -56,6 +56,10 @@ public class TMPLSPDU extends TAbstractPDU {
         String auxTargetIP = this.getIPv4Header().getTargetIP();
         int auxTCPPayloadSize = this.TCPPayload.getSize() - 20;
         TMPLSPDU clonedMPLSPDU = new TMPLSPDU(auxID, auxOriginIP, auxTargetIP, auxTCPPayloadSize);
+        // "Guarentee of Service Support over MPLS using Active Techniques" 
+        // proposal redefines the IPv4 Options field to track crossed active 
+        // nodes. Therefore we inspect if this field is being use this way and 
+        // clone it if necessary.
         if (this.getIPv4Header().getOptionsField().isUsed()) {
             int auxGoSLevel = this.getIPv4Header().getOptionsField().getEncodedGoSLevel();
             clonedMPLSPDU.getIPv4Header().getOptionsField().setEncodedGoSLevel(auxGoSLevel);
@@ -122,9 +126,9 @@ public class TMPLSPDU extends TAbstractPDU {
     @Override
     public int getSize() {
         int auxSize = 0;
-        auxSize += super.getIPv4Header().getSize();
-        auxSize += this.TCPPayload.getSize();
-        auxSize += (4 * this.MPLSLabelStack.getSize());
+        auxSize += super.getIPv4Header().getSize(); // IPv4 header.
+        auxSize += this.TCPPayload.getSize(); // TCP payload.
+        auxSize += (4 * this.MPLSLabelStack.getSize()); // MPLS payload.
         return (auxSize);
     }
 

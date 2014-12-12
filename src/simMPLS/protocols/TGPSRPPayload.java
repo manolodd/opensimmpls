@@ -17,116 +17,113 @@
 package simMPLS.protocols;
 
 /**
- * Esta clase implementa el payload de un paquete GPSRP, es decir, mensajes para la
- * recuperaci�n local de paquetes.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements a GPSRP (Guarantee of Service Store and Retransmit
+ * Protocol) packet content (payload of GPSRP packet). As defined in the
+ * proposal "Guarantee of Servico (GoS) Support over MPLS using Active
+ * Techniques".
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public class TGPSRPPayload {
-    
+
     /**
-     * Este m�todo es el constructor de la clase. Crea una nueva instancia de
-     * TDatosGPSRP.
+     * This method is the constructor of the class. It is create a new instance
+     * of TGPSRPPayload.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      */
     public TGPSRPPayload() {
-        mensaje = this.SOLICITUD_RETRANSMISION;
-        flujo = 0;
-        idPaquete = 0;
+        this.message = TGPSRPPayload.RETRANSMISSION_REQUEST;
+        this.flowID = 0;
+        this.packetID = 0;
     }
-    
+
     /**
-     * Este m�todo permite establecer el flujo al que pertenece el paquete cuya
-     * a cuya retransmisi�n se refiere este mensaje.
-     * @param idf El identificador del flujo al que pertenece el paquete solicitado.
+     * Este m�todo permite establecer el flowID al que pertenece el paquete cuya a
+ cuya retransmisi�n se refiere este message.
+     *
+     * @param flowID El identificador del flowID al que pertenece el paquete
+ solicitado.
      * @since 1.0
-     */    
-    public void ponerFlujo(int idf) {
-        flujo = idf;
+     */
+    public void setFlowID(int flowID) {
+        this.flowID = flowID;
     }
-    
+
     /**
-     * Este m�todo permite obtener el flujo al que pertenece el paquete cuya
-     * a cuya retransmisi�n se refiere este mensaje.
-     * @return El identificador del flujo al que pertenece el paquete solicitado.
+     * Este m�todo permite obtener el flowID al que pertenece el paquete cuya a
+ cuya retransmisi�n se refiere este message.
+     *
+     * @return El identificador del flowID al que pertenece el paquete solicitado.
      * @since 1.0
-     */    
-    public int obtenerFlujo() {
-        return this.flujo;
+     */
+    public int getFlowID() {
+        return this.flowID;
     }
-    
+
     /**
      * Este m�todo permite establecer el identificador del paquete a cuya
-     * retransmisi�n se refiere este mensaje.
-     * @param idp Identificador del paquete buscado.
+     * retransmisi�n se refiere este message.
+     *
+     * @param packetID Identificador del paquete buscado.
      * @since 1.0
-     */    
-    public void ponerIdPaquete(int idp) {
-        this.idPaquete = idp;
+     */
+    public void setPacketID(int packetID) {
+        this.packetID = packetID;
     }
-    
+
     /**
      * Este m�todo permite obtener el identificador del paquete a cuya
-     * retransmisi�n se refiere este mensaje.
+     * retransmisi�n se refiere este message.
+     *
      * @return Identificador del paquete solicitado.
      * @since 1.0
-     */    
-    public int obtenerIdPaquete() {
-        return this.idPaquete;
+     */
+    public int getPacketID() {
+        return this.packetID;
     }
-    
+
     /**
-     * Este m�todo devuelve el tama�o, en bytes, de esta instancia del payload GPSRP.
+     * Este m�todo devuelve el tama�o, en bytes, de esta instancia del payload
+     * GPSRP.
+     *
      * @return El tama�o en bytes del payload.
      * @since 1.0
      */
     public int setSize() {
         return 9;
+        // FIX: Create a constant insted of a harcoded value.
     }
-    
+
     /**
-     * Establece el mensaje de un paquete GPSRP puesto que en principio el paquete es
-     * GPSRP gen�rico y no especifica ninguna solicitud o respuesta.
-     * @param m El mensaje, que ser� una de las constantes definidas en la clase.
+     * Establece el message de un paquete GPSRP puesto que en principio el
+     * paquete es GPSRP gen�rico y no especifica ninguna solicitud o respuesta.
+     *
+     * @param message El message, que ser� una de las constantes definidas en la
+     * clase.
      * @since 1.0
      */
-    public void ponerMensaje(int m) {
-        mensaje = m;
+    public void setMessage(int message) {
+        this.message = message;
     }
-    
-    /** Este m�todo nos permite conocer el valor del mensaje del payload.
-     * @return El mensaje que lleva impl�cito el paquete.
+
+    /**
+     * Este m�todo nos permite conocer el valor del message del payload.
+     *
+     * @return El message que lleva impl�cito el paquete.
      * @since 1.0
      */
-    public int obtenerMensaje() {
-        return mensaje;
+    public int getMessage() {
+        return this.message;
     }
-    
-    /**
-     * Esta constante se usa para solicitar la retransmisi�n de un paquete marcado con
-     * GoS.
-     * @since 1.0
-     */    
-    public static final int SOLICITUD_RETRANSMISION = -1;
-    /**
-     * Esta constante se usa para denegar la retransmisi�n de un paquete marcado con
-     * GOS.
-     * @since 1.0
-     */    
+
+    public static final int RETRANSMISSION_REQUEST = -1;
     public static final int RETRANSMISION_NO = -2;
-    /**
-     * Esta constante se usa para conceder la retransmisi�n de un paquete marcado con
-     * GoS.
-     * @since 1.0
-     */    
     public static final int RETRANSMISION_OK = -3;
-    
-    /** Atributo que es el mensaje concreto que lleva incorporado este paquete TLDP.
-     * Ser� alguno de los valores constantes definidos en esta clase.
-     * @since 1.0
-     */
-    private int mensaje;
-    private int flujo;
-    private int idPaquete;
+
+    private int message;
+    private int flowID;
+    private int packetID;
 }

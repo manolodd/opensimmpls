@@ -187,8 +187,8 @@ public class TLERAStats extends TStats {
                 }
             } else if (tipoPaquete == TAbstractPDU.GPSRP) {
                 TGPSRPPDU pGPSRP = (TGPSRPPDU) paquete;
-                int mensaje = pGPSRP.getGPSRPPayload().obtenerMensaje();
-                if (mensaje == TGPSRPPayload.SOLICITUD_RETRANSMISION) {
+                int mensaje = pGPSRP.getGPSRPPayload().getMessage();
+                if (mensaje == TGPSRPPayload.RETRANSMISSION_REQUEST) {
                     if (entrada == TStats.SALIDA) {
                         this.tSGPSRP++;
                         solicitudesEmitidas++;

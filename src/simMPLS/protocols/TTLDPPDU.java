@@ -16,160 +16,200 @@
  */
 package simMPLS.protocols;
 
-/** Esta clase implementa un paquete TLDP (Tiny Label Distribution Protocol).
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+/**
+ * This class implements a TLDP (Tiny Label Distribution Protocol) packet. TLDP
+ * is defined in "Guarantee of Service (goS) Support over MPLS using Active
+ * Tehcniques" proposal.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public class TTLDPPDU extends TAbstractPDU {
-    
-    /** Este m�todo es el constructor de la clase. Crea una nueva instancia de un
-     * paquete TLDP bas�ndose en lo par�metros pasados.
-     * @param id id �nico del paquete.
-     * @param ipo Direcci�n IP origen del paquete.
-     * @param ipd Direcci�n IP destino del paquete.
+
+    /**
+     * This method is the constructor of the class. It is create a new instance
+     * of TTLDPPDU.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param id Packet identifier.
+     * @param originIP IP addres of this packet's sender.
+     * @param targetIP IP addres of this packet's receiver.
      * @since 1.0
      */
-    public TTLDPPDU(long id, String ipo, String ipd) {
-        super(id, ipo, ipd);
+    public TTLDPPDU(long id, String originIP, String targetIP) {
+        super(id, originIP, targetIP);
         this.TCPPayload = new TTCPPayload(0);
         this.TLDPPayload = new TTLDPPayload();
         this.LSPType = false;
         this.packetDirection = TTLDPPDU.DIRECTION_FORWARD;
     }
-    
-    /** Este m�todo devuelve el tama�o completo del paquete en bytes, para poder
-     * realizar c�lculos en la simulaci�n.
-     * @return El tama�o completo del paquete en bytes.
+
+    /**
+     * This method returns the size of the packet in bytes (octects).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return Size of this packet in bytes (octects).
      * @since 1.0
      */
+    @Override
     public int getSize() {
         int auxSize = 0;
-        auxSize += super.getIPv4Header().getSize(); // IPv4 header
-        auxSize += this.TCPPayload.getSize(); // TCP header
-        auxSize += this.TLDPPayload.getSize(); // LDP payload
+        auxSize += super.getIPv4Header().getSize(); // IPv4 header.
+        auxSize += this.TCPPayload.getSize(); // TCP payload.
+        auxSize += this.TLDPPayload.getSize(); // TLDP payload.
         return (auxSize);
     }
-    
-    /** Este m�todo devuelve la constante TLDP, indicando que el paquete es de tipo
-     * TLDP.
-     * @return La constante TLDP.
+
+    /**
+     * This method returns the type of the packet, as defined by constants in
+     * TAbstractPDU class.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The type of this packet.
      * @since 1.0
      */
+    @Override
     public int getType() {
-        return super.TLDP;
+        return TAbstractPDU.TLDP;
     }
-    
-    /** Este m�todo nos permite el acceso a los datos TCP de este paquete, para poder
-     * acceder a sus m�todos de forma directa.
-     * @return Los datos TCP de esta instancia.
+
+    /**
+     * This method return the TCP payload of this packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TCP payload of this packet.
      * @since 1.0
      */
     public TTCPPayload getTCPPayload() {
         return this.TCPPayload;
     }
-    
-    /** Este m�todo nos permite acceder a los datos TLDP del paquete para hacer uso
-     * directamente de sus m�todos.
-     * @return Los datos TLDP de esta instancia.
+
+    /**
+     * This method return the TLDP payload of this packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TLDP payload of this packet.
      * @since 1.0
      */
     public TTLDPPayload getTLDPPayload() {
         return this.TLDPPayload;
     }
-    
-    /** Este m�todo nos permite acceder a la header IPv4 del paquete y poder hacer uso
- de sus m�todos de forma directa.
-     * @return La header IP del paquete.
+
+    /**
+     * This method gets the IPv4 header of this packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The IPv4 header of this packet.
      * @since 1.0
      */
+    @Override
     public TIPv4Header getIPv4Header() {
         return super.getIPv4Header();
+        // Not necessary. Already implemented in superclass. FIX
     }
-    
+
     /**
-     * Este m�todo permite obtener el subtipo del paquete TLDP. En esta versi�n el
-     * paquete TLDP no tiene subtipos. Implementa este m�todo para dejar de ser una
-     * clase abstracta.
-     * @return TAbstractPDU.TLDP
+     * This method returns the subtype of the packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The subtype of this packet. For instances of this class, it
+     * returns TLDP, as defined in TAbstractPDU.
      * @since 1.0
      */
+    @Override
     public int getSubtype() {
         return TAbstractPDU.TLDP;
     }
-    
+
+    @Override
+    public void setSubtype(int st) {
+        // Do nothing. FIX (remove).
+    }
+
     /**
-     * Este m�todo no hace nada. Existe porque es necesario implementarlo por ser
-     * abstracto en una clase superior.
-     * @param st No utilizado.
+     * This metod sets the LSP signaled by this packet as a traditional LSP or a
+     * backup LSP as defined in "Guarantee of Service support over MPLS using
+     * Active Techniques" proposal. This value is only used with simulation
+     * purposes and does not form part of the TLDP protocol at all.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param LSPType LSP_NORMAL o LSP_BACKUP as defined in JSimulationPanel,
+     * depending on whether it refers to a traditional LSP or a backup LSP as
+     * defined in "Guarantee of Service support over MPLS using Active
+     * Techniques" proposal.
      * @since 1.0
      */
-    public void setSubtype(int st) {
-        // No se hace nada
+    public void setLSPType(boolean LSPType) {
+        this.LSPType = LSPType;
+        // FIX: LSP_NORMAL and LSP_BACKUP constats should be defined in this 
+        // class instead of in JSimulationPanel class.
     }
-    
+
     /**
-     * Este m�todo permite establecer el tipo de LSP al que se refiere el paquete TLDP.
-     * Este m�todo y el valor especificado se utilizan exclusivamente para la
-     * simulaci�n visual y en ning�n caso se puede entender que el valor forma parte
-     * del protocolo TLDP.
-     * @param tlsp LSP_NORMAL o LSP_BACKUP, dependiendo de si se refiere a un LSP tradicional o a
-     * un LSP de respaldo.
+     * This method gets the type of LSP that is signaled by this packet: a
+     * traditional one or a backup LSP as defined in "Guarantee of Service
+     * support over MPLS using Active Techniques" proposal. This value is only
+     * used with simulation purposes and does not form part of the TLDP protocol
+     * at all.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return LSP_NORMAL o LSP_BACKUP as defined in JSimulationPanel, depending
+     * on whether it refers to a traditional LSP or a backup LSP as defined in
+     * "Guarantee of Service support over MPLS using Active Techniques"
+     * proposal.
      * @since 1.0
-     */    
-    public void setLSPType(boolean tlsp) {
-        this.LSPType = tlsp;
-    }
-    
-    /**
-     * Este m�todo permite obtener el tipo de LSP al que se refiere el paquete TLDP.
-     * Este m�todo y el valor devuelto se utilizan exclusivamente para la
-     * simulaci�n visual y en ning�n caso se puede entender que el valor forma parte
-     * del protocolo TLDP.
-     * @return LSP_NORMAL o LSP_BACKUP, dependiendo de si se refiere a un LSP tradicional o a
-     * un LSP de respaldo.
-     * @since 1.0
-     */    
+     */
     public boolean getLSPType() {
         return this.LSPType;
+        // FIX: LSP_NORMAL and LSP_BACKUP constats should be defined in this 
+        // class instead of in JSimulationPanel class.
     }
-    
+
     /**
-     * Este m�todo permite obtener por d�nde ha llegado el paquete TLDP al nodo.
+     * This method return the way this packet has arrived to a given node.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     * @return CAME_BY_ENTRANCE, CAME_BY_EXIT o CAME_BY_BACKUP_EXIT, seg�n el lugar por donde haya llegado el nodo.
-     */    
+     * @return CAME_BY_ENTRANCE, CAME_BY_EXIT o CAME_BY_BACKUP_EXIT as defined
+     * in TTLDPPDU class.
+     */
     public int getLocalOrigin() {
-        if (this.packetDirection == TTLDPPDU.DIRECTION_FORWARD)
+        if (this.packetDirection == TTLDPPDU.DIRECTION_FORWARD) {
             return TTLDPPDU.CAME_BY_ENTRANCE;
-        if (this.packetDirection == TTLDPPDU.DIRECTION_BACKWARD)
+        }
+        if (this.packetDirection == TTLDPPDU.DIRECTION_BACKWARD) {
             return TTLDPPDU.CAME_BY_EXIT;
-        if (this.packetDirection == TTLDPPDU.DIRECTION_BACKWARD_BACKUP)
+        }
+        if (this.packetDirection == TTLDPPDU.DIRECTION_BACKWARD_BACKUP) {
             return TTLDPPDU.CAME_BY_BACKUP_EXIT;
+        }
         return TTLDPPDU.CAME_BY_ENTRANCE;
     }
-    
+
     /**
-     * Este m�todo permite establecer por donde va a salir del nodo el paquete TLDP.
+     * This method allow establishing the way this packet should follow to exit
+     * the node. It's a kind of internal pseudo-switching.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     * @param localTarget DIRECTION_FORWARD, DIRECTION_BACKWARD o DIRECTION_BACKWARD_BACKUP, dependiendo de por donde salga el paquete del
- nodo.
-     */    
+     * @param localTarget DIRECTION_FORWARD, DIRECTION_BACKWARD as defined in
+     * TTLDPPDU class.
+     */
     public void setLocalTarget(int localTarget) {
         this.packetDirection = localTarget;
     }
-    
+
     public static final int DIRECTION_FORWARD = -1;
     public static final int DIRECTION_BACKWARD = -2;
     public static final int DIRECTION_BACKWARD_BACKUP = -3;
-    
+
     public static final int CAME_BY_ENTRANCE = -1;
     public static final int CAME_BY_EXIT = -2;
     public static final int CAME_BY_BACKUP_EXIT = -3;
-    
+
     private int packetDirection;
     private TTCPPayload TCPPayload;
     private TTLDPPayload TLDPPayload;
-    
+
     private boolean LSPType;
 }
