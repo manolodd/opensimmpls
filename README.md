@@ -4,6 +4,10 @@
 
 ![OpenSimMPLS logo](https://github.com/manolodd/opensimmpls/blob/master/src/imagenes/splash.png?raw=true)
 
+# Compiling status (Master, JDK1.8)
+
+[![Build Status](https://travis-ci.org/manolodd/opensimmpls.svg?branch=master)](https://travis-ci.org/manolodd/opensimmpls)
+
 # LICENSE
  
 <b>OpenSimMPLS</b> is released under the terms of GPLv3.0+.
