@@ -54,7 +54,7 @@ public class TGPSRPPDU extends TAbstractPDU {
         int auxSize = 0;
         auxSize += super.getIPv4Header().getSize(); // IPv4 header
         auxSize += this.TCPPayload.getSize(); // TCP header
-        auxSize += this.GPSRPPayload.setSize(); // GPSRP packet size
+        auxSize += this.GPSRPPayload.getSize(); // GPSRP packet size
         return (auxSize);
     }
 

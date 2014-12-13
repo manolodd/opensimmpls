@@ -35,17 +35,18 @@ public class TGPSRPPayload {
      * @since 1.0
      */
     public TGPSRPPayload() {
-        this.message = TGPSRPPayload.RETRANSMISSION_REQUEST;
+        this.GPSRPMessageType = TGPSRPPayload.RETRANSMISSION_REQUEST;
         this.flowID = 0;
         this.packetID = 0;
     }
 
     /**
-     * Este m�todo permite establecer el flowID al que pertenece el paquete cuya a
- cuya retransmisi�n se refiere este message.
+     * This method sets the flow of the packet whose retransmission is being
+     * requested by this GPSRP packet.
      *
-     * @param flowID El identificador del flowID al que pertenece el paquete
- solicitado.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param flowID The flow ID of the packet whose retransmission is being
+     * requested.
      * @since 1.0
      */
     public void setFlowID(int flowID) {
@@ -53,10 +54,12 @@ public class TGPSRPPayload {
     }
 
     /**
-     * Este m�todo permite obtener el flowID al que pertenece el paquete cuya a
- cuya retransmisi�n se refiere este message.
+     * This method gets the flow of the packet whose retransmission is being
+     * requested by this GPSRP packet.
      *
-     * @return El identificador del flowID al que pertenece el paquete solicitado.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The flow ID of the packet whose retransmission is being
+     * requested.
      * @since 1.0
      */
     public int getFlowID() {
@@ -64,10 +67,12 @@ public class TGPSRPPayload {
     }
 
     /**
-     * Este m�todo permite establecer el identificador del paquete a cuya
-     * retransmisi�n se refiere este message.
+     * This method sets the packet ID of the packet whose retransmission is
+     * being requested by this GPSRP packet.
      *
-     * @param packetID Identificador del paquete buscado.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packetID Packet ID of the packet whose retransmission is being
+     * requested.
      * @since 1.0
      */
     public void setPacketID(int packetID) {
@@ -75,10 +80,11 @@ public class TGPSRPPayload {
     }
 
     /**
-     * Este m�todo permite obtener el identificador del paquete a cuya
-     * retransmisi�n se refiere este message.
+     * This method gets the packet ID of the packet whose retransmission is
+     * being requested by this GPSRP packet.
      *
-     * @return Identificador del paquete solicitado.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return Packet ID of the packet whose retransmission is being requested.
      * @since 1.0
      */
     public int getPacketID() {
@@ -86,44 +92,52 @@ public class TGPSRPPayload {
     }
 
     /**
-     * Este m�todo devuelve el tama�o, en bytes, de esta instancia del payload
-     * GPSRP.
+     * This method returns the size of this GPSRP payload in bytes (octects). As
+     * defined in the proposal "Guarantee of Service (GoS) Support over MPLS
+     * using Active Techniques".
      *
-     * @return El tama�o en bytes del payload.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return Size of this GPSRP payload in bytes (octects).
      * @since 1.0
      */
-    public int setSize() {
+    public int getSize() {
         return 9;
         // FIX: Create a constant insted of a harcoded value.
     }
 
     /**
-     * Establece el message de un paquete GPSRP puesto que en principio el
-     * paquete es GPSRP gen�rico y no especifica ninguna solicitud o respuesta.
+     * This method sets the type of GPSRP message, giving meaning to this GPSRP
+     * payload. As defined in the proposal "Guarantee of Service (GoS) Support
+     * over MPLS using Active Techniques".
      *
-     * @param message El message, que ser� una de las constantes definidas en la
-     * clase.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param GPSRPMessageType The type of GPSRP message; one of the constants
+     * defined in TGPSRPPayload class.
      * @since 1.0
      */
-    public void setMessage(int message) {
-        this.message = message;
+    public void setGPSRPMessageType(int GPSRPMessageType) {
+        this.GPSRPMessageType = GPSRPMessageType;
     }
 
     /**
-     * Este m�todo nos permite conocer el valor del message del payload.
+     * This method gets the type of GPSRP message, giving meaning to this GPSRP
+     * payload. As defined in the proposal "Guarantee of Service (GoS) Support
+     * over MPLS using Active Techniques".
      *
-     * @return El message que lleva impl�cito el paquete.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The type of GPSRP message; one of the constants defined in
+     * TGPSRPPayload class.
      * @since 1.0
      */
-    public int getMessage() {
-        return this.message;
+    public int getGPSRPMessageType() {
+        return this.GPSRPMessageType;
     }
 
     public static final int RETRANSMISSION_REQUEST = -1;
-    public static final int RETRANSMISION_NO = -2;
+    public static final int RETRANSMISION_NOT_POSSIBLE = -2;
     public static final int RETRANSMISION_OK = -3;
 
-    private int message;
+    private int GPSRPMessageType;
     private int flowID;
     private int packetID;
 }

@@ -29,6 +29,34 @@ Please, refer always to the project home page at:
 
  - http://www.manolodominguez.com/projects/opensimmpls/
 
+# Compiling from sources
+
+You can download latest compiled stable releases from the releases section of 
+this repository. However, if you want to test new features (please, do it and 
+give feedback), you will need to compile the project from sources. Follow these 
+steps:
+
+ - Clone the OpenSimMPLS repo: 
+
+    git clone https://github.com/manolodd/opensimmpls.git
+
+ - Compile the code and obtain a binary jar including all you need (you will 
+   need to install Ant before):
+
+   cd opensimmpls
+   ant opensimmpls-binary-fat-release
+
+ - The jar file will be located in binary-fat-release/opensimmpls directory.
+   
+   cd binary-fat-release/opensimmpls
+
+- Now, run the simulator:
+
+   java -jar openSimMPLS-bin-v{YourVersion}.jar
+
+- Need some scenarios to try? There is not problem!! You'll find them at the
+  examples folder (root of your cloned repository).
+
 
 #HOW TO CONTRIBUTE
 
@@ -45,19 +73,19 @@ If you want to contribute to OpenSimMPLS project, follow these instructions:
  - Create a fork of OpenSimMPL in your own GitHub repository.
  - Clone your OpenSimMPLS repository to your PC or laptop.
  - Create a branch in your local cloned GIT repository. We recommend to name 
-   this branch as "opensimmpls-yourgithubaccount" or something similar.
+   this branch as "opensimmpls-festureyouaredeveloping" or something similar.
  - Do all modifications on this branch, file additions or deletions, 
    modifications, commits...
  - Push your modifications to your remote github OpenSimMPLS repository.
  - Go again to yout GitHub account, choose your OpenSimMPLS repository and then
-   your "opensimmpls-yourgithubaccount" branch (since the previous step, this 
-   branch should be there) and click on the green button at the left. This will
-   guide you to make a pull request (send your modifications on your own
+   your "opensimmpls-festureyouaredeveloping" branch (since the previous step, 
+   this branch should be there) and click on the green button at the left. This 
+   will guide you to make a pull request (send your modifications on your own
    OpenSimMPLS repository to OpenSimMPLS main repository from where you did your
    fork at the beginning).
  - That's all we will have your contribution and will try to merge it into the
    master branch of OpenSimMPLS. Please, comment your contribution as much as
-   possible; we should undertand what you are contributing.
+   possible; we should understand your contribution.
 
 This is a very easy process. However, if it is very difficult to you, simply 
 send us all your modifications (scenario, sources, documentation...) to:

@@ -187,7 +187,7 @@ public class TLERAStats extends TStats {
                 }
             } else if (tipoPaquete == TAbstractPDU.GPSRP) {
                 TGPSRPPDU pGPSRP = (TGPSRPPDU) paquete;
-                int mensaje = pGPSRP.getGPSRPPayload().getMessage();
+                int mensaje = pGPSRP.getGPSRPPayload().getGPSRPMessageType();
                 if (mensaje == TGPSRPPayload.RETRANSMISSION_REQUEST) {
                     if (entrada == TStats.SALIDA) {
                         this.tSGPSRP++;
@@ -198,7 +198,7 @@ public class TLERAStats extends TStats {
                         this.tEGPSRP++;
                         solicitudesRecibidas++;
                     }
-                } else if (mensaje == TGPSRPPayload.RETRANSMISION_NO) {
+                } else if (mensaje == TGPSRPPayload.RETRANSMISION_NOT_POSSIBLE) {
                     if (entrada == TStats.SALIDA) {
                         this.tSGPSRP++;
                         retransmisionesNoRealizadas++;

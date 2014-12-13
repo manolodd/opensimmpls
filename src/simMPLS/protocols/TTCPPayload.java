@@ -16,45 +16,58 @@
  */
 package simMPLS.protocols;
 
-/** Esta clase implementa el payload de un paquete TCP. Es decir,
- * simular� que el paquete TCP lleva datos del nivel superior en su interior y no
- * est�, por tanto, vac�o.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+/**
+ * This class implements a TCP packet content (payload of TCP packet). It is
+ * used to simulate packets of different sizes.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public class TTCPPayload {
-    
-    /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
-     * TDatosTCP.
-     * @param t El tama�o que ocupar� el paquete TCP, en bytes.
+
+    /**
+     * This method is the constructor of the class. It is create a new instance
+     * of TTCPPayload having the size passed in as a parameter. TCP header size
+     * will be added to the specified value, so specify only payload size.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param size The desired size for this TCP packet payload, in bytes
+     * (octects).
      * @since 1.0
      */
-    public TTCPPayload(int t) {
-        tamanio = 20;   // Tama�o de la cabecera TCP
-        tamanio += t;
+    public TTCPPayload(int size) {
+        // FIX: create a constant insted of this harcoded value.
+        this.size = 20;   // TCP header size in bytes (octects)
+        this.size += size;
     }
-    
-    /** Este m�todo nos permite obtener el valor del atributo privado de la clase
-     * "tamanio".
-     * @return El valor del atributo tamanio.
+
+    /**
+     * This method gets the size of this TCP packet. TCP header size is included
+     * in the returned value.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return Te size for this TCP packet, including TCP header, in bytes
+     * (octects).
      * @since 1.0
      */
     public int getSize() {
-        return tamanio;
+        return this.size;
     }
-    
-    /** Este m�todo nos permite modificar el valor del atributo privado de la clase, tamanio.
-     * @param t El nuevo valor del atributo privado tamanio.
+
+    /**
+     * This method sets the size of this TCP packet payload. TCP header size
+     * will be added to the specified value, so specify only payload size.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param size The desired size for this TCP packet payload, in bytes
+     * (octects).
      * @since 1.0
      */
-    public void setSize(int t) {
-        tamanio = 20;   // Tama�o de la cabecera TCP.
-        tamanio += t;
+    public void setSize(int size) {
+        //FIX: create a constant instead of this harcoded value
+        this.size = 20;   // TCP header size in byts (octects).
+        this.size += size;
     }
-    
-    /** Este atributo almacenar� el tama�o de los datos que se supone que van sobre TCP.
-     * @since 1.0
-     */
-    private int tamanio;
+
+    private int size;
 }
