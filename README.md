@@ -37,21 +37,21 @@ give feedback), you will need to compile the project from sources. Follow these
 steps:
 
  - Clone the OpenSimMPLS repo: 
-```bash
+```console
 git clone https://github.com/manolodd/opensimmpls.git
 ```
  - Compile the code and obtain a binary jar including all you need (you will 
    need to install Ant before):
-```bash
+```console
 cd opensimmpls
 ant opensimmpls-binary-fat-release
 ```
  - The jar file will be located in binary-fat-release/opensimmpls directory.
-```bash   
+```console
 cd binary-fat-release/opensimmpls
 ```
 - Now, run the simulator:
-```bash
+```console
 java -jar openSimMPLS-bin-v{YourVersion}.jar
 ```
 - Need some scenarios to try? There is not problem!! You'll find them at the
