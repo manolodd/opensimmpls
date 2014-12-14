@@ -217,7 +217,7 @@ public class TDMGP {
     private int getRequestedPercentage(TAbstractPDU packet) {
         int packetGoSLevel = 0;
         if (packet.getIPv4Header().getOptionsField().isUsed()) {
-            packetGoSLevel = packet.getIPv4Header().getOptionsField().getEncodedGoSLevel();
+            packetGoSLevel = packet.getIPv4Header().getOptionsField().getRequestedGoSLevel();
         } else {
             return 0;
         }

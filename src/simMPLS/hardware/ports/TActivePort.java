@@ -610,7 +610,7 @@ public class TActivePort extends TPort {
         }
         if (packet.getType() == TAbstractPDU.IPV4) {
             if (packet.getIPv4Header().getOptionsField().isUsed()) {
-                int gosLevel = packet.getIPv4Header().getOptionsField().getEncodedGoSLevel();
+                int gosLevel = packet.getIPv4Header().getOptionsField().getRequestedGoSLevel();
                 if (gosLevel == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP) {
                     return TActivePort.PRIORITY_7;
                 }

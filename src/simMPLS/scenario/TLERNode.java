@@ -448,7 +448,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     
     /**
      * Este m�todo se llama cuando se recibe un paquete TLDP con informaci�n sobre las
-     * etiquetas a usar. El m�todo realiza sobre las matriz de encaminamiento la
+ etiquetas a use. El m�todo realiza sobre las matriz de encaminamiento la
      * operaci�n que sea necesario y propaga el cambio al nodo adyacente que
      * corresponda.
      * @param paquete Paquete TLDP recibido.

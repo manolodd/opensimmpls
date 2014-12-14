@@ -659,10 +659,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         String IPDestinoFinal = paquete.getIPv4Header().getTargetIP();
         TSwitchingMatrixEntry emc = null;
         boolean requiereLSPDeRespaldo = false;
-        if ((paquete.getIPv4Header().getOptionsField().getEncodedGoSLevel() == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP) ||
-        (paquete.getIPv4Header().getOptionsField().getEncodedGoSLevel() == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP) ||
-        (paquete.getIPv4Header().getOptionsField().getEncodedGoSLevel() == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP) ||
-        (paquete.getIPv4Header().getOptionsField().getEncodedGoSLevel() == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
+        if ((paquete.getIPv4Header().getOptionsField().getRequestedGoSLevel() == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP) ||
+        (paquete.getIPv4Header().getOptionsField().getRequestedGoSLevel() == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP) ||
+        (paquete.getIPv4Header().getOptionsField().getRequestedGoSLevel() == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP) ||
+        (paquete.getIPv4Header().getOptionsField().getRequestedGoSLevel() == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
             requiereLSPDeRespaldo = true;
         }
         emc = matrizConmutacion.getEntry(pEntrada, valorFEC, TSwitchingMatrixEntry.FEC_ENTRY);
@@ -700,7 +700,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                         TPort pSalida = puertos.getPort(emc.getOutgoingPortID());
                         TMPLSPDU paqueteMPLS = this.crearPaqueteMPLS(paquete, emc);
                         if (paquete.getSubtype() == TAbstractPDU.IPV4_GOS) {
-                            int EXPAux = paquete.getIPv4Header().getOptionsField().getEncodedGoSLevel();
+                            int EXPAux = paquete.getIPv4Header().getOptionsField().getRequestedGoSLevel();
                             TMPLSLabel etiquetaMPLS1 = new TMPLSLabel();
                             etiquetaMPLS1.setBoS(false);
                             etiquetaMPLS1.setEXP(EXPAux);
@@ -741,7 +741,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         
     /**
      * Este m�todo se llama cuando se recibe un paquete TLDP con informaci�n sobre las
-     * etiquetas a usar. El m�todo realiza sobre las matriz de encaminamiento la
+ etiquetas a use. El m�todo realiza sobre las matriz de encaminamiento la
      * operaci�n que sea necesario y propaga el cambio al nodo adyacente que
      * corresponda.
      * @param paquete Paquete TLDP recibido.

@@ -137,7 +137,7 @@ public class TReceiverStats extends TStats {
                     this.tEMPLS++;
                 }
             } else if (tipoPaquete == TAbstractPDU.MPLS_GOS) {
-                GoS = paquete.getIPv4Header().getOptionsField().getEncodedGoSLevel();
+                GoS = paquete.getIPv4Header().getOptionsField().getRequestedGoSLevel();
                 if (entrada == TStats.ENTRADA) {
                     if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tEMPLS++;
@@ -154,7 +154,7 @@ public class TReceiverStats extends TStats {
                     this.tEIPV4++;
                 }
             } else if (tipoPaquete == TAbstractPDU.IPV4_GOS) {
-                GoS = paquete.getIPv4Header().getOptionsField().getEncodedGoSLevel();
+                GoS = paquete.getIPv4Header().getOptionsField().getRequestedGoSLevel();
                 if (entrada == TStats.ENTRADA) {
                     if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tEIPV4++;

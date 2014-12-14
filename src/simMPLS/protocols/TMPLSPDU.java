@@ -61,10 +61,10 @@ public class TMPLSPDU extends TAbstractPDU {
         // nodes. Therefore we inspect if this field is being use this way and 
         // clone it if necessary.
         if (this.getIPv4Header().getOptionsField().isUsed()) {
-            int auxGoSLevel = this.getIPv4Header().getOptionsField().getEncodedGoSLevel();
-            clonedMPLSPDU.getIPv4Header().getOptionsField().setEncodedGoSLevel(auxGoSLevel);
-            int auxGoSID = this.getIPv4Header().getOptionsField().getGoSPacketID();
-            clonedMPLSPDU.getIPv4Header().getOptionsField().setGoSPacketID(auxGoSID);
+            int auxGoSLevel = this.getIPv4Header().getOptionsField().getRequestedGoSLevel();
+            clonedMPLSPDU.getIPv4Header().getOptionsField().setRequestedGoSLevel(auxGoSLevel);
+            int auxGoSID = this.getIPv4Header().getOptionsField().getPacketLocalUniqueIdentifier();
+            clonedMPLSPDU.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(auxGoSID);
             if (this.getIPv4Header().getOptionsField().hasCrossedActiveNodes()) {
                 int auxNumberOfCrossedActiveNodes = this.getIPv4Header().getOptionsField().getNumberOfCrossedActiveNodes();
                 int i = 0;

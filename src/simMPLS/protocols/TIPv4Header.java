@@ -54,7 +54,7 @@ public class TIPv4Header {
     public int getGoSGlobalUniqueIdentifier() {
         String RawGoSGlobalUniqueIdentifier = "";
         if (this.IPv4OptionsField.isUsed()) {
-            RawGoSGlobalUniqueIdentifier = this.originIP + this.IPv4OptionsField.getGoSPacketID();
+            RawGoSGlobalUniqueIdentifier = this.originIP + this.IPv4OptionsField.getPacketLocalUniqueIdentifier();
             return RawGoSGlobalUniqueIdentifier.hashCode();
         }
         // FIX: Create and use a constant instead of this harcoded value
@@ -74,7 +74,7 @@ public class TIPv4Header {
         // FIX: create and use a constant instead of the following harcoded
         // value.
         int size = 20; // IP header size in bytes (octets)
-        size += this.IPv4OptionsField.obtenerTamanio(); // options field size
+        size += this.IPv4OptionsField.getSize(); // options field size
         return size;
     }
 

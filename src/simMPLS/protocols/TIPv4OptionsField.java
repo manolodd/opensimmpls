@@ -16,207 +16,196 @@
  */
 package simMPLS.protocols;
 
-/** Esta clase implementa una codificaci�n del campo opciones de IPv4 acorde a lo
+/**
+ * Esta clase implementa una codificaci�n del campo opciones de IPv4 acorde a lo
  * que necesitamos para la propuesta de GoS sobre MPLS.
+ *
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
 public class TIPv4OptionsField {
-    
-    /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
+
+    /**
+     * Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * TCampoOpcionesIPv4.
+     *
      * @since 1.0
      */
     public TIPv4OptionsField() {
-        nivelGoS = 0;
-        nodosPasados = new String[this.MAX_IPS];
-        int i = 0;
-        for (i=0; i< this.MAX_IPS; i++) {
-            nodosPasados[i] = null;
+        // FIX: create and use class constants instead of harcoded values.
+        this.requestedGoSLevel = 0;
+        this.registerOfActiveNodesCrossed = new String[TIPv4OptionsField.MAX_REGISTERED_ACTIVE_NODE_IP_ADDRESSES];
+        for (int i = 0; i < TIPv4OptionsField.MAX_REGISTERED_ACTIVE_NODE_IP_ADDRESSES; i++) {
+            this.registerOfActiveNodesCrossed[i] = null;
         }
-        campoUsado = false;
-        nodosOcupados = 0;
-        idUnico = 0;
-        hayMarcasDePaso = false;
+        this.optionFieldIsUsed = false;
+        this.numberOfActiveNodesRegistered = 0;
+        this.packetLocalUniqueIdentifier = 0;
+        this.hasCrossedActiveNodesIPs = false;
     }
-    
-    /** Este m�todo devuelve el tama�o del campo opciones debido a que �ste puede ser
-     * variable en palabras de 4 bytes. El resultado lo devuelve en bytes.
+
+    /**
+     * Este m�todo devuelve el tama�o del campo opciones debido a que �ste puede
+     * ser variable en palabras de 4 bytes. El resultado lo devuelve en bytes.
+     *
      * @return El tama�o en bytes del campo opciones de IPv4.
      * @since 1.0
      */
-    public int obtenerTamanio() {
-        int tam=0;
-        int contador = 0;
-        if (this.campoUsado) {
-            tam += 1;   // Del campo GoS
-            tam += 4;   // Del identificador �nico
-            tam += (4*this.nodosOcupados);
-            while (contador < tam) {
-                contador += 4;
+    public int getSize() {
+        // FIX: Recode. Size variable is not necessary.
+        int size = 0;
+        int sizeAux = 0;
+        if (this.optionFieldIsUsed) {
+            // FIX: Create and use class constants instead of harcoded values.
+            size += 1;   // GoS field.
+            size += 4;   // Unique local identifier.
+            size += (4 * this.numberOfActiveNodesRegistered);
+            while (sizeAux < size) {
+                sizeAux += 4;
             }
-            tam = contador;
+            size = sizeAux;
         }
-        return tam;
+        return size;
     }
-    
+
     /**
      * Este m�todo permite establecer el nivel de garant�a de servicio que se ha
      * elegido para el paquete.
-     * @param ngos Nivel de garant�a de servicio; Una de las constantes definidas en la clase TPDU.
+     *
+     * @param requestedGoSLevel Nivel de garant�a de servicio; Una de las
+     * constantes definidas en la clase TPDU.
      * @since 1.0
      */
-    public void setEncodedGoSLevel(int ngos) {
-        this.nivelGoS = ngos;
-        this.campoUsado = true;
+    public void setRequestedGoSLevel(int requestedGoSLevel) {
+        this.requestedGoSLevel = requestedGoSLevel;
+        this.optionFieldIsUsed = true;
     }
-    
+
     /**
      * Este m�todo permite establecer como usado el campo opciones.
+     *
      * @since 1.0
      */
-    public void usar() {
-        this.campoUsado = true;
+    public void use() {
+        this.optionFieldIsUsed = true;
     }
-    
+
     /**
-     * Este m�todo permite consultar si el campo opciones est� siendo usado o no.
-     * @return true, si el campo opciones est� siendo usado. false en caso contrario.
+     * Este m�todo permite consultar si el campo opciones est� siendo usado o
+     * no.
+     *
+     * @return true, si el campo opciones est� siendo usado. false en caso
+     * contrario.
      * @since 1.0
      */
     public boolean isUsed() {
-        return this.campoUsado;
+        return this.optionFieldIsUsed;
     }
-    
+
     /**
-     * Este m�todo poermite obtener el nivel de garant�a de servicio que tiene el
-     * paquete.
-     * @return El nivel de garant�a de servicio del paquete. una de las constantes definidas en
-     * la clase TPDU.
+     * Este m�todo poermite obtener el nivel de garant�a de servicio que tiene
+     * el paquete.
+     *
+     * @return El nivel de garant�a de servicio del paquete. una de las
+     * constantes definidas en la clase TPDU.
      * @since 1.0
      */
-    public int getEncodedGoSLevel() {
-        return this.nivelGoS;
+    public int getRequestedGoSLevel() {
+        return this.requestedGoSLevel;
     }
-    
+
     /**
      * Este m�todo permite establecer el identificador del paquete.
-     * @param id El identificador del paquete.
+     *
+     * @param packetLocalUniqueIdentifier El identificador del paquete.
      * @since 1.0
      */
-    public void setGoSPacketID(int id) {
-        this.idUnico = id;
-        this.campoUsado = true;
+    public void setPacketLocalUniqueIdentifier(int packetLocalUniqueIdentifier) {
+        this.packetLocalUniqueIdentifier = packetLocalUniqueIdentifier;
+        this.optionFieldIsUsed = true;
     }
-    
+
     /**
      * Este m�todo permite obtener el identificador del paquete.
+     *
      * @return El identificador del paquete.
      * @since 1.0
      */
-    public int getGoSPacketID() {
-        return this.idUnico;
+    public int getPacketLocalUniqueIdentifier() {
+        return this.packetLocalUniqueIdentifier;
     }
-    
+
     /**
-     * Este m�todo permite insertar en el campo opciones una direcci�n IP de un nodo
-     * activo atravesado.
-     * @param IPNodo La IP del nodo activo atravesado.
+     * Este m�todo permite insertar en el campo opciones una direcci�n IP de un
+     * nodo activo atravesado.
+     *
+     * @param crossedActiveNodeIP La IP del nodo activo atravesado.
      * @since 1.0
      */
-    public void setCrossedActiveNode(String IPNodo) {
-        this.hayMarcasDePaso = true;
-        this.campoUsado = true;
-        if (this.nodosOcupados < MAX_IPS) {
-            this.nodosPasados[this.nodosOcupados] = IPNodo;
-            this.nodosOcupados++;
+    public void setCrossedActiveNode(String crossedActiveNodeIP) {
+        this.hasCrossedActiveNodesIPs = true;
+        this.optionFieldIsUsed = true;
+        if (this.numberOfActiveNodesRegistered < MAX_REGISTERED_ACTIVE_NODE_IP_ADDRESSES) {
+            this.registerOfActiveNodesCrossed[this.numberOfActiveNodesRegistered] = crossedActiveNodeIP;
+            this.numberOfActiveNodesRegistered++;
         } else {
-            int contador = 1;
-            for (contador = 1; contador < MAX_IPS; contador++) {
-                nodosPasados[contador-1] = nodosPasados[contador];
+            // Drop the first registered crossed active node IP addres, because the option field
+            // is already full.
+            for (int index = 1; index < MAX_REGISTERED_ACTIVE_NODE_IP_ADDRESSES; index++) {
+                this.registerOfActiveNodesCrossed[index - 1] = this.registerOfActiveNodesCrossed[index];
             }
-            nodosPasados[MAX_IPS-1] = IPNodo;
+            this.registerOfActiveNodesCrossed[MAX_REGISTERED_ACTIVE_NODE_IP_ADDRESSES - 1] = crossedActiveNodeIP;
         }
     }
-    
+
     /**
-     * Este m�todo permite averiguar si en el campo opciones hay anotadas direcciones
-     * IP de los nodos activos que se han pasado o no.
-     * @return true, si hay direcciones IP almacenadas en el campo opciones. false, en caso
-     * contrario,
+     * Este m�todo permite averiguar si en el campo opciones hay anotadas
+     * direcciones IP de los nodos activos que se han pasado o no.
+     *
+     * @return true, si hay direcciones IP almacenadas en el campo opciones.
+     * false, en caso contrario,
      * @since 1.0
      */
     public boolean hasCrossedActiveNodes() {
-        return this.hayMarcasDePaso;
+        return this.hasCrossedActiveNodesIPs;
     }
-    
+
     /**
      * Este m�todo comprueba el n�mero de IP de nodos activos atravesados por el
      * paquete que est�n actualmente marcadas en el campo opciones.
-     * @return N�mero de IP de nodos activos atravesados que contiene el campo opciones.
+     *
+     * @return N�mero de IP de nodos activos atravesados que contiene el campo
+     * opciones.
      * @since 1.0
-     */    
+     */
     public int getNumberOfCrossedActiveNodes() {
-        return this.nodosOcupados;
+        return this.numberOfActiveNodesRegistered;
     }
-    
+
     /**
-     * Este m�todo devuelve la IP del nodo activo que el paquete atraves� hace <I>naa</I>
+     * Este m�todo devuelve la IP del nodo activo que el paquete atraves� hace
+     * <I>registeredActiveNodeIndex</I>
      * nodos activos.
-     * @param naa N�mero de nodos activos atravesados antes del que queremos saber la IP.
+     *
+     * @param registeredActiveNodeIndex N�mero de nodos activos atravesados antes del que queremos
+     * saber la IP.
      * @return IP del nodo activo deseado.
      * @since 1.0
-     */    
-    public String getCrossedActiveNode(int naa) {
-        if (naa < this.MAX_IPS) {
-            return this.nodosPasados[naa];
+     */
+    public String getCrossedActiveNode(int registeredActiveNodeIndex) {
+        if (registeredActiveNodeIndex < TIPv4OptionsField.MAX_REGISTERED_ACTIVE_NODE_IP_ADDRESSES) {
+            return this.registerOfActiveNodesCrossed[registeredActiveNodeIndex];
         }
         return null;
     }
-    
-    /**
-     * Esta constante indica el n�mero m�ximo de direcciones IP de nodos activos
-     * atravesados que pueden ser almacenadas en el campo opciones.
-     * @since 1.0
-     */
-    private static final int MAX_IPS = 8;
-    
-    /**
-     * Este atributo almacena los datos del nivel de garant�a de servicio y la creaci�n
-     * de LSp de respaldo que se han elegido para el paquete.
-     * @since 1.0
-     */
-    private int nivelGoS;
-    /**
-     * Este atributo est� configurado como una cola rotatoria que almacena las
-     * direcciones IP (la 8 �ltimas como mucho9 de los nodos activos que ha ido
-     * atravesando el paquete.
-     * @since 1.0
-     */
-    private String nodosPasados[];
-    /**
-     * Este atributo indica si el campo opciones se ha usado o no, para de este modo
-     * contarlo en el c�mputo del tama�o del paquete o no.
-     * @since 1.0
-     */
-    private boolean campoUsado;
-    /**
-     * Este m�todo indica cu�ntas direcciones IP's de nodos activos atravesados hay
-     * almacenadas en el campo opciones.
-     * @since 1.0
-     */
-    private int nodosOcupados;
-    /**
-     * Este m�todo almacena el identificador unico que, junto con la IP de origen del
-     * paquete, forman la clave primaria que identifica al paquete.
-     * @since 1.0
-     */
-    private int idUnico;
-    /**
-     * Este atributo indica si se ha anotado alguna direcci�n IP de algun nodo activo
-     * en el campo opciones.
-     * @since 1.0
-     */
-    private boolean hayMarcasDePaso;
+
+    private static final int MAX_REGISTERED_ACTIVE_NODE_IP_ADDRESSES = 8;
+
+    private int requestedGoSLevel;
+    private String[] registerOfActiveNodesCrossed;
+    private boolean optionFieldIsUsed;
+    private int numberOfActiveNodesRegistered;
+    private int packetLocalUniqueIdentifier;
+    private boolean hasCrossedActiveNodesIPs;
 }
