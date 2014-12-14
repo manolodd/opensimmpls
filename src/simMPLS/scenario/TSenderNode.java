@@ -542,7 +542,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                     etiquetaMPLSDeEmision.setBoS(true);
                     etiquetaMPLSDeEmision.setEXP(0);
                     etiquetaMPLSDeEmision.setLabel(etiquetaDeEmision);
-                    etiquetaMPLSDeEmision.setTTL(paquete.getIPv4Header().obtenerTTL());
+                    etiquetaMPLSDeEmision.setTTL(paquete.getIPv4Header().getTTL());
                     paquete.getLabelStack().pushLabel(etiquetaMPLSDeEmision);
                     return paquete;
                 } else {
@@ -554,12 +554,12 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                     etiquetaMPLSDeEmision.setBoS(true);
                     etiquetaMPLSDeEmision.setEXP(0);
                     etiquetaMPLSDeEmision.setLabel(etiquetaDeEmision);
-                    etiquetaMPLSDeEmision.setTTL(paquete.getIPv4Header().obtenerTTL());
+                    etiquetaMPLSDeEmision.setTTL(paquete.getIPv4Header().getTTL());
                     TMPLSLabel etiquetaMPLS1 = new TMPLSLabel();
                     etiquetaMPLS1.setBoS(false);
                     etiquetaMPLS1.setEXP(valorGoS);
                     etiquetaMPLS1.setLabel(1);
-                    etiquetaMPLS1.setTTL(paquete.getIPv4Header().obtenerTTL());
+                    etiquetaMPLS1.setTTL(paquete.getIPv4Header().getTTL());
                     paquete.getLabelStack().pushLabel(etiquetaMPLSDeEmision);
                     paquete.getLabelStack().pushLabel(etiquetaMPLS1);
                     return paquete;

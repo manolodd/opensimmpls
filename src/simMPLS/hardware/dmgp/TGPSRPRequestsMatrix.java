@@ -120,7 +120,7 @@ public class TGPSRPRequestsMatrix {
         TGPSRPRequestEntry gpsrpRequestEntry = new TGPSRPRequestEntry(this.idGenerator.getNextID());
         gpsrpRequestEntry.setOutgoingPort(incomingPort);
         gpsrpRequestEntry.setFlowID(mplsPacket.getIPv4Header().getOriginIP().hashCode());
-        gpsrpRequestEntry.setPacketID(mplsPacket.getIPv4Header().obtenerClavePrimaria());
+        gpsrpRequestEntry.setPacketID(mplsPacket.getIPv4Header().getGoSGlobalUniqueIdentifier());
         int numberOfCrossedNodes = mplsPacket.getIPv4Header().getOptionsField().getNumberOfCrossedActiveNodes();
         int i = 0;
         String nextIP = "";

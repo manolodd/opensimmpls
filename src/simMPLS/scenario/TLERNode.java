@@ -1351,7 +1351,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         empls.setBoS(true);
         empls.setEXP(0);
         empls.setLabel(emc.getOutgoingLabel());
-        empls.setTTL(paqueteIPv4.getIPv4Header().obtenerTTL()-1);
+        empls.setTTL(paqueteIPv4.getIPv4Header().getTTL()-1);
         paqueteMPLS.getLabelStack().pushLabel(empls);
         paqueteIPv4 = null;
         try {
@@ -1381,7 +1381,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         }
         paqueteIPv4.setHeader(paqueteMPLS.getIPv4Header());
         paqueteIPv4.setTCPPayload(paqueteMPLS.getTCPPayload());
-        paqueteIPv4.getIPv4Header().ponerTTL(paqueteMPLS.getLabelStack().getTop().getTTL());
+        paqueteIPv4.getIPv4Header().setTTL(paqueteMPLS.getLabelStack().getTop().getTTL());
         if (paqueteIPv4.getIPv4Header().getOptionsField().isUsed()) {
             paqueteIPv4.setSubtype(TAbstractPDU.IPV4_GOS);
         } else {

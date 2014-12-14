@@ -705,7 +705,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                             etiquetaMPLS1.setBoS(false);
                             etiquetaMPLS1.setEXP(EXPAux);
                             etiquetaMPLS1.setLabel(1);
-                            etiquetaMPLS1.setTTL(paquete.getIPv4Header().obtenerTTL());
+                            etiquetaMPLS1.setTTL(paquete.getIPv4Header().getTTL());
                             paqueteMPLS.getLabelStack().pushLabel(etiquetaMPLS1);
                             paqueteMPLS.setSubtype(TAbstractPDU.MPLS_GOS);
                             paqueteMPLS.getIPv4Header().getOptionsField().setCrossedActiveNode(this.getIPAddress());
@@ -1955,7 +1955,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         empls.setBoS(true);
         empls.setEXP(0);
         empls.setLabel(emc.getOutgoingLabel());
-        empls.setTTL(paqueteIPv4.getIPv4Header().obtenerTTL()-1);
+        empls.setTTL(paqueteIPv4.getIPv4Header().getTTL()-1);
         paqueteMPLS.getLabelStack().pushLabel(empls);
         paqueteIPv4 = null;
         try {
@@ -1985,7 +1985,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         }
         paqueteIPv4.setHeader(paqueteMPLS.getIPv4Header());
         paqueteIPv4.setTCPPayload(paqueteMPLS.getTCPPayload());
-        paqueteIPv4.getIPv4Header().ponerTTL(paqueteMPLS.getLabelStack().getTop().getTTL());
+        paqueteIPv4.getIPv4Header().setTTL(paqueteMPLS.getLabelStack().getTop().getTTL());
         if (paqueteMPLS.getSubtype() == TAbstractPDU.MPLS) {
             paqueteIPv4.setSubtype(TAbstractPDU.IPV4);
         } else if (paqueteMPLS.getSubtype() == TAbstractPDU.MPLS_GOS) {

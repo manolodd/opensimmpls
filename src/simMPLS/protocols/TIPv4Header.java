@@ -16,125 +16,147 @@
  */
 package simMPLS.protocols;
 
-/** Esta clase implementa la cabecera de un paquete IPv4 con las opciones que
- * interesan para este proyecto final de carrera.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+/**
+ * This class implements a IPv4 header.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public class TIPv4Header {
-    
-    /** Este m�todo es el constructor de la clase. Crea una nueva instancia de TCabeceraIPv4.
-     * @param ipo Direcci�n IP origen.
-     * @param ipd Direcci�n IP destino.
-     * @since 1.0
-     */
-    public TIPv4Header(String ipo, String ipd) {
-        IPOrigen = ipo;
-        IPDestino = ipd;
-        opciones = new TIPv4OptionsField();
-        TTL = 255;
-    }
-    
+
     /**
-     * Este m�todo devuelve una cadena de caracteres que identifica �nequ�vocamente a
-     * un paquete marcado con GoS dentro de la topolog�a. Est� formada por una
-     * concatenaci�n de las representaciones textuales de la IP del emisor y del
-     * identificador �nico del paquete.
-     * @return Una cadena de caracteres �nica en todo el dominio MPLS para ese paquete.
+     * This method is the constructor of the class. It is create a new instance
+     * of TIPv4Header.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param originIP IP addres of this packet's sender.
+     * @param targetIP IP addres of this packet's receiver.
      * @since 1.0
      */
-    public int obtenerClavePrimaria() {
-        String clave = "";
-        if (opciones.isUsed()) {
-            clave = this.IPOrigen + opciones.getGoSPacketID();
-            return clave.hashCode();
+    public TIPv4Header(String originIP, String targetIP) {
+        this.originIP = originIP;
+        this.targetIP = targetIP;
+        this.IPv4OptionsField = new TIPv4OptionsField();
+        // FIX: create and use a constant instead of this harcoded value.
+        this.TTL = 255;
+    }
+
+    /**
+     * This method gets a global unique identifier that identifies unambiguously
+     * this packet from other from the point of view of GoS. As defined in the
+     * proposal "Guarantee of Servico (GoS) Support over MPLS using Active
+     * Techniques".
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return A global unique identifier of this packet within the MPLS domain.
+     * @since 1.0
+     */
+    public int getGoSGlobalUniqueIdentifier() {
+        String RawGoSGlobalUniqueIdentifier = "";
+        if (this.IPv4OptionsField.isUsed()) {
+            RawGoSGlobalUniqueIdentifier = this.originIP + this.IPv4OptionsField.getGoSPacketID();
+            return RawGoSGlobalUniqueIdentifier.hashCode();
         }
+        // FIX: Create and use a constant instead of this harcoded value
         return -1;
     }
-    
-    /** Este m�todo devuelve el tama�o de la cabecera IPv4 en un momento dado. Puede ser
-     * que su campo opcinoes haya variad y por tanto el tama�o de la cabecera no sea
-     * constante.
-     * @return El tama�o de la cabecera en bytes.
+
+    /**
+     * This method gets the size in bytes (octects) of this IPv4 header,
+     * including the options field if used.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the size in bytes (octects) of this IPv4 header, including the
+     * options field if used.
      * @since 1.0
      */
     public int getSize() {
-        return (20 + opciones.obtenerTamanio());
+        // FIX: create and use a constant instead of the following harcoded
+        // value.
+        int size = 20; // IP header size in bytes (octets)
+        size += this.IPv4OptionsField.obtenerTamanio(); // options field size
+        return size;
     }
-    
-    /** Este m�todo devuelve la IP de origen de la cabecera IPv4.
-     * @return La direcci�n IP de origen.
+
+    /**
+     * This method gets the IP address of the sender of this packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the IP address of the sender of this packet.
      * @since 1.0
      */
     public String getOriginIP() {
-        return IPOrigen;
+        return this.originIP;
     }
-    
-    /** Este m�todo sirve para modificar el campo de direcci�n IP origen de la cabecera
-     * IPv4.
-     * @param ipo El nuevo valor de la IP de origen.
+
+    /**
+     * This method sets the IP address of the sender of this packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param originIP The IP address of the sender of this packet.
      * @since 1.0
      */
-    public void ponerIPOrigen(String ipo) {
-        IPOrigen = ipo;
+    public void setOriginIP(String originIP) {
+        this.originIP = originIP;
     }
-    
-    /** Este m�todo devuelve la IP de destino de la cabecera IPv4.
-     * @return La direcci�n IP de destino.
+
+    /**
+     * This method gets the IP address of the receiver of this packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the IP address of the receiver of this packet.
      * @since 1.0
      */
     public String getTargetIP() {
-        return IPDestino;
+        return this.targetIP;
     }
-    
-    /** Este m�todo sirve para modificar el campo de direcci�n destino de la cabecera
-     * IPv4.
-     * @param ipd El nuevo valor para la IP de destino.
+
+    /**
+     * This method sets the IP address of the receiver of this packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param targetIP The IP address of the receiver of this packet.
      * @since 1.0
      */
-    public void ponerIPDestino(String ipd) {
-        IPDestino = ipd;
+    public void setTargetIP(String targetIP) {
+        this.targetIP = targetIP;
     }
-    
-    /** Este m�todo modifica el valor del campo TTL de la cabecera IPv4.
-     * @param t El nuevo valor para el campo TTL.
+
+    /**
+     * This method sets the TTL (Time To Live) field of the IPv4 header.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param ttl The desired TTL value for this IPv4 header.
      * @since 1.0
      */
-    public void ponerTTL(int t) {
-        TTL = t;
+    public void setTTL(int ttl) {
+        this.TTL = ttl;
     }
-    
-    /** Este m�todo obtiene el valor del campo TTL de la cabecera IPv4.
-     * @return El valor del campo TTL.
+
+    /**
+     * This method gets the TTL (Time To Live) field of the IPv4 header.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The TTL value of this IPv4 header.
      * @since 1.0
      */
-    public int obtenerTTL() {
-        return TTL;
+    public int getTTL() {
+        return this.TTL;
     }
-    
-    /** Este m�todo obtiene el campo opciones al completo, de la cabecera IPv4.
-     * @return El campo opciones de la cabecera, completo.
+
+    /**
+     * This method gets the options field of this IPv4 header.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The option fields of this IPv4 header.
      * @since 1.0
      */
     public TIPv4OptionsField getOptionsField() {
-        return opciones;
+        return this.IPv4OptionsField;
     }
-    
-    /** Atributo que ser� la direcci�n fuente del paquete IPv4 que llevar� esta cabecera.
-     * @since 1.0
-     */
-    private String IPOrigen;
-    /** Atributo que ser� la direcci�n destino del paquete IPv4 que llevar� esta cabecera.
-     * @since 1.0
-     */
-    private String IPDestino;
-    /** Atributo que ser� el campo "Time to Live" de la cabecera IPv4.
-     * @since 1.0
-     */
+
+    private String originIP;
+    private String targetIP;
     private int TTL;
-    /** Atributo que implementa una codificaci�n del campo opciones de IPv4.
-     * @since 1.0
-     */
-    private TIPv4OptionsField opciones;
+    private TIPv4OptionsField IPv4OptionsField;
 }

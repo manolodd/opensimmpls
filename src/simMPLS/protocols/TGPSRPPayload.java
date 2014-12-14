@@ -133,6 +133,7 @@ public class TGPSRPPayload {
         return this.GPSRPMessageType;
     }
 
+    // Types of GPSRP messages
     public static final int RETRANSMISSION_REQUEST = -1;
     public static final int RETRANSMISION_NOT_POSSIBLE = -2;
     public static final int RETRANSMISION_OK = -3;
