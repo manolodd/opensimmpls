@@ -1,3 +1,5 @@
 /dist/
 /build/
 /binary-fat-release/
+/nbproject/private/
+/.project
