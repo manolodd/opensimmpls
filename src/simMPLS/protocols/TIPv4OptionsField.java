@@ -17,19 +17,20 @@
 package simMPLS.protocols;
 
 /**
- * Esta clase implementa una codificaci�n del campo opciones de IPv4 acorde a lo
- * que necesitamos para la propuesta de GoS sobre MPLS.
+ * This class implements a specifica format of the options field of the IPv4
+ * header that is needed to implement the "Guarantee of Service (GoS) support
+ * over MPLS using active techniques".
  *
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public class TIPv4OptionsField {
 
     /**
-     * Este m�todo es el constructor de la clase. Crea una nueva instancia de
-     * TCampoOpcionesIPv4.
+     * This method is the constructor of the class. It creates a new instance of
+     * TIPv4OptionsField.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      */
     public TIPv4OptionsField() {
@@ -46,10 +47,11 @@ public class TIPv4OptionsField {
     }
 
     /**
-     * Este m�todo devuelve el tama�o del campo opciones debido a que �ste puede
-     * ser variable en palabras de 4 bytes. El resultado lo devuelve en bytes.
+     * This method gets the size of the options field. This is needed because
+     * its size can vary in 4-bytes word.
      *
-     * @return El tama�o en bytes del campo opciones de IPv4.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The size of the options field, in bytes (octects).
      * @since 1.0
      */
     public int getSize() {
@@ -60,7 +62,7 @@ public class TIPv4OptionsField {
             // FIX: Create and use class constants instead of harcoded values.
             size += 1;   // GoS field.
             size += 4;   // Unique local identifier.
-            size += (4 * this.numberOfActiveNodesRegistered);
+            size += (4 * this.numberOfActiveNodesRegistered); //4 bytes each one.
             while (sizeAux < size) {
                 sizeAux += 4;
             }
@@ -70,11 +72,13 @@ public class TIPv4OptionsField {
     }
 
     /**
-     * Este m�todo permite establecer el nivel de garant�a de servicio que se ha
-     * elegido para el paquete.
+     * This method allow establishing the GoS level that has been selected fot
+     * the packet. This is part of the "Guarantee of Service (GoS) support over
+     * MPLS using active techniques" proposal.
      *
-     * @param requestedGoSLevel Nivel de garant�a de servicio; Una de las
-     * constantes definidas en la clase TPDU.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param requestedGoSLevel GoS level selected for the packet, as defined in
+     * TAbstractPDU class.
      * @since 1.0
      */
     public void setRequestedGoSLevel(int requestedGoSLevel) {
@@ -83,8 +87,9 @@ public class TIPv4OptionsField {
     }
 
     /**
-     * Este m�todo permite establecer como usado el campo opciones.
+     * This method set the options field as "in use".
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      */
     public void use() {
@@ -92,11 +97,10 @@ public class TIPv4OptionsField {
     }
 
     /**
-     * Este m�todo permite consultar si el campo opciones est� siendo usado o
-     * no.
+     * This method gets whether the options field is being used or not.
      *
-     * @return true, si el campo opciones est� siendo usado. false en caso
-     * contrario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return true, if the options field is being used. Otherwise, false.
      * @since 1.0
      */
     public boolean isUsed() {
@@ -104,11 +108,11 @@ public class TIPv4OptionsField {
     }
 
     /**
-     * Este m�todo poermite obtener el nivel de garant�a de servicio que tiene
-     * el paquete.
+     * This method gets the requested GoS level encoded in this packets.
      *
-     * @return El nivel de garant�a de servicio del paquete. una de las
-     * constantes definidas en la clase TPDU.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return GoS level selected for the packet, as defined in TAbstractPDU
+     * class.
      * @since 1.0
      */
     public int getRequestedGoSLevel() {
@@ -116,9 +120,14 @@ public class TIPv4OptionsField {
     }
 
     /**
-     * Este m�todo permite establecer el identificador del paquete.
+     * This method set a unique packet identifier to this packet. This is part
+     * of the "Guarantee of Service (GoS) support over MPLS using active
+     * techniques" proposal. It is used to identify a given packet in the whole
+     * MPLS domain.
      *
-     * @param packetLocalUniqueIdentifier El identificador del paquete.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packetLocalUniqueIdentifier The global unique identifier for this
+     * packet.
      * @since 1.0
      */
     public void setPacketLocalUniqueIdentifier(int packetLocalUniqueIdentifier) {
@@ -127,9 +136,13 @@ public class TIPv4OptionsField {
     }
 
     /**
-     * Este m�todo permite obtener el identificador del paquete.
+     * This method get the unique packet identifier of this packet. This is part
+     * of the "Guarantee of Service (GoS) support over MPLS using active
+     * techniques" proposal. It is used to identify a given packet in the whole
+     * MPLS domain.
      *
-     * @return El identificador del paquete.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The global unique identifier of this packet.
      * @since 1.0
      */
     public int getPacketLocalUniqueIdentifier() {
@@ -137,10 +150,12 @@ public class TIPv4OptionsField {
     }
 
     /**
-     * Este m�todo permite insertar en el campo opciones una direcci�n IP de un
-     * nodo activo atravesado.
+     * This method register in the options field the IP address of a new crossed
+     * active node. This is part of the "Guarantee of Service (GoS) support over
+     * MPLS using active techniques" proposal.
      *
-     * @param crossedActiveNodeIP La IP del nodo activo atravesado.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param crossedActiveNodeIP The IP address of a new crossed active node.
      * @since 1.0
      */
     public void setCrossedActiveNode(String crossedActiveNodeIP) {
@@ -150,8 +165,8 @@ public class TIPv4OptionsField {
             this.registerOfActiveNodesCrossed[this.numberOfActiveNodesRegistered] = crossedActiveNodeIP;
             this.numberOfActiveNodesRegistered++;
         } else {
-            // Drop the first registered crossed active node IP addres, because the option field
-            // is already full.
+            // Drop the first registered crossed active node IP address, because
+            // the option field is already full.
             for (int index = 1; index < MAX_REGISTERED_ACTIVE_NODE_IP_ADDRESSES; index++) {
                 this.registerOfActiveNodesCrossed[index - 1] = this.registerOfActiveNodesCrossed[index];
             }
@@ -160,11 +175,12 @@ public class TIPv4OptionsField {
     }
 
     /**
-     * Este m�todo permite averiguar si en el campo opciones hay anotadas
-     * direcciones IP de los nodos activos que se han pasado o no.
+     * This method allow knowing whether the options field contains IP addresses
+     * of crossed active nodes, or not.
      *
-     * @return true, si hay direcciones IP almacenadas en el campo opciones.
-     * false, en caso contrario,
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return true, if the options field contains IP addresses of active nodes
+     * that has been crossed. Oterwise, false.
      * @since 1.0
      */
     public boolean hasCrossedActiveNodes() {
@@ -172,11 +188,12 @@ public class TIPv4OptionsField {
     }
 
     /**
-     * Este m�todo comprueba el n�mero de IP de nodos activos atravesados por el
-     * paquete que est�n actualmente marcadas en el campo opciones.
+     * This method gets the number of IP addresses included of active nodes that
+     * are registered in the options field.
      *
-     * @return N�mero de IP de nodos activos atravesados que contiene el campo
-     * opciones.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return number of IP addresses included of active nodes that are
+     * registered in the options field
      * @since 1.0
      */
     public int getNumberOfCrossedActiveNodes() {
@@ -184,13 +201,13 @@ public class TIPv4OptionsField {
     }
 
     /**
-     * Este m�todo devuelve la IP del nodo activo que el paquete atraves� hace
-     * <I>registeredActiveNodeIndex</I>
-     * nodos activos.
+     * This method returns the IP address of the active node that this packet
+     * crossed registeredActiveNodeIndex hops ago.
      *
-     * @param registeredActiveNodeIndex N�mero de nodos activos atravesados antes del que queremos
-     * saber la IP.
-     * @return IP del nodo activo deseado.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param registeredActiveNodeIndex Number of active nodes that this packet
+     * crossed before the one whose IP address is wanted.
+     * @return IP of the desired active node.
      * @since 1.0
      */
     public String getCrossedActiveNode(int registeredActiveNodeIndex) {
