@@ -42,6 +42,7 @@ public class TMPLSPDU extends TAbstractPDU {
         super(id, originIP, targetIP);
         this.TCPPayload = new TTCPPayload(payloadSize);
         this.MPLSLabelStack = new TMPLSLabelStack();
+        this.subType = TAbstractPDU.MPLS;
     }
 
     /**
@@ -179,7 +180,7 @@ public class TMPLSPDU extends TAbstractPDU {
 
     @Override
     public void setSubtype(int st) {
-        // Do nothing. FIX (remove).
+        this.subType = st;
     }
 
     /**
@@ -192,9 +193,10 @@ public class TMPLSPDU extends TAbstractPDU {
      */
     @Override
     public int getSubtype() {
-        return TAbstractPDU.MPLS;
+        return this.subType;
     }
 
+    private int subType;
     private TTCPPayload TCPPayload;
     private TMPLSLabelStack MPLSLabelStack;
 }

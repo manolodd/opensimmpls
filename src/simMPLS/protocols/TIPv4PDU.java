@@ -39,6 +39,7 @@ public class TIPv4PDU extends TAbstractPDU {
     public TIPv4PDU(long id, String originIP, String targetIP, int payloadSize) {
         super(id, originIP, targetIP);
         this.TCPPayload = new TTCPPayload(payloadSize);
+        this.subType = TAbstractPDU.IPV4;
     }
 
     /**
@@ -110,13 +111,14 @@ public class TIPv4PDU extends TAbstractPDU {
      */
     @Override
     public int getSubtype() {
-        return TAbstractPDU.IPV4;
+        return this.subType;
     }
 
     @Override
     public void setSubtype(int subtype) {
-        // Do nothing. FIX (remove).
+        this.subType = subtype;
     }
 
+    private int subType;
     private TTCPPayload TCPPayload;
 }
