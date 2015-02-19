@@ -16,6 +16,8 @@
  */
 package simMPLS.main;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import simMPLS.ui.utils.TImagesBroker;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
