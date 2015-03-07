@@ -50,7 +50,7 @@ public class TMPLSLabelStack {
      */
     public void pushLabel(TMPLSLabel etiqueta) {
         try {
-            etiqueta.ponerIdentificador(generaID.obtenerNuevo());
+            etiqueta.setID(generaID.obtenerNuevo());
         } catch (EIDGeneratorOverflow e) {
             e.printStackTrace();
         }
@@ -82,7 +82,7 @@ public class TMPLSLabelStack {
     public void cambiarEtiqueta(TMPLSLabel etiqueta) {
         this.popTop();
         try {
-            etiqueta.ponerIdentificador(generaID.obtenerNuevo());
+            etiqueta.setID(generaID.obtenerNuevo());
         } catch (EIDGeneratorOverflow e) {
             e.printStackTrace();
         }

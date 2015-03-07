@@ -114,6 +114,14 @@ public class TIPv4PDU extends TAbstractPDU {
         return this.subType;
     }
 
+    /**
+     * This method has to be implemented by any subclasses. It has to allow
+     * setting the subtype of the packet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param subtype The subtype of the packet.
+     * @since 1.0
+     */
     @Override
     public void setSubtype(int subtype) {
         this.subType = subtype;

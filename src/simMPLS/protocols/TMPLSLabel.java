@@ -16,167 +16,184 @@
  */
 package simMPLS.protocols;
 
-/** Esta clase implementa una etiqueta MPLS con sus campos bien diferenciados y
- * accesibles.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+/**
+ * This class implements a MPLS label.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public class TMPLSLabel implements Comparable {
-    
-    /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
-     * TEtiquetaMPLS usando como identificador el pasado por par�metros.
-     * @param id El identificador de la etiqueta, pasado por par�metro.
+
+    /**
+     * This method is the constructor of the class. It is create a new MPLS
+     * label.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param id Label identifier. It will be used with sorting purposes.
      * @since 1.0
      */
     public TMPLSLabel(int id) {
-        TTL = 256;
-        label = 16;
-        EXP = 0;
-        BoS = true;
-        identificador = id;
+        //FIX: Change these harcoded values and use constants instead.
+        this.ttl = 256;
+        this.label = 16;
+        this.exp = 0;
+        this.bos = true;
+        this.identifier = id;
     }
-    
-    /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
-     * TEtiquetaMPLS y le pone por defecto el identificador 0.
+
+    /**
+     * This method is the constructor of the class. It is create a new MPLS
+     * label.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      */
     public TMPLSLabel() {
-        TTL = 256;
-        label = 16;
-        EXP = 0;
-        BoS = true;
-        identificador = 0;
+        //FIX: Change these harcoded values and use constants instead.
+        this.ttl = 256;
+        this.label = 16;
+        this.exp = 0;
+        this.bos = true;
+        this.identifier = 0;
     }
-    
-    /** Este m�todo nos permite cambiar el identificador de la etiqueta MPLS.
-     * @param id El nuevo valor que deseamos poner al identificador de la etiqueta MPLS.
+
+    /**
+     * This method sets the label identifier that will be used for sorting
+     * purposes.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param id Label identifier. It will be used with sorting purposes.
      * @since 1.0
      */
-    public void ponerIdentificador(int id) {
-        identificador = id;
+    public void setID(int id) {
+        this.identifier = id;
     }
-    
-    /** Este m�todo nos permite consultar el valor del identificador de la etiqueta
-     * MPLS.
-     * @return El valor del identificador de la etiqueta MPLS.
+
+    /**
+     * This method gets the label identifier that will be used for sorting
+     * purposes.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return Label identifier. It will be used with sorting purposes.
      * @since 1.0
      */
     public int getID() {
-        return identificador;
+        return this.identifier;
     }
-    
-    /** Este m�todo nos permite cambiar el valor del atributo <B>label</B> de la
-     * etiqueta MPLS.
-     * @param l El nuevo valor que deseamos para el campo label de la etiqueta MPLS.
+
+    /**
+     * This method sets the value for "label" field of this MPLS label.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param label The value for the "label" field of this MPLS label.
      * @since 1.0
      */
-    public void setLabel(int l) {
-        label = l;
+    public void setLabel(int label) {
+        this.label = label;
     }
-    
-    /** Este m�todo nos permite obtener el valor del atributo <B>label</B> de la etiqueta MPLS.
-     * @return El valor del atributo privado label, de la etiqueta MPLS.
+
+    /**
+     * This method gets the value of "label" field of this MPLS label.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return label The value of the "label" field of this MPLS label.
      * @since 1.0
      */
     public int getLabel() {
-        return label;
+        return this.label;
     }
-    
-    /** Este m�todo nos permite cambiar el valor del atributto <B>TTL</B> (Time to Live)
-     * de la etiqueta MPLS.
-     * @param t El nuevo valor deseado para el atributo TTL.
+
+    /**
+     * This method sets the value for "TTL" field of this MPLS label.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param ttl The value for the "TTL" field of this MPLS label.
      * @since 1.0
      */
-    public void setTTL(int t) {
-        TTL = t;
+    public void setTTL(int ttl) {
+        this.ttl = ttl;
     }
-    
-    /** Este m�todo nos permite obtener el valor del atributo privado <B>TTL</B> de la
-     * etiqueta MPLS.
-     * @return El valor del atributo TTL de la etiqueta MPLS.
+
+    /**
+     * This method sets the value of "TTL" field of this MPLS label.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The value of the "TTL" field of this MPLS label.
      * @since 1.0
      */
     public int getTTL() {
-        return TTL;
+        return this.ttl;
     }
-    
-    /** Este m�todo nos permite especificar el valor del atributo <B>EXP</B> de la
-     * etiqueta MPLS.
-     * @param e El nuevo valor deseado para el atributo privado EXP de la etiqueta MPLS.
+
+    /**
+     * This method sets the value for "EXP" field of this MPLS label.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param exp The value for the "EXP" field of this MPLS label.
      * @since 1.0
      */
-    public void setEXP(int e) {
-        EXP = e;
+    public void setEXP(int exp) {
+        this.exp = exp;
     }
-    
-    /** Este m�todo nos permite obtener el valor del atributo privado <B>EXP</B> de la
-     * etiqueta MPLS.
-     * @return El valor del atributo privado EXP de la etiqueta MPLS.
+
+    /**
+     * This method gets the value for "EXP" field of this MPLS label.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The value of the "EXP" field of this MPLS label.
      * @since 1.0
      */
     public int getEXP() {
-        return EXP;
+        return this.exp;
     }
-    
-    /** Este m�todo nos permite especificar un valor para el atributo privado <B>Bos</B>
-     * (Bottom of Stack) de la etiqueta MPLS.
-     * @param b El nuevo valor para el campo BoS de la etiqueta MPLS.
+
+    /**
+     * This method sets the value for "BoS" field of this MPLS label.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param bos The value for the "BoS" field of this MPLS label.
      * @since 1.0
      */
-    public void setBoS(boolean b) {
-        BoS = b;
+    public void setBoS(boolean bos) {
+        this.bos = bos;
     }
-    
-    /** Este m�todo nos permite obtener el valor del atributo privado <B>BoS</B> (Bottom
-     * of Stack)de la etiqueta MPLS.
-     * @return El valor del atributo privado BoS (Bottom of Stack) del a etiqueta MPLS.
+
+    /**
+     * This method gets the value for "BoS" field of this MPLS label.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The value of the "BoS" field of this MPLS label.
      * @since 1.0
      */
     public boolean getBoS() {
-        return BoS;
+        return this.bos;
     }
-    
-    /** Este m�todo compara esta instancia de TMPLSLabel con otra del mismo tipo,
- para aclarar si es mayor, menor o igual, en base al orden que especifica este
- m�todo. Es la implementaci�n de la interfaz Comparable.
-     * @param o El objeto del tipo TMPLSLabel con el que se va a comparar.
-     * @return -1, 0 � 1, dependiendo de si, de acuerdo con el orden establecido, esta
-     * instancia es menor, igual o mayor que la especificada por par�metro.
+
+    /**
+     * This metod compares the current instance to the one specified as a
+     * parameter, for sorting purposes.
+     *
+     * @param mplsLabelObject The object to be compared to the current instance.
+     * @return -1, 0 or 1, depending on whether the current instance is lower,
+     * equal or greater than the one passed in as a parameter.
      * @since 1.0
      */
-    public int compareTo(Object o) {
-        TMPLSLabel e2= (TMPLSLabel) o;
-        if (this.getID() > e2.getID()) {
+    @Override
+    public int compareTo(Object mplsLabelObject) {
+        TMPLSLabel label2 = (TMPLSLabel) mplsLabelObject;
+        //FIX: change returned values and use class constants insted.
+        if (this.getID() > label2.getID()) {
             return 1;
-        } else if (this.getID() == e2.getID()) {
+        } else if (this.getID() == label2.getID()) {
             return 0;
         } else {
             return -1;
         }
     }
-    
-    /** Atributo privado. El campo TTL (Time to Live) de la etiqueta MPLS.
-     * @since 1.0
-     */
-    private int TTL;
-    /** Atributo privado. El campo Label de la cabecera MPLS.
-     * @since 1.0
-     */
+
+    private int ttl;
     private int label;
-    /** Atributo privado. Es el campo EXP (Experimental) de la etiqueta MPLS. Lo
-     * usaremos en Open SimMPLS para denotar cu�ndo un paquete est� marcado como
-     * privilegiado.
-     * @since 1.0
-     */
-    private int EXP;
-    /** Atributo privado. Campo BoS (Bottom of Stack) de la etiqueta MPLS.
-     * @since 1.0
-     */
-    private boolean BoS;
-    /** Atributo privado. Identificador num�rico �nico para cada etiqueta, de forma que
-     * puedan ser ordenadas en la pila.
-     * @since 1.0
-     */
-    private int identificador;
+    private int exp;
+    private boolean bos;
+    private int identifier;
 }
