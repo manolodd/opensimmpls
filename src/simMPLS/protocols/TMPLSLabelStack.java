@@ -16,98 +16,114 @@
  */
 package simMPLS.protocols;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import simMPLS.utils.EIDGeneratorOverflow;
 import simMPLS.utils.TIDGenerator;
-import java.util.*;
 
-/** Esta clase implementa la pila de etiquetas de un paquete MPLS.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+/**
+ * This class implements the MPLS label stack of a MPLS packet.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
  */
 public class TMPLSLabelStack {
-    
-    /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
-     * TPilaEtiquetasMPLS, vac�a.
+
+    /**
+     * This method is the constructor of the class. It is create a new empty
+     * MPLS label stack.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      */
     public TMPLSLabelStack() {
-        pila = new LinkedList();
-        generaID = new TIDGenerator();
+        this.stack = new LinkedList();
+        this.idGenerator = new TIDGenerator();
     }
-    
-    /** Este m�todo devuelve el tama�o completo de la pila de etiquetas, en bytes.
-     * @return Tama�o completo de la pila de etiquetas, en bytes.
+
+    /**
+     * This method gets the size of the label stack in bytes (octects).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The size of the lable stack in bytes (octects).
      * @since 1.0
      */
     public int getSize() {
-        return pila.size();
+        return stack.size();
     }
-    
-    /** Este m�todo inserta una nueva etiqueta MPLS en la pila de etiquetas.
-     * @param etiqueta Etiqueta que deseamos insertar en la pila de etiquetas MPLS.
+
+    /**
+     * This method adds a new MPLS label to the top of the label stack (push).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param mplsLabel The MPLS label to be inserted in the top of the label
+     * stack. MPLS.
      * @since 1.0
      */
-    public void pushLabel(TMPLSLabel etiqueta) {
+    public void pushLabel(TMPLSLabel mplsLabel) {
         try {
-            etiqueta.setID(generaID.obtenerNuevo());
+            mplsLabel.setID(this.idGenerator.getNew());
         } catch (EIDGeneratorOverflow e) {
             e.printStackTrace();
         }
-        pila.addLast(etiqueta);
+        this.stack.addLast(mplsLabel);
     }
-    
-    /** Este metodo nos da acceso a la etiqueta de la pila de etiquetas que se encuentra
-     * ne la cima de la pila y as� poder acceder a sus m�todos.
-     * @return Etiqueta en la cima de la pila de etiquetas MPLS.
+
+    /**
+     * This method gets the MPLS label from the top of the MPLS label stack, but
+     * does not remove it.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return MPLS label in top of MPLS label stack.
      * @since 1.0
      */
     public TMPLSLabel getTop() {
-        return (TMPLSLabel) pila.getLast();
+        return (TMPLSLabel) this.stack.getLast();
     }
-    
-    /** Este m�todo elimina la etiqueta que se encuentra en la cima de la pila de
-     * etiquetas.
+
+    /**
+     * This method removes the MPLS label from the top of the MPLS label stack.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      */
     public void popTop() {
-        pila.removeLast();
+        this.stack.removeLast();
     }
-    
-    /** Este m�todo cambia la etiqueta que se encuentra en la cima de la pila de
-     * etiquetas, por la etiqueta pasada por par�metros.
-     * @param etiqueta nueva etiqueta que sustituir� a la de la cima de la pila de etiquetas.
+
+    /**
+     * This method replaces (swap) the MPLS label in top of the MPLS label stack
+     * with the one specified as an argument.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param mplsLabel the MPLS label that will replace the one in top of the
+     * MPLS label stack.
      * @since 1.0
      */
-    public void cambiarEtiqueta(TMPLSLabel etiqueta) {
+    public void swapTop(TMPLSLabel mplsLabel) {
         this.popTop();
         try {
-            etiqueta.setID(generaID.obtenerNuevo());
+            mplsLabel.setID(this.idGenerator.getNew());
         } catch (EIDGeneratorOverflow e) {
             e.printStackTrace();
         }
-        pila.addLast(etiqueta);
+        this.stack.addLast(mplsLabel);
     }
-    
-    /** Este m�todo elimina por completo la pila de etiquetas.
+
+    /**
+     * This method removes all MPLS labels from the label stack.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      */
-    public void borrar() {
-        Iterator it = pila.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
+    public void clear() {
+        Iterator iterator = this.stack.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
         }
     }
-    
-    /** Este atributo es una lista enlazada, configurada como pila, que almacenar� todas
-     * las etiquetas en orden LIFO.
-     * @since 1.0
-     */
-    private LinkedList pila;
-    /** Este atributo es un generador de identificadores, que ser� usado para asignar un
-     * identificador distinto a cada etiqueta y poder ordenarlas as� en la pila.
-     * @since 1.0
-     */
-    private TIDGenerator generaID;
+
+    private LinkedList stack;
+    private TIDGenerator idGenerator;
 }
