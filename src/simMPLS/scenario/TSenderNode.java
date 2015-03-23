@@ -543,7 +543,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                     etiquetaMPLSDeEmision.setEXP(0);
                     etiquetaMPLSDeEmision.setLabel(etiquetaDeEmision);
                     etiquetaMPLSDeEmision.setTTL(paquete.getIPv4Header().getTTL());
-                    paquete.getLabelStack().pushLabel(etiquetaMPLSDeEmision);
+                    paquete.getLabelStack().pushTop(etiquetaMPLSDeEmision);
                     return paquete;
                 } else {
                     TMPLSPDU paquete = new TMPLSPDU(gIdent.getNextID(), getIPAddress(), this.IPDestino, 0);
@@ -560,8 +560,8 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                     etiquetaMPLS1.setEXP(valorGoS);
                     etiquetaMPLS1.setLabel(1);
                     etiquetaMPLS1.setTTL(paquete.getIPv4Header().getTTL());
-                    paquete.getLabelStack().pushLabel(etiquetaMPLSDeEmision);
-                    paquete.getLabelStack().pushLabel(etiquetaMPLS1);
+                    paquete.getLabelStack().pushTop(etiquetaMPLSDeEmision);
+                    paquete.getLabelStack().pushTop(etiquetaMPLS1);
                     return paquete;
                 }
             } else {
