@@ -40,8 +40,8 @@ public class TMPLSPDU extends TAbstractPDU {
      */
     public TMPLSPDU(long id, String originIP, String targetIP, int payloadSize) {
         super(id, originIP, targetIP);
-        this.TCPPayload = new TTCPPayload(payloadSize);
-        this.MPLSLabelStack = new TMPLSLabelStack();
+        this.tcpPayload = new TTCPPayload(payloadSize);
+        this.mplsLabelStack = new TMPLSLabelStack();
         this.subType = TAbstractPDU.MPLS;
     }
 
@@ -55,7 +55,7 @@ public class TMPLSPDU extends TAbstractPDU {
         long auxID = this.getID();
         String auxOriginIP = this.getIPv4Header().getOriginIP();
         String auxTargetIP = this.getIPv4Header().getTargetIP();
-        int auxTCPPayloadSize = this.TCPPayload.getSize() - 20;
+        int auxTCPPayloadSize = this.tcpPayload.getSize() - 20;
         TMPLSPDU clonedMPLSPDU = new TMPLSPDU(auxID, auxOriginIP, auxTargetIP, auxTCPPayloadSize);
         // "Guarentee of Service Support over MPLS using Active Techniques" 
         // proposal redefines the IPv4 Options field to track crossed active 
@@ -128,8 +128,8 @@ public class TMPLSPDU extends TAbstractPDU {
     public int getSize() {
         int auxSize = 0;
         auxSize += super.getIPv4Header().getSize(); // IPv4 header.
-        auxSize += this.TCPPayload.getSize(); // TCP payload.
-        auxSize += (4 * this.MPLSLabelStack.getSize()); // MPLS payload.
+        auxSize += this.tcpPayload.getSize(); // TCP payload.
+        auxSize += (4 * this.mplsLabelStack.getSize()); // MPLS payload.
         return (auxSize);
     }
 
@@ -154,7 +154,7 @@ public class TMPLSPDU extends TAbstractPDU {
      * @since 1.0
      */
     public TTCPPayload getTCPPayload() {
-        return this.TCPPayload;
+        return this.tcpPayload;
     }
 
     /**
@@ -165,7 +165,7 @@ public class TMPLSPDU extends TAbstractPDU {
      * @since 1.0
      */
     public void setTCPPayload(TTCPPayload TCPPayload) {
-        this.TCPPayload = TCPPayload;
+        this.tcpPayload = TCPPayload;
     }
 
     /**
@@ -175,7 +175,7 @@ public class TMPLSPDU extends TAbstractPDU {
      * @since 1.0
      */
     public TMPLSLabelStack getLabelStack() {
-        return this.MPLSLabelStack;
+        return this.mplsLabelStack;
     }
 
     @Override
@@ -197,6 +197,6 @@ public class TMPLSPDU extends TAbstractPDU {
     }
 
     private int subType;
-    private TTCPPayload TCPPayload;
-    private TMPLSLabelStack MPLSLabelStack;
+    private TTCPPayload tcpPayload;
+    private TMPLSLabelStack mplsLabelStack;
 }
