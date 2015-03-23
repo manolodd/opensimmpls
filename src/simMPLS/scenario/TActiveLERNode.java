@@ -706,7 +706,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                             etiquetaMPLS1.setEXP(EXPAux);
                             etiquetaMPLS1.setLabel(1);
                             etiquetaMPLS1.setTTL(paquete.getIPv4Header().getTTL());
-                            paqueteMPLS.getLabelStack().pushLabel(etiquetaMPLS1);
+                            paqueteMPLS.getLabelStack().pushTop(etiquetaMPLS1);
                             paqueteMPLS.setSubtype(TAbstractPDU.MPLS_GOS);
                             paqueteMPLS.getIPv4Header().getOptionsField().setCrossedActiveNode(this.getIPAddress());
                             dmgp.addPacket(paqueteMPLS);
@@ -806,29 +806,29 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_REQUESTED);
                 solicitarTLDP(emc);
                 if (conEtiqueta1) {
-                    paquete.getLabelStack().pushLabel(eMPLS);
+                    paquete.getLabelStack().pushTop(eMPLS);
                 }
                 this.puertos.getPort(emc.getIncomingPortID()).reEnqueuePacket(paquete);
             } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
                 if (conEtiqueta1) {
-                    paquete.getLabelStack().pushLabel(eMPLS);
+                    paquete.getLabelStack().pushTop(eMPLS);
                 }
                 this.puertos.getPort(emc.getIncomingPortID()).reEnqueuePacket(paquete);
             } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
                 if (conEtiqueta1) {
-                    paquete.getLabelStack().pushLabel(eMPLS);
+                    paquete.getLabelStack().pushTop(eMPLS);
                 }
                 discardPacket(paquete);
             } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
                 if (conEtiqueta1) {
-                    paquete.getLabelStack().pushLabel(eMPLS);
+                    paquete.getLabelStack().pushTop(eMPLS);
                 }
                 discardPacket(paquete);
             } else if ((etiquetaActual > 15) || (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED)) {
                 int operacion = emc.getLabelStackOperation();
                 if (operacion == TSwitchingMatrixEntry.UNDEFINED) {
                     if (conEtiqueta1) {
-                        paquete.getLabelStack().pushLabel(eMPLS);
+                        paquete.getLabelStack().pushTop(eMPLS);
                     }
                     discardPacket(paquete);
                 } else {
@@ -841,9 +841,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                         if (requiereLSPDeRespaldo) {
                             solicitarTLDPDeBackup(emc);
                         }
-                        paquete.getLabelStack().pushLabel(empls);
+                        paquete.getLabelStack().pushTop(empls);
                         if (conEtiqueta1) {
-                            paquete.getLabelStack().pushLabel(eMPLS);
+                            paquete.getLabelStack().pushTop(eMPLS);
                         }
                         TPort pSalida = puertos.getPort(emc.getOutgoingPortID());
                         if (conEtiqueta1) {
@@ -864,7 +864,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                         } else {
                             paquete.getLabelStack().popTop();
                             if (conEtiqueta1) {
-                                paquete.getLabelStack().pushLabel(eMPLS);
+                                paquete.getLabelStack().pushTop(eMPLS);
                             }
                             TPort pSalida = puertos.getPort(emc.getOutgoingPortID());
                             pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
@@ -880,7 +880,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                         }
                         paquete.getLabelStack().getTop().setLabel(emc.getOutgoingLabel());
                         if (conEtiqueta1) {
-                            paquete.getLabelStack().pushLabel(eMPLS);
+                            paquete.getLabelStack().pushTop(eMPLS);
                         }
                         TPort pSalida = puertos.getPort(emc.getOutgoingPortID());
                         if (conEtiqueta1) {
@@ -905,13 +905,13 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 }
             } else {
                 if (conEtiqueta1) {
-                    paquete.getLabelStack().pushLabel(eMPLS);
+                    paquete.getLabelStack().pushTop(eMPLS);
                 }
                 discardPacket(paquete);
             }
         } else {
             if (conEtiqueta1) {
-                paquete.getLabelStack().pushLabel(eMPLS);
+                paquete.getLabelStack().pushTop(eMPLS);
             }
             discardPacket(paquete);
         }
@@ -1795,7 +1795,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.LABEL_ASSIGNED);
             }
             try {
-                emc.setLocalTLDPSessionID(gIdentLDP.obtenerNuevo());
+                emc.setLocalTLDPSessionID(gIdentLDP.getNew());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1855,7 +1855,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.LABEL_ASSIGNED);
             }
             try {
-                emc.setLocalTLDPSessionID(gIdentLDP.obtenerNuevo());
+                emc.setLocalTLDPSessionID(gIdentLDP.getNew());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1917,7 +1917,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.LABEL_ASSIGNED);
             }
             try {
-                emc.setLocalTLDPSessionID(gIdentLDP.obtenerNuevo());
+                emc.setLocalTLDPSessionID(gIdentLDP.getNew());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1956,7 +1956,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         empls.setEXP(0);
         empls.setLabel(emc.getOutgoingLabel());
         empls.setTTL(paqueteIPv4.getIPv4Header().getTTL()-1);
-        paqueteMPLS.getLabelStack().pushLabel(empls);
+        paqueteMPLS.getLabelStack().pushTop(empls);
         paqueteIPv4 = null;
         try {
             this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paqueteMPLS.getSubtype(), paqueteMPLS.getSize()));

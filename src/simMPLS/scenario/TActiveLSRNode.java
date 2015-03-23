@@ -650,7 +650,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         emc = matrizConmutacion.getEntry(pEntrada, valorLABEL, TSwitchingMatrixEntry.LABEL_ENTRY);
         if (emc == null) {
             if (conEtiqueta1) {
-                paquete.getLabelStack().pushLabel(eMPLS);
+                paquete.getLabelStack().pushTop(eMPLS);
             }
             discardPacket(paquete);
         } else {
@@ -659,29 +659,29 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_REQUESTED);
                 solicitarTLDP(emc);
                 if (conEtiqueta1) {
-                    paquete.getLabelStack().pushLabel(eMPLS);
+                    paquete.getLabelStack().pushTop(eMPLS);
                 }
                 this.puertos.getPort(emc.getIncomingPortID()).reEnqueuePacket(paquete);
             } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
                 if (conEtiqueta1) {
-                    paquete.getLabelStack().pushLabel(eMPLS);
+                    paquete.getLabelStack().pushTop(eMPLS);
                 }
                 this.puertos.getPort(emc.getIncomingPortID()).reEnqueuePacket(paquete);
             } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
                 if (conEtiqueta1) {
-                    paquete.getLabelStack().pushLabel(eMPLS);
+                    paquete.getLabelStack().pushTop(eMPLS);
                 }
                 discardPacket(paquete);
             } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
                 if (conEtiqueta1) {
-                    paquete.getLabelStack().pushLabel(eMPLS);
+                    paquete.getLabelStack().pushTop(eMPLS);
                 }
                 discardPacket(paquete);
             } else if ((etiquetaActual > 15) || (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED)) {
                 int operacion = emc.getLabelStackOperation();
                 if (operacion == TSwitchingMatrixEntry.UNDEFINED) {
                     if (conEtiqueta1) {
-                        paquete.getLabelStack().pushLabel(eMPLS);
+                        paquete.getLabelStack().pushTop(eMPLS);
                     }
                     discardPacket(paquete);
                 } else {
@@ -691,9 +691,9 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                         empls.setEXP(0);
                         empls.setLabel(emc.getOutgoingLabel());
                         empls.setTTL(paquete.getLabelStack().getTop().getTTL()-1);
-                        paquete.getLabelStack().pushLabel(empls);
+                        paquete.getLabelStack().pushTop(empls);
                         if (conEtiqueta1) {
-                            paquete.getLabelStack().pushLabel(eMPLS);
+                            paquete.getLabelStack().pushTop(eMPLS);
                             paquete.getIPv4Header().getOptionsField().setCrossedActiveNode(this.getIPAddress());
                             dmgp.addPacket(paquete);
                         }
@@ -707,7 +707,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     } else if (operacion == TSwitchingMatrixEntry.POP_LABEL) {
                         paquete.getLabelStack().popTop();
                         if (conEtiqueta1) {
-                            paquete.getLabelStack().pushLabel(eMPLS);
+                            paquete.getLabelStack().pushTop(eMPLS);
                             paquete.getIPv4Header().getOptionsField().setCrossedActiveNode(this.getIPAddress());
                             dmgp.addPacket(paquete);
                         }
@@ -724,7 +724,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                         }
                         paquete.getLabelStack().getTop().setLabel(emc.getOutgoingLabel());
                         if (conEtiqueta1) {
-                            paquete.getLabelStack().pushLabel(eMPLS);
+                            paquete.getLabelStack().pushTop(eMPLS);
                             paquete.getIPv4Header().getOptionsField().setCrossedActiveNode(this.getIPAddress());
                             dmgp.addPacket(paquete);
                         }
@@ -753,7 +753,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 }
             } else {
                 if (conEtiqueta1) {
-                    paquete.getLabelStack().pushLabel(eMPLS);
+                    paquete.getLabelStack().pushTop(eMPLS);
                 }
                 discardPacket(paquete);
             }
@@ -1564,7 +1564,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             emc.setEntryType(TSwitchingMatrixEntry.LABEL_ENTRY);
             emc.setLabelStackOperation(TSwitchingMatrixEntry.SWAP_LABEL);
             try {
-                emc.setLocalTLDPSessionID(gIdentLDP.obtenerNuevo());
+                emc.setLocalTLDPSessionID(gIdentLDP.getNew());
             } catch (Exception e) {
                 e.printStackTrace();
             }
