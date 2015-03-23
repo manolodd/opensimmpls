@@ -55,7 +55,7 @@ import simMPLS.ui.dialogs.JVentanaLSR;
 import simMPLS.ui.dialogs.JVentanaLSRA;
 import simMPLS.ui.dialogs.JVentanaReceptor;
 import simMPLS.ui.utils.TImagesBroker;
-import simMPLS.utils.JFiltroOSM;
+import simMPLS.utils.JOSMFilter;
 import simMPLS.utils.TProgressEventListener;
 
 /**
@@ -1359,11 +1359,11 @@ private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
         if (config.obtenerValida()) {
             try {
                 if (config.obtenerTipo() == TLink.INTERNAL) {
-                    TInternalLink enlaceInterno = new TInternalLink(escenario.getTopology().getItemIdentifierGenerator().obtenerNuevo(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
+                    TInternalLink enlaceInterno = new TInternalLink(escenario.getTopology().getItemIdentifierGenerator().getNew(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
                     enlaceInterno.configurar(config, escenario.getTopology(), false);
                     escenario.getTopology().addLink(enlaceInterno);
                 } else {
-                    TExternalLink enlaceExterno = new TExternalLink(escenario.getTopology().getItemIdentifierGenerator().obtenerNuevo(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
+                    TExternalLink enlaceExterno = new TExternalLink(escenario.getTopology().getItemIdentifierGenerator().getNew(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
                     enlaceExterno.configurar(config, escenario.getTopology(), false);
                     escenario.getTopology().addLink(enlaceExterno);
                 }
@@ -1486,7 +1486,7 @@ private void clicDerechoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
 private void clicEnAniadirLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLSRA
     TActiveLSRNode lsra = null;
     try {
-        lsra = new TActiveLSRNode(escenario.getTopology().getItemIdentifierGenerator().obtenerNuevo(), escenario.getTopology().getIPAddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
+        lsra = new TActiveLSRNode(escenario.getTopology().getItemIdentifierGenerator().getNew(), escenario.getTopology().getIPAddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
     } catch (Exception e) {
         JVentanaError err;
         err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
@@ -1520,7 +1520,7 @@ private void clicEnAniadirLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
 private void clicEnAniadirLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLSR
     TLSRNode lsr = null;
     try {
-        lsr = new TLSRNode(escenario.getTopology().getItemIdentifierGenerator().obtenerNuevo(), escenario.getTopology().getIPAddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
+        lsr = new TLSRNode(escenario.getTopology().getItemIdentifierGenerator().getNew(), escenario.getTopology().getIPAddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
     } catch (Exception e) {
         JVentanaError err;
         err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
@@ -1554,7 +1554,7 @@ private void clicEnAniadirLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
 private void clicEnAniadirLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLERA
     TActiveLERNode lera = null;
     try {
-        lera = new TActiveLERNode(escenario.getTopology().getItemIdentifierGenerator().obtenerNuevo(), escenario.getTopology().getIPAddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
+        lera = new TActiveLERNode(escenario.getTopology().getItemIdentifierGenerator().getNew(), escenario.getTopology().getIPAddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
     } catch (Exception e) {
         JVentanaError err;
         err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
@@ -1791,7 +1791,7 @@ private void ratonEntraEnIconoComenzar(java.awt.event.MouseEvent evt) {//GEN-FIR
 private void clicEnAniadirLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLER
     TLERNode ler = null;
     try {
-        ler = new TLERNode(escenario.getTopology().getItemIdentifierGenerator().obtenerNuevo(), escenario.getTopology().getIPAddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
+        ler = new TLERNode(escenario.getTopology().getItemIdentifierGenerator().getNew(), escenario.getTopology().getIPAddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
     } catch (Exception e) {
         JVentanaError err;
         err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
@@ -1965,7 +1965,7 @@ private void ratonEntraEnIconoEmisor(java.awt.event.MouseEvent evt) {//GEN-FIRST
 private void clicEnAniadirReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirReceptor
     TReceiverNode receptor = null;
     try {
-        receptor = new TReceiverNode(escenario.getTopology().getItemIdentifierGenerator().obtenerNuevo(), escenario.getTopology().getIPAddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
+        receptor = new TReceiverNode(escenario.getTopology().getItemIdentifierGenerator().getNew(), escenario.getTopology().getIPAddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
     } catch (Exception e) {
         JVentanaError err;
         err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
@@ -2013,7 +2013,7 @@ private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-
     } else {
         TSenderNode emisor = null;
         try {
-            emisor = new TSenderNode(escenario.getTopology().getItemIdentifierGenerator().obtenerNuevo(), escenario.getTopology().getIPAddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
+            emisor = new TSenderNode(escenario.getTopology().getItemIdentifierGenerator().getNew(), escenario.getTopology().getIPAddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
         } catch (Exception e) {
             JVentanaError err;
             err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
@@ -2200,7 +2200,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
     public void gestionarGuardarComo() {
         anotarDatosDeEscenario();
         JFileChooser dialogoGuardar = new JFileChooser();
-        dialogoGuardar.setFileFilter(new JFiltroOSM());
+        dialogoGuardar.setFileFilter(new JOSMFilter());
         dialogoGuardar.setDialogType(JFileChooser.CUSTOM_DIALOG);
         dialogoGuardar.setApproveButtonMnemonic('A');
         dialogoGuardar.setApproveButtonText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.DialogoGuardar.OK"));

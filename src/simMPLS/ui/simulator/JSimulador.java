@@ -29,7 +29,7 @@ import simMPLS.ui.dialogs.JVentanaBooleana;
 import simMPLS.ui.dialogs.JVentanaComentario;
 import simMPLS.ui.dialogs.JVentanaError;
 import simMPLS.ui.utils.TImagesBroker;
-import simMPLS.utils.JFiltroOSM;
+import simMPLS.utils.JOSMFilter;
 import simMPLS.utils.TIDGenerator;
 
 /**
@@ -326,7 +326,7 @@ public class JSimulador extends javax.swing.JFrame {
     private void clicEnAbrir(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAbrir
         boolean finAbrir = false;
         JFileChooser dialogoAbrir = new JFileChooser();
-        dialogoAbrir.setFileFilter(new JFiltroOSM());
+        dialogoAbrir.setFileFilter(new JOSMFilter());
         dialogoAbrir.setDialogType(JFileChooser.CUSTOM_DIALOG);
         dialogoAbrir.setApproveButtonMnemonic('A');
         dialogoAbrir.setApproveButtonText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JSimulador.DialogoAbrir.OK"));
@@ -558,7 +558,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
      */    
     private void clicEnNuevo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnNuevo
         try {
-            int id = GeneradorId.obtenerNuevo();
+            int id = GeneradorId.getNew();
             String tit = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TextoUntitled-")+id;
             numVentanasAbiertas++;
             activarOpciones();
