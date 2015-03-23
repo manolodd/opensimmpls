@@ -60,7 +60,7 @@ public class TMPLSLabelStack {
      * stack. MPLS.
      * @since 1.0
      */
-    public void pushLabel(TMPLSLabel mplsLabel) {
+    public void pushTop(TMPLSLabel mplsLabel) {
         try {
             mplsLabel.setID(this.idGenerator.getNew());
         } catch (EIDGeneratorOverflow e) {

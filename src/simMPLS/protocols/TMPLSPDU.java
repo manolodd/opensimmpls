@@ -109,10 +109,10 @@ public class TMPLSPDU extends TAbstractPDU {
             }
         }
         while (localLabelStack.size() > 0) {
-            this.getLabelStack().pushLabel((TMPLSLabel) localLabelStack.removeFirst());
+            this.getLabelStack().pushTop((TMPLSLabel) localLabelStack.removeFirst());
         }
         while (labelStackForClonedPDU.size() > 0) {
-            clonedMPLSPDU.getLabelStack().pushLabel((TMPLSLabel) labelStackForClonedPDU.removeFirst());
+            clonedMPLSPDU.getLabelStack().pushTop((TMPLSLabel) labelStackForClonedPDU.removeFirst());
         }
         return clonedMPLSPDU;
     }
