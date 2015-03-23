@@ -38,9 +38,9 @@ public class TTLDPPDU extends TAbstractPDU {
      */
     public TTLDPPDU(long id, String originIP, String targetIP) {
         super(id, originIP, targetIP);
-        this.TCPPayload = new TTCPPayload(0);
-        this.TLDPPayload = new TTLDPPayload();
-        this.LSPType = false;
+        this.tcpPayload = new TTCPPayload(0);
+        this.tldpPayload = new TTLDPPayload();
+        this.lspType = false;
         this.packetDirection = TTLDPPDU.DIRECTION_FORWARD;
     }
 
@@ -55,8 +55,8 @@ public class TTLDPPDU extends TAbstractPDU {
     public int getSize() {
         int auxSize = 0;
         auxSize += super.getIPv4Header().getSize(); // IPv4 header.
-        auxSize += this.TCPPayload.getSize(); // TCP payload.
-        auxSize += this.TLDPPayload.getSize(); // TLDP payload.
+        auxSize += this.tcpPayload.getSize(); // TCP payload.
+        auxSize += this.tldpPayload.getSize(); // TLDP payload.
         return (auxSize);
     }
 
@@ -81,7 +81,7 @@ public class TTLDPPDU extends TAbstractPDU {
      * @since 1.0
      */
     public TTCPPayload getTCPPayload() {
-        return this.TCPPayload;
+        return this.tcpPayload;
     }
 
     /**
@@ -92,7 +92,7 @@ public class TTLDPPDU extends TAbstractPDU {
      * @since 1.0
      */
     public TTLDPPayload getTLDPPayload() {
-        return this.TLDPPayload;
+        return this.tldpPayload;
     }
 
     /**
@@ -140,7 +140,7 @@ public class TTLDPPDU extends TAbstractPDU {
      * @since 1.0
      */
     public void setLSPType(boolean LSPType) {
-        this.LSPType = LSPType;
+        this.lspType = LSPType;
         // FIX: LSP_NORMAL and LSP_BACKUP constats should be defined in this 
         // class instead of in JSimulationPanel class.
     }
@@ -160,8 +160,8 @@ public class TTLDPPDU extends TAbstractPDU {
      * @since 1.0
      */
     public boolean getLSPType() {
-        return this.LSPType;
-        // FIX: LSP_NORMAL and LSP_BACKUP constats should be defined in this 
+        return this.lspType;
+        // FIX: LSP_NORMAL and LSP_BACKUP constants should be defined in this 
         // class instead of in JSimulationPanel class.
     }
 
@@ -208,8 +208,8 @@ public class TTLDPPDU extends TAbstractPDU {
     public static final int CAME_BY_BACKUP_EXIT = -3;
 
     private int packetDirection;
-    private TTCPPayload TCPPayload;
-    private TTLDPPayload TLDPPayload;
+    private TTCPPayload tcpPayload;
+    private TTLDPPayload tldpPayload;
 
-    private boolean LSPType;
+    private boolean lspType;
 }
