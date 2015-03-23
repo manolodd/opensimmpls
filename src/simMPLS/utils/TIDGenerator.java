@@ -54,7 +54,7 @@ public class TIDGenerator {
      * hay que capturar la excepci�n por si acaso.
      * @since 1.0
      */
-    synchronized public int obtenerNuevo() throws EIDGeneratorOverflow {
+    synchronized public int getNew() throws EIDGeneratorOverflow {
         if (identificador > 2147483646) {
             throw new EIDGeneratorOverflow();
         } else {
