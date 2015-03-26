@@ -49,7 +49,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      */
     public TSenderNode(int identificador, String d, TLongIDGenerator il, TTopology t) {
         super(identificador, d, il, t);
-        this.ponerPuertos(super.NUM_PUERTOS_EMISOR);
+        this.setPorts(super.NUM_PUERTOS_EMISOR);
         gIdent = new TLongIDGenerator();
         gIdGoS = new TRotaryIDGenerator();
         String IPDestino = "";
@@ -795,7 +795,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @param num N�mero de puertos que tendr� el nodo. Como m�ximo est� configurado para 8.
      * @since 1.0
      */    
-    public synchronized void ponerPuertos(int num) {
+    public synchronized void setPorts(int num) {
         puertos = new TFIFOPortSet(num, this);
     }
     

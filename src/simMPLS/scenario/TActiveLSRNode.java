@@ -59,7 +59,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      */
     public TActiveLSRNode(int identificador, String d, TLongIDGenerator il, TTopology t) {
         super(identificador, d, il, t);
-        this.ponerPuertos(super.NUM_PUERTOS_LSRA);
+        this.setPorts(super.NUM_PUERTOS_LSRA);
         matrizConmutacion = new TSwitchingMatrix();
         gIdent = new TLongIDGenerator();
         gIdentLDP = new TIDGenerator();
@@ -1755,7 +1755,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param num N�mero de puertos del nodo. Como mucho 8.
      * @since 1.0
      */
-    public synchronized void ponerPuertos(int num) {
+    public synchronized void setPorts(int num) {
         puertos = new TActivePortSet(num, this);
     }
     

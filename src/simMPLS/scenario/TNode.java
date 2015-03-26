@@ -249,7 +249,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @param num El n�mero de puertos deseados para el nodo. 8 como mucho.
      * @since 1.0
      */    
-    public abstract void ponerPuertos(int num);
+    public abstract void setPorts(int num);
 
     /**
      * Este m�todo permite poner un paquete en el buffer de entrada del nodo.
@@ -477,7 +477,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * Esta constante identifica el n�mero de puerto que tiene un LER activo.
      * @since 1.0
      */    
-    public static final int NUM_PUERTOS_LERA = 8;
+    public static final int NUM_LERA_PORTS = 8;
     /**
      * Esta constante identifica el n�mero de puerto que tiene un LSR.
      * @since 1.0

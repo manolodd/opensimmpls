@@ -46,7 +46,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      */
     public TReceiverNode(int identificador, String d, TLongIDGenerator il, TTopology t) {
         super(identificador, d, il, t);
-        this.ponerPuertos(super.NUM_PUERTOS_RECEPTOR);
+        this.setPorts(super.NUM_PUERTOS_RECEPTOR);
         this.puertos.setUnlimitedBuffer(true);
         this.estadisticas = new TReceiverStats();
     }
@@ -297,7 +297,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * @param num El n�mero de puertos del nodo. Como mucho 8.
      * @since 1.0
      */    
-    public synchronized void ponerPuertos(int num) {
+    public synchronized void setPorts(int num) {
         puertos = new TFIFOPortSet(num, this);
     }
     

@@ -62,7 +62,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      */
     public TLERNode(int identificador, String d, TLongIDGenerator il, TTopology t) {
         super(identificador, d, il, t);
-        this.ponerPuertos(super.NUM_PUERTOS_LER);
+        this.setPorts(super.NUM_PUERTOS_LER);
         matrizConmutacion = new TSwitchingMatrix();
         gIdent = new TLongIDGenerator();
         gIdentLDP = new TIDGenerator();
@@ -1645,7 +1645,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @param num N�mero de puertos deseado para el nodo. Como mucho, 8 puertos.
      * @since 1.0
      */
-    public synchronized void ponerPuertos(int num) {
+    public synchronized void setPorts(int num) {
         puertos = new TFIFOPortSet(num, this);
     }
     
