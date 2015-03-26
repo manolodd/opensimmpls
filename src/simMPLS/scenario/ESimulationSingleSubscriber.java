@@ -19,26 +19,41 @@ package simMPLS.scenario;
 /**
  * Esta clase implementa una excepci�n que se utilizar� cuando un contador de
  * progreso intente a�adir un nuevo suscriptor, teniendo ya uno previo.
+ *
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
+/**
+ * This class implements an exception that will be thrown when more than a
+ * single listener is subscribed to the progress event generator.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 1.1
+ */
 public class ESimulationSingleSubscriber extends Exception {
-    
-    /** Crea una nueva instancia de EProgresoUnSoloSuscriptor.
+
+    /**
+     * This method is the constructor of the class. It is create a new instance
+     * of ESimulationSingleSubscriber.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
-     */    
+     */
     public ESimulationSingleSubscriber() {
     }
-    
-    /** Este m�todo devuelve un texo explicativo del motivo por el que se ha producido
-     * la excepci�n cuando es invocado.
-     * @return Devuele una cadena de texto (String) que es un mensaje explicativo del motivo de
-     * la excepci�n.
+
+    /**
+     * This method return a localized message explaining the cause of this
+     * exception.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a localized message explaining the cause of this exception.
      * @since 1.0
-     */    
+     */
+    @Override
     public String toString() {
-        return(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("ESimulacionUnSoloSuscriptor.toString"));
+        return (java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("ESimulacionUnSoloSuscriptor.toString"));
     }
-    
+
 }
