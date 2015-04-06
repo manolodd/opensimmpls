@@ -1,7 +1,7 @@
 # Project status (Master, JDK1.8)
 
 [![Build Status](https://travis-ci.org/manolodd/opensimmpls.svg?branch=master)](https://travis-ci.org/manolodd/opensimmpls)
-[![Code Health](https://landscape.io/github/manolodd/opensimmpls/master/landscape.svg?style=flat)](https://landscape.io/github/manolodd/opensimmpls/master/badges)
+[![Code Health](https://landscape.io/github/manolodd/opensimmpls/master/landscape.svg?style=flat)](https://landscape.io/github/manolodd/opensimmpls/master)
 
 # THE PROJECT
 
