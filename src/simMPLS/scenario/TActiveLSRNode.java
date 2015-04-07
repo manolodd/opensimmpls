@@ -159,7 +159,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @since 1.0
      */
     public int obtenerTamanioBuffer() {
-        return this.obtenerPuertos().getBufferSizeInMB();
+        return this.getPorts().getBufferSizeInMB();
     }
     
     /**
@@ -168,7 +168,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @since 1.0
      */
     public void ponerTamanioBuffer(int tb) {
-        this.obtenerPuertos().setBufferSizeInMB(tb);
+        this.getPorts().setBufferSizeInMB(tb);
     }
     
     /**
@@ -182,7 +182,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         gIdent.reset();
         gIdentLDP.reset();
         estadisticas.reset();
-        estadisticas.activarEstadisticas(this.obtenerEstadisticas());
+        estadisticas.activarEstadisticas(this.isGeneratingStats());
         dmgp.reset();
         peticionesGPSRP.reset();
         this.restaurarPasosSinEmitir();
@@ -205,7 +205,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     public void receiveTimerEvent(TTimerEvent evt) {
         this.ponerDuracionTic(evt.getStepDuration());
         this.ponerInstanteDeTiempo(evt.getUpperLimit());
-        if (this.obtenerPuertos().isAnyPacketToSwitch()) {
+        if (this.getPorts().isAnyPacketToSwitch()) {
             this.nsDisponibles += evt.getStepDuration();
         } else {
             this.restaurarPasosSinEmitir();
@@ -222,7 +222,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     public void run() {
         // Acciones a llevar a cabo durante el tic.
         try {
-            this.generarEventoSimulacion(new TSENodeCongested(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), this.obtenerPuertos().getCongestionLevel()));
+            this.generarEventoSimulacion(new TSENodeCongested(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), this.getPorts().getCongestionLevel()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -351,7 +351,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         int puertoLeido = 0;
         TAbstractPDU paquete = null;
         int octetosQuePuedoMandar = this.obtenerOctetosTransmitibles();
-        while (this.obtenerPuertos().canSwitchPacket(octetosQuePuedoMandar)) {
+        while (this.getPorts().canSwitchPacket(octetosQuePuedoMandar)) {
             conmute = true;
             paquete = this.puertos.getNextPacket();
             puertoLeido = puertos.getReadPort();
@@ -1593,7 +1593,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @return El conjunto de puertos del nodo.
      * @since 1.0
      */
-    public TPortSet obtenerPuertos() {
+    public TPortSet getPorts() {
         return this.puertos;
     }
     
@@ -1639,23 +1639,23 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      */
     public int comprobar(TTopology t, boolean recfg) {
         this.ponerBienConfigurado(false);
-        if (this.obtenerNombre().equals(""))
+        if (this.getName().equals(""))
             return this.SIN_NOMBRE;
         boolean soloEspacios = true;
-        for (int i=0; i < this.obtenerNombre().length(); i++){
-            if (this.obtenerNombre().charAt(i) != ' ')
+        for (int i=0; i < this.getName().length(); i++){
+            if (this.getName().charAt(i) != ' ')
                 soloEspacios = false;
         }
         if (soloEspacios)
             return this.SOLO_ESPACIOS;
         if (!recfg) {
-            TNode tp = t.obtenerPrimerNodoLlamado(this.obtenerNombre());
+            TNode tp = t.obtenerPrimerNodoLlamado(this.getName());
             if (tp != null)
                 return this.NOMBRE_YA_EXISTE;
         } else {
-            TNode tp = t.obtenerPrimerNodoLlamado(this.obtenerNombre());
+            TNode tp = t.obtenerPrimerNodoLlamado(this.getName());
             if (tp != null) {
-                if (this.topologia.existeMasDeUnNodoLlamado(this.obtenerNombre())) {
+                if (this.topologia.existeMasDeUnNodoLlamado(this.getName())) {
                     return this.NOMBRE_YA_EXISTE;
                 }
             }
@@ -1690,15 +1690,15 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         String cadena = "#LSRA#";
         cadena += this.getID();
         cadena += "#";
-        cadena += this.obtenerNombre().replace('#', ' ');
+        cadena += this.getName().replace('#', ' ');
         cadena += "#";
         cadena += this.getIPAddress();
         cadena += "#";
-        cadena += this.obtenerEstado();
+        cadena += this.getStatus();
         cadena += "#";
-        cadena += this.obtenerMostrarNombre();
+        cadena += this.getShowName();
         cadena += "#";
-        cadena += this.obtenerEstadisticas();
+        cadena += this.isGeneratingStats();
         cadena += "#";
         cadena += this.obtenerPosicion().x;
         cadena += "#";
@@ -1706,7 +1706,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         cadena += "#";
         cadena += this.potenciaEnMb;
         cadena += "#";
-        cadena += this.obtenerPuertos().getBufferSizeInMB();
+        cadena += this.getPorts().getBufferSizeInMB();
         cadena += "#";
         cadena += this.dmgp.getDMGPSizeInKB();
         cadena += "#";
@@ -1720,22 +1720,22 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @return TRUE, si se ha conseguido deserializar correctamente. FALSE en caso contrario.
      * @since 1.0
      */
-    public boolean unmarshall(String elemento) {
+    public boolean unMarshall(String elemento) {
         String valores[] = elemento.split("#");
         if (valores.length != 13) {
             return false;
         }
-        this.ponerIdentificador(Integer.valueOf(valores[2]).intValue());
-        this.ponerNombre(valores[3]);
-        this.ponerIP(valores[4]);
-        this.ponerEstado(Integer.valueOf(valores[5]).intValue());
-        this.ponerMostrarNombre(Boolean.valueOf(valores[6]).booleanValue());
-        this.ponerEstadisticas(Boolean.valueOf(valores[7]).booleanValue());
+        this.setID(Integer.valueOf(valores[2]).intValue());
+        this.setName(valores[3]);
+        this.setIPAddress(valores[4]);
+        this.setStatus(Integer.valueOf(valores[5]).intValue());
+        this.setShowName(Boolean.valueOf(valores[6]).booleanValue());
+        this.setGenerateStats(Boolean.valueOf(valores[7]).booleanValue());
         int posX = Integer.valueOf(valores[8]).intValue();
         int posY = Integer.valueOf(valores[9]).intValue();
-        this.ponerPosicion(new Point(posX+24, posY+24));
+        this.setPosition(new Point(posX+24, posY+24));
         this.potenciaEnMb = Integer.valueOf(valores[10]).intValue();
-        this.obtenerPuertos().setBufferSizeInMB(Integer.valueOf(valores[11]).intValue());
+        this.getPorts().setBufferSizeInMB(Integer.valueOf(valores[11]).intValue());
         this.dmgp.setDMGPSizeInKB(Integer.valueOf(valores[12]).intValue());
         return true;
     }

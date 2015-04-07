@@ -157,7 +157,7 @@ public class TTopology {
         Iterator iterador = conjuntoNodos.iterator();
         while (iterador.hasNext()) {
             nodo = (TNode) iterador.next();
-            if (nodo.obtenerNombre().equals(nom))
+            if (nodo.getName().equals(nom))
                 return nodo;
         }
         return null;
@@ -175,7 +175,7 @@ public class TTopology {
         Iterator iterador = conjuntoNodos.iterator();
         while (iterador.hasNext()) {
             nodo = (TNode) iterador.next();
-            if (nodo.obtenerNombre().equals(nom))
+            if (nodo.getName().equals(nom))
                 cuantos++;
                 if (cuantos > 1)
                     return true;
@@ -285,38 +285,38 @@ public class TTopology {
             if (nodoBuscado.getID() == nodo.getID()) {
                 if (nodo.getNodeType() == TNode.SENDER) {
                     TSenderNode nodoTrasCast = (TSenderNode) nodoBuscado;
-                    nodoTrasCast.ponerNombre(nodo.obtenerNombre());
-                    nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
+                    nodoTrasCast.setName(nodo.getName());
+                    nodoTrasCast.setPosition(nodo.obtenerPosicion());
                 }
                 else if (nodo.getNodeType() == TNode.RECEIVER) {
                     TSenderNode nodoTrasCast = (TSenderNode) nodoBuscado;
-                    nodoTrasCast.ponerNombre(nodo.obtenerNombre());
-                    nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
+                    nodoTrasCast.setName(nodo.getName());
+                    nodoTrasCast.setPosition(nodo.obtenerPosicion());
                 }
                 else if (nodo.getNodeType() == TNode.RECEIVER) {
                     TReceiverNode nodoTrasCast = (TReceiverNode) nodoBuscado;
-                    nodoTrasCast.ponerNombre(nodo.obtenerNombre());
-                    nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
+                    nodoTrasCast.setName(nodo.getName());
+                    nodoTrasCast.setPosition(nodo.obtenerPosicion());
                 }
                 else if (nodo.getNodeType() == TNode.LER) {
                     TLERNode nodoTrasCast = (TLERNode) nodoBuscado;
-                    nodoTrasCast.ponerNombre(nodo.obtenerNombre());
-                    nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
+                    nodoTrasCast.setName(nodo.getName());
+                    nodoTrasCast.setPosition(nodo.obtenerPosicion());
                 }
                 else if (nodo.getNodeType() == TNode.LERA) {
                     TActiveLERNode nodoTrasCast = (TActiveLERNode) nodoBuscado;
-                    nodoTrasCast.ponerNombre(nodo.obtenerNombre());
-                    nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
+                    nodoTrasCast.setName(nodo.getName());
+                    nodoTrasCast.setPosition(nodo.obtenerPosicion());
                 }
                 else if (nodo.getNodeType() == TNode.LSR) {
                     TLSRNode nodoTrasCast = (TLSRNode) nodoBuscado;
-                    nodoTrasCast.ponerNombre(nodo.obtenerNombre());
-                    nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
+                    nodoTrasCast.setName(nodo.getName());
+                    nodoTrasCast.setPosition(nodo.obtenerPosicion());
                 }
                 else if (nodo.getNodeType() == TNode.LSRA) {
                     TActiveLSRNode nodoTrasCast = (TActiveLSRNode) nodoBuscado;
-                    nodoTrasCast.ponerNombre(nodo.obtenerNombre());
-                    nodoTrasCast.ponerPosicion(nodo.obtenerPosicion());
+                    nodoTrasCast.setName(nodo.getName());
+                    nodoTrasCast.setPosition(nodo.obtenerPosicion());
                 }
                 fin = true;
             }

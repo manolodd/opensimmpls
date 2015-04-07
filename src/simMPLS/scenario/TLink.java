@@ -157,12 +157,12 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
             this.ponerExtremo2(topo.obtenerPrimerNodoLlamado(tcenlace.obtenerNombreExtremo2()));
             this.desconectarDePuertos();
             this.ponerPuertoExtremo1(tcenlace.obtenerPuertoExtremo1());
-            TPortSet p1 = extremo1.obtenerPuertos();
+            TPortSet p1 = extremo1.getPorts();
             if (p1 != null) {
                 p1.connectLinkToPort(this, this.puertoExtremo1);
             }
             this.ponerPuertoExtremo2(tcenlace.obtenerPuertoExtremo2());
-            TPortSet p2 = extremo2.obtenerPuertos();
+            TPortSet p2 = extremo2.getPorts();
             if (p2 != null) {
                 p2.connectLinkToPort(this, this.puertoExtremo2);
             }
@@ -179,9 +179,9 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
         tce.ponerNombre(this.obtenerNombre());
         tce.ponerMostrarNombre(this.obtenerMostrarNombre());
         if (this.getEnd1() != null)
-            tce.ponerNombreExtremo1(this.getEnd1().obtenerNombre());
+            tce.ponerNombreExtremo1(this.getEnd1().getName());
         if (this.getEnd2() != null)
-            tce.ponerNombreExtremo2(this.getEnd2().obtenerNombre());
+            tce.ponerNombreExtremo2(this.getEnd2().getName());
         tce.ponerDelay(this.obtenerDelay());
         tce.ponerPuertoExtremo1(this.obtenerPuertoExtremo1());
         tce.ponerPuertoExtremo2(this.obtenerPuertoExtremo2());
@@ -195,13 +195,13 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      */
     public void desconectarDePuertos() {
         if (extremo1 != null) {
-            TPortSet p1 = extremo1.obtenerPuertos();
+            TPortSet p1 = extremo1.getPorts();
             if (p1 != null) {
                 p1.disconnectLinkFromPort(this.puertoExtremo1);
             }
         }
         if (extremo2 != null) {
-            TPortSet p2 = extremo2.obtenerPuertos();
+            TPortSet p2 = extremo2.getPorts();
             if (p2 != null) {
                 p2.disconnectLinkFromPort(this.puertoExtremo2);
             }
@@ -561,7 +561,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return TRUE, si todo va bien. FALSE si no se ha podido deserializar el enlace.
      * @since 1.0
      */    
-    public abstract boolean unmarshall(String elemento);
+    public abstract boolean unMarshall(String elemento);
     /**
      * Este m�todo establece si el enlace est� ca�o o no.
      * @param ec TRUE, si el enlace debe aparecer como caido. FALSE en caso contrario.

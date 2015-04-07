@@ -370,57 +370,57 @@ public class JSimulationPanel extends javax.swing.JPanel {
             int tipo = nodo.getNodeType();
             switch (tipo) {
                 case TNode.SENDER: {
-                    if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
+                    if (nodo.getStatus() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.RECEIVER: {
-                    if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
+                    if (nodo.getStatus() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.LER: {
-                    if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
+                    if (nodo.getStatus() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LER), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LER_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.LERA: {
-                    if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
+                    if (nodo.getStatus() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LERA), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LERA_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.LSR: {
-                    if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
+                    if (nodo.getStatus() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSR), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.LSRA: {
-                    if (nodo.obtenerEstado() == TNode.DESELECCIONADO)
+                    if (nodo.getStatus() == TNode.DESELECCIONADO)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
             }
-            if (nodo.obtenerMostrarNombre()) {
+            if (nodo.getShowName()) {
                 FontMetrics fm = this.getFontMetrics(this.getFont());
-                int anchoTexto = fm.charsWidth(nodo.obtenerNombre().toCharArray(), 0, nodo.obtenerNombre().length());
+                int anchoTexto = fm.charsWidth(nodo.getName().toCharArray(), 0, nodo.getName().length());
                 int posX = (nodo.obtenerPosicion().x + 24) - ((anchoTexto/2));
                 int posY = nodo.obtenerPosicion().y+60;
                 g2Dbuf.setColor(Color.WHITE);
                 g2Dbuf.fillRoundRect(posX-3, posY-13, anchoTexto+5, 17, 10, 10);
                 g2Dbuf.setColor(Color.GRAY);
-                g2Dbuf.drawString(nodo.obtenerNombre(), posX, posY);
+                g2Dbuf.drawString(nodo.getName(), posX, posY);
                 g2Dbuf.drawRoundRect(posX-3, posY-13, anchoTexto+5, 17, 10, 10);
             }
         }

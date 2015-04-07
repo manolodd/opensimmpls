@@ -360,12 +360,12 @@ public class JVentanaLER extends javax.swing.JDialog {
     
 private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnCancelar
     if (reconfigurando) {
-        configLER.ponerMostrarNombre(BKUPMostrarNombre);
-        configLER.ponerNombre(BKUPNombre);
+        configLER.setShowName(BKUPMostrarNombre);
+        configLER.setName(BKUPNombre);
         configLER.ponerBienConfigurado(true);
         configLER.ponerTamanioBuffer(BKUPTamBuffer);
         configLER.ponerPotenciaEnMb(BKUPPotencia);
-        configLER.ponerEstadisticas(BKUPGenerarEstadisticas);
+        configLER.setGenerateStats(BKUPGenerarEstadisticas);
         reconfigurando = false;
     } else {
         configLER.ponerBienConfigurado(false);
@@ -377,14 +377,14 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
     configLER.ponerBienConfigurado(true);
     if (!this.reconfigurando){
-        configLER.ponerPosicion(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
+        configLER.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
     configLER.ponerTamanioBuffer(this.selectorDeTamanioBuffer.getValue());
     configLER.ponerPotenciaEnMb(this.selectorDePotenciaDeConmutacion.getValue());
-    configLER.ponerEstadisticas(this.selectorDeGenerarEstadisticasSencillo.isSelected());
-    configLER.ponerNombre(nombreNodo.getText());
-    configLER.ponerMostrarNombre(verNombre.isSelected());
-    configLER.ponerEstadisticas(this.selectorDeGenerarEstadisticasSencillo.isSelected());
+    configLER.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
+    configLER.setName(nombreNodo.getText());
+    configLER.setShowName(verNombre.isSelected());
+    configLER.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
     int error = configLER.comprobar(topo, this.reconfigurando);
     if (error != TLERNode.CORRECTA) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
@@ -434,9 +434,9 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             this.panelCoordenadas.setEnabled(false);
             this.panelCoordenadas.setToolTipText(null);
 
-            BKUPGenerarEstadisticas = tnler.obtenerEstadisticas();
-            BKUPMostrarNombre = tnler.obtenerMostrarNombre();
-            BKUPNombre = tnler.obtenerNombre();
+            BKUPGenerarEstadisticas = tnler.isGeneratingStats();
+            BKUPMostrarNombre = tnler.getShowName();
+            BKUPNombre = tnler.getName();
             BKUPPotencia = tnler.obtenerPotenciaEnMb();
             BKUPTamBuffer = tnler.obtenerTamanioBuffer();
 

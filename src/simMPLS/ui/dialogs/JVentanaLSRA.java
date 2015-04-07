@@ -395,11 +395,11 @@ public class JVentanaLSRA extends javax.swing.JDialog {
 
 private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnCancelar
     if (reconfigurando) {
-        configLSRA.ponerMostrarNombre(BKUPMostrarNombre);
-        configLSRA.ponerNombre(BKUPNombre);
+        configLSRA.setShowName(BKUPMostrarNombre);
+        configLSRA.setName(BKUPNombre);
         configLSRA.ponerBienConfigurado(true);
         configLSRA.ponerTamanioBuffer(BKUPTamBuffer);
-        configLSRA.ponerEstadisticas(BKUPGenerarEstadisticas);
+        configLSRA.setGenerateStats(BKUPGenerarEstadisticas);
         configLSRA.ponerPotenciaEnMb(BKUPPotencia);
         configLSRA.ponerTamanioDMGPEnKB(BKUPTamanioDMGP);
         reconfigurando = false;
@@ -413,14 +413,14 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
     configLSRA.ponerBienConfigurado(true);
     if (!this.reconfigurando){
-        configLSRA.ponerPosicion(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
+        configLSRA.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
     configLSRA.ponerTamanioDMGPEnKB(this.selectorDeTamanioDMGP.getValue());
     configLSRA.ponerTamanioBuffer(this.selectorDeTamanioBuffer.getValue());
     configLSRA.ponerPotenciaEnMb(this.selectorDePotenciaDeConmutacion.getValue());
-    configLSRA.ponerNombre(nombreNodo.getText());
-    configLSRA.ponerEstadisticas(this.selectorDeGenerarEstadisticasSencillo.isSelected());
-    configLSRA.ponerMostrarNombre(verNombre.isSelected());
+    configLSRA.setName(nombreNodo.getText());
+    configLSRA.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
+    configLSRA.setShowName(verNombre.isSelected());
     int error = configLSRA.comprobar(topo, this.reconfigurando);
     if (error != TActiveLSRNode.CORRECTA) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
@@ -470,9 +470,9 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             this.panelCoordenadas.setEnabled(false);
             this.panelCoordenadas.setToolTipText(null);
 
-            BKUPGenerarEstadisticas = tnlsra.obtenerEstadisticas();
-            BKUPMostrarNombre = tnlsra.obtenerMostrarNombre();
-            BKUPNombre = tnlsra.obtenerNombre();
+            BKUPGenerarEstadisticas = tnlsra.isGeneratingStats();
+            BKUPMostrarNombre = tnlsra.getShowName();
+            BKUPNombre = tnlsra.getName();
             BKUPPotencia = tnlsra.obtenerPotenciaEnMb();
             BKUPTamBuffer = tnlsra.obtenerTamanioBuffer();
             BKUPTamanioDMGP = tnlsra.obtenerTamanioDMGPEnKB();

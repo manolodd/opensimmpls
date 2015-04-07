@@ -240,8 +240,8 @@ private void clicEnGenerarEstadisticaFacil(java.awt.event.ActionEvent evt) {//GE
 
 private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnCancelar
     if (reconfigurando) {
-        configReceptor.ponerMostrarNombre(BKUPMostrarNombre);
-        configReceptor.ponerNombre(BKUPNombre);
+        configReceptor.setShowName(BKUPMostrarNombre);
+        configReceptor.setName(BKUPNombre);
         configReceptor.ponerBienConfigurado(true);
         reconfigurando = false;
     } else {
@@ -254,11 +254,11 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
     configReceptor.ponerBienConfigurado(true);
     if (!this.reconfigurando){
-        configReceptor.ponerPosicion(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
+        configReceptor.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
-    configReceptor.ponerNombre(nombreNodo.getText());
-    configReceptor.ponerMostrarNombre(verNombre.isSelected());
-    configReceptor.ponerEstadisticas(this.selectorGenerarEstadisticaAvanzada.isSelected());
+    configReceptor.setName(nombreNodo.getText());
+    configReceptor.setShowName(verNombre.isSelected());
+    configReceptor.setGenerateStats(this.selectorGenerarEstadisticaAvanzada.isSelected());
     int error = configReceptor.comprobar(topo, this.reconfigurando);
     if (error != TReceiverNode.CORRECTA) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
@@ -309,9 +309,9 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             this.panelCoordenadas.setEnabled(false);
             this.panelCoordenadas.setToolTipText(null);
 
-            BKUPGenerarEstadisticas = tnr.obtenerEstadisticas();
-            BKUPMostrarNombre = tnr.obtenerMostrarNombre();
-            BKUPNombre = tnr.obtenerNombre();
+            BKUPGenerarEstadisticas = tnr.isGeneratingStats();
+            BKUPMostrarNombre = tnr.getShowName();
+            BKUPNombre = tnr.getName();
 
             this.nombreNodo.setText(BKUPNombre);
             this.verNombre.setSelected(BKUPMostrarNombre);

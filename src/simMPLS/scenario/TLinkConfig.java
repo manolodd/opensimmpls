@@ -235,8 +235,8 @@ public class TLinkConfig {
                 if (topo.existeMasDeUnEnlaceLlamado(nombre)) {
                     return this.NOMBRE_YA_EXISTE;
                 } else {
-                    if (e.getEnd1().obtenerNombre().equals(this.obtenerNombreExtremo1())) {
-                        if (!e.getEnd2().obtenerNombre().equals(this.obtenerNombreExtremo2())) {
+                    if (e.getEnd1().getName().equals(this.obtenerNombreExtremo1())) {
+                        if (!e.getEnd2().getName().equals(this.obtenerNombreExtremo2())) {
                             return this.NOMBRE_YA_EXISTE;
                         }
                     } else {

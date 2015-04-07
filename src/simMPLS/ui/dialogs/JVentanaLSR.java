@@ -359,11 +359,11 @@ public class JVentanaLSR extends javax.swing.JDialog {
 
 private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnCancelar
     if (reconfigurando) {
-        configLSR.ponerMostrarNombre(BKUPMostrarNombre);
-        configLSR.ponerNombre(BKUPNombre);
+        configLSR.setShowName(BKUPMostrarNombre);
+        configLSR.setName(BKUPNombre);
         configLSR.ponerBienConfigurado(true);
         configLSR.ponerTamanioBuffer(BKUPTamBuffer);
-        configLSR.ponerEstadisticas(BKUPGenerarEstadisticas);
+        configLSR.setGenerateStats(BKUPGenerarEstadisticas);
         configLSR.ponerPotenciaEnMb(BKUPPotencia);
         reconfigurando = false;
     } else {
@@ -376,13 +376,13 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
     configLSR.ponerBienConfigurado(true);
     if (!this.reconfigurando){
-        configLSR.ponerPosicion(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
+        configLSR.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
     configLSR.ponerTamanioBuffer(this.selectorDeTamanioBuffer.getValue());
     configLSR.ponerPotenciaEnMb(this.selectorDePotenciaDeConmutacion.getValue());
-    configLSR.ponerNombre(nombreNodo.getText());
-    configLSR.ponerEstadisticas(this.selectorDeGenerarEstadisticasSencillo.isSelected());
-    configLSR.ponerMostrarNombre(verNombre.isSelected());
+    configLSR.setName(nombreNodo.getText());
+    configLSR.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
+    configLSR.setShowName(verNombre.isSelected());
     int error = configLSR.comprobar(topo, this.reconfigurando);
     if (error != TLSRNode.CORRECTA) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
@@ -432,9 +432,9 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             this.panelCoordenadas.setEnabled(false);
             this.panelCoordenadas.setToolTipText(null);
 
-            BKUPGenerarEstadisticas = tnlsr.obtenerEstadisticas();
-            BKUPMostrarNombre = tnlsr.obtenerMostrarNombre();
-            BKUPNombre = tnlsr.obtenerNombre();
+            BKUPGenerarEstadisticas = tnlsr.isGeneratingStats();
+            BKUPMostrarNombre = tnlsr.getShowName();
+            BKUPNombre = tnlsr.getName();
             BKUPPotencia = tnlsr.obtenerPotenciaEnMb();
             BKUPTamBuffer = tnlsr.obtenerTamanioBuffer();
 

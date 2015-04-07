@@ -70,7 +70,7 @@ public class TSENodeCongested extends TSimulationEvent {
             return ent.obtenerNombre();
         } else if (et.getElementType() == TTopologyElement.NODO) {
             nt = (TNode) et;
-            return nt.obtenerNombre();
+            return nt.getName();
         }
         return ("");
     }

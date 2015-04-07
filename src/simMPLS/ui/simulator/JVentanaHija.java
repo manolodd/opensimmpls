@@ -922,10 +922,10 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             if (et != null) {
                 if (et.getElementType() == TTopologyElement.NODO) {
                     TNode nt = (TNode) et;
-                    if (nt.obtenerPuertos().isArtificiallyCongested()) {
-                        nt.obtenerPuertos().setArtificiallyCongested(false);
+                    if (nt.getPorts().isArtificiallyCongested()) {
+                        nt.getPorts().setArtificiallyCongested(false);
                     } else {
-                        nt.obtenerPuertos().setArtificiallyCongested(true);
+                        nt.getPorts().setArtificiallyCongested(true);
                     }
                 } else if (et.getElementType() == TTopologyElement.LINK) {
                     TLink ent = (TLink) et;
@@ -1031,7 +1031,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                     p2.y = 0;
                 if (p2.y > panelDisenio.getSize().height)
                     p2.y = panelDisenio.getSize().height;
-                nodoSeleccionado.ponerPosicion(new Point(p2.x, p2.y));
+                nodoSeleccionado.setPosition(new Point(p2.x, p2.y));
                 panelSimulacion.repaint();
                 this.escenario.setModified(true);
             }
@@ -1048,7 +1048,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
     private void ratonSoltadoEnPanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSoltadoEnPanelSimulacion
         if (evt.getButton() == MouseEvent.BUTTON1) {
             if (nodoSeleccionado != null) {
-                nodoSeleccionado.ponerEstado(TNode.DESELECCIONADO);
+                nodoSeleccionado.setStatus(TNode.DESELECCIONADO);
                 nodoSeleccionado = null;
                 this.escenario.setModified(true);
             }
@@ -1073,7 +1073,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                     TNode nt = (TNode) et;
                     nodoSeleccionado = nt;
                     if (nodoSeleccionado != null) {
-                        nodoSeleccionado.ponerEstado(TNode.SELECCIONADO);
+                        nodoSeleccionado.setStatus(TNode.SELECCIONADO);
                         this.escenario.setModified(true);
                     }
                 }
@@ -1257,7 +1257,7 @@ private void clicEnPopUpDisenioFondoOcultarNombreNodos(java.awt.event.ActionEven
     TNode nodoAux;
     while (it.hasNext()) {
         nodoAux = (TNode) it.next();
-        nodoAux.ponerMostrarNombre(false);
+        nodoAux.setShowName(false);
     }
     panelDisenio.repaint();
     this.escenario.setModified(true);
@@ -1273,7 +1273,7 @@ private void clicEnPopUpDisenioFondoVerNombreNodos(java.awt.event.ActionEvent ev
     TNode nodoAux;
     while (it.hasNext()) {
         nodoAux = (TNode) it.next();
-        nodoAux.ponerMostrarNombre(true);
+        nodoAux.setShowName(true);
     }
     panelDisenio.repaint();
     this.escenario.setModified(true);
@@ -1434,7 +1434,7 @@ private void clicEnPopUpDisenioVerNombre(java.awt.event.ActionEvent evt) {//GEN-
     if (elementoDisenioClicDerecho != null) {
         if (elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODO) {
             TNode nt = (TNode) elementoDisenioClicDerecho;
-            nt.ponerMostrarNombre(dVerNombreMenuItem.isSelected());
+            nt.setShowName(dVerNombreMenuItem.isSelected());
             elementoDisenioClicDerecho = null;
             panelDisenio.repaint();
         } else {
@@ -1461,7 +1461,7 @@ private void clicDerechoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
         else {
             if (et.getElementType() == TTopologyElement.NODO) {
                 TNode nt = (TNode) et;
-                dVerNombreMenuItem.setSelected(nt.obtenerMostrarNombre());
+                dVerNombreMenuItem.setSelected(nt.getShowName());
                 elementoDisenioClicDerecho = et;
                 diseElementoPopUp.show(this, evt.getX()+7, evt.getY()+15);
             } else if (et.getElementType() == TTopologyElement.LINK) {
@@ -1593,10 +1593,10 @@ private void ratonSobrePanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIR
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
         if (et.getElementType() == TTopologyElement.NODO) {
             TNode nt = (TNode) et;
-            if (nt.obtenerPuertos().isArtificiallyCongested()) {
-                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.Congestion") +nt.obtenerPuertos().getCongestionLevel()+ java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.POrcentaje")+java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.paraDejarDeCongestionar"));
+            if (nt.getPorts().isArtificiallyCongested()) {
+                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.Congestion") +nt.getPorts().getCongestionLevel()+ java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.POrcentaje")+java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.paraDejarDeCongestionar"));
             } else {
-                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.Congestion") +nt.obtenerPuertos().getCongestionLevel()+ java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.POrcentaje")+java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.paraCongestionar"));
+                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.Congestion") +nt.getPorts().getCongestionLevel()+ java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.POrcentaje")+java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("VentanaHija.paraCongestionar"));
             }
         } else if (et.getElementType() == TTopologyElement.LINK) {
             TLink ent = (TLink) et;
@@ -1661,7 +1661,7 @@ private void arrastrandoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
                 p2.y = 0;
             if (p2.y > panelDisenio.getSize().height)
                 p2.y = panelDisenio.getSize().height;
-            nodoSeleccionado.ponerPosicion(new Point(p2.x, p2.y));
+            nodoSeleccionado.setPosition(new Point(p2.x, p2.y));
             panelDisenio.repaint();
             this.escenario.setModified(true);
         }
@@ -1677,7 +1677,7 @@ private void arrastrandoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
 private void clicSoltadoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicSoltadoEnPanelDisenio
     if (evt.getButton() == MouseEvent.BUTTON1) {
         if (nodoSeleccionado != null) {
-            nodoSeleccionado.ponerEstado(TNode.DESELECCIONADO);
+            nodoSeleccionado.setStatus(TNode.DESELECCIONADO);
             nodoSeleccionado = null;
             this.escenario.setModified(true);
         }
@@ -1695,7 +1695,7 @@ private void clicEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:even
         TTopology topo = escenario.getTopology();
         nodoSeleccionado = topo.obtenerNodoEnPosicion(evt.getPoint());
         if (nodoSeleccionado != null) {
-            nodoSeleccionado.ponerEstado(TNode.SELECCIONADO);
+            nodoSeleccionado.setStatus(TNode.SELECCIONADO);
             this.escenario.setModified(true);
         }
         panelDisenio.repaint();
@@ -2130,8 +2130,8 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
         it = this.escenario.getTopology().getNodesIterator();
         while (it.hasNext()) {
             nt = (TNode) it.next();
-            if (nt.obtenerEstadisticas()) {
-                this.selectorElementoEstadisticas.addItem(nt.obtenerNombre());
+            if (nt.isGeneratingStats()) {
+                this.selectorElementoEstadisticas.addItem(nt.getName());
             }
         }
         this.selectorElementoEstadisticas.setSelectedIndex(0);

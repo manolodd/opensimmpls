@@ -396,12 +396,12 @@ public class JVentanaLERA extends javax.swing.JDialog {
     
 private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnCancelar
     if (reconfigurando) {
-        configLERA.ponerMostrarNombre(BKUPMostrarNombre);
-        configLERA.ponerNombre(BKUPNombre);
+        configLERA.setShowName(BKUPMostrarNombre);
+        configLERA.setName(BKUPNombre);
         configLERA.ponerBienConfigurado(true);
         configLERA.ponerTamanioBuffer(BKUPTamBuffer);
         configLERA.ponerPotenciaEnMb(BKUPPotencia);
-        configLERA.ponerEstadisticas(BKUPGenerarEstadisticas);
+        configLERA.setGenerateStats(BKUPGenerarEstadisticas);
         configLERA.setDMGPSizeInKB(BKUPTamanioDMGP);
         reconfigurando = false;
     } else {
@@ -414,15 +414,15 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
     configLERA.ponerBienConfigurado(true);
     if (!this.reconfigurando){
-        configLERA.ponerPosicion(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
+        configLERA.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
     configLERA.setDMGPSizeInKB(this.selectorDeTamanioDMGP.getValue());
     configLERA.ponerTamanioBuffer(this.selectorDeTamanioBuffer.getValue());
     configLERA.ponerPotenciaEnMb(this.selectorDePotenciaDeConmutacion.getValue());
-    configLERA.ponerEstadisticas(this.selectorDeGenerarEstadisticasSencillo.isSelected());
-    configLERA.ponerNombre(nombreNodo.getText());
-    configLERA.ponerMostrarNombre(verNombre.isSelected());
-    configLERA.ponerEstadisticas(this.selectorDeGenerarEstadisticasSencillo.isSelected());
+    configLERA.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
+    configLERA.setName(nombreNodo.getText());
+    configLERA.setShowName(verNombre.isSelected());
+    configLERA.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
     int error = configLERA.comprobar(topo, this.reconfigurando);
     if (error != TActiveLERNode.OK) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
@@ -472,9 +472,9 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             this.panelCoordenadas.setEnabled(false);
             this.panelCoordenadas.setToolTipText(null);
 
-            BKUPGenerarEstadisticas = tnlera.obtenerEstadisticas();
-            BKUPMostrarNombre = tnlera.obtenerMostrarNombre();
-            BKUPNombre = tnlera.obtenerNombre();
+            BKUPGenerarEstadisticas = tnlera.isGeneratingStats();
+            BKUPMostrarNombre = tnlera.getShowName();
+            BKUPNombre = tnlera.getName();
             BKUPPotencia = tnlera.obtenerPotenciaEnMb();
             BKUPTamBuffer = tnlera.obtenerTamanioBuffer();
             BKUPTamanioDMGP = tnlera.getDMGPSizeInKB();

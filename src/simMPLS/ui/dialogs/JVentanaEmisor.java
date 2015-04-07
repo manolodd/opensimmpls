@@ -74,7 +74,7 @@ public class JVentanaEmisor extends javax.swing.JDialog {
         while (it.hasNext()) {
             nt = (TNode) it.next();
             if (nt.getNodeType() == TNode.RECEIVER) {
-                selectorDelReceptor.addItem(nt.obtenerNombre());
+                selectorDelReceptor.addItem(nt.getName());
             }
         }
         this.selectorDeGoS.removeAllItems();
@@ -540,12 +540,12 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
     if (reconfigurando) {
         emisor.ponerDestino(BKUPDestino);
         emisor.ponerLSPDeBackup(BKUPLSPDeBackup);
-        emisor.ponerMostrarNombre(BKUPMostrarNombre);
+        emisor.setShowName(BKUPMostrarNombre);
         emisor.ponerNivelDeGoS(BKUPNivelDeGos);
-        emisor.ponerNombre(BKUPNombre);
+        emisor.setName(BKUPNombre);
         emisor.ponerTasaTrafico(BKUPTasaTrafico);
         emisor.ponerTipoTrafico(BKUPTipoTrafico);
-        emisor.ponerEstadisticas(BKUPGenerarEstadisticas);
+        emisor.setGenerateStats(BKUPGenerarEstadisticas);
         emisor.ponerTamDatosConstante(BKUPTamDatosConstante);
         emisor.ponerBienConfigurado(true);
         emisor.ponerSobreMPLS(BKUPEncapsularEnMPLS);
@@ -560,11 +560,11 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
     emisor.ponerBienConfigurado(true);
     if (!this.reconfigurando){
-        emisor.ponerPosicion(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
+        emisor.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
-    emisor.ponerNombre(nombreNodo.getText());
-    emisor.ponerMostrarNombre(verNombre.isSelected());
-    emisor.ponerEstadisticas(this.selectorDeGenerarEstadisticas.isSelected());
+    emisor.setName(nombreNodo.getText());
+    emisor.setShowName(verNombre.isSelected());
+    emisor.setGenerateStats(this.selectorDeGenerarEstadisticas.isSelected());
     emisor.ponerTasaTrafico(this.selectorDeTasa.getValue());
     emisor.ponerLSPDeBackup(this.selectorLSPDeRespaldo.isSelected());
     emisor.ponerSobreMPLS(this.encapsularSobreMPLS.isSelected());
@@ -628,15 +628,15 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             this.panelCoordenadas.setToolTipText(null);
             TNode nt = this.topo.obtenerNodo(emisor.obtenerDestino());
             if (nt != null) {
-                BKUPDestino = nt.obtenerNombre();
+                BKUPDestino = nt.getName();
             }
             BKUPLSPDeBackup = emisor.obtenerLSPDeBackup();
-            BKUPMostrarNombre = emisor.obtenerMostrarNombre();
+            BKUPMostrarNombre = emisor.getShowName();
             BKUPNivelDeGos = emisor.obtenerNivelDeGoS();
-            BKUPNombre = emisor.obtenerNombre();
+            BKUPNombre = emisor.getName();
             BKUPTasaTrafico = emisor.obtenerTasaTrafico();
             BKUPTipoTrafico = emisor.obtenerTipoTrafico();
-            BKUPGenerarEstadisticas = emisor.obtenerEstadisticas();
+            BKUPGenerarEstadisticas = emisor.isGeneratingStats();
             BKUPTamDatosConstante = emisor.obtenerTamDatosConstante();
             this.BKUPEncapsularEnMPLS = emisor.obtenerSobreMPLS();
             

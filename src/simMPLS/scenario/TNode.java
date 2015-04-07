@@ -65,7 +65,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @param e Estad�sticas para el nodo.
      * @since 1.0
      */    
-    public void ponerEstadisticas(boolean e) {
+    public void setGenerateStats(boolean e) {
         generarEstadisticas = e;
     }
 
@@ -74,7 +74,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @return las estad�sticas del nodo.
      * @since 1.0
      */    
-    public boolean obtenerEstadisticas() {
+    public boolean isGeneratingStats() {
         return generarEstadisticas;
     }
 
@@ -118,7 +118,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @return Nombre del nodo.
      * @since 1.0
      */    
-    public String obtenerNombre() {
+    public String getName() {
         return nombre;
     }
 
@@ -127,7 +127,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @since 1.0
      * @param n nombre deseado para el nodo.
      */    
-    public void ponerNombre(String n) {
+    public void setName(String n) {
         nombre = n;
     }
 
@@ -145,7 +145,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @param identificador El identificador unico del nodo.
      * @since 1.0
      */    
-    public void ponerIdentificador(int identificador) {
+    public void setID(int identificador) {
         id = identificador;
     }
 
@@ -165,7 +165,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @param p Las coordenadas del panel de simulaci�n elegidas para el nodo.
      * @since 1.0
      */    
-    public void ponerPosicion(Point p) {
+    public void setPosition(Point p) {
         posicion.x = p.x - (ANCHO_ICONOS/2);
         posicion.y = p.y - (ALTO_ICONOS/2);
     }
@@ -188,7 +188,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @return SELECCIONADO, si el nodo est� seleccionado. DESELECCIONADO en caso contrario.
      * @since 1.0
      */    
-    public int obtenerEstado() {
+    public int getStatus() {
         return estado;
     }
 
@@ -198,7 +198,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * contrario.
      * @since 1.0
      */    
-    public void ponerEstado(int est) {
+    public void setStatus(int est) {
         estado = est;
     }
 
@@ -208,7 +208,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @param p TRUE, si queremos ver el nombre del nodo. FALSE en caso contrario.
      * @since 1.0
      */    
-    public void ponerMostrarNombre(boolean p) {
+    public void setShowName(boolean p) {
         if (nombre.length() == 0)
             mostrarNombre = false;
         else
@@ -221,7 +221,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @return TRUE, si se est� mostrando el nombre del nodo. FALSE en caso contrario.
      * @since 1.0
      */    
-    public boolean obtenerMostrarNombre() {
+    public boolean getShowName() {
         return mostrarNombre;
     }
 
@@ -239,7 +239,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @param direccion Direcci�n IP deseada para el nodo.
      * @since 1.0
      */    
-    public void ponerIP(String direccion) {
+    public void setIPAddress(String direccion) {
         IP = direccion;
     }
 
@@ -301,7 +301,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @return El conjunto de puertos del nodo.
      * @since 1.0
      */    
-    public abstract TPortSet obtenerPuertos();
+    public abstract TPortSet getPorts();
     /**
      * Este m�todo permite obtener eventos de sincronizaci�n del reloj principal del
      * simulador.
@@ -388,7 +388,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @return TRUE, si se consigue deserializar sin problemas. FALSe en caso contrario.
      * @since 1.0
      */    
-    public abstract boolean unmarshall(String elemento);
+    public abstract boolean unMarshall(String elemento);
     
     /**
      * Este m�todo permite acceder directamente a las estad�sticas del nodo.

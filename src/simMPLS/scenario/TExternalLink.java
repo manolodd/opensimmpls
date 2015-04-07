@@ -267,7 +267,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * @return TRUE, si se deserializa correctamente, FALSE en caso contrario.
      * @since 1.0
      */    
-    public boolean unmarshall(String elemento) {
+    public boolean unMarshall(String elemento) {
         TLinkConfig configEnlace = new TLinkConfig();
         String valores[] = elemento.split("#");
         if (valores.length != 10) {
@@ -282,8 +282,8 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
         TNode ex1 = this.obtenerTopologia().obtenerNodo(IP1);
         TNode ex2 = this.obtenerTopologia().obtenerNodo(IP2);
         if (!((ex1 == null) || (ex2 == null))) {
-            configEnlace.ponerNombreExtremo1(ex1.obtenerNombre());
-            configEnlace.ponerNombreExtremo2(ex2.obtenerNombre());
+            configEnlace.ponerNombreExtremo1(ex1.getName());
+            configEnlace.ponerNombreExtremo2(ex2.getName());
             configEnlace.ponerPuertoExtremo1(Integer.valueOf(valores[7]).intValue());
             configEnlace.ponerPuertoExtremo2(Integer.valueOf(valores[9]).intValue());
             configEnlace.calcularTipo(this.topologia);

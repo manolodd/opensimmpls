@@ -53,7 +53,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
 
     /**
      * Este m�todo es el constructor de la clase. Crea una nueva instancia de
-     * TNodoLERA y otorga unos valores iniciales a los atributos.
+ TNodoLERA y otorga unos elementFields iniciales a los atributos.
      *
      * @param identifier Clabve primaria que permite buscar, encontrar y
      * ordenadr dentro de la topolog�a a esta instancia del LER. Identifica el
@@ -115,11 +115,11 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
 
     /**
      * Este m�todo calcula el numero de nanosegundos que son necesarios para
- conmutar un determinado n�mero de octects.
+     * conmutar un determinado n�mero de octects.
      *
      * @param octects El n�mero de octects que queremos conmutar.
      * @return El n�mero de nanosegundos necesarios para conmutar el n�mero de
- octects especificados.
+     * octects especificados.
      * @since 1.0
      */
     public double getNsRequiredForAllOctets(int octects) {
@@ -183,7 +183,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @since 1.0
      */
     public int obtenerTamanioBuffer() {
-        return this.obtenerPuertos().getBufferSizeInMB();
+        return this.getPorts().getBufferSizeInMB();
     }
 
     /**
@@ -193,7 +193,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @since 1.0
      */
     public void ponerTamanioBuffer(int tb) {
-        this.obtenerPuertos().setBufferSizeInMB(tb);
+        this.getPorts().setBufferSizeInMB(tb);
     }
 
     /**
@@ -208,7 +208,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         gIdent.reset();
         gIdentLDP.reset();
         stats.reset();
-        stats.activarEstadisticas(this.obtenerEstadisticas());
+        stats.activarEstadisticas(this.isGeneratingStats());
         dmgp.reset();
         gpsrpRequests.reset();
         this.restaurarPasosSinEmitir();
@@ -236,7 +236,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     public void receiveTimerEvent(TTimerEvent evt) {
         this.ponerDuracionTic(evt.getStepDuration());
         this.ponerInstanteDeTiempo(evt.getUpperLimit());
-        if (this.obtenerPuertos().isAnyPacketToRoute()) {
+        if (this.getPorts().isAnyPacketToRoute()) {
             this.nsDisponibles += evt.getStepDuration();
         } else {
             this.restaurarPasosSinEmitir();
@@ -254,7 +254,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     public void run() {
         // Acciones a llevar a cabo durante el tic.
         try {
-            this.generarEventoSimulacion(new TSENodeCongested(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), this.obtenerPuertos().getCongestionLevel()));
+            this.generarEventoSimulacion(new TSENodeCongested(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), this.getPorts().getCongestionLevel()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -414,7 +414,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         int puertoLeido = 0;
         TAbstractPDU paquete = null;
         int octetosQuePuedoMandar = this.obtenerOctetosTransmitibles();
-        while (this.obtenerPuertos().canSwitchPacket(octetosQuePuedoMandar)) {
+        while (this.getPorts().canSwitchPacket(octetosQuePuedoMandar)) {
             conmute = true;
             paquete = this.puertos.getNextPacket();
             puertoLeido = puertos.getReadPort();
@@ -2037,7 +2037,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     /**
      * Este m�todo toma como par�metro un paquete MPLS y su entrada en la matriz
      * de conmutaci�n asociada. Extrae del paquete MPLS el paquete IP
-     * correspondiente y actualiza sus valores correctamente.
+ correspondiente y actualiza sus elementFields correctamente.
      *
      * @param paqueteMPLS Paquete MPLS cuyo contenido de nivel IPv4 se desea
      * extraer.
@@ -2133,7 +2133,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @return El conjunto de puertos del nodo.
      * @since 1.0
      */
-    public TPortSet obtenerPuertos() {
+    public TPortSet getPorts() {
         return this.puertos;
     }
 
@@ -2214,12 +2214,12 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      */
     public int comprobar(TTopology t, boolean recfg) {
         this.ponerBienConfigurado(false);
-        if (this.obtenerNombre().equals("")) {
+        if (this.getName().equals("")) {
             return this.UNNAMED;
         }
         boolean soloEspacios = true;
-        for (int i = 0; i < this.obtenerNombre().length(); i++) {
-            if (this.obtenerNombre().charAt(i) != ' ') {
+        for (int i = 0; i < this.getName().length(); i++) {
+            if (this.getName().charAt(i) != ' ') {
                 soloEspacios = false;
             }
         }
@@ -2227,14 +2227,14 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             return this.ONLY_BLANK_SPACES;
         }
         if (!recfg) {
-            TNode tp = t.obtenerPrimerNodoLlamado(this.obtenerNombre());
+            TNode tp = t.obtenerPrimerNodoLlamado(this.getName());
             if (tp != null) {
                 return this.NAME_ALREADY_EXISTS;
             }
         } else {
-            TNode tp = t.obtenerPrimerNodoLlamado(this.obtenerNombre());
+            TNode tp = t.obtenerPrimerNodoLlamado(this.getName());
             if (tp != null) {
-                if (this.topologia.existeMasDeUnNodoLlamado(this.obtenerNombre())) {
+                if (this.topologia.existeMasDeUnNodoLlamado(this.getName())) {
                     return this.NAME_ALREADY_EXISTS;
                 }
             }
@@ -2265,66 +2265,71 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo forma una cadena de texto que representa al LER y toda su
-     * configuraci�n. Sirve para almacenar el LER en disco.
+     * Este m�todo forma una serializedElement de texto que representa al LER y toda su
+ configuraci�n. Sirve para almacenar el LER en disco.
      *
-     * @return Una cadena de texto que representa un a este LER.
+     * @return Una serializedElement de texto que representa un a este LER.
      * @since 1.0
      */
+    @Override
     public String marshall() {
-        String cadena = "#LERA#";
-        cadena += this.getID();
-        cadena += "#";
-        cadena += this.obtenerNombre().replace('#', ' ');
-        cadena += "#";
-        cadena += this.getIPAddress();
-        cadena += "#";
-        cadena += this.obtenerEstado();
-        cadena += "#";
-        cadena += this.obtenerMostrarNombre();
-        cadena += "#";
-        cadena += this.obtenerEstadisticas();
-        cadena += "#";
-        cadena += this.obtenerPosicion().x;
-        cadena += "#";
-        cadena += this.obtenerPosicion().y;
-        cadena += "#";
-        cadena += this.switchingPowerInMbps;
-        cadena += "#";
-        cadena += this.obtenerPuertos().getBufferSizeInMB();
-        cadena += "#";
-        cadena += this.dmgp.getDMGPSizeInKB();
-        cadena += "#";
-        return cadena;
+        // FIX: all harcoded values should be coded as class constants.
+        String serializedElement = "#LERA#";
+        serializedElement += this.getID();
+        serializedElement += "#";
+        serializedElement += this.getName().replace('#', ' ');
+        serializedElement += "#";
+        serializedElement += this.getIPAddress();
+        serializedElement += "#";
+        serializedElement += this.getStatus();
+        serializedElement += "#";
+        serializedElement += this.getShowName();
+        serializedElement += "#";
+        serializedElement += this.isGeneratingStats();
+        serializedElement += "#";
+        serializedElement += this.obtenerPosicion().x;
+        serializedElement += "#";
+        serializedElement += this.obtenerPosicion().y;
+        serializedElement += "#";
+        serializedElement += this.switchingPowerInMbps;
+        serializedElement += "#";
+        serializedElement += this.getPorts().getBufferSizeInMB();
+        serializedElement += "#";
+        serializedElement += this.dmgp.getDMGPSizeInKB();
+        serializedElement += "#";
+        return serializedElement;
     }
 
     /**
-     * Este m�todo toma como par�metro una cadena de texto que debe pertencer a
-     * un LER serializado y configura esta instancia con los valores de dicha
-     * caddena.
+     * Este m�todo toma como par�metro una serializedElement de texto que debe pertencer a
+ un LER serializado y configura esta instancia con los elementFields de dicha
+ caddena.
      *
-     * @param elemento LER serializado.
+     * @param serializedElement LER serializado.
      * @return true, si no ha habido errores y la instancia actual est� bien
      * configurada. false en caso contrario.
      * @since 1.0
      */
-    public boolean unmarshall(String elemento) {
-        String valores[] = elemento.split("#");
-        if (valores.length != 13) {
+    @Override
+    public boolean unMarshall(String serializedElement) {
+        // FIX: All numeric values in this method should be implemented as class
+        // constants instead of harcodeed values.
+        String[] elementFields = serializedElement.split("#");
+        if (elementFields.length != 13) {
             return false;
         }
-        this.ponerIdentificador(Integer.valueOf(valores[2]).intValue());
-        this.ponerNombre(valores[3]);
-        this.ponerIP(valores[4]);
-        this.ponerEstado(Integer.valueOf(valores[5]).intValue());
-        this.ponerMostrarNombre(Boolean.valueOf(valores[6]).booleanValue());
-        this.ponerEstadisticas(Boolean.valueOf(valores[7]).booleanValue());
-        int posX = Integer.valueOf(valores[8]).intValue();
-        int posY = Integer.valueOf(valores[9]).intValue();
-        this.ponerPosicion(new Point(posX + 24, posY + 24));
-        this.switchingPowerInMbps = Integer.valueOf(valores[10]).intValue();
-        this.obtenerPuertos().setBufferSizeInMB(Integer.valueOf(valores[11]).intValue());
-        this.dmgp.setDMGPSizeInKB(Integer.valueOf(valores[12]).intValue());
+        this.setID(Integer.parseInt(elementFields[2]));
+        this.setName(elementFields[3]);
+        this.setIPAddress(elementFields[4]);
+        this.setStatus(Integer.parseInt(elementFields[5]));
+        this.setShowName(Boolean.parseBoolean(elementFields[6]));
+        this.setGenerateStats(Boolean.parseBoolean(elementFields[7]));
+        int coordX = Integer.parseInt(elementFields[8]);
+        int coordY = Integer.parseInt(elementFields[9]);
+        this.setPosition(new Point(coordX + 24, coordY + 24));
+        this.switchingPowerInMbps = Integer.parseInt(elementFields[10]);
+        this.getPorts().setBufferSizeInMB(Integer.parseInt(elementFields[11]));
+        this.dmgp.setDMGPSizeInKB(Integer.parseInt(elementFields[12]));
         return true;
     }
 
@@ -2334,20 +2339,24 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @return Las estad�sticas del nodo.
      * @since 1.0
      */
+    @Override
     public TStats getStats() {
-        return stats;
+        return this.stats;
     }
 
     /**
      * Este m�todo permite establecer el n�mero de puertos que tendr� el nodo.
      *
-     * @param num N�mero de puertos deseado para el nodo. Como mucho, 8 puertos.
+     * @param numPorts N�mero de puertos deseado para el nodo. Como mucho, 8 puertos.
      * @since 1.0
      */
-    public synchronized void setPorts(int num) {
-        puertos = new TActivePortSet(num, this);
+    @Override
+    public synchronized void setPorts(int numPorts) {
+        this.puertos = new TActivePortSet(numPorts, this);
     }
 
+    // FIX: This values are used to check that the active LER node is correctly
+    // configured through the UI. It should not be here but in another place.
     public static final int OK = 0;
     public static final int UNNAMED = 1;
     public static final int NAME_ALREADY_EXISTS = 2;

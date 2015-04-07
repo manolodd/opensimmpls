@@ -62,7 +62,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         tamDatosConstante = 0;
         tamDatosVariable = 0;
         estadisticas = new TSenderStats();
-        estadisticas.activarEstadisticas(this.obtenerEstadisticas());
+        estadisticas.activarEstadisticas(this.isGeneratingStats());
     }
     
     /**
@@ -611,7 +611,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @return El conjunto de puertos del nodo.
      * @since 1.0
      */
-    public TPortSet obtenerPuertos() {
+    public TPortSet getPorts() {
         return this.puertos;
     }
     
@@ -645,23 +645,23 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      */    
     public int comprobar(TTopology t, boolean recfg) {
         this.ponerBienConfigurado(false);
-        if (this.obtenerNombre().equals(""))
+        if (this.getName().equals(""))
             return this.SIN_NOMBRE;
         boolean soloEspacios = true;
-        for (int i=0; i < this.obtenerNombre().length(); i++){
-            if (this.obtenerNombre().charAt(i) != ' ')
+        for (int i=0; i < this.getName().length(); i++){
+            if (this.getName().charAt(i) != ' ')
                 soloEspacios = false;
         }
         if (soloEspacios)
             return this.SOLO_ESPACIOS;
         if (!recfg) {
-            TNode tp = t.obtenerPrimerNodoLlamado(this.obtenerNombre());
+            TNode tp = t.obtenerPrimerNodoLlamado(this.getName());
             if (tp != null)
                 return this.NOMBRE_YA_EXISTE;
         } else {
-            TNode tp = t.obtenerPrimerNodoLlamado(this.obtenerNombre());
+            TNode tp = t.obtenerPrimerNodoLlamado(this.getName());
             if (tp != null) {
-                if (this.topologia.existeMasDeUnNodoLlamado(this.obtenerNombre())) {
+                if (this.topologia.existeMasDeUnNodoLlamado(this.getName())) {
                     return this.NOMBRE_YA_EXISTE;
                 }
             }
@@ -703,15 +703,15 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         String cadena = "#Emisor#";
         cadena += this.getID();
         cadena += "#";
-        cadena += this.obtenerNombre().replace('#', ' ');
+        cadena += this.getName().replace('#', ' ');
         cadena += "#";
         cadena += this.getIPAddress();
         cadena += "#";
-        cadena += this.obtenerEstado();
+        cadena += this.getStatus();
         cadena += "#";
-        cadena += this.obtenerMostrarNombre();
+        cadena += this.getShowName();
         cadena += "#";
-        cadena += this.obtenerEstadisticas();
+        cadena += this.isGeneratingStats();
         cadena += "#";
         cadena += this.obtenerPosicion().x;
         cadena += "#";
@@ -741,20 +741,20 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @return TRUE, si se consigue deserializar correctamente. FALSE en caso contrario.
      * @since 1.0
      */    
-    public boolean unmarshall(String elemento) {
+    public boolean unMarshall(String elemento) {
         String valores[] = elemento.split("#");
         if (valores.length != 17) {
             return false;
         }
-        this.ponerIdentificador(Integer.valueOf(valores[2]).intValue());
-        this.ponerNombre(valores[3]);
-        this.ponerIP(valores[4]);
-        this.ponerEstado(Integer.valueOf(valores[5]).intValue());
-        this.ponerMostrarNombre(Boolean.valueOf(valores[6]).booleanValue());
-        this.ponerEstadisticas(Boolean.valueOf(valores[7]).booleanValue());
+        this.setID(Integer.valueOf(valores[2]).intValue());
+        this.setName(valores[3]);
+        this.setIPAddress(valores[4]);
+        this.setStatus(Integer.valueOf(valores[5]).intValue());
+        this.setShowName(Boolean.valueOf(valores[6]).booleanValue());
+        this.setGenerateStats(Boolean.valueOf(valores[7]).booleanValue());
         int posX = Integer.valueOf(valores[8]).intValue();
         int posY = Integer.valueOf(valores[9]).intValue();
-        this.ponerPosicion(new Point(posX+24, posY+24));
+        this.setPosition(new Point(posX+24, posY+24));
         this.IPDestino = valores[10];
         this.ponerLSPDeBackup(Boolean.valueOf(valores[11]).booleanValue());
         this.ponerNivelDeGoS(Integer.valueOf(valores[12]).intValue());
@@ -775,7 +775,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         gIdGoS.reset();
         this.puertos.reset();
         this.estadisticas.reset();
-        estadisticas.activarEstadisticas(this.obtenerEstadisticas());
+        estadisticas.activarEstadisticas(this.isGeneratingStats());
         this.restaurarPasosSinEmitir();
     }
     
