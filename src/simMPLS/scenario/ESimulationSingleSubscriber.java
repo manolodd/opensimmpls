@@ -16,14 +16,6 @@
 package simMPLS.scenario;
 
 /**
- * Esta clase implementa una excepci�n que se utilizar� cuando un contador de
- * progreso intente a�adir un nuevo suscriptor, teniendo ya uno previo.
- *
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
- */
-/**
  * This class implements an exception that will be thrown when more than a
  * single listener is subscribed to the progress event generator.
  *
