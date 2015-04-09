@@ -97,6 +97,6 @@ opensimmpls@manolodominguez.com
 And we will do our best to understand them and, somewhat, include your 
 contribution into the project.
 
-REMEMBER!!!! all your contributions have to be compatible with GPL3+ license.
+REMEMBER!!!! all your contributions have to be compatible with Apache Software License 2.0.
 
 #### Thanks for contributing.
