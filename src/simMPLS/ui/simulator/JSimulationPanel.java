@@ -173,7 +173,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
     }
     
     /**
-     * Este m�todo asocia al panel de simulaci�n una topologia concreta.
+     * Este m�todo asocia al panel de simulaci�n una topology concreta.
      * @since 1.0
      * @param t Topolog�a que se debe representar en el panel de simulaci�n.
      */    

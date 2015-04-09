@@ -207,7 +207,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * contrario.
      * @since 1.0
      */    
-    public boolean estaBienConfigurado() {
+    public boolean isWellConfigured() {
         return false;
     }
     
@@ -224,12 +224,12 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
     
     /**
      * Este m�todo transforma en un mensaje legible el c�digo de error devuelto por el
-     * m�todo <I>comprobar(...)</I>
+     * m�todo <I>validateConfig(...)</I>
      * @param e El codigo de error que se quiere transformar.
      * @return El mensaje textual correspondiente a ese mensaje de error.
      * @since 1.0
      */    
-    public String obtenerMensajeError(int e) {
+    public String getErrorMessage(int e) {
         return null;
     }
     

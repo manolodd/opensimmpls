@@ -59,7 +59,7 @@ import simMPLS.utils.TProgressEventListener;
 
 /**
  * Esta clase implementa una ventana que save� un escenario completo y dar�
- soporte a la simulaci�n, an�lisis y dise�o de la topologia.
+ soporte a la simulaci�n, an�lisis y dise�o de la topology.
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
@@ -1495,7 +1495,7 @@ private void clicEnAniadirLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
     JVentanaLSRA vlsra = new JVentanaLSRA(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
     vlsra.ponerConfiguracion(lsra, false);
     vlsra.show();
-    if (lsra.estaBienConfigurado()) {
+    if (lsra.isWellConfigured()) {
         try {
             escenario.getTopology().addNode(lsra);
             panelDisenio.repaint();
@@ -1529,7 +1529,7 @@ private void clicEnAniadirLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
     JVentanaLSR vlsr = new JVentanaLSR(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
     vlsr.ponerConfiguracion(lsr, false);
     vlsr.show();
-    if (lsr.estaBienConfigurado()) {
+    if (lsr.isWellConfigured()) {
         try {
             escenario.getTopology().addNode(lsr);
             panelDisenio.repaint();
@@ -1563,7 +1563,7 @@ private void clicEnAniadirLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
     JVentanaLERA vlera = new JVentanaLERA(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
     vlera.ponerConfiguracion(lera, false);
     vlera.show();
-    if (lera.estaBienConfigurado()) {
+    if (lera.isWellConfigured()) {
         try {
             escenario.getTopology().addNode(lera);
             panelDisenio.repaint();
@@ -1669,8 +1669,8 @@ private void arrastrandoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
 }//GEN-LAST:event_arrastrandoEnPanelDisenio
 
 /** Este m�todo se llama autom�ticamente cuando soltamos el bot�n del raton a la
- * rrastrar o al hacer clic. Si el rat�n estaba sobre  un elemento de la topologia,
- * se marca �ste como no seleccionado.
+ * rrastrar o al hacer clic. Si el rat�n estaba sobre  un elemento de la topology,
+ se marca �ste como no seleccionado.
  * @since 1.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
@@ -1800,7 +1800,7 @@ private void clicEnAniadirLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
     JVentanaLER vler = new JVentanaLER(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
     vler.ponerConfiguracion(ler, false);
     vler.show();
-    if (ler.estaBienConfigurado()) {
+    if (ler.isWellConfigured()) {
         try {
             escenario.getTopology().addNode(ler);
             panelDisenio.repaint();
@@ -1957,7 +1957,7 @@ private void ratonEntraEnIconoEmisor(java.awt.event.MouseEvent evt) {//GEN-FIRST
 }//GEN-LAST:event_ratonEntraEnIconoEmisor
 
 /** Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono receptor
- * en la ventana de dise�o. A�ade un receptor nuevo en la topologia.
+ * en la ventana de dise�o. A�ade un receptor nuevo en la topology.
  * @since 1.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
@@ -1974,7 +1974,7 @@ private void clicEnAniadirReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
     JVentanaReceptor vr = new JVentanaReceptor(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
     vr.ponerConfiguracion(receptor, false);
     vr.show();
-    if (receptor.estaBienConfigurado()) {
+    if (receptor.isWellConfigured()) {
         try {
             escenario.getTopology().addNode(receptor);
             panelDisenio.repaint();
@@ -1991,7 +1991,7 @@ private void clicEnAniadirReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
 }//GEN-LAST:event_clicEnAniadirReceptor
 
 /** Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono emisor
- * en la ventana de dise�o. A�ade un emisor nuevo en la topologia.
+ * en la ventana de dise�o. A�ade un emisor nuevo en la topology.
  * @since 1.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
@@ -2022,7 +2022,7 @@ private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-
         JVentanaEmisor ve = new JVentanaEmisor(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
         ve.ponerConfiguracion(emisor, false);
         ve.show();
-        if (emisor.estaBienConfigurado()) {
+        if (emisor.isWellConfigured()) {
             try {
                 escenario.getTopology().addNode(emisor);
                 panelDisenio.repaint();
@@ -2327,7 +2327,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             this.etiquetaEstadisticasNombreAutor.setText(this.nombreAutor.getText());
             this.areaEstadisticasDescripcion.setText(this.descripcionEscenario.getText());
             this.etiquetaNombreElementoEstadistica.setText(nombre);
-            TNode nt = this.escenario.getTopology().obtenerPrimerNodoLlamado(nombre);
+            TNode nt = this.escenario.getTopology().setFirstNodeNamed(nombre);
             gbc = new java.awt.GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 0;
@@ -2551,8 +2551,8 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
      * @since 1.0
      */
     private TProgressEventListener aProgresoGeneracion;
-    /** Este atributo contendr� todo el escenario completo de la simulaci�n: topologia,
-     * an�lisis y simulaci�n.
+    /** Este atributo contendr� todo el escenario completo de la simulaci�n: topology,
+ an�lisis y simulaci�n.
      * @since 1.0
      */
     private TScenario escenario;

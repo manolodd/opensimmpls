@@ -33,7 +33,7 @@ public class TTopology {
 
     /**
      * Crea una nueva instancia de TTopologia
-     * @param e Escenario padre al que pertence la topologia.
+     * @param e Escenario padre al que pertence la topology.
      * @since 1.0
      */
     public TTopology(TScenario e) {
@@ -74,7 +74,7 @@ public class TTopology {
     }
     
     /**
-     * Este m�todo inserta un nuevo nodo en la topologia.
+     * Este m�todo inserta un nuevo nodo en la topology.
      * @param nodo Nodo que queremos insertar.
      * @since 1.0
      */    
@@ -112,7 +112,7 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo obtiene un nodo de la topologia seg�n si identificador.
+     * Este m�todo obtiene un nodo de la topology seg�n si identificador.
      * @param identificador Identificador del nodo que deseamos obtener.
      * @return Nodo que busc�bamos.NULL si no existe.
      * @since 1.0
@@ -129,7 +129,7 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo obtiene un nodo de la topologia por su direcci�n IP.
+     * Este m�todo obtiene un nodo de la topology por su direcci�n IP.
      * @param ip IP del nodo que deseamos obtener.
      * @return Nodo que busc�bamos.NULL si no existe.
      * @since 1.0
@@ -152,7 +152,7 @@ public class TTopology {
      * @return Nodo que busc�bamos. NULL si no existe.
      * @since 1.0
      */    
-    public TNode obtenerPrimerNodoLlamado(String nom) {
+    public TNode setFirstNodeNamed(String nom) {
         TNode nodo = null;
         Iterator iterador = conjuntoNodos.iterator();
         while (iterador.hasNext()) {
@@ -169,7 +169,7 @@ public class TTopology {
      * @return TRUE, si existe m�s de un nodo con el mismo nombre. FALSE en caso contrario.
      * @since 1.0
      */    
-    public boolean existeMasDeUnNodoLlamado(String nom) {
+    public boolean thereIsMoreThanANodeNamed(String nom) {
         int cuantos = 0;
         TNode nodo = null;
         Iterator iterador = conjuntoNodos.iterator();
@@ -262,8 +262,8 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo devuelve un vector con todos los nodos de la topologia.
-     * @return Un vector con todos los nodos de la topologia.
+     * Este m�todo devuelve un vector con todos los nodos de la topology.
+     * @return Un vector con todos los nodos de la topology.
      * @since 1.0
      */    
     public TNode[] obtenerNodos() {
@@ -271,8 +271,8 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo toma un nodo por parametro y actualiza el mismo en la topologia, con
-     * los valores pasados.
+     * Este m�todo toma un nodo por parametro y actualiza el mismo en la topology, con
+ los valores pasados.
      * @param nodo Nodo que queremos actualizar, con los nuevos valores.
      * @since 1.0
      */    
@@ -324,7 +324,7 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo inserta un nuevo enlace en la topologia.
+     * Este m�todo inserta un nuevo enlace en la topology.
      * @param enlace Enlace que deseamos insertar.
      * @since 1.0
      */    
@@ -337,8 +337,8 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo elimina de la topologia el enlace cuyo identificador es el
-     * especificado por par�metros.
+     * Este m�todo elimina de la topology el enlace cuyo identificador es el
+ especificado por par�metros.
      * @param identificador Identificador del enlace que deseamos eliminar.
      * @since 1.0
      */    
@@ -368,8 +368,8 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo obtiene un enlace de la topologia, cuyo identificador coincide con
-     * el especificado por parametros.
+     * Este m�todo obtiene un enlace de la topology, cuyo identificador coincide con
+ el especificado por parametros.
      * @param identificador Identificador del enlace que deseamos obtener.
      * @return El enlace que dese�bamos obtener. NULL si no existe.
      * @since 1.0
@@ -404,7 +404,7 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo devuelve un vector con todos los enlaces de la topologia.
+     * Este m�todo devuelve un vector con todos los enlaces de la topology.
      * @return Un vector con todos los enlaces de la topolog�a.
      * @since 1.0
      */    
@@ -474,8 +474,8 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo elimina de la topologia un nodo cuyo identificador coincida con el
-     * especificado por par�metros.
+     * Este m�todo elimina de la topology un nodo cuyo identificador coincida con el
+ especificado por par�metros.
      * @param identificador identificador del nodo a borrar.
      * @since 1.0
      */    
@@ -506,7 +506,7 @@ public class TTopology {
     /**
      * Este m�todo devuelve un iterador que permite navegar por los nodos de forma
      * sencilla.
-     * @return El iterador de los nodos de la topologia.
+     * @return El iterador de los nodos de la topology.
      * @since 1.0
      */    
     public Iterator getNodesIterator() {
@@ -524,8 +524,8 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo limpia la topologia, eliminando todos los enlaces y nodos
-     * existentes.
+     * Este m�todo limpia la topology, eliminando todos los enlaces y nodos
+ existentes.
      * @since 1.0
      */    
     public void eliminarTodo() {
@@ -557,7 +557,7 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo permite establecer el reloj principal que controlar� la topologia.
+     * Este m�todo permite establecer el reloj principal que controlar� la topology.
      * @param r El reloj principal de la topolog�a.
      * @since 1.0
      */    
@@ -566,7 +566,7 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo permite obtener el reloj principal de la topologia.
+     * Este m�todo permite obtener el reloj principal de la topology.
      * @return El reloj principal de la topolog�a.
      * @since 1.0
      */    
@@ -575,7 +575,7 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo permite obtener el retardo menor de todos los enlaces de la topologia.
+     * Este m�todo permite obtener el retardo menor de todos los enlaces de la topology.
      * @return El retardo menor de todos los enlaces de la topolog�a.
      * @since 1.0
      */    
@@ -652,8 +652,8 @@ public class TTopology {
 
     /**
      * Este m�todo permite acceder directamente al generador de identificadores para
-     * eventos de la topologia.
-     * @return El generador de identificadores para eventos de la topologia.
+ eventos de la topology.
+     * @return El generador de identificadores para eventos de la topology.
      * @since 1.0
      */    
     public TLongIDGenerator getEventIDGenerator() {

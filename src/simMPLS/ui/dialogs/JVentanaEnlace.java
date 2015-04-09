@@ -293,7 +293,7 @@ private void clicEnCambioNodoDerecho(java.awt.event.ActionEvent evt) {//GEN-FIRS
     this.selectorPuertoDerecho.addItem("");
     this.selectorPuertoDerecho.setSelectedIndex(0);
     if (this.selectorExtremoDerecho.getSelectedIndex() != 0) {
-        TNode seleccionado = topo.obtenerPrimerNodoLlamado((String) selectorExtremoDerecho.getSelectedItem());
+        TNode seleccionado = topo.setFirstNodeNamed((String) selectorExtremoDerecho.getSelectedItem());
         Iterator it = topo.getNodesIterator();
         TNode nt;
         if (seleccionado != null) {
@@ -319,7 +319,7 @@ private void clicEnCambioNodoIzquierdo(java.awt.event.ActionEvent evt) {//GEN-FI
     this.selectorPuertoDerecho.addItem("");
     this.selectorPuertoDerecho.setSelectedIndex(0);
     if (this.selectorExtremoIzquierdo.getSelectedIndex() != 0) {
-        TNode seleccionado = topo.obtenerPrimerNodoLlamado((String) selectorExtremoIzquierdo.getSelectedItem());
+        TNode seleccionado = topo.setFirstNodeNamed((String) selectorExtremoIzquierdo.getSelectedItem());
         Iterator it = topo.getNodesIterator();
         TNode nt;
         if (seleccionado != null) {

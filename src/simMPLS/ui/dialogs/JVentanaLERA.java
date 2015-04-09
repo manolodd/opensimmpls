@@ -398,21 +398,21 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
     if (reconfigurando) {
         configLERA.setShowName(BKUPMostrarNombre);
         configLERA.setName(BKUPNombre);
-        configLERA.ponerBienConfigurado(true);
+        configLERA.setWellConfigured(true);
         configLERA.ponerTamanioBuffer(BKUPTamBuffer);
         configLERA.ponerPotenciaEnMb(BKUPPotencia);
         configLERA.setGenerateStats(BKUPGenerarEstadisticas);
         configLERA.setDMGPSizeInKB(BKUPTamanioDMGP);
         reconfigurando = false;
     } else {
-        configLERA.ponerBienConfigurado(false);
+        configLERA.setWellConfigured(false);
     }
     this.setVisible(false);
     this.dispose();
 }//GEN-LAST:event_clicEnCancelar
 
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
-    configLERA.ponerBienConfigurado(true);
+    configLERA.setWellConfigured(true);
     if (!this.reconfigurando){
         configLERA.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
@@ -423,10 +423,10 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     configLERA.setName(nombreNodo.getText());
     configLERA.setShowName(verNombre.isSelected());
     configLERA.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
-    int error = configLERA.comprobar(topo, this.reconfigurando);
+    int error = configLERA.validateConfig(topo, this.reconfigurando);
     if (error != TActiveLERNode.OK) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
-        va.mostrarMensaje(configLERA.obtenerMensajeError(error));
+        va.mostrarMensaje(configLERA.getErrorMessage(error));
         va.show();
     } else {
         this.setVisible(false);
@@ -454,7 +454,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
 /** Closes the dialog */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         setVisible(false);
-        configLERA.ponerBienConfigurado(false);
+        configLERA.setWellConfigured(false);
         dispose();
     }//GEN-LAST:event_closeDialog
     

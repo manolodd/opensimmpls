@@ -183,7 +183,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo inicia el hilo de ejecuci�n del LER, para que entre en
      * funcionamiento. Adem�s controla el tiempo de que dispone el LER para conmutar
      * paquetes.
-     * @param evt Evento de reloj que sincroniza la ejecuci�n de los elementos de la topologia.
+     * @param evt Evento de reloj que sincroniza la ejecuci�n de los elementos de la topology.
      * @since 1.0
      */
     public void receiveTimerEvent(TTimerEvent evt) {
@@ -356,7 +356,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                 // haber mensajes GPSRP dirigidos a �l.
                 this.discardPacket(paquete);
             } else {
-                String IPSalida = this.topologia.obtenerIPSalto(this.getIPAddress(), IPDestinoFinal);
+                String IPSalida = this.topology.obtenerIPSalto(this.getIPAddress(), IPDestinoFinal);
                 pSalida = (TFIFOPort) this.puertos.getPortWhereIsConectedANodeHavingIP(IPSalida);
                 if (pSalida != null) {
                     pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
@@ -958,7 +958,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         String IPLocal = this.getIPAddress();
         String IPDestinoFinal = emc.getTailEndIPAddress();
         if (emc.getOutgoingLabel() != TSwitchingMatrixEntry.LABEL_ASSIGNED) {
-            String IPSalto = topologia.obtenerIPSalto(IPLocal, IPDestinoFinal);
+            String IPSalto = topology.obtenerIPSalto(IPLocal, IPDestinoFinal);
             if (IPSalto != null) {
                 TTLDPPDU paqueteTLDP = null;
                 try {
@@ -1155,7 +1155,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         int IdTLDPAntecesor = paqueteSolicitud.getTLDPPayload().getTLDPIdentifier();
         TPort puertoEntrada = puertos.getPort(pEntrada);
         String IPDestinoFinal = paqueteSolicitud.getTLDPPayload().getTargetIPAddress();
-        String IPSalto = topologia.obtenerIPSalto(this.getIPAddress(), IPDestinoFinal);
+        String IPSalto = topology.obtenerIPSalto(this.getIPAddress(), IPDestinoFinal);
         if (IPSalto != null) {
             TPort puertoSalida = puertos.getPortWhereIsConectedANodeHavingIP(IPSalto);
             int enlaceOrigen = TLink.EXTERNAL;
@@ -1217,7 +1217,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         TSwitchingMatrixEntry emc = null;
         String IPLocal = this.getIPAddress();
         String IPDestinoFinal = paqueteIPv4.getIPv4Header().getTargetIP();
-        String IPSalida = topologia.obtenerIPSalto(IPLocal, IPDestinoFinal);
+        String IPSalida = topology.obtenerIPSalto(IPLocal, IPDestinoFinal);
         if (IPSalida != null) {
             TPort puertoEntrada = puertos.getPort(pEntrada);
             TPort puertoSalida = puertos.getPortWhereIsConectedANodeHavingIP(IPSalida);
@@ -1276,7 +1276,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         TSwitchingMatrixEntry emc = null;
         String IPLocal = this.getIPAddress();
         String IPDestinoFinal = paqueteMPLS.getIPv4Header().getTargetIP();
-        String IPSalida = topologia.obtenerIPSalto(IPLocal, IPDestinoFinal);
+        String IPSalida = topology.obtenerIPSalto(IPLocal, IPDestinoFinal);
         if (IPSalida != null) {
             TPort puertoEntrada = puertos.getPort(pEntrada);
             TPort puertoSalida = puertos.getPortWhereIsConectedANodeHavingIP(IPSalida);
@@ -1519,8 +1519,8 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @return true, si el LER est� bien configurado. false en caso contrario.
      * @since 1.0
      */
-    public boolean estaBienConfigurado() {
-        return this.bienConfigurado;
+    public boolean isWellConfigured() {
+        return this.wellConfigured;
     }
     
     /**
@@ -1530,8 +1530,8 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @return CORRECTA, si la configuraci�n es correcta. Un c�digo de error en caso contrario.
      * @since 1.0
      */
-    public int comprobar(TTopology t, boolean recfg) {
-        this.ponerBienConfigurado(false);
+    public int validateConfig(TTopology t, boolean recfg) {
+        this.setWellConfigured(false);
         if (this.getName().equals(""))
             return this.SIN_NOMBRE;
         boolean soloEspacios = true;
@@ -1542,18 +1542,18 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         if (soloEspacios)
             return this.SOLO_ESPACIOS;
         if (!recfg) {
-            TNode tp = t.obtenerPrimerNodoLlamado(this.getName());
+            TNode tp = t.setFirstNodeNamed(this.getName());
             if (tp != null)
                 return this.NOMBRE_YA_EXISTE;
         } else {
-            TNode tp = t.obtenerPrimerNodoLlamado(this.getName());
+            TNode tp = t.setFirstNodeNamed(this.getName());
             if (tp != null) {
-                if (this.topologia.existeMasDeUnNodoLlamado(this.getName())) {
+                if (this.topology.thereIsMoreThanANodeNamed(this.getName())) {
                     return this.NOMBRE_YA_EXISTE;
                 }
             }
         }
-        this.ponerBienConfigurado(true);
+        this.setWellConfigured(true);
         return this.CORRECTA;
     }
     
@@ -1563,7 +1563,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @return Cadena de texto explicando el error.
      * @since 1.0
      */
-    public String obtenerMensajeError(int e) {
+    public String getErrorMessage(int e) {
         switch (e) {
             case SIN_NOMBRE: return (java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TConfigLER.FALTA_NOMBRE"));
             case NOMBRE_YA_EXISTE: return (java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TConfigLER.NOMBRE_REPETIDO"));
@@ -1671,7 +1671,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     public static final int SIN_NOMBRE = 1;
     /**
      * Esta constante indica que el nombre especificado para el LER ya est� siendo
-     * usado por otro nodo de la topologia.
+ usado por otro nodo de la topology.
      * @since 1.0
      */
     public static final int NOMBRE_YA_EXISTE = 2;

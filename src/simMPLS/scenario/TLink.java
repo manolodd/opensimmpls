@@ -153,8 +153,8 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
         this.ponerMostrarNombre(tcenlace.obtenerMostrarNombre());
         this.ponerDelay(tcenlace.obtenerDelay());
         if (!recfg) {
-            this.ponerExtremo1(topo.obtenerPrimerNodoLlamado(tcenlace.obtenerNombreExtremo1()));
-            this.ponerExtremo2(topo.obtenerPrimerNodoLlamado(tcenlace.obtenerNombreExtremo2()));
+            this.ponerExtremo1(topo.setFirstNodeNamed(tcenlace.obtenerNombreExtremo1()));
+            this.ponerExtremo2(topo.setFirstNodeNamed(tcenlace.obtenerNombreExtremo2()));
             this.desconectarDePuertos();
             this.ponerPuertoExtremo1(tcenlace.obtenerPuertoExtremo1());
             TPortSet p1 = extremo1.getPorts();
@@ -540,14 +540,14 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return TRUE, si est� bien configurado. FALSE en caso contrario.
      * @since 1.0
      */    
-    public abstract boolean estaBienConfigurado();
+    public abstract boolean isWellConfigured();
     /**
      * Este m��etodo devolver� un mensaje de error asociado a un codigo de error.
      * @param e Codigo de error.
      * @return Representaci�n textual del c�digo de error.
      * @since 1.0
      */    
-    public abstract String obtenerMensajeError(int e);
+    public abstract String getErrorMessage(int e);
     /**
      * Este m�todo serializa el enlace; es decir, lo convierte a texto para ser volcado
      * a disco.

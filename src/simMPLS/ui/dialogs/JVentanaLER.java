@@ -362,20 +362,20 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
     if (reconfigurando) {
         configLER.setShowName(BKUPMostrarNombre);
         configLER.setName(BKUPNombre);
-        configLER.ponerBienConfigurado(true);
+        configLER.setWellConfigured(true);
         configLER.ponerTamanioBuffer(BKUPTamBuffer);
         configLER.ponerPotenciaEnMb(BKUPPotencia);
         configLER.setGenerateStats(BKUPGenerarEstadisticas);
         reconfigurando = false;
     } else {
-        configLER.ponerBienConfigurado(false);
+        configLER.setWellConfigured(false);
     }
     this.setVisible(false);
     this.dispose();
 }//GEN-LAST:event_clicEnCancelar
 
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
-    configLER.ponerBienConfigurado(true);
+    configLER.setWellConfigured(true);
     if (!this.reconfigurando){
         configLER.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
@@ -385,10 +385,10 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     configLER.setName(nombreNodo.getText());
     configLER.setShowName(verNombre.isSelected());
     configLER.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
-    int error = configLER.comprobar(topo, this.reconfigurando);
+    int error = configLER.validateConfig(topo, this.reconfigurando);
     if (error != TLERNode.CORRECTA) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
-        va.mostrarMensaje(configLER.obtenerMensajeError(error));
+        va.mostrarMensaje(configLER.getErrorMessage(error));
         va.show();
     } else {
         this.setVisible(false);
@@ -416,7 +416,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
 /** Closes the dialog */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         setVisible(false);
-        configLER.ponerBienConfigurado(false);
+        configLER.setWellConfigured(false);
         dispose();
     }//GEN-LAST:event_closeDialog
     

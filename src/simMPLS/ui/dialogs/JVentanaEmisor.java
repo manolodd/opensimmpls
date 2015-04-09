@@ -547,18 +547,18 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
         emisor.ponerTipoTrafico(BKUPTipoTrafico);
         emisor.setGenerateStats(BKUPGenerarEstadisticas);
         emisor.ponerTamDatosConstante(BKUPTamDatosConstante);
-        emisor.ponerBienConfigurado(true);
+        emisor.setWellConfigured(true);
         emisor.ponerSobreMPLS(BKUPEncapsularEnMPLS);
         reconfigurando = false;
     } else {
-        emisor.ponerBienConfigurado(false);
+        emisor.setWellConfigured(false);
     }
     this.setVisible(false);
     this.dispose();
 }//GEN-LAST:event_clicEnCancelar
 
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
-    emisor.ponerBienConfigurado(true);
+    emisor.setWellConfigured(true);
     if (!this.reconfigurando){
         emisor.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
@@ -576,10 +576,10 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     } else if (this.traficoVariable.isSelected()) {
         emisor.ponerTipoTrafico(TSenderNode.VARIABLE);
     }
-    int error = emisor.comprobar(topo, this.reconfigurando);
+    int error = emisor.validateConfig(topo, this.reconfigurando);
     if (error != TSenderNode.CORRECTA) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
-        va.mostrarMensaje(emisor.obtenerMensajeError(error));
+        va.mostrarMensaje(emisor.getErrorMessage(error));
         va.show();
     } else {
         this.reconfigurando = false;
@@ -608,7 +608,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
     /** Closes the dialog */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         setVisible(false);
-        emisor.ponerBienConfigurado(false);
+        emisor.setWellConfigured(false);
         dispose();
     }//GEN-LAST:event_closeDialog
 

@@ -234,8 +234,8 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
     
     /**
-     * Este m�todo se encarga de comprobar que los enlaces que unen al nodo con sus
-     * adyacentes, funcionan correctamente. Y si no es asi y es necesario, env�a la
+     * Este m�todo se encarga de validateConfig que los enlaces que unen al nodo con sus
+ adyacentes, funcionan correctamente. Y si no es asi y es necesario, env�a la
      * se�alizaci�n correspondiente para reparar la situaci�n.
      * @since 1.0
      */
@@ -399,7 +399,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     this.atenderAceptacionGPSRP(paquete, pEntrada);
                 }
             } else {
-                String IPSalida = this.topologia.obtenerIPSaltoRABAN(this.getIPAddress(), IPDestinoFinal);
+                String IPSalida = this.topology.obtenerIPSaltoRABAN(this.getIPAddress(), IPDestinoFinal);
                 pSalida = (TActivePort) this.puertos.getPortWhereIsConectedANodeHavingIP(IPSalida);
                 if (pSalida != null) {
                     pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
@@ -1296,7 +1296,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     public void solicitarTLDP(TSwitchingMatrixEntry emc) {
         String IPLocal = this.getIPAddress();
         String IPDestinoFinal = emc.getTailEndIPAddress();
-        String IPSalto = topologia.obtenerIPSaltoRABAN(IPLocal, IPDestinoFinal);
+        String IPSalto = topology.obtenerIPSaltoRABAN(IPLocal, IPDestinoFinal);
         if (IPSalto != null) {
             TTLDPPDU paqueteTLDP = null;
             try {
@@ -1339,7 +1339,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         String IPLocal = this.getIPAddress();
         String IPDestinoFinal = emc.getTailEndIPAddress();
         String IPSaltoPrincipal = puertos.getIPOfNodeLinkedTo(emc.getOutgoingPortID());
-        String IPSalto = topologia.obtenerIPSaltoRABAN(IPLocal, IPDestinoFinal, IPSaltoPrincipal);
+        String IPSalto = topology.obtenerIPSaltoRABAN(IPLocal, IPDestinoFinal, IPSaltoPrincipal);
         if (IPSalto != null) {
             if (emc.getBackupOutgoingPortID() == TSwitchingMatrixEntry.UNDEFINED) {
                 if (emc.getBackupOutgoingLabel() == TSwitchingMatrixEntry.UNDEFINED) {
@@ -1545,7 +1545,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         int IdTLDPAntecesor = paqueteSolicitud.getTLDPPayload().getTLDPIdentifier();
         TPort puertoEntrada = puertos.getPort(pEntrada);
         String IPDestinoFinal = paqueteSolicitud.getTLDPPayload().getTargetIPAddress();
-        String IPSalto = topologia.obtenerIPSaltoRABAN(this.getIPAddress(), IPDestinoFinal);
+        String IPSalto = topology.obtenerIPSaltoRABAN(this.getIPAddress(), IPDestinoFinal);
         if (IPSalto != null) {
             TPort puertoSalida = puertos.getPortWhereIsConectedANodeHavingIP(IPSalto);
             emc = new TSwitchingMatrixEntry();
@@ -1625,8 +1625,8 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @return TRUE, si el ndoo est� bien configurado. FALSE en caso contrario.
      * @since 1.0
      */
-    public boolean estaBienConfigurado() {
-        return this.bienConfigurado;
+    public boolean isWellConfigured() {
+        return this.wellConfigured;
     }
     /**
      * Este m�todo devuelve si el nodo est� bien configurado y si no, la raz�n.
@@ -1637,8 +1637,8 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * contrario.
      * @since 1.0
      */
-    public int comprobar(TTopology t, boolean recfg) {
-        this.ponerBienConfigurado(false);
+    public int validateConfig(TTopology t, boolean recfg) {
+        this.setWellConfigured(false);
         if (this.getName().equals(""))
             return this.SIN_NOMBRE;
         boolean soloEspacios = true;
@@ -1649,18 +1649,18 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         if (soloEspacios)
             return this.SOLO_ESPACIOS;
         if (!recfg) {
-            TNode tp = t.obtenerPrimerNodoLlamado(this.getName());
+            TNode tp = t.setFirstNodeNamed(this.getName());
             if (tp != null)
                 return this.NOMBRE_YA_EXISTE;
         } else {
-            TNode tp = t.obtenerPrimerNodoLlamado(this.getName());
+            TNode tp = t.setFirstNodeNamed(this.getName());
             if (tp != null) {
-                if (this.topologia.existeMasDeUnNodoLlamado(this.getName())) {
+                if (this.topology.thereIsMoreThanANodeNamed(this.getName())) {
                     return this.NOMBRE_YA_EXISTE;
                 }
             }
         }
-        this.ponerBienConfigurado(true);
+        this.setWellConfigured(true);
         return this.CORRECTA;
     }
     
@@ -1671,7 +1671,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @return Texto explicativo del c�digo de error.
      * @since 1.0
      */
-    public String obtenerMensajeError(int e) {
+    public String getErrorMessage(int e) {
         switch (e) {
             case SIN_NOMBRE: return (java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TConfigLSR.FALTA_NOMBRE"));
             case NOMBRE_YA_EXISTE: return (java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TConfigLSR.NOMBRE_REPETIDO"));

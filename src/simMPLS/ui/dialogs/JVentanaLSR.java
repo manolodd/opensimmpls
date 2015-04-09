@@ -361,20 +361,20 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
     if (reconfigurando) {
         configLSR.setShowName(BKUPMostrarNombre);
         configLSR.setName(BKUPNombre);
-        configLSR.ponerBienConfigurado(true);
+        configLSR.setWellConfigured(true);
         configLSR.ponerTamanioBuffer(BKUPTamBuffer);
         configLSR.setGenerateStats(BKUPGenerarEstadisticas);
         configLSR.ponerPotenciaEnMb(BKUPPotencia);
         reconfigurando = false;
     } else {
-        configLSR.ponerBienConfigurado(false);
+        configLSR.setWellConfigured(false);
     }
     this.setVisible(false);
     this.dispose();
 }//GEN-LAST:event_clicEnCancelar
 
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
-    configLSR.ponerBienConfigurado(true);
+    configLSR.setWellConfigured(true);
     if (!this.reconfigurando){
         configLSR.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
@@ -383,10 +383,10 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     configLSR.setName(nombreNodo.getText());
     configLSR.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
     configLSR.setShowName(verNombre.isSelected());
-    int error = configLSR.comprobar(topo, this.reconfigurando);
+    int error = configLSR.validateConfig(topo, this.reconfigurando);
     if (error != TLSRNode.CORRECTA) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
-        va.mostrarMensaje(configLSR.obtenerMensajeError(error));
+        va.mostrarMensaje(configLSR.getErrorMessage(error));
         va.show();
     } else {
         this.setVisible(false);
@@ -414,7 +414,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
     /** Closes the dialog */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         setVisible(false);
-        configLSR.ponerBienConfigurado(false);
+        configLSR.setWellConfigured(false);
         dispose();
     }//GEN-LAST:event_closeDialog
 

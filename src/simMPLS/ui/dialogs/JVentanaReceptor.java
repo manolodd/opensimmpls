@@ -242,27 +242,27 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
     if (reconfigurando) {
         configReceptor.setShowName(BKUPMostrarNombre);
         configReceptor.setName(BKUPNombre);
-        configReceptor.ponerBienConfigurado(true);
+        configReceptor.setWellConfigured(true);
         reconfigurando = false;
     } else {
-        configReceptor.ponerBienConfigurado(false);
+        configReceptor.setWellConfigured(false);
     }
     this.setVisible(false);
     this.dispose();
 }//GEN-LAST:event_clicEnCancelar
 
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
-    configReceptor.ponerBienConfigurado(true);
+    configReceptor.setWellConfigured(true);
     if (!this.reconfigurando){
         configReceptor.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
     configReceptor.setName(nombreNodo.getText());
     configReceptor.setShowName(verNombre.isSelected());
     configReceptor.setGenerateStats(this.selectorGenerarEstadisticaAvanzada.isSelected());
-    int error = configReceptor.comprobar(topo, this.reconfigurando);
+    int error = configReceptor.validateConfig(topo, this.reconfigurando);
     if (error != TReceiverNode.CORRECTA) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
-        va.mostrarMensaje(configReceptor.obtenerMensajeError(error));
+        va.mostrarMensaje(configReceptor.getErrorMessage(error));
         va.show();
     } else {
         this.setVisible(false);
@@ -290,7 +290,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
     /** Closes the dialog */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         setVisible(false);
-        configReceptor.ponerBienConfigurado(false);
+        configReceptor.setWellConfigured(false);
         dispose();
     }//GEN-LAST:event_closeDialog
 

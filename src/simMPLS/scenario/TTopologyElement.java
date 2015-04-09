@@ -46,7 +46,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
         this.longIdentifierGenerator = il;
         this.nsDisponibles = 0;
         alive = true;
-        bienConfigurado = false;
+        wellConfigured = false;
         instanteDeTiempo = 0;
         duracionTic = 0;
     }
@@ -244,8 +244,8 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @param bc TRUE, si el elemento est� bien configurado. FALSE en caso contrario.
      * @since 1.0
      */    
-    public void ponerBienConfigurado(boolean bc) {
-        this.bienConfigurado = bc;
+    public void setWellConfigured(boolean bc) {
+        this.wellConfigured = bc;
     }
     
     /**
@@ -267,7 +267,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @return TRUE, si el elemento est� bien configurado. FALSE en otro caso.
      * @since 1.0
      */    
-    public abstract boolean estaBienConfigurado();
+    public abstract boolean isWellConfigured();
     /**
      * Este m�todo genera un mensaje legible correspondiente al c�digo de error
      * especificado.
@@ -275,7 +275,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @return Mensaje de texto explicativo del c�digo de error.
      * @since 1.0
      */    
-    public abstract String obtenerMensajeError(int e);
+    public abstract String getErrorMessage(int e);
     /**
      * Este m�todo convierte el elemento completo en una cadena de texto almacenable en
      * disco.
@@ -337,7 +337,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * no.
      * @since 1.0
      */    
-    protected boolean bienConfigurado;
+    protected boolean wellConfigured;
     private long instanteDeTiempo;
     private int duracionTic;
 }

@@ -38,7 +38,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     /**
      * Crea una nueva instancia de TNodoTopologia.
      * @since 1.0
-     * @param identificador Identificador unico para el nodo en la topologia.
+     * @param identificador Identificador unico para el nodo en la topology.
      * @param d Direcci�n IP del nodo.
      * @param il Generador de identificadores para los eventos que deba emitir el nodo.
      * @param t Topologia donde se encuentra el nodo inclu�do.
@@ -53,7 +53,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
         IP = d;
         puertos = null;
         cerrojo = new TMonitor();
-        topologia = t;
+        topology = t;
         generarEstadisticas = false;
         nsDisponibles = 0;
         nsDelTic = 0;
@@ -96,21 +96,21 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Eeste m�todo permite establecer la topologia donde se encuentra el nodo.
+     * Eeste m�todo permite establecer la topology donde se encuentra el nodo.
      * @since 1.0
      * @param t Topolog�a donde se encuentra el nodo.
      */    
     public void ponerTopologia(TTopology t) {
-        topologia = t;
+        topology = t;
     }
 
     /**
-     * Este m�todo permite obtener la topologia donde se encuentra el nodo.
+     * Este m�todo permite obtener la topology donde se encuentra el nodo.
      * @return Topolog�a donde se encuentra el nodo.
      * @since 1.0
      */    
     public TTopology obtenerTopologia() {
-        return topologia;
+        return topology;
     }
 
     /**
@@ -352,7 +352,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @return TRUE, si el nodo est� bien configurado. FALSE en caso contrario.
      * @since 1.0
      */    
-    public abstract boolean estaBienConfigurado();
+    public abstract boolean isWellConfigured();
     
     /**
      * Este m�todo comprueba la configuraci�n del nodo y devuelve un codigo que expresa
@@ -363,7 +363,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @return CORRECTA, si la configuraci�n es correcta. Un c�digo de error en caso contrario.
      * @since 1.0
      */    
-    public abstract int comprobar(TTopology t, boolean recfg);
+    public abstract int validateConfig(TTopology t, boolean recfg);
     
     /**
      * Este m�todo transofmra el c�digo de error de la configuraci�n de un nodo en un
@@ -372,7 +372,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @return Un texto explicando el codigo de error.
      * @since 1.0
      */    
-    public abstract String obtenerMensajeError(int e);
+    public abstract String getErrorMessage(int e);
     
     /**
      * Este m�todo transforma el nodo en una repreentaci�n de texto que se puede volcar
@@ -529,10 +529,10 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      */    
     private TMonitor cerrojo;
     /**
-     * Este atributo almacena la topologia en la que est� incluido el nodo.
+     * Este atributo almacena la topology en la que est� incluido el nodo.
      * @since 1.0
      */    
-    protected TTopology topologia;
+    protected TTopology topology;
     /**
      * @since 1.0
      */    

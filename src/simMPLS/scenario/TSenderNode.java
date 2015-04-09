@@ -92,7 +92,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      */
     public void ponerDestino(String d) {
         if (!d.equals("")) {
-            TNode nt = this.topologia.obtenerPrimerNodoLlamado(d);
+            TNode nt = this.topology.setFirstNodeNamed(d);
             if (nt != null) {
                 IPDestino = nt.getIPAddress();
             }
@@ -355,7 +355,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                     } catch (Exception e) {
                         e.printStackTrace(); 
                     }
-                    if (this.topologia.obtenerIPSalto(this.getIPAddress(), this.obtenerDestino()) != null) {
+                    if (this.topology.obtenerIPSalto(this.getIPAddress(), this.obtenerDestino()) != null) {
                         pt.putPacketOnLink(paqueteConTamanio, pt.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     } else {
                         discardPacket(paqueteConTamanio);
@@ -630,8 +630,8 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @return TRUE, si el nodo est� bien configurado. FALSE en caso contrario.
      * @since 1.0
      */    
-    public boolean estaBienConfigurado() {
-        return this.bienConfigurado;
+    public boolean isWellConfigured() {
+        return this.wellConfigured;
     }
     
     /**
@@ -643,8 +643,8 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @return CORRECTA, si el nodo est� bien configurado. Un codigo de error en caso contrario.
      * @since 1.0
      */    
-    public int comprobar(TTopology t, boolean recfg) {
-        this.ponerBienConfigurado(false);
+    public int validateConfig(TTopology t, boolean recfg) {
+        this.setWellConfigured(false);
         if (this.getName().equals(""))
             return this.SIN_NOMBRE;
         boolean soloEspacios = true;
@@ -655,13 +655,13 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         if (soloEspacios)
             return this.SOLO_ESPACIOS;
         if (!recfg) {
-            TNode tp = t.obtenerPrimerNodoLlamado(this.getName());
+            TNode tp = t.setFirstNodeNamed(this.getName());
             if (tp != null)
                 return this.NOMBRE_YA_EXISTE;
         } else {
-            TNode tp = t.obtenerPrimerNodoLlamado(this.getName());
+            TNode tp = t.setFirstNodeNamed(this.getName());
             if (tp != null) {
-                if (this.topologia.existeMasDeUnNodoLlamado(this.getName())) {
+                if (this.topology.thereIsMoreThanANodeNamed(this.getName())) {
                     return this.NOMBRE_YA_EXISTE;
                 }
             }
@@ -671,7 +671,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
             return this.SIN_DESTINO;
         if (this.obtenerDestino().equals(""))
             return this.SIN_DESTINO;
-        this.ponerBienConfigurado(true);
+        this.setWellConfigured(true);
         return this.CORRECTA;
     }
     
@@ -682,7 +682,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @return El mensaje equivalente al codigo de error, pero legible.
      * @since 1.0
      */    
-    public String obtenerMensajeError(int e) {
+    public String getErrorMessage(int e) {
         switch (e) {
             case SIN_NOMBRE: return (java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TConfigEmisor.FALTA_NOMBRE"));
             case NOMBRE_YA_EXISTE: return (java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TConfigEmisor.NOMBRE_REPETIDO"));

@@ -397,21 +397,21 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
     if (reconfigurando) {
         configLSRA.setShowName(BKUPMostrarNombre);
         configLSRA.setName(BKUPNombre);
-        configLSRA.ponerBienConfigurado(true);
+        configLSRA.setWellConfigured(true);
         configLSRA.ponerTamanioBuffer(BKUPTamBuffer);
         configLSRA.setGenerateStats(BKUPGenerarEstadisticas);
         configLSRA.ponerPotenciaEnMb(BKUPPotencia);
         configLSRA.ponerTamanioDMGPEnKB(BKUPTamanioDMGP);
         reconfigurando = false;
     } else {
-        configLSRA.ponerBienConfigurado(false);
+        configLSRA.setWellConfigured(false);
     }
     this.setVisible(false);
     this.dispose();
 }//GEN-LAST:event_clicEnCancelar
 
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
-    configLSRA.ponerBienConfigurado(true);
+    configLSRA.setWellConfigured(true);
     if (!this.reconfigurando){
         configLSRA.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
@@ -421,10 +421,10 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     configLSRA.setName(nombreNodo.getText());
     configLSRA.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
     configLSRA.setShowName(verNombre.isSelected());
-    int error = configLSRA.comprobar(topo, this.reconfigurando);
+    int error = configLSRA.validateConfig(topo, this.reconfigurando);
     if (error != TActiveLSRNode.CORRECTA) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
-        va.mostrarMensaje(configLSRA.obtenerMensajeError(error));
+        va.mostrarMensaje(configLSRA.getErrorMessage(error));
         va.show();
     } else {
         this.setVisible(false);
@@ -452,7 +452,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
     /** Closes the dialog */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         setVisible(false);
-        configLSRA.ponerBienConfigurado(false);
+        configLSRA.setWellConfigured(false);
         dispose();
     }//GEN-LAST:event_closeDialog
 

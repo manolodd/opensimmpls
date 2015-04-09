@@ -230,7 +230,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * conmutar paquetes.
      *
      * @param evt Evento de reloj que sincroniza la ejecuci�n de los elementos
-     * de la topologia.
+ de la topology.
      * @since 1.0
      */
     public void receiveTimerEvent(TTimerEvent evt) {
@@ -465,7 +465,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     this.atenderAceptacionGPSRP(paquete, pEntrada);
                 }
             } else {
-                String IPSalida = this.topologia.obtenerIPSaltoRABAN(this.getIPAddress(), IPDestinoFinal);
+                String IPSalida = this.topology.obtenerIPSaltoRABAN(this.getIPAddress(), IPDestinoFinal);
                 pSalida = (TFIFOPort) this.puertos.getPortWhereIsConectedANodeHavingIP(IPSalida);
                 if (pSalida != null) {
                     pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
@@ -1554,7 +1554,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         String IPLocal = this.getIPAddress();
         String IPDestinoFinal = emc.getTailEndIPAddress();
         if (emc.getOutgoingLabel() != TSwitchingMatrixEntry.LABEL_ASSIGNED) {
-            String IPSalto = topologia.obtenerIPSaltoRABAN(IPLocal, IPDestinoFinal);
+            String IPSalto = topology.obtenerIPSaltoRABAN(IPLocal, IPDestinoFinal);
             if (IPSalto != null) {
                 TTLDPPDU paqueteTLDP = null;
                 try {
@@ -1600,7 +1600,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         String IPDestinoFinal = emc.getTailEndIPAddress();
         String IPSaltoPrincipal = puertos.getIPOfNodeLinkedTo(emc.getOutgoingPortID());
         if (IPSaltoPrincipal != null) {
-            String IPSalto = topologia.obtenerIPSaltoRABAN(IPLocal, IPDestinoFinal, IPSaltoPrincipal);
+            String IPSalto = topology.obtenerIPSaltoRABAN(IPLocal, IPDestinoFinal, IPSaltoPrincipal);
             if (IPSalto != null) {
                 if (emc.getBackupOutgoingPortID() == TSwitchingMatrixEntry.UNDEFINED) {
                     if (emc.getBackupOutgoingLabel() == TSwitchingMatrixEntry.UNDEFINED) {
@@ -1815,7 +1815,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         int IdTLDPAntecesor = paqueteSolicitud.getTLDPPayload().getTLDPIdentifier();
         TPort puertoEntrada = puertos.getPort(pEntrada);
         String IPDestinoFinal = paqueteSolicitud.getTLDPPayload().getTargetIPAddress();
-        String IPSalto = topologia.obtenerIPSaltoRABAN(this.getIPAddress(), IPDestinoFinal);
+        String IPSalto = topology.obtenerIPSaltoRABAN(this.getIPAddress(), IPDestinoFinal);
         if (IPSalto != null) {
             TPort puertoSalida = puertos.getPortWhereIsConectedANodeHavingIP(IPSalto);
             int enlaceOrigen = TLink.EXTERNAL;
@@ -1880,7 +1880,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         TSwitchingMatrixEntry emc = null;
         String IPLocal = this.getIPAddress();
         String IPDestinoFinal = paqueteIPv4.getIPv4Header().getTargetIP();
-        String IPSalida = topologia.obtenerIPSaltoRABAN(IPLocal, IPDestinoFinal);
+        String IPSalida = topology.obtenerIPSaltoRABAN(IPLocal, IPDestinoFinal);
         if (IPSalida != null) {
             TPort puertoEntrada = puertos.getPort(pEntrada);
             TPort puertoSalida = puertos.getPortWhereIsConectedANodeHavingIP(IPSalida);
@@ -1942,7 +1942,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         TSwitchingMatrixEntry emc = null;
         String IPLocal = this.getIPAddress();
         String IPDestinoFinal = paqueteMPLS.getIPv4Header().getTargetIP();
-        String IPSalida = topologia.obtenerIPSaltoRABAN(IPLocal, IPDestinoFinal);
+        String IPSalida = topology.obtenerIPSaltoRABAN(IPLocal, IPDestinoFinal);
         if (IPSalida != null) {
             TPort puertoEntrada = puertos.getPort(pEntrada);
             TPort puertoSalida = puertos.getPortWhereIsConectedANodeHavingIP(IPSalida);
@@ -2198,67 +2198,70 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @return true, si el LER est� bien configurado. false en caso contrario.
      * @since 1.0
      */
-    public boolean estaBienConfigurado() {
-        return this.bienConfigurado;
+    @Override
+    public boolean isWellConfigured() {
+        return this.wellConfigured;
     }
 
     /**
      * Este m�todo comprueba que una cierta configuraci�n es v�lida.
      *
-     * @param t Topolog�a a la que pertenece el LER.
-     * @param recfg true si se trata de una reconfiguraci�n. false en caso
+     * @param topology Topolog�a a la que pertenece el LER.
+     * @param reconfiguration true si se trata de una reconfiguraci�n. false en caso
      * contrario.
      * @return CORRECTA, si la configuraci�n es correcta. Un c�digo de error en
      * caso contrario.
      * @since 1.0
      */
-    public int comprobar(TTopology t, boolean recfg) {
-        this.ponerBienConfigurado(false);
+    @Override
+    public int validateConfig(TTopology topology, boolean reconfiguration) {
+        this.setWellConfigured(false);
         if (this.getName().equals("")) {
-            return this.UNNAMED;
+            return TActiveLERNode.UNNAMED;
         }
-        boolean soloEspacios = true;
+        boolean onlyBlankSpaces = true;
         for (int i = 0; i < this.getName().length(); i++) {
             if (this.getName().charAt(i) != ' ') {
-                soloEspacios = false;
+                onlyBlankSpaces = false;
             }
         }
-        if (soloEspacios) {
-            return this.ONLY_BLANK_SPACES;
+        if (onlyBlankSpaces) {
+            return TActiveLERNode.ONLY_BLANK_SPACES;
         }
-        if (!recfg) {
-            TNode tp = t.obtenerPrimerNodoLlamado(this.getName());
-            if (tp != null) {
-                return this.NAME_ALREADY_EXISTS;
+        if (!reconfiguration) {
+            TNode nodeAux = topology.setFirstNodeNamed(this.getName());
+            if (nodeAux != null) {
+                return TActiveLERNode.NAME_ALREADY_EXISTS;
             }
         } else {
-            TNode tp = t.obtenerPrimerNodoLlamado(this.getName());
-            if (tp != null) {
-                if (this.topologia.existeMasDeUnNodoLlamado(this.getName())) {
-                    return this.NAME_ALREADY_EXISTS;
+            TNode nodeAux = topology.setFirstNodeNamed(this.getName());
+            if (nodeAux != null) {
+                if (this.topology.thereIsMoreThanANodeNamed(this.getName())) {
+                    return TActiveLERNode.NAME_ALREADY_EXISTS;
                 }
             }
         }
-        this.ponerBienConfigurado(true);
-        return this.OK;
+        this.setWellConfigured(true);
+        return TActiveLERNode.OK;
     }
 
     /**
      * Este m�todo toma un codigo de error y genera un mensaje textual del
      * mismo.
      *
-     * @param e El c�digo de error para el cual queremos una explicaci�n
+     * @param errorCode El c�digo de error para el cual queremos una explicaci�n
      * textual.
      * @return Cadena de texto explicando el error.
      * @since 1.0
      */
-    public String obtenerMensajeError(int e) {
-        switch (e) {
-            case UNNAMED:
+    @Override
+    public String getErrorMessage(int errorCode) {
+        switch (errorCode) {
+            case TActiveLERNode.UNNAMED:
                 return (java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TConfigLER.FALTA_NOMBRE"));
-            case NAME_ALREADY_EXISTS:
+            case TActiveLERNode.NAME_ALREADY_EXISTS:
                 return (java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TConfigLER.NOMBRE_REPETIDO"));
-            case ONLY_BLANK_SPACES:
+            case TActiveLERNode.ONLY_BLANK_SPACES:
                 return (java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TNodoLER.NombreNoSoloEspacios"));
         }
         return ("");

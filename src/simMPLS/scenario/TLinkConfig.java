@@ -284,8 +284,8 @@ public class TLinkConfig {
      */    
     public void calcularTipo(TTopology topo) {
         TNode e1, e2;
-        e1 = topo.obtenerPrimerNodoLlamado(nombreExtremo1);
-        e2 = topo.obtenerPrimerNodoLlamado(nombreExtremo2);
+        e1 = topo.setFirstNodeNamed(nombreExtremo1);
+        e2 = topo.setFirstNodeNamed(nombreExtremo2);
         if ((e1 != null) && (e2 != null)) {
             int tipo1 = e1.getNodeType();
             int tipo2 = e2.getNodeType();

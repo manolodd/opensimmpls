@@ -174,8 +174,8 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * @return TRUE, si el nodo esta bien configurado. FALSE en caso contrario.
      * @since 1.0
      */    
-    public boolean estaBienConfigurado() {
-        return this.bienConfigurado;
+    public boolean isWellConfigured() {
+        return this.wellConfigured;
     }
     
     /**
@@ -188,8 +188,8 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * contrario.
      * @since 1.0
      */    
-    public int comprobar(TTopology t, boolean recfg) {
-        this.ponerBienConfigurado(false);
+    public int validateConfig(TTopology t, boolean recfg) {
+        this.setWellConfigured(false);
         if (this.getName().equals(""))
             return this.SIN_NOMBRE;
         boolean soloEspacios = true;
@@ -200,18 +200,18 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
         if (soloEspacios)
             return this.SOLO_ESPACIOS;
         if (!recfg) {
-            TNode tp = t.obtenerPrimerNodoLlamado(this.getName());
+            TNode tp = t.setFirstNodeNamed(this.getName());
             if (tp != null)
                 return this.NOMBRE_YA_EXISTE;
         } else {
-            TNode tp = t.obtenerPrimerNodoLlamado(this.getName());
+            TNode tp = t.setFirstNodeNamed(this.getName());
             if (tp != null) {
-                if (this.topologia.existeMasDeUnNodoLlamado(this.getName())) {
+                if (this.topology.thereIsMoreThanANodeNamed(this.getName())) {
                     return this.NOMBRE_YA_EXISTE;
                 }
             }
         }
-        this.ponerBienConfigurado(true);
+        this.setWellConfigured(true);
         estadisticas.activarEstadisticas(this.isGeneratingStats());
         return this.CORRECTA;
     }
@@ -223,7 +223,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * @return Texto explicativo del codigo de error.
      * @since 1.0
      */    
-    public String obtenerMensajeError(int e) {
+    public String getErrorMessage(int e) {
         switch (e) {
             case SIN_NOMBRE: return (java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TConfigReceptor.FALTA_NOMBRE"));
             case NOMBRE_YA_EXISTE: return (java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TConfigReceptor.NOMBRE_REPETIDO"));
