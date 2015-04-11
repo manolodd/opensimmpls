@@ -134,7 +134,7 @@ public class TFIFOPortSet extends TPortSet {
      * @since 1.0
      */
     @Override
-    public boolean isAnyPortAvailable() {
+    public boolean hasAvailablePorts() {
         int i = 0;
         for (i = 0; i < this.numberOfPorts; i++) {
             if (this.ports[i].isAvailable()) {
@@ -314,7 +314,7 @@ public class TFIFOPortSet extends TPortSet {
      * @since 1.0
      */
     @Override
-    public TPort getPortWhereIsConectedANodeHavingIP(String adjacentNodeIP) {
+    public TPort getPortConnectedToANodeWithIPAddress(String adjacentNodeIP) {
         for (int i = 0; i < this.numberOfPorts; i++) {
             if (!this.ports[i].isAvailable()) {
                 int targetNodeID = this.ports[i].getLink().getTargetNodeIDOfTrafficSentBy(this.parentNode);
