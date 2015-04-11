@@ -51,7 +51,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
         estado = DESELECCIONADO;
         mostrarNombre = false;
         IP = d;
-        puertos = null;
+        ports = null;
         cerrojo = new TMonitor();
         topology = t;
         generarEstadisticas = false;
@@ -244,8 +244,8 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permite establecer el n�mero de puertos que tendr� el nodo.
-     * @param num El n�mero de puertos deseados para el nodo. 8 como mucho.
+     * Este m�todo permite establecer el n�mero de ports que tendr� el nodo.
+     * @param num El n�mero de ports deseados para el nodo. 8 como mucho.
      * @since 1.0
      */    
     public abstract void setPorts(int num);
@@ -253,12 +253,12 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo permite poner un paquete en el buffer de entrada del nodo.
      * @param paquete Paquete que deseamo poner.
-     * @param puerto Puerto del conjunto de puertos en el que deeamos depositar el paquete.
+     * @param puerto Puerto del conjunto de ports en el que deeamos depositar el paquete.
      * @since 1.0
      */    
     public synchronized void ponerPaquete(TAbstractPDU paquete, int puerto) {
         cerrojo.lock();
-        this.puertos.getPort(puerto).addPacket(paquete);
+        this.ports.getPort(puerto).addPacket(paquete);
         cerrojo.unLock();
     }
 
@@ -297,8 +297,8 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     public abstract void discardPacket(TAbstractPDU paquete);
     
     /**
-     * Este m�todo permite acceder directamente a los puertos del nodo.
-     * @return El conjunto de puertos del nodo.
+     * Este m�todo permite acceder directamente a los ports del nodo.
+     * @return El conjunto de ports del nodo.
      * @since 1.0
      */    
     public abstract TPortSet getPorts();
@@ -334,18 +334,18 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     public abstract void runGoSPDUStoreAndRetransmitProtocol(TMPLSPDU paquete, int pSalida);
     
     /**
-     * Este m�todo averigua si al nodo le quedan puertos libre o no.
-     * @return TRUE, si quedan puertos libres al nodo. FALSE en caso contrario.
+     * Este m�todo averigua si al nodo le quedan ports libre o no.
+     * @return TRUE, si quedan ports libres al nodo. FALSE en caso contrario.
      * @since 1.0
      */    
-    public abstract boolean tienePuertosLibres();
+    public abstract boolean hasAvailablePorts();
     /**
      * Este m�todo devuelve el peso del nodo, que debe ser tenido en cuenta por los
      * algoritmos de encaminamiento.
      * @since 1.0
      * @return El peso del nodo.
      */    
-    public abstract long obtenerPeso();
+    public abstract long getRoutingWeight();
 
     /**
      * Este m�todo devuelve si el nodo est� bien configurado o no.
@@ -520,10 +520,10 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      */    
     private String IP;
     /**
-     * Este atributo contiene el conjunto de puertos del nodo.
+     * Este atributo contiene el conjunto de ports del nodo.
      * @since 1.0
      */    
-    protected TPortSet puertos;
+    protected TPortSet ports;
     /**
      * @since 1.0
      */    

@@ -46,7 +46,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     public TReceiverNode(int identificador, String d, TLongIDGenerator il, TTopology t) {
         super(identificador, d, il, t);
         this.setPorts(super.NUM_PUERTOS_RECEPTOR);
-        this.puertos.setUnlimitedBuffer(true);
+        this.ports.setUnlimitedBuffer(true);
         this.estadisticas = new TReceiverStats();
     }
 
@@ -56,7 +56,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * @since 1.0
      */    
     public void reset() {
-        this.puertos.reset();
+        this.ports.reset();
         this.estadisticas.reset();
         estadisticas.activarEstadisticas(this.isGeneratingStats());
     }
@@ -98,7 +98,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * @since 1.0
      */    
     public void recibirDatos() {
-        TPort p = this.puertos.getPort(0);
+        TPort p = this.ports.getPort(0);
         long idEvt = 0;
         int tipo = 0;
         TAbstractPDU paquete = null;
@@ -142,21 +142,21 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     }
     
     /**
-     * Este m�too permite acceder directamente a los puertos del nodo.
-     * @return El conjunto de puertos del nodo.
+     * Este m�too permite acceder directamente a los ports del nodo.
+     * @return El conjunto de ports del nodo.
      * @since 1.0
      */    
     public TPortSet getPorts() {
-        return this.puertos;
+        return this.ports;
     }
 
     /**
-     * Este m�todo devuelve si el nodo tiene puertos libres o no.
-     * @return TRUE, si el nodo tiene puertos libres. FALSE en caso contrario.
+     * Este m�todo devuelve si el nodo tiene ports libres o no.
+     * @return TRUE, si el nodo tiene ports libres. FALSE en caso contrario.
      * @since 1.0
      */    
-    public boolean tienePuertosLibres() {
-        return this.puertos.isAnyPortAvailable();
+    public boolean hasAvailablePorts() {
+        return this.ports.hasAvailablePorts();
     }
 
     /**
@@ -165,7 +165,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * @return En el caso de un nodo receptor, siempre es cero.
      * @since 1.0
      */    
-    public long obtenerPeso() {
+    public long getRoutingWeight() {
         return 0;
     }
 
@@ -292,12 +292,12 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     }
     
     /**
-     * Este m�todo permite establecer el n�mero de puertos que deseamos para el nodo.
-     * @param num El n�mero de puertos del nodo. Como mucho 8.
+     * Este m�todo permite establecer el n�mero de ports que deseamos para el nodo.
+     * @param num El n�mero de ports del nodo. Como mucho 8.
      * @since 1.0
      */    
     public synchronized void setPorts(int num) {
-        puertos = new TFIFOPortSet(num, this);
+        ports = new TFIFOPortSet(num, this);
     }
     
     /**

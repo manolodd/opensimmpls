@@ -297,13 +297,13 @@ private void clicEnCambioNodoDerecho(java.awt.event.ActionEvent evt) {//GEN-FIRS
         Iterator it = topo.getNodesIterator();
         TNode nt;
         if (seleccionado != null) {
-//          Actualizar los puertos de dicho nodo
+//          Actualizar los ports de dicho nodo
             int i=0;
             for (i=0; i<seleccionado.getPorts().getNumberOfPorts(); i++) {
                 if (seleccionado.getPorts().getPort(i).isAvailable())
                     this.selectorPuertoDerecho.addItem(""+i);
             }
-//          Actualizar los puertos de dicho nodo
+//          Actualizar los ports de dicho nodo
         }
     }
 }//GEN-LAST:event_clicEnCambioNodoDerecho
@@ -323,17 +323,17 @@ private void clicEnCambioNodoIzquierdo(java.awt.event.ActionEvent evt) {//GEN-FI
         Iterator it = topo.getNodesIterator();
         TNode nt;
         if (seleccionado != null) {
-//          Actualizar los puertos de dicho nodo
+//          Actualizar los ports de dicho nodo
             int i=0;
             for (i=0; i<seleccionado.getPorts().getNumberOfPorts(); i++) {
                 if (seleccionado.getPorts().getPort(i).isAvailable())
                     this.selectorPuertoIzquierdo.addItem(""+i);
             }
-//          Actualizar los puertos de dicho nodo
+//          Actualizar los ports de dicho nodo
             while (it.hasNext()) {
                 nt = (TNode) it.next();
                 if (!nt.getName().equals(seleccionado.getName())) {
-                    if (nt.tienePuertosLibres()) {
+                    if (nt.hasAvailablePorts()) {
                         if (!topo.existeEnlace(nt.getID(), seleccionado.getID())) {
                             switch (seleccionado.getNodeType()) {
                                 case TNode.SENDER: {
@@ -389,7 +389,7 @@ public void cargarNodosPorDefecto() {
     TNode nt;
     while (it.hasNext()) {
         nt = (TNode) it.next();
-        if (nt.tienePuertosLibres()) {
+        if (nt.hasAvailablePorts()) {
             selectorExtremoIzquierdo.addItem(nt.getName());
             selectorExtremoIzquierdo.setSelectedIndex(0);
         }

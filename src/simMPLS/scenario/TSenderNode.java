@@ -257,7 +257,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      */
     public void run() {
         try {
-            this.generarEventoSimulacion(new TSENodeCongested(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), 0));
+            this.generateSimulationEvent(new TSENodeCongested(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), 0));
         } catch (Exception e) {
             e.printStackTrace(); 
         }
@@ -335,7 +335,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     public void generarTrafico() {
         TAbstractPDU paquete=null;
         TAbstractPDU paqueteConTamanio=null;
-        TPort pt = puertos.getPort(0);
+        TPort pt = ports.getPort(0);
         if (pt != null) {
             if (!pt.isAvailable()) {
                 paquete = crearPaquete();
@@ -350,8 +350,8 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                             TIPv4PDU paqueteIPv4 = (TIPv4PDU) paqueteConTamanio;
                             tipo = paqueteIPv4.getSubtype();
                         }
-                        this.generarEventoSimulacion(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), tipo, paqueteConTamanio.getSize()));
-                        this.generarEventoSimulacion(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), tipo));
+                        this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), tipo, paqueteConTamanio.getSize()));
+                        this.generateSimulationEvent(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), tipo));
                     } catch (Exception e) {
                         e.printStackTrace(); 
                     }
@@ -589,8 +589,8 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      */    
     public void discardPacket(TAbstractPDU paquete) {
         try {
-            this.generarEventoSimulacion(new TSEPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
-            this.estadisticas.addStatsEntry(paquete, TStats.DESCARTE);
+            this.generateSimulationEvent(new TSEPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+            this.estadisticas.addStatsEntry(paquete, TStats.DISCARD);
         } catch (Exception e) {
             e.printStackTrace(); 
         }
@@ -598,21 +598,21 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
     
     /**
-     * Este m�todo investiga si al nodo le quedan puertos libres.
-     * @return TRUE, si al nodo le quedan puertos libres. FALSE en caso contrario.
+     * Este m�todo investiga si al nodo le quedan ports libres.
+     * @return TRUE, si al nodo le quedan ports libres. FALSE en caso contrario.
      * @since 1.0
      */
-    public boolean tienePuertosLibres() {
-        return this.puertos.isAnyPortAvailable();
+    public boolean hasAvailablePorts() {
+        return this.ports.hasAvailablePorts();
     }
     
     /**
-     * Este m�todo permite acceder a los puertos del nodo directamente.
-     * @return El conjunto de puertos del nodo.
+     * Este m�todo permite acceder a los ports del nodo directamente.
+     * @return El conjunto de ports del nodo.
      * @since 1.0
      */
     public TPortSet getPorts() {
-        return this.puertos;
+        return this.ports;
     }
     
     /**
@@ -621,7 +621,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @return En el nodo emisor, siempre es cero.
      * @since 1.0
      */
-    public long obtenerPeso() {
+    public long getRoutingWeight() {
         return 0;
     }
     
@@ -773,7 +773,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     public void reset() {
         gIdent.reset();
         gIdGoS.reset();
-        this.puertos.reset();
+        this.ports.reset();
         this.estadisticas.reset();
         estadisticas.activarEstadisticas(this.isGeneratingStats());
         this.restaurarPasosSinEmitir();
@@ -789,13 +789,13 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }    
     
     /**
-     * Este m�todo inicia el conjunto de puertos del nodo, con el n�mero de puertos
-     * especificado.
-     * @param num N�mero de puertos que tendr� el nodo. Como m�ximo est� configurado para 8.
+     * Este m�todo inicia el conjunto de ports del nodo, con el n�mero de ports
+ especificado.
+     * @param num N�mero de ports que tendr� el nodo. Como m�ximo est� configurado para 8.
      * @since 1.0
      */    
     public synchronized void setPorts(int num) {
-        puertos = new TFIFOPortSet(num, this);
+        ports = new TFIFOPortSet(num, this);
     }
     
 	/**    

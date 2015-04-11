@@ -85,7 +85,7 @@ public class TDMGPEntry implements Comparable {
      */
     public void setPacket(TMPLSPDU p) {
         this.packet = p.getAClon();
-        this.flowID = p.getIPv4Header().getOriginIP().hashCode();
+        this.flowID = p.getIPv4Header().getOriginIPAddress().hashCode();
         this.packetID = p.getIPv4Header().getGoSGlobalUniqueIdentifier();
     }
 

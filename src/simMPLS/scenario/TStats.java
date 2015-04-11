@@ -123,8 +123,8 @@ public abstract class TStats {
      * Este m�todo modifica las estad�sticas, a�adiendo las necesarias para el paquete
      * especificado.
      * @param paquete Paquete que se desea anotar en las estad�sticas.
-     * @param entrada ENTRADA, SALIDA, DESCARTE dependiendo si el paquete ha entrado del nodo, sallido
-     * o ha sido descartado.
+     * @param entrada ENTRADA, SALIDA, DISCARD dependiendo si el paquete ha entrado del nodo, sallido
+ o ha sido descartado.
      * @since 1.0
      */    
     public abstract void addStatsEntry(TAbstractPDU paquete, int entrada);
@@ -326,5 +326,5 @@ public abstract class TStats {
      * Esta constante indica un paquete descartado en el nodo.
      * @since 1.0
      */    
-    public static final int DESCARTE = -3;
+    public static final int DISCARD = -3;
 }

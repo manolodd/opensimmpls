@@ -133,8 +133,8 @@ public class TLSRStats extends TStats {
      * Este m�todo permite aumentar las estad�sticas, a�adiendo las del paquete
      * especificado.
      * @param paquete Paquete que se desea contabilizar.
-     * @param entrada ENTRADA, SALIDA o DESCARTE, dependiendo de si el paquete entra en el nodo, sale
-     * de �l o es descartado.
+     * @param entrada ENTRADA, SALIDA o DISCARD, dependiendo de si el paquete entra en el nodo, sale
+ de �l o es descartado.
      * @since 1.0
      */    
     public void addStatsEntry(TAbstractPDU paquete, int entrada) {
@@ -144,7 +144,7 @@ public class TLSRStats extends TStats {
             if (tipoPaquete == TAbstractPDU.TLDP) {
                 if (entrada == TStats.SALIDA) {
                     this.tSTLDP++;
-                } else if (entrada == TStats.DESCARTE) {
+                } else if (entrada == TStats.DISCARD) {
                     this.tDTLDP++;
                 } else if (entrada == TStats.ENTRADA) {
                     this.tETLDP++;
@@ -152,7 +152,7 @@ public class TLSRStats extends TStats {
             } else if (tipoPaquete == TAbstractPDU.GPSRP) {
                 if (entrada == TStats.SALIDA) {
                     this.tSGPSRP++;
-                } else if (entrada == TStats.DESCARTE) {
+                } else if (entrada == TStats.DISCARD) {
                     this.tDGPSRP++;
                 } else if (entrada == TStats.ENTRADA) {
                     this.tEGPSRP++;
@@ -160,7 +160,7 @@ public class TLSRStats extends TStats {
             } else if (tipoPaquete == TAbstractPDU.MPLS) {
                 if (entrada == TStats.SALIDA) {
                     this.tSMPLS++;
-                } else if (entrada == TStats.DESCARTE) {
+                } else if (entrada == TStats.DISCARD) {
                     this.tDMPLS++;
                 } else if (entrada == TStats.ENTRADA) {
                     this.tEMPLS++;
@@ -177,7 +177,7 @@ public class TLSRStats extends TStats {
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.tSMPLS_GOS3++;
                     }
-                } else if (entrada == TStats.DESCARTE) {
+                } else if (entrada == TStats.DISCARD) {
                     if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tDMPLS++;
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {

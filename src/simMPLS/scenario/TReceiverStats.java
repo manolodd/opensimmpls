@@ -119,8 +119,8 @@ public class TReceiverStats extends TStats {
      * Este m�todo permite ampliar las estad�sticas a�adiendo las correspondientes para
      * el paquete especificado.
      * @param paquete Paquete que se desea contabilizar.
-     * @param entrada ENTRADA, SALIDA o DESCARTE, dependiendo de si el paquete entra en el nodo, sale
-     * de �l o es descartado.
+     * @param entrada ENTRADA, SALIDA o DISCARD, dependiendo de si el paquete entra en el nodo, sale
+ de �l o es descartado.
      * @since 1.0
      */    
     public void addStatsEntry(TAbstractPDU paquete, int entrada) {

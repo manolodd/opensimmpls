@@ -77,7 +77,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
         enlaceCaido = ec;
         if (ec) {
             try {
-                this.generarEventoSimulacion(new TSELinkBroken(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
+                this.generateSimulationEvent(new TSELinkBroken(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
                 this.cerrojo.lock();
                 TAbstractPDU paquete = null;
                 TLinkBufferEntry ebe = null;
@@ -87,9 +87,9 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
                     paquete = ebe.obtenerPaquete();
                     if (paquete != null) {
                         if (ebe.obtenerDestino() == 1) {
-                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.getEnd2(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+                            this.generateSimulationEvent(new TSEPacketDiscarded(this.getEnd2(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         } else if (ebe.obtenerDestino() == 2) {
-                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.getEnd1(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+                            this.generateSimulationEvent(new TSEPacketDiscarded(this.getEnd1(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         }
                     }
                     it.remove();
@@ -100,7 +100,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
             }
         } else {
             try {
-                this.generarEventoSimulacion(new TSELinkRecovered(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
+                this.generateSimulationEvent(new TSELinkRecovered(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
             } catch (EIDGeneratorOverflow e) {
                 e.printStackTrace(); 
             }
@@ -135,7 +135,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
             if (ebe.obtenerDestino() == 1)
                 pctj = 100 - pctj;
             try {
-                this.generarEventoSimulacion(new TSEPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), ebe.obtenerPaquete().getSubtype(), pctj));
+                this.generateSimulationEvent(new TSEPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), ebe.obtenerPaquete().getSubtype(), pctj));
             } catch (EIDGeneratorOverflow e) {
                 e.printStackTrace(); 
             }

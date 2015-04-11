@@ -123,8 +123,8 @@ public class TSenderStats extends TStats {
      * Este m�todo amplia las estad�sticas, a�adiendo las del nuevo paquete
      * especificado.
      * @param paquete Paquete que se desea contabilizar en las estad�sticas.
-     * @param entrada ENTRADA, SALIDA o DESCARTE, dependiendo de si el paquete entra en el nodo, sale
-     * de �l o es descartado.
+     * @param entrada ENTRADA, SALIDA o DISCARD, dependiendo de si el paquete entra en el nodo, sale
+ de �l o es descartado.
      * @since 1.0
      */    
     public void addStatsEntry(TAbstractPDU paquete, int entrada) {
@@ -134,7 +134,7 @@ public class TSenderStats extends TStats {
             if (tipoPaquete == TAbstractPDU.MPLS) {
                 if (entrada == TStats.SALIDA) {
                     this.tSMPLS++;
-                } else if (entrada == TStats.DESCARTE) {
+                } else if (entrada == TStats.DISCARD) {
                     this.tDMPLS++;
                 }
             } else if (tipoPaquete == TAbstractPDU.MPLS_GOS) {
@@ -149,7 +149,7 @@ public class TSenderStats extends TStats {
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.tSMPLS_GOS3++;
                     }
-                } else if (entrada == TStats.DESCARTE) {
+                } else if (entrada == TStats.DISCARD) {
                     if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tDMPLS++;
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
@@ -163,7 +163,7 @@ public class TSenderStats extends TStats {
             } else if (tipoPaquete == TAbstractPDU.IPV4) {
                 if (entrada == TStats.SALIDA) {
                     this.tSIPV4++;
-                } else if (entrada == TStats.DESCARTE) {
+                } else if (entrada == TStats.DISCARD) {
                     this.tDIPV4++;
                 }
             } else if (tipoPaquete == TAbstractPDU.IPV4_GOS) {
@@ -178,7 +178,7 @@ public class TSenderStats extends TStats {
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.tSIPV4_GOS3++;
                     }
-                } else if (entrada == TStats.DESCARTE) {
+                } else if (entrada == TStats.DISCARD) {
                     if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tDIPV4++;
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {

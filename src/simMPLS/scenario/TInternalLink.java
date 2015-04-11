@@ -80,7 +80,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
             try {
                 this.numeroDeLSPs = 0;
                 this.numeroDeLSPsDeBackup = 0;
-                this.generarEventoSimulacion(new TSELinkBroken(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
+                this.generateSimulationEvent(new TSELinkBroken(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
                 this.cerrojo.lock();
                 TAbstractPDU paquete = null;
                 TLinkBufferEntry ebe = null;
@@ -90,9 +90,9 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
                     paquete = ebe.obtenerPaquete();
                     if (paquete != null) {
                         if (ebe.obtenerDestino() == 1) {
-                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.getEnd2(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+                            this.generateSimulationEvent(new TSEPacketDiscarded(this.getEnd2(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         } else if (ebe.obtenerDestino() == 2) {
-                            this.generarEventoSimulacion(new TSEPacketDiscarded(this.getEnd1(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+                            this.generateSimulationEvent(new TSEPacketDiscarded(this.getEnd1(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
                         }
                     }
                     it.remove();
@@ -103,7 +103,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
             }
         } else {
             try {
-                this.generarEventoSimulacion(new TSELinkRecovered(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
+                this.generateSimulationEvent(new TSELinkRecovered(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
             } catch (EIDGeneratorOverflow e) {
                 e.printStackTrace(); 
             }
@@ -141,7 +141,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
     public void ponerLSP() {
         numeroDeLSPs++;
         try {
-            this.generarEventoSimulacion(new TSELSPEstablished(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
+            this.generateSimulationEvent(new TSELSPEstablished(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
         } catch (Exception e) {
             e.printStackTrace(); 
         }
@@ -155,7 +155,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
         if (numeroDeLSPs > 0) {
             numeroDeLSPs--;
             try {
-                this.generarEventoSimulacion(new TSELSPRemoved(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
+                this.generateSimulationEvent(new TSELSPRemoved(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
             } catch (Exception e) {
                 e.printStackTrace(); 
             }
@@ -207,11 +207,11 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
                 pctj = 100 - pctj;
             try {
                 if (ebe.obtenerPaquete().getType() == TAbstractPDU.TLDP) {
-                    this.generarEventoSimulacion(new TSEPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP, pctj));
+                    this.generateSimulationEvent(new TSEPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP, pctj));
                 } else if (ebe.obtenerPaquete().getType() == TAbstractPDU.MPLS) {
-                    this.generarEventoSimulacion(new TSEPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), ebe.obtenerPaquete().getSubtype(), pctj));
+                    this.generateSimulationEvent(new TSEPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), ebe.obtenerPaquete().getSubtype(), pctj));
                 } else if (ebe.obtenerPaquete().getType() == TAbstractPDU.GPSRP) {
-                    this.generarEventoSimulacion(new TSEPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP, pctj));
+                    this.generateSimulationEvent(new TSEPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP, pctj));
                 }
             } catch (EIDGeneratorOverflow e) {
                 e.printStackTrace(); 
@@ -399,8 +399,8 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
     public long obtenerPesoRABAN() {
         long peso = 0;
         long pesoD = this.obtenerDelay();
-        long pesoE1 = (long) ((double) (pesoD*0.10)) * this.getEnd1().obtenerPeso();
-        long pesoE2 = (long) ((double) (pesoD*0.10)) * this.getEnd2().obtenerPeso();
+        long pesoE1 = (long) ((double) (pesoD*0.10)) * this.getEnd1().getRoutingWeight();
+        long pesoE2 = (long) ((double) (pesoD*0.10)) * this.getEnd2().getRoutingWeight();
         long pesoLSP = (long) ((double) (pesoD*0.05)) * this.numeroDeLSPs;
         long pesoLSPB = (long) ((double) (pesoD*0.05)) * this.numeroDeLSPsDeBackup;
         long pesoOnFly = (long) ((double) (pesoD*0.10)) * this.buffer.size();

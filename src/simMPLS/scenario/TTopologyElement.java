@@ -224,7 +224,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @param evt Evento que se quiere enviar al recolector.
      * @since 1.0
      */    
-    public void generarEventoSimulacion(TSimulationEvent evt) {
+    public void generateSimulationEvent(TSimulationEvent evt) {
         if (simulationEventsListener != null) {
             simulationEventsListener.captureSimulationEvents(evt);
         }

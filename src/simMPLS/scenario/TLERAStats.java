@@ -168,8 +168,8 @@ public class TLERAStats extends TStats {
      * Este metodo permite aumentar las estad�sticas a�adiendo para ello las del
      * paquete especificado.
      * @param paquete Paquete a contabilizar.
-     * @param entrada ENTRADA, SALIDA o DESCARTE, dependiendo de si el paquete entra en el nodod, sale
-     * de el o es descartado.
+     * @param entrada ENTRADA, SALIDA o DISCARD, dependiendo de si el paquete entra en el nodod, sale
+ de el o es descartado.
      * @since 1.0
      */    
     public void addStatsEntry(TAbstractPDU paquete, int entrada) {
@@ -179,7 +179,7 @@ public class TLERAStats extends TStats {
             if (tipoPaquete == TAbstractPDU.TLDP) {
                 if (entrada == TStats.SALIDA) {
                     this.tSTLDP++;
-                } else if (entrada == TStats.DESCARTE) {
+                } else if (entrada == TStats.DISCARD) {
                     this.tDTLDP++;
                 } else if (entrada == TStats.ENTRADA) {
                     this.tETLDP++;
@@ -191,7 +191,7 @@ public class TLERAStats extends TStats {
                     if (entrada == TStats.SALIDA) {
                         this.tSGPSRP++;
                         solicitudesEmitidas++;
-                    } else if (entrada == TStats.DESCARTE) {
+                    } else if (entrada == TStats.DISCARD) {
                         this.tDGPSRP++;
                     } else if (entrada == TStats.ENTRADA) {
                         this.tEGPSRP++;
@@ -201,7 +201,7 @@ public class TLERAStats extends TStats {
                     if (entrada == TStats.SALIDA) {
                         this.tSGPSRP++;
                         retransmisionesNoRealizadas++;
-                    } else if (entrada == TStats.DESCARTE) {
+                    } else if (entrada == TStats.DISCARD) {
                         this.tDGPSRP++;
                     } else if (entrada == TStats.ENTRADA) {
                         this.tEGPSRP++;
@@ -211,7 +211,7 @@ public class TLERAStats extends TStats {
                     if (entrada == TStats.SALIDA) {
                         this.tSGPSRP++;
                         retransmisionesRealizadas++;
-                    } else if (entrada == TStats.DESCARTE) {
+                    } else if (entrada == TStats.DISCARD) {
                         this.tDGPSRP++;
                     } else if (entrada == TStats.ENTRADA) {
                         this.tEGPSRP++;
@@ -221,7 +221,7 @@ public class TLERAStats extends TStats {
             } else if (tipoPaquete == TAbstractPDU.MPLS) {
                 if (entrada == TStats.SALIDA) {
                     this.tSMPLS++;
-                } else if (entrada == TStats.DESCARTE) {
+                } else if (entrada == TStats.DISCARD) {
                     this.tDMPLS++;
                 } else if (entrada == TStats.ENTRADA) {
                     this.tEMPLS++;
@@ -238,7 +238,7 @@ public class TLERAStats extends TStats {
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.tSMPLS_GOS3++;
                     }
-                } else if (entrada == TStats.DESCARTE) {
+                } else if (entrada == TStats.DISCARD) {
                     paquetesGoSPerdido++;
                     if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tDMPLS++;
@@ -263,7 +263,7 @@ public class TLERAStats extends TStats {
             } else if (tipoPaquete == TAbstractPDU.IPV4) {
                 if (entrada == TStats.SALIDA) {
                     this.tSIPV4++;
-                } else if (entrada == TStats.DESCARTE) {
+                } else if (entrada == TStats.DISCARD) {
                     this.tDIPV4++;
                 } else if (entrada == TStats.ENTRADA) {
                     this.tEIPV4++;
@@ -280,7 +280,7 @@ public class TLERAStats extends TStats {
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.tSIPV4_GOS3++;
                     }
-                } else if (entrada == TStats.DESCARTE) {
+                } else if (entrada == TStats.DISCARD) {
                     if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tDIPV4++;
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
