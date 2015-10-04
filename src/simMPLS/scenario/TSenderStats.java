@@ -250,7 +250,7 @@ public class TSenderStats extends TStats {
      * @param instante Tic de reloj al que se a�adir�n los �ltimos datos.
      * @since 1.0
      */    
-    public void asentarDatos(long instante) {
+    public void consolidateData(long instante) {
         if (this.estadisticasActivas) {
             if (tSIPV4 > 0) {
 		if (salientesIPv4.getItemCount() == 0) {

@@ -55,7 +55,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
         cerrojo = new TMonitor();
         topology = t;
         generarEstadisticas = false;
-        nsDisponibles = 0;
+        availableNs = 0;
         nsDelTic = 0;
         pasosSinEmitir = 0;
     }
@@ -276,7 +276,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * paquete.
      * @since 1.0
      */    
-    public void restaurarPasosSinEmitir() {
+    public void restoreStepsWithoutEmitting() {
         pasosSinEmitir = 0;
     }
 

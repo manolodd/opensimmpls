@@ -119,7 +119,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      */
     public int obtenerLimiteBitsTransmitibles() {
         double nsPorCadaBit = obtenerNsPorBit();
-        double maximoBits = (double) ((double)nsDisponibles/(double)nsPorCadaBit);
+        double maximoBits = (double) ((double)availableNs/(double)nsPorCadaBit);
         return (int) maximoBits;
     }
     
@@ -182,10 +182,10 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         gIdent.reset();
         gIdentLDP.reset();
         estadisticas.reset();
-        estadisticas.activarEstadisticas(this.isGeneratingStats());
+        estadisticas.activateStats(this.isGeneratingStats());
         dmgp.reset();
         peticionesGPSRP.reset();
-        this.restaurarPasosSinEmitir();
+        this.restoreStepsWithoutEmitting();
     }
     
     /**
@@ -203,15 +203,15 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @since 1.0
      */
     public void receiveTimerEvent(TTimerEvent evt) {
-        this.ponerDuracionTic(evt.getStepDuration());
-        this.ponerInstanteDeTiempo(evt.getUpperLimit());
+        this.setStepDouration(evt.getStepDuration());
+        this.setTimeInstant(evt.getUpperLimit());
         if (this.getPorts().isAnyPacketToSwitch()) {
-            this.nsDisponibles += evt.getStepDuration();
+            this.availableNs += evt.getStepDuration();
         } else {
-            this.restaurarPasosSinEmitir();
-            this.nsDisponibles = evt.getStepDuration();
+            this.restoreStepsWithoutEmitting();
+            this.availableNs = evt.getStepDuration();
         }
-        this.iniciar();
+        this.startOperation();
     }
     
     /**
@@ -229,7 +229,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         comprobarElEstadoDeLasComunicaciones();
         decrementarContadores();
         conmutarPaquete();
-        estadisticas.asentarDatos(this.getAvailableTime());
+        estadisticas.consolidateData(this.getAvailableTime());
         // Acciones a llevar a cabo durante el tic.
     }
     
@@ -363,15 +363,15 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 } else if (paquete.getType() == TAbstractPDU.GPSRP) {
                     conmutarGPSRP((TGPSRPPDU) paquete, puertoLeido);
                 } else {
-                    this.nsDisponibles += obtenerNsUsadosTotalOctetos(paquete.getSize());
+                    this.availableNs += obtenerNsUsadosTotalOctetos(paquete.getSize());
                     discardPacket(paquete);
                 }
-                this.nsDisponibles -= obtenerNsUsadosTotalOctetos(paquete.getSize());
+                this.availableNs -= obtenerNsUsadosTotalOctetos(paquete.getSize());
                 octetosQuePuedoMandar = this.obtenerOctetosTransmitibles();
             }
         }
         if (conmute) {
-            this.restaurarPasosSinEmitir();
+            this.restoreStepsWithoutEmitting();
         } else {
             this.incrementarPasosSinEmitir();
         }

@@ -311,7 +311,7 @@ public class TLSRAStats extends TStats {
      * @param instante Instante de tiempo al que se atribuir�n los ultimso datos.
      * @since 1.0
      */    
-    public void asentarDatos(long instante) {
+    public void consolidateData(long instante) {
         if (this.estadisticasActivas) {
             if (tEMPLS > 0) {
                 if (entrantesMPLS.getItemCount() == 0) {

@@ -178,7 +178,7 @@ public abstract class TPortSet {
      * to be switched/routed. Otherwise, returns FALSE.
      * @since 1.0
      */
-    public abstract boolean isAnyPacketToRoute();
+    public abstract boolean isThereAnyPacketToRoute();
 
     /**
      * This method, when implemented, will check if the next packet can be

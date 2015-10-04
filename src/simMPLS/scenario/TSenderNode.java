@@ -62,7 +62,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         tamDatosConstante = 0;
         tamDatosVariable = 0;
         estadisticas = new TSenderStats();
-        estadisticas.activarEstadisticas(this.isGeneratingStats());
+        estadisticas.activateStats(this.isGeneratingStats());
     }
     
     /**
@@ -244,10 +244,10 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @since 1.0
      */
     public void receiveTimerEvent(TTimerEvent evt) {
-        this.ponerDuracionTic(evt.getStepDuration());
-        this.ponerInstanteDeTiempo(evt.getUpperLimit());
-        this.nsDisponibles += evt.getStepDuration();
-        this.iniciar();
+        this.setStepDouration(evt.getStepDuration());
+        this.setTimeInstant(evt.getUpperLimit());
+        this.availableNs += evt.getStepDuration();
+        this.startOperation();
     }
     
     /**
@@ -269,11 +269,11 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         }
         paqueteTmp = null;
         if (emito) {
-            this.restaurarPasosSinEmitir();
+            this.restoreStepsWithoutEmitting();
         } else {
             this.incrementarPasosSinEmitir();
         }
-        this.estadisticas.asentarDatos(this.getAvailableTime());
+        this.estadisticas.consolidateData(this.getAvailableTime());
     }
     
     /**
@@ -423,7 +423,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      */    
     public int obtenerLimiteBitsTransmitibles() {
         double nsPorCadaBit = obtenerNsPorBit();
-        double maximoBits = (double) ((double)nsDisponibles/(double)nsPorCadaBit);
+        double maximoBits = (double) ((double)availableNs/(double)nsPorCadaBit);
         return (int) maximoBits;
     }
     
@@ -502,9 +502,9 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                 paqueteMPLS = (TMPLSPDU) paquete;
                 paqueteMPLS.getTCPPayload().setSize((int) tamanioDatos);
                 nsUsados = this.obtenerNsUsadosTotalOctetos(tamanioTotal);
-                this.nsDisponibles -= nsUsados;
-                if (this.nsDisponibles < 0)
-                    this.nsDisponibles = 0;
+                this.availableNs -= nsUsados;
+                if (this.availableNs < 0)
+                    this.availableNs = 0;
                 if (this.tipoTrafico == this.VARIABLE) {
                     this.tamDatosVariable = this.generarTamanioSiguientePaquete();
                 }
@@ -513,9 +513,9 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                 paqueteIPv4 = (TIPv4PDU) paquete;
                 paqueteIPv4.getTCPPayload().setSize(tamanioDatos);
                 nsUsados = this.obtenerNsUsadosTotalOctetos(tamanioTotal);
-                this.nsDisponibles -= nsUsados;
-                if (this.nsDisponibles < 0)
-                    this.nsDisponibles = 0;
+                this.availableNs -= nsUsados;
+                if (this.availableNs < 0)
+                    this.availableNs = 0;
                 if (this.tipoTrafico == this.VARIABLE) {
                     this.tamDatosVariable = this.generarTamanioSiguientePaquete();
                 }
@@ -775,8 +775,8 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         gIdGoS.reset();
         this.ports.reset();
         this.estadisticas.reset();
-        estadisticas.activarEstadisticas(this.isGeneratingStats());
-        this.restaurarPasosSinEmitir();
+        estadisticas.activateStats(this.isGeneratingStats());
+        this.restoreStepsWithoutEmitting();
     }
     
     /**

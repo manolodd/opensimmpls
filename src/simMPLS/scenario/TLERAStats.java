@@ -400,7 +400,7 @@ public class TLERAStats extends TStats {
      * @param instante Instante de tiempo al que se atribuir�n los ultimos datos existentes.
      * @since 1.0
      */    
-    public void asentarDatos(long instante) {
+    public void consolidateData(long instante) {
         if (this.estadisticasActivas) {
             if (tEIPV4 > 0) {
                 if (entrantesIPv4.getItemCount() == 0) {

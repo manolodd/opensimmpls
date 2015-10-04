@@ -43,7 +43,7 @@ public abstract class TStats {
      * @since 1.0
      * @param a TRUE, activa las estad�sticas. FALSE las desactiva.
      */    
-    public void activarEstadisticas(boolean a) {
+    public void activateStats(boolean a) {
         this.estadisticasActivas = a;
     }
 
@@ -134,7 +134,7 @@ public abstract class TStats {
      * @param instante Instante al que se asignar�n los �ltimos datos.
      * @since 1.0
      */    
-    public abstract void asentarDatos(long instante);
+    public abstract void consolidateData(long instante);
     /**
      * Devuelve el n�mero de gr�ficas que contiene la instancia.
      * @return N�mero de gr�ficas.

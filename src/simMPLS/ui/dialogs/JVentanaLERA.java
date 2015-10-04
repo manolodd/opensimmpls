@@ -399,8 +399,8 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
         configLERA.setShowName(BKUPMostrarNombre);
         configLERA.setName(BKUPNombre);
         configLERA.setWellConfigured(true);
-        configLERA.ponerTamanioBuffer(BKUPTamBuffer);
-        configLERA.ponerPotenciaEnMb(BKUPPotencia);
+        configLERA.setBufferSizeInMBytes(BKUPTamBuffer);
+        configLERA.setSwitchingPowerInMbps(BKUPPotencia);
         configLERA.setGenerateStats(BKUPGenerarEstadisticas);
         configLERA.setDMGPSizeInKB(BKUPTamanioDMGP);
         reconfigurando = false;
@@ -417,8 +417,8 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
         configLERA.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
     configLERA.setDMGPSizeInKB(this.selectorDeTamanioDMGP.getValue());
-    configLERA.ponerTamanioBuffer(this.selectorDeTamanioBuffer.getValue());
-    configLERA.ponerPotenciaEnMb(this.selectorDePotenciaDeConmutacion.getValue());
+    configLERA.setBufferSizeInMBytes(this.selectorDeTamanioBuffer.getValue());
+    configLERA.setSwitchingPowerInMbps(this.selectorDePotenciaDeConmutacion.getValue());
     configLERA.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
     configLERA.setName(nombreNodo.getText());
     configLERA.setShowName(verNombre.isSelected());
@@ -475,8 +475,8 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             BKUPGenerarEstadisticas = tnlera.isGeneratingStats();
             BKUPMostrarNombre = tnlera.getShowName();
             BKUPNombre = tnlera.getName();
-            BKUPPotencia = tnlera.obtenerPotenciaEnMb();
-            BKUPTamBuffer = tnlera.obtenerTamanioBuffer();
+            BKUPPotencia = tnlera.getSwitchingPowerInMbps();
+            BKUPTamBuffer = tnlera.getBufferSizeInMBytes();
             BKUPTamanioDMGP = tnlera.getDMGPSizeInKB();
 
             this.selectorDeTamanioDMGP.setValue(this.BKUPTamanioDMGP);

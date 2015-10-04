@@ -44,7 +44,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
         hilo = null;
         simulationEventsListener = null;
         this.longIdentifierGenerator = il;
-        this.nsDisponibles = 0;
+        this.availableNs = 0;
         alive = true;
         wellConfigured = false;
         instanteDeTiempo = 0;
@@ -66,7 +66,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @param i Instante de tiempo.
      * @since 1.0
      */    
-    public void ponerInstanteDeTiempo(long i) {
+    public void setTimeInstant(long i) {
         this.instanteDeTiempo = i;
     }
 
@@ -84,7 +84,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @param dc Duraci�n del tic en nanosegundos.
      * @since 1.0
      */    
-    public void ponerDuracionTic(int dc) {
+    public void setStepDouration(int dc) {
         this.duracionTic = dc;
     }
     
@@ -125,7 +125,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @since 1.0
      */    
     public void ponerNsDisponibles(long ns) {
-        nsDisponibles = ns;
+        availableNs = ns;
     }
 
     /**
@@ -135,7 +135,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @since 1.0
      */    
     public double obtenerNsDisponibles() {
-        return nsDisponibles;
+        return availableNs;
     }
 
     /**
@@ -145,7 +145,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @since 1.0
      */    
     public void sumarNsADisponibles(long ns) {
-        nsDisponibles += ns;
+        availableNs += ns;
     }
 
     /**
@@ -155,17 +155,17 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @since 1.0
      */    
     public void restarNsADisponibles(long ns) {
-        if (nsDisponibles < ns)
-            nsDisponibles = 0;
+        if (availableNs < ns)
+            availableNs = 0;
         else
-            nsDisponibles -= ns;
+            availableNs -= ns;
     }
 
     /**
      * Este m�todo pone en funcionamiento el hilo independiente que maneja al elemento.
      * @since 1.0
      */    
-    public synchronized void iniciar() {
+    public synchronized void startOperation() {
         if (hilo == null) {
             hilo = new Thread(this);
             this.hilo.start();
@@ -330,7 +330,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * elemento para realizar las operaciones que necesite.
      * @since 1.0
      */    
-    protected double nsDisponibles;
+    protected double availableNs;
     private boolean alive;
     /**
      * Este atributo almacenar� en todo momento si el elemento est� bien configurado o

@@ -58,7 +58,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     public void reset() {
         this.ports.reset();
         this.estadisticas.reset();
-        estadisticas.activarEstadisticas(this.isGeneratingStats());
+        estadisticas.activateStats(this.isGeneratingStats());
     }
     
     /**
@@ -76,9 +76,9 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * @since 1.0
      */    
     public void receiveTimerEvent(TTimerEvent evt) {
-        this.ponerDuracionTic(evt.getStepDuration());
-        this.ponerInstanteDeTiempo(evt.getUpperLimit());
-        this.iniciar();
+        this.setStepDouration(evt.getStepDuration());
+        this.setTimeInstant(evt.getUpperLimit());
+        this.startOperation();
     }
 
     /**
@@ -89,7 +89,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     public void run() {
         // Acciones a llevar a cabo durante el tic.
         recibirDatos();
-        estadisticas.asentarDatos(this.getAvailableTime());
+        estadisticas.consolidateData(this.getAvailableTime());
         // Acciones a llevar a cabo durante el tic.
     }
 
@@ -212,7 +212,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
             }
         }
         this.setWellConfigured(true);
-        estadisticas.activarEstadisticas(this.isGeneratingStats());
+        estadisticas.activateStats(this.isGeneratingStats());
         return this.CORRECTA;
     }
     

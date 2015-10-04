@@ -311,7 +311,7 @@ public class TActivePortSet extends TPortSet {
      * @since 1.0
      */
     @Override
-    public boolean isAnyPacketToRoute() {
+    public boolean isThereAnyPacketToRoute() {
         return this.isAnyPacketToSwitch();
     }
 
