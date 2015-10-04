@@ -44,7 +44,7 @@ public class TTLDPPayload {
      * This method gets the size of this TLDP packet.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return Te size for this TLDP packet, in bytes (octects).
+     * @return The size for this TLDP packet, in bytes (octects).
      * @since 1.0
      */
     public int getSize() {
