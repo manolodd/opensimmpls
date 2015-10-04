@@ -422,23 +422,23 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @since 1.0
      */
     public void routePackets() {
-        boolean atLeastOnePacketSwitched = false;
+        boolean atLeastOnePacketRouted = false;
         int readPort = 0;
         TAbstractPDU packet = null;
         int switchableOctectsWithCurrentNs = this.getMaxSwitchableOctectsWithCurrentNs();
         while (this.getPorts().canSwitchPacket(switchableOctectsWithCurrentNs)) {
-            atLeastOnePacketSwitched = true;
+            atLeastOnePacketRouted = true;
             packet = this.ports.getNextPacket();
             readPort = ports.getReadPort();
             if (packet != null) {
                 if (packet.getType() == TAbstractPDU.IPV4) {
-                    switchIPv4((TIPv4PDU) packet, readPort);
+                    handleIPv4Packet((TIPv4PDU) packet, readPort);
                 } else if (packet.getType() == TAbstractPDU.TLDP) {
-                    switchTLDP((TTLDPPDU) packet, readPort);
+                    handleTLDPPacket((TTLDPPDU) packet, readPort);
                 } else if (packet.getType() == TAbstractPDU.MPLS) {
-                    switchMPLS((TMPLSPDU) packet, readPort);
+                    handleMPLSPacket((TMPLSPDU) packet, readPort);
                 } else if (packet.getType() == TAbstractPDU.GPSRP) {
-                    switchGPSRP((TGPSRPPDU) packet, readPort);
+                    handleGPSRPPacket((TGPSRPPDU) packet, readPort);
                 } else {
                     this.availableNs += getNsRequiredForAllOctets(packet.getSize());
                     discardPacket(packet);
@@ -447,7 +447,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 switchableOctectsWithCurrentNs = this.getMaxSwitchableOctectsWithCurrentNs();
             }
         }
-        if (atLeastOnePacketSwitched) {
+        if (atLeastOnePacketRouted) {
             this.resetStepsWithoutEmittingToZero();
         } else {
             this.increaseStepsWithoutEmitting();
@@ -461,7 +461,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param incomingPort Puerto por el que ha llegado el packet.
      * @since 1.0
      */
-    public void switchGPSRP(TGPSRPPDU packet, int incomingPort) {
+    public void handleGPSRPPacket(TGPSRPPDU packet, int incomingPort) {
         if (packet != null) {
             int mensaje = packet.getGPSRPPayload().getGPSRPMessageType();
             int flujo = packet.getGPSRPPayload().getFlowID();
@@ -702,7 +702,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param pEntrada Puerto por el que ha accedido al nodo el packet.
      * @since 1.0
      */
-    public void switchIPv4(TIPv4PDU paquete, int pEntrada) {
+    public void handleIPv4Packet(TIPv4PDU paquete, int pEntrada) {
         int valorFEC = classifyPacket(paquete);
         String IPDestinoFinal = paquete.getIPv4Header().getTargetIPAddress();
         TSwitchingMatrixEntry emc = null;
@@ -797,7 +797,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param pEntrada Puerto por el que se ha recibido el packet TLDP.
      * @since 1.0
      */
-    public void switchTLDP(TTLDPPDU paquete, int pEntrada) {
+    public void handleTLDPPacket(TTLDPPDU paquete, int pEntrada) {
         if (paquete.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REQUEST) {
             this.tratarSolicitudTLDP(paquete, pEntrada);
         } else if (paquete.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REQUEST_OK) {
@@ -823,7 +823,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param pEntrada Puerto por el que ha llegado el packet MPLS recibido.
      * @since 1.0
      */
-    public void switchMPLS(TMPLSPDU paquete, int pEntrada) {
+    public void handleMPLSPacket(TMPLSPDU paquete, int pEntrada) {
         TMPLSLabel eMPLS = null;
         TSwitchingMatrixEntry emc = null;
         boolean conEtiqueta1 = false;
