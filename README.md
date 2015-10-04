@@ -21,7 +21,7 @@
     
  - Manuel Domínguez-Dorado - <ingeniero@ManoloDominguez.com>
    
-## Other collaborators:
+## Other collaborators (release 1.0):
 
  - José Luis González Sánchez - <jlgs@unex.es>
  - Javier Carmona Murillo - <jcarmur@unex.es>
