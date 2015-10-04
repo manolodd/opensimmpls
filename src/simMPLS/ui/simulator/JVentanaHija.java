@@ -929,7 +929,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                     }
                 } else if (et.getElementType() == TTopologyElement.LINK) {
                     TLink ent = (TLink) et;
-                    if (ent.linkIsBroken()) {
+                    if (ent.isBroken()) {
                         ent.ponerEnlaceCaido(false);
                     } else {
                         ent.ponerEnlaceCaido(true);
@@ -1600,7 +1600,7 @@ private void ratonSobrePanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIR
             }
         } else if (et.getElementType() == TTopologyElement.LINK) {
             TLink ent = (TLink) et;
-            if (ent.linkIsBroken()) {
+            if (ent.isBroken()) {
                 panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.EnlaceRoto"));
             } else {
                 panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.EnlaceFuncionando"));

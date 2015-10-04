@@ -733,7 +733,7 @@ public class TTopology {
         for (i=0; i<numNodosActual; i++) {
             for (j=0; j<numNodosActual; j++) {
                 en = obtenerEnlace(equivalencia[i], equivalencia[j]);
-                if ((en == null) || ((en != null) && (en.linkIsBroken()))) {
+                if ((en == null) || ((en != null) && (en.isBroken()))) {
                     if (i==j) {
                         matrizAdyacencia[i][j] = 0;
                     } else {
@@ -885,7 +885,7 @@ public class TTopology {
         for (i=0; i<numNodosActual; i++) {
             for (j=0; j<numNodosActual; j++) {
                 en = obtenerEnlace(equivalencia[i], equivalencia[j]);
-                if ((en == null) || ((en != null) && (en.linkIsBroken()))) {
+                if ((en == null) || ((en != null) && (en.isBroken()))) {
                     if (i==j) {
                         matrizAdyacencia[i][j] = 0;
                     } else {
@@ -984,7 +984,7 @@ public class TTopology {
         for (i=0; i<numNodosActual; i++) {
             for (j=0; j<numNodosActual; j++) {
                 en = obtenerEnlace(equivalencia[i], equivalencia[j]);
-                if ((en == null) || ((en != null) && (en.linkIsBroken()))) {
+                if ((en == null) || ((en != null) && (en.isBroken()))) {
                     if (i==j) {
                         matrizAdyacencia[i][j] = 0;
                     } else {

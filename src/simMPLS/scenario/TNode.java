@@ -267,7 +267,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * paquete.
      * @since 1.0
      */    
-    public void incrementarPasosSinEmitir() {
+    public void increaseStepsWithoutEmitting() {
         pasosSinEmitir++;
     }
     
@@ -276,7 +276,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * paquete.
      * @since 1.0
      */    
-    public void restoreStepsWithoutEmitting() {
+    public void resetStepsWithoutEmittingToZero() {
         pasosSinEmitir = 0;
     }
 
@@ -285,7 +285,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @return El n�mero de pasos
      * @since 1.0
      */    
-    public int obtenerPasosSinEmitir() {
+    public int getStepsWithoutEmitting() {
         return pasosSinEmitir;
     }
     

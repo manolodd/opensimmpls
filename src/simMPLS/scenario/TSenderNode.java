@@ -269,9 +269,9 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         }
         paqueteTmp = null;
         if (emito) {
-            this.restoreStepsWithoutEmitting();
+            this.resetStepsWithoutEmittingToZero();
         } else {
-            this.incrementarPasosSinEmitir();
+            this.increaseStepsWithoutEmitting();
         }
         this.estadisticas.consolidateData(this.getAvailableTime());
     }
@@ -776,7 +776,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         this.ports.reset();
         this.estadisticas.reset();
         estadisticas.activateStats(this.isGeneratingStats());
-        this.restoreStepsWithoutEmitting();
+        this.resetStepsWithoutEmittingToZero();
     }
     
     /**

@@ -56,10 +56,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param identifier the identifier of this active LER node that allow
-     * referencing it in the topology.
+ referencing switchingMatrixIterator in the topology.
      * @param ipAddress The IPv4 address assigned to this active LER.
      * @param longIDGenerator The idntifier generator that the active LER will
-     * use to identify unambiguosly each event it generates.
+ use to identify unambiguosly each event switchingMatrixIterator generates.
      * @param topology A reference to the topology this active LER belongs to.
      * @since 1.0
      */
@@ -221,7 +221,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         this.stats.activateStats(this.isGeneratingStats());
         this.dmgp.reset();
         this.gpsrpRequests.reset();
-        this.restoreStepsWithoutEmitting();
+        this.resetStepsWithoutEmittingToZero();
     }
 
     /**
@@ -251,7 +251,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         if (this.getPorts().isThereAnyPacketToRoute()) {
             this.availableNs += evt.getStepDuration();
         } else {
-            this.restoreStepsWithoutEmitting();
+            this.resetStepsWithoutEmittingToZero();
             this.availableNs = evt.getStepDuration();
         }
         this.startOperation();
@@ -286,208 +286,208 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @since 1.0
      */
     public void checkConnectivityStatus() {
-        boolean eliminar = false;
-        TSwitchingMatrixEntry emc = null;
-        int idPuerto = 0;
-        TPort puertoSalida = null;
-        TPort puertoSalidaBackup = null;
-        TPort puertoEntrada = null;
-        TLink et = null;
-        TLink et2 = null;
-        switchingMatrix.getMonitor().lock();
-        Iterator it = switchingMatrix.getEntriesIterator();
-        while (it.hasNext()) {
-            emc = (TSwitchingMatrixEntry) it.next();
-            if (emc != null) {
-                idPuerto = emc.getBackupOutgoingPortID();
-                if ((idPuerto >= 0) && (idPuerto < this.ports.getNumberOfPorts())) {
-                    puertoSalidaBackup = this.ports.getPort(idPuerto);
-                    if (puertoSalidaBackup != null) {
-                        et = puertoSalidaBackup.getLink();
-                        if (et != null) {
-                            if ((et.linkIsBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
-                                if (emc.backupLSPHasBeenEstablished() || emc.backupLSPShouldBeRemoved()) {
-                                    emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
-                                    emc.setBackupOutgoingPortID(TSwitchingMatrixEntry.UNDEFINED);
+        boolean removeSwitchingMatrixEntry = false;
+        TSwitchingMatrixEntry switchingMatrixEntry = null;
+        // FIX: Avoid using harcoded values
+        int portIDAux = 0;
+        TPort outgoingPort = null;
+        TPort outgoingBackupPort = null;
+        TPort incomingPort = null;
+        TLink linkAux1 = null;
+        TLink linkAux2 = null;
+        this.switchingMatrix.getMonitor().lock();
+        Iterator switchingMatrixIterator = this.switchingMatrix.getEntriesIterator();
+        while (switchingMatrixIterator.hasNext()) {
+            switchingMatrixEntry = (TSwitchingMatrixEntry) switchingMatrixIterator.next();
+            if (switchingMatrixEntry != null) {
+                portIDAux = switchingMatrixEntry.getBackupOutgoingPortID();
+                if ((portIDAux >= 0) && (portIDAux < this.ports.getNumberOfPorts())) {
+                    outgoingBackupPort = this.ports.getPort(portIDAux);
+                    if (outgoingBackupPort != null) {
+                        linkAux1 = outgoingBackupPort.getLink();
+                        if (linkAux1 != null) {
+                            if ((linkAux1.isBroken()) && (switchingMatrixEntry.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
+                                if (switchingMatrixEntry.backupLSPHasBeenEstablished() || switchingMatrixEntry.backupLSPShouldBeRemoved()) {
+                                    switchingMatrixEntry.setBackupOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
+                                    switchingMatrixEntry.setBackupOutgoingPortID(TSwitchingMatrixEntry.UNDEFINED);
                                 }
                             }
                         }
                     }
                 }
-                idPuerto = emc.getOutgoingPortID();
-                if ((idPuerto >= 0) && (idPuerto < this.ports.getNumberOfPorts())) {
-                    puertoSalida = this.ports.getPort(idPuerto);
-                    if (puertoSalida != null) {
-                        et = puertoSalida.getLink();
-                        if (et != null) {
-                            if ((et.linkIsBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
-                                puertoEntrada = this.ports.getPort(emc.getIncomingPortID());
-                                et = puertoEntrada.getLink();
-                                if (et.getLinkType() == TLink.INTERNAL) {
-                                    eliminarTLDP(emc, emc.getIncomingPortID());
+                portIDAux = switchingMatrixEntry.getOutgoingPortID();
+                if ((portIDAux >= 0) && (portIDAux < this.ports.getNumberOfPorts())) {
+                    outgoingPort = this.ports.getPort(portIDAux);
+                    if (outgoingPort != null) {
+                        linkAux1 = outgoingPort.getLink();
+                        if (linkAux1 != null) {
+                            if ((linkAux1.isBroken()) && (switchingMatrixEntry.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
+                                incomingPort = this.ports.getPort(switchingMatrixEntry.getIncomingPortID());
+                                linkAux1 = incomingPort.getLink();
+                                if (linkAux1.getLinkType() == TLink.INTERNAL) {
+                                    this.labelWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getIncomingPortID());
                                 } else {
-                                    eliminar = true;
+                                    removeSwitchingMatrixEntry = true;
                                 }
                             }
                         }
                     }
                 }
-                idPuerto = emc.getIncomingPortID();
-                if ((idPuerto >= 0) && (idPuerto < this.ports.getNumberOfPorts())) {
-                    puertoEntrada = this.ports.getPort(idPuerto);
-                    if (puertoEntrada != null) {
-                        et = puertoEntrada.getLink();
-                        if (et != null) {
-                            if ((et.linkIsBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
-                                puertoSalida = this.ports.getPort(emc.getOutgoingPortID());
-                                et = puertoSalida.getLink();
-                                if (et.getLinkType() == TLink.INTERNAL) {
-                                    eliminarTLDP(emc, emc.getOutgoingPortID());
+                portIDAux = switchingMatrixEntry.getIncomingPortID();
+                if ((portIDAux >= 0) && (portIDAux < this.ports.getNumberOfPorts())) {
+                    incomingPort = this.ports.getPort(portIDAux);
+                    if (incomingPort != null) {
+                        linkAux1 = incomingPort.getLink();
+                        if (linkAux1 != null) {
+                            if ((linkAux1.isBroken()) && (switchingMatrixEntry.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
+                                outgoingPort = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID());
+                                linkAux1 = outgoingPort.getLink();
+                                if (linkAux1.getLinkType() == TLink.INTERNAL) {
+                                    this.labelWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getOutgoingPortID());
                                 } else {
-                                    eliminar = false;
+                                    removeSwitchingMatrixEntry = false;
                                 }
                             }
                         }
                     }
                 }
-                if ((emc.getIncomingPortID() >= 0) && ((emc.getOutgoingPortID() >= 0))) {
-                    et = ports.getPort(emc.getIncomingPortID()).getLink();
-                    et2 = ports.getPort(emc.getOutgoingPortID()).getLink();
-                    if (et.linkIsBroken() && et2.linkIsBroken()) {
-                        eliminar = true;
+                if ((switchingMatrixEntry.getIncomingPortID() >= 0) && ((switchingMatrixEntry.getOutgoingPortID() >= 0))) {
+                    linkAux1 = ports.getPort(switchingMatrixEntry.getIncomingPortID()).getLink();
+                    linkAux2 = ports.getPort(switchingMatrixEntry.getOutgoingPortID()).getLink();
+                    if (linkAux1.isBroken() && linkAux2.isBroken()) {
+                        removeSwitchingMatrixEntry = true;
                     }
-                    if (et.linkIsBroken() && (et2.getLinkType() == TLink.EXTERNAL)) {
-                        eliminar = true;
+                    if (linkAux1.isBroken() && (linkAux2.getLinkType() == TLink.EXTERNAL)) {
+                        removeSwitchingMatrixEntry = true;
                     }
-                    if ((et.getLinkType() == TLink.EXTERNAL) && et2.linkIsBroken()) {
-                        eliminar = true;
+                    if ((linkAux1.getLinkType() == TLink.EXTERNAL) && linkAux2.isBroken()) {
+                        removeSwitchingMatrixEntry = true;
                     }
                 } else {
-                    eliminar = true;
+                    removeSwitchingMatrixEntry = true;
                 }
-                if (eliminar) {
-                    it.remove();
+                if (removeSwitchingMatrixEntry) {
+                    switchingMatrixIterator.remove();
                 }
             } else {
-                it.remove();
+                switchingMatrixIterator.remove();
             }
         }
-        switchingMatrix.getMonitor().unLock();
-
-        gpsrpRequests.decreaseTimeout(this.obtenerDuracionTic());
-        gpsrpRequests.updateEntries();
-        int numeroPuertos = ports.getNumberOfPorts();
+        this.switchingMatrix.getMonitor().unLock();
+        this.gpsrpRequests.decreaseTimeout(this.obtenerDuracionTic());
+        this.gpsrpRequests.updateEntries();
+        int numberOfPorts = ports.getNumberOfPorts();
         int i = 0;
-        TActivePort puertoActual = null;
-        TLink enlTop = null;
-        for (i = 0; i < numeroPuertos; i++) {
-            puertoActual = (TActivePort) ports.getPort(i);
-            if (puertoActual != null) {
-                enlTop = puertoActual.getLink();
-                if (enlTop != null) {
-                    if (enlTop.linkIsBroken()) {
-                        gpsrpRequests.removeEntriesMatchingOutgoingPort(i);
+        TActivePort currentPort = null;
+        TLink linkOfPort = null;
+        for (i = 0; i < numberOfPorts; i++) {
+            currentPort = (TActivePort) ports.getPort(i);
+            if (currentPort != null) {
+                linkOfPort = currentPort.getLink();
+                if (linkOfPort != null) {
+                    if (linkOfPort.isBroken()) {
+                        this.gpsrpRequests.removeEntriesMatchingOutgoingPort(i);
                     }
                 }
             }
         }
-        gpsrpRequests.getMonitor().lock();
-        Iterator ite = gpsrpRequests.getEntriesIterator();
-        int idFlujo = 0;
-        int idPaquete = 0;
-        String IPDestino = null;
-        int pSalida = 0;
-        TGPSRPRequestEntry epet = null;
-        while (ite.hasNext()) {
-            epet = (TGPSRPRequestEntry) ite.next();
-            if (epet.isRetryable()) {
-                idFlujo = epet.getFlowID();
-                idPaquete = epet.getPacketID();
-                IPDestino = epet.getCrossedNodeIP();
-                pSalida = epet.getOutgoingPort();
-                this.solicitarGPSRP(idFlujo, idPaquete, IPDestino, pSalida);
+        this.gpsrpRequests.getMonitor().lock();
+        Iterator gpsrpRequestsIterator = this.gpsrpRequests.getEntriesIterator();
+        int flowID = 0;
+        int packetID = 0;
+        String targetIPv4Address = null;
+        int outgoingPortAux = 0;
+        TGPSRPRequestEntry gpsrpRequestEntry = null;
+        while (gpsrpRequestsIterator.hasNext()) {
+            gpsrpRequestEntry = (TGPSRPRequestEntry) gpsrpRequestsIterator.next();
+            if (gpsrpRequestEntry.isRetryable()) {
+                flowID = gpsrpRequestEntry.getFlowID();
+                packetID = gpsrpRequestEntry.getPacketID();
+                targetIPv4Address = gpsrpRequestEntry.getCrossedNodeIP();
+                outgoingPortAux = gpsrpRequestEntry.getOutgoingPort();
+                this.requestGPSRP(flowID, packetID, targetIPv4Address, outgoingPortAux);
             }
-            epet.resetTimeout();
+            gpsrpRequestEntry.resetTimeout();
         }
-        gpsrpRequests.getMonitor().unLock();
+        this.gpsrpRequests.getMonitor().unLock();
     }
 
     /**
      * Este m�todo lee del puerto que corresponda seg�n el turno Round Robin
      * consecutivamente hasta que se termina el cr�dito. Si tiene posibilidad de
-     * conmutar y/o encaminar un paquete, lo hace, llamando para ello a los
-     * m�todos correspondiente segun el paquete. Si el paquete est� mal formado
-     * o es desconocido, lo descarta.
+ conmutar y/o encaminar un packet, lo hace, llamando para ello a los
+ m�todos correspondiente segun el packet. Si el packet est� mal formado
+ o es desconocido, lo descarta.
      *
      * @since 1.0
      */
     public void routePackets() {
-        boolean conmute = false;
-        int puertoLeido = 0;
-        TAbstractPDU paquete = null;
-        int octetosQuePuedoMandar = this.getMaxSwitchableOctectsWithCurrentNs();
-        while (this.getPorts().canSwitchPacket(octetosQuePuedoMandar)) {
-            conmute = true;
-            paquete = this.ports.getNextPacket();
-            puertoLeido = ports.getReadPort();
-            if (paquete != null) {
-                if (paquete.getType() == TAbstractPDU.IPV4) {
-                    conmutarIPv4((TIPv4PDU) paquete, puertoLeido);
-                } else if (paquete.getType() == TAbstractPDU.TLDP) {
-                    conmutarTLDP((TTLDPPDU) paquete, puertoLeido);
-                } else if (paquete.getType() == TAbstractPDU.MPLS) {
-                    conmutarMPLS((TMPLSPDU) paquete, puertoLeido);
-                } else if (paquete.getType() == TAbstractPDU.GPSRP) {
-                    conmutarGPSRP((TGPSRPPDU) paquete, puertoLeido);
+        boolean atLeastOnePacketSwitched = false;
+        int readPort = 0;
+        TAbstractPDU packet = null;
+        int switchableOctectsWithCurrentNs = this.getMaxSwitchableOctectsWithCurrentNs();
+        while (this.getPorts().canSwitchPacket(switchableOctectsWithCurrentNs)) {
+            atLeastOnePacketSwitched = true;
+            packet = this.ports.getNextPacket();
+            readPort = ports.getReadPort();
+            if (packet != null) {
+                if (packet.getType() == TAbstractPDU.IPV4) {
+                    switchIPv4((TIPv4PDU) packet, readPort);
+                } else if (packet.getType() == TAbstractPDU.TLDP) {
+                    switchTLDP((TTLDPPDU) packet, readPort);
+                } else if (packet.getType() == TAbstractPDU.MPLS) {
+                    switchMPLS((TMPLSPDU) packet, readPort);
+                } else if (packet.getType() == TAbstractPDU.GPSRP) {
+                    switchGPSRP((TGPSRPPDU) packet, readPort);
                 } else {
-                    this.availableNs += getNsRequiredForAllOctets(paquete.getSize());
-                    discardPacket(paquete);
+                    this.availableNs += getNsRequiredForAllOctets(packet.getSize());
+                    discardPacket(packet);
                 }
-                this.availableNs -= getNsRequiredForAllOctets(paquete.getSize());
-                octetosQuePuedoMandar = this.getMaxSwitchableOctectsWithCurrentNs();
+                this.availableNs -= getNsRequiredForAllOctets(packet.getSize());
+                switchableOctectsWithCurrentNs = this.getMaxSwitchableOctectsWithCurrentNs();
             }
         }
-        if (conmute) {
-            this.restoreStepsWithoutEmitting();
+        if (atLeastOnePacketSwitched) {
+            this.resetStepsWithoutEmittingToZero();
         } else {
-            this.incrementarPasosSinEmitir();
+            this.increaseStepsWithoutEmitting();
         }
     }
 
     /**
-     * Este m�todo conmuta un paquete GPSRP.
+     * Este m�todo conmuta un packet GPSRP.
      *
-     * @param paquete Paquete GPSRP que conmutar.
-     * @param pEntrada Puerto por el que ha llegado el paquete.
+     * @param packet Paquete GPSRP que conmutar.
+     * @param incomingPort Puerto por el que ha llegado el packet.
      * @since 1.0
      */
-    public void conmutarGPSRP(TGPSRPPDU paquete, int pEntrada) {
-        if (paquete != null) {
-            int mensaje = paquete.getGPSRPPayload().getGPSRPMessageType();
-            int flujo = paquete.getGPSRPPayload().getFlowID();
-            int idPaquete = paquete.getGPSRPPayload().getPacketID();
-            String IPDestinoFinal = paquete.getIPv4Header().getTargetIPAddress();
+    public void switchGPSRP(TGPSRPPDU packet, int incomingPort) {
+        if (packet != null) {
+            int mensaje = packet.getGPSRPPayload().getGPSRPMessageType();
+            int flujo = packet.getGPSRPPayload().getFlowID();
+            int idPaquete = packet.getGPSRPPayload().getPacketID();
+            String IPDestinoFinal = packet.getIPv4Header().getTargetIPAddress();
             TFIFOPort pSalida = null;
             if (IPDestinoFinal.equals(this.getIPAddress())) {
                 if (mensaje == TGPSRPPayload.RETRANSMISSION_REQUEST) {
-                    this.atenderPeticionGPSRP(paquete, pEntrada);
+                    this.atenderPeticionGPSRP(packet, incomingPort);
                 } else if (mensaje == TGPSRPPayload.RETRANSMISION_NOT_POSSIBLE) {
-                    this.atenderDenegacionGPSRP(paquete, pEntrada);
+                    this.atenderDenegacionGPSRP(packet, incomingPort);
                 } else if (mensaje == TGPSRPPayload.RETRANSMISION_OK) {
-                    this.atenderAceptacionGPSRP(paquete, pEntrada);
+                    this.atenderAceptacionGPSRP(packet, incomingPort);
                 }
             } else {
                 String IPSalida = this.topology.obtenerIPSaltoRABAN(this.getIPAddress(), IPDestinoFinal);
                 pSalida = (TFIFOPort) this.ports.getPortConnectedToANodeWithIPAddress(IPSalida);
                 if (pSalida != null) {
-                    pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
+                    pSalida.putPacketOnLink(packet, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     try {
                         this.generateSimulationEvent(new TSEPacketRouted(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
-                    this.discardPacket(paquete);
+                    this.discardPacket(packet);
                 }
             }
         }
@@ -497,7 +497,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * Este m�todo atiende una solicitud GPSRP de retransmisi�n.
      *
      * @param paquete Paquete GPSRP de petici�n de retransmisi�n.
-     * @param pEntrada Puerto por el que ha llegado el paquete.
+     * @param pEntrada Puerto por el que ha llegado el packet.
      * @since 1.0
      */
     public void atenderPeticionGPSRP(TGPSRPPDU paquete, int pEntrada) {
@@ -521,10 +521,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo atiende un paquete GPSRP de denegaci�n de retransmisi�n.
+     * Este m�todo atiende un packet GPSRP de denegaci�n de retransmisi�n.
      *
      * @param paquete Paquete GPSRP.
-     * @param pEntrada Puerto por el que ha llegado el paquete GPSRP.
+     * @param pEntrada Puerto por el que ha llegado el packet GPSRP.
      * @since 1.0
      */
     public void atenderDenegacionGPSRP(TGPSRPPDU paquete, int pEntrada) {
@@ -537,7 +537,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             if (!ep.isPurgeable()) {
                 String IPDestino = ep.getCrossedNodeIP();
                 if (IPDestino != null) {
-                    solicitarGPSRP(idf, idp, IPDestino, p);
+                    requestGPSRP(idf, idp, IPDestino, p);
                 } else {
                     gpsrpRequests.removeEntry(idf, idp);
                 }
@@ -548,10 +548,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo atiende un paquete GPSRP de aceptaci�n de retransmisi�n.
+     * Este m�todo atiende un packet GPSRP de aceptaci�n de retransmisi�n.
      *
      * @param paquete Paquete GPSRP de aceptaci�n de retransmisi�n.
-     * @param pEntrada Puerto por el que ha llegado el paquete.
+     * @param pEntrada Puerto por el que ha llegado el packet.
      * @since 1.0
      */
     public void atenderAceptacionGPSRP(TGPSRPPDU paquete, int pEntrada) {
@@ -599,14 +599,14 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param idFlujo Identificador del flujo del cual se solicita
      * retransmisi�n.
-     * @param idPaquete Identificaci�n del paquete del flujo del que se desea
-     * retransmisi�n.
+     * @param idPaquete Identificaci�n del packet del flujo del que se desea
+ retransmisi�n.
      * @param IPDestino IP del nodo al que se realizar� la solicitud.
      * @param pSalida Puerto de salida por el que se debe encaminar la
      * solicitud.
      * @since 1.0
      */
-    public void solicitarGPSRP(int idFlujo, int idPaquete, String IPDestino, int pSalida) {
+    public void requestGPSRP(int idFlujo, int idPaquete, String IPDestino, int pSalida) {
         TActivePort puertoSalida = (TActivePort) ports.getPort(pSalida);
         TGPSRPPDU paqueteGPSRP = null;
         if (IPDestino != null) {
@@ -692,17 +692,17 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
 
     /**
      * Este m�todo comprueba si existe una entrada en la tabla de encaminamiento
-     * para el paquete entrante. Si no es as�, clasifica el paquete y, si es
-     * necesario, reencola el paquete y solicita una etiqueta para poder
-     * enviarlo. Una vez que tiene entrada en la tabla de encaminamiento,
-     * reenv�a el paquete hacia el interior del dominio MPLS o hacia el
-     * exterior, segun corresponda.
+ para el packet entrante. Si no es as�, clasifica el packet y, si es
+ necesario, reencola el packet y solicita una etiqueta para poder
+ enviarlo. Una vez que tiene entrada en la tabla de encaminamiento,
+ reenv�a el packet hacia el interior del dominio MPLS o hacia el
+ exterior, segun corresponda.
      *
      * @param paquete Paquete IPv4 de entrada.
-     * @param pEntrada Puerto por el que ha accedido al nodo el paquete.
+     * @param pEntrada Puerto por el que ha accedido al nodo el packet.
      * @since 1.0
      */
-    public void conmutarIPv4(TIPv4PDU paquete, int pEntrada) {
+    public void switchIPv4(TIPv4PDU paquete, int pEntrada) {
         int valorFEC = classifyPacket(paquete);
         String IPDestinoFinal = paquete.getIPv4Header().getTargetIPAddress();
         TSwitchingMatrixEntry emc = null;
@@ -788,16 +788,16 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo se llama cuando se recibe un paquete TLDP con informaci�n
-     * sobre las etiquetas a use. El m�todo realiza sobre las matriz de
+     * Este m�todo se llama cuando se recibe un packet TLDP con informaci�n
+ sobre las etiquetas a use. El m�todo realiza sobre las matriz de
      * encaminamiento la operaci�n que sea necesario y propaga el cambio al nodo
      * adyacente que corresponda.
      *
      * @param paquete Paquete TLDP recibido.
-     * @param pEntrada Puerto por el que se ha recibido el paquete TLDP.
+     * @param pEntrada Puerto por el que se ha recibido el packet TLDP.
      * @since 1.0
      */
-    public void conmutarTLDP(TTLDPPDU paquete, int pEntrada) {
+    public void switchTLDP(TTLDPPDU paquete, int pEntrada) {
         if (paquete.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REQUEST) {
             this.tratarSolicitudTLDP(paquete, pEntrada);
         } else if (paquete.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REQUEST_OK) {
@@ -813,17 +813,17 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
 
     /**
      * Este m�todo comprueba si existe una entrada en la tabla de encaminamiento
-     * para el paquete entrante. Si no es as�, clasifica el paquete y, si es
-     * necesario, reencola el paquete y solicita una etiqueta para poder
-     * enviarlo. Una vez que tiene entrada en la tabla de encaminamiento,
-     * reenv�a el paquete hacia el siguiente nodo del dominio MPLS o hacia el
-     * exterior, segun corresponda.
+ para el packet entrante. Si no es as�, clasifica el packet y, si es
+ necesario, reencola el packet y solicita una etiqueta para poder
+ enviarlo. Una vez que tiene entrada en la tabla de encaminamiento,
+ reenv�a el packet hacia el siguiente nodo del dominio MPLS o hacia el
+ exterior, segun corresponda.
      *
      * @param paquete Paquete MPLS recibido.
-     * @param pEntrada Puerto por el que ha llegado el paquete MPLS recibido.
+     * @param pEntrada Puerto por el que ha llegado el packet MPLS recibido.
      * @since 1.0
      */
-    public void conmutarMPLS(TMPLSPDU paquete, int pEntrada) {
+    public void switchMPLS(TMPLSPDU paquete, int pEntrada) {
         TMPLSLabel eMPLS = null;
         TSwitchingMatrixEntry emc = null;
         boolean conEtiqueta1 = false;
@@ -993,7 +993,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
                 enviarSolicitudOkTLDP(emc);
             } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                eliminarTLDP(emc, pEntrada);
+                labelWithdrawal(emc, pEntrada);
             } else if (etiquetaActual > 15) {
                 enviarSolicitudOkTLDP(emc);
             } else {
@@ -1005,7 +1005,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo trata un paquete TLDP de eliminaci�n de etiqueta.
+     * Este m�todo trata un packet TLDP de eliminaci�n de etiqueta.
      *
      * @param paquete Eliminaci�n de etiqueta recibida.
      * @param pEntrada Puerto por el que se recibi�n la eliminaci�n de etiqueta.
@@ -1027,15 +1027,15 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     if (etiquetaActual == TSwitchingMatrixEntry.UNDEFINED) {
                         emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
                         enviarEliminacionOkTLDP(emc, pEntrada);
-                        eliminarTLDP(emc, emc.getOppositePortID(pEntrada));
+                        labelWithdrawal(emc, emc.getOppositePortID(pEntrada));
                     } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
                         emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
                         enviarEliminacionOkTLDP(emc, pEntrada);
-                        eliminarTLDP(emc, emc.getOppositePortID(pEntrada));
+                        labelWithdrawal(emc, emc.getOppositePortID(pEntrada));
                     } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
                         emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
                         enviarEliminacionOkTLDP(emc, pEntrada);
-                        eliminarTLDP(emc, emc.getOppositePortID(pEntrada));
+                        labelWithdrawal(emc, emc.getOppositePortID(pEntrada));
                     } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
                         enviarEliminacionOkTLDP(emc, pEntrada);
                         switchingMatrix.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
@@ -1044,7 +1044,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     } else if (etiquetaActual > 15) {
                         emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
                         enviarEliminacionOkTLDP(emc, pEntrada);
-                        eliminarTLDP(emc, emc.getOppositePortID(pEntrada));
+                        labelWithdrawal(emc, emc.getOppositePortID(pEntrada));
                     } else {
                         discardPacket(paquete);
                     }
@@ -1052,18 +1052,18 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                         int etiquetaActualBackup = emc.getBackupOutgoingLabel();
                         if (etiquetaActualBackup == TSwitchingMatrixEntry.UNDEFINED) {
                             emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
-                            eliminarTLDP(emc, emc.getBackupOutgoingPortID());
+                            labelWithdrawal(emc, emc.getBackupOutgoingPortID());
                         } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_REQUESTED) {
                             emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
-                            eliminarTLDP(emc, emc.getBackupOutgoingPortID());
+                            labelWithdrawal(emc, emc.getBackupOutgoingPortID());
                         } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
                             emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
-                            eliminarTLDP(emc, emc.getBackupOutgoingPortID());
+                            labelWithdrawal(emc, emc.getBackupOutgoingPortID());
                         } else if (etiquetaActualBackup == TSwitchingMatrixEntry.REMOVING_LABEL) {
                             // No hacemos nada... esperamos.
                         } else if (etiquetaActualBackup > 15) {
                             emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
-                            eliminarTLDP(emc, emc.getBackupOutgoingPortID());
+                            labelWithdrawal(emc, emc.getBackupOutgoingPortID());
                         } else {
                             discardPacket(paquete);
                         }
@@ -1077,15 +1077,15 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 if (etiquetaActual == TSwitchingMatrixEntry.UNDEFINED) {
                     emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
                     enviarEliminacionOkTLDP(emc, pEntrada);
-                    eliminarTLDP(emc, emc.getIncomingPortID());
+                    labelWithdrawal(emc, emc.getIncomingPortID());
                 } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
                     emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
                     enviarEliminacionOkTLDP(emc, pEntrada);
-                    eliminarTLDP(emc, emc.getIncomingPortID());
+                    labelWithdrawal(emc, emc.getIncomingPortID());
                 } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
                     emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
                     enviarEliminacionOkTLDP(emc, pEntrada);
-                    eliminarTLDP(emc, emc.getIncomingPortID());
+                    labelWithdrawal(emc, emc.getIncomingPortID());
                 } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
                     enviarEliminacionOkTLDP(emc, pEntrada);
                     switchingMatrix.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
@@ -1104,7 +1104,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                         if (emc.getUpstreamTLDPSessionID() != TSwitchingMatrixEntry.UNDEFINED) {
                             emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
                             enviarEliminacionOkTLDP(emc, pEntrada);
-                            eliminarTLDP(emc, emc.getIncomingPortID());
+                            labelWithdrawal(emc, emc.getIncomingPortID());
                         } else {
                             enviarEliminacionOkTLDP(emc, pEntrada);
                             switchingMatrix.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
@@ -1145,7 +1145,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo trata un paquete TLDP de confirmaci�n de etiqueta.
+     * Este m�todo trata un packet TLDP de confirmaci�n de etiqueta.
      *
      * @param paquete Confirmaci�n de etiqueta.
      * @param pEntrada Puerto por el que se ha recibido la confirmaci�n de
@@ -1215,7 +1215,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo trata un paquete TLDP de denegaci�n de etiqueta.
+     * Este m�todo trata un packet TLDP de denegaci�n de etiqueta.
      *
      * @param paquete Paquete de denegaci�n de etiquetas recibido.
      * @param pEntrada Puerto por el que se ha recibido la denegaci�n de
@@ -1269,8 +1269,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo trata un paquete TLDP de confirmaci�n de eliminaci�n de
-     * etiqueta.
+     * Este m�todo trata un packet TLDP de confirmaci�n de eliminaci�n de
+ etiqueta.
      *
      * @param paquete Paquete de confirmaci�n e eliminaci�n de etiqueta.
      * @param pEntrada Puerto por el que se ha recibido la confirmaci�n de
@@ -1659,7 +1659,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param puerto Puerto por el que se debe enviar la eliminaci�n.
      * @param emc Entrada en la matriz de conmutaci�n especificada.
      */
-    public void eliminarTLDP(TSwitchingMatrixEntry emc, int puerto) {
+    public void labelWithdrawal(TSwitchingMatrixEntry emc, int puerto) {
         if (emc != null) {
             emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
             String IPLocal = this.getIPAddress();
@@ -1756,8 +1756,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param puerto Puerto por el que se debe enviar la eliminaci�n.
      * @param emc Entrada de la matriz de conmutaci�n especificada.
      */
-    public void eliminarTLDPTrasTimeout(TSwitchingMatrixEntry emc, int puerto) {
-        eliminarTLDP(emc, puerto);
+    public void labelWithdrawalAfterTimeout(TSwitchingMatrixEntry emc, int puerto) {
+        labelWithdrawal(emc, puerto);
     }
 
     /**
@@ -1767,10 +1767,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param emc Entrada de la matriz de conmutaci�n especificada.
      * @since 1.0
      */
-    public void eliminarTLDPTrasTimeout(TSwitchingMatrixEntry emc) {
-        eliminarTLDP(emc, emc.getIncomingPortID());
-        eliminarTLDP(emc, emc.getOutgoingPortID());
-        eliminarTLDP(emc, emc.getBackupOutgoingPortID());
+    public void labelWithdrawalAfterTimeout(TSwitchingMatrixEntry emc) {
+        labelWithdrawal(emc, emc.getIncomingPortID());
+        labelWithdrawal(emc, emc.getOutgoingPortID());
+        labelWithdrawal(emc, emc.getBackupOutgoingPortID());
     }
 
     /**
@@ -1797,7 +1797,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     if (emc.shouldRetryExpiredTLDPRequest()) {
                         emc.resetTimeOut();
                         emc.decreaseAttempts();
-                        eliminarTLDPTrasTimeout(emc);
+                        labelWithdrawalAfterTimeout(emc);
                     } else {
                         if (!emc.areThereAvailableAttempts()) {
                             it.remove();
@@ -1814,10 +1814,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
 
     /**
      * Este m�todo crea una nueva entrada en la matriz de conmutaci�n con los
-     * datos de un paquete TLDP entrante.
+ datos de un packet TLDP entrante.
      *
      * @param paqueteSolicitud Paquete TLDP entrante, de solicitud de etiqueta.
-     * @param pEntrada Puerto de entrada del paquete TLDP.
+     * @param pEntrada Puerto de entrada del packet TLDP.
      * @return La entrada de la matriz de conmutaci�n, ya creada, insertada e
      * inicializada.
      * @since 1.0
@@ -1880,10 +1880,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
 
     /**
      * Este m�todo crea una nueva entrada en la matriz de conmutaci�n bas�ndose
-     * en un paquete IPv4 recibido.
+ en un packet IPv4 recibido.
      *
      * @param paqueteIPv4 Paquete IPv4 recibido.
-     * @param pEntrada Puerto por el que ha llegado el paquete IPv4.
+     * @param pEntrada Puerto por el que ha llegado el packet IPv4.
      * @return La entrada de la matriz de conmutaci�n, creada, insertada e
      * inicializada.
      * @since 1.0
@@ -1942,10 +1942,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
 
     /**
      * Este m�todo crea una nueva entrada en la matriz de conmutaci�n bas�ndose
-     * en un paquete MPLS recibido.
+ en un packet MPLS recibido.
      *
      * @param paqueteMPLS Paquete MPLS recibido.
-     * @param pEntrada Puerto por el que ha llegado el paquete MPLS.
+     * @param pEntrada Puerto por el que ha llegado el packet MPLS.
      * @return La entrada de la matriz de conmutaci�n, creada, insertada e
      * inicializada.
      * @since 1.0
@@ -2005,16 +2005,16 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo toma un paquete IPv4 y la entrada de la matriz de conmutaci�n
-     * asociada al mismo y crea un paquete MPLS etiquetado correctamente que
-     * contiene dicho paquete IPv4 listo para ser transmitido hacia el interior
-     * del dominio.
+     * Este m�todo toma un packet IPv4 y la entrada de la matriz de conmutaci�n
+ asociada al mismo y crea un packet MPLS etiquetado correctamente que
+ contiene dicho packet IPv4 listo para ser transmitido hacia el interior
+ del dominio.
      *
      * @param ipv4Packet Paquete IPv4 que se debe etiquetar.
      * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n asociada
-     * al paquete IPv4 que se desea etiquetar.
-     * @return El paquete IPv4 de entrada, convertido en un paquete MPLS
-     * correctamente etiquetado.
+ al packet IPv4 que se desea etiquetar.
+     * @return El packet IPv4 de entrada, convertido en un packet MPLS
+ correctamente etiquetado.
      * @since 1.0
      */
     public TMPLSPDU createMPLSPacket(TIPv4PDU ipv4Packet, TSwitchingMatrixEntry switchingMatrixEntry) {
@@ -2048,16 +2048,16 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo toma como par�metro un paquete MPLS y su entrada en la matriz
-     * de conmutaci�n asociada. Extrae del paquete MPLS el paquete IP
-     * correspondiente y actualiza sus elementFields correctamente.
+     * Este m�todo toma como par�metro un packet MPLS y su entrada en la matriz
+ de conmutaci�n asociada. Extrae del packet MPLS el packet IP
+ correspondiente y actualiza sus elementFields correctamente.
      *
      * @param MPLSPacket Paquete MPLS cuyo contenido de nivel IPv4 se desea
      * extraer.
      * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n asociada
-     * al paquete MPLS.
-     * @return Paquete IPv4 que corresponde al paquete MPLS una vez que se ha
-     * eliminado toda la informaci�n MLPS; que se ha desetiquetado.
+ al packet MPLS.
+     * @return Paquete IPv4 que corresponde al packet MPLS una vez que se ha
+ eliminado toda la informaci�n MLPS; que se ha desetiquetado.
      * @since 1.0
      */
     public TIPv4PDU createIPv4Packet(TMPLSPDU MPLSPacket, TSwitchingMatrixEntry switchingMatrixEntry) {

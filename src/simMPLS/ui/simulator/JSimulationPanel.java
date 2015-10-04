@@ -270,7 +270,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
             } else {
                 g2Dbuf.setColor(Color.BLUE);
             }
-            if (enlace.linkIsBroken()) {
+            if (enlace.isBroken()) {
                     float dash1[] = {5.0f};
                     BasicStroke dashed = new BasicStroke(2.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash1, 0.0f);
                     g2Dbuf.setColor(Color.RED);
@@ -279,7 +279,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
             g2Dbuf.drawLine(inicio.x+24, inicio.y+24, fin.x+24, fin.y+24);
             g2Dbuf.setStroke(new BasicStroke((float) 1));
 //
-            if (!enlace.linkIsBroken()) {
+            if (!enlace.isBroken()) {
                 if (enlace.getLinkType() == TLink.INTERNAL) {
                     TInternalLink ei = (TInternalLink) enlace;
                     if (ei.tieneLSPs()) {
@@ -305,7 +305,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
             }
 //
 //
-            if (!enlace.linkIsBroken()) {
+            if (!enlace.isBroken()) {
                 if (enlace.getLinkType() == TLink.INTERNAL) {
                     TInternalLink ei = (TInternalLink) enlace;
                     if (ei.tieneLSPsDeBackup()) {
@@ -622,7 +622,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA_CONGESTIONADO), p.x, p.y, null);
                             }
                         }
-                        if (nt.obtenerPasosSinEmitir() > TNode.MAX_PASOS_SIN_EMITIR) {
+                        if (nt.getStepsWithoutEmitting() > TNode.MAX_PASOS_SIN_EMITIR) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.TRABAJANDO), p.x, p.y, null);
                         }
                     }

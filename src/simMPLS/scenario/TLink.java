@@ -66,7 +66,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return TRUE, si el enlace est� caido. FALSE en caso contrario.
      * @since 1.0
      */    
-    public boolean linkIsBroken() {
+    public boolean isBroken() {
         return enlaceCaido;
     }
     

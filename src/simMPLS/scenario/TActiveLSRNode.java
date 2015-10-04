@@ -185,7 +185,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         estadisticas.activateStats(this.isGeneratingStats());
         dmgp.reset();
         peticionesGPSRP.reset();
-        this.restoreStepsWithoutEmitting();
+        this.resetStepsWithoutEmittingToZero();
     }
     
     /**
@@ -208,7 +208,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         if (this.getPorts().isAnyPacketToSwitch()) {
             this.availableNs += evt.getStepDuration();
         } else {
-            this.restoreStepsWithoutEmitting();
+            this.resetStepsWithoutEmittingToZero();
             this.availableNs = evt.getStepDuration();
         }
         this.startOperation();
@@ -257,7 +257,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     if (puertoSalidaBackup != null) {
                         et = puertoSalidaBackup.getLink();
                         if (et != null) {
-                            if ((et.linkIsBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
+                            if ((et.isBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
                                 if (emc.backupLSPHasBeenEstablished() || emc.backupLSPShouldBeRemoved()) {
                                     emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
                                     emc.setBackupOutgoingPortID(TSwitchingMatrixEntry.UNDEFINED);
@@ -272,7 +272,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     if (puertoSalida != null) {
                         et = puertoSalida.getLink();
                         if (et != null) {
-                            if ((et.linkIsBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
+                            if ((et.isBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
                                 if (emc.backupLSPHasBeenEstablished()) {
                                     emc.switchToBackupLSP();
                                 } else {
@@ -288,7 +288,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     if (puertoEntrada != null) {
                         et = puertoEntrada.getLink();
                         if (et != null) {
-                            if ((et.linkIsBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
+                            if ((et.isBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
                                 eliminarTLDP(emc, emc.getOutgoingPortID());
                                 if (emc.backupLSPHasBeenEstablished() || emc.backupLSPShouldBeRemoved()) {
                                     emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
@@ -315,7 +315,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             if (puertoActual != null) {
                 enlTop = puertoActual.getLink();
                 if (enlTop != null) {
-                    if (enlTop.linkIsBroken()) {
+                    if (enlTop.isBroken()) {
                         peticionesGPSRP.removeEntriesMatchingOutgoingPort(i);
                     }
                 }
@@ -371,9 +371,9 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             }
         }
         if (conmute) {
-            this.restoreStepsWithoutEmitting();
+            this.resetStepsWithoutEmittingToZero();
         } else {
-            this.incrementarPasosSinEmitir();
+            this.increaseStepsWithoutEmitting();
         }
     }
     

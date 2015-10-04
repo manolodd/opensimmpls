@@ -167,7 +167,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         gIdentLDP.reset();
         estadisticas.reset();
         estadisticas.activateStats(this.isGeneratingStats());
-        this.restoreStepsWithoutEmitting();
+        this.resetStepsWithoutEmittingToZero();
     }
     
     /**
@@ -192,7 +192,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         if (this.getPorts().isThereAnyPacketToRoute()) {
             this.availableNs += evt.getStepDuration();
         } else {
-            this.restoreStepsWithoutEmitting();
+            this.resetStepsWithoutEmittingToZero();
             this.availableNs = evt.getStepDuration();
         }
         this.startOperation();
@@ -242,11 +242,11 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                     if (puertoSalida != null) {
                         et = puertoSalida.getLink();
                         if (et != null) {
-                            if ((et.linkIsBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
+                            if ((et.isBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
                                 puertoEntrada = this.ports.getPort(emc.getIncomingPortID());
                                 et = puertoEntrada.getLink();
                                 if (et.getLinkType() == TLink.INTERNAL) {
-                                    eliminarTLDP(emc, emc.getIncomingPortID());
+                                    labelWithdrawal(emc, emc.getIncomingPortID());
                                 } else {
                                     eliminar = true;
                                 }
@@ -260,11 +260,11 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                     if (puertoEntrada != null) {
                         et = puertoEntrada.getLink();
                         if (et != null) {
-                            if ((et.linkIsBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
+                            if ((et.isBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
                                 puertoSalida = this.ports.getPort(emc.getOutgoingPortID());
                                 et = puertoSalida.getLink();
                                 if (et.getLinkType() == TLink.INTERNAL) {
-                                    eliminarTLDP(emc, emc.getOutgoingPortID());
+                                    labelWithdrawal(emc, emc.getOutgoingPortID());
                                 } else {
                                     eliminar = false;
                                 }
@@ -275,13 +275,13 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                 if ((emc.getIncomingPortID() >= 0) && ((emc.getOutgoingPortID() >= 0))) {
                     et = ports.getPort(emc.getIncomingPortID()).getLink();
                     et2 = ports.getPort(emc.getOutgoingPortID()).getLink();
-                    if (et.linkIsBroken() && et2.linkIsBroken()) {
+                    if (et.isBroken() && et2.isBroken()) {
                         eliminar = true;
                     }
-                    if (et.linkIsBroken() && (et2.getLinkType() == TLink.EXTERNAL)) {
+                    if (et.isBroken() && (et2.getLinkType() == TLink.EXTERNAL)) {
                         eliminar = true;
                     }
-                    if ((et.getLinkType() == TLink.EXTERNAL) && et2.linkIsBroken()) {
+                    if ((et.getLinkType() == TLink.EXTERNAL) && et2.isBroken()) {
                         eliminar = true;
                     }
                 } else {
@@ -332,9 +332,9 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
             }
         }
         if (conmute) {
-            this.restoreStepsWithoutEmitting();
+            this.resetStepsWithoutEmittingToZero();
         } else {
-            this.incrementarPasosSinEmitir();
+            this.increaseStepsWithoutEmitting();
         }
     }
     
@@ -636,7 +636,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
             } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
                 enviarSolicitudOkTLDP(emc);
             } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                eliminarTLDP(emc, pEntrada);
+                labelWithdrawal(emc, pEntrada);
             } else if (etiquetaActual > 15) {
                 enviarSolicitudOkTLDP(emc);
             } else {
@@ -668,15 +668,15 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                 if (etiquetaActual == TSwitchingMatrixEntry.UNDEFINED) {
                     emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
                     enviarEliminacionOkTLDP(emc, pEntrada);
-                    eliminarTLDP(emc, emc.getOppositePortID(pEntrada));
+                    labelWithdrawal(emc, emc.getOppositePortID(pEntrada));
                 } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
                     emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
                     enviarEliminacionOkTLDP(emc, pEntrada);
-                    eliminarTLDP(emc, emc.getOppositePortID(pEntrada));
+                    labelWithdrawal(emc, emc.getOppositePortID(pEntrada));
                 } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
                     emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
                     enviarEliminacionOkTLDP(emc, pEntrada);
-                    eliminarTLDP(emc, emc.getOppositePortID(pEntrada));
+                    labelWithdrawal(emc, emc.getOppositePortID(pEntrada));
                 } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
                     enviarEliminacionOkTLDP(emc, pEntrada);
                     matrizConmutacion.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
@@ -685,7 +685,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                 } else if (etiquetaActual > 15) {
                     emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
                     enviarEliminacionOkTLDP(emc, pEntrada);
-                    eliminarTLDP(emc, emc.getOppositePortID(pEntrada));
+                    labelWithdrawal(emc, emc.getOppositePortID(pEntrada));
                 } else {
                     discardPacket(paquete);
                 }
@@ -998,7 +998,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @param puerto Puerto por el que se debe enviar la eliminaci�n.
      * @param emc Entrada en la matriz de conmutaci�n especificada.
      */
-    public void eliminarTLDP(TSwitchingMatrixEntry emc, int puerto) {
+    public void labelWithdrawal(TSwitchingMatrixEntry emc, int puerto) {
         if (emc != null) {
             emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
             String IPLocal = this.getIPAddress();
@@ -1090,8 +1090,8 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @param puerto Puerto por el que se debe enviar la eliminaci�n.
      * @param emc Entrada de la matriz de conmutaci�n especificada.
      */
-    public void eliminarTLDPTrasTimeout(TSwitchingMatrixEntry emc, int puerto){
-        eliminarTLDP(emc, puerto);
+    public void labelWithdrawalAfterTimeout(TSwitchingMatrixEntry emc, int puerto){
+        labelWithdrawal(emc, puerto);
     }
     
     /**
@@ -1100,9 +1100,9 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @param emc Entrada de la matriz de conmutaci�n especificada.
      * @since 1.0
      */
-    public void eliminarTLDPTrasTimeout(TSwitchingMatrixEntry emc){
-        eliminarTLDP(emc, emc.getIncomingPortID());
-        eliminarTLDP(emc, emc.getOutgoingPortID());
+    public void labelWithdrawalAfterTimeout(TSwitchingMatrixEntry emc){
+        labelWithdrawal(emc, emc.getIncomingPortID());
+        labelWithdrawal(emc, emc.getOutgoingPortID());
     }
     
     /**
@@ -1127,7 +1127,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                     if (emc.shouldRetryExpiredTLDPRequest()) {
                         emc.resetTimeOut();
                         emc.decreaseAttempts();
-                        eliminarTLDPTrasTimeout(emc);
+                        labelWithdrawalAfterTimeout(emc);
                     } else {
                         if (!emc.areThereAvailableAttempts()) {
                             it.remove();

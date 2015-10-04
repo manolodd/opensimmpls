@@ -159,7 +159,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         gIdentLDP.reset();
         estadisticas.reset();
         estadisticas.activateStats(this.isGeneratingStats());
-        this.restoreStepsWithoutEmitting();
+        this.resetStepsWithoutEmittingToZero();
     }
     
     /**
@@ -182,7 +182,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         if (this.getPorts().isAnyPacketToSwitch()) {
             this.availableNs += evt.getStepDuration();
         } else {
-            this.restoreStepsWithoutEmitting();
+            this.resetStepsWithoutEmittingToZero();
             this.availableNs = evt.getStepDuration();
         }
         this.startOperation();
@@ -229,7 +229,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                     if (puertoSalida != null) {
                         et = puertoSalida.getLink();
                         if (et != null) {
-                            if ((et.linkIsBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
+                            if ((et.isBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
                                 eliminarTLDP(emc, emc.getIncomingPortID());
                             }
                         }
@@ -241,7 +241,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                     if (puertoEntrada != null) {
                         et = puertoEntrada.getLink();
                         if (et != null) {
-                            if ((et.linkIsBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
+                            if ((et.isBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
                                 eliminarTLDP(emc, emc.getOutgoingPortID());
                             }
                         }
@@ -283,9 +283,9 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
             }
         }
         if (conmute) {
-            this.restoreStepsWithoutEmitting();
+            this.resetStepsWithoutEmittingToZero();
         } else {
-            this.incrementarPasosSinEmitir();
+            this.increaseStepsWithoutEmitting();
         }
     }
     
