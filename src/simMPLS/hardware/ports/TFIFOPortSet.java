@@ -314,7 +314,7 @@ public class TFIFOPortSet extends TPortSet {
      * @since 1.0
      */
     @Override
-    public TPort getPortConnectedToANodeWithIPAddress(String adjacentNodeIP) {
+    public TPort getLocalPortConnectedToANodeWithIPAddress(String adjacentNodeIP) {
         for (int i = 0; i < this.numberOfPorts; i++) {
             if (!this.ports[i].isAvailable()) {
                 int targetNodeID = this.ports[i].getLink().getTargetNodeIDOfTrafficSentBy(this.parentNode);

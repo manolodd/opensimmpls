@@ -225,7 +225,7 @@ public abstract class TPortSet {
      * connected to this port set, returns NULL.
      * @since 1.0
      */
-    public abstract TPort getPortConnectedToANodeWithIPAddress(String adjacentNodeIP);
+    public abstract TPort getLocalPortConnectedToANodeWithIPAddress(String adjacentNodeIP);
 
     /**
      * This method, when implemented, will query a given port to obtain the IP

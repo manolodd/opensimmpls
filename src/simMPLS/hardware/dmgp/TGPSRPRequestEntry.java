@@ -149,7 +149,7 @@ public class TGPSRPRequestEntry implements Comparable {
      * return NULL.
      * @since 1.0
      */
-    public String getCrossedNodeIP() {
+    public String getCrossedNodeIPv4() {
         if (this.crossedNodes.size() > 0) {
             return ((String) this.crossedNodes.removeFirst());
         }

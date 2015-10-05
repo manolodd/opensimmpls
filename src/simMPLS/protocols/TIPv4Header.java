@@ -106,7 +106,7 @@ public class TIPv4Header {
      * @return the IP address of the receiver of this packet.
      * @since 1.0
      */
-    public String getTargetIPAddress() {
+    public String getTargetIPv4Address() {
         return this.targetIP;
     }
 

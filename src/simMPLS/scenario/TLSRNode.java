@@ -300,7 +300,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
             int mensaje = paquete.getGPSRPPayload().getGPSRPMessageType();
             int flujo = paquete.getGPSRPPayload().getFlowID();
             int idPaquete = paquete.getGPSRPPayload().getPacketID();
-            String IPDestinoFinal = paquete.getIPv4Header().getTargetIPAddress();
+            String IPDestinoFinal = paquete.getIPv4Header().getTargetIPv4Address();
             TFIFOPort pSalida = null;
             if (IPDestinoFinal.equals(this.getIPAddress())) {
                 // Un LSR no entiende peticiones GPSRP, por tanto no pueder
@@ -308,7 +308,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                 this.discardPacket(paquete);
             } else {
                 String IPSalida = this.topology.obtenerIPSalto(this.getIPAddress(), IPDestinoFinal);
-                pSalida = (TFIFOPort) this.ports.getPortConnectedToANodeWithIPAddress(IPSalida);
+                pSalida = (TFIFOPort) this.ports.getLocalPortConnectedToANodeWithIPAddress(IPSalida);
                 if (pSalida != null) {
                     pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     try {
@@ -359,7 +359,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
             conEtiqueta1 = true;
         }
         int valorLABEL = paquete.getLabelStack().getTop().getLabel();
-        String IPDestinoFinal = paquete.getIPv4Header().getTargetIPAddress();
+        String IPDestinoFinal = paquete.getIPv4Header().getTargetIPv4Address();
         emc = matrizConmutacion.getEntry(pEntrada, valorLABEL, TSwitchingMatrixEntry.LABEL_ENTRY);
         if (emc == null) {
             if (conEtiqueta1) {
@@ -685,7 +685,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                         } else {
                             nuevoTLDP.setLocalTarget(TTLDPPDU.DIRECTION_BACKWARD);
                         }
-                        TPort pSalida = ports.getPortConnectedToANodeWithIPAddress(IPDestino);
+                        TPort pSalida = ports.getLocalPortConnectedToANodeWithIPAddress(IPDestino);
                         pSalida.putPacketOnLink(nuevoTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
                             this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP, nuevoTLDP.getSize()));
@@ -727,7 +727,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                         } else {
                             nuevoTLDP.setLocalTarget(TTLDPPDU.DIRECTION_BACKWARD);
                         }
-                        TPort pSalida = ports.getPortConnectedToANodeWithIPAddress(IPDestino);
+                        TPort pSalida = ports.getLocalPortConnectedToANodeWithIPAddress(IPDestino);
                         pSalida.putPacketOnLink(nuevoTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
                             this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP, nuevoTLDP.getSize()));
@@ -814,7 +814,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                     paqueteTLDP.setLSPType(false);
                 }
                 paqueteTLDP.setLocalTarget(TTLDPPDU.DIRECTION_FORWARD);
-                TPort pSalida = ports.getPortConnectedToANodeWithIPAddress(IPSalto);
+                TPort pSalida = ports.getLocalPortConnectedToANodeWithIPAddress(IPSalto);
                 if (pSalida != null) {
                     pSalida.putPacketOnLink(paqueteTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     try {
@@ -996,7 +996,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         String IPDestinoFinal = paqueteSolicitud.getTLDPPayload().getTargetIPAddress();
         String IPSalto = topology.obtenerIPSalto(this.getIPAddress(), IPDestinoFinal);
         if (IPSalto != null) {
-            TPort puertoSalida = ports.getPortConnectedToANodeWithIPAddress(IPSalto);
+            TPort puertoSalida = ports.getLocalPortConnectedToANodeWithIPAddress(IPSalto);
             emc = new TSwitchingMatrixEntry();
             emc.setUpstreamTLDPSessionID(IdTLDPAntecesor);
             emc.setTailEndIPAddress(IPDestinoFinal);

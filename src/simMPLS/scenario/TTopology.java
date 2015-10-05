@@ -818,7 +818,7 @@ public class TTopology {
      * @return La direcci�n IP del nodo adyacente al origen al que hay que dirigirse. NULL, si no hay camino entre el origen y el destino.
      * @since 1.0
      */    
-    public synchronized String obtenerIPSaltoRABAN(String IPorigen, String IPdestino) {
+    public synchronized String getNextHopRABANIPv4Address(String IPorigen, String IPdestino) {
         int origen = this.obtenerNodo(IPorigen).getID();
         int destino = this.obtenerNodo(IPdestino).getID();
         int siguienteSalto = obtenerSaltoRABAN(origen, destino);

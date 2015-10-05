@@ -269,7 +269,7 @@ public class TGPSRPRequestsMatrix {
             if (gpsrpRequestEntry.getFlowID() == flowID) {
                 if (gpsrpRequestEntry.getPacketID() == packetID) {
                     this.monitor.unLock();
-                    return gpsrpRequestEntry.getCrossedNodeIP();
+                    return gpsrpRequestEntry.getCrossedNodeIPv4();
                 }
             }
         }
