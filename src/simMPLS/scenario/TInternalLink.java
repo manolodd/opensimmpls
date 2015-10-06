@@ -138,7 +138,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * Este m�todo a�ade un LSP sobre este enlace.
      * @since 1.0
      */    
-    public void ponerLSP() {
+    public void setLSPUp() {
         numeroDeLSPs++;
         try {
             this.generateSimulationEvent(new TSELSPEstablished(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
@@ -186,7 +186,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * Este m�todo quita un LSP de respaldo establecido sobre este enlace.
      * @since 1.0
      */    
-    public void quitarLSPDeBackup() {
+    public void setBackupLSPDown() {
         if (numeroDeLSPsDeBackup > 0)
             numeroDeLSPsDeBackup--;
     }

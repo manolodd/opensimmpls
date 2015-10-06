@@ -731,8 +731,8 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                         pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         if (emc.aBackupLSPHasBeenRequested()) {
                             TInternalLink ei = (TInternalLink) pSalida.getLink();
-                            ei.ponerLSP();
-                            ei.quitarLSPDeBackup();
+                            ei.setLSPUp();
+                            ei.setBackupLSPDown();
                             emc.setEntryIsForBackupLSP(false);
                         }
                         try {
@@ -874,8 +874,8 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                         enviarEliminacionOkTLDP(emc, pEntrada);
                         if (emc.getBackupOutgoingPortID() >= 0) {
                             TInternalLink ei = (TInternalLink) ports.getPort(emc.getBackupOutgoingPortID()).getLink();
-                            ei.ponerLSP();
-                            ei.quitarLSPDeBackup();
+                            ei.setLSPUp();
+                            ei.setBackupLSPDown();
                         }
                         emc.switchToBackupLSP();
                     } else {
@@ -941,7 +941,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                         if (emc.aBackupLSPHasBeenRequested()) {
                             et.ponerLSPDeBackup();
                         } else {
-                            et.ponerLSP();
+                            et.setLSPUp();
                         }
                     }
                     enviarSolicitudOkTLDP(emc);
@@ -1069,7 +1069,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                         if (pSalida != null) {
                             TInternalLink ei = (TInternalLink) pSalida.getLink();
                             if (emc.aBackupLSPHasBeenRequested()) {
-                                ei.quitarLSPDeBackup();
+                                ei.setBackupLSPDown();
                             } else {
                                 ei.quitarLSP();
                             }
@@ -1081,7 +1081,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                             TPort pSalida = ports.getPort(emc.getBackupOutgoingPortID());
                             if (pSalida != null) {
                                 TInternalLink ei = (TInternalLink) pSalida.getLink();
-                                ei.quitarLSPDeBackup();
+                                ei.setBackupLSPDown();
                             }
                             emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_WITHDRAWN);
                         }
@@ -1090,7 +1090,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     if (pSalida != null) {
                         TInternalLink ei = (TInternalLink) pSalida.getLink();
                         if (emc.aBackupLSPHasBeenRequested()) {
-                            ei.quitarLSPDeBackup();
+                            ei.setBackupLSPDown();
                         } else {
                             ei.quitarLSP();
                         }
@@ -1115,7 +1115,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     TPort pSalida = ports.getPort(pEntrada);
                     TInternalLink ei = (TInternalLink) pSalida.getLink();
                     if (emc.aBackupLSPHasBeenRequested()) {
-                        ei.quitarLSPDeBackup();
+                        ei.setBackupLSPDown();
                     } else {
                         ei.quitarLSP();
                     }
@@ -1140,7 +1140,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 } else if (etiquetaActualBackup == TSwitchingMatrixEntry.REMOVING_LABEL) {
                     TPort pSalida = ports.getPort(pEntrada);
                     TInternalLink ei = (TInternalLink) pSalida.getLink();
-                    ei.quitarLSPDeBackup();
+                    ei.setBackupLSPDown();
                     emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.LABEL_WITHDRAWN);
                     if (emc.getOutgoingLabel() == TSwitchingMatrixEntry.LABEL_WITHDRAWN) {
                         matrizConmutacion.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());

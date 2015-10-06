@@ -721,7 +721,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                     if (emc.aBackupLSPHasBeenRequested()) {
                         et.ponerLSPDeBackup();
                     } else {
-                        et.ponerLSP();
+                        et.setLSPUp();
                     }
                 }
                 enviarSolicitudOkTLDP(emc);
@@ -803,7 +803,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                     if (et.getLinkType() == TLink.INTERNAL) {
                         TInternalLink ei = (TInternalLink) et;
                         if (emc.aBackupLSPHasBeenRequested()) {
-                            ei.quitarLSPDeBackup();
+                            ei.setBackupLSPDown();
                         } else {
                             ei.quitarLSP();
                         }

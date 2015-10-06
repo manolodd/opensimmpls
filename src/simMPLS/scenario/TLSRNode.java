@@ -436,8 +436,8 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                         pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         if (emc.aBackupLSPHasBeenRequested()) {
                             TInternalLink ei = (TInternalLink) pSalida.getLink();
-                            ei.ponerLSP();
-                            ei.quitarLSPDeBackup();
+                            ei.setLSPUp();
+                            ei.setBackupLSPDown();
                             emc.setEntryIsForBackupLSP(false);
                         }
                         try {
@@ -565,7 +565,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                     if (emc.aBackupLSPHasBeenRequested()) {
                         et.ponerLSPDeBackup();
                     } else {
-                        et.ponerLSP();
+                        et.setLSPUp();
                     }
                 }
                 enviarSolicitudOkTLDP(emc);
@@ -644,7 +644,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                 TPort pSalida = ports.getPort(pEntrada);
                 TInternalLink ei = (TInternalLink) pSalida.getLink();
                 if (emc.aBackupLSPHasBeenRequested()) {
-                    ei.quitarLSPDeBackup();
+                    ei.setBackupLSPDown();
                 } else {
                     ei.quitarLSP();
                 }
