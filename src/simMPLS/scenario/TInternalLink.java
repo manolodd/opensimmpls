@@ -151,7 +151,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * Este m�todo quita un LSP establecido sobre este enlace.
      * @since 1.0
      */    
-    public void quitarLSP() {
+    public void removeLSP() {
         if (numeroDeLSPs > 0) {
             numeroDeLSPs--;
             try {
@@ -178,7 +178,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * Este m�todo a�ade un LSP de respaldo sobre este enlace.
      * @since 1.0
      */    
-    public void ponerLSPDeBackup() {
+    public void setBackupLSP() {
         numeroDeLSPsDeBackup++;
     }
 

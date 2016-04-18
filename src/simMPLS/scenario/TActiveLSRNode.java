@@ -939,7 +939,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     TInternalLink et = (TInternalLink) ports.getPort(pEntrada).getLink();
                     if (et != null) {
                         if (emc.aBackupLSPHasBeenRequested()) {
-                            et.ponerLSPDeBackup();
+                            et.setBackupLSP();
                         } else {
                             et.setLSPUp();
                         }
@@ -967,7 +967,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     }
                     TInternalLink et = (TInternalLink) ports.getPort(pEntrada).getLink();
                     if (et != null) {
-                        et.ponerLSPDeBackup();
+                        et.setBackupLSP();
                     }
                 } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
                     discardPacket(paquete);
@@ -1071,7 +1071,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                             if (emc.aBackupLSPHasBeenRequested()) {
                                 ei.setBackupLSPDown();
                             } else {
-                                ei.quitarLSP();
+                                ei.removeLSP();
                             }
                         }
                         emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_WITHDRAWN);
@@ -1092,7 +1092,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                         if (emc.aBackupLSPHasBeenRequested()) {
                             ei.setBackupLSPDown();
                         } else {
-                            ei.quitarLSP();
+                            ei.removeLSP();
                         }
                     }
                     matrizConmutacion.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
@@ -1117,7 +1117,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     if (emc.aBackupLSPHasBeenRequested()) {
                         ei.setBackupLSPDown();
                     } else {
-                        ei.quitarLSP();
+                        ei.removeLSP();
                     }
                     if (emc.getBackupOutgoingLabel() == TSwitchingMatrixEntry.LABEL_WITHDRAWN) {
                         matrizConmutacion.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
@@ -1339,7 +1339,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         String IPLocal = this.getIPAddress();
         String IPDestinoFinal = emc.getTailEndIPAddress();
         String IPSaltoPrincipal = ports.getIPOfNodeLinkedTo(emc.getOutgoingPortID());
-        String IPSalto = topology.obtenerIPSaltoRABAN(IPLocal, IPDestinoFinal, IPSaltoPrincipal);
+        String IPSalto = topology.getNextHopRABANIPv4Address(IPLocal, IPDestinoFinal, IPSaltoPrincipal);
         if (IPSalto != null) {
             if (emc.getBackupOutgoingPortID() == TSwitchingMatrixEntry.UNDEFINED) {
                 if (emc.getBackupOutgoingLabel() == TSwitchingMatrixEntry.UNDEFINED) {

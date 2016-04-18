@@ -563,7 +563,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                 TInternalLink et = (TInternalLink) ports.getPort(pEntrada).getLink();
                 if (et != null) {
                     if (emc.aBackupLSPHasBeenRequested()) {
-                        et.ponerLSPDeBackup();
+                        et.setBackupLSP();
                     } else {
                         et.setLSPUp();
                     }
@@ -646,7 +646,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                 if (emc.aBackupLSPHasBeenRequested()) {
                     ei.setBackupLSPDown();
                 } else {
-                    ei.quitarLSP();
+                    ei.removeLSP();
                 }
                 matrizConmutacion.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
             } else if (etiquetaActual > 15) {

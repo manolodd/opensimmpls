@@ -719,7 +719,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                 TInternalLink et = (TInternalLink) ports.getPort(emc.getOutgoingPortID()).getLink();
                 if (et != null) {
                     if (emc.aBackupLSPHasBeenRequested()) {
-                        et.ponerLSPDeBackup();
+                        et.setBackupLSP();
                     } else {
                         et.setLSPUp();
                     }
@@ -805,7 +805,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                         if (emc.aBackupLSPHasBeenRequested()) {
                             ei.setBackupLSPDown();
                         } else {
-                            ei.quitarLSP();
+                            ei.removeLSP();
                         }
                     }
                 }

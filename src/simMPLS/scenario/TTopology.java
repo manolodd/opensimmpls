@@ -839,7 +839,7 @@ public class TTopology {
      * @param IPorigen Direcci�n IP del nodo desde el que se calcula el salto.
      * @param IPdestino Direcci�n IP del nodo al que se quiere llegar.
      */    
-    public synchronized String obtenerIPSaltoRABAN(String IPorigen, String IPdestino, String IPNodoAEvitar) {
+    public synchronized String getNextHopRABANIPv4Address(String IPorigen, String IPdestino, String IPNodoAEvitar) {
         int origen = this.obtenerNodo(IPorigen).getID();
         int destino = this.obtenerNodo(IPdestino).getID();
         int nodoAEvitar = this.obtenerNodo(IPNodoAEvitar).getID();
