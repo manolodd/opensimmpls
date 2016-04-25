@@ -304,7 +304,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         }
         matrizConmutacion.getMonitor().unLock();
         
-        peticionesGPSRP.decreaseTimeout(this.obtenerDuracionTic());
+        peticionesGPSRP.decreaseTimeout(this.getTickDuration());
         peticionesGPSRP.updateEntries();
         int numeroPuertos = ports.getNumberOfPorts();
         int i = 0;
@@ -388,7 +388,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             int mensaje = paquete.getGPSRPPayload().getGPSRPMessageType();
             int flujo = paquete.getGPSRPPayload().getFlowID();
             int idPaquete = paquete.getGPSRPPayload().getPacketID();
-            String IPDestinoFinal = paquete.getIPv4Header().getTargetIPv4Address();
+            String IPDestinoFinal = paquete.getIPv4Header().getTailEndIPAddress();
             TActivePort pSalida = null;
             if (IPDestinoFinal.equals(this.getIPAddress())) {
                 if (mensaje == TGPSRPPayload.RETRANSMISSION_REQUEST) {
@@ -645,7 +645,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             }
         }
         int valorLABEL = paquete.getLabelStack().getTop().getLabel();
-        String IPDestinoFinal = paquete.getIPv4Header().getTargetIPv4Address();
+        String IPDestinoFinal = paquete.getIPv4Header().getTailEndIPAddress();
         emc = matrizConmutacion.getEntry(pEntrada, valorLABEL, TSwitchingMatrixEntry.LABEL_ENTRY);
         if (emc == null) {
             if (conEtiqueta1) {
@@ -1506,7 +1506,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         while (it.hasNext()) {
             emc = (TSwitchingMatrixEntry) it.next();
             if (emc != null) {
-                emc.decreaseTimeOut(this.obtenerDuracionTic());
+                emc.decreaseTimeOut(this.getTickDuration());
                 if (emc.getOutgoingLabel() == TSwitchingMatrixEntry.LABEL_REQUESTED) {
                     if (emc.shouldRetryExpiredTLDPRequest()) {
                         emc.resetTimeOut();
@@ -1544,7 +1544,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         TSwitchingMatrixEntry emc = null;
         int IdTLDPAntecesor = paqueteSolicitud.getTLDPPayload().getTLDPIdentifier();
         TPort puertoEntrada = ports.getPort(pEntrada);
-        String IPDestinoFinal = paqueteSolicitud.getTLDPPayload().getTargetIPAddress();
+        String IPDestinoFinal = paqueteSolicitud.getTLDPPayload().getTailEndIPAddress();
         String IPSalto = topology.getNextHopRABANIPv4Address(this.getIPAddress(), IPDestinoFinal);
         if (IPSalto != null) {
             TPort puertoSalida = ports.getLocalPortConnectedToANodeWithIPAddress(IPSalto);

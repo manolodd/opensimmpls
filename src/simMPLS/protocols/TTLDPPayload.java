@@ -101,7 +101,7 @@ public class TTLDPPayload {
      * @return The IP address of the node that should receive this TLDP packet.
      * @since 1.0
      */
-    public String getTargetIPAddress() {
+    public String getTailEndIPAddress() {
         return this.targetIPAddress;
     }
 

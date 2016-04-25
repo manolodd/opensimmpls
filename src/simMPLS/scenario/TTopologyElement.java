@@ -75,7 +75,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @return La duraci�n del tic, en nanosegundos.
      * @since 1.0
      */    
-    public int obtenerDuracionTic() {
+    public int getTickDuration() {
         return this.duracionTic;
     }
     

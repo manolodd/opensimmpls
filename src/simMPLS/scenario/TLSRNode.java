@@ -300,7 +300,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
             int mensaje = paquete.getGPSRPPayload().getGPSRPMessageType();
             int flujo = paquete.getGPSRPPayload().getFlowID();
             int idPaquete = paquete.getGPSRPPayload().getPacketID();
-            String IPDestinoFinal = paquete.getIPv4Header().getTargetIPv4Address();
+            String IPDestinoFinal = paquete.getIPv4Header().getTailEndIPAddress();
             TFIFOPort pSalida = null;
             if (IPDestinoFinal.equals(this.getIPAddress())) {
                 // Un LSR no entiende peticiones GPSRP, por tanto no pueder
@@ -359,7 +359,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
             conEtiqueta1 = true;
         }
         int valorLABEL = paquete.getLabelStack().getTop().getLabel();
-        String IPDestinoFinal = paquete.getIPv4Header().getTargetIPv4Address();
+        String IPDestinoFinal = paquete.getIPv4Header().getTailEndIPAddress();
         emc = matrizConmutacion.getEntry(pEntrada, valorLABEL, TSwitchingMatrixEntry.LABEL_ENTRY);
         if (emc == null) {
             if (conEtiqueta1) {
@@ -955,7 +955,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         while (it.hasNext()) {
             emc = (TSwitchingMatrixEntry) it.next();
             if (emc != null) {
-                emc.decreaseTimeOut(this.obtenerDuracionTic());
+                emc.decreaseTimeOut(this.getTickDuration());
                 if (emc.getOutgoingLabel() == TSwitchingMatrixEntry.LABEL_REQUESTED) {
                     if (emc.shouldRetryExpiredTLDPRequest()) {
                         emc.resetTimeOut();
@@ -993,7 +993,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         TSwitchingMatrixEntry emc = null;
         int IdTLDPAntecesor = paqueteSolicitud.getTLDPPayload().getTLDPIdentifier();
         TPort puertoEntrada = ports.getPort(pEntrada);
-        String IPDestinoFinal = paqueteSolicitud.getTLDPPayload().getTargetIPAddress();
+        String IPDestinoFinal = paqueteSolicitud.getTLDPPayload().getTailEndIPAddress();
         String IPSalto = topology.obtenerIPSalto(this.getIPAddress(), IPDestinoFinal);
         if (IPSalto != null) {
             TPort puertoSalida = ports.getLocalPortConnectedToANodeWithIPAddress(IPSalto);
