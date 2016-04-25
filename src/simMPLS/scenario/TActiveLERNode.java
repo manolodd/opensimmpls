@@ -1770,7 +1770,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                             tldpPacket.setLocalTarget(TTLDPPDU.DIRECTION_BACKWARD);
                         }
                     }
-                    TPort outgoingPortID = ports.getPort(portID);
+                    TPort outgoingPortID = this.ports.getPort(portID);
                     if (outgoingPortID != null) {
                         outgoingPortID.putPacketOnLink(tldpPacket, outgoingPortID.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
@@ -1790,38 +1790,45 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * Este m�todo reenv�a todas las peticiones pendientes de contestaci�n de
      * una entrada de la matriz de conmutaci�n.
      *
-     * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n especificada.
+     * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n
+     * especificada.
      * @since 1.0
      */
-    public void solicitarTLDPTrasTimeout(TSwitchingMatrixEntry switchingMatrixEntry) {
+    public void requestTLDPAfterTimeout(TSwitchingMatrixEntry switchingMatrixEntry) {
         if (switchingMatrixEntry != null) {
-            String IPLocal = this.getIPAddress();
-            String IPDestinoFinal = switchingMatrixEntry.getTailEndIPAddress();
-            String IPSalto = ports.getIPOfNodeLinkedTo(switchingMatrixEntry.getOutgoingPortID());
-            if (IPSalto != null) {
-                TTLDPPDU paqueteTLDP = null;
+            String localIPAddress = this.getIPAddress();
+            String tailEndIPAddress = switchingMatrixEntry.getTailEndIPAddress();
+            String nextHopIPAddress = this.ports.getIPOfNodeLinkedTo(switchingMatrixEntry.getOutgoingPortID());
+            if (nextHopIPAddress != null) {
+                TTLDPPDU tldpPacket = null;
                 try {
-                    paqueteTLDP = new TTLDPPDU(gIdent.getNextID(), IPLocal, IPSalto);
+                    tldpPacket = new TTLDPPDU(this.gIdent.getNextID(), localIPAddress, nextHopIPAddress);
                 } catch (Exception e) {
+                    // FIX: this is ugly. Avoid.
                     e.printStackTrace();
                 }
-                if (paqueteTLDP != null) {
-                    paqueteTLDP.getTLDPPayload().setTargetIPAddress(IPDestinoFinal);
-                    paqueteTLDP.getTLDPPayload().setTLDPMessageType(TTLDPPayload.LABEL_REQUEST);
-                    paqueteTLDP.getTLDPPayload().setTLDPIdentifier(switchingMatrixEntry.getLocalTLDPSessionID());
+                if (tldpPacket != null) {
+                    tldpPacket.getTLDPPayload().setTargetIPAddress(tailEndIPAddress);
+                    tldpPacket.getTLDPPayload().setTLDPMessageType(TTLDPPayload.LABEL_REQUEST);
+                    tldpPacket.getTLDPPayload().setTLDPIdentifier(switchingMatrixEntry.getLocalTLDPSessionID());
                     if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
-                        paqueteTLDP.setLSPType(true);
+                        // FIX: Avoid using harcoded values. Use class constants
+                        // instead
+                        tldpPacket.setLSPType(true);
                     } else {
-                        paqueteTLDP.setLSPType(false);
+                        // FIX: Avoid using harcoded values. Use class constants
+                        // instead
+                        tldpPacket.setLSPType(false);
                     }
-                    paqueteTLDP.setLocalTarget(TTLDPPDU.DIRECTION_FORWARD);
-                    TPort pSalida = ports.getPort(switchingMatrixEntry.getOutgoingPortID());
-                    if (pSalida != null) {
-                        pSalida.putPacketOnLink(paqueteTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
+                    tldpPacket.setLocalTarget(TTLDPPDU.DIRECTION_FORWARD);
+                    TPort outgoingPortID = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID());
+                    if (outgoingPortID != null) {
+                        outgoingPortID.putPacketOnLink(tldpPacket, outgoingPortID.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
-                            this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP, paqueteTLDP.getSize()));
+                            this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP, tldpPacket.getSize()));
                             this.generateSimulationEvent(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP));
                         } catch (Exception e) {
+                            // FIX: this is ugly. Avoid.
                             e.printStackTrace();
                         }
                     }
@@ -1873,7 +1880,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     if (emc.shouldRetryExpiredTLDPRequest()) {
                         emc.resetTimeOut();
                         emc.decreaseAttempts();
-                        solicitarTLDPTrasTimeout(emc);
+                        requestTLDPAfterTimeout(emc);
                     }
                 } else if (emc.getOutgoingLabel() == TSwitchingMatrixEntry.REMOVING_LABEL) {
                     if (emc.shouldRetryExpiredTLDPRequest()) {
