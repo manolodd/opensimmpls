@@ -244,7 +244,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @since 1.0
      */
     public void receiveTimerEvent(TTimerEvent evt) {
-        this.setStepDouration(evt.getStepDuration());
+        this.setStepDuration(evt.getStepDuration());
         this.setTimeInstant(evt.getUpperLimit());
         this.availableNs += evt.getStepDuration();
         this.startOperation();

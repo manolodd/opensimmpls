@@ -76,7 +76,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * @since 1.0
      */    
     public void receiveTimerEvent(TTimerEvent evt) {
-        this.setStepDouration(evt.getStepDuration());
+        this.setStepDuration(evt.getStepDuration());
         this.setTimeInstant(evt.getUpperLimit());
         this.startOperation();
     }

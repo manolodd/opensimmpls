@@ -61,7 +61,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * @since 1.0
      */    
     public void receiveTimerEvent(TTimerEvent evt) {
-        this.setStepDouration(evt.getStepDuration());
+        this.setStepDuration(evt.getStepDuration());
         this.setTimeInstant(evt.getUpperLimit());
         paso = evt.getStepDuration();
         this.startOperation();

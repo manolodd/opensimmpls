@@ -84,7 +84,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @param dc Duraci�n del tic en nanosegundos.
      * @since 1.0
      */    
-    public void setStepDouration(int dc) {
+    public void setStepDuration(int dc) {
         this.duracionTic = dc;
     }
     

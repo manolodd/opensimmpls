@@ -203,7 +203,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @since 1.0
      */
     public void receiveTimerEvent(TTimerEvent evt) {
-        this.setStepDouration(evt.getStepDuration());
+        this.setStepDuration(evt.getStepDuration());
         this.setTimeInstant(evt.getUpperLimit());
         if (this.getPorts().isAnyPacketToSwitch()) {
             this.availableNs += evt.getStepDuration();

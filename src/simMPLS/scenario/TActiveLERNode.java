@@ -138,11 +138,12 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo calcula el n�mero de bits que puede conmutar el nodo con el
-     * n�mero de nanosegundos de que dispone actualmente.
+     * This method gets the number of bits that this LERA can route with the
+     * available number of nanoseconds it has. The more switching power the LERA
+     * has, the more bits it can switch with the same number of nanoseconds.
      *
-     * @return El n�mero de bits m�ximo que puede conmutar el nodo con los
-     * nanosegundos de que dispone actualmente.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the current size of DMGP in KBytes.
      * @since 1.0
      */
     public int getMaxSwitchableBitsWithCurrentNs() {
@@ -152,11 +153,12 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo calcula el n�mero de octetos completos que puede transmitir
-     * el nodo con el n�mero de nanosegundos de que dispone.
+     * This method gets the number of octects that this LERA can route with the
+     * available number of nanoseconds it has. The more switching power the LERA
+     * has, the more octects it can switch with the same number of nanoseconds.
      *
-     * @return El n�mero de octetos completos que puede transmitir el nodo en un
-     * momento dado.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the current size of DMGP in KBytes.
      * @since 1.0
      */
     public int getMaxSwitchableOctectsWithCurrentNs() {
@@ -166,9 +168,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo obtiene la potencia em Mbps con que est� configurado el nodo.
+     * This method gets the switching power of this LERA, in Mbps.
      *
-     * @return La potencia de conmutaci�n del nodo en Mbps.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the current size of DMGP in KBytes.
      * @since 1.0
      */
     public int getSwitchingPowerInMbps() {
@@ -176,10 +179,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo permite establecer la potencia de conmutaci�n del nodo en
-     * Mbps.
+     * This method sets the switching power of this LERA, in Mbps.
      *
-     * @param switchingPowerInMbps Potencia deseada para el nodo en Mbps.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param switchingPowerInMbps the switching power of this LERA, in Mbps.
      * @since 1.0
      */
     public void setSwitchingPowerInMbps(int switchingPowerInMbps) {
@@ -187,9 +190,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo obtiene el tama�o del buffer del nodo.
+     * This method gets the size of this LERA's buffer, in MBytes.
      *
-     * @return Tama�o del buffer del nodo en MB.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the size of this LERA's buffer, in MBytes.
      * @since 1.0
      */
     public int getBufferSizeInMBytes() {
@@ -197,9 +201,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo permite establecer el tama�o del buffer del nodo.
+     * This method sets the size of this LERA's buffer, in MBytes.
      *
-     * @param bufferSizeInMBytes Tama�o el buffer deseado para el nodo, en MB.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param bufferSizeInMBytes the size of this LERA's buffer, in MBytes.
      * @since 1.0
      */
     public void setBufferSizeInMBytes(int bufferSizeInMBytes) {
@@ -207,9 +212,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo reinicia los atributos de la clase como si acabasen de ser
-     * creados por el constructor.
+     * This method restart the attributes of the class as in the creation of the
+     * instance.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 1.0
      */
     @Override
@@ -226,9 +232,11 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo indica el tipo de nodo de que se trata la instancia actual.
+     * This method gets the type of this node. In this case, it will return the
+     * constant TNode.LERA.
      *
-     * @return LER. Indica que el nodo es de este tipo.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the constant TNode.LERA.
      * @since 1.0
      */
     @Override
@@ -247,7 +255,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      */
     @Override
     public void receiveTimerEvent(TTimerEvent timerEvent) {
-        this.setStepDouration(timerEvent.getStepDuration());
+        this.setStepDuration(timerEvent.getStepDuration());
         this.setTimeInstant(timerEvent.getUpperLimit());
         if (this.getPorts().isThereAnyPacketToRoute()) {
             this.availableNs += timerEvent.getStepDuration();
@@ -1907,8 +1915,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * Este m�todo crea una nueva entrada en la matriz de conmutaci�n con los
      * datos de un packet TLDP entrante.
      *
-     * @param tldpPacket Paquete TLDP entrante, de solicitud de
-     * etiqueta.
+     * @param tldpPacket Paquete TLDP entrante, de solicitud de etiqueta.
      * @param incomingPortID Puerto de entrada del packet TLDP.
      * @return La entrada de la matriz de conmutaci�n, ya creada, insertada e
      * inicializada.
@@ -2117,7 +2124,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         try {
             mplsPacket = new TMPLSPDU(gIdent.getNextID(), ipv4Packet.getIPv4Header().getOriginIPAddress(), ipv4Packet.getIPv4Header().getTailEndIPAddress(), ipv4Packet.getSize());
         } catch (EIDGeneratorOverflow e) {
-                // FIX: this is ugly. Avoid.
+            // FIX: this is ugly. Avoid.
             e.printStackTrace();
         }
         // FIX: At this point, mplsPacket could be null and the next line would
@@ -2140,6 +2147,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         try {
             this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), mplsPacket.getSubtype(), mplsPacket.getSize()));
         } catch (Exception e) {
+            // FIX: this is ugly. Avoid.
             e.printStackTrace();
         }
         return mplsPacket;
@@ -2161,8 +2169,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     public TIPv4PDU createIPv4Packet(TMPLSPDU MPLSPacket, TSwitchingMatrixEntry switchingMatrixEntry) {
         TIPv4PDU ipv4Packet = null;
         try {
-            ipv4Packet = new TIPv4PDU(gIdent.getNextID(), MPLSPacket.getIPv4Header().getOriginIPAddress(), MPLSPacket.getIPv4Header().getTailEndIPAddress(), MPLSPacket.getTCPPayload().getSize());
+            ipv4Packet = new TIPv4PDU(this.gIdent.getNextID(), MPLSPacket.getIPv4Header().getOriginIPAddress(), MPLSPacket.getIPv4Header().getTailEndIPAddress(), MPLSPacket.getTCPPayload().getSize());
         } catch (EIDGeneratorOverflow e) {
+            // FIX: this is ugly. Avoid.
             e.printStackTrace();
         }
         ipv4Packet.setHeader(MPLSPacket.getIPv4Header());
@@ -2176,6 +2185,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         try {
             this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), ipv4Packet.getSubtype(), ipv4Packet.getSize()));
         } catch (Exception e) {
+            // FIX: this is ugly. Avoid.
             e.printStackTrace();
         }
         MPLSPacket = null;
@@ -2187,17 +2197,17 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * dominio MPLS o es un packet externo al mismo.
      *
      * @param packet Paquete que ha llegado al nodo.
-     * @param entryPortID Puerto por el que ha llegado el packet al nodo.
+     * @param incomingPortID Puerto por el que ha llegado el packet al nodo.
      * @return true, si el packet es exterior al dominio MPLS. false en caso
      * contrario.
      * @since 1.0
      */
-    public boolean isAnExternalPacket(TAbstractPDU packet, int entryPortID) {
+    public boolean isAnExternalPacket(TAbstractPDU packet, int incomingPortID) {
         if (packet.getType() == TAbstractPDU.IPV4) {
             return true;
         }
-        TPort entryPort = ports.getPort(entryPortID);
-        return entryPort.getLink().getLinkType() == TLink.EXTERNAL;
+        TPort incomingPort = this.ports.getPort(incomingPortID);
+        return incomingPort.getLink().getLinkType() == TLink.EXTERNAL;
     }
 
     /**
@@ -2213,6 +2223,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             this.generateSimulationEvent(new TSEPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), packet.getSubtype()));
             this.stats.addStatsEntry(packet, TStats.DISCARD);
         } catch (Exception e) {
+            // FIX: this is ugly. Avoid.
             e.printStackTrace();
         }
         packet = null;
@@ -2232,8 +2243,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      */
     public int classifyPacket(TAbstractPDU packet) {
         String originIPAddress = packet.getIPv4Header().getOriginIPAddress();
-        String targetIPAddress = packet.getIPv4Header().getTailEndIPAddress();
-        String FECString = originIPAddress + targetIPAddress;
+        String tailEndIPAddress = packet.getIPv4Header().getTailEndIPAddress();
+        String FECString = originIPAddress + tailEndIPAddress;
         // FIX: hashCode() does not have a constistent behaviour between
         // different executions; should be changed and use a persistent 
         // mechanism.
@@ -2271,7 +2282,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      */
     @Override
     public long getRoutingWeight() {
-        // FIX: All harcoded values should be defined as class constants.
+        // FIX: All harcoded values should be defined as class constants. They 
+        // are weights of the GoS proposal, but anyway, tehy should be 
+        // configured as class constans.
         long congestionWeightComponent = (long) (this.ports.getCongestionLevel() * (0.7));
         long switchingMatrixWeightComponent = (long) ((10 * this.switchingMatrix.getNumberOfEntries()) * (0.3));
         long routingWeight = congestionWeightComponent + switchingMatrixWeightComponent;
