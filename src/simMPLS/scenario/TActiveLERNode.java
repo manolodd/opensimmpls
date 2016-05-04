@@ -268,9 +268,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Llama a las acciones que se tienen que ejecutar en el transcurso del tic
-     * de reloj que el LER estar� en funcionamiento.
+     * This method starts all tasks that has to be executed during a timer tick.
+     * The number of nanoseconds of this tick is the time this LERA will work.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
@@ -289,11 +290,11 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo comprueba que haya conectividad con sus nodos adyacentes, es
-     * decir, que no haya caido ning�n enlace. Si ha caido alg�n enlace,
-     * entonces genera la correspondiente se�alizaci�n para notificar este
-     * hecho.
+     * This method check wether the connectivity to the neighbors nodes exist.
+     * Let's say, this check whether a link of this node is down. If so, this
+     * method generates the corresponding event to notify the situation.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void checkConnectivityStatus() {
@@ -424,12 +425,13 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo lee del puerto que corresponda seg�n el turno Round Robin
-     * consecutivamente hasta que se termina el cr�dito. Si tiene posibilidad de
-     * conmutar y/o encaminar un packet, lo hace, llamando para ello a los
-     * m�todos correspondiente segun el packet. Si el packet est� mal formado o
-     * es desconocido, lo descarta.
+     * This method read read the port to which it is up following a Round Robin
+     * algorithm. It does that until it consumes all the available nanoseconds
+     * for the current tick/step. If it is able to switch or route a given
+     * incoming packet, it does it. If it is a martian packets, the paceket is
+     * discarded.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void routePackets() {
@@ -466,10 +468,11 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo conmuta un packet GPSRP.
+     * This method switchs an incoming GPDRP packet.
      *
-     * @param packet Paquete GPSRP que conmutar.
-     * @param incomingPortID Puerto por el que ha llegado el packet.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packet GPSRP packet to switch.
+     * @param incomingPortID Port of this node where the packet has arrived.
      * @since 2.0
      */
     public void handleGPSRPPacket(TGPSRPPDU packet, int incomingPortID) {
@@ -508,10 +511,11 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo atiende una solicitud GPSRP de retransmisi�n.
+     * This method handles a GPSRP request of retransmission.
      *
-     * @param packet Paquete GPSRP de petici�n de retransmisi�n.
-     * @param incomingPortID Puerto por el que ha llegado el packet.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packet GPSRP packet to switch.
+     * @param incomingPortID Port of this node where the packet has arrived.
      * @since 2.0
      */
     public void handleGPSRPRetransmissionRequest(TGPSRPPDU packet, int incomingPortID) {
@@ -536,13 +540,14 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo atiende un packet GPSRP de denegaci�n de retransmisi�n.
+     * This method handles a GPSRP denial of retransmission.
      *
-     * @param packet Paquete GPSRP.
-     * @param incomingPort Puerto por el que ha llegado el packet GPSRP.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packet GPSRP packet to switch.
+     * @param incomingPortID Port of this node where the packet has arrived.
      * @since 2.0
      */
-    public void handleGPSRPRetransmissionNotPossible(TGPSRPPDU packet, int incomingPort) {
+    public void handleGPSRPRetransmissionNotPossible(TGPSRPPDU packet, int incomingPortID) {
         int flowID = packet.getGPSRPPayload().getFlowID();
         int packetID = packet.getGPSRPPayload().getPacketID();
         TGPSRPRequestEntry gpsrpRequestEntry = this.gpsrpRequests.getEntry(flowID, packetID);
@@ -563,10 +568,11 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo atiende un packet GPSRP de aceptaci�n de retransmisi�n.
+     * This method handles a GPSRP acceptance of retransmission.
      *
-     * @param packet Paquete GPSRP de aceptaci�n de retransmisi�n.
-     * @param incomingPortID Puerto por el que ha llegado el packet.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packet GPSRP packet to switch.
+     * @param incomingPortID Port of this node where the packet has arrived.
      * @since 2.0
      */
     public void handleGPSRPRetransmissionOk(TGPSRPPDU packet, int incomingPortID) {
@@ -576,10 +582,13 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo solicita un retransmisi�n GPSRP.
+     * This method start the GPSRP protocol to request the retransmission of a
+     * lost packet part of wich has been recovered before discarding it.
      *
-     * @param packet Paquete MPLS para el cual se solicita la retransmisi�n.
-     * @param outgoingPortID Puerto por el cual debe salir la solicitud.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packet incomplete MPLS packet that want to be recovered locally.
+     * @param outgoingPortID Port of this node through wich the GPSRP
+     * retransmission request is going to be sent.
      * @since 2.0
      */
     @Override
@@ -615,15 +624,18 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo solicita un retransmisi�n GPSRP.
+     * This method start the GPSRP protocol to request the retransmission of a
+     * lost packet part of whose data has been recovered before discarding it.
      *
-     * @param flowID Identificador del flowID del cual se solicita
-     * retransmisi�n.
-     * @param packetID Identificaci�n del packet del flowID del que se desea
-     * retransmisi�n.
-     * @param targetIPv4Address IP del nodo al que se realizar� la solicitud.
-     * @param outgoingPortID Puerto de salida por el que se debe encaminar la
-     * solicitud.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param flowID flow ID for wich the retransmision is requested.
+     * @param outgoingPortID Port of this node through wich the GPSRP
+     * retransmission request is going to be sent.
+     * @param packetID packet, of the specified flow, for wich the
+     * retransmission is requested.
+     * @param targetIPv4Address IP address of the node to wich the
+     * retransmission request is sent. Hopefuly, the one that could retransmit
+     * the lost packet.
      * @since 2.0
      */
     public void requestGPSRP(int flowID, int packetID, String targetIPv4Address, int outgoingPortID) {
