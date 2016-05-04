@@ -24,7 +24,7 @@ import simMPLS.utils.TIDGenerator;
  * This class implements the MPLS label stack of a MPLS packet.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TMPLSLabelStack {
 
@@ -33,7 +33,7 @@ public class TMPLSLabelStack {
      * MPLS label stack.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public TMPLSLabelStack() {
         this.stack = new LinkedList();
@@ -45,7 +45,7 @@ public class TMPLSLabelStack {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The size of the lable stack in bytes (octects).
-     * @since 1.0
+     * @since 2.0
      */
     public int getSize() {
         return stack.size();
@@ -57,7 +57,7 @@ public class TMPLSLabelStack {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param mplsLabel The MPLS label to be inserted in the top of the label
      * stack. MPLS.
-     * @since 1.0
+     * @since 2.0
      */
     public void pushTop(TMPLSLabel mplsLabel) {
         try {
@@ -74,7 +74,7 @@ public class TMPLSLabelStack {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return MPLS label in top of MPLS label stack.
-     * @since 1.0
+     * @since 2.0
      */
     public TMPLSLabel getTop() {
         return (TMPLSLabel) this.stack.getLast();
@@ -84,7 +84,7 @@ public class TMPLSLabelStack {
      * This method removes the MPLS label from the top of the MPLS label stack.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public void popTop() {
         this.stack.removeLast();
@@ -97,7 +97,7 @@ public class TMPLSLabelStack {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param mplsLabel the MPLS label that will replace the one in top of the
      * MPLS label stack.
-     * @since 1.0
+     * @since 2.0
      */
     public void swapTop(TMPLSLabel mplsLabel) {
         this.popTop();
@@ -113,7 +113,7 @@ public class TMPLSLabelStack {
      * This method removes all MPLS labels from the label stack.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public void clear() {
         Iterator iterator = this.stack.iterator();

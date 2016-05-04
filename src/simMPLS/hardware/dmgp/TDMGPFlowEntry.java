@@ -25,7 +25,7 @@ import simMPLS.utils.TMonitor;
  * This class implements a flow entry for the DMGP memory.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TDMGPFlowEntry implements Comparable {
 
@@ -35,7 +35,7 @@ public class TDMGPFlowEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param incomingOrder Incoming order of the flow to the DMGP memory.
-     * @since 1.0
+     * @since 2.0
      */
     public TDMGPFlowEntry(int incomingOrder) {
         this.order = incomingOrder;
@@ -53,7 +53,7 @@ public class TDMGPFlowEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param flowID The flow identifier.
-     * @since 1.0
+     * @since 2.0
      */
     public void setFlowID(int flowID) {
         this.flowID = flowID;
@@ -64,7 +64,7 @@ public class TDMGPFlowEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The flow identifier.
-     * @since 1.0
+     * @since 2.0
      */
     public int getFlowID() {
         return this.flowID;
@@ -74,7 +74,7 @@ public class TDMGPFlowEntry implements Comparable {
      * This method establishes the percentage of DMGP assigned to this flow.
      *
      * @param assignedPercentage Percentage of DMGP assigned to this flow.
-     * @since 1.0
+     * @since 2.0
      */
     public void setAssignedPercentage(int assignedPercentage) {
         this.assignedPercentage = assignedPercentage;
@@ -85,7 +85,7 @@ public class TDMGPFlowEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Percentage of DMGP assigned to this flow.
-     * @since 1.0
+     * @since 2.0
      */
     public int getAssignedPercentage() {
         return this.assignedPercentage;
@@ -96,7 +96,7 @@ public class TDMGPFlowEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param assignedOctects Number of DMGP octects assigned to this flow.
-     * @since 1.0
+     * @since 2.0
      */
     public void setAssignedOctects(int assignedOctects) {
         this.assignedOctects = assignedOctects;
@@ -107,7 +107,7 @@ public class TDMGPFlowEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The number of DMGP octects assigned to this flow.
-     * @since 1.0
+     * @since 2.0
      */
     public int getAssignedOctects() {
         return this.assignedOctects;
@@ -119,7 +119,7 @@ public class TDMGPFlowEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param usedOctects Number of DMGP octects currently used by the flow.
-     * @since 1.0
+     * @since 2.0
      */
     public void setUsedOctects(int usedOctects) {
         this.usedOctects = usedOctects;
@@ -131,7 +131,7 @@ public class TDMGPFlowEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Number of DMGP octects currently used by the flow.
-     * @since 1.0
+     * @since 2.0
      */
     public int getUsedOctects() {
         return this.usedOctects;
@@ -142,7 +142,7 @@ public class TDMGPFlowEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The tree containing all the packets of this flow.
-     * @since 1.0
+     * @since 2.0
      */
     public TreeSet getEntries() {
         return this.entries;
@@ -153,7 +153,7 @@ public class TDMGPFlowEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The incoming order.
-     * @since 1.0
+     * @since 2.0
      */
     public int getOrder() {
         return this.order;
@@ -163,7 +163,7 @@ public class TDMGPFlowEntry implements Comparable {
      * This method returns the monitor of this flow.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @return The monitor of this flow.
      */
     public TMonitor getMonitor() {
@@ -190,7 +190,7 @@ public class TDMGPFlowEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packet Packet of this flow to be inserted in the DMGP.
-     * @since 1.0
+     * @since 2.0
      */
     public void addPacket(TMPLSPDU packet) {
         this.monitor.lock();
@@ -222,7 +222,7 @@ public class TDMGPFlowEntry implements Comparable {
      * @return -1, 0, 1, depending on whether the current instance is lesser,
      * equal or greater than the instance passed as an argument. In terms of
      * shorting.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int compareTo(Object o) {

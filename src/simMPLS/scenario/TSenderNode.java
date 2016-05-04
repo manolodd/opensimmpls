@@ -44,7 +44,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @param d Direcci�n IP del nodo.
      * @param il Generador de identigficadores para los eventos generados por el nodo.
      * @param t Topolog�a dentro de la cual se encuentra el nodo.
-     * @since 1.0
+     * @since 2.0
      */
     public TSenderNode(int identificador, String d, TLongIDGenerator il, TTopology t) {
         super(identificador, d, il, t);
@@ -69,7 +69,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * Este m�todo obtiene el tamanio de la carga �til los paquetes de datos constantes
      * que debe generar el nodo si est� configurado para tr�fico constante.
      * @return El tama�o de la carga �til de los paquetes constantes.
-     * @since 1.0
+     * @since 2.0
      */    
     public int obtenerTamDatosConstante() {
         return this.tamDatosConstante;
@@ -79,7 +79,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * Este m�todo permite establecer el tama�o de la carga util de los paquetes constantes que debe
      * generar el nodo.
      * @param tdc Tamanio de la carga util de los paquetes para tr�fico constante.
-     * @since 1.0
+     * @since 2.0
      */    
     public void ponerTamDatosConstante(int tdc) {
         this.tamDatosConstante = tdc;
@@ -88,7 +88,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     /**
      * Este m�todo permite establecer el nodo destino del tr�fico generado.
      * @param d IP del nodo destino del tr�fico.
-     * @since 1.0
+     * @since 2.0
      */
     public void ponerDestino(String d) {
         if (!d.equals("")) {
@@ -102,7 +102,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     /**
      * Este m�todo permite obtener la IP del nodo destino del tr�fico generado.
      * @return La IP del nodo destino del tr�fico generado.
-     * @since 1.0
+     * @since 2.0
      */
     public String obtenerDestino() {
         return IPDestino;
@@ -111,7 +111,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     /**
      * Este m�todo permite establecer la tasa de generaci�n de tr�fico del nodo.
      * @param t Tasa de generaci�n de tr�fico elegida para el nodo. En Mbps.
-     * @since 1.0
+     * @since 2.0
      */
     public void ponerTasaTrafico(int t) {
         tasaTransferencia = t;
@@ -120,7 +120,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     /**
      * Este m�todo permite obtener la tasa de generaci�n de tr�fico del nodo.
      * @return Tasa de generaci�n de tr�fico el nodo. En Mbps.
-     * @since 1.0
+     * @since 2.0
      */
     public int obtenerTasaTrafico() {
         return tasaTransferencia;
@@ -160,7 +160,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     /**
      * Este m�todo permite obtener el tipo de tr�fico que est� generando el nodo.
      * @return Tipo de tr�fico generado por el nodo. Una de las constantes de esta clase.
-     * @since 1.0
+     * @since 2.0
      */
     public int obtenerTipoTrafico() {
         return tipoTrafico;
@@ -170,7 +170,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * Este m�todo permite establecer si el tr�fico generado est� ya estiquetado en
      * MPLS o no. Lo que es lo mismo, si el tr�fico proviene de otro dominio MPLS o no.
      * @param mpls TRUE, si el nodo debe generar tr�fico MPLS. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public void ponerSobreMPLS(boolean mpls) {
         encapsularSobreMPLS = mpls;
@@ -180,7 +180,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * Este m�todo permite obtener si el tr�fico que est� generando el nodo es ya
      * tr�fico MPLS o no.
      * @return TRUE, si el tr�fico que est� generando el nodo es MPLS. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean obtenerSobreMPLS() {
         return encapsularSobreMPLS;
@@ -190,7 +190,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * Este m�todo permite establecer el nivel de garant�a de servicio con el que el
      * nodo debe marcar los paquetes generados.
      * @param gos Nivel de garant�a de servicio.
-     * @since 1.0
+     * @since 2.0
      */
     public void ponerNivelDeGoS(int gos) {
         nivelDeGoS = gos;
@@ -201,7 +201,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * est� marcando los paquetes generados.
      * @return El nivel de garant�a de servicio con el que el nodo est� marcando los paquetes
      * generados.
-     * @since 1.0
+     * @since 2.0
      */
     public int obtenerNivelDeGoS() {
         return nivelDeGoS;
@@ -211,7 +211,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * Este m�todo permite establecer si los paquetes generados ser�n marcdos para
      * requerir un LSP de respaldo en el dominio MPLS o no.
      * @param l TRUE si los paqutes requerir�n LSP de respaldo. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public void ponerLSPDeBackup(boolean l) {
         LSPDeBackup = l;
@@ -222,7 +222,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * requerir un LSP de respaldo o no.
      * @return TRUE, si los paquetes es�n siendo marcados para requerir un LSP de respaldo.
      * FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean obtenerLSPDeBackup() {
         return LSPDeBackup;
@@ -231,7 +231,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     /**
      * Este m�todo permite obtener el tipo de nodo del que se trata esta instancia.
      * @return TNode.SENDER, indicando que es un generador y emisor de tr�fico.
-     * @since 1.0
+     * @since 2.0
      */
     public int getNodeType() {
         return super.SENDER;
@@ -241,7 +241,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * Este m�todo permite recibir eventos de sincronizaci�n del reloj principal del
      * simulador, que es quien sincroniza todo.
      * @param evt Evento de sincronizaci�n enviado por el reloj principal.
-     * @since 1.0
+     * @since 2.0
      */
     public void receiveTimerEvent(TTimerEvent evt) {
         this.setStepDuration(evt.getStepDuration());
@@ -253,7 +253,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     /**
      * Este m�todo se llama cuando el hilo independiente del nodo se pone en
      * funcionamiento. Es el n�cleo del nodo.
-     * @since 1.0
+     * @since 2.0
      */
     public void run() {
         try {
@@ -281,7 +281,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * generado, independientemente de que se est� tratando con tr�fico constante o
      * variable.
      * @return El tama�o de la carga �til del siguiente paquete que generar� el emisor.
-     * @since 1.0
+     * @since 2.0
      */    
     public int obtenerTamanioDatosSiguientePaquete() {
         if (this.tipoTrafico == TSenderNode.CONSTANTE) {
@@ -296,7 +296,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
  valores de garant�a de Servicio con los que peuda estar marcado.
      * @param paquete Paquete de cuya header queremos conocer el tama�o.
      * @return El tama�o de la header.
-     * @since 1.0
+     * @since 2.0
      */    
     public int obtenerTamanioCabeceraSiguientePaquete(TAbstractPDU paquete) {
         TMPLSPDU paqueteMPLS = null;
@@ -315,7 +315,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * protocolo de los soportados, e incluso de que nivel de GoS tenga asignado.
      * @param paquete paquete cuyo tamanio se desea calcular.
      * @return El tama�o total del paquete especificado por par�metros.
-     * @since 1.0
+     * @since 2.0
      */    
     public int obtenerTamanioSiguientePaquete(TAbstractPDU paquete) {
         int tamanioDatos = 0;
@@ -330,7 +330,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     /**
      * Este m�todo crea paquetes de tr�fico acorde a la configuraci�n el emisor de
      * tr�fico y los env�a al receptor destino del tr�fico.
-     * @since 1.0
+     * @since 2.0
      */    
     public void generarTrafico() {
         TAbstractPDU paquete=null;
@@ -371,7 +371,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @param paquete Paquete que se desea contabilizar.
      * @param deEntrada TRUE indica que se trata de un paquete que ha entrado en el nodo. FALSE indica
      * que se trata de un paquete que ha salido del nodo.
-     * @since 1.0
+     * @since 2.0
      */    
     public void contabilizarPaquete(TAbstractPDU paquete, boolean deEntrada) {
         if (deEntrada) {
@@ -394,7 +394,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * transmitir un bit. Se basa para ello en la tasa de generaci�n de tr�fico del
      * nodo.
      * @return El n�mero de nanosegundos necesarios generar y transmitir un bit.
-     * @since 1.0
+     * @since 2.0
      */    
     public double obtenerNsPorBit() {
         long tasaEnBitsPorSegundo = (long) (this.tasaTransferencia*1048576L);
@@ -407,7 +407,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * enviar un determinado n�mero de octetos.
      * @param octetos N�mero de octetos que deseamos generar y transmitir.
      * @return N�mero de nanosegundos que necesitamos para los octetos especificados.
-     * @since 1.0
+     * @since 2.0
      */    
     public double obtenerNsUsadosTotalOctetos(int octetos) {
         double nsPorCadaBit = obtenerNsPorBit();
@@ -419,7 +419,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * Este m�todo calcula el n�mero de bits que puede generar y transmitir con el
      * n�mero de nanosegundos con los que cuenta.
      * @return N�mero de bits que puede generar y transmitir.
-     * @since 1.0
+     * @since 2.0
      */    
     public int obtenerLimiteBitsTransmitibles() {
         double nsPorCadaBit = obtenerNsPorBit();
@@ -432,7 +432,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * transmitir el emisor teniendo en cuenta el n�mero de nanosegundos con los que
      * cuenta.
      * @return El n�mero de octetos completos que se pueden generar y transmitir.
-     * @since 1.0
+     * @since 2.0
      */    
     public int obtenerOctetosTransmitibles() {
         double maximoBytes = ((double)obtenerLimiteBitsTransmitibles()/(double)8.0);
@@ -454,7 +454,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * Esta distribuci�n est� extra�da de las estad�sticas de la red Abilene, que son
      * p�blicas y se pueden observar en http://netflow.internet2.edu/weekly.
      * @return El tama�o que debe tener el siguiente paquete.
-     * @since 1.0
+     * @since 2.0
      */    
     public int generarTamanioSiguientePaquete() {
         int probabilidad = this.generadorDeAleatorios.nextInt(100);
@@ -481,7 +481,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * m�todos de la clase,pero ser� el correcto.
      * @param paquete Paquete al que se quiere a�adir datos.
      * @return Paquete con datos insertados del tama�o correcto seg�n el tipo de gr�fico.
-     * @since 1.0
+     * @since 2.0
      */    
     public TAbstractPDU ponerTamanio(TAbstractPDU paquete) {
         TMPLSPDU paqueteMPLS = null;
@@ -529,7 +529,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * Este m�todo devuelve un paquete vac�o (sin datos) del tipo correcto para el que
      * esta configurado el nodo emisor.
      * @return El paquete creado.
-     * @since 1.0
+     * @since 2.0
      */    
     public TAbstractPDU crearPaquete() {
         int valorGoS = this.obtenerCodificacionEXP();
@@ -585,7 +585,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * Este m�todo descarta un paquete de cualquier tipo. Adem�s anota los datos
      * relativos en ese descarte en las estad�sticas del nodo.
      * @param paquete Paquete que se quiere descartar.
-     * @since 1.0
+     * @since 2.0
      */    
     public void discardPacket(TAbstractPDU paquete) {
         try {
@@ -600,7 +600,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     /**
      * Este m�todo investiga si al nodo le quedan ports libres.
      * @return TRUE, si al nodo le quedan ports libres. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean hasAvailablePorts() {
         return this.ports.hasAvailablePorts();
@@ -609,7 +609,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     /**
      * Este m�todo permite acceder a los ports del nodo directamente.
      * @return El conjunto de ports del nodo.
-     * @since 1.0
+     * @since 2.0
      */
     public TPortSet getPorts() {
         return this.ports;
@@ -619,7 +619,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * Este m�todo devuelve el peso del nodo, que debe ser tenido en cuenta por el
      * algoritmo e encaminamiento para el c�lculo de rutas.
      * @return En el nodo emisor, siempre es cero.
-     * @since 1.0
+     * @since 2.0
      */
     public long getRoutingWeight() {
         return 0;
@@ -628,7 +628,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     /**
      * Este m�todo devuelve si el nodo est� bien configurado o no.
      * @return TRUE, si el nodo est� bien configurado. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean isWellConfigured() {
         return this.wellConfigured;
@@ -641,7 +641,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @param recfg TRUE si se est� reconfigurando el nodo emisor. FALSE si est� configurando por
      * primera vez.
      * @return CORRECTA, si el nodo est� bien configurado. Un codigo de error en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public int validateConfig(TTopology t, boolean recfg) {
         this.setWellConfigured(false);
@@ -680,7 +680,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * pero legible por el usuario.
      * @param e C�digo de error cuyo mensaje se desea obtener.
      * @return El mensaje equivalente al codigo de error, pero legible.
-     * @since 1.0
+     * @since 2.0
      */    
     public String getErrorMessage(int e) {
         switch (e) {
@@ -697,7 +697,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * volcar a disco.
      * @return TRUE, si se ha realizado la resializaci�n correctamente. FALSE en caso
      * contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public String marshall() {
         String cadena = "#Emisor#";
@@ -739,7 +739,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * construye, en base a ella, el emisor en memoria sobre la instancia actual.
      * @param elemento El nodo emisor serializado.
      * @return TRUE, si se consigue deserializar correctamente. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean unMarshall(String elemento) {
         String valores[] = elemento.split("#");
@@ -768,7 +768,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     /**
      * Este m�todo reinicia los atributos de la clase como si acabasen de ser creador
      * por el constructor.
-     * @since 1.0
+     * @since 2.0
      */    
     public void reset() {
         gIdent.reset();
@@ -782,7 +782,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     /**
      * Este m�todo permite acceder directamente a las estad�sticas del nodo.
      * @return Las estad�sticas del nodo.
-     * @since 1.0
+     * @since 2.0
      */    
     public TStats getStats() {
         return estadisticas;
@@ -792,7 +792,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * Este m�todo inicia el conjunto de ports del nodo, con el n�mero de ports
  especificado.
      * @param num N�mero de ports que tendr� el nodo. Como m�ximo est� configurado para 8.
-     * @since 1.0
+     * @since 2.0
      */    
     public synchronized void setPorts(int num) {
         ports = new TFIFOPortSet(num, this);
@@ -803,7 +803,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     * solicitar a un nodo activo la retransmisi�n de un paquete.
     * @param paquete Paquete cuya retransmisi�n se est� solicitando.
     * @param pSalida Puerto por el que se enviar� la solicitud.
-    * @since 1.0
+    * @since 2.0
     */    
     public void runGoSPDUStoreAndRetransmitProtocol(TMPLSPDU paquete, int pSalida) {
     }
@@ -825,24 +825,24 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     
     /**
      * Este atributo almacenar� las estad�sticas del nodo.
-     * @since 1.0
+     * @since 2.0
      */    
     public TSenderStats estadisticas;
     
     /**
      * Esta constante identifica que el tr�fico generado ser� constante.
-     * @since 1.0
+     * @since 2.0
      */
     public static final int CONSTANTE = 0;
     /**
      * Esta constante identifica que el tr�fico generado ser� variable.
-     * @since 1.0
+     * @since 2.0
      */
     public static final int VARIABLE = 1;
     
     /**
      * Esta constante indica que la configuraci�n del nodo es correcta.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int CORRECTA = 0;
     /**
@@ -852,18 +852,18 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     public static final int SIN_NOMBRE = 1;
     /**
      * Esta constante indica que el nombre del nodo ya existe.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int NOMBRE_YA_EXISTE = 2;
     /**
      * Esta constante indica que el nombre del nodo est� formado s�lo por espacios.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int SOLO_ESPACIOS = 3;
     /**
      * Esta constante indica que no ha seleccionado un destino para el tr�fico generado
      * por el nodo.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int SIN_DESTINO = 4;
     

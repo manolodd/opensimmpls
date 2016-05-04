@@ -37,13 +37,13 @@ import simMPLS.utils.TIDGenerator;
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
- * @since 1.0
+ * @since 2.0
  */
 public class JSimulador extends javax.swing.JFrame {
     
     /**
      * Este m�todo crea una nueva instancia de la clase, esto es un nuevo simulador.
-     * @since 1.0
+     * @since 2.0
      * @param di El dispensador de im�genes que se encargar� de precargar las im�genes necesarias
      * en el simulador, ahorrando tiempo y mejorando el rendimiento de la aplicaci�n.
      */
@@ -56,7 +56,7 @@ public class JSimulador extends javax.swing.JFrame {
     /**
      * Este m�todo inicia los componentes que no han sido suficientemente definidos por
      * el constructor.
-     * @since 1.0
+     * @since 2.0
      */    
     public void initComponents2() {
         GeneradorId = new TIDGenerator();
@@ -65,7 +65,7 @@ public class JSimulador extends javax.swing.JFrame {
     
     /** Este m�todo se llama desde el constructor de la clase y lo que hace es dar unos
      * valores iniciales a los atributos.
-     * @since 1.0
+     * @since 2.0
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -397,7 +397,7 @@ public class JSimulador extends javax.swing.JFrame {
 
     /**
      * @param evt
-     * @since 1.0
+     * @since 2.0
      */    
 private void clicEnEnviarComentario(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnEnviarComentario
     JVentanaComentario vc = new JVentanaComentario(dispensadorDeImagenes, this, true);
@@ -406,11 +406,11 @@ private void clicEnEnviarComentario(java.awt.event.ActionEvent evt) {//GEN-FIRST
 
 /**
  * @param evt
- * @since 1.0
+ * @since 2.0
  */
 /**
  * @param evt
- * @since 1.0
+ * @since 2.0
  */
 private void clicEnVistaMosaicoHorizontal(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnVistaMosaicoHorizontal
     javax.swing.JInternalFrame ventanas[] = Escritorio.getAllFrames();
@@ -438,7 +438,7 @@ private void clicEnVistaMosaicoHorizontal(java.awt.event.ActionEvent evt) {//GEN
 
 /**
  * @param evt
- * @since 1.0
+ * @since 2.0
  */
 private void clicEnVistaMosaicoVertical(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnVistaMosaicoVertical
     javax.swing.JInternalFrame ventanas[] = Escritorio.getAllFrames();
@@ -466,7 +466,7 @@ private void clicEnVistaMosaicoVertical(java.awt.event.ActionEvent evt) {//GEN-F
 
 /**
  * @param evt
- * @since 1.0
+ * @since 2.0
  */
 private void clicEnVistaCascada(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnVistaCascada
     int incremento=20;
@@ -503,7 +503,7 @@ private void clicEnVistaCascada(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
 
 /**
  * @param evt
- * @since 1.0
+ * @since 2.0
  */
 private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnVistaIconos
     javax.swing.JInternalFrame ventanas[] = Escritorio.getAllFrames();
@@ -522,7 +522,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
     
 /**
  * @param evt
- * @since 1.0
+ * @since 2.0
  */
     private void clicEnCerrar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnCerrar
         JVentanaHija vActiva= (JVentanaHija) Escritorio.getSelectedFrame();
@@ -553,7 +553,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
     
     /**
      * @param evt
-     * @since 1.0
+     * @since 2.0
      */    
     private void clicEnNuevo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnNuevo
         try {
@@ -580,7 +580,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
     
     /**
      * @param evt
-     * @since 1.0
+     * @since 2.0
      */    
     private void clicEnLicencia(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnLicencia
         JLicencia ventanaLicencia;
@@ -590,7 +590,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
     
     /**
      * @param evt
-     * @since 1.0
+     * @since 2.0
      */    
     private void clicEnSobre(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnSobre
         JSobre nuevoSobre;
@@ -600,7 +600,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
     
     /**
      * Este m�todo cierra todas las ventanas hijas que haya abiertas en ese momento.
-     * @since 1.0
+     * @since 2.0
      */    
     public void cerrarTodo() {
         while (numVentanasAbiertas > 0) {
@@ -636,14 +636,14 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
      */
     /** Sale del simulador cuando se elige desde el men� ARCHIVO
      * @param evt
-     * @since 1.0
+     * @since 2.0
      */
     private void clicEnSalir(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnSalir
         clicEnCualquierSalir();
     }//GEN-LAST:event_clicEnSalir
     
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private void clicEnCualquierSalir() {
         JVentanaBooleana vb = new JVentanaBooleana(this, true, dispensadorDeImagenes);
@@ -659,14 +659,14 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
 
     /** Sale del simulador
      * @param evt
-     * @since 1.0
+     * @since 2.0
      */
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
         clicEnCualquierSalir();
     }//GEN-LAST:event_exitForm
     
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private void desactivarOpciones() {
         cerrarMenuItem.setEnabled(false);
@@ -676,7 +676,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
     }
     
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private void activarOpciones() {
         cerrarMenuItem.setEnabled(true);
@@ -686,7 +686,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
     }
     
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private void desactivarOpcionesVista() {
         if (numVentanasAbiertas == 0) {
@@ -704,7 +704,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
     }
 
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private void activarOpcionesVista() {
         if (numVentanasAbiertas == 1) {
@@ -722,15 +722,15 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
     }
 
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private TImagesBroker dispensadorDeImagenes;
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private TIDGenerator GeneradorId;
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private int numVentanasAbiertas;
     // Variables declaration - do not modify//GEN-BEGIN:variables

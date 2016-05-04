@@ -41,7 +41,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @param identificador Identificador �nico del enlace.
      * @param il Generador de identificadores para los eventos emitidos por el enlace.
      * @param t Topolog�a a la que pertenece el enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public TLink(int identificador, TLongIDGenerator il, TTopology t) {
         super(TTopologyElement.LINK, il);
@@ -64,7 +64,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo averigua si el enlace est� caido o no.
      * @return TRUE, si el enlace est� caido. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean isBroken() {
         return enlaceCaido;
@@ -76,7 +76,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @param o Enlace de la topolog�a con el que se va a comparar la instancia actual.
      * @return -1, 0 � 1, dependiendo de si la instancia actual es menor, igual o mayor que la
      * pasada por par�metro, en t�rminos de orden.
-     * @since 1.0
+     * @since 2.0
      */
     public int compareTo(Object o) {
         TLink e = (TLink) o;
@@ -93,7 +93,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @param cienxcien Cien por cien.
      * @param xxcien Equis por ciento.
      * @return Valor calculado.
-     * @since 1.0
+     * @since 2.0
      */    
     public long obtenerPorcentajeTransito(long cienxcien, long xxcien) {
         return ((cienxcien-xxcien)*100)/cienxcien;
@@ -102,7 +102,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo calcula las coordenadas donde debe dibujarse un paquete que ha
      * recorrido ya un porcentaje concreto de su tr�nsito.
-     * @since 1.0
+     * @since 2.0
      * @param porcentaje Porcentaje recorrido ya por el paquete en el enlace.
      * @return Coordenadas donde dibujar el paquete.
      */    
@@ -124,7 +124,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo permite establecer la topologia a la que pertenece el enlace.
      * @param t Topolog�a a la que pertenece el enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public void ponerTopologia(TTopology t) {
         topologia = t;
@@ -133,7 +133,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo permite obtener la topologia a la que pertenece el enlace.
      * @return La topolog�a a la que pertenece el enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public TTopology obtenerTopologia() {
         return topologia;
@@ -141,7 +141,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     
     /**
      * Este m�todo configura el enlace.
-     * @since 1.0
+     * @since 2.0
      * @param recfg TRUE, si se est� reconfigurando el enlace. FALSE si se est� configurando por
      * primera vez.
      * @param tcenlace Objeto de configuraci�n del enlace que contiene una configuraci�n para
@@ -172,7 +172,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo obtiene un objeto con la configuraci�n completa del enlace.
      * @return Configuraci�n completa del enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     public TLinkConfig obtenerConfiguracion() {
         TLinkConfig tce = new TLinkConfig();
@@ -191,7 +191,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo libera el enlace, desconect�ndolo de los posibles nodos a los que
      * est� "enganchado".
-     * @since 1.0
+     * @since 2.0
      */
     public void desconectarDePuertos() {
         if (extremo1 != null) {
@@ -211,7 +211,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo establece el retardo del enlace.
      * @param d Retardo del enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public void ponerDelay(int d) {
         if (d <= 0) {
@@ -224,7 +224,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo obtiene el retardo del enlace.
      * @return Retardo del enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public int obtenerDelay() {
         return delay;
@@ -233,7 +233,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo establece el identificador �nico del enlace.
      * @param identificador Identificador del enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public void ponerIdentificador(int identificador) {
         id = identificador;
@@ -242,7 +242,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo permite obtener el identificador �nico del enlace.
      * @return Identificador unico del enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public int getID() {
         return id;
@@ -251,7 +251,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo permite establecer el nombre del enlace.
      * @param nom Nombre del enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public void ponerNombre(String nom) {
         nombre = nom;
@@ -260,7 +260,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo permite obtener el nombre del enlace.
      * @return Nombre del enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public String obtenerNombre() {
         return nombre;
@@ -269,7 +269,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo permite especificar si el nombre del enlace se ha de ver o no.
      * @param m TRUE, si el nombre debe mostrarse. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public void ponerMostrarNombre(boolean m) {
         mostrarNombre = m;
@@ -278,7 +278,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo permite obtener si el nombre del enlace se ha de ver o no.
      * @return TRUE, si el nombre se esta mostrando. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean obtenerMostrarNombre() {
         return mostrarNombre;
@@ -287,7 +287,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo obtiene el nodo que est� al final del extremo izquierdo del enlace.
      * @return El nodo extremo izquierdo del enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public TNode getEnd1() {
         return extremo1;
@@ -297,7 +297,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * Este m�todo permite establecer el nodo que estar� conectado al extremo izquierdo
      * del enlace.
      * @param e1 Nodo que estar� conectado al extremo izquierdo del enalace.
-     * @since 1.0
+     * @since 2.0
      */
     public void ponerExtremo1(TNode e1) {
         extremo1 = e1;
@@ -306,7 +306,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo obtiene el nodo que est� al final del extremo derecho del enlace.
      * @return El nodo del extremo derecho del enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public TNode getEnd2() {
         return extremo2;
@@ -316,7 +316,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * Este m�todo permite establecer el nodo que estar� conectado al extremo derecho
      * del enlace.
      * @param e2 Nodo del extremo derecho del enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public void ponerExtremo2(TNode e2) {
         extremo2 = e2;
@@ -325,7 +325,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo obtiene la posici�n del extremo izquierdo del enlace.
      * @return Posicio�n del extremo izquierdo del enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public Point obtenerPosicion1() {
         return extremo1.obtenerPosicion();
@@ -335,7 +335,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * Este m�todo establece el puerto del nodo extremo izquierdo al que est� conectado
      * el enlace.
      * @param p Puerto del nodo extremo izquierdo.
-     * @since 1.0
+     * @since 2.0
      */
     public void ponerPuertoExtremo1(int p) {
         puertoExtremo1 = p;
@@ -345,7 +345,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * Este m�todo permite obtener el puerto del nodo extremo izquierdo al que est�
      * conectado el enlace.
      * @return Puerto del nodo extremo izquierdo.
-     * @since 1.0
+     * @since 2.0
      */
     public int obtenerPuertoExtremo1() {
         return puertoExtremo1;
@@ -355,7 +355,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * Este m�todo establece el puerto del nodo extremo derecho al que est� conectado
      * el enlace.
      * @param p Puerto del nodo extremo derecho.
-     * @since 1.0
+     * @since 2.0
      */
     public void ponerPuertoExtremo2(int p) {
         puertoExtremo2 = p;
@@ -365,7 +365,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * Este m�todo permite obtener el puerto del nodo extremo derecho al que est�
      * conectado el enlace.
      * @return Puerto del nodo extremo derecho.
-     * @since 1.0
+     * @since 2.0
      */
     public int obtenerPuertoExtremo2() {
         return puertoExtremo2;
@@ -374,7 +374,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo obtiene la posici�n del nodo extremo derecho del enlace.
      * @return Posici�n del nodo extremo derecho del enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public Point obtenerPosicion2() {
         return extremo2.obtenerPosicion();
@@ -384,7 +384,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * Este m�todo comprueba si el enlace est� conectad a un nodo concreto.
      * @param extremo Nodo al que se desea saber si el enlace est� conectado o no.
      * @return TRUE, si est� conectado. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean conectadoA(TNode extremo) {
         if (extremo1.getID() == extremo.getID())
@@ -398,7 +398,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * Este m�todo comprueba si el enlace est� conectad a un nodo concreto.
      * @param idExtremo Identificador del nodo al que se desea saber si el enlace est� conectado o no.
      * @return TRUE, si est� conectado. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean conectadoA(int idExtremo) {
         if (extremo1.getID() == idExtremo)
@@ -412,7 +412,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * Este m�todo coloca un paquete desde el enlace al nodo destino.
      * @param paquete Paquete que se desea trasladar.
      * @param destino Nodo destino del paquete en el enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public void carryPacket(TAbstractPDU paquete, int destino) {
         cerrojo.lock();
@@ -424,7 +424,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * Este m�todo comprueba si dada unas coordenadas, el enlace pasa por dicha posici�n.
      * @param p Posici�n.
      * @return TRUE, si el enlace pasa por esa posici�n. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean estaEnPosicion(Point p) {
         int x1 = extremo1.obtenerPosicion().x+24;
@@ -471,7 +471,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo devuelve el cerrojo del enlace.
      * @return El cerrojo del enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public TMonitor obtenerCerrojo() {
         return this.cerrojo;
@@ -482,7 +482,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * par�metro.
      * @param n Nodo que realiza la consulta.
      * @return END_NODE_1, si el nodo es el extremo 1. END_NODE_2 si es el extremo 2.
-     * @since 1.0
+     * @since 2.0
      */
     public int queExtremoSoyYo(TNode n) {
         if (n.getID() == extremo1.getID())
@@ -495,7 +495,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * nodo quelo env�a.
      * @param n Nodo que env�a el paquete y que hace la consulta.
      * @return END_NODE_1 si el paquete debe ir al extremo 1. EXTREMO 2 si debe ir al extremo 2.
-     * @since 1.0
+     * @since 2.0
      */
     public int getTargetNodeIDOfTrafficSentBy(TNode n) {
         if (n.getID() == extremo1.getID())
@@ -506,25 +506,25 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este m�todo devuelve el tipo del enlace.
      * @return Ser� redefinido por las subclases.
-     * @since 1.0
+     * @since 2.0
      */
     public abstract int getLinkType();
     /**
      * Este m�todo captura un evento de reloj lo que pone en funcionamiento al enlace.
      * @param evt Evento de reloj.
-     * @since 1.0
+     * @since 2.0
      */
     public abstract void receiveTimerEvent(TTimerEvent evt);
     /**
      * N�cleo del enlace. Aqu� se codificar� (en las subclases) toda la funcionalidad.
-     * @since 1.0
+     * @since 2.0
      */
     public abstract void run();
     /**
      * Este m�todo obtiene el peso del enlace. Que ser� usado por los algoritmos de
      * encaminamiento.
      * @return Peso del enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public abstract long obtenerPeso();
     /**
@@ -532,68 +532,68 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * encaminamiento RABAN. El peso incluye diversos factores y no exclusivamente
      * el retardo del enlace.
      * @return Peso del enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public abstract long obtenerPesoRABAN();
     /**
      * Este m�todo calcula si est� bien configurado el enlace.
      * @return TRUE, si est� bien configurado. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public abstract boolean isWellConfigured();
     /**
      * Este m��etodo devolver� un mensaje de error asociado a un codigo de error.
      * @param e Codigo de error.
      * @return Representaci�n textual del c�digo de error.
-     * @since 1.0
+     * @since 2.0
      */    
     public abstract String getErrorMessage(int e);
     /**
      * Este m�todo serializa el enlace; es decir, lo convierte a texto para ser volcado
      * a disco.
      * @return Representaci�n textual del enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     public abstract String marshall();
     /**
      * Este m�todo deserializa un enlace y lo construye en memoria.
      * @param elemento Enlace serializado.
      * @return TRUE, si todo va bien. FALSE si no se ha podido deserializar el enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     public abstract boolean unMarshall(String elemento);
     /**
      * Este m�todo establece si el enlace est� ca�o o no.
      * @param ec TRUE, si el enlace debe aparecer como caido. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public abstract void ponerEnlaceCaido(boolean ec);
     /**
      * Este m�todo reinicia los atributos de la clase, dejando el enlace como recien
      * creado por el constructor.
-     * @since 1.0
+     * @since 2.0
      */    
     public abstract void reset();
     
     /**
      * Esta constante identifica a un enlace interno al dominio MPLS.
-     * @since 1.0
+     * @since 2.0
      */
     public static final int INTERNAL = 0;
     /**
      * Est� constante identifica a un enlace externo al dominio MPLS.
-     * @since 1.0
+     * @since 2.0
      */
     public static final int EXTERNAL = 1;
     
     /**
      * Esta constante se usa para identificar el extremo inicial del enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public static final int END_NODE_1 = 1;
     /**
      * Esta constante se usa para identificar el extremo final del enlace.
-     * @since 1.0
+     * @since 2.0
      */
     public static final int END_NODE_2 = 2;
     
@@ -608,83 +608,83 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     /**
      * Este atributo almacena los paquetes en el enlace para simular su recorrido por
      * el mismo.
-     * @since 1.0
+     * @since 2.0
      */
     protected SortedSet buffer;
     
     /**
      * Este atributo almacena temporalmente los paquetes que han llegado al destinio.
-     * @since 1.0
+     * @since 2.0
      */    
     protected TreeSet bufferLlegadosADestino;
     
     /**
      * Este atributo es el monitor de la clase que permite sincronizaciones.
-     * @since 1.0
+     * @since 2.0
      */
     protected TMonitor cerrojo;
     /**
      * Este atributo es el monitor de la clase que permite sincronizaciones en el
      * buffer de paquetes lelgados al destino.
-     * @since 1.0
+     * @since 2.0
      */    
     protected TMonitor cerrojoLlegados;
     /**
      * Topolog�a a la cual pertenece el enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     protected TTopology topologia;
     /**
      * Indica si el enlace est� funcionando o est� caido.
-     * @since 1.0
+     * @since 2.0
      */    
     protected boolean enlaceCaido;
     
     /**
      * Esta constante se usa para indicar que la configuraci�n del enlace es correcta.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int CORRECTA = 0;
     /**
      * Esta constante se usa para indicar que la configuraci�n del enlace es incorrecta.
      * Falta el nombre.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int SIN_NOMBRE = 1;
     /**
      * Esta constante se usa para indicar que la configuraci�n del enlace es incorrecta.
      * El nombre solo est� formado por espacios.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int SOLO_ESPACIOS = 2;
     /**
      * Esta constante se usa para indicar que la configuraci�n del enlace es incorrecta.
      * Ya hay un elemento con el nombre de este enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int NOMBRE_YA_EXISTE = 3;
     /**
      * Esta constante se usa para indicar que la configuraci�n del enlace es incorrecta.
      * no se ha especificado el puerto de origen.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int FALTA_PUERTO_1 = 4;
     /**
      * Esta constante se usa para indicar que la configuraci�n del enlace es incorrecta.
      * No se ha especificado el puerto de destino.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int FALTA_PUERTO_2 = 5;
     /**
      * Esta constante se usa para indicar que la configuraci�n del enlace es incorrecta.
      * No se ha especificado el nodo origen.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int FALTA_EXTREMO_1 = 6;
     /**
      * Esta constante se usa para indicar que la configuraci�n del enlace es incorrecta.
      * No se ha especificado el nodo destino.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int FALTA_EXTREMO_2 = 7;
 }

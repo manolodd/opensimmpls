@@ -37,7 +37,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @param identificador Identificador �nico para este elemento en la topolog�a.
      * @param il Generador de identificadores para los eventos que genere este enlace externo.
      * @param t Topologia en la que se encuentra este enlace interno.
-     * @since 1.0
+     * @since 2.0
      */
     public TInternalLink(int identificador, TLongIDGenerator il, TTopology t) {
         super(identificador, il, t);
@@ -49,7 +49,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
     /**
      * Este m�todo devuelve el tipo el enlace.
      * @return TLink.INTERNAL, indicando que es un nodo interno.
-     * @since 1.0
+     * @since 2.0
      */    
     public int getLinkType() {
         return super.INTERNAL;
@@ -59,7 +59,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * Este m�todo recibe eventos de sincronizaci�n del reloj del simulador, que lo
      * sincroniza todo.
      * @param evt Evento de sincronizaci�n que el reloj del simulador env�a a este enlace interno.
-     * @since 1.0
+     * @since 2.0
      */    
     public void receiveTimerEvent(simMPLS.hardware.timer.TTimerEvent evt) {
         this.setStepDuration(evt.getStepDuration());
@@ -72,7 +72,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * Este m�todo establece si el enlace se puede considerar como caido o no.
      * @param ec TRUE, indica que queremos que el enlace caiga. FALSE indica que no lo queremos o
      * que queremos que se levante si est� caido.
-     * @since 1.0
+     * @since 2.0
      */    
     public void ponerEnlaceCaido(boolean ec) {
         enlaceCaido = ec;
@@ -113,7 +113,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
     /**
      * Este m�todo se ejecuta cuando el hilo principal del enlace externo se ponne en
      * funcionamiento. Es el n�cleo del enlace interno.
-     * @since 1.0
+     * @since 2.0
      */    
     public void run() {
         // Acciones a llevar a cabo durante el tic.
@@ -126,7 +126,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
     /**
      * Este m�todo comprueba si sobre este enlace se ha establecido alg�n LSP.
      * @return TRUE, si se ha establecido alg�n LSP. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean tieneLSPs() {
         if (numeroDeLSPs > 0)
@@ -136,7 +136,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
 
     /**
      * Este m�todo a�ade un LSP sobre este enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     public void setLSPUp() {
         numeroDeLSPs++;
@@ -149,7 +149,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
 
     /**
      * Este m�todo quita un LSP establecido sobre este enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     public void removeLSP() {
         if (numeroDeLSPs > 0) {
@@ -166,7 +166,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * Este m�todo comprueba si sobre este enlace se ha establecido alg�n LSP de
      * respaldo.
      * @return TRUE, si se ha establecido alg�n LSP de respaldo. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean tieneLSPsDeBackup() {
         if (numeroDeLSPsDeBackup > 0)
@@ -176,7 +176,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
 
     /**
      * Este m�todo a�ade un LSP de respaldo sobre este enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     public void setBackupLSP() {
         numeroDeLSPsDeBackup++;
@@ -184,7 +184,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
 
     /**
      * Este m�todo quita un LSP de respaldo establecido sobre este enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     public void setBackupLSPDown() {
         if (numeroDeLSPsDeBackup > 0)
@@ -194,7 +194,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
     /**
      * Este m�todo toma todos los paquetes que en ese momento se encuentren circulando
      * por el enlace interno y los avanza por el mismo hacia su destino.
-     * @since 1.0
+     * @since 2.0
      */    
     public void actualizarTiemposDeEspera() {
         cerrojo.lock();
@@ -223,7 +223,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
     /**
      * Este m�todo toma todos los paquetes que se encuentren circulando por el enlace
      * interno y detecta todos aquellos que ya han llegado al destino.
-     * @since 1.0
+     * @since 2.0
      */    
     public void adelantarPaquetesEnTransito() {
         cerrojo.lock();
@@ -248,7 +248,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
     /**
      * Este m�todo toma todos los paquetes que han llegado al destino y realiza la
      * insercio�n de los mismos en el puerto correspondiente de dicho destino.
-     * @since 1.0
+     * @since 2.0
      */    
     public void pasarPaquetesADestino() {
         this.cerrojoLlegados.lock();
@@ -271,7 +271,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * Este m�todo obtiene el peso del enlace interno que debe usar el algoritmo de
      * routing para calcular rutas.
      * @return El peso del enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     public long obtenerPeso() {
         long peso = this.obtenerDelay();
@@ -282,7 +282,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * Este m�todo devuelve si el enlace interno est� bien configurado o no.
      * @return TRUE, si la configuraci�n actual del enlace es correcta. FALSE en caso
      * contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean isWellConfigured() {
         return false;
@@ -293,7 +293,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * enlace interno es v�lido o no.
      * @param t Topolog�a dentro de la cual se encuentra este enlace interno.
      * @return CORRECTA, si la configuraci�n es correcta. Un codigo de error en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public int comprobar(TTopology t) {
         return 0;
@@ -304,7 +304,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * m�todo <I>validateConfig(...)</I>
      * @param e El codigo de error que se quiere transformar.
      * @return El mensaje textual correspondiente a ese mensaje de error.
-     * @since 1.0
+     * @since 2.0
      */    
     public String getErrorMessage(int e) {
         return null;
@@ -314,7 +314,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * Este m�todo transforma el enlace interno en un representaci�n de texto que se
      * puede almacenar en disco sin problemas.
      * @return El equivalente en texto del enlace interno completo.
-     * @since 1.0
+     * @since 2.0
      */    
     public String marshall() {
         String cadena = "#EnlaceInterno#";
@@ -342,7 +342,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * configura el objeto con los valores que obtiene.
      * @param elemento Enlace interno en su representaci�n serializada.
      * @return TRUE, si se deserializa correctamente, FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean unMarshall(String elemento) {
         TLinkConfig configEnlace = new TLinkConfig();
@@ -374,7 +374,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
     /**
      * Este m�todo reinicia los atributos de la clase, dejando la instancia como si se
      * acabase de crear por el constructor.
-     * @since 1.0
+     * @since 2.0
      */    
     public void reset() {
         this.cerrojo.lock();

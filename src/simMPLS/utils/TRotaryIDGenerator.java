@@ -27,7 +27,7 @@ public class TRotaryIDGenerator {
     /**
      * Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * TIdentificadorRotativo y lo inicia a cero.
-     * @since 1.0
+     * @since 2.0
      */
     public TRotaryIDGenerator() {
         identificador = 0;
@@ -36,7 +36,7 @@ public class TRotaryIDGenerator {
     /**
      * Este m�todo coloca a cero el generador de identificadores. Como si acabase de
      * ser instanciado.
-     * @since 1.0
+     * @since 2.0
      */
     public synchronized void reset() {
         identificador = 0;
@@ -46,7 +46,7 @@ public class TRotaryIDGenerator {
      * Este m�todo obtiene un nuevo identificador del generador e incrementa su
      * contador interno para la siguiente llamada.
      * @return Un identificador nuevo y �nico (en este ciclo del generador).
-     * @since 1.0
+     * @since 2.0
      */
     synchronized public int getNextID() {
         if (identificador > 2147483646) {
@@ -61,7 +61,7 @@ public class TRotaryIDGenerator {
      * Este m�todo permite establecer el valor a partir del cu�l el generador de
      * identificadores comenzar� a generar.
      * @param i El valor con el que se desea iniciar el generador.
-     * @since 1.0
+     * @since 2.0
      */
     synchronized public void ponerIdentificador(int i) {
         identificador = i;

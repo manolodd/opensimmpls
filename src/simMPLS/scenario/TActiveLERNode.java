@@ -46,7 +46,7 @@ import simMPLS.utils.TLongIDGenerator;
  * network traffic to entry/exit to/from the MPLS domain.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TActiveLERNode extends TNode implements ITimerEventListener, Runnable {
 
@@ -62,7 +62,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * use to identify unambiguosly each event switchingMatrixIterator
      * generates.
      * @param topology A reference to the topology this active LER belongs to.
-     * @since 1.0
+     * @since 2.0
      */
     public TActiveLERNode(int identifier, String ipAddress, TLongIDGenerator longIDGenerator, TTopology topology) {
         super(identifier, ipAddress, longIDGenerator, topology);
@@ -85,7 +85,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the current size of DMGP in KBytes.
-     * @since 1.0
+     * @since 2.0
      */
     public int getDMGPSizeInKB() {
         return this.dmgp.getDMGPSizeInKB();
@@ -97,7 +97,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param sizeInKB the desired size of DMGP in KBytes.
-     * @since 1.0
+     * @since 2.0
      */
     public void setDMGPSizeInKB(int sizeInKB) {
         this.dmgp.setDMGPSizeInKB(sizeInKB);
@@ -110,7 +110,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the number of nanoseconds that are needed to switch a single bit.
-     * @since 1.0
+     * @since 2.0
      */
     public double getNsPerBit() {
         // FIX: replace al harcoded values for class constants
@@ -128,7 +128,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param octects the number of octects that wants to be switched.
      * @return the number of nanoseconds that are needed to switch the specified
      * number of octects.
-     * @since 1.0
+     * @since 2.0
      */
     public double getNsRequiredForAllOctets(int octects) {
         // FIX: replace al harcoded values for class constants
@@ -144,7 +144,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the current size of DMGP in KBytes.
-     * @since 1.0
+     * @since 2.0
      */
     public int getMaxSwitchableBitsWithCurrentNs() {
         double nsPerBit = getNsPerBit();
@@ -159,7 +159,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the current size of DMGP in KBytes.
-     * @since 1.0
+     * @since 2.0
      */
     public int getMaxSwitchableOctectsWithCurrentNs() {
         // FIX: replace al harcoded values for class constants
@@ -172,7 +172,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the current size of DMGP in KBytes.
-     * @since 1.0
+     * @since 2.0
      */
     public int getSwitchingPowerInMbps() {
         return this.switchingPowerInMbps;
@@ -183,7 +183,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param switchingPowerInMbps the switching power of this LERA, in Mbps.
-     * @since 1.0
+     * @since 2.0
      */
     public void setSwitchingPowerInMbps(int switchingPowerInMbps) {
         this.switchingPowerInMbps = switchingPowerInMbps;
@@ -194,7 +194,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the size of this LERA's buffer, in MBytes.
-     * @since 1.0
+     * @since 2.0
      */
     public int getBufferSizeInMBytes() {
         return this.getPorts().getBufferSizeInMB();
@@ -205,7 +205,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param bufferSizeInMBytes the size of this LERA's buffer, in MBytes.
-     * @since 1.0
+     * @since 2.0
      */
     public void setBufferSizeInMBytes(int bufferSizeInMBytes) {
         this.getPorts().setBufferSizeInMB(bufferSizeInMBytes);
@@ -216,7 +216,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * instance.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void reset() {
@@ -237,7 +237,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the constant TNode.LERA.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int getNodeType() {
@@ -245,13 +245,14 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo inicia el hilo de ejecuci�n del LER, para que entre en
-     * funcionamiento. Adem�s controla el tiempo de que dispone el LER para
-     * conmutar paquetes.
+     * This method receive a timer event from the simulation's global timer. It
+     * does some initial tasks and then wake up the LERA to start doing its
+     * work.
      *
-     * @param timerEvent Evento de reloj que sincroniza la ejecuci�n de los
-     * elementos de la topology.
-     * @since 1.0
+     * @param timerEvent a timer event that is used to synchronize all nodes and
+     * that inclues a number of nanoseconds to be used by the LERA.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
      */
     @Override
     public void receiveTimerEvent(TTimerEvent timerEvent) {
@@ -270,7 +271,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * Llama a las acciones que se tienen que ejecutar en el transcurso del tic
      * de reloj que el LER estar� en funcionamiento.
      *
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void run() {
@@ -281,9 +282,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             // FIX: this is not a good practice. Avoid.
             e.printStackTrace();
         }
-        checkConnectivityStatus();
-        decreaseCounters();
-        routePackets();
+        this.checkConnectivityStatus();
+        this.decreaseCounters();
+        this.routePackets();
         this.stats.consolidateData(this.getAvailableTime());
     }
 
@@ -293,7 +294,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * entonces genera la correspondiente se�alizaci�n para notificar este
      * hecho.
      *
-     * @since 1.0
+     * @since 2.0
      */
     public void checkConnectivityStatus() {
         boolean removeSwitchingMatrixEntry = false;
@@ -386,12 +387,12 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         this.switchingMatrix.getMonitor().unLock();
         this.gpsrpRequests.decreaseTimeout(this.getTickDuration());
         this.gpsrpRequests.updateEntries();
-        int numberOfPorts = ports.getNumberOfPorts();
+        int numberOfPorts = this.ports.getNumberOfPorts();
         int i = 0;
         TActivePort currentPort = null;
         TLink linkOfPort = null;
         for (i = 0; i < numberOfPorts; i++) {
-            currentPort = (TActivePort) ports.getPort(i);
+            currentPort = (TActivePort) this.ports.getPort(i);
             if (currentPort != null) {
                 linkOfPort = currentPort.getLink();
                 if (linkOfPort != null) {
@@ -429,7 +430,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * m�todos correspondiente segun el packet. Si el packet est� mal formado o
      * es desconocido, lo descarta.
      *
-     * @since 1.0
+     * @since 2.0
      */
     public void routePackets() {
         boolean atLeastOnePacketRouted = false;
@@ -469,7 +470,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param packet Paquete GPSRP que conmutar.
      * @param incomingPortID Puerto por el que ha llegado el packet.
-     * @since 1.0
+     * @since 2.0
      */
     public void handleGPSRPPacket(TGPSRPPDU packet, int incomingPortID) {
         if (packet != null) {
@@ -511,7 +512,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param packet Paquete GPSRP de petici�n de retransmisi�n.
      * @param incomingPortID Puerto por el que ha llegado el packet.
-     * @since 1.0
+     * @since 2.0
      */
     public void handleGPSRPRetransmissionRequest(TGPSRPPDU packet, int incomingPortID) {
         int flowID = packet.getGPSRPPayload().getFlowID();
@@ -539,7 +540,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param packet Paquete GPSRP.
      * @param incomingPort Puerto por el que ha llegado el packet GPSRP.
-     * @since 1.0
+     * @since 2.0
      */
     public void handleGPSRPRetransmissionNotPossible(TGPSRPPDU packet, int incomingPort) {
         int flowID = packet.getGPSRPPayload().getFlowID();
@@ -566,7 +567,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param packet Paquete GPSRP de aceptaci�n de retransmisi�n.
      * @param incomingPortID Puerto por el que ha llegado el packet.
-     * @since 1.0
+     * @since 2.0
      */
     public void handleGPSRPRetransmissionOk(TGPSRPPDU packet, int incomingPortID) {
         int flowID = packet.getGPSRPPayload().getFlowID();
@@ -579,7 +580,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param packet Paquete MPLS para el cual se solicita la retransmisi�n.
      * @param outgoingPortID Puerto por el cual debe salir la solicitud.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void runGoSPDUStoreAndRetransmitProtocol(TMPLSPDU packet, int outgoingPortID) {
@@ -623,7 +624,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param targetIPv4Address IP del nodo al que se realizar� la solicitud.
      * @param outgoingPortID Puerto de salida por el que se debe encaminar la
      * solicitud.
-     * @since 1.0
+     * @since 2.0
      */
     public void requestGPSRP(int flowID, int packetID, String targetIPv4Address, int outgoingPortID) {
         TActivePort outgoingPort = (TActivePort) this.ports.getPort(outgoingPortID);
@@ -656,7 +657,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param packet Paquete GPSRP de solicitud de retransmisi�n.
      * @param outgoingPortID Puerto por el que se debe enviar la denegaci�n.
-     * @since 1.0
+     * @since 2.0
      */
     public void rejectGPSRP(TGPSRPPDU packet, int outgoingPortID) {
         TActivePort outgoingPort = (TActivePort) this.ports.getPort(outgoingPortID);
@@ -691,7 +692,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param packet Paquete GPSRP de solicitud de retransmisi�n.
      * @param outgoingPortID Puerto por el que se debe enviar la aceptaci�n.
-     * @since 1.0
+     * @since 2.0
      */
     public void acceptGPSRP(TGPSRPPDU packet, int outgoingPortID) {
         TActivePort outgoingPort = (TActivePort) this.ports.getPort(outgoingPortID);
@@ -731,7 +732,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param packet Paquete IPv4 de entrada.
      * @param incomingPortID Puerto por el que ha accedido al nodo el packet.
-     * @since 1.0
+     * @since 2.0
      */
     public void handleIPv4Packet(TIPv4PDU packet, int incomingPortID) {
         int fec = classifyPacket(packet);
@@ -777,7 +778,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                         if (requireBackupLSP) {
                             requestTLDPForBackupLSP(switchingMatrixEntry);
                         }
-                        TPort outgoingPort = ports.getPort(switchingMatrixEntry.getOutgoingPortID());
+                        TPort outgoingPort = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID());
                         TMPLSPDU mplsPacket = this.createMPLSPacket(packet, switchingMatrixEntry);
                         if (packet.getSubtype() == TAbstractPDU.IPV4_GOS) {
                             int expFieldAux = packet.getIPv4Header().getOptionsField().getRequestedGoSLevel();
@@ -831,7 +832,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param packet Paquete TLDP recibido.
      * @param incomingPortID Puerto por el que se ha recibido el packet TLDP.
-     * @since 1.0
+     * @since 2.0
      */
     public void handleTLDPPacket(TTLDPPDU packet, int incomingPortID) {
         if (packet.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REQUEST) {
@@ -858,7 +859,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param packet Paquete MPLS recibido.
      * @param incomingPortID Puerto por el que ha llegado el packet MPLS
      * recibido.
-     * @since 1.0
+     * @since 2.0
      */
     public void handleMPLSPacket(TMPLSPDU packet, int incomingPortID) {
         TMPLSLabel mplsLabel = null;
@@ -1018,7 +1019,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param packet Petici�n de etiquetas recibida de otro nodo.
      * @param incomingPortID Puerto de entrada de la petici�n de etiqueta.
-     * @since 1.0
+     * @since 2.0
      */
     public void handleTLDPRequest(TTLDPPDU packet, int incomingPortID) {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
@@ -1055,7 +1056,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param packet Eliminaci�n de etiqueta recibida.
      * @param incomingPortID Puerto por el que se recibi�n la eliminaci�n de
      * etiqueta.
-     * @since 1.0
+     * @since 2.0
      */
     public void handleTLDPWithdrawal(TTLDPPDU packet, int incomingPortID) {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
@@ -1206,7 +1207,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param packet Confirmaci�n de etiqueta.
      * @param incomingPortID Puerto por el que se ha recibido la confirmaci�n de
      * etiquetas.
-     * @since 1.0
+     * @since 2.0
      */
     public void handleTLDPRequestOk(TTLDPPDU packet, int incomingPortID) {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
@@ -1280,7 +1281,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param packet Paquete de denegaci�n de etiquetas recibido.
      * @param incomingPortID Puerto por el que se ha recibido la denegaci�n de
      * etiquetas.
-     * @since 1.0
+     * @since 2.0
      */
     public void handleTLDPRefuseRequest(TTLDPPDU packet, int incomingPortID) {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
@@ -1339,7 +1340,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param packet Paquete de confirmaci�n e eliminaci�n de etiqueta.
      * @param incomingPortID Puerto por el que se ha recibido la confirmaci�n de
      * eliminaci�n de etiqueta.
-     * @since 1.0
+     * @since 2.0
      */
     public void handleTLDPWithdrawalOk(TTLDPPDU packet, int incomingPortID) {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
@@ -1494,7 +1495,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n
      * especificada.
-     * @since 1.0
+     * @since 2.0
      */
     public void sendTLDPRequestOk(TSwitchingMatrixEntry switchingMatrixEntry) {
         if (switchingMatrixEntry != null) {
@@ -1540,7 +1541,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n
      * correspondiente.
-     * @since 1.0
+     * @since 2.0
      */
     public void sendTLDPRequestRefuse(TSwitchingMatrixEntry switchingMatrixEntry) {
         if (switchingMatrixEntry != null) {
@@ -1584,7 +1585,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * Este m�todo env�a una confirmaci�n de eliminaci�n de etiqueta al nodo que
      * especifique la correspondiente entrada en la matriz de conmutaci�n.
      *
-     * @since 1.0
+     * @since 2.0
      * @param portID Puerto por el que se debe enviar la confirmaci�n de
      * eliminaci�n.
      * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n
@@ -1593,11 +1594,11 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     public void sendTLDPWithdrawalOk(TSwitchingMatrixEntry switchingMatrixEntry, int portID) {
         if (switchingMatrixEntry != null) {
             String localIPAddress = this.getIPAddress();
-            String targetIPAddress = ports.getIPOfNodeLinkedTo(portID);
+            String targetIPAddress = this.ports.getIPOfNodeLinkedTo(portID);
             if (targetIPAddress != null) {
                 TTLDPPDU tldpPacket = null;
                 try {
-                    tldpPacket = new TTLDPPDU(gIdent.getNextID(), localIPAddress, targetIPAddress);
+                    tldpPacket = new TTLDPPDU(this.gIdent.getNextID(), localIPAddress, targetIPAddress);
                 } catch (Exception e) {
                     // FIX: this is not a good practice. Avoid.
                     e.printStackTrace();
@@ -1620,7 +1621,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                             tldpPacket.setLocalTarget(TTLDPPDU.DIRECTION_BACKWARD);
                         }
                     }
-                    TPort outgoingPortID = ports.getPort(portID);
+                    TPort outgoingPortID = this.ports.getPort(portID);
                     outgoingPortID.putPacketOnLink(tldpPacket, outgoingPortID.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     try {
                         this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP, tldpPacket.getSize()));
@@ -1640,7 +1641,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param switchingMatrixEntry Entrada en la matriz de conmutaci�n
      * especificada.
-     * @since 1.0
+     * @since 2.0
      */
     public void requestTLDP(TSwitchingMatrixEntry switchingMatrixEntry) {
         String localIPAddress = this.getIPAddress();
@@ -1650,7 +1651,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             if (nextHopIPAddress != null) {
                 TTLDPPDU tldpPacket = null;
                 try {
-                    tldpPacket = new TTLDPPDU(gIdent.getNextID(), localIPAddress, nextHopIPAddress);
+                    tldpPacket = new TTLDPPDU(this.gIdent.getNextID(), localIPAddress, nextHopIPAddress);
                 } catch (Exception e) {
                     // FIX: this is not a good practice. Avoid.
                     e.printStackTrace();
@@ -1688,7 +1689,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param switchingMatrixEntry Entrada en la matriz de conmutaci�n
      * especificada.
-     * @since 1.0
+     * @since 2.0
      */
     public void requestTLDPForBackupLSP(TSwitchingMatrixEntry switchingMatrixEntry) {
         String localIPAddress = this.getIPAddress();
@@ -1703,10 +1704,12 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                         // instead.
                         if (switchingMatrixEntry.getOutgoingLabel() > 15) {
                             switchingMatrixEntry.setBackupOutgoingLabel(TSwitchingMatrixEntry.LABEL_REQUESTED);
+                            // FIX: This conditional is redundat as the same 
+                            // condition has been tested at the beginning.
                             if (nextHopIPAddress != null) {
                                 TTLDPPDU tldpPacket = null;
                                 try {
-                                    tldpPacket = new TTLDPPDU(gIdent.getNextID(), localIPAddress, nextHopIPAddress);
+                                    tldpPacket = new TTLDPPDU(this.gIdent.getNextID(), localIPAddress, nextHopIPAddress);
                                 } catch (Exception e) {
                                     // FIX: this is ugly. Avoid.
                                     e.printStackTrace();
@@ -1717,7 +1720,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                                     tldpPacket.getTLDPPayload().setTLDPIdentifier(switchingMatrixEntry.getLocalTLDPSessionID());
                                     tldpPacket.setLSPType(true);
                                     tldpPacket.setLocalTarget(TTLDPPDU.DIRECTION_FORWARD);
-                                    TPort outgoingPortID = ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPAddress);
+                                    TPort outgoingPortID = this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPAddress);
                                     switchingMatrixEntry.setBackupOutgoingPortID(outgoingPortID.getPortID());
                                     if (outgoingPortID != null) {
                                         outgoingPortID.putPacketOnLink(tldpPacket, outgoingPortID.getLink().getTargetNodeIDOfTrafficSentBy(this));
@@ -1742,7 +1745,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * Este m�todo env�a una eliminaci�n de etiqueta al nodo especificado por le
      * entrada de la matriz de conmutaci�n correspondiente.
      *
-     * @since 1.0
+     * @since 2.0
      * @param portID Puerto por el que se debe enviar la eliminaci�n.
      * @param switchingMatrixEntry Entrada en la matriz de conmutaci�n
      * especificada.
@@ -1800,7 +1803,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n
      * especificada.
-     * @since 1.0
+     * @since 2.0
      */
     public void requestTLDPAfterTimeout(TSwitchingMatrixEntry switchingMatrixEntry) {
         if (switchingMatrixEntry != null) {
@@ -1849,7 +1852,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * Este m�todo reenv�a todas las eliminaciones de etiquetas pendientes de
      * una entrada de la matriz de conmutaci�n.
      *
-     * @since 1.0
+     * @since 2.0
      * @param portID Puerto por el que se debe enviar la eliminaci�n.
      * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n
      * especificada.
@@ -1864,7 +1867,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n
      * especificada.
-     * @since 1.0
+     * @since 2.0
      */
     public void labelWithdrawalAfterTimeout(TSwitchingMatrixEntry switchingMatrixEntry) {
         sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getIncomingPortID());
@@ -1876,7 +1879,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * Este m�todo decrementa los contadores de retransmisi�n existentes para
      * este nodo.
      *
-     * @since 1.0
+     * @since 2.0
      */
     public void decreaseCounters() {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
@@ -1919,7 +1922,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param incomingPortID Puerto de entrada del packet TLDP.
      * @return La entrada de la matriz de conmutaci�n, ya creada, insertada e
      * inicializada.
-     * @since 1.0
+     * @since 2.0
      */
     public TSwitchingMatrixEntry createEntryFromTLDP(TTLDPPDU tldpPacket, int incomingPortID) {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
@@ -1986,7 +1989,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param incomingPortID Puerto por el que ha llegado el packet IPv4.
      * @return La entrada de la matriz de conmutaci�n, creada, insertada e
      * inicializada.
-     * @since 1.0
+     * @since 2.0
      */
     public TSwitchingMatrixEntry createInitialEntryInFECMatrix(TIPv4PDU ipv4Packet, int incomingPortID) {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
@@ -2049,7 +2052,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param incomingPortID Puerto por el que ha llegado el packet MPLS.
      * @return La entrada de la matriz de conmutaci�n, creada, insertada e
      * inicializada.
-     * @since 1.0
+     * @since 2.0
      */
     public TSwitchingMatrixEntry createInitialEntryInILMMatrix(TMPLSPDU mplsPacket, int incomingPortID) {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
@@ -2117,12 +2120,12 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * al packet IPv4 que se desea etiquetar.
      * @return El packet IPv4 de entrada, convertido en un packet MPLS
      * correctamente etiquetado.
-     * @since 1.0
+     * @since 2.0
      */
     public TMPLSPDU createMPLSPacket(TIPv4PDU ipv4Packet, TSwitchingMatrixEntry switchingMatrixEntry) {
         TMPLSPDU mplsPacket = null;
         try {
-            mplsPacket = new TMPLSPDU(gIdent.getNextID(), ipv4Packet.getIPv4Header().getOriginIPAddress(), ipv4Packet.getIPv4Header().getTailEndIPAddress(), ipv4Packet.getSize());
+            mplsPacket = new TMPLSPDU(this.gIdent.getNextID(), ipv4Packet.getIPv4Header().getOriginIPAddress(), ipv4Packet.getIPv4Header().getTailEndIPAddress(), ipv4Packet.getSize());
         } catch (EIDGeneratorOverflow e) {
             // FIX: this is ugly. Avoid.
             e.printStackTrace();
@@ -2164,7 +2167,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * al packet MPLS.
      * @return Paquete IPv4 que corresponde al packet MPLS una vez que se ha
      * eliminado toda la informaci�n MLPS; que se ha desetiquetado.
-     * @since 1.0
+     * @since 2.0
      */
     public TIPv4PDU createIPv4Packet(TMPLSPDU MPLSPacket, TSwitchingMatrixEntry switchingMatrixEntry) {
         TIPv4PDU ipv4Packet = null;
@@ -2200,7 +2203,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param incomingPortID Puerto por el que ha llegado el packet al nodo.
      * @return true, si el packet es exterior al dominio MPLS. false en caso
      * contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean isAnExternalPacket(TAbstractPDU packet, int incomingPortID) {
         if (packet.getType() == TAbstractPDU.IPV4) {
@@ -2215,7 +2218,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * estad�sticas del nodo.
      *
      * @param packet Paquete que se quiere descartar.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void discardPacket(TAbstractPDU packet) {
@@ -2239,7 +2242,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param packet El packet que se desea clasificar.
      * @return El FEC_ENTRY al que pertenece el packet pasado por par�metros.
-     * @since 1.0
+     * @since 2.0
      */
     public int classifyPacket(TAbstractPDU packet) {
         String originIPAddress = packet.getIPv4Header().getOriginIPAddress();
@@ -2255,7 +2258,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * Este m�todo permite el acceso al conjunto de ports del nodo.
      *
      * @return El conjunto de ports del nodo.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public TPortSet getPorts() {
@@ -2266,7 +2269,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * Este m�todo calcula si el nodo tiene ports libres o no.
      *
      * @return true, si el nodo tiene ports libres. false en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public boolean hasAvailablePorts() {
@@ -2278,7 +2281,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * rutas con costo menor. En el nodo LER el pero ser� siempre nulo (cero).
      *
      * @return 0. El routingWeight del LERA.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public long getRoutingWeight() {
@@ -2299,10 +2302,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * averiguar si el LER es nodo de salida.
      * @return true, si el LER es de salida del dominio para tr�fico dirigido a
      * esa IP. false en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean isExitActiveLER(String targetIPAddress) {
-        TPort portAux = ports.getLocalPortConnectedToANodeWithIPAddress(targetIPAddress);
+        TPort portAux = this.ports.getLocalPortConnectedToANodeWithIPAddress(targetIPAddress);
         if (portAux != null) {
             if (portAux.getLink().getLinkType() == TLink.EXTERNAL) {
                 return true;
@@ -2315,17 +2318,17 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * Este m�todo permite el acceso a la matriz de conmutaci�n de LER.
      *
      * @return La matriz de conmutaci�n del LER.
-     * @since 1.0
+     * @since 2.0
      */
     public TSwitchingMatrix getSwitchingMatrix() {
-        return switchingMatrix;
+        return this.switchingMatrix;
     }
 
     /**
      * Este m�todo comprueba que la configuraci�n de LER sea la correcta.
      *
      * @return true, si el LER est� bien configurado. false en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public boolean isWellConfigured() {
@@ -2340,7 +2343,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * caso contrario.
      * @return CORRECTA, si la configuraci�n es correcta. Un c�digo de error en
      * caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int validateConfig(TTopology topology, boolean reconfiguration) {
@@ -2381,7 +2384,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param errorCode El c�digo de error para el cual queremos una explicaci�n
      * textual.
      * @return Cadena de texto explicando el error.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public String getErrorMessage(int errorCode) {
@@ -2401,7 +2404,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * toda su configuraci�n. Sirve para almacenar el LER en disco.
      *
      * @return Una serializedElement de texto que representa un a este LER.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public String marshall() {
@@ -2440,7 +2443,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param serializedElement LER serializado.
      * @return true, si no ha habido errores y la instancia actual est� bien
      * configurada. false en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public boolean unMarshall(String serializedElement) {
@@ -2469,7 +2472,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * Este m�todo permite acceder directamente a las estadisticas del nodo.
      *
      * @return Las estad�sticas del nodo.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public TStats getStats() {
@@ -2481,7 +2484,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param numPorts N�mero de ports deseado para el nodo. Como mucho, 8
      * ports.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public synchronized void setPorts(int numPorts) {

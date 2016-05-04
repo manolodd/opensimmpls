@@ -30,753 +30,753 @@ public class TImagesBroker {
 
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un s�mbolo de "abrir".
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int ABRIR =                          0;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un s�mbolo de "abrir" peque�o y gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int ABRIR_MENU_GRIS =                1;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un s�mbolo de "abrir" peque�o.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int ABRIR_MENU =                     2;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un s�mbolo de "advertencia".
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int ADVERTENCIA =                    3;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un mago.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int ASISTENTE =                      4;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa un
      * boton de "play".
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int BOTON_COMENZAR =                 5;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa un
      * boton de "play" en gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int BOTON_COMENZAR_GRIS =            6;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * engranaje.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int BOTON_GENERAR =                  7;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * engranaje en gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int BOTON_GENERAR_GRIS =             8;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa un
      * boton de "stop".
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int BOTON_PARAR =                    9;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa un
      * boton de "stop" en gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int BOTON_PARAR_GRIS =              10;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa un
      * boton de "pausa".
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int BOTON_PAUSA =                   11;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa un
      * boton de "pausa" en gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int BOTON_PAUSA_GRIS =              12;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una imagen de "cerrar".
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int CERRAR =                        13;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una imagen de "cerrar" peque�a y gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int CERRAR_MENU_GRIS=               14;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una imagen de "cerrar" peque�a.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int CERRAR_MENU =                   15;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una imagen de un mensaje con un globo planetario.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int COMENTARIO =                    16;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una imagen de un mensaje con un globo planetario peque�o y gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int COMENTARIO_MENU_GRIS =          17;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una imagen de un mensaje con un globo planetario peque�o.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int COMENTARIO_MENU =               18;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa un
      * nodo emisor.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int EMISOR =                        19;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa un
      * nodo emisor peque�o y gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int EMISOR_MENU_GRIS =              20;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa un
      * nodo emisor peque�o.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int EMISOR_MENU =                   21;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa un
      * nodo emisor cuando se est� arrastrando.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int EMISOR_MOVIENDOSE =             22;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa un
      * enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int ENLACE =                        23;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa un
      * enlace peque�o y gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int ENLACE_MENU_GRIS =              24;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa un
      * enlace peque�o.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int ENLACE_MENU =                   25;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una imagen que indica error (direcci�n prohibida).
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int ERROR =                         26;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una imagen de "guardar".
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int GUARDAR =                       27;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una imagen de "guardar" con nombre.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int GUARDAR_COMO =                  28;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una imagen de "guardar" con nombre, peque�o y gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int GUARDAR_COMO_MENU_GRIS =        29;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una imagen de "guardar" con nombre, peque�o.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int GUARDAR_COMO_MENU =             30;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una imagen de "guardar" peque�o y gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int GUARDAR_MENU_GRIS =             31;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una imagen de "guardar" peque�o.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int GUARDAR_MENU =                  32;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una rede en miniatura.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int ICONO_VENTANA_INTERNA =         33;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una rede en miniatura, peque�a.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int ICONO_VENTANA_INTERNA_MENU =    34;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa el
      * logo de Open SimMPLS.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int ICONO_SIMMPLS =                 35;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una impresora.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int IMPRIMIR =                      36;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una impresora peque�a y gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int IMPRIMIR_MENU_GRIS =            37;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una impresora peque�a.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int IMPRIMIR_MENU =                 38;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Edge Router (LER).
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LER =                           39;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Edge Router (LER) peque�o y gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LER_MENU_GRIS =                 40;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Edge Router (LER) peque�o.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LER_MENU =                      41;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Edge Router (LER) cuando est� siendo arrastrado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LER_MOVIENDOSE =                42;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Edge Router Activo (LERA).
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LERA =                          43;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Edge Router Activo (LERA), peque�o y gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LERA_MENU_GRIS =                44;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Edge Router Activo (LERA), peque�o.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LERA_MENU =                     45;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Edge Router Activo (LERA), cuando est� siendo arrastrado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LERA_MOVIENDOSE =               46;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa un
      * documento escrito.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LICENCIA =                      47;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa un
      * documento escrito, peque�o y gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LICENCIA_MENU_GRIS =            48;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa un
      * documento escrito peque�o.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LICENCIA_MENU =                 49;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Switch Router (LSR).
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LSR =                           50;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Switch Router (LSR), peque�o y gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LSR_MENU_GRIS =                 51;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Switch Router (LSR), peque�o.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LSR_MENU =                      52;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Switch Router (LSR) cuando est� siendo arrastrado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LSR_MOVIENDOSE =                53;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Switch Router Activo (LSRA).
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LSRA =                          54;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Switch Router Activo (LSRA), peque�o y gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LSRA_MENU_GRIS =                55;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Switch Router Activo (LSRA), peque�o.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LSRA_MENU =                     56;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Switch Router Activo (LSRA), cuando est� siendo arrastrado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LSRA_MOVIENDOSE =               57;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una nube.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int NUBE =                          58;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un documento en blanco.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int NUEVO =                         59;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un documento en blanco, peque�o y gris
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int NUEVO_MENU_GRIS =               60;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un documento en blanco, peque�o.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int NUEVO_MENU =                    61;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * el logo de la certificaci�n OSI.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int OSI_CERTIFIED =                 62;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un nodo receptor.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int RECEPTOR =                      63;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un nodo receptor, peque�o y gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int RECEPTOR_MENU_GRIS =            64;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un nodo receptor, peque�o.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int RECEPTOR_MENU =                 65;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un nodo receptor, cuando est� siendo arrastrado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int RECEPTOR_MOVIENDOSE =           66;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un bot�n como el de apagar los aparatos el�ctricos.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int SALIR =                         67;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un bot�n como el de apagar los aparatos el�ctricos, pqeue�o.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int SALIR_MENU =                    68;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * la imagen inicial del programa.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int SPLASH =                        69;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * la imagen inicial del programa, con espacio para texto.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int SPLASH_INICIO =                 70;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * la imagen inicial del programa, peque�o y gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int SPLASH_MENU_GRIS =              71;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * la imagen inicial del programa, peque�o.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int SPLASH_MENU =                   72;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * la imagen de una manual.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int TUTORIAL =                      73;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * la imagen de una manual, peque�o y gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int TUTORIAL_MENU_GRIS =            74;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * la imagen de una manual, peque�o.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int TUTORIAL_MENU =                 75;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una aspa indicando que la imagen no existe. Es un atributo privado.
-     * @since 1.0
+     * @since 2.0
      */    
     private static final int IMAGEN_NO_ENCONTRADA =         76;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un nodo emisor, resaltado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int EMISOR_MENU_BRILLO =            77;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un nodo receptor, resaltado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int RECEPTOR_MENU_BRILLO =          78;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Edge Router (LER), resaltado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LER_MENU_BRILLO =               79;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Switch Router (LSR), resaltado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LSR_MENU_BRILLO =               80;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Edge Router Activo (LERA), resaltado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LERA_MENU_BRILLO =              81;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un LAbel Switch Router Activo (LSRA), resaltado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LSRA_MENU_BRILLO =              82;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un enlace, resaltado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int ENLACE_MENU_BRILLO =            83;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un bot�n del "Play", resaltado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int BOTON_COMENZAR_BRILLO =         84;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un engranaje, resaltado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int BOTON_GENERAR_BRILLO =          85;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un bot�n del "Stop", resaltado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int BOTON_PARAR_BRILLO =            86;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un bot�n del "Pausa", resaltado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int BOTON_PAUSA_BRILLO =            87;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una imagen indicando disposici�n en forma de iconos.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int VISTA_ICONOS =                  88;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una imagen indicando disposici�n de ventanas en cascada.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int VISTA_CASCADA =                 89;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una imagen indicando disposici�n de ventanas en mosaico horizontal.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int VISTA_HORIZONTAL =              90;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una imagen indicando disposici�n de ventanas en mosaico vertical.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int VISTA_VERTICAL =                91;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una topo indicando una PDU de tipo TLDP.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int PDU_LDP =                       92;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una topo indicando una PDU de tipo GoS.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int PDU_GOS =                       93;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una topo indicando una PDU de tipo IPV4.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int PDU_IPV4 =                      94;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una topo indicando una PDU de tipo MPLS.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int PDU_MPLS =                      95;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un nodo emisor congestionado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int EMISOR_CONGESTIONADO =          96;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un nodo receptor congestionado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int RECEPTOR_CONGESTIONADO =        97;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Edge Router (LER) congestionado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LER_CONGESTIONADO =             98;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Edge Router Activo (LERA) congestionado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LERA_CONGESTIONADO =            99;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Switch Router (LSR) congestionado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LSR_CONGESTIONADO =            100;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un Label Switch Router Activo (LSRA) congestionado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LSRA_CONGESTIONADO =           101;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un topo indicando una PDU de tipo IPV4 marcada con GoS.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int PDU_IPV4_GOS =                 102;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un topo indicando una PDU de tipo MPLS marcada con GoS.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int PDU_MPLS_GOS =                 103;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un reloj.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int SIMULACION =                   104;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un PC.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int OPCIONES =                     105;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una paleta de pintor.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int DISENIO =                      106;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una gr�fica de queso.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int ANALISIS =                     107;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un sobre a enviar por email.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int SOBRE_EMAIL =                  108;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una varca de validaci�n, verde.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int ACEPTAR =                      109;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un aspa roja de denegaci�n.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int CANCELAR =                     110;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * una caja de herramientas.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int AVANZADA =                     111;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un topo gris.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int TOPO_GRIS =                    112;
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * un topo verde.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int TOPO_VERDE =                   113;
     
     /** Esta constante indica al dispensador que le devuelva la imagen que representa
      * uan interrogaci�n circunscrita en cun c�rculo amarillo.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int INTERROGACION =                114;
 
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * el icono MIME para los ficheros *.OSM de escenarios de Open SimMPLS 1.0.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int MIME_OSM =                     115;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un paquete TLDP siendo descartado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int PDU_LDP_CAE =                  116;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un paquete GPSRP siendo descartado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int PDU_GOS_CAE =                  117;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un paquete IPv4 siendo descartado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int PDU_IPV4_CAE =                 118;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un paquete IPv4, marcado con Garant�a de Servicio, siendo descartado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int PDU_IPV4_GOS_CAE =             119;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un paquete MPLS, marcado con Garant�a de Servicio, siendo descartado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int PDU_MPLS_GOS_CAE =             120;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un paquete MPLS siendo descartado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int PDU_MPLS_CAE =                 121;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un paquete que est� siendfo generado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int PAQUETE_GENERADO =             122;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un paquete que est� siendo emitido.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int PAQUETE_EMITIDO =              123;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un paquete que est� siendo recibido.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int PAQUETE_RECIBIDO =             124;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un paquete que est� siendo conmutado.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int PAQUETE_CONMUTADO =            125;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un nodo emisor congestionado al 50%.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int EMISOR_CONGESTIONADO_20 =      126;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un nodo receptor congestionado al 50%.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int RECEPTOR_CONGESTIONADO_20 =    127;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un nodo LER congestionado al 50%.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LER_CONGESTIONADO_20 =         128;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un nodo LERA congestionado al 50%.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LERA_CONGESTIONADO_20 =        129;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un nodo LSR congestionado al 50%.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LSR_CONGESTIONADO_20 =         130;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un nodo LSRA congestionado al 50%.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LSRA_CONGESTIONADO_20 =        131;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un nodo emisor congestionado al 75%.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int EMISOR_CONGESTIONADO_60 =      132;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un nodo receptor congestionado al 75%.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int RECEPTOR_CONGESTIONADO_60 =    133;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un nodo LER congestionado al 75%.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LER_CONGESTIONADO_60 =         134;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un nodo LERA congestionado al 75%.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LERA_CONGESTIONADO_60 =        135;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un nodo LSR congestionado al 75%.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LSR_CONGESTIONADO_60 =         136;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * a un nodo LSRA congestionado al 75%.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int LSRA_CONGESTIONADO_60 =        137;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * un enlace de comunicaciones que cae.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int ENLACE_CAIDO =                 138;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * un enlace de comunicaciones que se recupera tras una ca�da.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int ENLACE_RECUPERADO =            139;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * un reloj de arena.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int TRABAJANDO =                   140;
     /**
      * Esta constante indica al dispensador que le devuelva la imagen que representa
      * una cptura de la web del proyecto.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int CAPTURAWEB =                   141;
     
     /** Esta constante indica cuantas im�genes debe cargar en memoria el dispensador de
      * im�genes.
-     * @since 1.0
+     * @since 2.0
      */    
     private static final int NUMERO_DE_IMAGENES =          142;
 
     /** Este m�todo es el constructor de la clase; crea una nueva instancia de
      * TDispensadorDeImagenes.
-     * @since 1.0
+     * @since 2.0
      */
     public TImagesBroker() {
         imagen = new ImageIcon[NUMERO_DE_IMAGENES];
@@ -789,7 +789,7 @@ public class TImagesBroker {
 
     /** Este m�todo carga en memoria todas las im�genes que se van a utilizar en la
      * aplicaci�n.
-     * @since 1.0
+     * @since 2.0
      */    
     private void cargarImagenes() {
         imagen[ABRIR] = new javax.swing.ImageIcon(getClass().getResource("/imagenes/abrir.png"));
@@ -940,7 +940,7 @@ public class TImagesBroker {
      * @param queImagen Constante que identifica la imagen que se desea obtener. Es una de las
      * constantes definidas en la clase.
      * @return Un objeto Image con la imagen que se ha solicitado.
-     * @since 1.0
+     * @since 2.0
      */    
     public Image obtenerImagen(int queImagen) {
         ImageIcon imagenBuscada = imagen[queImagen];
@@ -954,7 +954,7 @@ public class TImagesBroker {
      * @param queImagen Constante que identifica la imagen que se desea obtener. Es una de las
      * constantes definidas en la clase.
      * @return Un objeto ImageIcon con la imagen que se ha solicitado.
-     * @since 1.0
+     * @since 2.0
      */    
     public ImageIcon obtenerIcono(int queImagen) {
         ImageIcon imagenBuscada = imagen[queImagen];
@@ -966,7 +966,7 @@ public class TImagesBroker {
 
     /** Este atributo es el array din�mico de im�genes que almacenar� las referencias a
      * las im�genes cargadas.
-     * @since 1.0
+     * @since 2.0
      */    
     private ImageIcon imagen[];
 }

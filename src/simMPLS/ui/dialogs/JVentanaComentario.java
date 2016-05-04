@@ -36,7 +36,7 @@ public class JVentanaComentario extends javax.swing.JDialog {
      * JVentanaComentario.
      * @param modal TRUE indica que la ventana impedir� que se pueda seleccionar cualquier otra
      * parte de la interfaz hasta que se cierre. FALSE indica que esto no es asi.
-     * @since 1.0
+     * @since 2.0
      */
     public JVentanaComentario(TImagesBroker di, java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -50,7 +50,7 @@ public class JVentanaComentario extends javax.swing.JDialog {
     /**
      * Este m�todo termina de iniciar algunos valroes de atributos que no queden
      * correctamente preparados en el constructor.
-     * @since 1.0
+     * @since 2.0
      */    
     public void initComponents2() {
         java.awt.Dimension tamFrame=this.getSize();
@@ -196,7 +196,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
  * Este m�todo comprueba que los datos introducidos son correctos para enviar el
  * comentario a los autores del programa.
  * @return Un c�digo de error. Alguna de las cosntantesdefinidas en la clase.
- * @since 1.0
+ * @since 2.0
  */
     public int comprobarDatos() {  
         if (servidor.getText().equals(""))
@@ -216,25 +216,25 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
 
     /**
      * Constante que indica que el mensaje se ha enviado correctamente.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int CORRECTO = 0;
     /**
      * Esta constanteindica que el campo donde se deb�a especificar el servidor SMTP,
      * se ha dejado vac�o.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int SERVIDOR_VACIO = 1;
     /**
      * Esta constante indica que el lugar donde se deb�a escribir el comentario a
      * enviar, se ha dejado vacio.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int SIN_COMENTARIO = 2;
     /**
      * Esta constante indica que el campo donde se deb�a especificar el remitente del
      * mensaje, se ha dejado vac�o.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int REMITE_VACIO = 3;
 

@@ -43,7 +43,7 @@ public class TLinkConfig {
     /**
      * Este m�todo establece el retardo para el enlace.
      * @param d Retardo deseado para el enlace
-     * @since 1.0
+     * @since 2.0
      */    
     public void ponerDelay(int d) {
         delay = d;
@@ -52,7 +52,7 @@ public class TLinkConfig {
     /**
      * Este m�todo devuelve el retardo del enlace.
      * @return El retardo del enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     public int obtenerDelay() {
         return delay;
@@ -60,7 +60,7 @@ public class TLinkConfig {
     
     /**
      * Este m�todo establece la configuraci�n del enlace como v�lida.
-     * @since 1.0
+     * @since 2.0
      * @param v TRUE, indica que la configuraci�n es v�lida. FALSE, lo contrario.
      */    
     public void ponerValida(boolean v) {
@@ -69,7 +69,7 @@ public class TLinkConfig {
     
     /**
      * Este m�todo averigua si la configuraci�n de enlace es v�lida o no.
-     * @since 1.0
+     * @since 2.0
      * @return TRUE, si la configuraci�n es v�lida. FALSE en caso contrario.
      */    
     public boolean obtenerValida() {
@@ -78,7 +78,7 @@ public class TLinkConfig {
     
     /**
      * Este m�todo establece si el enlace es externo o interno al dominio MPLS.
-     * @since 1.0
+     * @since 2.0
      * @param t EXTERO, si se desea que el enlace sea externo. INTERNAL, si se desea que sea
  interno.
      */    
@@ -88,7 +88,7 @@ public class TLinkConfig {
 
     /**
      * Este m�todo averigua el tipo del enlace.
-     * @since 1.0
+     * @since 2.0
      * @return EXTERNAL, si el enlace es externo. INTERNAL si el enlace es interno.
      */    
     public int obtenerTipo() {
@@ -97,7 +97,7 @@ public class TLinkConfig {
 
     /**
      * Este m�todo establece el nombre del enlace.
-     * @since 1.0
+     * @since 2.0
      * @param n El nombre del enlace.
      */    
     public void ponerNombre(String n) {
@@ -106,7 +106,7 @@ public class TLinkConfig {
 
     /**
      * Este m�todo obtiene el nombre del enlace.
-     * @since 1.0
+     * @since 2.0
      * @return El nombre del enlace.
      */    
     public String obtenerNombre() {
@@ -115,7 +115,7 @@ public class TLinkConfig {
 
     /**
      * Este m�todo establece si el nombre del enlace se debe mostrar o no.
-     * @since 1.0
+     * @since 2.0
      * @param p TRUE, si queremos que el nombre se muestre. FALSE en caso contrario.
      */    
     public void ponerMostrarNombre(boolean p) {
@@ -124,7 +124,7 @@ public class TLinkConfig {
 
     /**
      * Este m�todo establece el nombre del nodo que ser� extremo izquierdo del enlace.
-     * @since 1.0
+     * @since 2.0
      * @param n Nombre del ndo que ser� extremo izquierdo del enlace.
      */    
     public void ponerNombreExtremo1(String n) {
@@ -133,7 +133,7 @@ public class TLinkConfig {
 
     /**
      * Este m�todo obtiene el nombre del nodo que es extremo izquierdo del enlace.
-     * @since 1.0
+     * @since 2.0
      * @return El nombre del nodo que es extremo izquierdo del enlace.
      */    
     public String obtenerNombreExtremo1() {
@@ -142,7 +142,7 @@ public class TLinkConfig {
 
     /**
      * Este m�todo establece el nombre del nodo que ser� extremo derecho del enlace.
-     * @since 1.0
+     * @since 2.0
      * @param n El nombre del nodo que es extremo derecho del enlace.
      */    
     public void ponerNombreExtremo2(String n) {
@@ -151,7 +151,7 @@ public class TLinkConfig {
 
     /**
      * Este m�todo obtiene el nombre del nodo que es extremo derecho del enlace.
-     * @since 1.0
+     * @since 2.0
      * @return El nombre del nodo que es extremo derecho del enlace.
      */    
     public String obtenerNombreExtremo2() {
@@ -160,7 +160,7 @@ public class TLinkConfig {
 
     /**
      * Este m�todo averigua si actualmente el enlace est� mostrando el nombre.
-     * @since 1.0
+     * @since 2.0
      * @return TRUE, si el nombre se est� mostrando. FALSE en caso contrario.
      */    
     public boolean obtenerMostrarNombre() {
@@ -170,7 +170,7 @@ public class TLinkConfig {
     /**
      * Este m�todo establece a qu� puerto del nodo extremo izquierdo del enlace se va a
      * conectar �ste.
-     * @since 1.0
+     * @since 2.0
      * @param p Puerto del nodo izquierdo al que se conecta el enlace.
      */    
     public void ponerPuertoExtremo1(int p) {  
@@ -180,7 +180,7 @@ public class TLinkConfig {
     /**
      * Este m�todo obtiene el puerto del nodo izquierdo del enlace al que este est�
      * conectado.
-     * @since 1.0
+     * @since 2.0
      * @return El puerto del ndo izquierdo del enlace al que �ste est� conectado.
      */    
     public int obtenerPuertoExtremo1() {  
@@ -190,7 +190,7 @@ public class TLinkConfig {
     /**
      * Este m�todo establece a qu� puerto del nodo extremo derecho del enlace se va a
      * conectar �ste.
-     * @since 1.0
+     * @since 2.0
      * @param p Puerto del ndo derecho del enlace al que se conectar� �ste.
      */    
     public void ponerPuertoExtremo2(int p) {  
@@ -200,7 +200,7 @@ public class TLinkConfig {
     /**
      * Este m�todo obtiene el puerto del nodo derecho del enlace al que �ste est�
      * conectado.
-     * @since 1.0
+     * @since 2.0
      * @return El puerto del nodo derecho del enlace al que este est� conectado.
      */    
     public int obtenerPuertoExtremo2() {  
@@ -209,7 +209,7 @@ public class TLinkConfig {
 
     /**
      * Este m�todo comprueba que la configuraci�n del enlace sea correcta.
-     * @since 1.0
+     * @since 2.0
      * @param topo Topolog�a donde est� insertado el enlace.
      * @param recfg TRUE, si se est� reconfigurando el enlace. FALSE si se est� insertando nuevo.
      * @return CORRECTA, si la configuraci�n es correcta. Un codigo de error correspondiente a
@@ -259,7 +259,7 @@ public class TLinkConfig {
     /**
      * Este m�todo transforma el c�digo de error de las constantes de la clase, en una
      * explicaci�n textual inteligible.
-     * @since 1.0
+     * @since 2.0
      * @param error El codigo de error que se debe transformar
      * @return La descripci�n textual del error
      */    
@@ -279,7 +279,7 @@ public class TLinkConfig {
     /**
      * Este m�todo calcula y configura el tipo del enlace bas�ndose en el tipo de nodos
      * que interconecta.
-     * @since 1.0
+     * @since 2.0
      * @param topo Topolog�a donde se encuentra el enlace.
      */    
     public void calcularTipo(TTopology topo) {
@@ -299,46 +299,46 @@ public class TLinkConfig {
 
     /**
      * Constante que indica que la configuraci�n del enlace es correcta.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int CORRECTA = 0;
     /**
      * Constante que indica falta el nombre en la configuraci�n del enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int SIN_NOMBRE = 1;
     /**
      * Constante que indica que el nombre del enlace solo esta compuesta por espacios.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int SOLO_ESPACIOS = 2;
     /**
      * Constante que indica que ya hay otro enlace en la topolog�a con ese nombre.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int NOMBRE_YA_EXISTE = 3;
     /**
      * Constnte que indica que no se ha seleccionado el puerto para el extremo
      * izquierdo del enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int FALTA_PUERTO_1 = 4;
     /**
      * Constnte que indica que no se ha seleccionado el puerto para el extremo
      * derecho del enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int FALTA_PUERTO_2 = 5;
     /**
      * Constnte que indica que no se ha seleccionado el extremo
      * izquierdo del enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int FALTA_EXTREMO_1 = 6;
     /**
      * Constnte que indica que no se ha seleccionado el extremo
      * derecho del enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int FALTA_EXTREMO_2 = 7;
 
@@ -350,7 +350,7 @@ public class TLinkConfig {
     private int puertoExtremo2;
     /**
      * Atributo de la clase que almacena el retardo del enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     public int delay;
     private boolean ponerNombre;

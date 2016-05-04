@@ -38,7 +38,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * @param identificador Identificador �nico para este elemento en la topolog�a.
      * @param il Generador de identificadores para los eventos que genere este enlace externo.
      * @param t Topologia en la que se encuentra este enlace externo.
-     * @since 1.0
+     * @since 2.0
      */
     public TExternalLink(int identificador, TLongIDGenerator il, TTopology t) {
         super(identificador, il, t);
@@ -48,7 +48,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
     /**
      * Este m�todo devuelve el tipo el enlace.
      * @return TLink.EXTERNAL, indicando que es un nodo externo.
-     * @since 1.0
+     * @since 2.0
      */    
     public int getLinkType() {
         return super.EXTERNAL;
@@ -58,7 +58,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * Este m�todo recibe eventos de sincronizaci�n del reloj del simulador, que lo
      * sincroniza todo.
      * @param evt Evento de sincronizaci�n que el reloj del simulador env�a a este enlace externo.
-     * @since 1.0
+     * @since 2.0
      */    
     public void receiveTimerEvent(TTimerEvent evt) {
         this.setStepDuration(evt.getStepDuration());
@@ -71,7 +71,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * Este m�todo establece si el enlace se puede considerar como caido o no.
      * @param ec TRUE, indica que queremos que el enlace caiga. FALSE indica que no lo queremos o
      * que queremos que se levante si est� caido.
-     * @since 1.0
+     * @since 2.0
      */    
     public void ponerEnlaceCaido(boolean ec) {
         enlaceCaido = ec;
@@ -110,7 +110,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
     /**
      * Este m�todo se ejecuta cuando el hilo principal del enlace externo se ponne en
      * funcionamiento. Es el n�cleo del enlace externo.
-     * @since 1.0
+     * @since 2.0
      */    
     public void run() {
         // Acciones a llevar a cabo durante el tic.
@@ -123,7 +123,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
     /**
      * Este m�todo toma todos los paquetes que en ese momento se encuentren circulando
      * por el enlace externo y los avanza por el mismo hacia su destino.
-     * @since 1.0
+     * @since 2.0
      */    
     public void actualizarTiemposDeEspera() {
         cerrojo.lock();
@@ -146,7 +146,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
     /**
      * Este m�todo toma todos los paquetes que se encuentren circulando por el enlace
      * externo y detecta todos aquellos que ya han llegado al destino.
-     * @since 1.0
+     * @since 2.0
      */    
     public void adelantarPaquetesEnTransito() {
         cerrojo.lock();
@@ -171,7 +171,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
     /**
      * Este m�todo toma todos los paquetes que han llegado al destino y realiza la
      * insercio�n de los mismos en el puerto correspondiente de dicho destino.
-     * @since 1.0
+     * @since 2.0
      */    
     public void pasarPaquetesADestino() {
         this.cerrojoLlegados.lock();
@@ -194,7 +194,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * Este m�todo obtiene el peso del enlace externos que debe usar el algoritmo de
      * routing para calcular rutas.
      * @return El peso del enlace. En el enlace externo es el retardo.
-     * @since 1.0
+     * @since 2.0
      */    
     public long obtenerPeso() {
         long peso = this.obtenerDelay();
@@ -205,7 +205,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * Este m�todo devuelve si el enlace externo est� bien configurado o no.
      * @return TRUE, si la configuraci�n actual del enlace es correcta. FALSE en caso
      * contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean isWellConfigured() {
         return false;
@@ -216,7 +216,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * enlace externo es v�lido o no.
      * @param t Topolog�a dentro de la cual se encuentra este enlace externo.
      * @return CORRECTA, si la configuraci�n es correcta. Un codigo de error en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public int comprobar(TTopology t) {
         return 0;
@@ -227,7 +227,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * m�todo <I>validateConfig(...)</I>
      * @param e El codigo de error que se quiere transformar.
      * @return El mensaje textual correspondiente a ese mensaje de error.
-     * @since 1.0
+     * @since 2.0
      */    
     public String getErrorMessage(int e) {
         return null;
@@ -237,7 +237,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * Este m�todo transforma el enlace externo en un representaci�n de texto que se
      * puede almacenar en disco sin problemas.
      * @return El equivalente en texto del enlace externo completo.
-     * @since 1.0
+     * @since 2.0
      */    
     public String marshall() {
         String cadena = "#EnlaceExterno#";
@@ -265,7 +265,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * configura el objeto con los valores que obtiene.
      * @param elemento Enlace externo en su representaci�n serializada.
      * @return TRUE, si se deserializa correctamente, FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean unMarshall(String elemento) {
         TLinkConfig configEnlace = new TLinkConfig();
@@ -297,7 +297,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
     /**
      * Este m�todo reinicia los atributos de la clase, dejando la instancia como si se
      * acabase de crear por el constructor.
-     * @since 1.0
+     * @since 2.0
      */    
     public void reset() {
         this.cerrojo.lock();

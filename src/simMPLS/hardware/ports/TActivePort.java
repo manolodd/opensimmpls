@@ -30,7 +30,7 @@ import simMPLS.utils.TMonitor;
  * active nodes.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TActivePort extends TPort {
 
@@ -39,7 +39,7 @@ public class TActivePort extends TPort {
      * TActivePort.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @param portID port number (the port id used to distinguish
  this port of other in the same active parentNode).
      * @param parentSetOfActivePorts A reference to the parent set of active
@@ -117,7 +117,7 @@ public class TActivePort extends TPort {
      * followin a FIFO paradigm.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     private void doPrioritizedRoundRobinPacketSelection() {
         boolean end = false;
@@ -378,7 +378,7 @@ public class TActivePort extends TPort {
      * packets.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @return -1, if there are not packet to read (the port is empty).
      * Otherwise, iterator return a value between 0 and 10 (inclusive) which is
      * the packetPriority of the next packet to be read from the port.
@@ -402,7 +402,7 @@ public class TActivePort extends TPort {
      *
      * @param unlimitedBuffer TRUE if the port is going to be defined as an
      * ideal one (unlimited space on iterator). FALSE, on the contrary.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void setUnlimitedBuffer(boolean unlimitedBuffer) {
@@ -414,7 +414,7 @@ public class TActivePort extends TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packet The packet to be discarded from the buffer.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void discardPacket(TAbstractPDU packet) {
@@ -426,7 +426,7 @@ public class TActivePort extends TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packet Packet to be inserted in the buffer of the active port.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void addPacket(TAbstractPDU packet) {
@@ -475,7 +475,7 @@ public class TActivePort extends TPort {
      * request the parent parentNode to request retransmission of the packet, if
      * needed, to other active nodes.
      *
-     * @since 1.0
+     * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packet The packet that is going to be inserted in the buffer
      * through EPCD algoritm.
@@ -648,7 +648,7 @@ public class TActivePort extends TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packet The packet to be inserted in the buffer of the active port.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void reEnqueuePacket(TAbstractPDU packet) {
@@ -689,7 +689,7 @@ public class TActivePort extends TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The read packet
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public TAbstractPDU getPacket() {
@@ -719,7 +719,7 @@ public class TActivePort extends TPort {
      * this moment.
      * @return TRUE, if we can switch the next packet of the buffer at this
      * moment. Otherwise, FALSE.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public boolean canSwitchPacket(int octets) {
@@ -742,7 +742,7 @@ public class TActivePort extends TPort {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return A number, without decimals, between 0 and 100, which will be the
      * congestion level as a percentage.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public long getCongestionLevel() {
@@ -761,7 +761,7 @@ public class TActivePort extends TPort {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TRUE, if there is a packet waiting to be switched/routed.
      * Otherwise, FALSE.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public boolean thereIsAPacketWaiting() {
@@ -811,7 +811,7 @@ public class TActivePort extends TPort {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Size, in octects, used by packets in the buffer of the active
      * port.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public long getOccupancy() {
@@ -948,7 +948,7 @@ public class TActivePort extends TPort {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The total number of packets stored in the buffer of the active
      * port.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int getNumberOfPackets() {
@@ -975,7 +975,7 @@ public class TActivePort extends TPort {
      * constructor.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void reset() {

@@ -30,7 +30,7 @@ import simMPLS.scenario.TNode;
  * SimMPLS format).
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TOSMSaver {
 
@@ -40,7 +40,7 @@ public class TOSMSaver {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param scenario The TScenario object to be stored in disk.
-     * @since 1.0
+     * @since 2.0
      */
     public TOSMSaver(TScenario scenario) {
         this.scenario = scenario;
@@ -58,7 +58,7 @@ public class TOSMSaver {
      * assure no manual modifications. If false, no CRC will be computed.
      * @return True, if the scenario can be saved successful. Otherwise, returns
      * false.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean save(File outputFile, boolean createCRC) {
         try {

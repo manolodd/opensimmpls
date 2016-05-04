@@ -30,7 +30,7 @@ import simMPLS.ui.utils.TImagesBroker;
  * topolog�a.
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @since 1.0
+ * @since 2.0
  */
 public class JVentanaEmisor extends javax.swing.JDialog {
 
@@ -42,7 +42,7 @@ public class JVentanaEmisor extends javax.swing.JDialog {
      * @param parent Ventana padre donde se mostrar� esta ventana de tipo JVentanaEmisor.
      * @param modal TRUE indica que la ventana impedir� que se pueda seleccionar cualquier parte de
      * la interfaz hasta que se cierre. FALSE indica todo lo contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public JVentanaEmisor(TTopology t, JPanelDisenio pad, TImagesBroker di, java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -57,7 +57,7 @@ public class JVentanaEmisor extends javax.swing.JDialog {
     /**
      * Este m�todo terminar� de configurar algunos aspectos que no hayan quedado
      * terminados de configurar en el constructor.
-     * @since 1.0
+     * @since 2.0
      */    
     public void initComponents2() {
         panelCoordenadas.ponerPanelOrigen(pd);
@@ -615,7 +615,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
     /**
      * Este m�todo permite cargar en la ventana la configuraci�n actual del nodo emisor
      * que estamos configurando.
-     * @since 1.0
+     * @since 2.0
      * @param recfg TRUE indica que estamos reconfigurando el emisor. FALSE, que el emisor est�
      * siendo insertado desde cero.
      * @param tce Nodo emisor que estamos configurando.

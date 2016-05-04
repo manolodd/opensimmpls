@@ -26,7 +26,7 @@ import simMPLS.utils.TMonitor;
  * simulation events.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TSimulationCollector implements ISimulationEventListener {
 
@@ -35,7 +35,7 @@ public class TSimulationCollector implements ISimulationEventListener {
      * TSimulationCollector.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public TSimulationCollector() {
         this.simulationEventsBuffer = new TreeSet();
@@ -47,7 +47,7 @@ public class TSimulationCollector implements ISimulationEventListener {
      * This method establishes the simulation panel where collected simulation
      * events will be displayed. It connects the generated events to the GUI.
      *
-     * @since 1.0
+     * @since 2.0
      * @param simulationPanel The simulation panel where collected simulation
      * events will be displayed.
      */
@@ -60,7 +60,7 @@ public class TSimulationCollector implements ISimulationEventListener {
      * delivers them to the simulation panel to be displayed.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @param simulationEvent The simulation event received.
      */
     @Override
@@ -142,7 +142,7 @@ public class TSimulationCollector implements ISimulationEventListener {
      * values, as when created by the constructor.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      *
      */
     public void reset() {

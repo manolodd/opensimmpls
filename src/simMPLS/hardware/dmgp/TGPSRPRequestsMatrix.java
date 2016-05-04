@@ -26,7 +26,7 @@ import simMPLS.utils.TMonitor;
  * be stored while they wait to be managed.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TGPSRPRequestsMatrix {
 
@@ -35,7 +35,7 @@ public class TGPSRPRequestsMatrix {
      * TGPSRPRequestsMatrix.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public TGPSRPRequestsMatrix() {
         this.entries = new TreeSet();
@@ -48,7 +48,7 @@ public class TGPSRPRequestsMatrix {
      * when created by the constructor.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public void reset() {
         this.entries = null;
@@ -66,7 +66,7 @@ public class TGPSRPRequestsMatrix {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param currentOutgoingPort The port that is goint to be replaced.
      * @param newOutgoingPort The new outgoing port for matching entries.
-     * @since 1.0
+     * @since 2.0
      */
     public void updateOutgoingPort(int currentOutgoingPort, int newOutgoingPort) {
         this.monitor.lock();
@@ -88,7 +88,7 @@ public class TGPSRPRequestsMatrix {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param oldOutgoingPort Port that must match the outgoing port of entries to be
      * removed.
-     * @since 1.0
+     * @since 2.0
      */
     public void removeEntriesMatchingOutgoingPort(int oldOutgoingPort) {
         this.monitor.lock();
@@ -112,7 +112,7 @@ public class TGPSRPRequestsMatrix {
      * @param incomingPort Incoming port of the packet. It will be the outgoing port
      * for the retransmission request.
      * @return The new created an inserted entry. Otherwise, NULL.
-     * @since 1.0
+     * @since 2.0
      */
     public TGPSRPRequestEntry addEntry(TMPLSPDU mplsPacket, int incomingPort) {
         this.monitor.lock();
@@ -140,7 +140,7 @@ public class TGPSRPRequestsMatrix {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param flowID Flow the entry refers to.
      * @param packetID Packet the table refers to.
-     * @since 1.0
+     * @since 2.0
      */
     public void removeEntry(int flowID, int packetID) {
         this.monitor.lock();
@@ -164,7 +164,7 @@ public class TGPSRPRequestsMatrix {
      * @param flowID Flow identifier the entry refers to.
      * @param packetID Packet identifier the entry refers to.
      * @return Entry matching the specified arguments. Otherwise, NULL.
-     * @since 1.0
+     * @since 2.0
      */
     public TGPSRPRequestEntry getEntry(int flowID, int packetID) {
         this.monitor.lock();
@@ -188,7 +188,7 @@ public class TGPSRPRequestsMatrix {
      * retransmission attemps are available and their timeouts have expired.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public void updateEntries() {
         this.monitor.lock();
@@ -210,7 +210,7 @@ public class TGPSRPRequestsMatrix {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param nanoseconds Number of nanoseconds to be decreased from all entries timeouts.
-     * @since 1.0
+     * @since 2.0
      */
     public void decreaseTimeout(int nanoseconds) {
         this.monitor.lock();
@@ -230,7 +230,7 @@ public class TGPSRPRequestsMatrix {
      * @param flowID Flow identifier the entry refers to.
      * @param packetID Packet identifier the entry refers to.
      * @return Outgoing port of the entry maching the specified arguments.
-     * @since 1.0
+     * @since 2.0
      */
     public int getOutgoingPort(int flowID, int packetID) {
         this.monitor.lock();
@@ -258,7 +258,7 @@ public class TGPSRPRequestsMatrix {
      * @param packetID Packet identifier of the desired entry.
      * @return IP address of the following node to be requested for a packet
      * retransmission. Otherwise, NULL.
-     * @since 1.0
+     * @since 2.0
      */
     public String getActiveNodeIP(int flowID, int packetID) {
         this.monitor.lock();
@@ -282,7 +282,7 @@ public class TGPSRPRequestsMatrix {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Iterator of all entries in the table.
-     * @since 1.0
+     * @since 2.0
      */
     public Iterator getEntriesIterator() {
         return entries.iterator();
@@ -293,7 +293,7 @@ public class TGPSRPRequestsMatrix {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Sync monitor of the table.
-     * @since 1.0
+     * @since 2.0
      */
     public TMonitor getMonitor() {
         return this.monitor;
@@ -302,13 +302,13 @@ public class TGPSRPRequestsMatrix {
     /**
      * Timer used to know when a retransmission request should be retried.
      *
-     * @since 1.0
+     * @since 2.0
      */
     public static final int TIMEOUT = 50000;
     /**
      * Number of times the rentransmission request should be retried.
      *
-     * @since 1.0
+     * @since 2.0
      */
     public static final int ATTEMPTS = 8;
 

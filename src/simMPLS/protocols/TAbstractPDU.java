@@ -20,7 +20,7 @@ package simMPLS.protocols;
  * is common for all PDU. Cannot be directly instantiated.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public abstract class TAbstractPDU implements Comparable {
 
@@ -32,7 +32,7 @@ public abstract class TAbstractPDU implements Comparable {
      * @param id Packet identifier.
      * @param originIP IP addres of this packet's sender.
      * @param targetIP IP addres of this packet's receiver.
-     * @since 1.0
+     * @since 2.0
      */
     public TAbstractPDU(long id, String originIP, String targetIP) {
         this.id = id;
@@ -44,7 +44,7 @@ public abstract class TAbstractPDU implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return This packet's identifier.
-     * @since 1.0
+     * @since 2.0
      */
     public long getID() {
         return this.id;
@@ -55,7 +55,7 @@ public abstract class TAbstractPDU implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param id An identifier for this packet.
-     * @since 1.0
+     * @since 2.0
      */
     public void setID(long id) {
         this.id = id;
@@ -66,7 +66,7 @@ public abstract class TAbstractPDU implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The IPv4 header of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     public TIPv4Header getIPv4Header() {
         return this.IPv4Header;
@@ -77,7 +77,7 @@ public abstract class TAbstractPDU implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param IPv4Header The IPv4 header for this packet.
-     * @since 1.0
+     * @since 2.0
      */
     public void setHeader(TIPv4Header IPv4Header) {
         this.IPv4Header = IPv4Header;
@@ -91,7 +91,7 @@ public abstract class TAbstractPDU implements Comparable {
      * @param abstractPDU The packet to compaare with this one.
      * @return -1, 0 or 1 depending on wheteher the packet specified as
      * parameter is greater, equal or lower than the current one.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int compareTo(Object abstractPDU) {
@@ -111,7 +111,7 @@ public abstract class TAbstractPDU implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Size of this packet in bytes (octects).
-     * @since 1.0
+     * @since 2.0
      */
     public abstract int getSize();
 
@@ -121,7 +121,7 @@ public abstract class TAbstractPDU implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The type of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     public abstract int getType();
 
@@ -131,7 +131,7 @@ public abstract class TAbstractPDU implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The subtype of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     public abstract int getSubtype();
 
@@ -141,7 +141,7 @@ public abstract class TAbstractPDU implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packetSubtype The subtype of the packet.
-     * @since 1.0
+     * @since 2.0
      */
     public abstract void setSubtype(int packetSubtype);
 

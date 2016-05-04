@@ -23,14 +23,14 @@ import java.util.EventListener;
  * progress events.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public interface IProgressEventListener extends EventListener {
     /**
      * This method, when implemented, will capture progress events.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @param progressEvent The progress event received.
      */ 
     public void receiveProgressEvent(TProgressEvent progressEvent);

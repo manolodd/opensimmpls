@@ -57,7 +57,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
  id unico para cada evento que genere.
      * @param t Referencia a la topolog�a a la que pertenece el LER. Le permite hacer
      * comprobaciones, calcular rutas, etc�tera.
-     * @since 1.0
+     * @since 2.0
      */
     public TLERNode(int identificador, String d, TLongIDGenerator il, TTopology t) {
         super(identificador, d, il, t);
@@ -73,7 +73,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo calcula el n�mero de nanosegundos que se necesitan para conmutar un
      * bit. Se basa en la potencia de conmutaci�n configurada para el LER.
      * @return El n�mero de nanosegundos necesarios para conmutar un bit.
-     * @since 1.0
+     * @since 2.0
      */
     public double obtenerNsPorBit() {
         long tasaEnBitsPorSegundo = (long) (this.potenciaEnMb*1048576L);
@@ -87,7 +87,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @param octetos El n�mero de octetos que queremos conmutar.
      * @return El n�mero de nanosegundos necesarios para conmutar el n�mero de octetos
      * especificados.
-     * @since 1.0
+     * @since 2.0
      */
     public double obtenerNsUsadosTotalOctetos(int octetos) {
         double nsPorCadaBit = obtenerNsPorBit();
@@ -100,7 +100,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * de nanosegundos de que dispone actualmente.
      * @return El n�mero de bits m�ximo que puede conmutar el nodo con los nanosegundos de que
      * dispone actualmente.
-     * @since 1.0
+     * @since 2.0
      */
     public int obtenerLimiteBitsTransmitibles() {
         double nsPorCadaBit = obtenerNsPorBit();
@@ -112,7 +112,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo calcula el n�mero de octetos completos que puede transmitir el nodo
      * con el n�mero de nanosegundos de que dispone.
      * @return El n�mero de octetos completos que puede transmitir el nodo en un momento dado.
-     * @since 1.0
+     * @since 2.0
      */
     public int obtenerOctetosTransmitibles() {
         double maximoBytes = ((double)obtenerLimiteBitsTransmitibles()/(double)8.0);
@@ -122,7 +122,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo obtiene la potencia em Mbps con que est� configurado el nodo.
      * @return La potencia de conmutaci�n del nodo en Mbps.
-     * @since 1.0
+     * @since 2.0
      */
     public int obtenerPotenciaEnMb() {
         return this.potenciaEnMb;
@@ -131,7 +131,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo permite establecer la potencia de conmutaci�n del nodo en Mbps.
      * @param pot Potencia deseada para el nodo en Mbps.
-     * @since 1.0
+     * @since 2.0
      */
     public void ponerPotenciaEnMb(int pot) {
         this.potenciaEnMb = pot;
@@ -140,7 +140,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo obtiene el tama�o del buffer del nodo.
      * @return Tama�o del buffer del nodo en MB.
-     * @since 1.0
+     * @since 2.0
      */
     public int obtenerTamanioBuffer() {
         return this.getPorts().getBufferSizeInMB();
@@ -149,7 +149,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo permite establecer el tama�o del buffer del nodo.
      * @param tb Tama�o el buffer deseado para el nodo, en MB.
-     * @since 1.0
+     * @since 2.0
      */
     public void ponerTamanioBuffer(int tb) {
         this.getPorts().setBufferSizeInMB(tb);
@@ -158,7 +158,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo reinicia los atributos de la clase como si acabasen de ser creados
      * por el constructor.
-     * @since 1.0
+     * @since 2.0
      */
     public void reset() {
         this.ports.reset();
@@ -173,7 +173,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo indica el tipo de nodo de que se trata la instancia actual.
      * @return LER. Indica que el nodo es de este tipo.
-     * @since 1.0
+     * @since 2.0
      */
     public int getNodeType() {
         return super.LER;
@@ -184,7 +184,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * funcionamiento. Adem�s controla el tiempo de que dispone el LER para conmutar
      * paquetes.
      * @param evt Evento de reloj que sincroniza la ejecuci�n de los elementos de la topology.
-     * @since 1.0
+     * @since 2.0
      */
     public void receiveTimerEvent(TTimerEvent evt) {
         this.setStepDuration(evt.getStepDuration());
@@ -201,7 +201,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Llama a las acciones que se tienen que ejecutar en el transcurso del tic de
      * reloj que el LER estar� en funcionamiento.
-     * @since 1.0
+     * @since 2.0
      */
     public void run() {
         // Acciones a llevar a cabo durante el tic.
@@ -221,7 +221,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo comprueba que haya conectividad con sus nodos adyacentes, es decir,
      * que no haya caido ning�n enlace. Si ha caido alg�n enlace, entonces genera la
      * correspondiente se�alizaci�n para notificar este hecho.
-     * @since 1.0
+     * @since 2.0
      */
     public void comprobarElEstadoDeLasComunicaciones() {
         boolean eliminar = false;
@@ -303,7 +303,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * conmutar y/o encaminar un paquete, lo hace, llamando para ello a los m�todos
      * correspondiente segun el paquete. Si el paquete est� mal formado o es
      * desconocido, lo descarta.
-     * @since 1.0
+     * @since 2.0
      */
     public void encaminarPaquetes() {
         boolean conmute = false;
@@ -342,7 +342,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo conmuta un paquete GPSRP.
      * @param paquete Paquete GPSRP a conmutar.
      * @param pEntrada Puerto por el que ha entrado el paquete.
-     * @since 1.0
+     * @since 2.0
      */
     public void conmutarGPSRP(TGPSRPPDU paquete, int pEntrada) {
         if (paquete != null) {
@@ -380,7 +380,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * interior del dominio MPLS o hacia el exterior, segun corresponda.
      * @param paquete Paquete IPv4 de entrada.
      * @param pEntrada Puerto por el que ha accedido al nodo el paquete.
-     * @since 1.0
+     * @since 2.0
      */
     public void conmutarIPv4(TIPv4PDU paquete, int pEntrada) {
         int valorFEC = clasificarPaquete(paquete);
@@ -452,7 +452,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * corresponda.
      * @param paquete Paquete TLDP recibido.
      * @param pEntrada Puerto por el que se ha recibido el paquete TLDP.
-     * @since 1.0
+     * @since 2.0
      */
     public void conmutarTLDP(TTLDPPDU paquete, int pEntrada) {
         if (paquete.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REQUEST) {
@@ -476,7 +476,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * siguiente nodo del dominio MPLS o hacia el exterior, segun corresponda.
      * @param paquete Paquete MPLS recibido.
      * @param pEntrada Puerto por el que ha llegado el paquete MPLS recibido.
-     * @since 1.0
+     * @since 2.0
      */
     public void conmutarMPLS(TMPLSPDU paquete, int pEntrada) {
         TMPLSLabel eMPLS = null;
@@ -616,7 +616,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo trata una petici�n de etiquetas.
      * @param paquete Petici�n de etiquetas recibida de otro nodo.
      * @param pEntrada Puerto de entrada de la petici�n de etiqueta.
-     * @since 1.0
+     * @since 2.0
      */
     public void tratarSolicitudTLDP(TTLDPPDU paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
@@ -651,7 +651,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo trata un paquete TLDP de eliminaci�n de etiqueta.
      * @param paquete Eliminaci�n de etiqueta recibida.
      * @param pEntrada Puerto por el que se recibi�n la eliminaci�n de etiqueta.
-     * @since 1.0
+     * @since 2.0
      */
     public void tratarEliminacionTLDP(TTLDPPDU paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
@@ -700,7 +700,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo trata un paquete TLDP de confirmaci�n de etiqueta.
      * @param paquete Confirmaci�n de etiqueta.
      * @param pEntrada Puerto por el que se ha recibido la confirmaci�n de etiquetas.
-     * @since 1.0
+     * @since 2.0
      */
     public void tratarSolicitudOkTLDP(TTLDPPDU paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
@@ -743,7 +743,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo trata un paquete TLDP de denegaci�n de etiqueta.
      * @param paquete Paquete de denegaci�n de etiquetas recibido.
      * @param pEntrada Puerto por el que se ha recibido la denegaci�n de etiquetas.
-     * @since 1.0
+     * @since 2.0
      */
     public void tratarSolicitudNoTLDP(TTLDPPDU paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
@@ -775,7 +775,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo trata un paquete TLDP de confirmaci�n de eliminaci�n de etiqueta.
      * @param paquete Paquete de confirmaci�n e eliminaci�n de etiqueta.
      * @param pEntrada Puerto por el que se ha recibido la confirmaci�n de eliminaci�n de etiqueta.
-     * @since 1.0
+     * @since 2.0
      */
     public void tratarEliminacionOkTLDP(TTLDPPDU paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
@@ -822,7 +822,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo env�a una etiqueta al nodo que indique la entrada en la
      * matriz de conmutaci�n especificada.
      * @param emc Entrada de la matriz de conmutaci�n especificada.
-     * @since 1.0
+     * @since 2.0
      */
     public void enviarSolicitudOkTLDP(TSwitchingMatrixEntry emc) {
         if (emc != null) {
@@ -864,7 +864,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo env�a una denegaci�n de etiqueta al nodo que especifique la entrada
      * de la matriz de conmutaci�n correspondiente.
      * @param emc Entrada de la matriz de conmutaci�n correspondiente.
-     * @since 1.0
+     * @since 2.0
      */
     public void enviarSolicitudNoTLDP(TSwitchingMatrixEntry emc) {
         if (emc != null) {
@@ -905,7 +905,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo env�a una confirmaci�n de eliminaci�n de etiqueta al nodo que
      * especifique la correspondiente entrada en la matriz de conmutaci�n.
-     * @since 1.0
+     * @since 2.0
      * @param puerto Puierto por el que se debe enviar la confirmaci�n de eliminaci�n.
      * @param emc Entrada de la matriz de conmutaci�n especificada.
      */
@@ -952,7 +952,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo solicita una etiqueta al nodo que se especifica en la entrada de la
      * matriz de conmutaci�n correspondiente.
      * @param emc Entrada en la matriz de conmutaci�n especificada.
-     * @since 1.0
+     * @since 2.0
      */
     public void solicitarTLDP(TSwitchingMatrixEntry emc) {
         String IPLocal = this.getIPAddress();
@@ -994,7 +994,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo env�a una eliminaci�n de etiqueta al nodo especificado por le
      * entrada de la matriz de conmutaci�n correspondiente.
-     * @since 1.0
+     * @since 2.0
      * @param puerto Puerto por el que se debe enviar la eliminaci�n.
      * @param emc Entrada en la matriz de conmutaci�n especificada.
      */
@@ -1044,7 +1044,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo reenv�a todas las peticiones pendientes de contestaci�n de una
      * entrada de la matriz de conmutaci�n.
      * @param emc Entrada de la matriz de conmutaci�n especificada.
-     * @since 1.0
+     * @since 2.0
      */
     public void solicitarTLDPTrasTimeout(TSwitchingMatrixEntry emc) {
         if (emc != null) {
@@ -1086,7 +1086,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo reenv�a todas las eliminaciones de etiquetas pendientes de una
      * entrada de la matriz de conmutaci�n.
-     * @since 1.0
+     * @since 2.0
      * @param puerto Puerto por el que se debe enviar la eliminaci�n.
      * @param emc Entrada de la matriz de conmutaci�n especificada.
      */
@@ -1098,7 +1098,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo reenv�a todas las eliminaciones de etiquetas pendientes de una
  entrada de la matriz de conmutaci�n a todos los ports necesarios.
      * @param emc Entrada de la matriz de conmutaci�n especificada.
-     * @since 1.0
+     * @since 2.0
      */
     public void labelWithdrawalAfterTimeout(TSwitchingMatrixEntry emc){
         labelWithdrawal(emc, emc.getIncomingPortID());
@@ -1107,7 +1107,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     
     /**
      * Este m�todo decrementa los contadores de retransmisi�n existentes para este nodo.
-     * @since 1.0
+     * @since 2.0
      */
     public void decrementarContadores() {
         TSwitchingMatrixEntry emc = null;
@@ -1148,7 +1148,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @param paqueteSolicitud Paquete TLDP entrante, de solicitud de etiqueta.
      * @param pEntrada Puerto de entrada del paquete TLDP.
      * @return La entrada de la matriz de conmutaci�n, ya creada, insertada e inicializada.
-     * @since 1.0
+     * @since 2.0
      */
     public TSwitchingMatrixEntry crearEntradaAPartirDeTLDP(TTLDPPDU paqueteSolicitud, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
@@ -1211,7 +1211,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @param paqueteIPv4 Paquete IPv4 recibido.
      * @param pEntrada Puerto por el que ha llegado el paquete IPv4.
      * @return La entrada de la matriz de conmutaci�n, creada, insertada e inicializada.
-     * @since 1.0
+     * @since 2.0
      */
     public TSwitchingMatrixEntry crearEntradaInicialEnMatrizFEC(TIPv4PDU paqueteIPv4, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
@@ -1270,7 +1270,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @param paqueteMPLS Paquete MPLS recibido.
      * @param pEntrada Puerto por el que ha llegado el paquete MPLS.
      * @return La entrada de la matriz de conmutaci�n, creada, insertada e inicializada.
-     * @since 1.0
+     * @since 2.0
      */
     public TSwitchingMatrixEntry crearEntradaInicialEnMatrizLABEL(TMPLSPDU paqueteMPLS, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
@@ -1334,7 +1334,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * etiquetar.
      * @return El paquete IPv4 de entrada, convertido en un paquete MPLS correctamente
      * etiquetado.
-     * @since 1.0
+     * @since 2.0
      */
     public TMPLSPDU crearPaqueteMPLS(TIPv4PDU paqueteIPv4, TSwitchingMatrixEntry emc) {
         TMPLSPDU paqueteMPLS = null;
@@ -1369,7 +1369,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @param emc Entrada de la matriz de conmutaci�n asociada al paquete MPLS.
      * @return Paquete IPv4 que corresponde al paquete MPLS una vez que se ha eliminado toda la
      * informaci�n MLPS; que se ha desetiquetado.
-     * @since 1.0
+     * @since 2.0
      */
     public TIPv4PDU crearPaqueteIPv4(TMPLSPDU paqueteMPLS, TSwitchingMatrixEntry emc) {
         TIPv4PDU paqueteIPv4 = null;
@@ -1401,7 +1401,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @param paquete Paquete que ha llegado al nodo.
      * @param pEntrada Puerto por el que ha llegado el paquete al nodo.
      * @return true, si el paquete es exterior al dominio MPLS. false en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean esUnPaqueteExterno(TAbstractPDU paquete, int pEntrada) {
         if (paquete.getType() == TAbstractPDU.IPV4)
@@ -1418,7 +1418,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @param paquete paquete que se desa contabilizar.
      * @param deEntrada TRUE, si el paquete se ha recibido en el nodo. FALSE so el paquete ha salido del
      * nodo.
-     * @since 1.0
+     * @since 2.0
      */
     public void contabilizarPaquete(TAbstractPDU paquete, boolean deEntrada) {
     }
@@ -1427,7 +1427,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo descarta un paquete en el nodo y refleja dicho descarte en las
      * estad�sticas del nodo.
      * @param paquete Paquete que se quiere descartar.
-     * @since 1.0
+     * @since 2.0
      */
     public void discardPacket(TAbstractPDU paquete) {
         try {
@@ -1447,7 +1447,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
  mismo origen y con el mismo destino pertenecer�n al mismo FEC_ENTRY.
      * @param paquete El paquete que se desea clasificar.
      * @return El FEC_ENTRY al que pertenece el paquete pasado por par�metros.
-     * @since 1.0
+     * @since 2.0
      */
     public int clasificarPaquete(TAbstractPDU paquete) {
         String IPOrigen = paquete.getIPv4Header().getOriginIPAddress();
@@ -1459,7 +1459,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo permite el acceso al conjunto de ports del nodo.
      * @return El conjunto de ports del nodo.
-     * @since 1.0
+     * @since 2.0
      */
     public TPortSet getPorts() {
         return this.ports;
@@ -1468,7 +1468,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo calcula si el nodo tiene ports libres o no.
      * @return true, si el nodo tiene ports libres. false en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean hasAvailablePorts() {
         return this.ports.hasAvailablePorts();
@@ -1478,7 +1478,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo calcula el peso del nodo. Se utilizar� para calcular rutas con costo
      * menor. En el nodo LER el pero ser� siempre nulo (cero).
      * @return 0. El peso siempre ser� nulo en un LER.
-     * @since 1.0
+     * @since 2.0
      */
     public long getRoutingWeight() {
         long peso = 0;
@@ -1495,7 +1495,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * salida.
      * @return true, si el LER es de salida del dominio para tr�fico dirigido a esa IP. false
      * en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean soyLERDeSalida(String ip) {
         TPort p = ports.getLocalPortConnectedToANodeWithIPAddress(ip);
@@ -1508,7 +1508,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo permite el acceso a la matriz de conmutaci�n de LER.
      * @return La matriz de conmutaci�n del LER.
-     * @since 1.0
+     * @since 2.0
      */
     public TSwitchingMatrix obtenerMatrizConmutacion() {
         return matrizConmutacion;
@@ -1517,7 +1517,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo comprueba que la configuraci�n de LER sea la correcta.
      * @return true, si el LER est� bien configurado. false en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean isWellConfigured() {
         return this.wellConfigured;
@@ -1528,7 +1528,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @param t Topolog�a a la que pertenece el LER.
      * @param recfg true si se trata de una reconfiguraci�n. false en caso contrario.
      * @return CORRECTA, si la configuraci�n es correcta. Un c�digo de error en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public int validateConfig(TTopology t, boolean recfg) {
         this.setWellConfigured(false);
@@ -1561,7 +1561,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo toma un codigo de error y genera un mensaje textual del mismo.
      * @param e El c�digo de error para el cual queremos una explicaci�n textual.
      * @return Cadena de texto explicando el error.
-     * @since 1.0
+     * @since 2.0
      */
     public String getErrorMessage(int e) {
         switch (e) {
@@ -1576,7 +1576,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo forma una cadena de texto que representa al LER y toda su
      * configuraci�n. Sirve para almacenar el LER en disco.
      * @return Una cadena de texto que representa un a este LER.
-     * @since 1.0
+     * @since 2.0
      */
     public String marshall() {
         String cadena = "#LER#";
@@ -1609,7 +1609,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @param elemento LER serializado.
      * @return true, si no ha habido errores y la instancia actual est� bien configurada. false
      * en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean unMarshall(String elemento) {
         String valores[] = elemento.split("#");
@@ -1633,7 +1633,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo permite acceder directamente a las estadisticas del nodo.
      * @return Las estad�sticas del nodo.
-     * @since 1.0
+     * @since 2.0
      */
     public TStats getStats() {
         return estadisticas;
@@ -1642,7 +1642,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo permite establecer el n�mero de ports que tendr� el nodo.
      * @param num N�mero de ports deseado para el nodo. Como mucho, 8 ports.
-     * @since 1.0
+     * @since 2.0
      */
     public synchronized void setPorts(int num) {
         ports = new TFIFOPortSet(num, this);
@@ -1653,7 +1653,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * a un nodo activo la retransmisi�n de un paquete.
      * @param paquete Paquete cuya retransmisi�n se est� solicitando.
      * @param pSalida Puerto por el que se enviar� la solicitud.
-     * @since 1.0
+     * @since 2.0
      */
     public void runGoSPDUStoreAndRetransmitProtocol(TMPLSPDU paquete, int pSalida) {
     }
@@ -1661,24 +1661,24 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Esta constante indica que la configuraci�n del nodo LER esta correcta, que no
      * contiene errores.
-     * @since 1.0
+     * @since 2.0
      */
     public static final int CORRECTA = 0;
     /**
      * Esta constante indica que el nombre del nodo LER no est� definido.
-     * @since 1.0
+     * @since 2.0
      */
     public static final int SIN_NOMBRE = 1;
     /**
      * Esta constante indica que el nombre especificado para el LER ya est� siendo
  usado por otro nodo de la topology.
-     * @since 1.0
+     * @since 2.0
      */
     public static final int NOMBRE_YA_EXISTE = 2;
     /**
      * Esta constante indica que el nombre que se ha definido para el LER contiene s�lo
      * constantes.
-     * @since 1.0
+     * @since 2.0
      */
     public static final int SOLO_ESPACIOS = 3;
     

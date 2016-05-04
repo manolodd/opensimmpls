@@ -32,7 +32,7 @@ public class JVentanaBooleana extends javax.swing.JDialog {
      * @param modal TRUE indica que la ventana impedir� que se pueda seleccionar nada del resto de
      * la interfaz hasta que sea cerrada. FALSE indica que esto no es as�.
      * @param di Dispensador de im�genes global de la aplicaci�n.
-     * @since 1.0
+     * @since 2.0
      */
     public JVentanaBooleana(java.awt.Frame parent, boolean modal, TImagesBroker di) {
         super(parent, modal);
@@ -122,7 +122,7 @@ public class JVentanaBooleana extends javax.swing.JDialog {
     /**
      * Este m�todo obtiene la respuesta elegida por el usuario. La ventana booleana
      * siempre presenta una pregunta de tipo SI/NO que el usuario debe elegir.
-     * @since 1.0
+     * @since 2.0
      * @return TRUE, si el usuario respondi� afirmativamente a la pregunta. FALSE en caso
      * contrario.
      */    
@@ -140,7 +140,7 @@ public class JVentanaBooleana extends javax.swing.JDialog {
     
     /** Este m�todo recibe por par�metro un texto y hace que aparezca en la ventana.
      * @param texto El texto que se desea mostrar en la ventana.
-     * @since 1.0
+     * @since 2.0
      */    
     public void mostrarPregunta(java.lang.String texto) {
         java.awt.Toolkit.getDefaultToolkit().beep();

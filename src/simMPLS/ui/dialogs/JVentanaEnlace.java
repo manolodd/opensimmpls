@@ -40,7 +40,7 @@ public class JVentanaEnlace extends javax.swing.JDialog {
      * @param parent Ventana padre donde se ubicar� esta ventana de tipo JVentanaEnlace.
      * @param modal TRUE indica que la ventana impedir� que se pueda seleccionar nada de la interfza
      * hasta que se cierre. FALSE indica que esto no es asi.
-     * @since 1.0
+     * @since 2.0
      */
     public JVentanaEnlace(TTopology t, TImagesBroker di, java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -55,7 +55,7 @@ public class JVentanaEnlace extends javax.swing.JDialog {
     /**
      * Este m�todo configura aspectos de la ventana que no han podido ser configurados
      * en el constructor.
-     * @since 1.0
+     * @since 2.0
      */    
     public void initComponents2() {
         java.awt.Dimension tamFrame=this.getSize();
@@ -382,7 +382,7 @@ private void clicEnCambioNodoIzquierdo(java.awt.event.ActionEvent evt) {//GEN-FI
 /**
  * Este m�todo carga todos los nodos de la topolog�a en una lista para poder
  * seleccionar dentro de ella los dos nodos que va a unir el enlace.
- * @since 1.0
+ * @since 2.0
  */
 public void cargarNodosPorDefecto() {
     Iterator it = topo.getNodesIterator();
@@ -497,7 +497,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     /**
      * Este m�todo permite cargar en la ventana la configuraci�n actual del enlace que estamos
      * configurando.
-     * @since 1.0
+     * @since 2.0
      * @param recfg TRUE indica que se est� reconfigurando el enlace. FALSE indica que el enlace se
      * est� insertando nuevo.
      * @param tcenlace El enlace que estamos configurando.

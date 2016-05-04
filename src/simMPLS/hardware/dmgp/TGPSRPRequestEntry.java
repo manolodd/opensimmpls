@@ -22,7 +22,7 @@ import java.util.LinkedList;
  * retransmission requested by a node.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TGPSRPRequestEntry implements Comparable {
 
@@ -33,7 +33,7 @@ public class TGPSRPRequestEntry implements Comparable {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param incomingOrder Incoming order. This is a number that must be used to make
      * this entry shorted in a collection in a coherent way.
-     * @since 1.0
+     * @since 2.0
      */
     public TGPSRPRequestEntry(int incomingOrder) {
         this.timeout = TGPSRPRequestsMatrix.TIMEOUT;
@@ -51,7 +51,7 @@ public class TGPSRPRequestEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Incoming order to the entry.
-     * @since 1.0
+     * @since 2.0
      */
     public int getOrder() {
         return order;
@@ -62,7 +62,7 @@ public class TGPSRPRequestEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param flowID The flow the entry belongs to.
-     * @since 1.0
+     * @since 2.0
      */
     public void setFlowID(int flowID) {
         this.flowID = flowID;
@@ -73,7 +73,7 @@ public class TGPSRPRequestEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The flow the entry belongs to.
-     * @since 1.0
+     * @since 2.0
      */
     public int getFlowID() {
         return this.flowID;
@@ -85,7 +85,7 @@ public class TGPSRPRequestEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packetID The packet identifier.
-     * @since 1.0
+     * @since 2.0
      */
     public void setPacketID(int packetID) {
         this.packetID = packetID;
@@ -96,7 +96,7 @@ public class TGPSRPRequestEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The packet identifier.
-     * @since 1.0
+     * @since 2.0
      */
     public int getPacketID() {
         return this.packetID;
@@ -108,7 +108,7 @@ public class TGPSRPRequestEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param outgoingPort Outgoing port.
-     * @since 1.0
+     * @since 2.0
      */
     public void setOutgoingPort(int outgoingPort) {
         this.outgoingPort = outgoingPort;
@@ -120,7 +120,7 @@ public class TGPSRPRequestEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Outgoing port.
-     * @since 1.0
+     * @since 2.0
      */
     public int getOutgoingPort() {
         return this.outgoingPort;
@@ -133,7 +133,7 @@ public class TGPSRPRequestEntry implements Comparable {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param crossedNodeIP IP address of the node to be requested for a packet
      * retransmission.
-     * @since 1.0
+     * @since 2.0
      */
     public void setCrossedNodeIP(String crossedNodeIP) {
         this.crossedNodes.addFirst(crossedNodeIP);
@@ -147,7 +147,7 @@ public class TGPSRPRequestEntry implements Comparable {
      * @return IP address of the next active node to be requested for a packet
      * retransmission. If there is not a node to be requested, this method
      * return NULL.
-     * @since 1.0
+     * @since 2.0
      */
     public String getCrossedNodeIPv4() {
         if (this.crossedNodes.size() > 0) {
@@ -161,7 +161,7 @@ public class TGPSRPRequestEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param nanoseconds Number of nanoseconds to decrease from the timeout.
-     * @since 1.0
+     * @since 2.0
      */
     public void decreaseTimeout(int nanoseconds) {
         this.timeout -= nanoseconds;
@@ -174,7 +174,7 @@ public class TGPSRPRequestEntry implements Comparable {
      * This method restores the retransmission TimeOut to its original value.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public void resetTimeout() {
         if (this.timeout == 0) {
@@ -190,7 +190,7 @@ public class TGPSRPRequestEntry implements Comparable {
      * increases the number of expired retransmission attempts.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public void forceTimeoutReset() {
         this.timeout = TGPSRPRequestsMatrix.TIMEOUT;
@@ -207,7 +207,7 @@ public class TGPSRPRequestEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TRUE, if the retransmission must be retried. Otherwise, FALSE.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean isRetryable() {
         if (this.attempts > 0) {
@@ -226,7 +226,7 @@ public class TGPSRPRequestEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TRUE, if the entry must be removed. Otherwise, FALSE.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean isPurgeable() {
         if (this.crossedNodes.size() == 0) {
@@ -249,7 +249,7 @@ public class TGPSRPRequestEntry implements Comparable {
      * @return -1, 0, 1, depending on wheter the curren instance is lower,
      * equal, or greater than the one passed as an argument. In terms of
      * shorting.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int compareTo(Object o) {

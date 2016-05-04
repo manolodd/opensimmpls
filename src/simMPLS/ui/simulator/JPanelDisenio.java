@@ -38,7 +38,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
 
     /**
      * Crea una nueva instancia de JPanelDisenio.
-     * @since 1.0
+     * @since 2.0
      */
     public JPanelDisenio() {
         initComponents();
@@ -46,7 +46,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
 
     /**
      * Crea una nueva instancia de JPanelDisenio.
-     * @since 1.0
+     * @since 2.0
      * @param di El dispensador de im�genes. De �l tomar� el panel todas las im�genes que tenga
      * que mostrar en la pantalla.
      */    
@@ -58,7 +58,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
     /**
      * Este m�todo asocia con el panel de dise�o un dispensador de im�genes del cual el
      * panel tomar� las im�genes que tenga que mostrar en pantalla.
-     * @since 1.0
+     * @since 2.0
      * @param di El dispensador de im�genes.
      */    
     public void ponerDispensadorDeImagenes(TImagesBroker di) {
@@ -66,7 +66,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
     }
 
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private void initComponents () {
         tamPantalla=Toolkit.getDefaultToolkit().getScreenSize();
@@ -80,7 +80,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
 
     /**
      * Este m�todo permite establecer una topolog�a ya creada en el panel de dise�o.
-     * @since 1.0
+     * @since 2.0
      * @param t La topolog�a ya creda que queremos mostrar y modificar en el panel de dise�o.
      */    
     public void ponerTopologia(TTopology t) {
@@ -92,7 +92,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
      * enlace en el panel de dise�o a tenor de su retardo real.
      * @param delay El retardo real del enlace.
      * @return El grosor en p�xeles con que se debe mostrar el enlace en la zona de dise�o.
-     * @since 1.0
+     * @since 2.0
      */    
     public double obtenerGrosorEnlace(double delay) {
         return (16/Math.log(delay+100));
@@ -100,7 +100,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
     
     /**
      * @param g2Dbuf
-     * @since 1.0
+     * @since 2.0
      */    
     private void prepararImagen(Graphics2D g2Dbuf) {
         g2Dbuf.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -110,7 +110,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
 
     /**
      * @param g2Dbuf
-     * @since 1.0
+     * @since 2.0
      */    
     private void dibujarDominio(Graphics2D g2Dbuf) {
         Iterator itd = topologia.getNodesIterator();
@@ -151,7 +151,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
 
     /**
      * @param g2Dbuf
-     * @since 1.0
+     * @since 2.0
      */    
     private void dibujarEnlaces(Graphics2D g2Dbuf) {
         Iterator ite = topologia.getLinksIterator();
@@ -188,7 +188,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
 
     /**
      * @param g2Dbuf
-     * @since 1.0
+     * @since 2.0
      */    
     private void dibujarNodos(Graphics2D g2Dbuf) {
         maxX = 10;
@@ -267,7 +267,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
     /**
      * Esta imagen obtiene una captura del dise�o en un momento dado, en forma de
      * imagen bitmap.
-     * @since 1.0
+     * @since 2.0
      * @return La imagen capturada del dise�o de la topolog�a en un momento dado.
      */    
     public BufferedImage capturaDeDisenio() {
@@ -286,7 +286,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
 
     /**
      * Este m�todo redibuja la pantalla de dise�o cuando es necesario, autom�ticamente.
-     * @since 1.0
+     * @since 2.0
      * @param g El lienzo donde se debe redibujar la captura del dise�o de la topolog�a.
      */    
     public void paint(java.awt.Graphics g) {
@@ -295,35 +295,35 @@ public class JPanelDisenio extends javax.swing.JPanel {
     }  
 
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private TImagesBroker dispensadorDeImagenes;
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private Image buffer;
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private BufferedImage imagenbuf;
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private Graphics2D g2Dbuf;
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private TTopology topologia;
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private Dimension tamPantalla;
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private int maxX;
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private int maxY;
 }

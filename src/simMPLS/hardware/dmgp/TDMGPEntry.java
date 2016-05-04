@@ -22,7 +22,7 @@ import simMPLS.protocols.TMPLSPDU;
  * all neccesary data to be forwarded.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TDMGPEntry implements Comparable {
 
@@ -46,7 +46,7 @@ public class TDMGPEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The identifier of the flow associated to this entry.
-     * @since 1.0
+     * @since 2.0
      */
     public int getFlowID() {
         return this.flowID;
@@ -58,7 +58,7 @@ public class TDMGPEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The identifier of the GoS packet.
-     * @since 1.0
+     * @since 2.0
      */
     public int getPacketID() {
         return this.packetID;
@@ -70,7 +70,7 @@ public class TDMGPEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The stored GoS packet.
-     * @since 1.0
+     * @since 2.0
      */
     public TMPLSPDU getPacket() {
         return this.packet.getAClon();
@@ -81,7 +81,7 @@ public class TDMGPEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param p The packet to be inserted in this entry.
-     * @since 1.0
+     * @since 2.0
      */
     public void setPacket(TMPLSPDU p) {
         this.packet = p.getAClon();
@@ -95,7 +95,7 @@ public class TDMGPEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The order number of this DMGP entry.
-     * @since 1.0
+     * @since 2.0
      */
     public int getOrder() {
         return this.order;
@@ -108,7 +108,7 @@ public class TDMGPEntry implements Comparable {
      * @param o DMGP entry to be compared with this one.
      * @return -1, 0, 1, depending on whether the current entry is lower, equal
      * or greater than the entry specified as argument. In terms of shorting.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int compareTo(Object o) {

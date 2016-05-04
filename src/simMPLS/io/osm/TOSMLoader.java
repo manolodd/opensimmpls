@@ -36,7 +36,7 @@ import simMPLS.scenario.TActiveLERNode;
  * SimMPLS format).
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TOSMLoader {
 
@@ -45,7 +45,7 @@ public class TOSMLoader {
      * TOSMLoader.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public TOSMLoader() {
         this.scenario = new TScenario();
@@ -61,7 +61,7 @@ public class TOSMLoader {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param inputFile The file where a scenario description is stored.
      * @return true, if the file can be correctly loaded. False on the contrary.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean cargar(File inputFile) {
         if (this.fileIsValid(inputFile)) {
@@ -208,7 +208,7 @@ public class TOSMLoader {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TScenario, the scenario loaded from a file. Null if no scenario
      * has been loaded.
-     * @since 1.0
+     * @since 2.0
      */
     public TScenario getScenario() {
         return this.scenario;

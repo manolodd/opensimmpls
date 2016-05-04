@@ -31,7 +31,7 @@ public class JVentanaError extends javax.swing.JDialog {
      * @param modal TRUE indica que la ventana impedir� que se pueda seleccionar nada de la interfaz
      * de usuario hasta que se cierre. FALSE indica que esto no es as�.
      * @param di Dispensador de im�genes global de la aplicaci�n.
-     * @since 1.0
+     * @since 2.0
      */
     public JVentanaError(java.awt.Frame parent, boolean modal, TImagesBroker di) {
         super(parent, modal);
@@ -109,7 +109,7 @@ public class JVentanaError extends javax.swing.JDialog {
     
     /** Este m�todo recibe por par�metro un texto y hace que aparezca en la ventana.
      * @param texto El textoque se desea que aparezca en la ventana.
-     * @since 1.0
+     * @since 2.0
      */    
     public void mostrarMensaje(java.lang.String texto) {
         java.awt.Toolkit.getDefaultToolkit().beep();

@@ -31,7 +31,7 @@ public class TLERStats extends TStats {
     
     /**
      * Crea una nueva instancia de TEstadisticasLER
-     * @since 1.0
+     * @since 2.0
      */
     public TLERStats() {
     	paquetesEntrantes = new XYSeriesCollection();
@@ -102,7 +102,7 @@ public class TLERStats extends TStats {
     /**
      * Este m�todo permite obtener los datos para generar la gr�fica 1.
      * @return Datos de la gr�fica 1.
-     * @since 1.0
+     * @since 2.0
      */    
     public org.jfree.data.AbstractDataset obtenerDatosGrafica1() {
         return this.paquetesEntrantes;
@@ -111,7 +111,7 @@ public class TLERStats extends TStats {
     /**
      * Este m�todo permite obtener los datos para generar la gr�fica 2.
      * @return Datos de la gr�fica 2.
-     * @since 1.0
+     * @since 2.0
      */    
     public org.jfree.data.AbstractDataset obtenerDatosGrafica2() {
         return this.paquetesSalientes;
@@ -120,7 +120,7 @@ public class TLERStats extends TStats {
     /**
      * Este m�todo permite obtener los datos para generar la gr�fica 3.
      * @return Datos de la gr�fica 3.
-     * @since 1.0
+     * @since 2.0
      */    
     public org.jfree.data.AbstractDataset obtenerDatosGrafica3() {
         return this.paquetesDescartados;
@@ -129,7 +129,7 @@ public class TLERStats extends TStats {
     /**
      * Este m�todo permite obtener los datos para generar la gr�fica 4.
      * @return Datos de la gr�fica 4.
-     * @since 1.0
+     * @since 2.0
      */    
     public org.jfree.data.AbstractDataset obtenerDatosGrafica4() {
         return null;
@@ -138,7 +138,7 @@ public class TLERStats extends TStats {
     /**
      * Este m�todo permite obtener los datos para generar la gr�fica 5.
      * @return Datos de la gr�fica 5.
-     * @since 1.0
+     * @since 2.0
      */    
     public org.jfree.data.AbstractDataset obtenerDatosGrafica5() {
         return null;
@@ -147,7 +147,7 @@ public class TLERStats extends TStats {
     /**
      * Este m�todo permite obtener los datos para generar la gr�fica 6.
      * @return Datos de la gr�fica 6.
-     * @since 1.0
+     * @since 2.0
      */    
     public org.jfree.data.AbstractDataset obtenerDatosGrafica6() {
         return null;
@@ -159,7 +159,7 @@ public class TLERStats extends TStats {
      * @param paquete Paquete del que se desea contabilizar las estad�asticas.
      * @param entrada ENTRADA, SALIDA o DISCARD, dependiendo de si el paquete entra en el nodo, sale
  de el o es descartado.
-     * @since 1.0
+     * @since 2.0
      */    
     public void addStatsEntry(TAbstractPDU paquete, int entrada) {
         if (this.estadisticasActivas) {
@@ -270,7 +270,7 @@ public class TLERStats extends TStats {
     /**
      * Este m�todo devuelve el n�mero de gr�ficas del nodo LER.
      * @return N�mero de gr�ficas de LER.
-     * @since 1.0
+     * @since 2.0
      */    
     public int obtenerNumeroGraficas() {
         return 3;
@@ -279,7 +279,7 @@ public class TLERStats extends TStats {
     /**
      * Este m�todo reinicia el valor de los atributos dejando la instancia como si
      * acabase de ser creada por el constructor.
-     * @since 1.0
+     * @since 2.0
      */    
     public void reset() {
     	paquetesEntrantes = new XYSeriesCollection();
@@ -351,7 +351,7 @@ public class TLERStats extends TStats {
      * Este m�todo da por bueno los �ltimos datos estad�sticos a�adidos desde la ultima
      * vez que se llam� a este m�todo.
      * @param instante Instante de tiempo al que se atribuir�n los ultimos datos.
-     * @since 1.0
+     * @since 2.0
      */    
     public void consolidateData(long instante) {
         if (this.estadisticasActivas) {
@@ -660,7 +660,7 @@ public class TLERStats extends TStats {
     /**
      * Este m�todo permite obtener el titulo de la gr�fica 1.
      * @return T�tulo de la gr�fica 1.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerTitulo1() {
         return TStats.PAQUETES_ENTRANTES;
@@ -669,7 +669,7 @@ public class TLERStats extends TStats {
     /**
      * Este m�todo permite obtener el titulo de la gr�fica 2.
      * @return T�tulo de la gr�fica 2.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerTitulo2() {
         return TStats.PAQUETES_SALIENTES;
@@ -678,7 +678,7 @@ public class TLERStats extends TStats {
     /**
      * Este m�todo permite obtener el titulo de la gr�fica 3.
      * @return T�tulo de la gr�fica 3.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerTitulo3() {
         return TStats.PAQUETES_DESCARTADOS;
@@ -687,7 +687,7 @@ public class TLERStats extends TStats {
     /**
      * Este m�todo permite obtener el titulo de la gr�fica 4.
      * @return T�tulo de la gr�fica 4.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerTitulo4() {
         return null;
@@ -696,7 +696,7 @@ public class TLERStats extends TStats {
     /**
      * Este m�todo permite obtener el titulo de la gr�fica 5.
      * @return T�tulo de la gr�fica 5.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerTitulo5() {
         return null;
@@ -705,7 +705,7 @@ public class TLERStats extends TStats {
     /**
      * Este m�todo permite obtener el titulo de la gr�fica 6.
      * @return T�tulo de la gr�fica 6.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerTitulo6() {
         return null;

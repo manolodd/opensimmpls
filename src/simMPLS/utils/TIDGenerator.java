@@ -29,7 +29,7 @@ public class TIDGenerator {
     private int identificador;
     
     /** Crea un nuevo generador de identificadores con el valor inicial 0.
-     * @since 1.0
+     * @since 2.0
      */
     public TIDGenerator() {
         identificador = 0;
@@ -38,7 +38,7 @@ public class TIDGenerator {
     /**
      * Este m�todo reinicia el generador de identificadores a su valor original, como
      * si acabase de ser instanciado.
-     * @since 1.0
+     * @since 2.0
      */
     public synchronized void reset() {
         identificador = 0;
@@ -51,7 +51,7 @@ public class TIDGenerator {
      * @throws EIDGeneratorOverflow Esta excepci�n se lanza cuando el contador interno del generador de
      * identificadores se desborda. Es alto por lo que ngeneralmente no ocurrir�, pero
      * hay que capturar la excepci�n por si acaso.
-     * @since 1.0
+     * @since 2.0
      */
     synchronized public int getNew() throws EIDGeneratorOverflow {
         if (identificador > 2147483646) {
@@ -66,7 +66,7 @@ public class TIDGenerator {
      * Este m�todo establece el valor de partida del generador de identificadores,
      * siempre que el valor que deseamos sea mayor que el que ya tiene el propio
      * generador.
-     * @since 1.0
+     * @since 2.0
      * @param i El valor de partida con el cual deseamos iniciar el contador.
      */
     synchronized public void setIDIfGreater(int i) {
@@ -76,7 +76,7 @@ public class TIDGenerator {
     
     /**
      * Este m�todo permite poner el valor de partida del generador de identificadores.
-     * @since 1.0
+     * @since 2.0
      * @param i El valor que deseamos poner como valor de partida para el generador.
      */
     synchronized public void ponerIdentificador(int i) {

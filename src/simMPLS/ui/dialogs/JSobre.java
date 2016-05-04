@@ -28,7 +28,7 @@ public class JSobre extends javax.swing.JDialog {
 
     /**
      * Este m�todo crea una nueva instancia de JSobre
-     * @since 1.0
+     * @since 2.0
      * @param parent Ventana padre dentro de la cual se mostrar� esta ventana de tipo JSobre.
      * @param modal TRUE indica que la ventana impide que se seleccione nada del resto de la
      * interfaz hasta que sea cerrada. FALSE indica que esto no es as�.

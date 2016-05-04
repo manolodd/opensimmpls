@@ -30,7 +30,7 @@ public class TSimulation {
     /**
      * Crea una nueva instancia de TScenario
      * @param e Escenario al que pertenecen los datos de la simulaci�n.
-     * @since 1.0
+     * @since 2.0
      */
     public TSimulation(TScenario e) {
         escenarioPadre = e;
@@ -42,7 +42,7 @@ public class TSimulation {
     /**
      * Este m�todo permite establecer el panel de simulaci�n en el cual se realizar� la
      * simulaci�n.
-     * @since 1.0
+     * @since 2.0
      * @param ps El panel de simulaci�n.
      */    
     public void ponerPanelSimulacion(JSimulationPanel ps) {
@@ -52,7 +52,7 @@ public class TSimulation {
     /**
      * Este m�todo reinicia los atributos de la clase dej�ndolos como reci�n iniciados
      * por el constructor.
-     * @since 1.0
+     * @since 2.0
      */    
     public void reset() {
         recolector.reset();
@@ -61,7 +61,7 @@ public class TSimulation {
     /**
      * Este m�todo permite establecer la duraci�n total de la simulaci�n.
      * @param d Duraci�n total de la simulaci�n en nanosegundos.
-     * @since 1.0
+     * @since 2.0
      */    
     public void setDuration(long d) {
         this.duracion = d;
@@ -70,7 +70,7 @@ public class TSimulation {
     /**
      * Este m�todo permite establecer la duraci�n del paso de simulaci�n.
      * @param p Duraci�n del paso de simulaci�n en nanosegundos.
-     * @since 1.0
+     * @since 2.0
      */    
     public void setStep(long p) {
         this.paso = p;
@@ -79,7 +79,7 @@ public class TSimulation {
     /**
      * Este m�todo permite obtener la duraci�n total de la simulaci�n-
      * @return Duraci�n total de la simulaci�n, en nanosegundos.
-     * @since 1.0
+     * @since 2.0
      */    
     public long obtenerDuracion() {
         return this.duracion;
@@ -88,7 +88,7 @@ public class TSimulation {
     /**
      * Este m�todo permite obtener la duraci�n del paso de simulaci�n.
      * @return Duraci�n del paso de simulaci�n en nanosegundos.
-     * @since 1.0
+     * @since 2.0
      */    
     public long obtenerPaso() {
         return this.paso;
@@ -98,7 +98,7 @@ public class TSimulation {
      * Este m�todo serializa la instancia, convirti�ndola en un texto que se puede
      * almacenar en disco.
      * @return Un texto que representa a la instancia actual.
-     * @since 1.0
+     * @since 2.0
      */    
     public String marshallTimeParameters() {
         String serializada = "#Temporizacion#";
@@ -112,7 +112,7 @@ public class TSimulation {
  reconstruy�ndolo en memoria.
      * @param pt El objeto de tipo TSimulaci�n serializado.
      * @return TRUE, si se ha conseguido serializar correctamente. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean unmarshallTimeParameters(String pt) {
         String valores[] = pt.split("#");
@@ -127,7 +127,7 @@ public class TSimulation {
     /**
      * Este m�todo permite acceder directamente al recolector de eventos de simulaci�n.
      * @return Recolector de eventos de simulaci�n el escenario.
-     * @since 1.0
+     * @since 2.0
      */    
     public TSimulationCollector obtenerRecolector() {
         return recolector;

@@ -19,7 +19,7 @@ package simMPLS.protocols;
  * This class implements a IPv4 header.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TIPv4Header {
 
@@ -30,7 +30,7 @@ public class TIPv4Header {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param originIP IP addres of this packet's sender.
      * @param targetIP IP addres of this packet's receiver.
-     * @since 1.0
+     * @since 2.0
      */
     public TIPv4Header(String originIP, String targetIP) {
         this.originIP = originIP;
@@ -48,7 +48,7 @@ public class TIPv4Header {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return A global unique identifier of this packet within the MPLS domain.
-     * @since 1.0
+     * @since 2.0
      */
     public int getGoSGlobalUniqueIdentifier() {
         String RawGoSGlobalUniqueIdentifier = "";
@@ -67,7 +67,7 @@ public class TIPv4Header {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the size in bytes (octects) of this IPv4 header, including the
      * options field if used.
-     * @since 1.0
+     * @since 2.0
      */
     public int getSize() {
         // FIX: create and use a constant instead of the following harcoded
@@ -82,7 +82,7 @@ public class TIPv4Header {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the IP address of the sender of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     public String getOriginIPAddress() {
         return this.originIP;
@@ -93,7 +93,7 @@ public class TIPv4Header {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param originIP The IP address of the sender of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     public void setOriginIP(String originIP) {
         this.originIP = originIP;
@@ -104,7 +104,7 @@ public class TIPv4Header {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the IP address of the receiver of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     public String getTailEndIPAddress() {
         return this.targetIP;
@@ -115,7 +115,7 @@ public class TIPv4Header {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param targetIP The IP address of the receiver of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     public void setTargetIP(String targetIP) {
         this.targetIP = targetIP;
@@ -126,7 +126,7 @@ public class TIPv4Header {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param ttl The desired TTL value for this IPv4 header.
-     * @since 1.0
+     * @since 2.0
      */
     public void setTTL(int ttl) {
         this.TTL = ttl;
@@ -137,7 +137,7 @@ public class TIPv4Header {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The TTL value of this IPv4 header.
-     * @since 1.0
+     * @since 2.0
      */
     public int getTTL() {
         return this.TTL;
@@ -148,7 +148,7 @@ public class TIPv4Header {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The option fields of this IPv4 header.
-     * @since 1.0
+     * @since 2.0
      */
     public TIPv4OptionsField getOptionsField() {
         return this.IPv4OptionsField;

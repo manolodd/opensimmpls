@@ -41,7 +41,7 @@ public class JVentanaLER extends javax.swing.JDialog {
      * @param parent Ventana padre dentro de la cual se ubicar� esta ventana de tipo JVentanaLER
      * @param modal TRUE indica que la ventana impedir� que se pueda seleccionar nada de la interfaz
      * de usuario hasta que se cierre. FALSE indica que esto no es asi.
-     * @since 1.0
+     * @since 2.0
      */
     public JVentanaLER(TTopology t, JPanelDisenio pad, TImagesBroker di, java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -56,7 +56,7 @@ public class JVentanaLER extends javax.swing.JDialog {
     /**
      * Este m�todo terminar� de configurar aspectos de la clase que no han podido ser
      * definidos en el constructor.
-     * @since 1.0
+     * @since 2.0
      */
     public void initComponents2() {
         panelCoordenadas.ponerPanelOrigen(pd);
@@ -422,7 +422,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
     
     /**
      * Este m�todo permite cargar en la ventana la configuraci�n actual del LER.
-     * @since 1.0
+     * @since 2.0
      * @param tnler El nodo LER que queremos configurar.
      * @param recfg TRUE indica que estamos reconfigurando el LER. FALSE indica que el LER se ha
      * insertado nuevo en la topolog�a.

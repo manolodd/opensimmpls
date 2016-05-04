@@ -26,7 +26,7 @@ package simMPLS.utils;
 public class TMonitor {
     
     /** Crea una nueva instancia de TMonitor para sincronizar hilos.
-     * @since 1.0
+     * @since 2.0
      */
     public TMonitor() {
         bloqueado = false;
@@ -35,7 +35,7 @@ public class TMonitor {
     /** Cuando un hilo llama a este m�todo del monitor queda bloqueado en �l si hay otro
      * hilo que a�n no lo ha liberado y si no, es �l el que bloquea este monitor para
      * parar a otros hilos. El m�todo est� <B>sincronizado</B>.
-     * @since 1.0
+     * @since 2.0
      */
     public synchronized void lock() {
         while (bloqueado) {
@@ -51,7 +51,7 @@ public class TMonitor {
     /** Cuando un hilo llama a este m�todo, hace que uno de los hilos que estar�n
      * esperando que se libere el monitor, pueda acceder al mismo. El m�todo est�
      * <B>sincronizado</B>.
-     * @since 1.0
+     * @since 2.0
      */
     public synchronized void unLock() {
         bloqueado = false;
@@ -60,7 +60,7 @@ public class TMonitor {
     
     /** Atributo interno que especifica en qu� estado se encontrar� el hilo que llame a
      * este monitor.
-     * @since 1.0
+     * @since 2.0
      */
     private boolean bloqueado;
 }

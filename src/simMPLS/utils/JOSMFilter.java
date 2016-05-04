@@ -32,7 +32,7 @@ public class JOSMFilter extends FileFilter {
     /**
      * Este m�todo es el constructor de la clase. Implementa un nuevo filtro para los
      * fichero *.OSM.
-     * @since 1.0
+     * @since 2.0
      */
     public JOSMFilter() {
     }
@@ -42,7 +42,7 @@ public class JOSMFilter extends FileFilter {
      * mostrar en los di�logos o no.
      * @param f Fichero (enviado por el di�logo abrir/cerrar).
      * @return true, si el fichero se debe mostrar (pasa el filtro). false en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean accept(File f) {
         if (!f.isDirectory()) {
@@ -76,7 +76,7 @@ public class JOSMFilter extends FileFilter {
      * filtro.
      * @return Descripci�n detallada del fichero que pasa el filtro. Se mostrar� en el di�logo
      * abrir/cerrar.
-     * @since 1.0
+     * @since 2.0
      */
     public String getDescription() {
         return java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JSelectorFicheros.DescripcionOSM");

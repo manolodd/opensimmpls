@@ -22,7 +22,7 @@ package simMPLS.protocols;
  * Techniques".
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TGPSRPPayload {
 
@@ -31,7 +31,7 @@ public class TGPSRPPayload {
      * of TGPSRPPayload.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public TGPSRPPayload() {
         this.GPSRPMessageType = TGPSRPPayload.RETRANSMISSION_REQUEST;
@@ -46,7 +46,7 @@ public class TGPSRPPayload {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param flowID The flow ID of the packet whose retransmission is being
      * requested.
-     * @since 1.0
+     * @since 2.0
      */
     public void setFlowID(int flowID) {
         this.flowID = flowID;
@@ -59,7 +59,7 @@ public class TGPSRPPayload {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The flow ID of the packet whose retransmission is being
      * requested.
-     * @since 1.0
+     * @since 2.0
      */
     public int getFlowID() {
         return this.flowID;
@@ -72,7 +72,7 @@ public class TGPSRPPayload {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packetID Packet ID of the packet whose retransmission is being
      * requested.
-     * @since 1.0
+     * @since 2.0
      */
     public void setPacketID(int packetID) {
         this.packetID = packetID;
@@ -84,7 +84,7 @@ public class TGPSRPPayload {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Packet ID of the packet whose retransmission is being requested.
-     * @since 1.0
+     * @since 2.0
      */
     public int getPacketID() {
         return this.packetID;
@@ -97,7 +97,7 @@ public class TGPSRPPayload {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Size of this GPSRP payload in bytes (octects).
-     * @since 1.0
+     * @since 2.0
      */
     public int getSize() {
         return 9;
@@ -112,7 +112,7 @@ public class TGPSRPPayload {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param GPSRPMessageType The type of GPSRP message; one of the constants
      * defined in TGPSRPPayload class.
-     * @since 1.0
+     * @since 2.0
      */
     public void setGPSRPMessageType(int GPSRPMessageType) {
         this.GPSRPMessageType = GPSRPMessageType;
@@ -126,7 +126,7 @@ public class TGPSRPPayload {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The type of GPSRP message; one of the constants defined in
      * TGPSRPPayload class.
-     * @since 1.0
+     * @since 2.0
      */
     public int getGPSRPMessageType() {
         return this.GPSRPMessageType;

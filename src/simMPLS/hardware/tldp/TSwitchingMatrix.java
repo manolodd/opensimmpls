@@ -24,7 +24,7 @@ import simMPLS.utils.TMonitor;
  * topology.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TSwitchingMatrix {
 
@@ -33,7 +33,7 @@ public class TSwitchingMatrix {
      * TSwitchingMatrix.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public TSwitchingMatrix() {
         this.switchingMatrix = new LinkedList();
@@ -46,7 +46,7 @@ public class TSwitchingMatrix {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The monitor of the class.
-     * @since 1.0
+     * @since 2.0
      */
     public TMonitor getMonitor() {
         return this.monitor;
@@ -58,7 +58,7 @@ public class TSwitchingMatrix {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param switchingMatrixEntry The entry to be added to the switching
      * matrix.
-     * @since 1.0
+     * @since 2.0
      */
     public void addEntry(TSwitchingMatrixEntry switchingMatrixEntry) {
         this.monitor.lock();
@@ -78,7 +78,7 @@ public class TSwitchingMatrix {
      * switching entry.
      * @return The switching entry corresponding to the values specified as
      * arguments (if exist) or NULL on the contrary.
-     * @since 1.0
+     * @since 2.0
      */
     public TSwitchingMatrixEntry getEntry(int incomingPortID, int labelOrFEC, int entryType) {
         this.monitor.lock();
@@ -108,7 +108,7 @@ public class TSwitchingMatrix {
      * switching entry.
      * @return The switching entry corresponding to the value specified as an
      * argument (if exist) or NULL on the contrary.
-     * @since 1.0
+     * @since 2.0
      */
     public TSwitchingMatrixEntry getEntry(int localTLDPSessionID) {
         this.monitor.lock();
@@ -136,7 +136,7 @@ public class TSwitchingMatrix {
      * entry.
      * @return The switching entry corresponding to the values specified as
      * arguments (if exist) or NULL on the contrary.
-     * @since 1.0
+     * @since 2.0
      */
     public TSwitchingMatrixEntry getEntry(int upstreamTLDPSessionID, int incomingPortID) {
         this.monitor.lock();
@@ -167,7 +167,7 @@ public class TSwitchingMatrix {
      * switching entry.
      * @return TRUE, if the wanted switching entry exist in the switching
      * matrix. Otherwise, returns FALSE.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean existsEntry(int incomingPortID, int labelOrFEC, int entryType) {
         this.monitor.lock();
@@ -199,7 +199,7 @@ public class TSwitchingMatrix {
      * removed.
      * @param entryType The entry type (ILM or FTN) field of the switching entry
      * to be removed.
-     * @since 1.0
+     * @since 2.0
      */
     public void removeEntry(int incomingPortID, int labelOrFEC, int entryType) {
         this.monitor.lock();
@@ -227,7 +227,7 @@ public class TSwitchingMatrix {
      * entry to be removed.
      * @param incomingPortID The incoming port of field of the switching entry
      * to be removed.
-     * @since 1.0
+     * @since 2.0
      */
     public void removeEntry(int localTLDPSessionID, int incomingPortID) {
         this.monitor.lock();
@@ -261,7 +261,7 @@ public class TSwitchingMatrix {
      * arguments. Operations are defined in TSwitchingMatrixEntry class
      * (TSwitchingMatrixEntry.PUSH_LABEL, TSwitchingMatrixEntry.POP_LABEL,
      * TSwitchingMatrixEntry.SWAP_LABEL and TSwitchingMatrixEntry.NOOP).
-     * @since 1.0
+     * @since 2.0
      */
     public int getLabelStackOperation(int incomingPortID, int labelOrFEC, int entryType) {
         this.monitor.lock();
@@ -297,7 +297,7 @@ public class TSwitchingMatrix {
      * @return the outgoing label that has to be used when forwarding a packet
      * as stored in the switching entry identified by the values specified as
      * arguments.
-     * @since 1.0
+     * @since 2.0
      */
     public int getOutgoingLabel(int incomingPortID, int labelOrFEC, int entryType) {
         this.monitor.lock();
@@ -333,7 +333,7 @@ public class TSwitchingMatrix {
      * @return the outgoing port that has to be used when forwarding a packet as
      * stored in the switching entry identified by the values specified as
      * arguments.
-     * @since 1.0
+     * @since 2.0
      */
     public int getOutgoingPortID(int incomingPortID, int labelOrFEC, int entryType) {
         this.monitor.lock();
@@ -362,7 +362,7 @@ public class TSwitchingMatrix {
      * @param label The label we whant to check.
      * @return TRUE if any switching entry in the switching matrix is using the
      * specified label. Otherwise returns FALSE.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean labelIsAlreadyUsed(int label) {
         this.monitor.lock();
@@ -390,7 +390,7 @@ public class TSwitchingMatrix {
      * in the switching matrix, if possible. If the label space is completely
      * used and is not possible to return a new label, this returns
      * TSwitchingMatrixEntry.LABEL_UNAVAILABLE.
-     * @since 1.0
+     * @since 2.0
      */
     public int getNewLabel() {
         int labelAux = TSwitchingMatrixEntry.FIRST_UNRESERVED_LABEL;
@@ -410,7 +410,7 @@ public class TSwitchingMatrix {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the switching entries iterator for this switching matrix.
-     * @since 1.0
+     * @since 2.0
      */
     public Iterator getEntriesIterator() {
         return this.switchingMatrix.iterator();
@@ -423,7 +423,7 @@ public class TSwitchingMatrix {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the number of switching entries currently stored in this
      * switching matrix.
-     * @since 1.0
+     * @since 2.0
      */
     public int getNumberOfEntries() {
         return this.switchingMatrix.size();
@@ -434,7 +434,7 @@ public class TSwitchingMatrix {
      * matrix, as when created by the constructor.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public void reset() {
         this.monitor.lock();

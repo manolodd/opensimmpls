@@ -23,7 +23,7 @@ import simMPLS.protocols.TAbstractPDU;
  * This class implements a set of active ports for a node.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TActivePortSet extends TPortSet {
 
@@ -36,7 +36,7 @@ public class TActivePortSet extends TPortSet {
      * contain.
      * @param activeNode Reference to the parentNode the set of active ports
      * belongs to.
-     * @since 1.0
+     * @since 2.0
      */
     public TActivePortSet(int numberOfPorts, TNode activeNode) {
         super(numberOfPorts, activeNode);
@@ -117,7 +117,7 @@ public class TActivePortSet extends TPortSet {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param unlimitedBuffer TRUE, if the set of ports will be defined as
      * unlimited ones; otherwise, FALSE.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void setUnlimitedBuffer(boolean unlimitedBuffer) {
@@ -135,7 +135,7 @@ public class TActivePortSet extends TPortSet {
      * @param portID port number of the port to be obtained.
      * @return The port matching the port number specified as an argument. If
      * the port does not exist, returns NULL.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public TPort getPort(int portID) {
@@ -151,7 +151,7 @@ public class TActivePortSet extends TPortSet {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param sizeInMB Size, in MB, for the set of ports buffer.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void setBufferSizeInMB(int sizeInMB) {
@@ -163,7 +163,7 @@ public class TActivePortSet extends TPortSet {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The size of the port set buffer in MB.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int getBufferSizeInMB() {
@@ -177,7 +177,7 @@ public class TActivePortSet extends TPortSet {
      * @param portID portID number of the portID to be checked.
      * @return TRUE, if the portID is not connected to a link (available). FALSE
      * if the portID is connected to a link (not available).
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public boolean isAvailable(int portID) {
@@ -194,7 +194,7 @@ public class TActivePortSet extends TPortSet {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TRUE, if at least one port of the port set is not connected to a
      * link. Otherwise, returns false.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public boolean hasAvailablePorts() {
@@ -213,7 +213,7 @@ public class TActivePortSet extends TPortSet {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param link The link to be connected.
      * @param portID The port number of the port to be coonecte to the link.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void connectLinkToPort(TLink link, int portID) {
@@ -233,7 +233,7 @@ public class TActivePortSet extends TPortSet {
      * connected.
      * @return Link connected to the specified port. If the port is not
      * connected to a link, returns NULL.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public TLink getLinkConnectedToPort(int portID) {
@@ -252,7 +252,7 @@ public class TActivePortSet extends TPortSet {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param portID the port number of the port whose link is going to be
      * disconnected from it.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void disconnectLinkFromPort(int portID) {
@@ -268,7 +268,7 @@ public class TActivePortSet extends TPortSet {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return a new packet thas was waiting in one port of the port set.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public TAbstractPDU getNextPacket() {
@@ -289,7 +289,7 @@ public class TActivePortSet extends TPortSet {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TRUE, if there is at least one packet in one port buffer waiting
      * to be switched/routed. Otherwise, returns FALSE.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public boolean isAnyPacketToSwitch() {
@@ -308,7 +308,7 @@ public class TActivePortSet extends TPortSet {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TRUE, if there is at least one packet in one port buffer waiting
      * to be switched/routed. Otherwise, returns FALSE.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public boolean isThereAnyPacketToRoute() {
@@ -324,7 +324,7 @@ public class TActivePortSet extends TPortSet {
      * @param maxSwitchableOctects the max. number of octects the parent
      * parentNode is able to switch a this moment.
      * @return TRUE, if next packet can be switched. Otherwise, return false.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public boolean canSwitchPacket(int maxSwitchableOctects) {
@@ -347,7 +347,7 @@ public class TActivePortSet extends TPortSet {
      * instead.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void skipPort() {
@@ -360,7 +360,7 @@ public class TActivePortSet extends TPortSet {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The number of the port from where the latest packet was read.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int getReadPort() {
@@ -377,7 +377,7 @@ public class TActivePortSet extends TPortSet {
      * @return The port to wich the parentNode having the specified IP address
      * is connected to. If the parentNode having the specified IP address is not
      * connected to this port set, returns NULL.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public TPort getLocalPortConnectedToANodeWithIPAddress(String adjacentNodeIP) {
@@ -406,7 +406,7 @@ public class TActivePortSet extends TPortSet {
      * @param portID The port number of the port to be queried.
      * @return IP address of the node that is connected to the specified port by
      * a link. If the port is not connected (is available), returns NULL.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public String getIPOfNodeLinkedTo(int portID) {
@@ -428,7 +428,7 @@ public class TActivePortSet extends TPortSet {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Congestion level of the port set as a percentage (0%-100%).
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public long getCongestionLevel() {
@@ -447,7 +447,7 @@ public class TActivePortSet extends TPortSet {
      * constructor.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void reset() {
@@ -476,7 +476,7 @@ public class TActivePortSet extends TPortSet {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param congestArtificially TRUE if port set is going to be congested
      * artificially. Otherwise, FALSE.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void setArtificiallyCongested(boolean congestArtificially) {

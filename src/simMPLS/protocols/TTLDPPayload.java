@@ -21,7 +21,7 @@ package simMPLS.protocols;
  * MPLS using Active Techniques".
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TTLDPPayload {
 
@@ -30,7 +30,7 @@ public class TTLDPPayload {
      * of TTLDPPayload.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public TTLDPPayload() {
         this.TLDPMessageType = TTLDPPayload.LABEL_REQUEST;
@@ -45,7 +45,7 @@ public class TTLDPPayload {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The size for this TLDP packet, in bytes (octects).
-     * @since 1.0
+     * @since 2.0
      */
     public int getSize() {
         // Fix: create and use a constant insted of this harcoded value.
@@ -60,7 +60,7 @@ public class TTLDPPayload {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param TLDPMessageType The type of TLDP message; one of the constants
      * defined in TTLDPPayload class.
-     * @since 1.0
+     * @since 2.0
      */
     public void setTLDPMessageType(int TLDPMessageType) {
         this.TLDPMessageType = TLDPMessageType;
@@ -74,7 +74,7 @@ public class TTLDPPayload {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The type of TLDP message; one of the constants defined in
      * TTLDPPayload class.
-     * @since 1.0
+     * @since 2.0
      */
     public int getTLDPMessageType() {
         return this.TLDPMessageType;
@@ -87,7 +87,7 @@ public class TTLDPPayload {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param targetIPAddress the IP address of the node that should receive
      * this TLDP packet.
-     * @since 1.0
+     * @since 2.0
      */
     public void setTargetIPAddress(String targetIPAddress) {
         this.targetIPAddress = targetIPAddress;
@@ -99,7 +99,7 @@ public class TTLDPPayload {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The IP address of the node that should receive this TLDP packet.
-     * @since 1.0
+     * @since 2.0
      */
     public String getTailEndIPAddress() {
         return this.targetIPAddress;
@@ -113,7 +113,7 @@ public class TTLDPPayload {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param label The label that is going to travel within this TLDP packet
      * payload.
-     * @since 1.0
+     * @since 2.0
      */
     public void setLabel(int label) {
         this.label = label;
@@ -126,7 +126,7 @@ public class TTLDPPayload {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The label that travels within this TLDP packet payload.
-     * @since 1.0
+     * @since 2.0
      */
     public int getLabel() {
         return this.label;
@@ -138,7 +138,7 @@ public class TTLDPPayload {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param TLDPIdentifier The TLDP session identifier for this TLDP packet.
-     * @since 1.0
+     * @since 2.0
      */
     public void setTLDPIdentifier(int TLDPIdentifier) {
         this.TLDPIdentifier = TLDPIdentifier;
@@ -150,7 +150,7 @@ public class TTLDPPayload {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The TLDP session identifier for this TLDP packet.
-     * @since 1.0
+     * @since 2.0
      */
     public int getTLDPIdentifier() {
         return this.TLDPIdentifier;

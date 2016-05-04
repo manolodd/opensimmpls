@@ -34,7 +34,7 @@ public class JVentanaReceptor extends javax.swing.JDialog {
 
     /**
      * Crea una nueva instancia de JVentanaReceptor
-     * @since 1.0
+     * @since 2.0
      * @param t Topolog�a dentro de la cual se encuentra el nodo receptor que se va a configurar.
      * @param pad Panel de dise�o en el cual se est� dise�ando el nodo receptor.
      * @param di Dispensador de im�genes com�n a todo el programa.
@@ -56,7 +56,7 @@ public class JVentanaReceptor extends javax.swing.JDialog {
     /**
      * Este m�todo configura los componentes que no hayan quedado del todo configurados
      * en el constructor.
-     * @since 1.0
+     * @since 2.0
      */    
     public void initComponents2() {
         panelCoordenadas.ponerPanelOrigen(pd);
@@ -297,7 +297,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
     /**
      * Este m�todo configura la ventana de configuraci�n del receptor con los valores
      * que el receptor tenga ya activos.
-     * @since 1.0
+     * @since 2.0
      * @param tnr Nodo receptor que se desea configurar.
      * @param recfg TRUE indica que es una reconfiguraci�n del nodo receptor. FALSE indica que el
      * nodo est� siendo insertado por primera vez.

@@ -35,7 +35,7 @@ public class JLicencia extends javax.swing.JDialog {
      * @param modal Si es (true), ningun otro componente del programa podr� tomar el foco hasta que
      * esta ventana de dialogo se haya cerrado. Si es (false), se puede seguir  con el
      * programa a�n sin haber cerrado esta ventana.
-     * @since 1.0
+     * @since 2.0
      */
     public JLicencia(java.awt.Frame parent, boolean modal, TImagesBroker di) {
         super(parent, modal);

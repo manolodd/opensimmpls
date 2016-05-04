@@ -29,7 +29,7 @@ public abstract class TOpenSimMPLSEvent extends EventObject implements Comparabl
      * Este el el constructor de la clase, que permitir� crear instancias de tipo
      * TEventoSimMPLS. En realidad no se puede porque es una clase abstracta, pero debe
      * ser inicializada por las superclases y por ello se proporciona este constructor.
-     * @since 1.0
+     * @since 2.0
      * @param inst Instante de tiempo. Todos los eventos de Open SimMPLS est�n marcados con el
      * instante en que se han generado.
      * @param emisor El objeto que genera el evento.
@@ -45,7 +45,7 @@ public abstract class TOpenSimMPLSEvent extends EventObject implements Comparabl
     /**
      * Este m�todo permite obtener el instante de tiempo en que se gener� el evento.
      * @return El instante de tiempo en que se gener� el evento.
-     * @since 1.0
+     * @since 2.0
      */
     public long obtenerInstante() {
         return this.instante;
@@ -53,7 +53,7 @@ public abstract class TOpenSimMPLSEvent extends EventObject implements Comparabl
     
     /** Este m�todo obtiene el identificador del evento.
      * @return El identificador del evento.
-     * @since 1.0
+     * @since 2.0
      */
     public long obtenerIdentificador() {
         return identificador;
@@ -61,7 +61,7 @@ public abstract class TOpenSimMPLSEvent extends EventObject implements Comparabl
     
     /** Este m�todo permite cambiar el identificador del objeto colocado en el momento
      * de su instanciaci�n.
-     * @since 1.0
+     * @since 2.0
      * @param id El nuevo identificador del objeto.
      */
     public void ponerIdentificador(long id) {
@@ -74,7 +74,7 @@ public abstract class TOpenSimMPLSEvent extends EventObject implements Comparabl
      * @param o El otro evento con el que se compara.
      * @return -1, 0 � 1, dependiendo de si los eventos son distintos, mayor o menor en cuanto
      * a orden.
-     * @since 1.0
+     * @since 2.0
      */
     public int compareTo(Object o) {
         TOpenSimMPLSEvent e = (TOpenSimMPLSEvent) o;
@@ -95,29 +95,29 @@ public abstract class TOpenSimMPLSEvent extends EventObject implements Comparabl
     /** Este m�todo obtiene el tipo del evento, que ser� una de las constantes definidas
      * en esta clase.
      * @return La constante que indica de qu� tipo es el evento.
-     * @since 1.0
+     * @since 2.0
      */
     public abstract int getType();
     
     /** Constante que indica que el evento es de tipo ESTADISTICA.
-     * @since 1.0
+     * @since 2.0
      */
     public static final int ESTADISTICA = 0;
     /** Constante que indica que el evento es de tipo SIMULACION.
-     * @since 1.0
+     * @since 2.0
      */
     public static final int SIMULACION = 1;
     /** Constante que indica que el evento es de tipo TIMER.
-     * @since 1.0
+     * @since 2.0
      */
     public static final int TIMER = 2;
     /** Constante que indica que el evento es de tipo PROGRESS.
-     * @since 1.0
+     * @since 2.0
      */
     public static final int PROGRESS = 3;
     
     /** Atributo que contiene el identificador del evento.
-     * @since 1.0
+     * @since 2.0
      */
     private long identificador;
     private long instante;

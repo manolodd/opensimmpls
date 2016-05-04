@@ -28,7 +28,7 @@ public class TSEPacketSwitched extends TSimulationEvent {
 
     /**
      * Crea una nueva instancia de TESPaqueteConmutado
-     * @since 1.0
+     * @since 2.0
      * @param inst Instante de tiempo en el que se gener� el paquete.
      * @param emisor Nodo que gener� el evento.
      * @param id Identificador unico del evento.
@@ -42,7 +42,7 @@ public class TSEPacketSwitched extends TSimulationEvent {
     /**
      * Este m�todo obtiene el tipo el paquete que conmut� el nodo que gener� el evento.
      * @return Tipo de paquete conmutado.
-     * @since 1.0
+     * @since 2.0
      */    
     public int obtenerTipoPaquete() {
         return tipoP;
@@ -51,7 +51,7 @@ public class TSEPacketSwitched extends TSimulationEvent {
     /**
      * Este m�todo obtiene el subtipo del evento, si los hubiese.
      * @return El subtipo del evento.
-     * @since 1.0
+     * @since 2.0
      */    
     public int getSubtype() {
         return super.PACKET_SWITCHED;
@@ -60,7 +60,7 @@ public class TSEPacketSwitched extends TSimulationEvent {
     /**
      * Este m�todo obtiene el nombre del enlace que origin� el evento.
      * @return El nombre del enlace que origin� el evento.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerNombre() {
         TTopologyElement et = null;
@@ -80,7 +80,7 @@ public class TSEPacketSwitched extends TSimulationEvent {
     /**
      * Este m�todo obtiene un texto con el tipo de evento.
      * @return Un texto con el tipo de evento.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerNombreTipo() {
         TTopologyElement et = null;
@@ -96,7 +96,7 @@ public class TSEPacketSwitched extends TSimulationEvent {
     /**
      * Este m�todo devuelve una representaci�n textual del tipo de paquete conmutado.
      * @return Nombre en texto claro, del tipo de paquete conmutado.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerNombreTipoPaquete() {
         String strTipo = "";
@@ -133,7 +133,7 @@ public class TSEPacketSwitched extends TSimulationEvent {
     /**
      * Este m�todo explcia el evento en una l�nea de texto.
      * @return El texto explicando el evento.
-     * @since 1.0
+     * @since 2.0
      */    
     public String toString() {
         String cad = "";

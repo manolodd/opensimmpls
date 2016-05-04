@@ -20,7 +20,7 @@ package simMPLS.scenario;
  * single listener is subscribed to the progress event generator.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class ESimulationSingleSubscriber extends Exception {
 
@@ -29,7 +29,7 @@ public class ESimulationSingleSubscriber extends Exception {
      * of ESimulationSingleSubscriber.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public ESimulationSingleSubscriber() {
     }
@@ -40,7 +40,7 @@ public class ESimulationSingleSubscriber extends Exception {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return a localized message explaining the cause of this exception.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public String toString() {

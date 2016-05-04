@@ -23,7 +23,7 @@ import simMPLS.scenario.TSimulationEvent;
  * simulation events.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public interface ISimulationEventListener extends EventListener {
 
@@ -31,7 +31,7 @@ public interface ISimulationEventListener extends EventListener {
      * This method, when implemented, will capture simulation events.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @param simulationEvent The simulation event received.
      */
     public void captureSimulationEvents(TSimulationEvent simulationEvent);

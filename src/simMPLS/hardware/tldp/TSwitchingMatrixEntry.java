@@ -20,7 +20,7 @@ package simMPLS.hardware.tldp;
  * forwarding.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TSwitchingMatrixEntry {
 
@@ -29,7 +29,7 @@ public class TSwitchingMatrixEntry {
      * TSwitchingMatrixEntry.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public TSwitchingMatrixEntry() {
         this.incomingPortID = TSwitchingMatrixEntry.UNDEFINED;
@@ -55,7 +55,7 @@ public class TSwitchingMatrixEntry {
      * @return TRUE, if a backup LSP has been established. Otherwise, returns
      * FALSE.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public boolean backupLSPHasBeenEstablished() {
         if (this.backupOutgoingPortID >= 0) {
@@ -73,7 +73,7 @@ public class TSwitchingMatrixEntry {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TRUE, if backup LSP removal should be started. Otherwise returns
      * FALSE.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean backupLSPShouldBeRemoved() {
         if (backupLSPHasBeenEstablished()) {
@@ -94,7 +94,7 @@ public class TSwitchingMatrixEntry {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TRUE, if the current active node started the backup LSP.
      * Otherwise, returns FALSE..
-     * @since 1.0
+     * @since 2.0
      */
     public boolean amIABackupLSPHeadEnd() {
         if (this.isRequestForBackupLSP) {
@@ -112,7 +112,7 @@ public class TSwitchingMatrixEntry {
      * @param portID portID whose opposite portID should be returned.
      * @return The opposite portID taking into account the one specified as an
      * argument.
-     * @since 1.0
+     * @since 2.0
      */
     public int getOppositePortID(int portID) {
         if (this.incomingPortID == portID) {
@@ -135,7 +135,7 @@ public class TSwitchingMatrixEntry {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TRUE, if the initiating TLDP packet requested a backup LSP.
      * Otherwise, returns FALSE.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean aBackupLSPHasBeenRequested() {
         return this.isRequestForBackupLSP;
@@ -146,7 +146,7 @@ public class TSwitchingMatrixEntry {
      * LSP or not. It is used only for visual simulation purpose.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @param isRequestForBackupLSP TRUE, if the entry has a backup LSP
      * requests. Otherwise, returns false.
      */
@@ -159,7 +159,7 @@ public class TSwitchingMatrixEntry {
      * been used for this entry/TLDP request.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public void resetAttempts() {
         this.labelRequestAttempts = TSwitchingMatrixEntry.LABEL_REQUEST_ATTEMPTS;
@@ -170,7 +170,7 @@ public class TSwitchingMatrixEntry {
      * this entry.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public void decreaseAttempts() {
         if (this.labelRequestAttempts > 0) {
@@ -186,7 +186,7 @@ public class TSwitchingMatrixEntry {
      * this entry or not.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @return TRUE, if it is still possible to retry the label request.
      * Otherwise, returns false..
      */
@@ -202,7 +202,7 @@ public class TSwitchingMatrixEntry {
      * value.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public void resetTimeOut() {
         this.timeout = TSwitchingMatrixEntry.TIMEOUT;
@@ -212,7 +212,7 @@ public class TSwitchingMatrixEntry {
      * This method decreases the communication timeout.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @param nanosecondsToDecrease The number of nanoseconds that are going to
      * be decreased from the available timeout credit.
      */
@@ -231,7 +231,7 @@ public class TSwitchingMatrixEntry {
      * reviewed. It checks operation type to know if retry is possible.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @return TRUE, if the request of this entry should be retried. Otherwise
      * returns FALSE..
      */
@@ -252,7 +252,7 @@ public class TSwitchingMatrixEntry {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param incomingPortID The desired incoming portID.
-     * @since 1.0
+     * @since 2.0
      */
     public void setIncomingPortID(int incomingPortID) {
         this.incomingPortID = incomingPortID;
@@ -263,7 +263,7 @@ public class TSwitchingMatrixEntry {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The incoming portID of this entry.
-     * @since 1.0
+     * @since 2.0
      */
     public int getIncomingPortID() {
         return this.incomingPortID;
@@ -274,7 +274,7 @@ public class TSwitchingMatrixEntry {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param labelOrFEC The LABEL or FEC value for this entry.
-     * @since 1.0
+     * @since 2.0
      */
     public void setLabelOrFEC(int labelOrFEC) {
         this.labelOrFEC = labelOrFEC;
@@ -285,7 +285,7 @@ public class TSwitchingMatrixEntry {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The LABEl or FEC value of this entry.
-     * @since 1.0
+     * @since 2.0
      */
     public int getLabelOrFEC() {
         return this.labelOrFEC;
@@ -296,7 +296,7 @@ public class TSwitchingMatrixEntry {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param outgoingPortID The outgoing portID for this entry.
-     * @since 1.0
+     * @since 2.0
      */
     public void setOutgoingPortID(int outgoingPortID) {
         this.outgoingPortID = outgoingPortID;
@@ -308,7 +308,7 @@ public class TSwitchingMatrixEntry {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param backupOutgoingPortID the outgoing portID of the backup LSP for
      * this entry.
-     * @since 1.0
+     * @since 2.0
      */
     public void setBackupOutgoingPortID(int backupOutgoingPortID) {
         this.backupOutgoingPortID = backupOutgoingPortID;
@@ -319,7 +319,7 @@ public class TSwitchingMatrixEntry {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the outgoing portID of this entry.
-     * @since 1.0
+     * @since 2.0
      */
     public int getOutgoingPortID() {
         return this.outgoingPortID;
@@ -330,7 +330,7 @@ public class TSwitchingMatrixEntry {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the outgoing portID of the backup LSP of this entry.
-     * @since 1.0
+     * @since 2.0
      */
     public int getBackupOutgoingPortID() {
         return this.backupOutgoingPortID;
@@ -342,7 +342,7 @@ public class TSwitchingMatrixEntry {
      * main one and, hence, a backup LSP is now neccesary).
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public void switchToBackupLSP() {
         this.outgoingPortID = this.backupOutgoingPortID;
@@ -357,7 +357,7 @@ public class TSwitchingMatrixEntry {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param outgoingLabel the outgoing LABEL value for this entry.
-     * @since 1.0
+     * @since 2.0
      */
     public void setOutgoingLabel(int outgoingLabel) {
         this.label = outgoingLabel;
@@ -369,7 +369,7 @@ public class TSwitchingMatrixEntry {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param backupOutgoingLabel the outgoing LABEL for the backup LSP for this
      * entry.
-     * @since 1.0
+     * @since 2.0
      */
     public synchronized void setBackupOutgoingLabel(int backupOutgoingLabel) {
         this.backupLabel = backupOutgoingLabel;
@@ -380,7 +380,7 @@ public class TSwitchingMatrixEntry {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the outgoing LABEL of this entry.
-     * @since 1.0
+     * @since 2.0
      */
     public int getOutgoingLabel() {
         return this.label;
@@ -391,7 +391,7 @@ public class TSwitchingMatrixEntry {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the outgoing LABEL for the backup LSP of this entry.
-     * @since 1.0
+     * @since 2.0
      */
     public synchronized int getBackupOutgoingLabel() {
         return this.backupLabel;
@@ -404,7 +404,7 @@ public class TSwitchingMatrixEntry {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param labelStackOperation the operation to be performed to the top of
      * the label stack.
-     * @since 1.0
+     * @since 2.0
      */
     public void setLabelStackOperation(int labelStackOperation) {
         this.labelStackOperation = labelStackOperation;
@@ -416,7 +416,7 @@ public class TSwitchingMatrixEntry {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the operation to be performed to the top of the label stack.
-     * @since 1.0
+     * @since 2.0
      */
     public int getLabelStackOperation() {
         return this.labelStackOperation;
@@ -429,7 +429,7 @@ public class TSwitchingMatrixEntry {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param entryType the type of entry for this entry, as defined in
      * TSwitchingMatrixEntry.
-     * @since 1.0
+     * @since 2.0
      */
     public void setEntryType(int entryType) {
         this.entryType = entryType;
@@ -442,7 +442,7 @@ public class TSwitchingMatrixEntry {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the type of entry of this entry, as defined in
      * TSwitchingMatrixEntry.
-     * @since 1.0
+     * @since 2.0
      */
     public int getEntryType() {
         return this.entryType;
@@ -455,7 +455,7 @@ public class TSwitchingMatrixEntry {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the IP address of the tail end node the traffic affected by this
      * entry is going to.
-     * @since 1.0
+     * @since 2.0
      */
     public String getTailEndIPAddress() {
         return this.tailEndIPAddress;
@@ -468,7 +468,7 @@ public class TSwitchingMatrixEntry {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param tailEndIPAddress the IP address of the tail end node the traffic
      * affected by this entry is going to.
-     * @since 1.0
+     * @since 2.0
      */
     public void setTailEndIPAddress(String tailEndIPAddress) {
         this.tailEndIPAddress = tailEndIPAddress;
@@ -479,7 +479,7 @@ public class TSwitchingMatrixEntry {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param localTLDPSessionID the local TLDP session ID for this entry.
-     * @since 1.0
+     * @since 2.0
      */
     public void setLocalTLDPSessionID(int localTLDPSessionID) {
         this.localTLDPSessionID = localTLDPSessionID;
@@ -490,7 +490,7 @@ public class TSwitchingMatrixEntry {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the local TLDP session ID of this entry.
-     * @since 1.0
+     * @since 2.0
      */
     public int getLocalTLDPSessionID() {
         return this.localTLDPSessionID;
@@ -504,7 +504,7 @@ public class TSwitchingMatrixEntry {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param upstreamTLDPSessionID the TLDP session ID used by the upstream
      * adjacent node.
-     * @since 1.0
+     * @since 2.0
      */
     public void setUpstreamTLDPSessionID(int upstreamTLDPSessionID) {
         this.upstreamTLDPSessionID = upstreamTLDPSessionID;
@@ -517,7 +517,7 @@ public class TSwitchingMatrixEntry {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the TLDP session ID used by the upstream adjacent node.
-     * @since 1.0
+     * @since 2.0
      */
     public int getUpstreamTLDPSessionID() {
         return this.upstreamTLDPSessionID;
@@ -530,7 +530,7 @@ public class TSwitchingMatrixEntry {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TRUE if the entry is valid. Otherwise returns FALSE.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean isAValidEntry() {
         if (this.getIncomingPortID() == TSwitchingMatrixEntry.UNDEFINED) {

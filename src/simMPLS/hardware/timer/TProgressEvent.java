@@ -22,7 +22,7 @@ import simMPLS.utils.TOpenSimMPLSEvent;
  * the simulation when it is running.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TProgressEvent extends TOpenSimMPLSEvent {
 
@@ -34,7 +34,7 @@ public class TProgressEvent extends TOpenSimMPLSEvent {
      * @param eventGenerator The object that generates the event.
      * @param progressPercentage The progress percentage that the event is
      * carrying out and will be received by the listener.
-     * @since 1.0
+     * @since 2.0
      */
     public TProgressEvent(Object eventGenerator, long eventID, int progressPercentage) {
         super(eventGenerator, eventID, 0);
@@ -46,7 +46,7 @@ public class TProgressEvent extends TOpenSimMPLSEvent {
      *
      * @return The progress percentage that the event is carrying out and will
      * be received by the listener.
-     * @since 1.0
+     * @since 2.0
      */
     public int getProgressPercentage() {
         return this.progressPercentage;
@@ -58,7 +58,7 @@ public class TProgressEvent extends TOpenSimMPLSEvent {
      *
      * @return The type of this event. It is one of the constants defined in
      * TOpenSimMPLSEvent.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int getType() {

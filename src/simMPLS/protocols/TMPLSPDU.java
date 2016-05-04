@@ -21,7 +21,7 @@ import java.util.LinkedList;
  * This class implements a MPLS packet.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TMPLSPDU extends TAbstractPDU {
 
@@ -35,7 +35,7 @@ public class TMPLSPDU extends TAbstractPDU {
      * @param targetIP IP addres of this packet's receiver.
      * @param payloadSize The desired size for the payload of this MPLS packet,
      * in bytes (octects).
-     * @since 1.0
+     * @since 2.0
      */
     public TMPLSPDU(long id, String originIP, String targetIP, int payloadSize) {
         super(id, originIP, targetIP);
@@ -47,7 +47,7 @@ public class TMPLSPDU extends TAbstractPDU {
     /**
      * This method creates a clone of this MPLS packet.
      *
-     * @since 1.0
+     * @since 2.0
      * @return An exact copy of this MPLS packet.
      */
     public TMPLSPDU getAClon() {
@@ -122,7 +122,7 @@ public class TMPLSPDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Size of this packet in bytes (octects).
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int getSize() {
@@ -139,7 +139,7 @@ public class TMPLSPDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The type of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int getType() {
@@ -151,7 +151,7 @@ public class TMPLSPDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TCP payload of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     public TTCPPayload getTCPPayload() {
         return this.tcpPayload;
@@ -162,7 +162,7 @@ public class TMPLSPDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param TCPPayload The TCP payload for this packet.
-     * @since 1.0
+     * @since 2.0
      */
     public void setTCPPayload(TTCPPayload TCPPayload) {
         this.tcpPayload = TCPPayload;
@@ -172,7 +172,7 @@ public class TMPLSPDU extends TAbstractPDU {
      * This method returns the label stack of this MPLS packet.
      *
      * @return The label stack of this MPLS packet.
-     * @since 1.0
+     * @since 2.0
      */
     public TMPLSLabelStack getLabelStack() {
         return this.mplsLabelStack;
@@ -189,7 +189,7 @@ public class TMPLSPDU extends TAbstractPDU {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The subtype of this packet. For instances of this class, it
      * returns MPLS, as defined in TAbstractPDU.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int getSubtype() {

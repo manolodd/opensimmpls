@@ -30,7 +30,7 @@ public class TScenario {
 
     /**
      * Crea una nueva instancia de TEscenario
-     * @since 1.0
+     * @since 2.0
      */
     public TScenario() {
         topologia = new TTopology(this);
@@ -47,7 +47,7 @@ public class TScenario {
      * Este m�todo establece el panel de simulaci�n que se usar� para mostrar la
      * simulaci�n visual.
      * @param ps Un panel de simulaci�n existente.
-     * @since 1.0
+     * @since 2.0
      */    
     public void ponerPanelSimulacion(JSimulationPanel ps) {
         simulacion.ponerPanelSimulacion(ps);
@@ -56,7 +56,7 @@ public class TScenario {
     /**
      * Este m�todo reinicia todos los atributos de la clase, dejando a la instancia
      * como si la acabase de crear el constructor.
-     * @since 1.0
+     * @since 2.0
      */    
     public void reset() {
         topologia.reset();
@@ -68,7 +68,7 @@ public class TScenario {
      * Este m�todo permite establecer el t�tulo del escenario, que aparecer� en la
      * ventana correspondiente cuando sea necesario.
      * @param t T�tulo del escenario
-     * @since 1.0
+     * @since 2.0
      */    
     public void setTitle(String t) {
         this.titulo = t;
@@ -77,7 +77,7 @@ public class TScenario {
     /**
      * Este m�todo permite obtener el t�tulo del escenario.
      * @return T�tulo del escenario.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerTitulo() {
         return this.titulo;
@@ -86,7 +86,7 @@ public class TScenario {
     /**
      * Este m�todo permite establecer el autor del escenario.
      * @param a Autor del escenario.
-     * @since 1.0
+     * @since 2.0
      */    
     public void setAuthor(String a) {
         this.autor = a;
@@ -95,7 +95,7 @@ public class TScenario {
     /**
      * Este m�todo permite obtener el autor del escenario.
      * @return Autor del escenario.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerAutor() {
         return this.autor;
@@ -104,7 +104,7 @@ public class TScenario {
     /**
      * Este m�todo permite establecer la descripci�n del escenario.
      * @param d Descripci�n del escenario.
-     * @since 1.0
+     * @since 2.0
      */    
     public void setDescription(String d) {
         this.descripcion = d;
@@ -113,7 +113,7 @@ public class TScenario {
     /**
      * Este m�todo permite obtener la descripci�n del escenario.
      * @return La descripci�n del escenario.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerDescripcion() {
         return this.descripcion;
@@ -123,7 +123,7 @@ public class TScenario {
      * Este m�todo permite obtener una caden a que es la serializaci�n del t�tulo para
      * almacenarla en disco.
      * @return La representaci�n serializada del t�tulo.
-     * @since 1.0
+     * @since 2.0
      */    
     public String marshallTitle() {
         String cadena = "#Titulo#";
@@ -139,7 +139,7 @@ public class TScenario {
     /**
      * Este m�todo permite obtener una caden a que es la serializaci�n del autor para
      * almacenarla en disco.
-     * @since 1.0
+     * @since 2.0
      * @return La representaci�n serializada del autor
      */    
     public String marshallAuthor() {
@@ -156,7 +156,7 @@ public class TScenario {
     /**
      * Este m�todo permite obtener una cadena que es la serializaci�n de la descripci�n
      * del escenario para  almacenarla en disco.
-     * @since 1.0
+     * @since 2.0
      * @return Representaci�n serializada de la descripci�n.
      */    
     public String marshallDescription() {
@@ -173,7 +173,7 @@ public class TScenario {
     /**
      * Este m�todo permite, apartir de un t�tulo serializado, poner el mismo titulo a
      * la instancia actual del escenario.
-     * @since 1.0
+     * @since 2.0
      * @param titulo Titulo serializado.
      * @return TRUE, si se ha deserializado sin problemas. FALSE, en caso contrario.
      */    
@@ -191,7 +191,7 @@ public class TScenario {
     /**
      * Este m�todo permite, apartir de un autor serializado, poner el mismo autor a
      * la instancia actual del escenario.
-     * @since 1.0
+     * @since 2.0
      * @param autor Autor serializado.
      * @return TRUE, si se ha deserializado correctamente. FALSE en caso contrario.
      */    
@@ -209,7 +209,7 @@ public class TScenario {
     /**
      * Este m�todo permite, apartir de una descripci�n serializada, poner la misma
      * descripci�n a la instancia actual del escenario.
-     * @since 1.0
+     * @since 2.0
      * @param descripcion Descripci�n serializada.
      * @return TRUE, si se ha deserializado correctamente. FALSE en caso contrario.
      */    
@@ -228,7 +228,7 @@ public class TScenario {
      * Este m�todo permite establecer la topolog�a del escenario a partir de una
      * topolog�a existente.
      * @param t Topolog�a asociada al escenario.
-     * @since 1.0
+     * @since 2.0
      */    
     public void ponerTopologia(TTopology t) {
         topologia = t;
@@ -237,7 +237,7 @@ public class TScenario {
     /**
      * Este m�todo permite obtener la topolog�a del escenario.
      * @return Topolog�a del escenario.
-     * @since 1.0
+     * @since 2.0
      */    
     public TTopology getTopology() {
         return topologia;
@@ -245,7 +245,7 @@ public class TScenario {
 
     /**
      * Este m�todo permite establecer la simulaci�n del escenario.
-     * @since 1.0
+     * @since 2.0
      * @param s Simulaci�n asociada al escenario.
      */    
     public void ponerSimulacion(TSimulation s) {
@@ -255,7 +255,7 @@ public class TScenario {
     /**
      * Este m�todo permite obtener la simulaci�n del escenario.
      * @return Simulaci�n del escenario.
-     * @since 1.0
+     * @since 2.0
      */    
     public TSimulation getSimulation() {
         return simulacion;
@@ -265,7 +265,7 @@ public class TScenario {
      * Este m�todo permite saber si en un momento dado la simulaci�n est� funcionando o
      * no.
      * @return TRUE, si la simulaci�n est� en curso. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean simulacionEnFuncionamiento() {
         if (topologia.obtenerReloj().isRunning()) 
@@ -275,7 +275,7 @@ public class TScenario {
 
     /**
      * Este m�todo permite comenzar el proceso de simulaci�n.
-     * @since 1.0
+     * @since 2.0
      */    
     public void generarSimulacion() {
         if (!this.simulacionEnFuncionamiento()) {
@@ -288,7 +288,7 @@ public class TScenario {
      * Este m�todo permite establecer el tiempo que debe durar la simulaci�n.
      * @param d Marca de tiempo que expresa la duraci�n en tiempo de simulaci�n, de la
      * simulaci�n.
-     * @since 1.0
+     * @since 2.0
      */    
     public void ponerDuracionSimulacion(TTimestamp d) {
         if (!this.simulacionEnFuncionamiento()) {
@@ -302,7 +302,7 @@ public class TScenario {
      * discretiza, haci�ndose por tics.
      * @param p Duraci�n en nanosegundos del tic de relo o, lo que es lo mismo, la duraci�n del
      * paso de simulaci�n.
-     * @since 1.0
+     * @since 2.0
      */    
     public void ponerPasoSimulacion(int p) {
         if (!this.simulacionEnFuncionamiento()) {
@@ -314,7 +314,7 @@ public class TScenario {
      * Este m�todo permite establecer el nombre y la ruta del fichero que almacena en
      * disco el escenario.
      * @param f Fichero de disco que almacena el escenario.
-     * @since 1.0
+     * @since 2.0
      */    
     public void setFile(File f) {
         ficheroEscenario = f;
@@ -324,7 +324,7 @@ public class TScenario {
      * Este m�todo permite obtener el nombre y ruta del fichero que almacena el
      * escenario en disco.
      * @return Fichero y ruta que almacena el escenario en disco.
-     * @since 1.0
+     * @since 2.0
      */    
     public File obtenerFichero() {
         return ficheroEscenario;
@@ -334,7 +334,7 @@ public class TScenario {
      * Este m�todo establece si el escenario est� guardado en disco o no.
      * @param g TRUE, si el escenario queremos que aparezca como guardado. FALSE en caso
      * contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public void setSaved(boolean g) {
         guardado = g;
@@ -344,7 +344,7 @@ public class TScenario {
      * Este m�todo permite obtener si el escenario se encuentra guardado en disco o
      * solo est� en memoria.
      * @return TRUE, si el fichero est� almacenado en disco. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean obtenerGuardado() {
         return guardado;
@@ -355,7 +355,7 @@ public class TScenario {
      * vez que se guard� en disco o no.
      * @param m TRUE, si queremos que el escenario aparezca como modificado. FALSE en caso
      * contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public void setModified(boolean m) {
         modificado = m;
@@ -366,7 +366,7 @@ public class TScenario {
      * guardado en disco o no.
      * @return TRUE, si el escenario est� modificado con respecto al disco. FALSE en caso
      * contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean obtenerModificado() {
         return modificado;

@@ -21,7 +21,7 @@ package simMPLS.protocols;
  * Tehcniques" proposal.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TTLDPPDU extends TAbstractPDU {
 
@@ -33,7 +33,7 @@ public class TTLDPPDU extends TAbstractPDU {
      * @param id Packet identifier.
      * @param originIP IP addres of this packet's sender.
      * @param targetIP IP addres of this packet's receiver.
-     * @since 1.0
+     * @since 2.0
      */
     public TTLDPPDU(long id, String originIP, String targetIP) {
         super(id, originIP, targetIP);
@@ -48,7 +48,7 @@ public class TTLDPPDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Size of this packet in bytes (octects).
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int getSize() {
@@ -65,7 +65,7 @@ public class TTLDPPDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The type of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int getType() {
@@ -77,7 +77,7 @@ public class TTLDPPDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TCP payload of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     public TTCPPayload getTCPPayload() {
         return this.tcpPayload;
@@ -88,7 +88,7 @@ public class TTLDPPDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TLDP payload of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     public TTLDPPayload getTLDPPayload() {
         return this.tldpPayload;
@@ -99,7 +99,7 @@ public class TTLDPPDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The IPv4 header of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public TIPv4Header getIPv4Header() {
@@ -113,7 +113,7 @@ public class TTLDPPDU extends TAbstractPDU {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The subtype of this packet. For instances of this class, it
      * returns TLDP, as defined in TAbstractPDU.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int getSubtype() {
@@ -136,7 +136,7 @@ public class TTLDPPDU extends TAbstractPDU {
      * depending on whether it refers to a traditional LSP or a backup LSP as
      * defined in "Guarantee of Service support over MPLS using Active
      * Techniques" proposal.
-     * @since 1.0
+     * @since 2.0
      */
     public void setLSPType(boolean LSPType) {
         this.lspType = LSPType;
@@ -156,7 +156,7 @@ public class TTLDPPDU extends TAbstractPDU {
      * on whether it refers to a traditional LSP or a backup LSP as defined in
      * "Guarantee of Service support over MPLS using Active Techniques"
      * proposal.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean getLSPType() {
         return this.lspType;
@@ -168,7 +168,7 @@ public class TTLDPPDU extends TAbstractPDU {
      * This method return the way this packet has arrived to a given node.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @return CAME_BY_ENTRANCE, CAME_BY_EXIT o CAME_BY_BACKUP_EXIT as defined
      * in TTLDPPDU class.
      */
@@ -190,7 +190,7 @@ public class TTLDPPDU extends TAbstractPDU {
      * the node. It's a kind of internal pseudo-switching.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @param localTarget DIRECTION_FORWARD, DIRECTION_BACKWARD as defined in
      * TTLDPPDU class.
      */

@@ -23,14 +23,14 @@ import java.util.EventListener;
  * timer events.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public interface ITimerEventListener extends EventListener {
     /**
      * This method, when implemented, will capture timer events.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @param timerEvent The timer event received.
      */ 
     public void receiveTimerEvent(TTimerEvent timerEvent);

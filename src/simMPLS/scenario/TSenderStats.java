@@ -31,7 +31,7 @@ public class TSenderStats extends TStats {
     
     /**
      * Creates a new instance of TEstadisticasEmisor
-     * @since 1.0
+     * @since 2.0
      */
     public TSenderStats() {
     	paquetesSalientes = new XYSeriesCollection();
@@ -73,7 +73,7 @@ public class TSenderStats extends TStats {
     /**
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 1.
      * @return Datos dela gr�fica 1.
-     * @since 1.0
+     * @since 2.0
      */
     public org.jfree.data.AbstractDataset obtenerDatosGrafica1() {
         return this.paquetesSalientes;
@@ -82,7 +82,7 @@ public class TSenderStats extends TStats {
     /**
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 2.
      * @return Datos dela gr�fica 2.
-     * @since 1.0
+     * @since 2.0
      */    public org.jfree.data.AbstractDataset obtenerDatosGrafica2() {
         return this.paquetesDescartados;
     }
@@ -90,7 +90,7 @@ public class TSenderStats extends TStats {
     /**
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 3.
      * @return Datos dela gr�fica 3.
-     * @since 1.0
+     * @since 2.0
      */    public org.jfree.data.AbstractDataset obtenerDatosGrafica3() {
         return null;
     }
@@ -98,7 +98,7 @@ public class TSenderStats extends TStats {
     /**
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 4.
      * @return Datos dela gr�fica 4.
-     * @since 1.0
+     * @since 2.0
      */    public org.jfree.data.AbstractDataset obtenerDatosGrafica4() {
         return null;
     }
@@ -106,7 +106,7 @@ public class TSenderStats extends TStats {
     /**
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 5.
      * @return Datos dela gr�fica 5.
-     * @since 1.0
+     * @since 2.0
      */    public org.jfree.data.AbstractDataset obtenerDatosGrafica5() {
         return null;
     }
@@ -114,7 +114,7 @@ public class TSenderStats extends TStats {
     /**
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 6.
      * @return Datos dela gr�fica 6.
-     * @since 1.0
+     * @since 2.0
      */    public org.jfree.data.AbstractDataset obtenerDatosGrafica6() {
         return null;
     }
@@ -125,7 +125,7 @@ public class TSenderStats extends TStats {
      * @param paquete Paquete que se desea contabilizar en las estad�sticas.
      * @param entrada ENTRADA, SALIDA o DISCARD, dependiendo de si el paquete entra en el nodo, sale
  de �l o es descartado.
-     * @since 1.0
+     * @since 2.0
      */    
     public void addStatsEntry(TAbstractPDU paquete, int entrada) {
         if (this.estadisticasActivas) {
@@ -196,7 +196,7 @@ public class TSenderStats extends TStats {
     /**
      * Este m�todo devuelve el n�mero de gr�fica que tiene el emisor.
      * @return N�mero de gr�ficas del emisor.
-     * @since 1.0
+     * @since 2.0
      */    
     public int obtenerNumeroGraficas() {
         return 2;
@@ -205,7 +205,7 @@ public class TSenderStats extends TStats {
     /**
      * Este m�todo restaura las estad�sticas del emisor a su valor original com osi
      * acabasen de se creadas por el cosntructor.
-     * @since 1.0
+     * @since 2.0
      */    
     public void reset() {
     	paquetesSalientes = new XYSeriesCollection();
@@ -248,7 +248,7 @@ public class TSenderStats extends TStats {
      * Este m�todo actualiza las estadisticas con los valores nuevos desde la ultima
      * vez que se llam� a este m�todo.
      * @param instante Tic de reloj al que se a�adir�n los �ltimos datos.
-     * @since 1.0
+     * @since 2.0
      */    
     public void consolidateData(long instante) {
         if (this.estadisticasActivas) {
@@ -417,7 +417,7 @@ public class TSenderStats extends TStats {
     /**
      * Este m�todo obtiene el t�tulo de la gr�fica 1.
      * @return T�tulo de la gr�fica 1.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerTitulo1() {
         return TStats.PAQUETES_SALIENTES;
@@ -426,7 +426,7 @@ public class TSenderStats extends TStats {
     /**
      * Este m�todo obtiene el t�tulo de la gr�fica 2.
      * @return T�tulo de la gr�fica 2.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerTitulo2() {
         return TStats.PAQUETES_DESCARTADOS;
@@ -435,7 +435,7 @@ public class TSenderStats extends TStats {
     /**
      * Este m�todo obtiene el t�tulo de la gr�fica 3.
      * @return T�tulo de la gr�fica 3.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerTitulo3() {
         return null;
@@ -444,7 +444,7 @@ public class TSenderStats extends TStats {
     /**
      * Este m�todo obtiene el t�tulo de la gr�fica 4.
      * @return T�tulo de la gr�fica 4.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerTitulo4() {
         return null;
@@ -453,7 +453,7 @@ public class TSenderStats extends TStats {
     /**
      * Este m�todo obtiene el t�tulo de la gr�fica 5.
      * @return T�tulo de la gr�fica 5.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerTitulo5() {
         return null;
@@ -462,7 +462,7 @@ public class TSenderStats extends TStats {
     /**
      * Este m�todo obtiene el t�tulo de la gr�fica 6.
      * @return T�tulo de la gr�fica 6.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerTitulo6() {
         return null;

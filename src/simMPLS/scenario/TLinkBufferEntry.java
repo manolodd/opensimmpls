@@ -34,7 +34,7 @@ public class TLinkBufferEntry implements Comparable {
      * retardo del enlace.
      * @param dest Especifica cu�l de los nodos que une el enlace es destino del tr�fico. Los
      * enlaces son full duplex.
-     * @since 1.0
+     * @since 2.0
      */
     public TLinkBufferEntry(TAbstractPDU p, long tiempoEspera, int dest) {
         te = tiempoEspera;
@@ -49,7 +49,7 @@ public class TLinkBufferEntry implements Comparable {
      * @param o Instancia de tipo TLinkBufferEntry.
      * @return -1, 0 � 1, dependiendo de si la entrada del buffer con la que se compara es
      * ordinalmente menos, igual o mayor.
-     * @since 1.0
+     * @since 2.0
      */    
     public int compareTo(Object o) {
         TLinkBufferEntry ebe = (TLinkBufferEntry) o;
@@ -60,7 +60,7 @@ public class TLinkBufferEntry implements Comparable {
     /**
      * Este m�todo obtiene el paquete de la entrada del buffer.
      * @return Paquete de la entrada del buffer.
-     * @since 1.0
+     * @since 2.0
      */    
     public TAbstractPDU obtenerPaquete() {
         return paquete;
@@ -71,7 +71,7 @@ public class TLinkBufferEntry implements Comparable {
      * enlace.
      * @return El tiempo que el nodo debe esperar en el enlace desde que entra hasta que llega
      * al destino.
-     * @since 1.0
+     * @since 2.0
      */    
     public long obtener100x100() {
         return this.teInicial;
@@ -80,7 +80,7 @@ public class TLinkBufferEntry implements Comparable {
     /**
      * Este m�todo permte poner un paquete en la entrada el buffer.
      * @param p Paquete que deseamos insertar en la entrada del buffer.
-     * @since 1.0
+     * @since 2.0
      */    
     public void ponerPaquete(TAbstractPDU p) {
         paquete = p;
@@ -90,7 +90,7 @@ public class TLinkBufferEntry implements Comparable {
      * Este m�todo permite establecer el tiempo que el paquete deber� esperar en el
      * enlace desde que entra hasta que llega al destino.
      * @param t Tiempo de espera total para el paquete.
-     * @since 1.0
+     * @since 2.0
      */    
     public void ponerTiempoEspera(long t) {
         te = t;
@@ -101,7 +101,7 @@ public class TLinkBufferEntry implements Comparable {
      * Este m�todo permite obtener el tiempo que a�n le queda al paquete para llegar al
      * destino.
      * @return Tiempo (en nanosegundos) que le falta al paquete para llegar al destino.
-     * @since 1.0
+     * @since 2.0
      */    
     public long obtenerTiempoEspera() {
         return te;
@@ -112,7 +112,7 @@ public class TLinkBufferEntry implements Comparable {
      * tiempo que va transcurriendo. Al llegar a cero, el paquete habr� llegado al
      * destino.
      * @param paso Tiempo que se le resta al tiempo de espera del paquete.
-     * @since 1.0
+     * @since 2.0
      */    
     public void restarTiempoPaso(long paso) {
         te -= paso;
@@ -125,7 +125,7 @@ public class TLinkBufferEntry implements Comparable {
      * los nodos extremos es el destino.
      * @param dest 1 � 2, dependiendo de si el paquete va dirigido al extremo 1 o al extremo2 el
      * enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     public void ponerDestino(int dest) {
         destino = dest;
@@ -136,7 +136,7 @@ public class TLinkBufferEntry implements Comparable {
      * debe recibir el paquete.
      * @return 1 o 2, dependiendo de si el tr�fico debe salir por el extremo 1 o el extremo 2
      * del enlace.
-     * @since 1.0
+     * @since 2.0
      */    
     public int obtenerDestino() {
         return destino;

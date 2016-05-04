@@ -24,7 +24,7 @@ package simMPLS.ui.splash;
 public class JSplash extends javax.swing.JFrame {
 
     /** Este m�todo es el constructor de la clase; crea una nueva instancia de JSplash.
-     * @since 1.0
+     * @since 2.0
      */
     public JSplash() {
         initComponents();
@@ -33,7 +33,7 @@ public class JSplash extends javax.swing.JFrame {
 
     /** Este m�todo se llama desde el constructor para dar los valores por defecto a los
      * atributos de la ventana.
-     * @since 1.0
+     * @since 2.0
      */
     private void initComponents() {//GEN-BEGIN:initComponents
         Texto = new javax.swing.JLabel();
@@ -68,7 +68,7 @@ public class JSplash extends javax.swing.JFrame {
     }//GEN-END:initComponents
     /** Este m�todo cierra la ventana.
      * @param evt Evento indicando que se debe cerrar la ventana.
-     * @since 1.0
+     * @since 2.0
      */
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
         this.dispose();
@@ -76,7 +76,7 @@ public class JSplash extends javax.swing.JFrame {
 
     /** Este m�todo muestra en la ventana de inicio el texto que se especifique.
      * @param txt Texto que se mostrar� en el recuadro blanco de la ventana.
-     * @since 1.0
+     * @since 2.0
      */
     public void ponerTexto(String txt) {
         Texto.setText(txt);

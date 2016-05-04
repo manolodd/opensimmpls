@@ -19,7 +19,7 @@ package simMPLS.protocols;
  * This class implements a MPLS label.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TMPLSLabel implements Comparable {
 
@@ -29,7 +29,7 @@ public class TMPLSLabel implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param id Label identifier. It will be used with sorting purposes.
-     * @since 1.0
+     * @since 2.0
      */
     public TMPLSLabel(int id) {
         //FIX: Change these harcoded values and use constants instead.
@@ -45,7 +45,7 @@ public class TMPLSLabel implements Comparable {
      * label.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public TMPLSLabel() {
         //FIX: Change these harcoded values and use constants instead.
@@ -62,7 +62,7 @@ public class TMPLSLabel implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param id Label identifier. It will be used with sorting purposes.
-     * @since 1.0
+     * @since 2.0
      */
     public void setID(int id) {
         this.identifier = id;
@@ -74,7 +74,7 @@ public class TMPLSLabel implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Label identifier. It will be used with sorting purposes.
-     * @since 1.0
+     * @since 2.0
      */
     public int getID() {
         return this.identifier;
@@ -85,7 +85,7 @@ public class TMPLSLabel implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param label The value for the "label" field of this MPLS label.
-     * @since 1.0
+     * @since 2.0
      */
     public void setLabel(int label) {
         this.label = label;
@@ -96,7 +96,7 @@ public class TMPLSLabel implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return label The value of the "label" field of this MPLS label.
-     * @since 1.0
+     * @since 2.0
      */
     public int getLabel() {
         return this.label;
@@ -107,7 +107,7 @@ public class TMPLSLabel implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param ttl The value for the "TTL" field of this MPLS label.
-     * @since 1.0
+     * @since 2.0
      */
     public void setTTL(int ttl) {
         this.ttl = ttl;
@@ -118,7 +118,7 @@ public class TMPLSLabel implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The value of the "TTL" field of this MPLS label.
-     * @since 1.0
+     * @since 2.0
      */
     public int getTTL() {
         return this.ttl;
@@ -129,7 +129,7 @@ public class TMPLSLabel implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param exp The value for the "EXP" field of this MPLS label.
-     * @since 1.0
+     * @since 2.0
      */
     public void setEXP(int exp) {
         this.exp = exp;
@@ -140,7 +140,7 @@ public class TMPLSLabel implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The value of the "EXP" field of this MPLS label.
-     * @since 1.0
+     * @since 2.0
      */
     public int getEXP() {
         return this.exp;
@@ -151,7 +151,7 @@ public class TMPLSLabel implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param bos The value for the "BoS" field of this MPLS label.
-     * @since 1.0
+     * @since 2.0
      */
     public void setBoS(boolean bos) {
         this.bos = bos;
@@ -162,7 +162,7 @@ public class TMPLSLabel implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The value of the "BoS" field of this MPLS label.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean getBoS() {
         return this.bos;
@@ -175,7 +175,7 @@ public class TMPLSLabel implements Comparable {
      * @param mplsLabelObject The object to be compared to the current instance.
      * @return -1, 0 or 1, depending on whether the current instance is lower,
      * equal or greater than the one passed in as a parameter.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int compareTo(Object mplsLabelObject) {

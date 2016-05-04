@@ -28,7 +28,7 @@ public class TSEPacketOnFly extends TSimulationEvent {
 
     /**
      * Crea una nueva instancia de TESPaqueteEnTransito
-     * @since 1.0
+     * @since 2.0
      * @param inst Instante de tiempo en el que se produjo el evento.
      * @param pt Porcentaje de reccorido del enlace que lleva recorrido el paquete por el cual se
      * genero el evento.
@@ -45,7 +45,7 @@ public class TSEPacketOnFly extends TSimulationEvent {
     /**
      * Este m�todo obtiene el porcentaje del enalce que ha recorrido ya el paquete al
      * que se refiete el evento.
-     * @since 1.0
+     * @since 2.0
      * @return El porcentaje de recorrido del paquete.
      */    
     public long obtenerPorcentajeTransito() {
@@ -55,7 +55,7 @@ public class TSEPacketOnFly extends TSimulationEvent {
     /**
      * Este m�todo obtiene el tipo de paquete al que se refiere el evento.
      * @return El tipo el paquete.
-     * @since 1.0
+     * @since 2.0
      */    
     public int obtenerTipoPaquete() {
         return tipoP;
@@ -64,7 +64,7 @@ public class TSEPacketOnFly extends TSimulationEvent {
     /**
      * Este m�todo obtiene el subtipo del evento, si los hubiese.
      * @return El subtipo del evento.
-     * @since 1.0
+     * @since 2.0
      */    
     public int getSubtype() {
         return super.PACKET_ON_FLY;
@@ -73,7 +73,7 @@ public class TSEPacketOnFly extends TSimulationEvent {
     /**
      * Este m�todo obtiene el nombre del enlace que origin� el evento.
      * @return El nombre del enlace que origin� el evento.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerNombre() {
         TTopologyElement et = null;
@@ -93,7 +93,7 @@ public class TSEPacketOnFly extends TSimulationEvent {
     /**
      * Este m�todo obtiene un texto con el tipo de evento.
      * @return Un texto con el tipo de evento.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerNombreTipo() {
         TTopologyElement et = null;
@@ -109,7 +109,7 @@ public class TSEPacketOnFly extends TSimulationEvent {
     /**
      * Este m�todo obtiene una representaci�n textual del tipo de paquete.
      * @return El tipo de paquete, en texto.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerNombreTipoPaquete() {
         String strTipo = "";
@@ -146,7 +146,7 @@ public class TSEPacketOnFly extends TSimulationEvent {
     /**
      * Este m�todo explcia el evento en una l�nea de texto.
      * @return El texto explicando el evento.
-     * @since 1.0
+     * @since 2.0
      */    
     public String toString() {
         String cad = "";

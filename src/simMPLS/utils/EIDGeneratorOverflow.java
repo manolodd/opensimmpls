@@ -25,14 +25,14 @@ public class EIDGeneratorOverflow extends Exception {
     
     /** Es el constructor de la clase. Crea una nueva instancia de
      * EDesbordeDelidentificador.
-     * @since 1.0
+     * @since 2.0
      */
     public EIDGeneratorOverflow() {
     }
     
     /** Devuelve una descripci�n textual de por qu� se ha producido la excepci�n.
      * @return Una cadena de texto explicando el motivo de la excepci�n.
-     * @since 1.0
+     * @since 2.0
      */
     public String toString() {
         return(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("EDesbordeDelIdentificador.texto"));

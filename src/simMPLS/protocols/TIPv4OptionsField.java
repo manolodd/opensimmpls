@@ -21,7 +21,7 @@ package simMPLS.protocols;
  * over MPLS using active techniques".
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TIPv4OptionsField {
 
@@ -30,7 +30,7 @@ public class TIPv4OptionsField {
      * TIPv4OptionsField.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public TIPv4OptionsField() {
         // FIX: create and use class constants instead of harcoded values.
@@ -51,7 +51,7 @@ public class TIPv4OptionsField {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The size of the options field, in bytes (octects).
-     * @since 1.0
+     * @since 2.0
      */
     public int getSize() {
         // FIX: Recode. Size variable is not necessary.
@@ -78,7 +78,7 @@ public class TIPv4OptionsField {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param requestedGoSLevel GoS level selected for the packet, as defined in
      * TAbstractPDU class.
-     * @since 1.0
+     * @since 2.0
      */
     public void setRequestedGoSLevel(int requestedGoSLevel) {
         this.requestedGoSLevel = requestedGoSLevel;
@@ -89,7 +89,7 @@ public class TIPv4OptionsField {
      * This method set the options field as "in use".
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public void use() {
         this.optionFieldIsUsed = true;
@@ -100,7 +100,7 @@ public class TIPv4OptionsField {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return true, if the options field is being used. Otherwise, false.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean isUsed() {
         return this.optionFieldIsUsed;
@@ -112,7 +112,7 @@ public class TIPv4OptionsField {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return GoS level selected for the packet, as defined in TAbstractPDU
      * class.
-     * @since 1.0
+     * @since 2.0
      */
     public int getRequestedGoSLevel() {
         return this.requestedGoSLevel;
@@ -127,7 +127,7 @@ public class TIPv4OptionsField {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packetLocalUniqueIdentifier The global unique identifier for this
      * packet.
-     * @since 1.0
+     * @since 2.0
      */
     public void setPacketLocalUniqueIdentifier(int packetLocalUniqueIdentifier) {
         this.packetLocalUniqueIdentifier = packetLocalUniqueIdentifier;
@@ -142,7 +142,7 @@ public class TIPv4OptionsField {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The global unique identifier of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     public int getPacketLocalUniqueIdentifier() {
         return this.packetLocalUniqueIdentifier;
@@ -155,7 +155,7 @@ public class TIPv4OptionsField {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param crossedActiveNodeIP The IP address of a new crossed active node.
-     * @since 1.0
+     * @since 2.0
      */
     public void setCrossedActiveNode(String crossedActiveNodeIP) {
         this.hasCrossedActiveNodesIPs = true;
@@ -180,7 +180,7 @@ public class TIPv4OptionsField {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return true, if the options field contains IP addresses of active nodes
      * that has been crossed. Oterwise, false.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean hasCrossedActiveNodes() {
         return this.hasCrossedActiveNodesIPs;
@@ -193,7 +193,7 @@ public class TIPv4OptionsField {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return number of IP addresses included of active nodes that are
      * registered in the options field
-     * @since 1.0
+     * @since 2.0
      */
     public int getNumberOfCrossedActiveNodes() {
         return this.numberOfActiveNodesRegistered;
@@ -207,7 +207,7 @@ public class TIPv4OptionsField {
      * @param registeredActiveNodeIndex Number of active nodes that this packet
      * crossed before the one whose IP address is wanted.
      * @return IP of the desired active node.
-     * @since 1.0
+     * @since 2.0
      */
     public String getCrossedActiveNode(int registeredActiveNodeIndex) {
         if (registeredActiveNodeIndex < TIPv4OptionsField.MAX_REGISTERED_ACTIVE_NODE_IP_ADDRESSES) {

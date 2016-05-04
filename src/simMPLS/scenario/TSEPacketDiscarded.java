@@ -28,7 +28,7 @@ public class TSEPacketDiscarded extends TSimulationEvent {
 
     /**
      * Crea una nueva instancia de TESPqueteDescartado.
-     * @since 1.0
+     * @since 2.0
      * @param inst Instante de tiempo en el que se gener� el evento.
      * @param emisor Nodo que gener� ele evento.
      * @param id Identificador �nico del evento.
@@ -43,7 +43,7 @@ public class TSEPacketDiscarded extends TSimulationEvent {
      * Este m�todo devuelve el tipo del paquete que descart� el nodo que gener� el
      * evento.
      * @return Tipo del paquete que se descart�.
-     * @since 1.0
+     * @since 2.0
      */    
     public int obtenerTipoPaquete() {
         return tipoP;
@@ -52,7 +52,7 @@ public class TSEPacketDiscarded extends TSimulationEvent {
     /**
      * Este m�todo obtiene el subtipo del evento, si los hubiese.
      * @return El subtipo del evento.
-     * @since 1.0
+     * @since 2.0
      */    
     public int getSubtype() {
         return super.PACKET_DISCARDED;
@@ -61,7 +61,7 @@ public class TSEPacketDiscarded extends TSimulationEvent {
     /**
      * Este m�todo obtiene el nombre del enlace que origin� el evento.
      * @return El nombre del enlace que origin� el evento.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerNombre() {
         TTopologyElement et = null;
@@ -81,7 +81,7 @@ public class TSEPacketDiscarded extends TSimulationEvent {
     /**
      * Este m�todo obtiene un texto con el tipo de evento.
      * @return Un texto con el tipo de evento.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerNombreTipo() {
         TTopologyElement et = null;
@@ -97,7 +97,7 @@ public class TSEPacketDiscarded extends TSimulationEvent {
     /**
      * Este m�todo ofrece una representaci�n textual del tipo el paquete descartado.
      * @return Representaci�n textual del paquete descartado.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerNombreTipoPaquete() {
         String strTipo = "";
@@ -134,7 +134,7 @@ public class TSEPacketDiscarded extends TSimulationEvent {
     /**
      * Este m�todo explcia el evento en una l�nea de texto.
      * @return El texto explicando el evento.
-     * @since 1.0
+     * @since 2.0
      */    
     public String toString() {
         String cad = "";

@@ -20,7 +20,7 @@ package simMPLS.protocols;
  * used to simulate packets of different sizes.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TTCPPayload {
 
@@ -32,7 +32,7 @@ public class TTCPPayload {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param size The desired size for this TCP packet payload, in bytes
      * (octects).
-     * @since 1.0
+     * @since 2.0
      */
     public TTCPPayload(int size) {
         // FIX: create a constant insted of this harcoded value.
@@ -47,7 +47,7 @@ public class TTCPPayload {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Te size for this TCP packet, including TCP header, in bytes
      * (octects).
-     * @since 1.0
+     * @since 2.0
      */
     public int getSize() {
         return this.size;
@@ -60,7 +60,7 @@ public class TTCPPayload {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param size The desired size for this TCP packet payload, in bytes
      * (octects).
-     * @since 1.0
+     * @since 2.0
      */
     public void setSize(int size) {
         //FIX: create a constant instead of this harcoded value

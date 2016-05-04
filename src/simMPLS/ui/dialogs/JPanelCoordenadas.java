@@ -34,7 +34,7 @@ public class JPanelCoordenadas extends javax.swing.JPanel {
 
     /**
      * Crea una nueva instancia de JPanelDisenio
-     * @since 1.0
+     * @since 2.0
      */
     public JPanelCoordenadas() {
         panelOrigen = null;
@@ -43,7 +43,7 @@ public class JPanelCoordenadas extends javax.swing.JPanel {
 
     /**
      * Crea una nueva instancia de JPanelDisenio
-     * @since 1.0
+     * @since 2.0
      * @param pd Panel de dise�o cuay representaci�n en miniatura mostrar� el panel de
      * coordenadas.
      */    
@@ -55,7 +55,7 @@ public class JPanelCoordenadas extends javax.swing.JPanel {
     /**
      * Este m�todo establece el panel de dise�o que se mostrar� en miniatura en el
      * panel de coordenadas.
-     * @since 1.0
+     * @since 2.0
      * @param pd El panel de dise�o.
      */    
     public void ponerPanelOrigen(JPanelDisenio pd) {
@@ -72,7 +72,7 @@ public class JPanelCoordenadas extends javax.swing.JPanel {
     /**
      * Dado un clic sobre el panel de coordenadas, este m�todo devuelve correspondiente
      * la coordenada X real en el panel de dise�o.
-     * @since 1.0
+     * @since 2.0
      * @return La coordenada X real en el panel de dise�o.
      */    
     public int obtenerXReal() {
@@ -84,7 +84,7 @@ public class JPanelCoordenadas extends javax.swing.JPanel {
     /**
      * Dado un clic sobre el panel de coordenadas, este m�todo devuelve correspondiente
      * la coordenada Y real en el panel de dise�o.
-     * @since 1.0
+     * @since 2.0
      * @return La coordenada Y real en el panel de dise�o.
      */    
     public int obtenerYReal() {
@@ -96,7 +96,7 @@ public class JPanelCoordenadas extends javax.swing.JPanel {
     /**
      * Este m�todo dibuja un punto rojo indicativo en el panel de coordenadas, dado un
      * punto real del panel de dise�o.
-     * @since 1.0
+     * @since 2.0
      * @param p Punto (x,y) real del panel de dise�o.
      */    
     public void ponerCoordenadasReducidas(Point p) {
@@ -109,7 +109,7 @@ public class JPanelCoordenadas extends javax.swing.JPanel {
 
     /**
      * Este m�todo refresca el panel de coordenadas cuando sea necesario.
-     * @since 1.0
+     * @since 2.0
      * @param g Lienzo sobre el cual se va a redibujar el panel de coordenadas.
      */    
     public void paint(java.awt.Graphics g) {

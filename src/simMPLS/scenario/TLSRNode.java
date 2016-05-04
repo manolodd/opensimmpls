@@ -50,7 +50,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * @param d Direcci�n IP del nodo.
      * @param il Generador de identificadores para los eventos generados por el nodo.
      * @param t Topolog�a dentro de la cual se encuentra el nodo.
-     * @since 1.0
+     * @since 2.0
      */
     public TLSRNode(int identificador, String d, TLongIDGenerator il, TTopology t) {
         super(identificador, d, il, t);
@@ -66,7 +66,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo obtiene el n�mero de nanosegundos que son necesarios para conmutar
      * un bit.
      * @return El n�mero de nanosegundos necesarios para conmutar un bit.
-     * @since 1.0
+     * @since 2.0
      */
     public double obtenerNsPorBit() {
         long tasaEnBitsPorSegundo = (long) (this.potenciaEnMb*1048576L);
@@ -79,7 +79,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * determinado de octetos.
      * @param octetos N�mero de octetos que queremos conmutar.
      * @return N�mero de nanosegundos necesarios para conmutar los octetos especificados.
-     * @since 1.0
+     * @since 2.0
      */
     public double obtenerNsUsadosTotalOctetos(int octetos) {
         double nsPorCadaBit = obtenerNsPorBit();
@@ -91,7 +91,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo devuelve el n�mero de bits que se pueden conmutar con el n�mero de
      * nanosegundos de los que dispone actualmente el nodo.
      * @return N�mero de bits m�ximos que puede conmutar el nodo en un instante.
-     * @since 1.0
+     * @since 2.0
      */
     public int obtenerLimiteBitsTransmitibles() {
         double nsPorCadaBit = obtenerNsPorBit();
@@ -103,7 +103,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo calcula el n�mero m�ximo de octetos completos que puede conmtuar el
      * nodo.
      * @return El n�mero m�ximo de octetos que puede conmutar el nodo.
-     * @since 1.0
+     * @since 2.0
      */
     public int obtenerOctetosTransmitibles() {
         double maximoBytes = ((double)obtenerLimiteBitsTransmitibles()/(double)8.0);
@@ -114,7 +114,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo devuelve la potencia de conmutaci�n con la que est� configurado el
      * nodo.
      * @return Potencia de conmutaci�n en Mbps.
-     * @since 1.0
+     * @since 2.0
      */
     public int obtenerPotenciaEnMb() {
         return this.potenciaEnMb;
@@ -123,7 +123,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo establece la potencia de conmutaci�n para el nodo.
      * @param pot Potencia de conmutaci�n en Mbps deseada para el nodo.
-     * @since 1.0
+     * @since 2.0
      */
     public void ponerPotenciaEnMb(int pot) {
         this.potenciaEnMb = pot;
@@ -132,7 +132,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo permite obtener el tamanio el buffer del nodo.
      * @return Tamanio del buffer en MB.
-     * @since 1.0
+     * @since 2.0
      */
     public int obtenerTamanioBuffer() {
         return this.getPorts().getBufferSizeInMB();
@@ -141,7 +141,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo permite establecer el tamanio del buffer del nodo.
      * @param tb Tamanio deseado para el buffer del nodo en MB.
-     * @since 1.0
+     * @since 2.0
      */
     public void ponerTamanioBuffer(int tb) {
         this.getPorts().setBufferSizeInMB(tb);
@@ -150,7 +150,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo reinicia los atributos del nodo hasta dejarlos como si acabasen de
      * ser creados por el Constructor.
-     * @since 1.0
+     * @since 2.0
      */
     public void reset() {
         this.ports.reset();
@@ -165,7 +165,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo permite obtener el tipo del nodo.
      * @return TNode.LSR, indicando que se trata de un nodo LSR.
-     * @since 1.0
+     * @since 2.0
      */
     public int getNodeType() {
         return super.LSR;
@@ -174,7 +174,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo permite obtener eventos de sincronizaci�n del reloj del simulador.
      * @param evt Evento de sincronizaci�n que env�a el reloj del simulador.
-     * @since 1.0
+     * @since 2.0
      */
     public void receiveTimerEvent(TTimerEvent evt) {
         this.setStepDuration(evt.getStepDuration());
@@ -191,7 +191,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo se llama cuando se inicia el hilo independiente del nodo y es en el
      * que se implementa toda la funcionalidad.
-     * @since 1.0
+     * @since 2.0
      */
     public void run() {
         try {
@@ -210,7 +210,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo se encarga de validateConfig que los enlaces que unen al nodo con sus
  adyacentes, funcionan correctamente. Y si no es asi y es necesario, env�a la
      * se�alizaci�n correspondiente para reparar la situaci�n.
-     * @since 1.0
+     * @since 2.0
      */
     public void comprobarElEstadoDeLasComunicaciones() {
         TSwitchingMatrixEntry emc = null;
@@ -256,7 +256,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     
     /**
      * Este m�todo conmuta paquetes del buffer de entrada.
-     * @since 1.0
+     * @since 2.0
      */
     public void conmutarPaquete() {
         boolean conmute = false;
@@ -291,7 +291,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     
     /**
      * Este m�todo conmuta un paquete GPSRP.
-     * @since 1.0
+     * @since 2.0
      * @param paquete Paquete GPSRP a conmutar.
      * @param pEntrada Puerto por el que ha llegado el paquete.
      */
@@ -327,7 +327,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo trata un paquete TLDP que ha llegado.
      * @param paquete Paquete TLDP recibido.
      * @param pEntrada Puerto por el que se ha recibido el paquete TLDP.
-     * @since 1.0
+     * @since 2.0
      */
     public void conmutarTLDP(TTLDPPDU paquete, int pEntrada) {
         if (paquete.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REQUEST) {
@@ -347,7 +347,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo trata un paquete MPLS que ha llegado.
      * @param paquete Paquete MPLS recibido.
      * @param pEntrada Puerto por el que se ha recibido el paquete MPLS.
-     * @since 1.0
+     * @since 2.0
      */
     public void conmutarMPLS(TMPLSPDU paquete, int pEntrada) {
         TMPLSLabel eMPLS = null;
@@ -468,7 +468,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo trata una petici�n de etiquetas.
      * @param paquete Petici�n de etiquetas recibida de otro nodo.
      * @param pEntrada Puerto de entrada de la petici�n de etiqueta.
-     * @since 1.0
+     * @since 2.0
      */
     public void tratarSolicitudTLDP(TTLDPPDU paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
@@ -503,7 +503,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo trata un paquete TLDP de eliminaci�n de etiqueta.
      * @param paquete Eliminaci�n de etiqueta recibida.
      * @param pEntrada Puerto por el que se recibi�n la eliminaci�n de etiqueta.
-     * @since 1.0
+     * @since 2.0
      */
     public void tratarEliminacionTLDP(TTLDPPDU paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
@@ -544,7 +544,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo trata un paquete TLDP de confirmaci�n de etiqueta.
      * @param paquete Confirmaci�n de etiqueta.
      * @param pEntrada Puerto por el que se ha recibido la confirmaci�n de etiquetas.
-     * @since 1.0
+     * @since 2.0
      */
     public void tratarSolicitudOkTLDP(TTLDPPDU paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
@@ -587,7 +587,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo trata un paquete TLDP de denegaci�n de etiqueta.
      * @param paquete Paquete de denegaci�n de etiquetas recibido.
      * @param pEntrada Puerto por el que se ha recibido la denegaci�n de etiquetas.
-     * @since 1.0
+     * @since 2.0
      */
     public void tratarSolicitudNoTLDP(TTLDPPDU paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
@@ -619,7 +619,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo trata un paquete TLDP de confirmaci�n de eliminaci�n de etiqueta.
      * @param paquete Paquete de confirmaci�n e eliminaci�n de etiqueta.
      * @param pEntrada Puerto por el que se ha recibido la confirmaci�n de eliminaci�n de etiqueta.
-     * @since 1.0
+     * @since 2.0
      */
     public void tratarEliminacionOkTLDP(TTLDPPDU paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
@@ -661,7 +661,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo env�a una etiqueta al nodo que indique la entrada en la
      * matriz de conmutaci�n especificada.
      * @param emc Entrada de la matriz de conmutaci�n especificada.
-     * @since 1.0
+     * @since 2.0
      */
     public void enviarSolicitudOkTLDP(TSwitchingMatrixEntry emc) {
         if (emc != null) {
@@ -703,7 +703,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo env�a una denegaci�n de etiqueta al nodo que especifique la entrada
      * de la matriz de conmutaci�n correspondiente.
      * @param emc Entrada de la matriz de conmutaci�n correspondiente.
-     * @since 1.0
+     * @since 2.0
      */
     public void enviarSolicitudNoTLDP(TSwitchingMatrixEntry emc) {
         if (emc != null) {
@@ -744,7 +744,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo env�a una confirmaci�n de eliminaci�n de etiqueta al nodo que
      * especifique la correspondiente entrada en la matriz de conmutaci�n.
-     * @since 1.0
+     * @since 2.0
      * @param puerto Puerto por el que se debe enviar la confirmaci�n de eliminaci�n.
      * @param emc Entrada de la matriz de conmutaci�n especificada.
      */
@@ -791,7 +791,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo solicita una etiqueta al nodo que se especifica en la entrada de la
      * matriz de conmutaci�n correspondiente.
      * @param emc Entrada en la matriz de conmutaci�n especificada.
-     * @since 1.0
+     * @since 2.0
      */
     public void solicitarTLDP(TSwitchingMatrixEntry emc) {
         String IPLocal = this.getIPAddress();
@@ -831,7 +831,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo env�a una eliminaci�n de etiqueta al nodo especificado por le
      * entrada de la matriz de conmutaci�n correspondiente.
-     * @since 1.0
+     * @since 2.0
      * @param puerto Puerto por el que se debe enviar la eliminaci�n.
      * @param emc Entrada en la matriz de conmutaci�n especificada.
      */
@@ -883,7 +883,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo reenv�a todas las peticiones pendientes de contestaci�n de una
      * entrada de la matriz de conmutaci�n.
      * @param emc Entrada de la matriz de conmutaci�n especificada.
-     * @since 1.0
+     * @since 2.0
      */
     public void solicitarTLDPTrasTimeout(TSwitchingMatrixEntry emc) {
         if (emc != null) {
@@ -925,7 +925,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo reenv�a todas las eliminaciones de etiquetas pendientes de una
      * entrada de la matriz de conmutaci�n.
-     * @since 1.0
+     * @since 2.0
      * @param puerto Puerto por el que se debe enviar la eliminaci�n.
      * @param emc Entrada de la matriz de conmutaci�n especificada.
      */
@@ -937,7 +937,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo reenv�a todas las eliminaciones de etiquetas pendientes de una
  entrada de la matriz de conmutaci�n a todos los ports necesarios.
      * @param emc Entrada de la matriz de conmutaci�n especificada.
-     * @since 1.0
+     * @since 2.0
      */
     public void eliminarTLDPTrasTimeout(TSwitchingMatrixEntry emc){
         eliminarTLDP(emc, emc.getIncomingPortID());
@@ -946,7 +946,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     
     /**
      * Este m�todo decrementa los contadores para la retransmisi�n.
-     * @since 1.0
+     * @since 2.0
      */
     public void decrementarContadores() {
         TSwitchingMatrixEntry emc = null;
@@ -987,7 +987,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * @param paqueteSolicitud Solicitud de etiqueta recibida.
      * @param pEntrada Puerto por el que se ha recibido la solicitud.
      * @return La nueva entrada en la matriz de conmutaci�n, creda, insertada e inicializada.
-     * @since 1.0
+     * @since 2.0
      */
     public TSwitchingMatrixEntry crearEntradaAPartirDeTLDP(TTLDPPDU paqueteSolicitud, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
@@ -1025,7 +1025,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo descarta un paquete del ndo y refleja este descarte en las
      * estad�sticas del nodo.
      * @param paquete Paquete que queremos descartar.
-     * @since 1.0
+     * @since 2.0
      */
     public void discardPacket(TAbstractPDU paquete) {
         try {
@@ -1040,7 +1040,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo permite acceder a los ports del nodo directamtne.
      * @return El conjunto de ports del nodo.
-     * @since 1.0
+     * @since 2.0
      */
     public TPortSet getPorts() {
         return this.ports;
@@ -1049,7 +1049,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo devuelve si el nodo tiene ports libres o no.
      * @return TRUE, si el nodo tiene ports libres. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean hasAvailablePorts() {
         return this.ports.hasAvailablePorts();
@@ -1059,7 +1059,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo devuelve el peso del nodo, que debe ser tomado en cuenta por lo
      * algoritmos de encaminamiento para calcular las rutas.
      * @return El peso del LSR.
-     * @since 1.0
+     * @since 2.0
      */
     public long getRoutingWeight() {
         long peso = 0;
@@ -1072,7 +1072,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo calcula si el nodo est� bien configurado o no.
      * @return TRUE, si el ndoo est� bien configurado. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean isWellConfigured() {
         return this.wellConfigured;
@@ -1084,7 +1084,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * primera vez.
      * @return CORRECTA, si el nodo est� bien configurado. Un c�digo de error en caso
      * contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public int validateConfig(TTopology t, boolean recfg) {
         this.setWellConfigured(false);
@@ -1118,7 +1118,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * mensaje aclaratorio.
      * @param e C�digo de error.
      * @return Texto explicativo del c�digo de error.
-     * @since 1.0
+     * @since 2.0
      */
     public String getErrorMessage(int e) {
         switch (e) {
@@ -1133,7 +1133,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * Este m�todo permite transformar el nodo en una cadena de texto que se puede
      * volcar f�cilmente a disco.
      * @return Una cadena de texto que representa al nodo.
-     * @since 1.0
+     * @since 2.0
      */
     public String marshall() {
         String cadena = "#LSR#";
@@ -1165,7 +1165,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * representaci�n serializada de otro.
      * @param elemento �lemento serializado que se desea deserializar.
      * @return TRUE, si se ha conseguido deserializar correctamente. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean unMarshall(String elemento) {
         String valores[] = elemento.split("#");
@@ -1189,7 +1189,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo permite acceder directamente a las estad�sticas del nodo.
      * @return Las estad�sticas del nodo.
-     * @since 1.0
+     * @since 2.0
      */
     public TStats getStats() {
         return estadisticas;
@@ -1198,7 +1198,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * Este m�todo permite establecer el n�mero de ports que tendr� el nodo.
      * @param num N�mero de ports del nodo. Como mucho 8.
-     * @since 1.0
+     * @since 2.0
      */
     public synchronized void setPorts(int num) {
         ports = new TFIFOPortSet(num, this);
@@ -1209,31 +1209,31 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * a un nodo activo la retransmisi�n de un paquete.
      * @param paquete Paquete cuya retransmisi�n se est� solicitando.
      * @param pSalida Puerto por el que se enviar� la solicitud.
-     * @since 1.0
+     * @since 2.0
      */
     public void runGoSPDUStoreAndRetransmitProtocol(TMPLSPDU paquete, int pSalida) {
     }
     
     /**
      * Esta constante indica que la configuraci�n del nodo es correcta.
-     * @since 1.0
+     * @since 2.0
      */
     public static final int CORRECTA = 0;
     /**
      * Esta constante indica que en la configuraci�n del nodo, falta el nombre.
-     * @since 1.0
+     * @since 2.0
      */
     public static final int SIN_NOMBRE = 1;
     /**
      * Esta constante indica que, en la configuraci�n del nodo, se ha elegido un nombre
      * que ya est� siendo usado.
-     * @since 1.0
+     * @since 2.0
      */
     public static final int NOMBRE_YA_EXISTE = 2;
     /**
      * Esta constante indica que en la configuraci�n del nodo, el nombre elegido es
      * err�neo porque solo cuenta con espacios.
-     * @since 1.0
+     * @since 2.0
      */
     public static final int SOLO_ESPACIOS = 3;
     

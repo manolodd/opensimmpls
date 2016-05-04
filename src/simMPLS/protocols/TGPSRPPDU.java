@@ -21,7 +21,7 @@ package simMPLS.protocols;
  * Support over MPLS using Active Techniques".
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TGPSRPPDU extends TAbstractPDU {
 
@@ -33,7 +33,7 @@ public class TGPSRPPDU extends TAbstractPDU {
      * @param id Packet identifier.
      * @param originIP IP addres of this packet's sender.
      * @param targetIP IP addres of this packet's receiver.
-     * @since 1.0
+     * @since 2.0
      */
     public TGPSRPPDU(long id, String originIP, String targetIP) {
         super(id, originIP, targetIP);
@@ -46,7 +46,7 @@ public class TGPSRPPDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Size of this packet in bytes (octects).
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int getSize() {
@@ -63,7 +63,7 @@ public class TGPSRPPDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The type of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int getType() {
@@ -75,7 +75,7 @@ public class TGPSRPPDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TCP payload of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     public TTCPPayload getTCPPayload() {
         return this.TCPPayload;
@@ -86,7 +86,7 @@ public class TGPSRPPDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return GPSRP payload (header) of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     public TGPSRPPayload getGPSRPPayload() {
         return this.GPSRPPayload;
@@ -97,7 +97,7 @@ public class TGPSRPPDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The IPv4 header of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public TIPv4Header getIPv4Header() {
@@ -111,7 +111,7 @@ public class TGPSRPPDU extends TAbstractPDU {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The subtype of this packet. For instances of this class, it
      * returns GPSRP, as defined in TAbstractPDU.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int getSubtype() {

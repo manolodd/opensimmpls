@@ -22,7 +22,7 @@ import simMPLS.protocols.TAbstractPDU;
  * some packets, because of their embedded priority, within the buffer.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TActivePortBufferEntry implements Comparable {
 
@@ -31,7 +31,7 @@ public class TActivePortBufferEntry implements Comparable {
      * TActivePortBufferEntry.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @param priority packet priority. Embedded on it as defined by "Guarante
      * of Service (GoS)Support over MPLS using Active Techniques". Read this
      * proposal to know more about GoS priorities.
@@ -55,7 +55,7 @@ public class TActivePortBufferEntry implements Comparable {
      * la que se quiere comparar la instancia actual.
      * @return -1, 0 or 1, depending on whether the current instance incoming
      * order is lower, equal or greater than the one specified as an argument.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int compareTo(Object anotherActivePortBufferEntry) {
@@ -76,7 +76,7 @@ public class TActivePortBufferEntry implements Comparable {
      * Read this proposal to know more about GoS priorities.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @return Priority of the packet embedded in this active port buffer entry.
      * A number between 0 (no priority) and 10 (maximum priority).
      */
@@ -90,7 +90,7 @@ public class TActivePortBufferEntry implements Comparable {
      * parent buffer.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @return The incoming order of the embedded packet to the active port
      * parent buffer.
      */
@@ -102,7 +102,7 @@ public class TActivePortBufferEntry implements Comparable {
      * This method returns the packet embedded in this active port buffer entry.
      *
      * @return The packet itself.
-     * @since 1.0
+     * @since 2.0
      */
     public TAbstractPDU getPacket() {
         return this.packet;

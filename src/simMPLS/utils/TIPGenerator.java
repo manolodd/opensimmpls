@@ -25,7 +25,7 @@ public class TIPGenerator {
     
     /** Este m�todo es el constructor de la clase. Permite generar instancias de
      * TGeneradorDeIP.
-     * @since 1.0
+     * @since 2.0
      */
     public TIPGenerator() {
         octeto2 = 0;
@@ -40,7 +40,7 @@ public class TIPGenerator {
      * @param IPStr La representaci�n textual de la direcci�n IP.
      * @return TRUE, si la direcci�n IP es v�lida y se inicia con ella el generador; FALSE en
      * caso contrario.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean ponerValor(String IPStr) {
         if (esIPValida(IPStr)) {
@@ -56,7 +56,7 @@ public class TIPGenerator {
     /**
      * Este m�todo comprueba si una direcci�n IP pasada por par�metro es una direcci�n
      * v�lida y perteneciente al rango 10.0.0.1 - 10.255.255.254
-     * @since 1.0
+     * @since 2.0
      * @param IPStr La direcci�n IP a comprobar.
      * @return true, si la direcci�n IP es v�lida y adem�s pertenece al rango 10.0.0.1 -
      * 10.255.255.254. false en caso contrario.
@@ -85,7 +85,7 @@ public class TIPGenerator {
     
     /** Este m�todo reinicia el generador a su valor inicial "10.0.0.0" de forma que la
      * siguiente direcci�n IP que generar� ser� 10.0.0.1.
-     * @since 1.0
+     * @since 2.0
      */
     public void reset() {
         octeto2 = 0;
@@ -98,7 +98,7 @@ public class TIPGenerator {
      * direcciones IP el generador. Siempre y cuando la IP que especifiquemos sea mayor
      * que la que el propio generador tenga internamente.
      * @param IPStr Direcci�n IP a partir de la cual queremos que siga generando el generador.
-     * @since 1.0
+     * @since 2.0
      */
     public void setValueIfGreater(String IPStr) {
         if (esIPValida(IPStr)) {
@@ -128,7 +128,7 @@ public class TIPGenerator {
  m�todo, indicando que el generador no puede cumplir sus funci�n.
      * @return Devuelve una representaci�n textual de la direcci�n IP generada, por ejemplo
      * "10.32.125.254".
-     * @since 1.0
+     * @since 2.0
      */
     public String obtenerIP() throws EIPOverflow {
         if (octeto4 < 255) {
@@ -151,19 +151,19 @@ public class TIPGenerator {
     }
     
     /** Constante "10" que ser� el componente fijo de las direcciones IP generadas.
-     * @since 1.0
+     * @since 2.0
      */
     private static final int octeto1 = 10;
     /** Segundo octeto de las direcciones IP generadas.
-     * @since 1.0
+     * @since 2.0
      */
     private int octeto2;
     /** Tercer octeto de las direcciones IP generadas.
-     * @since 1.0
+     * @since 2.0
      */
     private int octeto3;
     /** Cuartoocteto de las direcciones IP generadas.
-     * @since 1.0
+     * @since 2.0
      */
     private int octeto4;
 }

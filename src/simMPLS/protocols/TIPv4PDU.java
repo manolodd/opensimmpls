@@ -19,7 +19,7 @@ package simMPLS.protocols;
  * This class implements a IPv4 packet.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TIPv4PDU extends TAbstractPDU {
 
@@ -33,7 +33,7 @@ public class TIPv4PDU extends TAbstractPDU {
      * @param targetIP IP addres of this packet's receiver.
      * @param payloadSize The desired size for the payload of this IPv4 packet,
      * in bytes (octects).
-     * @since 1.0
+     * @since 2.0
      */
     public TIPv4PDU(long id, String originIP, String targetIP, int payloadSize) {
         super(id, originIP, targetIP);
@@ -46,7 +46,7 @@ public class TIPv4PDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Size of this packet in bytes (octects).
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int getSize() {
@@ -59,7 +59,7 @@ public class TIPv4PDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The type of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int getType() {
@@ -71,7 +71,7 @@ public class TIPv4PDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TCP payload of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     public TTCPPayload getTCPPayload() {
         return this.TCPPayload;
@@ -82,7 +82,7 @@ public class TIPv4PDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param TCPPayload The TCP payload for this packet.
-     * @since 1.0
+     * @since 2.0
      */
     public void setTCPPayload(TTCPPayload TCPPayload) {
         this.TCPPayload = TCPPayload;
@@ -93,7 +93,7 @@ public class TIPv4PDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The IPv4 header of this packet.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public TIPv4Header getIPv4Header() {
@@ -106,7 +106,7 @@ public class TIPv4PDU extends TAbstractPDU {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The subtype of this packet. For instances of this class, it
      * returns IPV4, as defined in TAbstractPDU.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int getSubtype() {
@@ -119,7 +119,7 @@ public class TIPv4PDU extends TAbstractPDU {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param subtype The subtype of the packet.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void setSubtype(int subtype) {

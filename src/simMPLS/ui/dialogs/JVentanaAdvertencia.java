@@ -32,7 +32,7 @@ public class JVentanaAdvertencia extends javax.swing.JDialog {
      * @param modal TRUE indica que la ventana impedir� que se seleccione nada del resto de la
      * interfaz hasta que sea cerrada. FALSe indica que esto no es asi.
      * @param di Disepnsador de im�genes global de la aplicaci�n.
-     * @since 1.0
+     * @since 2.0
      */
     public JVentanaAdvertencia(java.awt.Frame parent, boolean modal, TImagesBroker di) {
         super(parent, modal);
@@ -110,7 +110,7 @@ public class JVentanaAdvertencia extends javax.swing.JDialog {
     
     /** Este m�todo recibe por par�metro un texto y hace que aparezca en la ventana.
      * @param texto El texto que se desea mostrar en la ventana.
-     * @since 1.0
+     * @since 2.0
      */    
     public void mostrarMensaje(java.lang.String texto) {
         java.awt.Toolkit.getDefaultToolkit().beep();
@@ -120,7 +120,7 @@ public class JVentanaAdvertencia extends javax.swing.JDialog {
     /** Este objeto es una referencia la dispensador de im�genes global del simulador.
      * Se encarga de tener precargadas las im�genes, acelerando el proceso de
      * mostrarlas.
-     * @since 1.0
+     * @since 2.0
      */    
     private TImagesBroker dispensadorDeImagenes;
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -68,7 +68,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
     
     /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * JVentanaHija.
-     * @since 1.0
+     * @since 2.0
      * @param padre Ventana padre dentro de la cual se va a ubicar este ventana hija.
      * @param di Dispensador de im�genes de donde se obtendr�n todas las im�genes que se
      * necesiten.
@@ -83,7 +83,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
     /**
      * Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * JVentanaHija.
-     * @since 1.0
+     * @since 2.0
      * @param titulo T�tulo que deseamos que tenga la ventana hija. Se usar� tambi�n para save el
  escenario en disco.
      * @param padre Ventana padre dentro de la cual se va a ubicar este ventana hija.
@@ -106,7 +106,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
      * necesiten.
      * @param esc Escenario ya creado al que se va a asociar esta ventana hija y que contendr� un
      * escenario y todos sus datos.
-     * @since 1.0
+     * @since 2.0
      */    
     public JVentanaHija(JSimulador padre, TImagesBroker di, TScenario esc) {
         dispensadorDeImagenes = di;
@@ -118,7 +118,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
     
     /** Este m�todo se encarga de start los atributos de la clase que no hayan sido
  aun iniciados por NetBeans.
-     * @since 1.0
+     * @since 2.0
      */
     public void initComponents2() {
         panelDisenio.ponerDispensadorDeImagenes(dispensadorDeImagenes);
@@ -163,7 +163,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
     /** Este m�todo es llamado desde el constructor para actualizar la mayor parte de
      * los atributos de la clase que tienen que ver con la interfaz de usuario. Es un
      * m�todo creado por NetBeans automaticamente.
-     * @since 1.0
+     * @since 2.0
      */
     private void initComponents() {//GEN-BEGIN:initComponents
         java.awt.GridBagConstraints gridBagConstraints;
@@ -1016,7 +1016,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
      * hace sobre un elemento que estaba seleccionado, el resultado es que ese elemento
      * se mueve donde vaya el cursor del rat�n.
      * @param evt El evento que provoca la llamada.
-     * @since 1.0
+     * @since 2.0
      */    
     private void ratonArrastradoEnPanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonArrastradoEnPanelSimulacion
     if (evt.getModifiersEx() == java.awt.event.InputEvent.BUTTON1_DOWN_MASK) {
@@ -1043,7 +1043,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
      * simulaci�n. Si se hace sobre un elemento que estaba seleccionado, deja de
      * estarlo.
      * @param evt El evento que genera la llamada.
-     * @since 1.0
+     * @since 2.0
      */    
     private void ratonSoltadoEnPanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSoltadoEnPanelSimulacion
         if (evt.getButton() == MouseEvent.BUTTON1) {
@@ -1060,7 +1060,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
      * Este m�todo se llama cuando se presiona un bot�n del rat�n en el panel de
      * simulaci�n. Si se hace sobre un elemento de la topolog�a, lo marca como
      * seleccionado.
-     * @since 1.0
+     * @since 2.0
      * @param evt El evento que provoca la llamada.
      */    
     private void clicEnPanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnPanelSimulacion
@@ -1089,7 +1089,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
      * Este m�todo se llama cuando se hace clic derecho sobre un elemento en la ventana
      * de dise�o y se selecciona la opci�n "Propiedades" del men� emergente. Se encarga
      * de mostrar en pantalla la ventana de configuraci�n del elemento en cuesti�n.
-     * @since 1.0
+     * @since 2.0
      * @param evt El evento que provoca la llamada.
      */    
     private void clicEnPropiedadesPopUpDisenioElemento(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPropiedadesPopUpDisenioElemento
@@ -1151,7 +1151,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
     /** Este m�todo se encarga de controlar que la duraci�n de la simulaci�on y del paso
      * de la misma sea acorde con los delays de los enlaces. Adem�s se encarga de la
      * actualizaci�n de la interfaz en esos lugares.
-     * @since 1.0
+     * @since 2.0
      */
     public void controlarParametrosTemporales() {
         if (!controlTemporizacionDesactivado) {
@@ -1177,7 +1177,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
     
     /** Este m�todo se llama autom�ticamente cuando se cambia la duraci�n en
      * nanosegundos del paso de simulaci�n.
-     * @since 1.0
+     * @since 2.0
      * @param evt Evento que hace que el m�todo salte.
      */
 private void clicEnPasoNs(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_clicEnPasoNs
@@ -1187,7 +1187,7 @@ private void clicEnPasoNs(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_
 
 /** Este m�todo se llama autom�ticamente cuando se cambia la duraci�n de la
  * simulaci�n en nanosegundos.
- * @since 1.0
+ * @since 2.0
  * @param evt Evento que hace que se ejecute este m�todo.
  */
 private void clicEnDuracionNs(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_clicEnDuracionNs
@@ -1197,7 +1197,7 @@ private void clicEnDuracionNs(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:ev
 
 /** Este m�todo se llama autom�ticamente cuando se cambia la duraci�n de la
  * simulaci�n en milisegundos.
- * @since 1.0
+ * @since 2.0
  * @param evt Evento que produce que se ejecute este m�todo.
  */
 private void clicEnDuracionMs(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_clicEnDuracionMs
@@ -1207,7 +1207,7 @@ private void clicEnDuracionMs(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:ev
 
 /** Este m�todo se llama autom�ticamente cuando se cambia el tiempo que se detendr�
  * la simulaci�n entre un paso de simulaci�n y otro.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void mlsPorTicCambiado(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mlsPorTicCambiado
@@ -1217,7 +1217,7 @@ private void mlsPorTicCambiado(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:e
 
 /** Este m�todo se ejecuta cuando se hace clic en la opci�n de ocultar el nombre de
  * todos los enlaces, en el men� emergente de la pantalla de Disenio.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void clicEnPopUpDisenioFondoOcultarNombreEnlaces(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoOcultarNombreEnlaces
@@ -1233,7 +1233,7 @@ private void clicEnPopUpDisenioFondoOcultarNombreEnlaces(java.awt.event.ActionEv
 
 /** Este m�todo se ejecuta cuando se hace clic en la opci�n de ver el nombre de
  * todos los enlaces, en el men� emergente de la pantalla de Disenio.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void clicEnPopUpDisenioFondoVerNombreEnlaces(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoVerNombreEnlaces
@@ -1249,7 +1249,7 @@ private void clicEnPopUpDisenioFondoVerNombreEnlaces(java.awt.event.ActionEvent 
 
 /** Este m�todo se ejecuta cuando se hace clic en la opci�n de ocultar el nombre de
  * todos los nodos, en el men� emergente de la pantalla de Disenio.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void clicEnPopUpDisenioFondoOcultarNombreNodos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoOcultarNombreNodos
@@ -1265,7 +1265,7 @@ private void clicEnPopUpDisenioFondoOcultarNombreNodos(java.awt.event.ActionEven
 
 /** Este m�todo se ejecuta cuando se hace clic en la opci�n de ver el nombre de
  * todos los nodos, en el men� emergente de la pantalla de Disenio.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void clicEnPopUpDisenioFondoVerNombreNodos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoVerNombreNodos
@@ -1281,7 +1281,7 @@ private void clicEnPopUpDisenioFondoVerNombreNodos(java.awt.event.ActionEvent ev
 
 /** Este m�todo se ejecuta cuando se hace clic en la opci�n de eliminar todo el
  * escenario completo, en el men� emergente de la pantalla de Disenio.
- * @since 1.0
+ * @since 2.0
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void clicEnPopUpDisenioFondoEliminar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoEliminar
@@ -1301,7 +1301,7 @@ private void clicEnPopUpDisenioFondoEliminar(java.awt.event.ActionEvent evt) {//
  * momento todo lo que se haga en la ventana tendr� su repercusi�n en el escenario.
  * @param esc Escenario ya creado al que se va a asociar esta ventana hija y que contendr� un
  * escenario y todos sus datos.
- * @since 1.0
+ * @since 2.0
  */
 public void ponerEscenario(TScenario esc) {
     this.controlTemporizacionDesactivado = true;
@@ -1341,7 +1341,7 @@ public void ponerEscenario(TScenario esc) {
 
 /** Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un enlace
  * nuevo en la barra de herramientas de la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirEnlace
@@ -1383,7 +1383,7 @@ private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
 /** Este m�todo se ejecuta cuando se hace clic en la opci�n eliminar que aparece en
  * el men� emergente al pulsar con el bot�n derecho sobre un elemento de la
  * topolog�a. En la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void clicEnPopUpDisenioEliminar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioEliminar
@@ -1427,7 +1427,7 @@ private void clicEnPopUpDisenioEliminar(java.awt.event.ActionEvent evt) {//GEN-F
 /** Este m�todo se ejecuta cuando se hace clic en la opci�n de ver/ocultar nombre
  * que aparece en el men� emergente al pulsar con el bot�n derecho sobre un elemento
  * de la topolog�a. En la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void clicEnPopUpDisenioVerNombre(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioVerNombre
@@ -1449,7 +1449,7 @@ private void clicEnPopUpDisenioVerNombre(java.awt.event.ActionEvent evt) {//GEN-
 
 /** Este m�todo se ejecuta cuando se hace clic con el bot�n derecho en la pantalla
  * de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt Evento que hace que este m�todo se dispare.
  */
 private void clicDerechoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicDerechoEnPanelDisenio
@@ -1479,7 +1479,7 @@ private void clicDerechoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
 
 /** Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LSRA
  * nuevo en la barra de herramientas de la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void clicEnAniadirLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLSRA
@@ -1513,7 +1513,7 @@ private void clicEnAniadirLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
 
 /** Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LSR
  * nuevo en la barra de herramientas de la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt Evento que hace que este m�todo se dispare.
  */
 private void clicEnAniadirLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLSR
@@ -1547,7 +1547,7 @@ private void clicEnAniadirLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
 
 /** Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LSRA
  * nuevo en la barra de herramientas de la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void clicEnAniadirLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLERA
@@ -1583,7 +1583,7 @@ private void clicEnAniadirLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
  * en la pantalla de simulaci�n. Entre otras cosas, cambia el cursor del rat�n al pasar
  * sobre un elemento, permite mostrar men�s emergentes coherentes con el contexto
  * de donde se encuentra el rat�n, etc�tera.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonSobrePanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSobrePanelSimulacion
@@ -1621,7 +1621,7 @@ private void ratonSobrePanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIR
  * en la pantalla de Dise�o. Entre otras cosas, cambia el cursor del rat�n al pasar
  * sobre un elemento, permite mostrar men�s emergentes coherentes con el contexto
  * de donde se encuentra el rat�n, etc�tera.
- * @since 1.0
+ * @since 2.0
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void ratonSobrePanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSobrePanelDisenio
@@ -1645,7 +1645,7 @@ private void ratonSobrePanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:
 /** Este m�todo se llama autom�ticamente cuando se est� arrastrando el rat�n en la
  * pantalla de dise�o. Se encarga de mover los elementos de un lugar a otro para
  * dise�ar la topolog�a.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void arrastrandoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_arrastrandoEnPanelDisenio
@@ -1671,7 +1671,7 @@ private void arrastrandoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
 /** Este m�todo se llama autom�ticamente cuando soltamos el bot�n del raton a la
  * rrastrar o al hacer clic. Si el rat�n estaba sobre  un elemento de la topology,
  se marca �ste como no seleccionado.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void clicSoltadoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicSoltadoEnPanelDisenio
@@ -1687,7 +1687,7 @@ private void clicSoltadoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
 
 /** Este m�todo se llama autom�ticamente cuando se hace un clic con el bot�n
  * izquierdo sobre la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void clicEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnPanelDisenio
@@ -1704,7 +1704,7 @@ private void clicEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:even
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono de
  * detener en la pantalla de simulaci�n.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDelIconoPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoPausar
@@ -1714,7 +1714,7 @@ private void ratonSaleDelIconoPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono de
  * detener en la pantalla de simulaci�n.
- * @since 1.0
+ * @since 2.0
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoPausar
@@ -1724,7 +1724,7 @@ private void ratonEntraEnIconoPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono de finalizar
  * en la pantalla de simulaci�n.
- * @since 1.0
+ * @since 2.0
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDelIconoFinalizar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoFinalizar
@@ -1734,7 +1734,7 @@ private void ratonSaleDelIconoFinalizar(java.awt.event.MouseEvent evt) {//GEN-FI
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono de finalizar
  * en la pantalla de simulaci�n.
- * @since 1.0
+ * @since 2.0
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoFinalizar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoFinalizar
@@ -1744,7 +1744,7 @@ private void ratonEntraEnIconoFinalizar(java.awt.event.MouseEvent evt) {//GEN-FI
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono de comenzar
  * en la pantalla de simulaci�n.
- * @since 1.0
+ * @since 2.0
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDelIconoReanudar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoReanudar
@@ -1754,7 +1754,7 @@ private void ratonSaleDelIconoReanudar(java.awt.event.MouseEvent evt) {//GEN-FIR
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono de
  * comenzar en la pantalla de simulaci�n.
- * @since 1.0
+ * @since 2.0
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoReanudar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoReanudar
@@ -1764,7 +1764,7 @@ private void ratonEntraEnIconoReanudar(java.awt.event.MouseEvent evt) {//GEN-FIR
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono generar en la
  * pantalla de simulaci�n.
- * @since 1.0
+ * @since 2.0
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDelIconoComenzar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoComenzar
@@ -1774,7 +1774,7 @@ private void ratonSaleDelIconoComenzar(java.awt.event.MouseEvent evt) {//GEN-FIR
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono generar en
  * la pantalla de simulaci�n.
- * @since 1.0
+ * @since 2.0
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoComenzar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoComenzar
@@ -1784,7 +1784,7 @@ private void ratonEntraEnIconoComenzar(java.awt.event.MouseEvent evt) {//GEN-FIR
 
 /** Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LER
  * nuevo en la barra de herramientas de la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt Evento que hace que se dispare este m�todo.
  */
 private void clicEnAniadirLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLER
@@ -1818,7 +1818,7 @@ private void clicEnAniadirLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono enlace en
  * la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo
  */
 private void ratonSaleDeIconoEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoEnlace
@@ -1828,7 +1828,7 @@ private void ratonSaleDeIconoEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono enlace en
  * la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoEnlace
@@ -1838,7 +1838,7 @@ private void ratonEntraEnIconoEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LSRA en
  * la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDeIconoLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLSRA
@@ -1848,7 +1848,7 @@ private void ratonSaleDeIconoLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono LSRA en
  * la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLSRA
@@ -1858,7 +1858,7 @@ private void ratonEntraEnIconoLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LSR en
  * la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDeIconoLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLSR
@@ -1868,7 +1868,7 @@ private void ratonSaleDeIconoLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono LSR en
  * la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLSR
@@ -1878,7 +1878,7 @@ private void ratonEntraEnIconoLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LERA en
  * la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDeIconoLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLERA
@@ -1888,7 +1888,7 @@ private void ratonSaleDeIconoLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono LERA en
  * la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLERA
@@ -1898,7 +1898,7 @@ private void ratonEntraEnIconoLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LER en
  * la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDeIconoLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLER
@@ -1908,7 +1908,7 @@ private void ratonSaleDeIconoLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono LER en
  * la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLER
@@ -1918,7 +1918,7 @@ private void ratonEntraEnIconoLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono receptor en
  * la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDeIconoReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoReceptor
@@ -1928,7 +1928,7 @@ private void ratonSaleDeIconoReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRS
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono receptor
  * en la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoReceptor
@@ -1938,7 +1938,7 @@ private void ratonEntraEnIconoReceptor(java.awt.event.MouseEvent evt) {//GEN-FIR
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono emisor en
  * la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonSaleDeIconoEmisor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoEmisor
@@ -1948,7 +1948,7 @@ private void ratonSaleDeIconoEmisor(java.awt.event.MouseEvent evt) {//GEN-FIRST:
 
 /** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono emisor en
  * la pantalla de dise�o.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void ratonEntraEnIconoEmisor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoEmisor
@@ -1958,7 +1958,7 @@ private void ratonEntraEnIconoEmisor(java.awt.event.MouseEvent evt) {//GEN-FIRST
 
 /** Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono receptor
  * en la ventana de dise�o. A�ade un receptor nuevo en la topology.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void clicEnAniadirReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirReceptor
@@ -1992,7 +1992,7 @@ private void clicEnAniadirReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
 
 /** Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono emisor
  * en la ventana de dise�o. A�ade un emisor nuevo en la topology.
- * @since 1.0
+ * @since 2.0
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirEmisorDeTrafico
@@ -2041,7 +2041,7 @@ private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-
 
 /** Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono detener
  * en la ventana de simulaci�n. Detiene la simulaci�n o su generaci�n.
- * @since 1.0
+ * @since 2.0
  * @param evt Evento que hace que este m�todo se dispare.
  */
 private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicAlPausar
@@ -2053,7 +2053,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
     
     /** Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
      * finalizar en la ventana de simulaci�n. Detiene la simulaci�n por completo.
-     * @since 1.0
+     * @since 2.0
      * @param evt El evento que hace que este m�todo se dispare.
      */
     private void clicEnFinalizar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnFinalizar
@@ -2067,7 +2067,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
     
     /** Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono comenzar
      * en la ventana de simulaci�n. Inicia la simulaci�n.
-     * @since 1.0
+     * @since 2.0
      * @param evt El evento que hace que este m�todo se dispare.
      */
     private void clicEnReanudar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnReanudar
@@ -2080,7 +2080,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
     
     /** Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono generar
      * en la ventana de simulaci�n. Crea la simulaci�n.
-     * @since 1.0
+     * @since 2.0
      * @param evt El evento que hace que este m�todo se dispare.
      */
     private void clicEnComenzar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnComenzar
@@ -2119,7 +2119,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
      * Este m�todo se llama cuando comienza la simulaci�n del escenario. Crea una lista
      * de todos los nodos que tienen activa la generaci�n de estad�sticas para
      * posteriormente poder elegir uno de ellos y ver sus gr�ficas.
-     * @since 1.0
+     * @since 2.0
      */    
     public void crearListaElementosEstadistica() {
         Iterator it = null;
@@ -2139,7 +2139,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
     
     /** Este m�todo modifica la interfaz para que las opciones que se muestran sean
      * acordes al momento en que la simulaci�n est� detenida.
-     * @since 1.0
+     * @since 2.0
      */
     private void activarOpcionesAlDetener() {
         iconoComenzar.setEnabled(false);
@@ -2150,7 +2150,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
     
     /** Este m�todo modifica la interfaz para que las opciones que se muestran sean
      * acordes al momento en que la simulaci�n ha finalizado.
-     * @since 1.0
+     * @since 2.0
      */
     private void activarOpcionesAlFinalizar() {
         iconoComenzar.setEnabled(true);
@@ -2161,7 +2161,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
     
     /** Este m�todo modifica la interfaz para que las opciones que se muestran sean
      * acordes al momento en que la simulaci�n se acaba de generar.
-     * @since 1.0
+     * @since 2.0
      */
     private void activarOpcionesTrasGenerar() {
         iconoComenzar.setEnabled(false);
@@ -2172,7 +2172,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
     
     /** Este m�todo modifica la interfaz para que las opciones que se muestran sean
      * acordes al momento en que la simulaci�n comienza.
-     * @since 1.0
+     * @since 2.0
      */
     private void activarOpcionesAlComenzar() {
         iconoComenzar.setEnabled(false);
@@ -2183,7 +2183,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
     
     /** Cierra la ventana hija y pierde o almacena su contenido en funci�n de la
      * elecci�n del usuario.
-     * @since 1.0
+     * @since 2.0
      */
     public void cerrar() {
         this.setVisible(false);
@@ -2194,7 +2194,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
     /**
      * Este m�todo se encarga de controlar que todo ocurre como debe con respecto al
      * escenario, cuando se pulsa en el men� principal la opci�n de "Guardar como..."
-     * @since 1.0
+     * @since 2.0
      */    
     public void gestionarGuardarComo() {
         anotarDatosDeEscenario();
@@ -2243,7 +2243,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
      * Este m�todo se encarga de controlar que todo ocurre como debe con respecto al
      * escenario, cuando se pulsa en el men� principal la opci�n de "Cerrar" o "Salir"
      * y el escenario actual no est� a�n guardado o est� modificado.
-     * @since 1.0
+     * @since 2.0
      */    
     public void gestionarGuardarParaCerrar() {
         boolean guardado = this.escenario.obtenerGuardado();
@@ -2296,7 +2296,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
     /**
      * Este m�todo se encarga de controlar que todo ocurre como debe con respecto al
      * escenario, cuando se pulsa en el men� principal la opci�n de "Guardar".
-     * @since 1.0
+     * @since 2.0
      */    
     public void gestionarGuardar() {
         boolean guardado = this.escenario.obtenerGuardado();
@@ -2537,7 +2537,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
      * Este m�todo se encarga de anotar los datos del escenario desde la interfaz de
      * usuario hasta los correspondientes atributos del objeto que almacena el
      * escenario.
-     * @since 1.0
+     * @since 2.0
      */    
     private void anotarDatosDeEscenario() {
         this.escenario.setTitle(this.nombreEscenario.getText());
@@ -2548,34 +2548,34 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
     /** Este atributo es el objeto encargado de actualizar la barra de progreso del
      * escenario que se usa a la hora de generar la simulaci�n y a la hora de
      * ejecutarla.
-     * @since 1.0
+     * @since 2.0
      */
     private TProgressEventListener aProgresoGeneracion;
     /** Este atributo contendr� todo el escenario completo de la simulaci�n: topology,
  an�lisis y simulaci�n.
-     * @since 1.0
+     * @since 2.0
      */
     private TScenario escenario;
     /** Este atributo contendr� en todo momento una referencia al nodo del escenario que
      * se est� arrastrando.
-     * @since 1.0
+     * @since 2.0
      */
     private TNode nodoSeleccionado;
     /** Este atributo contendr� todas las im�genes de Open SimMPLS para poder acceder a
      * ellas de forma m�s r�pida y para no tener que cargar la misma imagen en
      * distintas instancias.
-     * @since 1.0
+     * @since 2.0
      */
     private TImagesBroker dispensadorDeImagenes;
     /** Este atributo es una referencia a la ventana padre que recoge dentro de si a
      * esta ventana hija.
-     * @since 1.0
+     * @since 2.0
      */
     private JSimulador VentanaPadre;
     /** Este atributo contiene en todo momento un referencia al elemento de la topolog�a
      * (nodo o enlace) sobre el que se est� intentando abrir un men� contextual (clic
      * con el bot�n derecho).
-     * @since 1.0
+     * @since 2.0
      */
     private TTopologyElement elementoDisenioClicDerecho;
     

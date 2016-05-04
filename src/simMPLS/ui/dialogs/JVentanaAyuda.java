@@ -29,7 +29,7 @@ public class JVentanaAyuda extends javax.swing.JDialog {
     /**
      * Este es el metodo constructor de la clase. Crea una nueva instancia de
      * JVentanaAyuda.
-     * @since 1.0
+     * @since 2.0
      * @param di Dispensador de im�genes de donde la ventana tomara las que necesite.
      * @param parent Ventana padre de la cual depende esta.
      * @param modal TRUE indica que esta ventana estar� en primer plano hasta que se cierre,

@@ -33,7 +33,7 @@ public class TLSRAStats extends TStats {
     
     /**
      * Crea una nueva instancia de TEstadisticasLSRA
-     * @since 1.0
+     * @since 2.0
      */
     public TLSRAStats() {
     	paquetesEntrantes = new XYSeriesCollection();
@@ -89,7 +89,7 @@ public class TLSRAStats extends TStats {
     /**
      * Este m�todo permite obtener los datos necesario para generar la gr�fica 1.
      * @return Datos de la gr�fica 1.
-     * @since 1.0
+     * @since 2.0
      */    
     public org.jfree.data.AbstractDataset obtenerDatosGrafica1() {
         return this.paquetesEntrantes;
@@ -98,7 +98,7 @@ public class TLSRAStats extends TStats {
     /**
      * Este m�todo permite obtener los datos necesario para generar la gr�fica 2.
      * @return Datos de la gr�fica 2.
-     * @since 1.0
+     * @since 2.0
      */    
     public org.jfree.data.AbstractDataset obtenerDatosGrafica2() {
         return this.paquetesSalientes;
@@ -107,7 +107,7 @@ public class TLSRAStats extends TStats {
     /**
      * Este m�todo permite obtener los datos necesario para generar la gr�fica 3.
      * @return Datos de la gr�fica 3.
-     * @since 1.0
+     * @since 2.0
      */    
     public org.jfree.data.AbstractDataset obtenerDatosGrafica3() {
         return this.paquetesDescartados;
@@ -116,7 +116,7 @@ public class TLSRAStats extends TStats {
     /**
      * Este m�todo permite obtener los datos necesario para generar la gr�fica 4.
      * @return Datos de la gr�fica 4.
-     * @since 1.0
+     * @since 2.0
      */    
     public org.jfree.data.AbstractDataset obtenerDatosGrafica4() {
         return this.retransmisionesAtendidas;
@@ -125,7 +125,7 @@ public class TLSRAStats extends TStats {
     /**
      * Este m�todo permite obtener los datos necesario para generar la gr�fica 5.
      * @return Datos de la gr�fica 5.
-     * @since 1.0
+     * @since 2.0
      */    
     public org.jfree.data.AbstractDataset obtenerDatosGrafica5() {
         return this.recuperacionesLocales;
@@ -134,7 +134,7 @@ public class TLSRAStats extends TStats {
     /**
      * Este m�todo permite obtener los datos necesario para generar la gr�fica 6.
      * @return Datos de la gr�fica 6.
-     * @since 1.0
+     * @since 2.0
      */    
     public org.jfree.data.AbstractDataset obtenerDatosGrafica6() {
         return null;
@@ -146,7 +146,7 @@ public class TLSRAStats extends TStats {
      * @param paquete Paquete que se desea contabilizar.
      * @param entrada ENTRADA, SALIDA o DISCARD, dependiendo de si el paquete entra en el nodo, sale
  de �l o es descartado.
-     * @since 1.0
+     * @since 2.0
      */    
     public void addStatsEntry(TAbstractPDU paquete, int entrada) {
         if (this.estadisticasActivas) {
@@ -243,7 +243,7 @@ public class TLSRAStats extends TStats {
     /**
      * Este m�todo permite obtener el n�mero de graficas del LSRA.
      * @return El n�mero de gr�ficas del LSRA.
-     * @since 1.0
+     * @since 2.0
      */    
     public int obtenerNumeroGraficas() {
         return 5;
@@ -252,7 +252,7 @@ public class TLSRAStats extends TStats {
     /**
      * Este m�todo reinicia los atributos de la clase, dejando las instancia como si
      * acabase de ser creada por el constructor.
-     * @since 1.0
+     * @since 2.0
      */    
     public void reset() {
     	paquetesEntrantes = new XYSeriesCollection();
@@ -309,7 +309,7 @@ public class TLSRAStats extends TStats {
      * Este m�todo actualiza las estad�sticas con los ultimos datos recogidos desde la
      * �ltima llamada a este m�todo.
      * @param instante Instante de tiempo al que se atribuir�n los ultimso datos.
-     * @since 1.0
+     * @since 2.0
      */    
     public void consolidateData(long instante) {
         if (this.estadisticasActivas) {
@@ -511,7 +511,7 @@ public class TLSRAStats extends TStats {
     /**
      * Este m�todo permite obtener el t�tulo de la gr�fica 1.
      * @return T�tulo de la gr�fica 1.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerTitulo1() {
         return TStats.PAQUETES_ENTRANTES;
@@ -520,7 +520,7 @@ public class TLSRAStats extends TStats {
     /**
      * Este m�todo permite obtener el t�tulo de la gr�fica 2.
      * @return T�tulo de la gr�fica 2.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerTitulo2() {
         return TStats.PAQUETES_SALIENTES;
@@ -529,7 +529,7 @@ public class TLSRAStats extends TStats {
     /**
      * Este m�todo permite obtener el t�tulo de la gr�fica 3.
      * @return T�tulo de la gr�fica 3.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerTitulo3() {
         return TStats.PAQUETES_DESCARTADOS;
@@ -538,7 +538,7 @@ public class TLSRAStats extends TStats {
     /**
      * Este m�todo permite obtener el t�tulo de la gr�fica 4.
      * @return T�tulo de la gr�fica 4.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerTitulo4() {
         return TStats.RETRANSMISIONES_ATENDIDAS;
@@ -547,7 +547,7 @@ public class TLSRAStats extends TStats {
     /**
      * Este m�todo permite obtener el t�tulo de la gr�fica 5.
      * @return T�tulo de la gr�fica 5.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerTitulo5() {
         return TStats.RECUPERACIONES_LOCALES;
@@ -556,7 +556,7 @@ public class TLSRAStats extends TStats {
     /**
      * Este m�todo permite obtener el t�tulo de la gr�fica 6.
      * @return T�tulo de la gr�fica 6.
-     * @since 1.0
+     * @since 2.0
      */    
     public String obtenerTitulo6() {
         return null;

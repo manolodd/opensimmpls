@@ -21,7 +21,7 @@ package simMPLS.hardware.timer;
  * subscribing an aditional one.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class EProgressEventGeneratorOnlyAllowASingleListener extends Exception {
 
@@ -29,7 +29,7 @@ public class EProgressEventGeneratorOnlyAllowASingleListener extends Exception {
      * This is the constructor of the class. It creates a new instance of
      * EProgressEventGeneratorOnlyAllowASingleListener.
      *
-     * @since 1.0
+     * @since 2.0
      */
     public EProgressEventGeneratorOnlyAllowASingleListener() {
     }

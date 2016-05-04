@@ -41,7 +41,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * @param d Direcci�n IP del nodo.
      * @param il Generador de identificadores para los eventos que tenga que genrar el nodo.
      * @param t Topologia dentro de la cual se encuentra el nodo.
-     * @since 1.0
+     * @since 2.0
      */
     public TReceiverNode(int identificador, String d, TLongIDGenerator il, TTopology t) {
         super(identificador, d, il, t);
@@ -53,7 +53,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     /**
      * Este m�todo reinicia los atributos de la clase y los deja como recien creadops
      * por el constructor.
-     * @since 1.0
+     * @since 2.0
      */    
     public void reset() {
         this.ports.reset();
@@ -64,7 +64,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     /**
      * Este m�todo devuelve el tipo del nodo.
      * @return TNode.RECEIVER, indicando que se trata de un nodo receptor.
-     * @since 1.0
+     * @since 2.0
      */    
     public int getNodeType() {
         return super.RECEIVER;
@@ -73,7 +73,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     /**
      * Este m�todo permite obtener eventos enviados desde el reloj del simulador.
      * @param evt Evento enviado desde el reloj principal del simulador.
-     * @since 1.0
+     * @since 2.0
      */    
     public void receiveTimerEvent(TTimerEvent evt) {
         this.setStepDuration(evt.getStepDuration());
@@ -84,7 +84,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     /**
      * Este m�todo se llama autom�ticamente cuando el hilo independiente del nodo se
      * pone en funcionamiento. En �l se codifica toda la funcionalidad del nodo.
-     * @since 1.0
+     * @since 2.0
      */    
     public void run() {
         // Acciones a llevar a cabo durante el tic.
@@ -95,7 +95,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
 
     /**
      * Este m�todo lee mientras puede los paquetes que hay en el buffer de recepci�n.
-     * @since 1.0
+     * @since 2.0
      */    
     public void recibirDatos() {
         TPort p = this.ports.getPort(0);
@@ -123,7 +123,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * Este m�todo contabiliza en las estad�sticas del nodo un paquete le�do.
      * @param paquete Paquete que se quiere contabilizar.
      * @param deEntrada TRUE, si el paquete entra en el nodo. FALSE si el paquete sale del nodo.
-     * @since 1.0
+     * @since 2.0
      */    
     public void contabilizarPaquete(TAbstractPDU paquete, boolean deEntrada) {
         if (deEntrada) {
@@ -144,7 +144,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     /**
      * Este m�too permite acceder directamente a los ports del nodo.
      * @return El conjunto de ports del nodo.
-     * @since 1.0
+     * @since 2.0
      */    
     public TPortSet getPorts() {
         return this.ports;
@@ -153,7 +153,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     /**
      * Este m�todo devuelve si el nodo tiene ports libres o no.
      * @return TRUE, si el nodo tiene ports libres. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean hasAvailablePorts() {
         return this.ports.hasAvailablePorts();
@@ -163,7 +163,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * Este m�todo devuelve el peso del nodo que debe ser tenido en cuenta por los
      * algoritmos de encaminamiento para el c�lculo de rutas.
      * @return En el caso de un nodo receptor, siempre es cero.
-     * @since 1.0
+     * @since 2.0
      */    
     public long getRoutingWeight() {
         return 0;
@@ -172,7 +172,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     /**
      * Devuelve si el nodo est� bien configurado o no.
      * @return TRUE, si el nodo esta bien configurado. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean isWellConfigured() {
         return this.wellConfigured;
@@ -186,7 +186,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * por primera vez.
      * @return CORRECTA, si el nodo est� bien configurado. Un codigo de error en caso
      * contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public int validateConfig(TTopology t, boolean recfg) {
         this.setWellConfigured(false);
@@ -221,7 +221,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * entendible y explicativo.
      * @param e Codigo de error.
      * @return Texto explicativo del codigo de error.
-     * @since 1.0
+     * @since 2.0
      */    
     public String getErrorMessage(int e) {
         switch (e) {
@@ -235,7 +235,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     /**
      * Este m�todo transforma el nodo en una representaci�n textual volcable a disco.
      * @return La representaci�n textual del nodo.
-     * @since 1.0
+     * @since 2.0
      */    
     public String marshall() {
         String cadena = "#Receptor#";
@@ -263,7 +263,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * reconstruyendolo en memoria en la instancia actual.
      * @param elemento Nodo receptor serializado.
      * @return TRUE, si se ha podido deserializar correctamente. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean unMarshall(String elemento) {
         String valores[] = elemento.split("#");
@@ -285,7 +285,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     /**
      * Este m�todo permite acceder directamente a las estad�sticas del nodo.
      * @return Las estad�sticas del nodo.
-     * @since 1.0
+     * @since 2.0
      */    
     public TStats getStats() {
         return this.estadisticas;
@@ -294,7 +294,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     /**
      * Este m�todo permite establecer el n�mero de ports que deseamos para el nodo.
      * @param num El n�mero de ports del nodo. Como mucho 8.
-     * @since 1.0
+     * @since 2.0
      */    
     public synchronized void setPorts(int num) {
         ports = new TFIFOPortSet(num, this);
@@ -304,7 +304,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * Este m�todo permite descartar nu paquete en el nodo y reflejar este descarte en
      * las estadisticas.
      * @param paquete paquete que deseamos descartar.
-     * @since 1.0
+     * @since 2.0
      */    
     public void discardPacket(TAbstractPDU paquete) {
         // Un receptor no descarta paquetes, porque tiene un buffer 
@@ -317,29 +317,29 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     * solicitar a un nodo activo la retransmisi�n de un paquete.
     * @param paquete Paquete cuya retransmisi�n se est� solicitando.
     * @param pSalida Puerto por el que se enviar� la solicitud.
-    * @since 1.0
+    * @since 2.0
     */    
     public void runGoSPDUStoreAndRetransmitProtocol(TMPLSPDU paquete, int pSalida) {
     }
     
     /**
      * Esta constante identifica que la configuraci�n del nodo es correcta.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int CORRECTA = 0;
     /**
      * Esta constante identifica que el nodo no tiene nombre.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int SIN_NOMBRE = 1;
     /**
      * Esta constante identifica que el nombre del nodo ya existe con anterioridad.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int NOMBRE_YA_EXISTE = 2;
     /**
      * Esta constante identifica que el nombre del nodo est� formado s�lo por espacios.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int SOLO_ESPACIOS = 3;
     

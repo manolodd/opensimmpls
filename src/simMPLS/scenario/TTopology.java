@@ -34,7 +34,7 @@ public class TTopology {
     /**
      * Crea una nueva instancia de TTopologia
      * @param e Escenario padre al que pertence la topology.
-     * @since 1.0
+     * @since 2.0
      */
     public TTopology(TScenario e) {
         conjuntoNodos = new TreeSet();
@@ -51,7 +51,7 @@ public class TTopology {
     /**
      * Este m�todo reinicia los atributos de la clase y los deja como si acabasen de
      * ser iniciador por el constructor.
-     * @since 1.0
+     * @since 2.0
      */    
     public void reset() {
         this.cerrojoFloyd.lock();
@@ -76,7 +76,7 @@ public class TTopology {
     /**
      * Este m�todo inserta un nuevo nodo en la topology.
      * @param nodo Nodo que queremos insertar.
-     * @since 1.0
+     * @since 2.0
      */    
     public void addNode(TNode nodo) {
         conjuntoNodos.add(nodo);
@@ -115,7 +115,7 @@ public class TTopology {
      * Este m�todo obtiene un nodo de la topology seg�n si identificador.
      * @param identificador Identificador del nodo que deseamos obtener.
      * @return Nodo que busc�bamos.NULL si no existe.
-     * @since 1.0
+     * @since 2.0
      */    
     public TNode obtenerNodo(int identificador) {
         TNode nodo = null;
@@ -132,7 +132,7 @@ public class TTopology {
      * Este m�todo obtiene un nodo de la topology por su direcci�n IP.
      * @param ip IP del nodo que deseamos obtener.
      * @return Nodo que busc�bamos.NULL si no existe.
-     * @since 1.0
+     * @since 2.0
      */    
     public TNode obtenerNodo(String ip) {
         TNode nodo = null;
@@ -150,7 +150,7 @@ public class TTopology {
      * sea el mismo que el especificado como par�metro.
      * @param nom Nombre del nodo que deseamos obtener.
      * @return Nodo que busc�bamos. NULL si no existe.
-     * @since 1.0
+     * @since 2.0
      */    
     public TNode setFirstNodeNamed(String nom) {
         TNode nodo = null;
@@ -167,7 +167,7 @@ public class TTopology {
      * Este m�todo comprueba si existe m�s de un nodo con el mismo nombre.
      * @param nom Nombre del nodo.
      * @return TRUE, si existe m�s de un nodo con el mismo nombre. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean thereIsMoreThanANodeNamed(String nom) {
         int cuantos = 0;
@@ -187,7 +187,7 @@ public class TTopology {
      * Este m�todo comprueba si existe m�s de un enlace con el mismo nombre.
      * @param nom Nombre del enlace.
      * @return TRUE si existe m�s de un enlace con el mismo nombre. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean existeMasDeUnEnlaceLlamado(String nom) {
         int cuantos = 0;
@@ -208,7 +208,7 @@ public class TTopology {
      * su tr�fico al receptor especificado por parametros.
      * @param nr Nodo receptor.
      * @return TRUE, si algun exmisor env�a tr�fico al receptor. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean hayTraficoDirigidoAMi(TReceiverNode nr) {
         TNode nodo = null;
@@ -230,7 +230,7 @@ public class TTopology {
      * especificado como par�metro.
      * @param nom Nombre del enlace buscado.
      * @return El enlace buscado. NULL si no existe.
-     * @since 1.0
+     * @since 2.0
      */    
     public TLink obtenerPrimerEnlaceLlamado(String nom) {
         TLink enlace = null;
@@ -248,7 +248,7 @@ public class TTopology {
      * especificada como par�metro.
      * @param p Coordenadas del nodo que deseamos buscar.
      * @return El nodo buscado. NULL si no existe.
-     * @since 1.0
+     * @since 2.0
      */    
     public TNode obtenerNodoEnPosicion(Point p) {
         TNode nodo = null;
@@ -264,7 +264,7 @@ public class TTopology {
     /**
      * Este m�todo devuelve un vector con todos los nodos de la topology.
      * @return Un vector con todos los nodos de la topology.
-     * @since 1.0
+     * @since 2.0
      */    
     public TNode[] obtenerNodos() {
         return (TNode[]) conjuntoNodos.toArray();
@@ -274,7 +274,7 @@ public class TTopology {
      * Este m�todo toma un nodo por parametro y actualiza el mismo en la topology, con
  los valores pasados.
      * @param nodo Nodo que queremos actualizar, con los nuevos valores.
-     * @since 1.0
+     * @since 2.0
      */    
     public void modificarNodo(TNode nodo) {
         boolean fin = false;
@@ -326,7 +326,7 @@ public class TTopology {
     /**
      * Este m�todo inserta un nuevo enlace en la topology.
      * @param enlace Enlace que deseamos insertar.
-     * @since 1.0
+     * @since 2.0
      */    
     public void addLink(TLink enlace) {
         conjuntoEnlaces.add(enlace);
@@ -340,7 +340,7 @@ public class TTopology {
      * Este m�todo elimina de la topology el enlace cuyo identificador es el
  especificado por par�metros.
      * @param identificador Identificador del enlace que deseamos eliminar.
-     * @since 1.0
+     * @since 2.0
      */    
     public void eliminarEnlace(int identificador) {
         boolean fin = false;
@@ -361,7 +361,7 @@ public class TTopology {
     /**
      * Este m�todo elimina de la topolog�a el enlace pasado por par�metro.
      * @param e El enlace que deseamos eliminar.
-     * @since 1.0
+     * @since 2.0
      */    
     public void eliminarEnlace(TLink e) {
         eliminarEnlace(e.getID());
@@ -372,7 +372,7 @@ public class TTopology {
  el especificado por parametros.
      * @param identificador Identificador del enlace que deseamos obtener.
      * @return El enlace que dese�bamos obtener. NULL si no existe.
-     * @since 1.0
+     * @since 2.0
      */    
     public TLink obtenerEnlace(int identificador) {
         TLink enlace = null;
@@ -390,7 +390,7 @@ public class TTopology {
      * simulaci�n coincidan con las pasadas por parametro.
      * @param p Coordenadas del enlace buscado.
      * @return El enlace buscado. NULL si no existe.
-     * @since 1.0
+     * @since 2.0
      */    
     public TLink obtenerEnlaceEnPosicion(Point p) {
         TLink enlace = null;
@@ -406,7 +406,7 @@ public class TTopology {
     /**
      * Este m�todo devuelve un vector con todos los enlaces de la topology.
      * @return Un vector con todos los enlaces de la topolog�a.
-     * @since 1.0
+     * @since 2.0
      */    
     public TLink[] obtenerEnlaces() {
         return (TLink[]) conjuntoEnlaces.toArray();
@@ -415,7 +415,7 @@ public class TTopology {
     /**
      * Este m�todo actualiza un enlace de la topolog�a con otro pasado por par�metro.
      * @param enlace Enlace que queremos actualizar, con los valores nuevos.
-     * @since 1.0
+     * @since 2.0
      */    
     public void modificarEnlace(TLink enlace) {
         boolean fin = false;
@@ -456,7 +456,7 @@ public class TTopology {
      * ventana de simulaci�n coincidan con las pasadas por parametro.
      * @param p Coordenadas del elemento buscado.
      * @return El elemento buscado. NULL si no existe.
-     * @since 1.0
+     * @since 2.0
      */    
     public TTopologyElement obtenerElementoEnPosicion(Point p) {
         if (hayElementoEnPosicion(p)) {
@@ -477,7 +477,7 @@ public class TTopology {
      * Este m�todo elimina de la topology un nodo cuyo identificador coincida con el
  especificado por par�metros.
      * @param identificador identificador del nodo a borrar.
-     * @since 1.0
+     * @since 2.0
      */    
     public void eliminarNodo(int identificador) {
         TLink enlace = null;
@@ -497,7 +497,7 @@ public class TTopology {
     /**
      * Este m�todo elimina de la topolog�a el nodo especificado por parametros.
      * @param n Nodo que deseamos eliminar.
-     * @since 1.0
+     * @since 2.0
      */    
     public void eliminarNodo(TNode n) {
         eliminarNodo(n.getID());
@@ -507,7 +507,7 @@ public class TTopology {
      * Este m�todo devuelve un iterador que permite navegar por los nodos de forma
      * sencilla.
      * @return El iterador de los nodos de la topology.
-     * @since 1.0
+     * @since 2.0
      */    
     public Iterator getNodesIterator() {
         return conjuntoNodos.iterator();
@@ -517,7 +517,7 @@ public class TTopology {
      * Este m�todo devuelve un iterador que permite navegar por los enlaces de forma
      * sencilla.
      * @return El iterador de los enlaces de la topolog�a.
-     * @since 1.0
+     * @since 2.0
      */    
     public Iterator getLinksIterator() {
         return conjuntoEnlaces.iterator();
@@ -526,7 +526,7 @@ public class TTopology {
     /**
      * Este m�todo limpia la topology, eliminando todos los enlaces y nodos
  existentes.
-     * @since 1.0
+     * @since 2.0
      */    
     public void eliminarTodo() {
         Iterator it = this.getLinksIterator();
@@ -550,7 +550,7 @@ public class TTopology {
     /**
      * Este m�todo devuelve el n�mero de nodos que hay en la topolog�a.
      * @return N�mero de nodos de la topolog�a.
-     * @since 1.0
+     * @since 2.0
      */    
     public int obtenerNumeroDeNodos() {
         return conjuntoNodos.size();
@@ -559,7 +559,7 @@ public class TTopology {
     /**
      * Este m�todo permite establecer el reloj principal que controlar� la topology.
      * @param r El reloj principal de la topolog�a.
-     * @since 1.0
+     * @since 2.0
      */    
     public void ponerReloj(TTimer r) {
         relojTopologia = r;
@@ -568,7 +568,7 @@ public class TTopology {
     /**
      * Este m�todo permite obtener el reloj principal de la topology.
      * @return El reloj principal de la topolog�a.
-     * @since 1.0
+     * @since 2.0
      */    
     public TTimer obtenerReloj() {
         return relojTopologia;
@@ -577,7 +577,7 @@ public class TTopology {
     /**
      * Este m�todo permite obtener el retardo menor de todos los enlaces de la topology.
      * @return El retardo menor de todos los enlaces de la topolog�a.
-     * @since 1.0
+     * @since 2.0
      */    
     public int obtenerMinimoDelay() {
         Iterator it = this.getLinksIterator();
@@ -606,7 +606,7 @@ public class TTopology {
      * @param extremo1 Identificador del nodo extremo 1.
      * @param extremo2 Identificador del nodo extremo 2.
      * @return TRUE, si existe un enlace entre extremo1 y extremo 2. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean existeEnlace(int extremo1, int extremo2) {
         TLink enlace = null;
@@ -631,7 +631,7 @@ public class TTopology {
      * @param extremo1 Identificador del nodo extremo 1.
      * @param extremo2 Identificador del nodo extremo 2.
      * @return El enlace entre extremo 1 y extremo 2. NULL si no existe.
-     * @since 1.0
+     * @since 2.0
      */    
     public TLink obtenerEnlace(int extremo1, int extremo2) {
         TLink enlace = null;
@@ -654,7 +654,7 @@ public class TTopology {
      * Este m�todo permite acceder directamente al generador de identificadores para
  eventos de la topology.
      * @return El generador de identificadores para eventos de la topology.
-     * @since 1.0
+     * @since 2.0
      */    
     public TLongIDGenerator getEventIDGenerator() {
         return this.IDEvento;
@@ -664,7 +664,7 @@ public class TTopology {
      * Este m�todo permite establecer el generador de identificadores para elementos de
      * la topolog�a.
      * @param gie El generador de identificadores de elementos.
-     * @since 1.0
+     * @since 2.0
      */    
     public void ponerGeneradorIdentificadorElmto(TIDGenerator gie) {
         generaIdentificador = gie;
@@ -674,7 +674,7 @@ public class TTopology {
      * Este m�todo permite obtener el generador de identificadores para elementos de
      * la topolog�a.
      * @return El generador de identificadores de elementos.
-     * @since 1.0
+     * @since 2.0
      */    
     public TIDGenerator getItemIdentifierGenerator() {
         return generaIdentificador;
@@ -683,7 +683,7 @@ public class TTopology {
     /**
      * Este m�todo permite establecer el generador de direcciones IP de la topolog�a.
      * @param gip Generador de direcciones IP de la topolog�a.
-     * @since 1.0
+     * @since 2.0
      */    
     public void ponerGeneradorIP(TIPGenerator gip) {
         generadorIP = gip;
@@ -692,7 +692,7 @@ public class TTopology {
     /**
      * Este m�todo permite obtener el generador de direcciones IP de la topolog�a.
      * @return El generador de direcciones IP de la topolog�a.
-     * @since 1.0
+     * @since 2.0
      */    
     public TIPGenerator getIPAddressGenerator() {
         return generadorIP;
@@ -705,7 +705,7 @@ public class TTopology {
      * @param origen Identificador del nodo origen.
      * @param destino Identificador del nodo destino.
      * @return Identificador del nod que es siguiente salto para llegar del origen al destino.
-     * @since 1.0
+     * @since 2.0
      */    
     public synchronized int obtenerSalto(int origen, int destino) {
         cerrojoFloyd.lock();
@@ -798,7 +798,7 @@ public class TTopology {
      * @param IPorigen IP del nodo origen
      * @param IPdestino IP del nodo destino.
      * @return IP del nodo que es siguiente salto para llegar del origen al destino.
-     * @since 1.0
+     * @since 2.0
      */    
     public synchronized String obtenerIPSalto(String IPorigen, String IPdestino) {
         int origen = this.obtenerNodo(IPorigen).getID();
@@ -816,7 +816,7 @@ public class TTopology {
      * @param IPorigen Direcci�n IP del nodo desde el que se calcula el salto.
      * @param IPdestino Direcci�n IP del nodo al que se quiere llegar.
      * @return La direcci�n IP del nodo adyacente al origen al que hay que dirigirse. NULL, si no hay camino entre el origen y el destino.
-     * @since 1.0
+     * @since 2.0
      */    
     public synchronized String getNextHopRABANIPv4Address(String IPorigen, String IPdestino) {
         int origen = this.obtenerNodo(IPorigen).getID();
@@ -833,7 +833,7 @@ public class TTopology {
      * para avanzar hacia el destino seg� el protocolo RABAN. Adem�s lo calcula
      * evitando pasar por el enlace que se especifica mediante el par IPOrigen-IPNodoAEvitar.
      * @return La direcci�n IP del nodo adyacente al origen al que hay que dirigirse. NULL, si no hay camino entre el origen y el destino.
-     * @since 1.0
+     * @since 2.0
      * @param IPNodoAEvitar IP del nodo adyacente al nodo origen. Por el enlace que une a ambos, no se desea
      * pasar.
      * @param IPorigen Direcci�n IP del nodo desde el que se calcula el salto.
@@ -857,7 +857,7 @@ public class TTopology {
      * @param origen Identificador del nodo origen.
      * @param destino Identificador del nodo destino.
      * @return Identificador del nod que es siguiente salto para llegar del origen al destino.
-     * @since 1.0
+     * @since 2.0
      */    
     public synchronized int obtenerSaltoRABAN(int origen, int destino) {
         cerrojoRABAN.lock();
@@ -949,7 +949,7 @@ public class TTopology {
      * lo calcula evitando pasar por el enlace que se especifica mediante el par
      * origen-nodoAEvitar.
      * @return El identificador del nodo adyacente al origen al que hay que dirigirse. NULL, si no hay camino entre el origen y el destino.
-     * @since 1.0
+     * @since 2.0
      * @param origen El identyificador del nodo que realiza la petici�n de c�lculo.
      * @param destino El identificador del nodo al que se desea llegar.
      * @param nodoAEvitar Identificador del nodo adyacente a origen. El enlace que une a ambos se desea
@@ -1052,17 +1052,17 @@ public class TTopology {
 
     /**
      * Esta constante identifica un peso infinito.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final long PESO_INFINITO = 9223372036854775806L;
     /**
      * Esta constante implementa un peso muy alto.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final long PESO_MUY_ALTO = (long) PESO_INFINITO / 2;
     /**
      * Esta constante indica que no hay camino entre un nodo y otro.
-     * @since 1.0
+     * @since 2.0
      */    
     public static final int SIN_CAMINO = -1;
 

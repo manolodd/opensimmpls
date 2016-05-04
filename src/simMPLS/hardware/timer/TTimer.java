@@ -38,7 +38,7 @@ import simMPLS.utils.TLongIDGenerator;
  * component that compose the topology.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TTimer implements Runnable {
 
@@ -48,7 +48,7 @@ public class TTimer implements Runnable {
      * class.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public TTimer() {
         this.thread = null;
@@ -73,7 +73,7 @@ public class TTimer implements Runnable {
      * constructor.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public void reset() {
         this.currentTimestamp = new TTimestamp(0, 0);
@@ -92,7 +92,7 @@ public class TTimer implements Runnable {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param finishTimestamp is the time limit for the simulation. In fact it
      * it the timestamp the timer has to reach to finish the simulation.
-     * @since 1.0
+     * @since 2.0
      */
     public void setFinishTimestamp(TTimestamp finishTimestamp) {
         this.finishTimestamp.setMillisecond(finishTimestamp.getMillisecond());
@@ -105,7 +105,7 @@ public class TTimer implements Runnable {
      * topology componets advance the simulation.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @param tick the period the timer has to wait between generating a timer
      * event and the next one.
      */
@@ -119,7 +119,7 @@ public class TTimer implements Runnable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param timerEventListener the element that wants to receive timer events.
-     * @since 1.0
+     * @since 2.0
      */
     public void addTimerEventListener(TTopologyElement timerEventListener) {
         if (timerEventListener.getElementType() == TTopologyElement.LINK) {
@@ -136,7 +136,7 @@ public class TTimer implements Runnable {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param timerEventListener The topology element that are going to stop
      * receiving timer events from this timer.
-     * @since 1.0
+     * @since 2.0
      */
     public void removeTimerEventListener(TTopologyElement timerEventListener) {
         if (timerEventListener.getElementType() == TTopologyElement.LINK) {
@@ -167,7 +167,7 @@ public class TTimer implements Runnable {
      * checked off to be removed as timer event listeners.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public void purgeTimerEventListeners() {
         Iterator linksIterator = this.timerEventListenerLInks.iterator();
@@ -199,7 +199,7 @@ public class TTimer implements Runnable {
      * subscribe only one progress event listener at the same time. So, if you
      * try to subscribe another one whe n there is a previous progress event
      * listener subscribed to the timer, this ixception is thrown.
-     * @since 1.0
+     * @since 2.0
      */
     public void addProgressEventListener(TProgressEventListener progressEventListener) throws EProgressEventGeneratorOnlyAllowASingleListener {
         if (this.progressEventListener == null) {
@@ -214,7 +214,7 @@ public class TTimer implements Runnable {
      * this progress event listener will stop receiving progress events.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public void removeProgressEventListener() {
         this.progressEventListener = null;
@@ -225,7 +225,7 @@ public class TTimer implements Runnable {
      * elements that are subscribed to receive timer events.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     private void generateTimerEvent() {
         Iterator linksIterator = this.timerEventListenerLInks.iterator();
@@ -294,7 +294,7 @@ public class TTimer implements Runnable {
      * listener that are subscribed to receive it.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public void generateProgressEvent() {
         int computedProgress = 0;
@@ -316,7 +316,7 @@ public class TTimer implements Runnable {
      * This method restart the timer operation after it was previously paused.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public synchronized void restart() {
         if (this.thread == null) {
@@ -335,7 +335,7 @@ public class TTimer implements Runnable {
      * simulation will start. This method is a synchronized one.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public synchronized void start() {
         if (this.thread == null) {
@@ -358,7 +358,7 @@ public class TTimer implements Runnable {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param pause TRUE, if the timer has to be paused. FALSE if the timer has
      * to be restarted.
-     * @since 1.0
+     * @since 2.0
      */
     public void setPaused(boolean pause) {
         if ((this.paused) && (pause)) {
@@ -384,7 +384,7 @@ public class TTimer implements Runnable {
      * This method checks whether the timer is currently running or paused.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @return TRUE, if the timmer is currently paused. Otherwise, return FALSE.
      */
     public boolean isPaused() {
@@ -398,7 +398,7 @@ public class TTimer implements Runnable {
      * until they finishing using this event to simulate whatever.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public void run() {
         this.running = true;
@@ -449,7 +449,7 @@ public class TTimer implements Runnable {
      * between timer events. This method is a synchronized one.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     private synchronized void waitUntilTimerEventListenersFinishTheirWork() {
         Iterator nodesIterator = this.timerEventListenerNodes.iterator();
@@ -471,7 +471,7 @@ public class TTimer implements Runnable {
      * before doing a new operation. This method is a synchronized one.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public synchronized void waitForCompletion() {
         if (this.thread != null) {
@@ -489,7 +489,7 @@ public class TTimer implements Runnable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TRUE, if the timer is running. Otherwise, return FALSE.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean isRunning() {
         return this.running;

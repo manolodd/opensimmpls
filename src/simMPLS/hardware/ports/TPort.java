@@ -24,7 +24,7 @@ import simMPLS.utils.TMonitor;
  * This abstract class will be implemented to have an I/O port of a port set.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public abstract class TPort {
 
@@ -33,7 +33,7 @@ public abstract class TPort {
      * TPort.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @param portID the id of the port. This is the unique id
  ti distinguish the port within the parent port set.
      * @param parentPortSet A reference to the parent port set this port belongs
@@ -50,7 +50,7 @@ public abstract class TPort {
      * This method establish which is the port set this port belongs to.
      *
      * @param parentPortSet The port set this port belongs to.
-     * @since 1.0
+     * @since 2.0
      */
     public void setPortSet(TPortSet parentPortSet) {
         this.parentPortSet = parentPortSet;
@@ -60,7 +60,7 @@ public abstract class TPort {
      * This method get the port set this port belongs to.
      *
      * @return The port set this port belongs to.
-     * @since 1.0
+     * @since 2.0
      */
     public TPortSet getPortSet() {
         return this.parentPortSet;
@@ -70,7 +70,7 @@ public abstract class TPort {
      * This method establishes the port number for this port.
      *
      * @param portID the port number for this port.
-     * @since 1.0
+     * @since 2.0
      */
     public void setPortID(int portID) {
         this.portID = portID;
@@ -80,7 +80,7 @@ public abstract class TPort {
      * This method gets the port number for this port.
      *
      * @return The port number for this port.
-     * @since 1.0
+     * @since 2.0
      */
     public int getPortID() {
         return this.portID;
@@ -91,7 +91,7 @@ public abstract class TPort {
      * adjacent node) or no (if it is connected to another adjacent node).
      *
      * @return TRUE, if it is available. Otherwise, FALSE.
-     * @since 1.0
+     * @since 2.0
      */
     public boolean isAvailable() {
         if (this.link == null) {
@@ -105,7 +105,7 @@ public abstract class TPort {
      * link attachments.
      *
      * @param link the link to be attached to this port.
-     * @since 1.0
+     * @since 2.0
      */
     public void setLink(TLink link) {
         this.link = link;
@@ -116,7 +116,7 @@ public abstract class TPort {
      *
      * @return The link attached to this port, if the port is connected.
      * Otherwise, NULL.
-     * @since 1.0
+     * @since 2.0
      */
     public TLink getLink() {
         return this.link;
@@ -126,7 +126,7 @@ public abstract class TPort {
      * This method dettach a link from this port, making it available for new
      * links attachments.
      *
-     * @since 1.0
+     * @since 2.0
      */
     public void disconnectLink() {
         this.link = null;
@@ -140,7 +140,7 @@ public abstract class TPort {
      * @param packet The packet to be delivered through the link.
      * @param endID 1, if the packet has to be delivered to the end 1. 2, if the
      * packet has to be delivered to the end 2.
-     * @since 1.0
+     * @since 2.0
      */
     public void putPacketOnLink(TAbstractPDU packet, int endID) {
         if (this.link != null) {
@@ -170,7 +170,7 @@ public abstract class TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packet The packet to be discarded from the buffer.
-     * @since 1.0
+     * @since 2.0
      */
     public abstract void discardPacket(TAbstractPDU packet);
 
@@ -180,7 +180,7 @@ public abstract class TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packet Packet to be inserted in the buffer of the port.
-     * @since 1.0
+     * @since 2.0
      */
     public abstract void addPacket(TAbstractPDU packet);
 
@@ -191,7 +191,7 @@ public abstract class TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packet The packet to be inserted in the buffer of the port.
-     * @since 1.0
+     * @since 2.0
      */
     public abstract void reEnqueuePacket(TAbstractPDU packet);
 
@@ -201,7 +201,7 @@ public abstract class TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The read packet
-     * @since 1.0
+     * @since 2.0
      */
     public abstract TAbstractPDU getPacket();
 
@@ -216,7 +216,7 @@ public abstract class TPort {
      * moment.
      * @return TRUE, if we can switch the next packet of the buffer at this
      * moment. Otherwise, FALSE.
-     * @since 1.0
+     * @since 2.0
      */
     public abstract boolean canSwitchPacket(int octetos);
 
@@ -227,7 +227,7 @@ public abstract class TPort {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return A number, without decimals, between 0 and 100, which will be the
      * congestion level as a percentage.
-     * @since 1.0
+     * @since 2.0
      */
     public abstract long getCongestionLevel();
 
@@ -238,7 +238,7 @@ public abstract class TPort {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TRUE, if there is a packet waiting to be switched/routed.
      * Otherwise, FALSE.
-     * @since 1.0
+     * @since 2.0
      */
     public abstract boolean thereIsAPacketWaiting();
 
@@ -248,7 +248,7 @@ public abstract class TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Size, in octects, used by packets in the buffer of the port.
-     * @since 1.0
+     * @since 2.0
      */
     public abstract long getOccupancy();
 
@@ -258,7 +258,7 @@ public abstract class TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The total number of packets stored in the buffer of the port.
-     * @since 1.0
+     * @since 2.0
      */
     public abstract int getNumberOfPackets();
 
@@ -267,7 +267,7 @@ public abstract class TPort {
      * created by the constructor.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public abstract void reset();
 
@@ -278,7 +278,7 @@ public abstract class TPort {
      *
      * @param unlimitedBuffer TRUE if the port is going to be defined as an
      * ideal one (unlimited space on it). FALSE, on the contrary.
-     * @since 1.0
+     * @since 2.0
      */
     public abstract void setUnlimitedBuffer(boolean unlimitedBuffer);
 

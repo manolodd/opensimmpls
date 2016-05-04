@@ -51,7 +51,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
 
     /**
      * Crea una nueva instancia de JPanelSimulacion
-     * @since 1.0
+     * @since 2.0
      */
     public JSimulationPanel() {
         initComponents();
@@ -59,7 +59,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
 
     /**
      * Crea una nueva instancia de JPanelSimulacion
-     * @since 1.0
+     * @since 2.0
      * @param di Dispensador de im�genes de donde el panel tomar� las im�genes que necesite
      * mostrar en pantalla.
      */    
@@ -69,7 +69,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
     }
 
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private void initComponents () {
         tamPantalla=Toolkit.getDefaultToolkit().getScreenSize();
@@ -97,7 +97,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
 
     /**
      * Reincia todos los atributos de la clase a su valor de creaci�n.
-     * @since 1.0
+     * @since 2.0
      */    
     public void reset() {
         cerrojo.lock();
@@ -123,7 +123,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
     /**
      * Este m�todo env�a un evento al fichero de traza, para que quede registrado.
      * @param es Evento de simulaci�n que se desea tracear.
-     * @since 1.0
+     * @since 2.0
      */    
     public void enviarATraza(TSimulationEvent es) {
         String texto = "";
@@ -139,7 +139,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
     /**
      * Este m�todo establece el fichero de traza.
      * @param ft Fichero de traza.
-     * @since 1.0
+     * @since 2.0
      */    
     public void ponerFicheroTraza(File ft) {
         if (this.ficheroTraza != null) {
@@ -174,7 +174,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
     
     /**
      * Este m�todo asocia al panel de simulaci�n una topology concreta.
-     * @since 1.0
+     * @since 2.0
      * @param t Topolog�a que se debe representar en el panel de simulaci�n.
      */    
     public void ponerTopologia(TTopology t) {
@@ -184,7 +184,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
     /**
      * Este m�todo asigna un dispensador de im�genes al panel de forma que de ah�
      * tomar� todas las im�genes que deba mostrar en la pantalla.
-     * @since 1.0
+     * @since 2.0
      * @param di El dispensador de im�genes.
      */    
     public void ponerDispensadorDeImagenes(TImagesBroker di) {
@@ -194,7 +194,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
     /**
      * Este m�todo determina que grosor en p�xeles debe tener un enlace de la topolog�a
      * al ser mostrado, segun su delay.
-     * @since 1.0
+     * @since 2.0
      * @param delay Retardo del enlace.
      * @return Grosor en p�xeles que se debe usar para mostrar el enlace.
      */    
@@ -204,7 +204,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
     
     /**
      * @param g2Dbuf
-     * @since 1.0
+     * @since 2.0
      */    
     private void prepararImagen(Graphics2D g2Dbuf) {
         g2Dbuf.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -214,7 +214,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
 
     /**
      * @param g2Dbuf
-     * @since 1.0
+     * @since 2.0
      */    
     private void dibujarDominio(Graphics2D g2Dbuf) {
         Iterator itd = topologia.getNodesIterator();
@@ -255,7 +255,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
 
     /**
      * @param g2Dbuf
-     * @since 1.0
+     * @since 2.0
      */    
     private void dibujarEnlaces(Graphics2D g2Dbuf) {
         Iterator ite = topologia.getLinksIterator();
@@ -350,7 +350,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
 
     /**
      * @param g2Dbuf
-     * @since 1.0
+     * @since 2.0
      */    
     private void dibujarNodos(Graphics2D g2Dbuf) {
         maxX = 10;
@@ -431,7 +431,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
      * que se muestra un tic en la simulaci�n, y se meustra el siguiente. A efectos
      * pr�cticos permite ralentizar la simulaci�n en tiempo real.
      * @param mls N�mero de milisegundos de retardo entre frames de una misma simulaci�n.
-     * @since 1.0
+     * @since 2.0
      */    
     public void ponerMlsPorTic(int mls) {
         this.mlsPorTic = mls;
@@ -441,7 +441,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
      * Este m�todo permite a�adir un evento a la lista de eventos que se deben mostrar
      * en la ventana del simulador.
      * @param evt El nuevo evento que se debe mostrar en la simulaci�n.
-     * @since 1.0
+     * @since 2.0
      */    
     public void addEvent(TSimulationEvent evt) {
         cerrojo.lock();
@@ -478,7 +478,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
     /**
      * Este m�todo permite dibujar los eventos relacionados con las PDU's que circulan
      * por la red.
-     * @since 1.0
+     * @since 2.0
      * @param g2D El lienzo donde se mostrar� el evento.
      */    
     public void dibujarEventosPaquete(Graphics2D g2D) {
@@ -562,7 +562,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
     
     /**
      * Este m�todo permite representar los eventos que tengan que ver con los nodos.
-     * @since 1.0
+     * @since 2.0
      * @param g2D El lienzo donde se mostrar� el evento.
      */    
     public void dibujarEventosNodo(Graphics2D g2D) {
@@ -638,7 +638,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
     /**
      * Este m�todo permite tratar los eventos que tienen que ver con los enlaces de
      * comunicaciones.
-     * @since 1.0
+     * @since 2.0
      * @param g2D El lienzo donde se mostrar� el evento.
      */    
     public void dibujarEventosEnlace(Graphics2D g2D) {
@@ -670,7 +670,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
     /**
      * Este m�todo muestra un contador en la ventana de simulaci�n que indica el
      * nanosegundo de simulaci�n que por el que se va.
-     * @since 1.0
+     * @since 2.0
      * @param g2D El lienzo donde se mostrar� el contador.
      */    
     public void dibujarTicActual(Graphics2D g2D) {
@@ -693,7 +693,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
      * aparecer�n en la simulaci�n. Siempre, por supuesto, que la leyenda est�
      * configurada para aparecer.
      * @param g2D Lienzo del panel de simulaci�n, donde se dibujar� la leyenda.
-     * @since 1.0
+     * @since 2.0
      */    
     public void dibujarLeyenda(Graphics2D g2D) {
         if (this.mostrarLeyenda) {
@@ -802,7 +802,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
     /**
      * Este m�todo permite obtener una representaci�n de la simulaci�n en un momento,
      * en forma de imagen bitmap.
-     * @since 1.0
+     * @since 2.0
      * @return Una imagen accesible, cuyo contenido es una captura de la simulaci�n.
      */    
     public BufferedImage capturaDeDisenio() {
@@ -826,7 +826,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
 
     /**
      * Este m�todo redibuja el panel de simulaci�n cada vez que es necesario.
-     * @since 1.0
+     * @since 2.0
      * @param g El lienzo donde se debe redibujar el panel de simulaci�n.
      */    
     public void paint(java.awt.Graphics g) {
@@ -837,7 +837,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
     /**
      * Este m�todo permite averiguar si el simulador est� mostrando la leyenda o no.
      * @return TRUE, si se est� mostrando la leyenda. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public boolean obtenerMostrarLeyenda() {
         return this.mostrarLeyenda;
@@ -846,42 +846,42 @@ public class JSimulationPanel extends javax.swing.JPanel {
     /**
      * Este m�todo permite establecer si el simulador mostrar� la leyenda o no.
      * @param ml TRUE, si el simulador debe mostrar la leyenda. FALSE en caso contrario.
-     * @since 1.0
+     * @since 2.0
      */    
     public void ponerMostrarLeyenda(boolean ml) {
         this.mostrarLeyenda = ml;
     }
     
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private TImagesBroker dispensadorDeImagenes;
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private Image buffer;
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private BufferedImage imagenbuf;
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private Graphics2D g2Dbuf;
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private TTopology topologia;
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private Dimension tamPantalla;  
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private int maxX;
     /**
-     * @since 1.0
+     * @since 2.0
      */    
     private int maxY;
     

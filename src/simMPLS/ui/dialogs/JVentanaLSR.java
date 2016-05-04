@@ -40,7 +40,7 @@ public class JVentanaLSR extends javax.swing.JDialog {
      * @param modal TRUE indica que esta ventana impedira que se pueda seleccionar cualquier otra
      * zona de la interfaz hasta que se haya cerrado. FALSE significa que esto no es
      * as�.
-     * @since 1.0
+     * @since 2.0
      */
     public JVentanaLSR(TTopology t, JPanelDisenio pad, TImagesBroker di, java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -55,7 +55,7 @@ public class JVentanaLSR extends javax.swing.JDialog {
     /**
      * Este m�todo configura aspectos de la calse que no han podido ser configurados
      * por el constructor.
-     * @since 1.0
+     * @since 2.0
      */    
     public void initComponents2() {
         panelCoordenadas.ponerPanelOrigen(pd);
@@ -420,7 +420,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
 
     /**
      * Este m�todo permite cargar en la ventana la configuraci�n actual del nodo LSR.
-     * @since 1.0
+     * @since 2.0
      * @param tnlsr Nodo LSR que queremos configurar.
      * @param recfg TRUE indica que vamos a reconfigurar el nodo LSR. FALSE indica que el nodo LSR
      * est� siendo insertado nuevo en la topolog�a.

@@ -26,7 +26,7 @@ import simMPLS.utils.TMonitor;
  * This class implements a DMGP memory to save GoS-aware PDUs temporarily.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TDMGP {
 
@@ -35,7 +35,7 @@ public class TDMGP {
      * and initialize its attributes.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public TDMGP() {
         this.monitor = new TMonitor();
@@ -50,7 +50,7 @@ public class TDMGP {
      * This method establish the global size of DMGP in kilobytes.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @param size Size in kilobytes.
      */
     public void setDMGPSizeInKB(int size) {
@@ -63,7 +63,7 @@ public class TDMGP {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Size in kilobites.
-     * @since 1.0
+     * @since 2.0
      */
     public int getDMGPSizeInKB() {
         return this.totalDMGPSizeInKB;
@@ -76,7 +76,7 @@ public class TDMGP {
      * @param flowID Identifier of the flow the packet belongs to.
      * @param packetID Identifier of the packet.
      * @return The packet, if in the DMGP. NULL on the contrary.
-     * @since 1.0
+     * @since 2.0
      */
     public TMPLSPDU getPacket(int flowID, int packetID) {
         TMPLSPDU wantedPacket = null;
@@ -103,7 +103,7 @@ public class TDMGP {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packet The packet to be inserted into the DMGP memory.
-     * @since 1.0
+     * @since 2.0
      */
     public void addPacket(TMPLSPDU packet) {
         TDMGPFlowEntry dmgpFlowEntry = this.getFlow(packet);
@@ -122,7 +122,7 @@ public class TDMGP {
      * constructor.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public void reset() {
         this.monitor = null;

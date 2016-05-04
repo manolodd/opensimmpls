@@ -22,7 +22,7 @@ import simMPLS.utils.TOpenSimMPLSEvent;
  * synchronize all elements that compose the simulation.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TTimerEvent extends TOpenSimMPLSEvent {
 
@@ -36,7 +36,7 @@ public class TTimerEvent extends TOpenSimMPLSEvent {
      * step) carried out by this event.
      * @param upperEndOfInterval The end of the period of time (simulation step)
      * carried out by this event.
-     * @since 1.0
+     * @since 2.0
      */
     public TTimerEvent(Object eventGenerator, long eventID, TTimestamp lowerEndOfInterval, TTimestamp upperEndOfInterval) {
         super(eventGenerator, eventID, upperEndOfInterval.getTotalAsNanoseconds());
@@ -51,7 +51,7 @@ public class TTimerEvent extends TOpenSimMPLSEvent {
      *
      * @return The duration of the simulation step in nanoseconds, according to
      * the values included in this event.
-     * @since 1.0
+     * @since 2.0
      */
     public int getStepDuration() {
         return (int) ((this.upperEndOfInterval.getTotalAsNanoseconds()) - (this.lowerEndOfInterval.getTotalAsNanoseconds()));
@@ -63,7 +63,7 @@ public class TTimerEvent extends TOpenSimMPLSEvent {
      *
      * @return The end of the interval according to the values included in the
      * event, in nanoseconds.
-     * @since 1.0
+     * @since 2.0
      */
     public long getUpperLimit() {
         return (long) (this.upperEndOfInterval.getTotalAsNanoseconds());
@@ -75,7 +75,7 @@ public class TTimerEvent extends TOpenSimMPLSEvent {
      *
      * @return The type of this event. It is one of the constants defined in
      * TOpenSimMPLSEvent.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int getType() {

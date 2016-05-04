@@ -19,7 +19,7 @@ package simMPLS.hardware.timer;
  * This class implements a timestamp.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TTimestamp implements Comparable {
 
@@ -30,7 +30,7 @@ public class TTimestamp implements Comparable {
      *
      * @param millisecond The millisecond part of the timestamp.
      * @param nanosecond The nanosecond part of the timestamp.
-     * @since 1.0
+     * @since 2.0
      */
     public TTimestamp(long millisecond, int nanosecond) {
         this.millisecond = millisecond;
@@ -46,7 +46,7 @@ public class TTimestamp implements Comparable {
      * @return ARGUMENT_IS_GREATER, BOTH_ARE_EQUAL or ARGUMENT_IS_LOWER,
      * depending on whether the specified argument is greater, equal or lower
      * than the current instance.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int compareTo(Object anotherTimestamp) {
@@ -75,7 +75,7 @@ public class TTimestamp implements Comparable {
      * This method gets the nanosecond component of the timestamp.
      *
      * @return The nanosecond component of the timestamp.
-     * @since 1.0
+     * @since 2.0
      */
     public int getNanosecond() {
         return this.nanosecond;
@@ -85,7 +85,7 @@ public class TTimestamp implements Comparable {
      * This method set the nanosecond component of the timestamp.
      *
      * @param nanosecond The nanosecond component of the timestamp.
-     * @since 1.0
+     * @since 2.0
      */
     public void setNanosecond(int nanosecond) {
         this.nanosecond = nanosecond;
@@ -97,7 +97,7 @@ public class TTimestamp implements Comparable {
      *
      * @param addedNanosecond The number of nanoseconds to be added to the
      * current timestamp.
-     * @since 1.0
+     * @since 2.0
      */
     public void increaseNanoseconds(int addedNanosecond) {
         this.nanosecond += addedNanosecond;
@@ -112,7 +112,7 @@ public class TTimestamp implements Comparable {
      * This method get the millisecond component of the timestamp.
      *
      * @return The millisecond component of the timestamp.
-     * @since 1.0
+     * @since 2.0
      */
     public long getMillisecond() {
         return this.millisecond;
@@ -122,7 +122,7 @@ public class TTimestamp implements Comparable {
      * This method set the millisecond component of the timestamp.
      *
      * @param millisecond The millisecond component of the timestamp.
-     * @since 1.0
+     * @since 2.0
      */
     public void setMillisecond(long millisecond) {
         this.millisecond = millisecond;
@@ -134,7 +134,7 @@ public class TTimestamp implements Comparable {
      *
      * @param anotherTimestamp A timestamp that will be used to set the values
      * of the current one..
-     * @since 1.0
+     * @since 2.0
      */
     public void setTimestamp(TTimestamp anotherTimestamp) {
         this.millisecond = anotherTimestamp.getMillisecond();
@@ -147,7 +147,7 @@ public class TTimestamp implements Comparable {
      *
      * @param addedMilliseconds The number of milliseconds to be added to the
      * current timestamp.
-     * @since 1.0
+     * @since 2.0
      */
     public void increaseMiliseconds(long addedMilliseconds) {
         this.millisecond += addedMilliseconds;
@@ -158,7 +158,7 @@ public class TTimestamp implements Comparable {
      * nanoseconds.
      *
      * @return The moment represented by the current timestamp, in nanoseconds.
-     * @since 1.0
+     * @since 2.0
      */
     public long getTotalAsNanoseconds() {
         return (long) ((this.getMillisecond() * 1000000) + this.getNanosecond());

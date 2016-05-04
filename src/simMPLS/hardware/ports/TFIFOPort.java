@@ -27,7 +27,7 @@ import simMPLS.protocols.TAbstractPDU;
  * packets.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TFIFOPort extends TPort {
 
@@ -36,7 +36,7 @@ public class TFIFOPort extends TPort {
      * TFIFOPort.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      * @param portID the identifier of the port. This is the unique identifier
      * ti distinguish the port within the parent port set.
      * @param parentPortSet A reference to the parent port set this port belongs
@@ -55,7 +55,7 @@ public class TFIFOPort extends TPort {
      *
      * @param unlimitedBuffer TRUE if the port is going to be defined as an
      * ideal one (unlimited space on iterator). FALSE, on the contrary.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void setUnlimitedBuffer(boolean unlimitedBuffer) {
@@ -67,7 +67,7 @@ public class TFIFOPort extends TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packet The packet to be discarded from the buffer.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void discardPacket(TAbstractPDU packet) {
@@ -79,7 +79,7 @@ public class TFIFOPort extends TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packet Packet to be inserted in the buffer of the port.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void addPacket(TAbstractPDU packet) {
@@ -126,7 +126,7 @@ public class TFIFOPort extends TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packet The packet to be inserted in the buffer of the port.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void reEnqueuePacket(TAbstractPDU packet) {
@@ -162,7 +162,7 @@ public class TFIFOPort extends TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The read packet
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public TAbstractPDU getPacket() {
@@ -188,7 +188,7 @@ public class TFIFOPort extends TPort {
      * moment.
      * @return TRUE, if we can switch the next packet of the buffer at this
      * moment. Otherwise, FALSE.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public boolean canSwitchPacket(int octets) {
@@ -207,7 +207,7 @@ public class TFIFOPort extends TPort {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return A number, without decimals, between 0 and 100, which will be the
      * congestion level as a percentage.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public long getCongestionLevel() {
@@ -226,7 +226,7 @@ public class TFIFOPort extends TPort {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TRUE, if there is a packet waiting to be switched/routed.
      * Otherwise, FALSE.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public boolean thereIsAPacketWaiting() {
@@ -242,7 +242,7 @@ public class TFIFOPort extends TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Size, in octects, used by packets in the buffer of the port.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public long getOccupancy() {
@@ -270,7 +270,7 @@ public class TFIFOPort extends TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The total number of packets stored in the buffer of the port.
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public int getNumberOfPackets() {
@@ -282,7 +282,7 @@ public class TFIFOPort extends TPort {
      * constructor.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     @Override
     public void reset() {

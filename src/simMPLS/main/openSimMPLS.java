@@ -29,7 +29,7 @@ import simMPLS.ui.splash.JSplash;
  * class, that should be executed to run the simulator.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class openSimMPLS {
 
@@ -37,7 +37,7 @@ public class openSimMPLS {
      * This method shows licensing information of OpenSimMPLS on console.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public static void mostrarGPL() {
         try {
@@ -73,7 +73,7 @@ public class openSimMPLS {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param args Arguments specified at command line.
-     * @since 1.0
+     * @since 2.0
      */
     public static void main(String args[]) {
         if (args.length > 0) {

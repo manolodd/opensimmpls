@@ -29,7 +29,7 @@ import java.net.UnknownHostException;
  * This class implements a class that uses SMTP to send email messages.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
- * @version 1.1
+ * @version 2.0
  */
 public class TSMTP {
 
@@ -38,7 +38,7 @@ public class TSMTP {
      * instance of TSMTP.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 1.0
+     * @since 2.0
      */
     public TSMTP() {
         this.remoteSMTPPort = 0;
@@ -59,7 +59,7 @@ public class TSMTP {
      * @param receiverEmailAddress Receiver email address.
      * @return 0 if the TSMTP instance inputStream weel configured. Otherwise,
      * returns TSMTP.CONNECTION_ERROR.
-     * @since 1.0
+     * @since 2.0
      */
     public int configure(String remoteSMTPHost, String remoteSMTPPort, String remoteSMTPUser, String receiverEmailAddress) {
         try {
@@ -100,7 +100,7 @@ public class TSMTP {
      * @param receiverEmailAddress Receiver email address.
      * @return 0 if the TSMTP instance inputStream weel configured. Otherwise,
      * returns TSMTP.CONNECTION_ERROR.
-     * @since 1.0
+     * @since 2.0
      */
     public int configure(String remoteSMTPHost, String receiverEmailAddress) {
         try {

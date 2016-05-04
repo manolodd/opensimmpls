@@ -25,12 +25,12 @@ public class TLongIDGenerator {
     
     /** Atributo que almacena el valor interno del generador de identificadores
      * num�ticos largos.
-     * @since 1.0
+     * @since 2.0
      */
     private long identificador;
     
     /** Crea un nuevo generador de identificadores con el valor inicial 0.
-     * @since 1.0
+     * @since 2.0
      */
     public TLongIDGenerator() {
         identificador = 0;
@@ -39,7 +39,7 @@ public class TLongIDGenerator {
     /**
      * Este m�todo reinicia el generador de identificadores a su valor original, como
      * si acabase de ser instanciado.
-     * @since 1.0
+     * @since 2.0
      */
     public synchronized void reset() {
         identificador = 0;
@@ -52,7 +52,7 @@ public class TLongIDGenerator {
      * @throws EIDGeneratorOverflow Esta excepci�n se lanza cuando el contador interno del generador de
      * identificadores se desborda. Es alto por lo que generalmente no ocurrir�, pero
      * hay que capturar la excepci�n por si acaso.
-     * @since 1.0
+     * @since 2.0
      */
     synchronized public long getNextID() throws EIDGeneratorOverflow {
         if (identificador > 9223372036854775806L) {
