@@ -747,6 +747,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param incomingPortID Port of this node from wich the IPv4 packet has
      * arrived.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void handleIPv4Packet(TIPv4PDU packet, int incomingPortID) {
         int fec = classifyPacket(packet);
@@ -845,6 +846,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param incomingPortID Port of this node from wich the TLDP packet has
      * arrived.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void handleTLDPPacket(TTLDPPDU packet, int incomingPortID) {
         if (packet.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REQUEST) {
@@ -871,6 +873,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param incomingPortID Port of this node from wich the MPLS packet has
      * arrived.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void handleMPLSPacket(TMPLSPDU packet, int incomingPortID) {
         TMPLSLabel mplsLabel = null;
@@ -1030,6 +1033,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param incomingPortID Port of this node from wich the label request has
      * arrived.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void handleTLDPRequest(TTLDPPDU packet, int incomingPortID) {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
@@ -1067,6 +1071,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param incomingPortID Port of this node from wich the label withdrawal
      * has arrived.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void handleTLDPWithdrawal(TTLDPPDU packet, int incomingPortID) {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
@@ -1210,10 +1215,11 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     /**
      * This method handles a label acknowledge.
      *
-     * @param packet Confirmaci�n de etiqueta.
-     * @param incomingPortID Puerto por el que se ha recibido la confirmaci�n de
-     * etiquetas.
+     * @param packet Label acknowledge received.
+     * @param incomingPortID Port of this node from wich the label acknowledge
+     * has arrived.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void handleTLDPRequestOk(TTLDPPDU packet, int incomingPortID) {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
@@ -1286,6 +1292,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param incomingPortID Puerto por el que se ha recibido la denegaci�n de
      * etiquetas.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void handleTLDPRefuseRequest(TTLDPPDU packet, int incomingPortID) {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
@@ -1343,6 +1350,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param incomingPortID Puerto por el que se ha recibido la confirmaci�n de
      * eliminaci�n de etiqueta.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void handleTLDPWithdrawalOk(TTLDPPDU packet, int incomingPortID) {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
@@ -1496,6 +1504,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n
      * especificada.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void sendTLDPRequestOk(TSwitchingMatrixEntry switchingMatrixEntry) {
         if (switchingMatrixEntry != null) {
@@ -1542,6 +1551,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n
      * correspondiente.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void sendTLDPRequestRefuse(TSwitchingMatrixEntry switchingMatrixEntry) {
         if (switchingMatrixEntry != null) {
@@ -1590,6 +1600,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * eliminaci�n.
      * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n
      * especificada.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void sendTLDPWithdrawalOk(TSwitchingMatrixEntry switchingMatrixEntry, int portID) {
         if (switchingMatrixEntry != null) {
@@ -1642,6 +1653,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param switchingMatrixEntry Entrada en la matriz de conmutaci�n
      * especificada.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void requestTLDP(TSwitchingMatrixEntry switchingMatrixEntry) {
         String localIPAddress = this.getIPAddress();
@@ -1690,6 +1702,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param switchingMatrixEntry Entrada en la matriz de conmutaci�n
      * especificada.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void requestTLDPForBackupLSP(TSwitchingMatrixEntry switchingMatrixEntry) {
         String localIPAddress = this.getIPAddress();
@@ -1749,6 +1762,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param portID Puerto por el que se debe enviar la eliminaci�n.
      * @param switchingMatrixEntry Entrada en la matriz de conmutaci�n
      * especificada.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void sendTLDPWithdrawal(TSwitchingMatrixEntry switchingMatrixEntry, int portID) {
         if (switchingMatrixEntry != null) {
@@ -1804,6 +1818,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n
      * especificada.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void requestTLDPAfterTimeout(TSwitchingMatrixEntry switchingMatrixEntry) {
         if (switchingMatrixEntry != null) {
@@ -1856,6 +1871,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param portID Puerto por el que se debe enviar la eliminaci�n.
      * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n
      * especificada.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void labelWithdrawalAfterTimeout(TSwitchingMatrixEntry switchingMatrixEntry, int portID) {
         sendTLDPWithdrawal(switchingMatrixEntry, portID);
@@ -1880,6 +1896,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * este nodo.
      *
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void decreaseCounters() {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
@@ -1921,6 +1938,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @return La entrada de la matriz de conmutaci�n, ya creada, insertada e
      * inicializada.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public TSwitchingMatrixEntry createEntryFromTLDP(TTLDPPDU tldpPacket, int incomingPortID) {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
@@ -1988,6 +2006,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @return La entrada de la matriz de conmutaci�n, creada, insertada e
      * inicializada.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public TSwitchingMatrixEntry createInitialEntryInFECMatrix(TIPv4PDU ipv4Packet, int incomingPortID) {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
@@ -2051,6 +2070,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @return La entrada de la matriz de conmutaci�n, creada, insertada e
      * inicializada.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public TSwitchingMatrixEntry createInitialEntryInILMMatrix(TMPLSPDU mplsPacket, int incomingPortID) {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
@@ -2119,6 +2139,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @return El packet IPv4 de entrada, convertido en un packet MPLS
      * correctamente etiquetado.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public TMPLSPDU createMPLSPacket(TIPv4PDU ipv4Packet, TSwitchingMatrixEntry switchingMatrixEntry) {
         TMPLSPDU mplsPacket = null;
@@ -2166,6 +2187,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @return Paquete IPv4 que corresponde al packet MPLS una vez que se ha
      * eliminado toda la informaci�n MLPS; que se ha desetiquetado.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public TIPv4PDU createIPv4Packet(TMPLSPDU MPLSPacket, TSwitchingMatrixEntry switchingMatrixEntry) {
         TIPv4PDU ipv4Packet = null;
@@ -2202,6 +2224,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @return true, si el packet es exterior al dominio MPLS. false en caso
      * contrario.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public boolean isAnExternalPacket(TAbstractPDU packet, int incomingPortID) {
         if (packet.getType() == TAbstractPDU.IPV4) {
@@ -2217,6 +2240,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @param packet Paquete que se quiere descartar.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public void discardPacket(TAbstractPDU packet) {
@@ -2241,6 +2265,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param packet El packet que se desea clasificar.
      * @return El FEC_ENTRY al que pertenece el packet pasado por par�metros.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public int classifyPacket(TAbstractPDU packet) {
         String originIPAddress = packet.getIPv4Header().getOriginIPAddress();
@@ -2257,6 +2282,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @return El conjunto de ports del nodo.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public TPortSet getPorts() {
@@ -2268,6 +2294,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @return true, si el nodo tiene ports libres. false en caso contrario.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public boolean hasAvailablePorts() {
@@ -2280,6 +2307,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @return 0. El routingWeight del LERA.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public long getRoutingWeight() {
@@ -2301,6 +2329,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @return true, si el LER es de salida del dominio para tr�fico dirigido a
      * esa IP. false en caso contrario.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public boolean isExitActiveLER(String targetIPAddress) {
         TPort portAux = this.ports.getLocalPortConnectedToANodeWithIPAddress(targetIPAddress);
@@ -2317,6 +2346,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @return La matriz de conmutaci�n del LER.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public TSwitchingMatrix getSwitchingMatrix() {
         return this.switchingMatrix;
@@ -2327,6 +2357,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @return true, si el LER est� bien configurado. false en caso contrario.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public boolean isWellConfigured() {
@@ -2342,6 +2373,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @return CORRECTA, si la configuraci�n es correcta. Un c�digo de error en
      * caso contrario.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public int validateConfig(TTopology topology, boolean reconfiguration) {
@@ -2383,6 +2415,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * textual.
      * @return Cadena de texto explicando el error.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public String getErrorMessage(int errorCode) {
@@ -2403,6 +2436,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @return Una serializedElement de texto que representa un a este LER.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public String marshall() {
@@ -2442,6 +2476,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @return true, si no ha habido errores y la instancia actual est� bien
      * configurada. false en caso contrario.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public boolean unMarshall(String serializedElement) {
@@ -2471,6 +2506,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      *
      * @return Las estad�sticas del nodo.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public TStats getStats() {
@@ -2483,6 +2519,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @param numPorts N�mero de ports deseado para el nodo. Como mucho, 8
      * ports.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public synchronized void setPorts(int numPorts) {
