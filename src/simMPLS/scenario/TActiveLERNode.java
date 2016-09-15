@@ -1289,8 +1289,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * This method handles a received TLDP packet containing a label refusal.
      *
      * @param packet Label refusal received.
-     * @param incomingPortID Port of this node from wich the label refusal
-     * has arrived.
+     * @param incomingPortID Port of this node from wich the label refusal has
+     * arrived.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -1343,12 +1343,12 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo trata un packet TLDP de confirmaci�n de eliminaci�n de
-     * etiqueta.
+     * This method handles a TLDP packet containing a label withdrawal
+     * acknowledgement.
      *
-     * @param packet Paquete de confirmaci�n e eliminaci�n de etiqueta.
-     * @param incomingPortID Puerto por el que se ha recibido la confirmaci�n de
-     * eliminaci�n de etiqueta.
+     * @param packet Label withdrawal acknowledgement received.
+     * @param incomingPortID Port of this node from wich the label withdrawal
+     * acknowledgement has arrived.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -1498,11 +1498,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo env�a una etiqueta al nodo que indique la entrada en la
-     * matriz de conmutaci�n especificada.
+     * This methods sends a label to a node that is specified in the
+     * switching matrix entry specified as an argument.
      *
-     * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n
-     * especificada.
+     * @param switchingMatrixEntry The switching matrix entry specified.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -1545,11 +1544,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo env�a una denegaci�n de etiqueta al nodo que especifique la
-     * entrada de la matriz de conmutaci�n correspondiente.
+     * This methods sends a label refusal to a node that is specified in the
+     * switching matrix entry specified as an argument.
      *
-     * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n
-     * correspondiente.
+     * @param switchingMatrixEntry The switching matrix entry specified.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
