@@ -1064,7 +1064,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         }
     }
 
-    /**   
+    /**
      * This method handles a label withdrawal.
      *
      * @param packet Label withdrawal received.
@@ -1286,11 +1286,11 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo trata un packet TLDP de denegaci�n de etiqueta.
+     * This method handles a received TLDP packet containing a label refusal.
      *
-     * @param packet Paquete de denegaci�n de etiquetas recibido.
-     * @param incomingPortID Puerto por el que se ha recibido la denegaci�n de
-     * etiquetas.
+     * @param packet Label refusal received.
+     * @param incomingPortID Port of this node from wich the label refusal
+     * has arrived.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
