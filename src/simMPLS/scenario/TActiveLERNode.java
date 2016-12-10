@@ -2194,6 +2194,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             // FIX: this is ugly. Avoid.
             e.printStackTrace();
         }
+        // FIX: At this point, ipv4Packet could be null and the next line would
+        // throw an exception. To be corrected.
         ipv4Packet.setHeader(MPLSPacket.getIPv4Header());
         ipv4Packet.setTCPPayload(MPLSPacket.getTCPPayload());
         ipv4Packet.getIPv4Header().setTTL(MPLSPacket.getLabelStack().getTop().getTTL());
