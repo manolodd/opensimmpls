@@ -1498,8 +1498,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * This methods sends a label to a node that is specified in the
-     * switching matrix entry specified as an argument.
+     * This methods sends a label to a node that is specified in the switching
+     * matrix entry specified as an argument.
      *
      * @param switchingMatrixEntry The switching matrix entry specified.
      * @since 2.0
@@ -1590,14 +1590,13 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo env�a una confirmaci�n de eliminaci�n de etiqueta al nodo que
-     * especifique la correspondiente entrada en la matriz de conmutaci�n.
+     * This method sends a label withdrawal acknowledgement to the node
+     * specified in the corresponding switching matrix entry.
      *
      * @since 2.0
-     * @param portID Puerto por el que se debe enviar la confirmaci�n de
-     * eliminaci�n.
-     * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n
-     * especificada.
+     * @param portID Port of this node from wich the label withdrawal
+     * acknowledgement will be sent.
+     * @param switchingMatrixEntry The switching matrix entry specified.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void sendTLDPWithdrawalOk(TSwitchingMatrixEntry switchingMatrixEntry, int portID) {
@@ -1645,11 +1644,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo solicita una etiqueta al nodo que se especifica en la entrada
-     * de la matriz de conmutaci�n correspondiente.
+     * This method requests a label from the node contained in the switching
+     * matrix entry specified as an argument.
      *
-     * @param switchingMatrixEntry Entrada en la matriz de conmutaci�n
-     * especificada.
+     * @param switchingMatrixEntry The switching matrix entry specified.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -1693,12 +1691,11 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo solicita una etiqueta al nodo que se especifica en la entrada
-     * de la matriz de conmutaci�n correspondiente. La solicitud ir� destinada a
-     * crear un LSP de backup.
+     * This method requests a label from the node contained in the switching
+     * matrix entry specified as an argument. This request is to create a backup
+     * LSP.
      *
-     * @param switchingMatrixEntry Entrada en la matriz de conmutaci�n
-     * especificada.
+     * @param switchingMatrixEntry The switching matrix entry specified.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -1753,13 +1750,13 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo env�a una eliminaci�n de etiqueta al nodo especificado por le
-     * entrada de la matriz de conmutaci�n correspondiente.
+     * This method sends a label withdrawal to the node included in the
+     * switching matrix entry specified as an argument.
      *
      * @since 2.0
-     * @param portID Puerto por el que se debe enviar la eliminaci�n.
-     * @param switchingMatrixEntry Entrada en la matriz de conmutaci�n
-     * especificada.
+     * @param portID Port of this node from wich the label withdrawal will be
+     * sent.
+     * @param switchingMatrixEntry The switching matrix entry specified.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void sendTLDPWithdrawal(TSwitchingMatrixEntry switchingMatrixEntry, int portID) {
@@ -1810,11 +1807,11 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo reenv�a todas las peticiones pendientes de contestaci�n de
-     * una entrada de la matriz de conmutaci�n.
+     * This method re-sends all the TLDP requests that are waiting for an
+     * answer, related to the specified switching matrix entry, after a timeout
+     * expiration.
      *
-     * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n
-     * especificada.
+     * @param switchingMatrixEntry The switching matrix entry specified.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -1862,13 +1859,13 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo reenv�a todas las eliminaciones de etiquetas pendientes de
-     * una entrada de la matriz de conmutaci�n.
+     * This method re-sends all the TLDP withdrawals that are pending, related
+     * to the specified switching matrix entry, after a timeout expiration.
      *
      * @since 2.0
-     * @param portID Puerto por el que se debe enviar la eliminaci�n.
-     * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n
-     * especificada.
+     * @param portID Port of this node from wich the label withdrawals will be
+     * sent.
+     * @param switchingMatrixEntry The switching matrix entry specified.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void labelWithdrawalAfterTimeout(TSwitchingMatrixEntry switchingMatrixEntry, int portID) {
@@ -1876,12 +1873,14 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo reenv�a todas las eliminaciones de etiquetas pendientes de
-     * una entrada de la matriz de conmutaci�n a todos los ports necesarios.
+     * This method re-sends all the TLDP withdrawals that are pending, related
+     * to the specified switching matrix entry, after a timeout expiration. TLDP
+     * withdrawals will be sent by each port specified in the switching matrix
+     * entry.
      *
-     * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n
-     * especificada.
      * @since 2.0
+     * @param switchingMatrixEntry The switching matrix entry specified.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void labelWithdrawalAfterTimeout(TSwitchingMatrixEntry switchingMatrixEntry) {
         sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getIncomingPortID());
@@ -1890,8 +1889,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo decrementa los contadores de retransmisi�n existentes para
-     * este nodo.
+     * This method decreases all retransmission counters for the this node.
      *
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
@@ -1904,6 +1902,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             switchingMatrixEntry = (TSwitchingMatrixEntry) entriesIterator.next();
             if (switchingMatrixEntry != null) {
                 switchingMatrixEntry.decreaseTimeOut(this.getTickDuration());
+                // FIX: It is more efficient to use a switch clause instead of
+                // nested ifs.
                 if (switchingMatrixEntry.getOutgoingLabel() == TSwitchingMatrixEntry.LABEL_REQUESTED) {
                     if (switchingMatrixEntry.shouldRetryExpiredTLDPRequest()) {
                         switchingMatrixEntry.resetTimeOut();
@@ -1928,13 +1928,13 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo crea una nueva entrada en la matriz de conmutaci�n con los
-     * datos de un packet TLDP entrante.
+     * This method creates a new entry in the switching matrix using data from
+     * an incoming TLDP packet.
      *
-     * @param tldpPacket Paquete TLDP entrante, de solicitud de etiqueta.
-     * @param incomingPortID Puerto de entrada del packet TLDP.
-     * @return La entrada de la matriz de conmutaci�n, ya creada, insertada e
-     * inicializada.
+     * @param tldpPacket the incoming packet. A label request.
+     * @param incomingPortID the port by wich the TLDP packet has arrived.
+     * @return A new switching matrix entry, already initialized and inserted in
+     * the switching matrix of this node.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -1996,13 +1996,13 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo crea una nueva entrada en la matriz de conmutaci�n bas�ndose
-     * en un packet IPv4 recibido.
+     * This method creates a new entry in the switching matrix using data from
+     * an incoming IPv4 packet.
      *
-     * @param ipv4Packet Paquete IPv4 recibido.
-     * @param incomingPortID Puerto por el que ha llegado el packet IPv4.
-     * @return La entrada de la matriz de conmutaci�n, creada, insertada e
-     * inicializada.
+     * @param ipv4Packet the incoming packet.
+     * @param incomingPortID the port by wich the IPv4 packet has arrived.
+     * @return A new switching matrix entry, already initialized and inserted in
+     * the switching matrix of this node.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -2060,13 +2060,13 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo crea una nueva entrada en la matriz de conmutaci�n bas�ndose
-     * en un packet MPLS recibido.
+     * This method creates a new entry in the switching matrix using data from
+     * an incoming MPLS packet.
      *
-     * @param mplsPacket Paquete MPLS recibido.
-     * @param incomingPortID Puerto por el que ha llegado el packet MPLS.
-     * @return La entrada de la matriz de conmutaci�n, creada, insertada e
-     * inicializada.
+     * @param mplsPacket the incoming packet.
+     * @param incomingPortID the port by wich the MPLS packet has arrived.
+     * @return A new switching matrix entry, already initialized and inserted in
+     * the switching matrix of this node.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -2126,16 +2126,15 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo toma un packet IPv4 y la entrada de la matriz de conmutaci�n
-     * asociada al mismo y crea un packet MPLS etiquetado correctamente que
-     * contiene dicho packet IPv4 listo para ser transmitido hacia el interior
-     * del dominio.
+     * This method take an incoming IPv4 packet and the corresponding entry in
+     * the switching matrix and creates a new MPLS packet containing the IPv4
+     * one and labeled correctly to be sent to the interior of the MPLS domain.
      *
-     * @param ipv4Packet Paquete IPv4 que se debe etiquetar.
-     * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n asociada
-     * al packet IPv4 que se desea etiquetar.
-     * @return El packet IPv4 de entrada, convertido en un packet MPLS
-     * correctamente etiquetado.
+     * @param ipv4Packet the IPv4 packet to be labeled as an MPLS packet.
+     * @param switchingMatrixEntry entry of the switching matrix corresponding
+     * to the incoming IPv4 packet.
+     * @return an MPLS packet that is the incoming IPv4 packet labeled as an
+     * MPLS packet.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -2148,7 +2147,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             e.printStackTrace();
         }
         // FIX: At this point, mplsPacket could be null and the next line would
-        // throw an exception. Correct.
+        // throw an exception. To be corrected.
         mplsPacket.setHeader(ipv4Packet.getIPv4Header());
         mplsPacket.setTCPPayload(ipv4Packet.getTCPPayload());
         if (ipv4Packet.getSubtype() == TAbstractPDU.IPV4) {
