@@ -2173,16 +2173,15 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo toma como par�metro un packet MPLS y su entrada en la matriz
-     * de conmutaci�n asociada. Extrae del packet MPLS el packet IP
-     * correspondiente y actualiza sus elementFields correctamente.
+     * This method gets an MPLS packet and its associated entry in the switching
+     * matrix and extracts the original IPv4 from it.
      *
-     * @param MPLSPacket Paquete MPLS cuyo contenido de nivel IPv4 se desea
-     * extraer.
-     * @param switchingMatrixEntry Entrada de la matriz de conmutaci�n asociada
-     * al packet MPLS.
-     * @return Paquete IPv4 que corresponde al packet MPLS una vez que se ha
-     * eliminado toda la informaci�n MLPS; que se ha desetiquetado.
+     * @param MPLSPacket the MPLS packet whose IPv4 content is going to be
+     * extracted.
+     * @param switchingMatrixEntry entry of the switching matrix corresponding
+     * to the incoming MPLS packet.
+     * @return the IPv4 packet that is contained in the MPLS specified as an
+     * argumenty.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -2215,13 +2214,13 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo comprueba si un packet recibido es un packet del interior del
-     * dominio MPLS o es un packet externo al mismo.
+     * This method checks whether a given packet comes from inside the MPLS
+     * domain or from outside the MPLS domain.
      *
-     * @param packet Paquete que ha llegado al nodo.
-     * @param incomingPortID Puerto por el que ha llegado el packet al nodo.
-     * @return true, si el packet es exterior al dominio MPLS. false en caso
-     * contrario.
+     * @param packet incoming packet.
+     * @param incomingPortID por from wich the packet has arrived to this node.
+     * @return true, if the packet comes from outside the MPLS domain.
+     * Otherwise, false.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -2234,10 +2233,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo descarta un packet en el nodo y refleja dicho descarte en las
-     * estad�sticas del nodo.
+     * This method discards a packet and update the corresponding stats.
      *
-     * @param packet Paquete que se quiere descartar.
+     * @param packet packet to be discarded.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -2254,32 +2252,33 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo toma como parametro un packet, supuestamente sin etiquetar, y
-     * lo clasifica. Esto significa que determina el FEC_ENTRY al que pertenece
-     * el packet. Este valor se calcula como el c�digo HASH practicado a la
-     * concatenaci�n de la IP de origen y la IP de destino. En la pr�ctica esto
-     * significa que paquetes con el mismo origen y con el mismo destino
-     * pertenecer�n al mismo FEC_ENTRY.
+     * This method gets an incoming incomingPacket as a parameter and classifies
+     * it. This means that the node determines the FEC_ENTRY to wich the
+     * incomingPacket has to be associated. This values is computed as a hash of
+     * the concatenation of the origin and the target IP address. In practice,
+     * this means that packets having the same origin and target IP addresses
+     * have the same FEC_ENTRY.
      *
-     * @param packet El packet que se desea clasificar.
-     * @return El FEC_ENTRY al que pertenece el packet pasado por par�metros.
+     * @param incomingPacket the incoming incomingPacket to be classified.
+     * @return The computed FEC_ENTRY to wich de incoming packet has to be
+     * associated.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
-    public int classifyPacket(TAbstractPDU packet) {
-        String originIPAddress = packet.getIPv4Header().getOriginIPAddress();
-        String tailEndIPAddress = packet.getIPv4Header().getTailEndIPAddress();
+    public int classifyPacket(TAbstractPDU incomingPacket) {
+        String originIPAddress = incomingPacket.getIPv4Header().getOriginIPAddress();
+        String tailEndIPAddress = incomingPacket.getIPv4Header().getTailEndIPAddress();
         String FECString = originIPAddress + tailEndIPAddress;
-        // FIX: hashCode() does not have a constistent behaviour between
-        // different executions; should be changed and use a persistent 
-        // mechanism.
+        // FIX: According to Java documentation, hashCode() does not have a 
+        // constistent behaviour between different executions; should be changed
+        // and use a persistent mechanism.
         return FECString.hashCode();
     }
 
     /**
-     * Este m�todo permite el acceso al conjunto de ports del nodo.
+     * This gets the ports set of this node.
      *
-     * @return El conjunto de ports del nodo.
+     * @return the ports set of this node.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -2289,9 +2288,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo calcula si el nodo tiene ports libres o no.
+     * This method checks whether the node has available ports or not.
      *
-     * @return true, si el nodo tiene ports libres. false en caso contrario.
+     * @return true, if the node has available ports. Otherwise, false.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -2301,17 +2300,20 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo calcula el routingWeight del nodo. Se utilizar� para calcular
-     * rutas con costo menor. En el nodo LER el pero ser� siempre nulo (cero).
+     * This method computes the routing weight of this node. This has to do with
+     * the "Guarente of Service Support (GoS) over MPLS using Active Techniques"
+     * proposal. It allows the RABAN routing algorithm to balance the traffic
+     * over the network depending on some factors like the congestion level or
+     * the number of flows that are crossing the node at the moment.
      *
-     * @return 0. El routingWeight del LERA.
+     * @return The routing weight of this node.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public long getRoutingWeight() {
         // FIX: All harcoded values should be defined as class constants. They 
-        // are weights of the GoS proposal, but anyway, tehy should be 
+        // are weights of the GoS proposal, but anyway, they should be 
         // configured as class constans.
         long congestionWeightComponent = (long) (this.ports.getCongestionLevel() * (0.7));
         long switchingMatrixWeightComponent = (long) ((10 * this.switchingMatrix.getNumberOfEntries()) * (0.3));
@@ -2320,13 +2322,12 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo comprueba si la isntancia actual es el LER de salida del
-     * dominio MPLS para una IP dada.
+     * This method checks whether this node is an exit point from the MPLS
+     * domain to reach a given target IP address.
      *
-     * @param targetIPAddress IP de destino del tr�fico, para la cual queremos
-     * averiguar si el LER es nodo de salida.
-     * @return true, si el LER es de salida del dominio para tr�fico dirigido a
-     * esa IP. false en caso contrario.
+     * @param targetIPAddress the IP address that has to be reached.
+     * @return true, if this node is an exit point from the MPLS domain that
+     * allow reaching the specified target IP address. Otherwise, false.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -2341,9 +2342,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo permite el acceso a la matriz de conmutaci�n de LER.
+     * This method gets the switching matrix of the node.
      *
-     * @return La matriz de conmutaci�n del LER.
+     * @return the switching matrix of this node.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -2352,9 +2353,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo comprueba que la configuraci�n de LER sea la correcta.
+     * This method returns the configuration status of this node.
      *
-     * @return true, si el LER est� bien configurado. false en caso contrario.
+     * @return true, if the node is configured correctly. Otherwise, false.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -2364,13 +2365,14 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo comprueba que una cierta configuraci�n es v�lida.
+     * This method checks whether this node is configured correctly or not.
      *
-     * @param topology Topolog�a a la que pertenece el LER.
-     * @param reconfiguration true si se trata de una reconfiguraci�n. false en
-     * caso contrario.
-     * @return CORRECTA, si la configuraci�n es correcta. Un c�digo de error en
-     * caso contrario.
+     * @param topology Topology to wich this node belongs to.
+     * @param reconfiguration true, if the node is being re-configured.
+     * Otherwise, false.
+     * @return TActiveLERNode.OK if the configuration is correct. Otherwise, an
+     * error code is returned. See public constants of error codes in this
+     * class.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
