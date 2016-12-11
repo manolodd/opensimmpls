@@ -2409,12 +2409,12 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo toma un codigo de error y genera un messageType textual del
-     * mismo.
+     * This method generates an human-readable error message from a given error
+     * code specified as ana argument.
      *
-     * @param errorCode El c�digo de error para el cual queremos una explicaci�n
-     * textual.
-     * @return Cadena de texto explicando el error.
+     * @param errorCode the error code to witch the text message has to be
+     * generated.
+     * @return an String explaining the error.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -2432,10 +2432,11 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo forma una serializedElement de texto que representa al LER y
-     * toda su configuraci�n. Sirve para almacenar el LER en disco.
+     * This method serializes the configuration parameters of this node into an
+     * string that can be saved into disk.
      *
-     * @return Una serializedElement de texto que representa un a este LER.
+     * @return an String containing all the configuration parameters of this
+     * node.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -2469,20 +2470,20 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo toma como par�metro una serializedElement de texto que debe
-     * pertencer a un LER serializado y configura esta instancia con los
-     * elementFields de dicha caddena.
+     * This method gets as an argument a serialized string that contains the
+     * needed parameters to configure an TActiveLERNode and configure this node
+     * using them.
      *
-     * @param serializedElement LER serializado.
-     * @return true, si no ha habido errores y la instancia actual est� bien
-     * configurada. false en caso contrario.
+     * @param serializedElement A serialized representation of a TActiveLERNode.
+     * @return true, whether the serialized string is correct and this node has
+     * been initialized correctly using the serialized values. Otherwise, false.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public boolean unMarshall(String serializedElement) {
-        // FIX: All numeric values in this method should be implemented as class
-        // constants instead of harcodeed values.
+        // FIX: All fixed values in this method should be implemented as class
+        // constants instead of harcoded values.
         String[] elementFields = serializedElement.split("#");
         if (elementFields.length != 13) {
             return false;
