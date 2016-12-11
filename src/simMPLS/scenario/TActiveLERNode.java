@@ -2504,9 +2504,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo permite acceder directamente a las estadisticas del nodo.
+     * This node gets the stat of this node.
      *
-     * @return Las estad�sticas del nodo.
+     * @return The stats of this node.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
@@ -2516,10 +2516,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo permite establecer el n�mero de ports que tendr� el nodo.
+     * This method sets the number of ports of this node.
      *
-     * @param numPorts N�mero de ports deseado para el nodo. Como mucho, 8
-     * ports.
+     * @param numPorts Number of ports of this node. The maximum allowed is 8.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
