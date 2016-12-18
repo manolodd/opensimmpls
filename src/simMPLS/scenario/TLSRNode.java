@@ -159,7 +159,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         gIdentLDP.reset();
         estadisticas.reset();
         estadisticas.activateStats(this.isGeneratingStats());
-        this.resetStepsWithoutEmittingToZero();
+        this.handleGPSRPPacket();
     }
     
     /**
@@ -182,7 +182,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         if (this.getPorts().isAnyPacketToSwitch()) {
             this.availableNs += evt.getStepDuration();
         } else {
-            this.resetStepsWithoutEmittingToZero();
+            this.handleGPSRPPacket();
             this.availableNs = evt.getStepDuration();
         }
         this.startOperation();
@@ -283,7 +283,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
             }
         }
         if (conmute) {
-            this.resetStepsWithoutEmittingToZero();
+            this.handleGPSRPPacket();
         } else {
             this.increaseStepsWithoutEmitting();
         }

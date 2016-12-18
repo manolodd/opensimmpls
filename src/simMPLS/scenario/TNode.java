@@ -276,7 +276,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * paquete.
      * @since 2.0
      */    
-    public void resetStepsWithoutEmittingToZero() {
+    public void handleGPSRPPacket() {
         pasosSinEmitir = 0;
     }
 
@@ -486,7 +486,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * Esta constante identifica el n�mero de puerto que tiene un LSR activo.
      * @since 2.0
      */    
-    public static final int NUM_PUERTOS_LSRA = 8;
+    public static final int NUM_LSRA_PORTS = 8;
     /**
      * Esta constante identifica el n�mero de pasos m�ximo que el nodo estar�
      * sin emitir un paquete antes de que se muestre un reloj de arena en el

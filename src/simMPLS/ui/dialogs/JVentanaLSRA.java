@@ -398,10 +398,10 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
         configLSRA.setShowName(BKUPMostrarNombre);
         configLSRA.setName(BKUPNombre);
         configLSRA.setWellConfigured(true);
-        configLSRA.ponerTamanioBuffer(BKUPTamBuffer);
+        configLSRA.setBufferSizeInMBytes(BKUPTamBuffer);
         configLSRA.setGenerateStats(BKUPGenerarEstadisticas);
-        configLSRA.ponerPotenciaEnMb(BKUPPotencia);
-        configLSRA.ponerTamanioDMGPEnKB(BKUPTamanioDMGP);
+        configLSRA.setSwitchingPowerInMbps(BKUPPotencia);
+        configLSRA.setDMGPSizeInKB(BKUPTamanioDMGP);
         reconfigurando = false;
     } else {
         configLSRA.setWellConfigured(false);
@@ -415,9 +415,9 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     if (!this.reconfigurando){
         configLSRA.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
-    configLSRA.ponerTamanioDMGPEnKB(this.selectorDeTamanioDMGP.getValue());
-    configLSRA.ponerTamanioBuffer(this.selectorDeTamanioBuffer.getValue());
-    configLSRA.ponerPotenciaEnMb(this.selectorDePotenciaDeConmutacion.getValue());
+    configLSRA.setDMGPSizeInKB(this.selectorDeTamanioDMGP.getValue());
+    configLSRA.setBufferSizeInMBytes(this.selectorDeTamanioBuffer.getValue());
+    configLSRA.setSwitchingPowerInMbps(this.selectorDePotenciaDeConmutacion.getValue());
     configLSRA.setName(nombreNodo.getText());
     configLSRA.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
     configLSRA.setShowName(verNombre.isSelected());
@@ -473,9 +473,9 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             BKUPGenerarEstadisticas = tnlsra.isGeneratingStats();
             BKUPMostrarNombre = tnlsra.getShowName();
             BKUPNombre = tnlsra.getName();
-            BKUPPotencia = tnlsra.obtenerPotenciaEnMb();
-            BKUPTamBuffer = tnlsra.obtenerTamanioBuffer();
-            BKUPTamanioDMGP = tnlsra.obtenerTamanioDMGPEnKB();
+            BKUPPotencia = tnlsra.getSwitchingPowerInMbps();
+            BKUPTamBuffer = tnlsra.getBufferSizeInMBytes();
+            BKUPTamanioDMGP = tnlsra.getDMGPSizeInKB();
 
             this.selectorDeTamanioDMGP.setValue(this.BKUPTamanioDMGP);
             this.selectorDeGenerarEstadisticasAvanzado.setSelected(BKUPGenerarEstadisticas);
