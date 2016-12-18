@@ -161,7 +161,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @return the current size of DMGP in KBytes.
      * @since 2.0
      */
-    public int getMaxSwitchableOctectsWithCurrentNs() {
+    public int getMaxRouteableOctectsWithCurrentNs() {
         // FIX: replace al harcoded values for class constants
         double maxNumberOfOctects = ((double) getMaxSwitchableBitsWithCurrentNs() / (double) 8.0);
         return (int) maxNumberOfOctects;
@@ -228,7 +228,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         this.stats.activateStats(this.isGeneratingStats());
         this.dmgp.reset();
         this.gpsrpRequests.reset();
-        this.resetStepsWithoutEmittingToZero();
+        this.handleGPSRPPacket();
     }
 
     /**
@@ -261,7 +261,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         if (this.getPorts().isThereAnyPacketToRoute()) {
             this.availableNs += timerEvent.getStepDuration();
         } else {
-            this.resetStepsWithoutEmittingToZero();
+            this.handleGPSRPPacket();
             this.availableNs = timerEvent.getStepDuration();
         }
         this.startOperation();
@@ -276,7 +276,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      */
     @Override
     public void run() {
-        // Acciones a llevar a cabo durante el tic.
+        // Actions to be done during the timer tick.
         try {
             this.generateSimulationEvent(new TSENodeCongested(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), this.getPorts().getCongestionLevel()));
         } catch (Exception e) {
@@ -313,6 +313,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             switchingMatrixEntry = (TSwitchingMatrixEntry) switchingMatrixIterator.next();
             if (switchingMatrixEntry != null) {
                 portIDAux = switchingMatrixEntry.getBackupOutgoingPortID();
+                // FIX: Avoid using harcoded values
                 if ((portIDAux >= 0) && (portIDAux < this.ports.getNumberOfPorts())) {
                     outgoingBackupPort = this.ports.getPort(portIDAux);
                     if (outgoingBackupPort != null) {
@@ -328,6 +329,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     }
                 }
                 portIDAux = switchingMatrixEntry.getOutgoingPortID();
+                // FIX: Avoid using harcoded values
                 if ((portIDAux >= 0) && (portIDAux < this.ports.getNumberOfPorts())) {
                     outgoingPort = this.ports.getPort(portIDAux);
                     if (outgoingPort != null) {
@@ -346,6 +348,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     }
                 }
                 portIDAux = switchingMatrixEntry.getIncomingPortID();
+                // FIX: Avoid using harcoded values
                 if ((portIDAux >= 0) && (portIDAux < this.ports.getNumberOfPorts())) {
                     incomingPort = this.ports.getPort(portIDAux);
                     if (incomingPort != null) {
@@ -438,12 +441,13 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         boolean atLeastOnePacketRouted = false;
         int readPort = 0;
         TAbstractPDU packet = null;
-        int switchableOctectsWithCurrentNs = this.getMaxSwitchableOctectsWithCurrentNs();
-        while (this.getPorts().canSwitchPacket(switchableOctectsWithCurrentNs)) {
+        int routeableOctectsWithCurrentNs = this.getMaxRouteableOctectsWithCurrentNs();
+        while (this.getPorts().canSwitchPacket(routeableOctectsWithCurrentNs)) {
             atLeastOnePacketRouted = true;
             packet = this.ports.getNextPacket();
             readPort = this.ports.getReadPort();
             if (packet != null) {
+                // FIX: Convert to a switch statement
                 if (packet.getType() == TAbstractPDU.IPV4) {
                     handleIPv4Packet((TIPv4PDU) packet, readPort);
                 } else if (packet.getType() == TAbstractPDU.TLDP) {
@@ -457,11 +461,11 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     discardPacket(packet);
                 }
                 this.availableNs -= getNsRequiredForAllOctets(packet.getSize());
-                switchableOctectsWithCurrentNs = this.getMaxSwitchableOctectsWithCurrentNs();
+                routeableOctectsWithCurrentNs = this.getMaxRouteableOctectsWithCurrentNs();
             }
         }
         if (atLeastOnePacketRouted) {
-            this.resetStepsWithoutEmittingToZero();
+            this.handleGPSRPPacket();
         } else {
             this.increaseStepsWithoutEmitting();
         }
@@ -485,6 +489,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             String targetIPv4Address = packet.getIPv4Header().getTailEndIPAddress();
             TFIFOPort outgoingPort = null;
             if (targetIPv4Address.equals(this.getIPAddress())) {
+                // FIX: Convert to a switch statement
                 if (messageType == TGPSRPPayload.RETRANSMISSION_REQUEST) {
                     this.handleGPSRPRetransmissionRequest(packet, incomingPortID);
                 } else if (messageType == TGPSRPPayload.RETRANSMISION_NOT_POSSIBLE) {
