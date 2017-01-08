@@ -332,7 +332,7 @@ public abstract class TPortSet {
      * @return The size of the port set buffer in MB.
      * @since 2.0
      */
-    public abstract int getBufferSizeInMB();
+    public abstract int getBufferSizeInMBytes();
 
     /**
      * This method, when implemented, will check whether a given port is

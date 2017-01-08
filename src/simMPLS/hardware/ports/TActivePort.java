@@ -498,7 +498,7 @@ public class TActivePort extends TPort {
             ex.printStackTrace();
         }
         int packetSubtype = packet.getSubtype();
-        if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= ((parentPortSetAux.getBufferSizeInMB() * 1024 * 1024) - EPCD_THRESHOLD)) {
+        if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= ((parentPortSetAux.getBufferSizeInMBytes() * 1024 * 1024) - EPCD_THRESHOLD)) {
             TActivePortBufferEntry activePortBufferEntry = new TActivePortBufferEntry(packetPriority, packetOrder, packet);
             this.addPrioritizedBufferEntry(activePortBufferEntry);
             parentPortSetAux.increasePortSetOccupancy(packet.getSize());
@@ -671,7 +671,7 @@ public class TActivePort extends TPort {
             this.addPrioritizedBufferEntry(activePortBufferEntry);
             parentPortSetAux.increasePortSetOccupancy(packet.getSize());
         } else {
-            if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= (parentPortSetAux.getBufferSizeInMB() * 1024 * 1024)) {
+            if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= (parentPortSetAux.getBufferSizeInMBytes() * 1024 * 1024)) {
                 TActivePortBufferEntry activePortBufferEntry = new TActivePortBufferEntry(packetPriority, packetOrder, packet);
                 this.addPrioritizedBufferEntry(activePortBufferEntry);
                 parentPortSetAux.increasePortSetOccupancy(packet.getSize());
@@ -750,7 +750,7 @@ public class TActivePort extends TPort {
             return 0;
         }
         TActivePortSet parentPortSetAux = (TActivePortSet) this.parentPortSet;
-        long congestion = (parentPortSetAux.getPortSetOccupancy() * 100) / (parentPortSetAux.getBufferSizeInMB() * 1024 * 1024);
+        long congestion = (parentPortSetAux.getPortSetOccupancy() * 100) / (parentPortSetAux.getBufferSizeInMBytes() * 1024 * 1024);
         return congestion;
     }
 

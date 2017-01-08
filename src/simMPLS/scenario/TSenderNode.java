@@ -94,7 +94,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         if (!d.equals("")) {
             TNode nt = this.topology.setFirstNodeNamed(d);
             if (nt != null) {
-                IPDestino = nt.getIPAddress();
+                IPDestino = nt.getIPv4Address();
             }
         }
     }
@@ -355,7 +355,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                     } catch (Exception e) {
                         e.printStackTrace(); 
                     }
-                    if (this.topology.obtenerIPSalto(this.getIPAddress(), this.obtenerDestino()) != null) {
+                    if (this.topology.obtenerIPSalto(this.getIPv4Address(), this.obtenerDestino()) != null) {
                         pt.putPacketOnLink(paqueteConTamanio, pt.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     } else {
                         discardPacket(paqueteConTamanio);
@@ -536,7 +536,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         try {
             if (this.encapsularSobreMPLS) {
                 if (valorGoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
-                    TMPLSPDU paquete = new TMPLSPDU(gIdent.getNextID(), getIPAddress(), this.IPDestino, 0);
+                    TMPLSPDU paquete = new TMPLSPDU(gIdent.getNextID(), getIPv4Address(), this.IPDestino, 0);
                     TMPLSLabel etiquetaMPLSDeEmision = new TMPLSLabel();
                     etiquetaMPLSDeEmision.setBoS(true);
                     etiquetaMPLSDeEmision.setEXP(0);
@@ -545,7 +545,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                     paquete.getLabelStack().pushTop(etiquetaMPLSDeEmision);
                     return paquete;
                 } else {
-                    TMPLSPDU paquete = new TMPLSPDU(gIdent.getNextID(), getIPAddress(), this.IPDestino, 0);
+                    TMPLSPDU paquete = new TMPLSPDU(gIdent.getNextID(), getIPv4Address(), this.IPDestino, 0);
                     paquete.setSubtype(TAbstractPDU.MPLS_GOS);
                     paquete.getIPv4Header().getOptionsField().setRequestedGoSLevel(valorGoS);
                     paquete.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(this.gIdGoS.getNextID());
@@ -565,10 +565,10 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                 }
             } else {
                 if (valorGoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
-                    TIPv4PDU paquete = new TIPv4PDU(gIdent.getNextID(), getIPAddress(), this.IPDestino, 0);
+                    TIPv4PDU paquete = new TIPv4PDU(gIdent.getNextID(), getIPv4Address(), this.IPDestino, 0);
                     return paquete;
                 } else {
-                    TIPv4PDU paquete = new TIPv4PDU(gIdent.getNextID(), getIPAddress(), this.IPDestino, 0);
+                    TIPv4PDU paquete = new TIPv4PDU(gIdent.getNextID(), getIPv4Address(), this.IPDestino, 0);
                     paquete.setSubtype(TAbstractPDU.IPV4_GOS);
                     paquete.getIPv4Header().getOptionsField().setRequestedGoSLevel(valorGoS);
                     paquete.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(this.gIdGoS.getNextID());
@@ -705,7 +705,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         cadena += "#";
         cadena += this.getName().replace('#', ' ');
         cadena += "#";
-        cadena += this.getIPAddress();
+        cadena += this.getIPv4Address();
         cadena += "#";
         cadena += this.getStatus();
         cadena += "#";

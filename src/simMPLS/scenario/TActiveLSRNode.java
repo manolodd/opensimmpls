@@ -39,22 +39,26 @@ import simMPLS.utils.TIDGenerator;
 import simMPLS.utils.TLongIDGenerator;
 
 /**
- * Esta clase implementa un nodo LSR; un conmutador interno a un dominio MPLS.
+ * This class implements an active Label Switch Router (LSR) that will operate
+ * inside a MPLS domain.
  *
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnable {
 
     /**
-     * Crea una nueva instancia de TNodoLSR
+     * This method is the constructor of the class. It is create a new instance
+     * of TActiveLSRNode.
      *
-     * @param identifier Identificador unico del nodo en la topolog�a.
-     * @param ipAddress Direcci�n IP del nodo.
-     * @param longIDGenerator Generador de identificadores para los eventos
-     * generados por el nodo.
-     * @param topology Topolog�a dentro de la cual se encuentra el nodo.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param identifier the identifier of this active LSR node that allow
+     * referencing switchingMatrixIterator in the topology.
+     * @param ipAddress The IPv4 address assigned to this active LSR.
+     * @param longIDGenerator The idntifier generator that the active LSR will
+     * use to identify unambiguosly each event the switchingMatrixIterator
+     * generates.
+     * @param topology A reference to the topology this active LSR belongs to.
      * @since 2.0
      */
     public TActiveLSRNode(int identifier, String ipAddress, TLongIDGenerator longIDGenerator, TTopology topology) {
@@ -65,6 +69,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         this.switchingMatrix = new TSwitchingMatrix();
         this.gIdent = new TLongIDGenerator();
         this.gIdentLDP = new TIDGenerator();
+        //FIX: replace with class constants.
         this.switchingPowerInMbps = 512;
         this.dmgp = new TDMGP();
         this.gpsrpRequests = new TGPSRPRequestsMatrix();
@@ -72,19 +77,23 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo obtiene el tama�o del a memoria DMGP del nodo.
+     * This method returns the size of the local DMGP (see the "Guarantee Of
+     * Service Support Over MPLS Using Active Techniques" proposal) in KBytes.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the current size of DMGP in KBytes.
      * @since 2.0
-     * @return Tama�o de la DMGP en KB.
      */
     public int getDMGPSizeInKB() {
         return this.dmgp.getDMGPSizeInKB();
     }
 
     /**
-     * Este m�todo permite establecer el tama�o de la DMGP del nodo.
+     * This method sets the size of the local DMGP (see the "Guarantee Of
+     * Service Support Over MPLS Using Active Techniques" proposal) in KBytes.
      *
-     * @param sizeInKB Tama�o de la DMGP del nodo en KB.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param sizeInKB the desired size of DMGP in KBytes.
      * @since 2.0
      */
     public void setDMGPSizeInKB(int sizeInKB) {
@@ -92,10 +101,12 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo obtiene el n�mero de nanosegundos que son necesarios para
-     * conmutar un bit.
+     * This method computes and returns the number of nanoseconds that are
+     * needed to switch a single bit. This is something that depends on the
+     * switching power of this active LSR.
      *
-     * @return El n�mero de nanosegundos necesarios para conmutar un bit.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the number of nanoseconds that are needed to switch a single bit.
      * @since 2.0
      */
     public double getNsPerBit() {
@@ -106,26 +117,30 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo calcula el n�mero de nanosegundos necesarios para conmutar un
- n�mero determinado de octets.
+     * This method computes and returns the number of nanoseconds that are
+     * needed to switch the specified number of octects. This is something that
+     * depends on the switching power of this active LSR.
      *
-     * @param octets N�mero de octets que queremos conmutar.
-     * @return N�mero de nanosegundos necesarios para conmutar los octets
- especificados.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param octects the number of octects that wants to be switched.
+     * @return the number of nanoseconds that are needed to switch the specified
+     * number of octects.
      * @since 2.0
      */
-    public double getNsRequiredForAllOctets(int octets) {
+    public double getNsRequiredForAllOctets(int octects) {
         // FIX: replace al harcoded values for class constants
         double nsPerBit = getNsPerBit();
-        long numberOfBits = (long) ((long) octets * (long) 8);
+        long numberOfBits = (long) ((long) octects * (long) 8);
         return (double) ((double) nsPerBit * (long) numberOfBits);
     }
 
     /**
-     * Este m�todo devuelve el n�mero de bits que se pueden conmutar con el
-     * n�mero de nanosegundos de los que dispone actualmente el nodo.
+     * This method gets the number of bits that this LSRA can switch with the
+     * available number of nanoseconds it has. The more switching power the LSRA
+     * has, the more bits it can switch with the same number of nanoseconds.
      *
-     * @return N�mero de bits m�ximos que puede conmutar el nodo en un instante.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the current size of DMGP in KBytes.
      * @since 2.0
      */
     public int getMaxSwitchableBitsWithCurrentNs() {
@@ -135,10 +150,12 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo calcula el n�mero m�ximo de octetos completos que puede
-     * conmtuar el nodo.
+     * This method gets the number of octects that this LSRA can switch with the
+     * available number of nanoseconds it has. The more switching power the LERA
+     * has, the more octects it can switch with the same number of nanoseconds.
      *
-     * @return El n�mero m�ximo de octetos que puede conmutar el nodo.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the current size of DMGP in KBytes.
      * @since 2.0
      */
     public int getMaxSwitchableOctectsWithCurrentNs() {
@@ -148,10 +165,10 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo devuelve la potencia de conmutaci�n con la que est�
-     * configurado el nodo.
+     * This method gets the switching power of this LSRA, in Mbps.
      *
-     * @return Potencia de conmutaci�n en Mbps.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the switching power of the node in Mbps.
      * @since 2.0
      */
     public int getSwitchingPowerInMbps() {
@@ -159,9 +176,10 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo establece la potencia de conmutaci�n para el nodo.
+     * This method sets the switching power of this LSRA, in Mbps.
      *
-     * @param switchingPowerInMbps Potencia de conmutaci�n en Mbps deseada para el nodo.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param switchingPowerInMbps the switching power of this LSRA, in Mbps.
      * @since 2.0
      */
     public void setSwitchingPowerInMbps(int switchingPowerInMbps) {
@@ -169,19 +187,21 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo permite obtener el tamanio el buffer del nodo.
+     * This method gets the size of this LSRA's buffer, in MBytes.
      *
-     * @return Tamanio del buffer en MB.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the size of this LSRA's buffer, in MBytes.
      * @since 2.0
      */
     public int getBufferSizeInMBytes() {
-        return this.getPorts().getBufferSizeInMB();
+        return this.getPorts().getBufferSizeInMBytes();
     }
 
     /**
-     * Este m�todo permite establecer el tamanio del buffer del nodo.
+     * This method sets the size of this LSRA's buffer, in MBytes.
      *
-     * @param bufferSizeInMBytes Tamanio deseado para el buffer del nodo en MB.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param bufferSizeInMBytes the size of this LSRA's buffer, in MBytes.
      * @since 2.0
      */
     public void setBufferSizeInMBytes(int bufferSizeInMBytes) {
@@ -189,9 +209,10 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo reinicia los atributos del nodo hasta dejarlos como si
-     * acabasen de ser creados por el Constructor.
+     * This method restart the attributes of the class as in the creation of the
+     * instance.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
@@ -208,9 +229,11 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo permite obtener el tipo del nodo.
+     * This method gets the type of this node. In this case, it will return the
+     * constant TNode.LSRA.
      *
-     * @return TNode.LSR, indicando que se trata de un nodo LSR.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the constant TNode.LSRA.
      * @since 2.0
      */
     @Override
@@ -219,10 +242,13 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo permite obtener eventos de sincronizaci�n del reloj del
-     * simulador.
+     * This method receive a timer event from the simulation's global timer. It
+     * does some initial tasks and then wake up the LSRA to start doing its
+     * work.
      *
-     * @param timerEvent Evento de sincronizaci�n que env�a el reloj del simulador.
+     * @param timerEvent a timer event that is used to synchronize all nodes and
+     * that inclues a number of nanoseconds to be used by the LSRA.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
@@ -239,9 +265,10 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo se llama cuando se inicia el hilo independiente del nodo y es
-     * en el que se implementa toda la funcionalidad.
+     * This method starts all tasks that has to be executed during a timer tick.
+     * The number of nanoseconds of this tick is the time this LSRA will work.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
@@ -260,11 +287,11 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo se encarga de validateConfig que los enlaces que unen al nodo
-     * con sus adyacentes, funcionan correctamente. Y si no es asi y es
-     * necesario, env�a la se�alizaci�n correspondiente para reparar la
-     * situaci�n.
+     * This method check wether the connectivity to the neighbors nodes exists.
+     * Let's say, this check whether a link of this node is down. If so, this
+     * method generates the corresponding event to notify the situation.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void checkConnectivityStatus() {
@@ -374,8 +401,13 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo conmuta paquetes del buffer de entrada.
+     * This method read read the port to which it is up following a Round Robin
+     * algorithm. It does that until it consumes all the available nanoseconds
+     * for the current tick/step. If it is able to switch or route a given
+     * incoming packet, it does it. If it is a martian packet, the packet is
+     * discarded.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void switchPackets() {
@@ -390,9 +422,9 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             if (packet != null) {
                 // FIX: Convert to a switch statement
                 if (packet.getType() == TAbstractPDU.TLDP) {
-                    conmutarTLDP((TTLDPPDU) packet, readPort);
+                    handleTLDPPacket((TTLDPPDU) packet, readPort);
                 } else if (packet.getType() == TAbstractPDU.MPLS) {
-                    conmutarMPLS((TMPLSPDU) packet, readPort);
+                    handleMPLSPacket((TMPLSPDU) packet, readPort);
                 } else if (packet.getType() == TAbstractPDU.GPSRP) {
                     conmutarGPSRP((TGPSRPPDU) packet, readPort);
                 } else {
@@ -411,10 +443,11 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo conmuta un packet GPSRP.
+     * This method switchs an incoming GPDRP packet.
      *
-     * @param packet Paquete GPSRP a conmutar.
-     * @param incomingPortID Puerto por el que ha llegado el packet.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packet GPSRP packet to switch.
+     * @param incomingPortID Port of this node where the packet has arrived.
      * @since 2.0
      */
     public void conmutarGPSRP(TGPSRPPDU packet, int incomingPortID) {
@@ -426,7 +459,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             int packetID = packet.getGPSRPPayload().getPacketID();
             String targetIPv4Address = packet.getIPv4Header().getTailEndIPAddress();
             TActivePort outgoingPort = null;
-            if (targetIPv4Address.equals(this.getIPAddress())) {
+            if (targetIPv4Address.equals(this.getIPv4Address())) {
                 // FIX: Convert to a switch statement
                 if (messageType == TGPSRPPayload.RETRANSMISSION_REQUEST) {
                     this.atenderPeticionGPSRP(packet, incomingPortID);
@@ -436,7 +469,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     this.atenderAceptacionGPSRP(packet, incomingPortID);
                 }
             } else {
-                String nextHopIPv4Address = this.topology.getNextHopRABANIPv4Address(this.getIPAddress(), targetIPv4Address);
+                String nextHopIPv4Address = this.topology.getNextHopRABANIPv4Address(this.getIPv4Address(), targetIPv4Address);
                 outgoingPort = (TActivePort) this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPv4Address);
                 if (outgoingPort != null) {
                     outgoingPort.putPacketOnLink(packet, outgoingPort.getLink().getTargetNodeIDOfTrafficSentBy(this));
@@ -454,101 +487,112 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo atiende una petici�n de retransmisi�n.
+     * This method handles a GPSRP request of retransmission.
      *
-     * @param paquete Paquete GPSRP de solicitud de retransmisi�n.
-     * @param pEntrada Puerto por el que ha llegado el packet.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packet GPSRP packet to handle.
+     * @param incomingPortID Port of this node where the packet has arrived.
      * @since 2.0
      */
-    public void atenderPeticionGPSRP(TGPSRPPDU paquete, int pEntrada) {
-        int idFlujo = paquete.getGPSRPPayload().getFlowID();
-        int idPaquete = paquete.getGPSRPPayload().getPacketID();
-        TMPLSPDU paqueteBuscado = (TMPLSPDU) dmgp.getPacket(idFlujo, idPaquete);
-        if (paqueteBuscado != null) {
-            this.aceptarGPSRP(paquete, pEntrada);
-            TActivePort puertoSalida = (TActivePort) this.ports.getPort(pEntrada);
-            if (puertoSalida != null) {
-                puertoSalida.putPacketOnLink(paqueteBuscado, puertoSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
+    public void atenderPeticionGPSRP(TGPSRPPDU packet, int incomingPortID) {
+        int flowID = packet.getGPSRPPayload().getFlowID();
+        int packetID = packet.getGPSRPPayload().getPacketID();
+        TMPLSPDU wantedPacket = (TMPLSPDU) this.dmgp.getPacket(flowID, packetID);
+        if (wantedPacket != null) {
+            this.acceptGPSRP(packet, incomingPortID);
+            TActivePort outgoingPort = (TActivePort) this.ports.getPort(incomingPortID);
+            if (outgoingPort != null) {
+                outgoingPort.putPacketOnLink(wantedPacket, outgoingPort.getLink().getTargetNodeIDOfTrafficSentBy(this));
                 try {
-                    this.generateSimulationEvent(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paqueteBuscado.getSubtype()));
+                    this.generateSimulationEvent(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), wantedPacket.getSubtype()));
                 } catch (Exception e) {
+                    // FIX: this is not a good practice. Avoid.
                     e.printStackTrace();
                 }
             }
         } else {
-            this.denegarGPSRP(paquete, pEntrada);
+            this.rejectGPSRP(packet, incomingPortID);
         }
     }
 
     /**
-     * Este m�todo atiende una denegaci�n de retransmisi�n.
+     * This method handles a GPSRP denial of retransmission.
      *
-     * @param paquete Paquete GPSRP de denegaci�n de retransmisi�n.
-     * @param pEntrada Puerto por el que ha llegado el packet.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packet GPSRP packet to handle.
+     * @param incomingPortID Port of this node where the packet has arrived.
      * @since 2.0
      */
-    public void atenderDenegacionGPSRP(TGPSRPPDU paquete, int pEntrada) {
-        int idf = paquete.getGPSRPPayload().getFlowID();
-        int idp = paquete.getGPSRPPayload().getPacketID();
-        TGPSRPRequestEntry ep = gpsrpRequests.getEntry(idf, idp);
-        if (ep != null) {
-            ep.forceTimeoutReset();
-            int p = ep.getOutgoingPort();
-            if (!ep.isPurgeable()) {
-                String IPDestino = ep.getCrossedNodeIPv4();
-                if (IPDestino != null) {
-                    requestGPSRP(idf, idp, IPDestino, p);
+    public void atenderDenegacionGPSRP(TGPSRPPDU packet, int incomingPortID) {
+        int flowID = packet.getGPSRPPayload().getFlowID();
+        int packetID = packet.getGPSRPPayload().getPacketID();
+        TGPSRPRequestEntry gpsrpRequestEntry = this.gpsrpRequests.getEntry(flowID, packetID);
+        if (gpsrpRequestEntry != null) {
+            gpsrpRequestEntry.forceTimeoutReset();
+            int p = gpsrpRequestEntry.getOutgoingPort();
+            if (!gpsrpRequestEntry.isPurgeable()) {
+                String targetIPv4Address = gpsrpRequestEntry.getCrossedNodeIPv4();
+                if (targetIPv4Address != null) {
+                    requestGPSRP(flowID, packetID, targetIPv4Address, p);
                 } else {
-                    gpsrpRequests.removeEntry(idf, idp);
+                    this.gpsrpRequests.removeEntry(flowID, packetID);
                 }
             } else {
-                gpsrpRequests.removeEntry(idf, idp);
+                this.gpsrpRequests.removeEntry(flowID, packetID);
             }
         }
     }
 
     /**
-     * Este m�todo atiende una aceptaci�n de retransmisi�n.
+     * This method handles a GPSRP acceptance of retransmission.
      *
-     * @param paquete Paquete GPSRP de aceptaci�n de retransmisi�n.
-     * @param pEntrada Puerto por el que ha llegado el packet.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packet GPSRP packet to handle.
+     * @param incomingPortID Port of this node where the packet has arrived.
      * @since 2.0
      */
-    public void atenderAceptacionGPSRP(TGPSRPPDU paquete, int pEntrada) {
-        int idf = paquete.getGPSRPPayload().getFlowID();
-        int idp = paquete.getGPSRPPayload().getPacketID();
-        gpsrpRequests.removeEntry(idf, idp);
+    public void atenderAceptacionGPSRP(TGPSRPPDU packet, int incomingPortID) {
+        int flowID = packet.getGPSRPPayload().getFlowID();
+        int packetID = packet.getGPSRPPayload().getPacketID();
+        this.gpsrpRequests.removeEntry(flowID, packetID);
     }
 
     /**
-     * Este m�todo solicita una retransmisi�n de packet.
+     * This method start the GPSRP protocol to request the retransmission of a
+     * lost packet part of wich has been recovered before discarding it.
      *
-     * @param paquete Paquete MPLS para el que se solicita la retransmisi�n.
-     * @param pSalida Puerto por el que se debe encaminar la petici�n.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packet incomplete MPLS packet that want to be recovered locally.
+     * @param outgoingPortID Port of this node through wich the GPSRP
+     * retransmission request is going to be sent.
      * @since 2.0
      */
     @Override
-    public void runGoSPDUStoreAndRetransmitProtocol(TMPLSPDU paquete, int pSalida) {
-        TGPSRPRequestEntry ep = null;
-        ep = this.gpsrpRequests.addEntry(paquete, pSalida);
-        if (ep != null) {
-            TActivePort puertoSalida = (TActivePort) ports.getPort(pSalida);
-            TGPSRPPDU paqueteGPSRP = null;
-            String IPDestino = ep.getCrossedNodeIPv4();
-            if (IPDestino != null) {
+    public void runGoSPDUStoreAndRetransmitProtocol(TMPLSPDU packet, int outgoingPortID) {
+        TGPSRPRequestEntry gpsrpRequestEntry = null;
+        gpsrpRequestEntry = this.gpsrpRequests.addEntry(packet, outgoingPortID);
+        if (gpsrpRequestEntry != null) {
+            TActivePort outgoingPort = (TActivePort) ports.getPort(outgoingPortID);
+            TGPSRPPDU gpsrpPacket = null;
+            String targetIPv4Address = gpsrpRequestEntry.getCrossedNodeIPv4();
+            if (targetIPv4Address != null) {
                 try {
-                    paqueteGPSRP = new TGPSRPPDU(gIdent.getNextID(), this.getIPAddress(), IPDestino);
+                    gpsrpPacket = new TGPSRPPDU(this.gIdent.getNextID(), this.getIPv4Address(), targetIPv4Address);
                 } catch (Exception e) {
+                    //FIX: This is not a good practice. Avoid.
                     e.printStackTrace();
                 }
-                paqueteGPSRP.getGPSRPPayload().setFlowID(ep.getFlowID());
-                paqueteGPSRP.getGPSRPPayload().setPacketID(ep.getPacketID());
-                paqueteGPSRP.getGPSRPPayload().setGPSRPMessageType(TGPSRPPayload.RETRANSMISSION_REQUEST);
-                puertoSalida.putPacketOnLink(paqueteGPSRP, puertoSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
+                // FIX: gpsrPacket could be null if the previous try generates 
+                // an exception. 
+                gpsrpPacket.getGPSRPPayload().setFlowID(gpsrpRequestEntry.getFlowID());
+                gpsrpPacket.getGPSRPPayload().setPacketID(gpsrpRequestEntry.getPacketID());
+                gpsrpPacket.getGPSRPPayload().setGPSRPMessageType(TGPSRPPayload.RETRANSMISSION_REQUEST);
+                outgoingPort.putPacketOnLink(gpsrpPacket, outgoingPort.getLink().getTargetNodeIDOfTrafficSentBy(this));
                 try {
-                    this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP, paqueteGPSRP.getSize()));
+                    this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP, gpsrpPacket.getSize()));
                     this.generateSimulationEvent(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP));
                 } catch (Exception e) {
+                    //FIX: This is not a good practice. Avoid.
                     e.printStackTrace();
                 }
             }
@@ -556,479 +600,530 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo solicita una retransmisi�n de packet.
+     * This method start the GPSRP protocol to request the retransmission of a
+     * lost packet part of whose data has been recovered before discarding it.
      *
-     * @param idFlujo Identificador del flowID al que pertenece el packet
- solicitado.
-     * @param idPaquete Identificador del packet solicitado.
-     * @param IPDestino IP del nodo al que se env�a la solicitud.
-     * @param pSalida Puerto de salida por el que se debe encaminar la
-     * solicitud.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param flowID flow ID for wich the retransmision is requested.
+     * @param outgoingPortID Port of this node through wich the GPSRP
+     * retransmission request is going to be sent.
+     * @param packetID packet, of the specified flow, for wich the
+     * retransmission is requested.
+     * @param targetIPv4Address IP address of the node to wich the
+     * retransmission request is sent. Hopefuly, the one that could retransmit
+     * the lost packet.
      * @since 2.0
      */
-    public void requestGPSRP(int idFlujo, int idPaquete, String IPDestino, int pSalida) {
-        TActivePort puertoSalida = (TActivePort) ports.getPort(pSalida);
-        TGPSRPPDU paqueteGPSRP = null;
-        if (IPDestino != null) {
+    public void requestGPSRP(int flowID, int packetID, String targetIPv4Address, int outgoingPortID) {
+        TActivePort outgoingPort = (TActivePort) this.ports.getPort(outgoingPortID);
+        TGPSRPPDU gpsrpPacket = null;
+        if (targetIPv4Address != null) {
             try {
-                paqueteGPSRP = new TGPSRPPDU(gIdent.getNextID(), this.getIPAddress(), IPDestino);
+                gpsrpPacket = new TGPSRPPDU(this.gIdent.getNextID(), this.getIPv4Address(), targetIPv4Address);
             } catch (Exception e) {
+                //FIX: This is not a good practice. Avoid.
                 e.printStackTrace();
             }
-            paqueteGPSRP.getGPSRPPayload().setFlowID(idFlujo);
-            paqueteGPSRP.getGPSRPPayload().setPacketID(idPaquete);
-            paqueteGPSRP.getGPSRPPayload().setGPSRPMessageType(TGPSRPPayload.RETRANSMISSION_REQUEST);
-            puertoSalida.putPacketOnLink(paqueteGPSRP, puertoSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
+            // FIX: gpsrPacket could be null if the previous try generates an 
+            // exception. 
+            gpsrpPacket.getGPSRPPayload().setFlowID(flowID);
+            gpsrpPacket.getGPSRPPayload().setPacketID(packetID);
+            gpsrpPacket.getGPSRPPayload().setGPSRPMessageType(TGPSRPPayload.RETRANSMISSION_REQUEST);
+            outgoingPort.putPacketOnLink(gpsrpPacket, outgoingPort.getLink().getTargetNodeIDOfTrafficSentBy(this));
             try {
-                this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP, paqueteGPSRP.getSize()));
+                this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP, gpsrpPacket.getSize()));
                 this.generateSimulationEvent(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP));
             } catch (Exception e) {
+                //FIX: This is not a good practice. Avoid.
                 e.printStackTrace();
             }
         }
     }
 
     /**
-     * Este m�todo deniega la retransmisi�n de un packet.
+     * This method deny a packet retransmission.
      *
-     * @param paquete Paquete GPSRP de solicitud de retransmisi�in.
-     * @param pSalida PPuerto de salida por el que se debe encaminar la
-     * denegaci�n.
+     * @param packet GPSRP packet requesting a packet retransmission.
+     * @param outgoingPortID Outgoing port to be used to send the denial.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void denegarGPSRP(TGPSRPPDU paquete, int pSalida) {
-        TActivePort puertoSalida = (TActivePort) this.ports.getPort(pSalida);
-        if (puertoSalida != null) {
-            TGPSRPPDU paqueteGPSRP = null;
+    public void rejectGPSRP(TGPSRPPDU packet, int outgoingPortID) {
+        TActivePort outgoingPort = (TActivePort) this.ports.getPort(outgoingPortID);
+        if (outgoingPort != null) {
+            TGPSRPPDU gpsrpPacket = null;
             try {
-                paqueteGPSRP = new TGPSRPPDU(gIdent.getNextID(), this.getIPAddress(), paquete.getIPv4Header().getOriginIPAddress());
+                gpsrpPacket = new TGPSRPPDU(this.gIdent.getNextID(), this.getIPv4Address(), packet.getIPv4Header().getOriginIPAddress());
             } catch (Exception e) {
+                //FIX: This is not a good practice. Avoid.
                 e.printStackTrace();
             }
-            paqueteGPSRP.getGPSRPPayload().setFlowID(paquete.getGPSRPPayload().getFlowID());
-            paqueteGPSRP.getGPSRPPayload().setPacketID(paquete.getGPSRPPayload().getPacketID());
-            paqueteGPSRP.getGPSRPPayload().setGPSRPMessageType(TGPSRPPayload.RETRANSMISION_NOT_POSSIBLE);
-            puertoSalida.putPacketOnLink(paqueteGPSRP, puertoSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
+            // FIX: gpsrPacket could be null if the previous try generates an 
+            // exception. 
+            gpsrpPacket.getGPSRPPayload().setFlowID(packet.getGPSRPPayload().getFlowID());
+            gpsrpPacket.getGPSRPPayload().setPacketID(packet.getGPSRPPayload().getPacketID());
+            gpsrpPacket.getGPSRPPayload().setGPSRPMessageType(TGPSRPPayload.RETRANSMISION_NOT_POSSIBLE);
+            outgoingPort.putPacketOnLink(gpsrpPacket, outgoingPort.getLink().getTargetNodeIDOfTrafficSentBy(this));
             try {
-                this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP, paqueteGPSRP.getSize()));
+                this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP, gpsrpPacket.getSize()));
                 this.generateSimulationEvent(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP));
             } catch (Exception e) {
+                //FIX: This is not a good practice. Avoid.
                 e.printStackTrace();
             }
         } else {
-            discardPacket(paquete);
+            discardPacket(packet);
         }
     }
 
     /**
-     * Este m�todo acepta la retransmisi�n de un packet.
+     * This method accepts/confirms a packet retransmission.
      *
-     * @param paquete Paquete GPSRP de solicitud de retransmisi�n.
-     * @param pSalida Puerto por el que se debe encaminar la aceptaci�n.
+     * @param packet GPSRP packet requesting a packet retransmission.
+     * @param outgoingPortID Outgoing port to be used to send the acceptance.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void aceptarGPSRP(TGPSRPPDU paquete, int pSalida) {
-        TActivePort puertoSalida = (TActivePort) this.ports.getPort(pSalida);
-        if (puertoSalida != null) {
-            TGPSRPPDU paqueteGPSRP = null;
+    public void acceptGPSRP(TGPSRPPDU packet, int outgoingPortID) {
+        TActivePort outgoingPort = (TActivePort) this.ports.getPort(outgoingPortID);
+        if (outgoingPort != null) {
+            TGPSRPPDU gpsrpPacket = null;
             try {
-                paqueteGPSRP = new TGPSRPPDU(gIdent.getNextID(), this.getIPAddress(), paquete.getIPv4Header().getOriginIPAddress());
+                gpsrpPacket = new TGPSRPPDU(this.gIdent.getNextID(), this.getIPv4Address(), packet.getIPv4Header().getOriginIPAddress());
             } catch (Exception e) {
+                //FIX: This is not a good practice. Avoid.
                 e.printStackTrace();
             }
-            paqueteGPSRP.getGPSRPPayload().setFlowID(paquete.getGPSRPPayload().getFlowID());
-            paqueteGPSRP.getGPSRPPayload().setPacketID(paquete.getGPSRPPayload().getPacketID());
-            paqueteGPSRP.getGPSRPPayload().setGPSRPMessageType(TGPSRPPayload.RETRANSMISION_OK);
-            puertoSalida.putPacketOnLink(paqueteGPSRP, puertoSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
+            // FIX: gpsrPacket could be null if the previous try generates an 
+            // exception. 
+            gpsrpPacket.getGPSRPPayload().setFlowID(packet.getGPSRPPayload().getFlowID());
+            gpsrpPacket.getGPSRPPayload().setPacketID(packet.getGPSRPPayload().getPacketID());
+            gpsrpPacket.getGPSRPPayload().setGPSRPMessageType(TGPSRPPayload.RETRANSMISION_OK);
+            outgoingPort.putPacketOnLink(gpsrpPacket, outgoingPort.getLink().getTargetNodeIDOfTrafficSentBy(this));
             try {
-                this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP, paqueteGPSRP.getSize()));
+                this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP, gpsrpPacket.getSize()));
                 this.generateSimulationEvent(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.GPSRP));
             } catch (Exception e) {
+                //FIX: This is not a good practice. Avoid.
                 e.printStackTrace();
             }
         } else {
-            discardPacket(paquete);
+            discardPacket(packet);
         }
     }
 
     /**
-     * Este m�todo trata un packet TLDP que ha llegado.
+     * This method is called when a TLDP packet is received. It performs the
+     * required action in the routing matrix and propagates the changes to the
+     * correspondant adjacent node.
      *
-     * @param paquete Paquete TLDP recibido.
-     * @param pEntrada Puerto por el que se ha recibido el packet TLDP.
+     * @param packet TLDP packet received.
+     * @param incomingPortID Port of this node from wich the TLDP packet has
+     * arrived.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
-    public void conmutarTLDP(TTLDPPDU paquete, int pEntrada) {
-        if (paquete.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REQUEST) {
-            this.tratarSolicitudTLDP(paquete, pEntrada);
-        } else if (paquete.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REQUEST_OK) {
-            this.tratarSolicitudOkTLDP(paquete, pEntrada);
-        } else if (paquete.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REQUEST_DENIED) {
-            this.tratarSolicitudNoTLDP(paquete, pEntrada);
-        } else if (paquete.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REMOVAL_REQUEST) {
-            this.tratarEliminacionTLDP(paquete, pEntrada);
-        } else if (paquete.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REVOMAL_REQUEST_OK) {
-            this.tratarEliminacionOkTLDP(paquete, pEntrada);
+    public void handleTLDPPacket(TTLDPPDU packet, int incomingPortID) {
+        // FIX: change by a Switch statement
+        if (packet.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REQUEST) {
+            this.handleTLDPRequest(packet, incomingPortID);
+        } else if (packet.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REQUEST_OK) {
+            this.handleTLDPRequestOk(packet, incomingPortID);
+        } else if (packet.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REQUEST_DENIED) {
+            this.handleTLDPRefuseRequest(packet, incomingPortID);
+        } else if (packet.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REMOVAL_REQUEST) {
+            this.handleTLDPWithdrawal(packet, incomingPortID);
+        } else if (packet.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REVOMAL_REQUEST_OK) {
+            this.handleTLDPWithdrawalOk(packet, incomingPortID);
         }
     }
 
     /**
-     * Este m�todo trata un packet MPLS que ha llegado.
+     * This method switch a MPLS packet according to the information contained
+     * in the corresponding entry in the switching table.
      *
-     * @param paquete Paquete MPLS recibido.
-     * @param pEntrada Puerto por el que se ha recibido el packet MPLS.
+     * @param packet MPLS packet received.
+     * @param incomingPortID Port of this node from wich the MPLS packet has
+     * arrived.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
-    public void conmutarMPLS(TMPLSPDU paquete, int pEntrada) {
-        TMPLSLabel eMPLS = null;
-        TSwitchingMatrixEntry emc = null;
-        boolean conEtiqueta1 = false;
-        boolean requiereLSPDeRespaldo = false;
-        if (paquete.getLabelStack().getTop().getLabel() == 1) {
-            eMPLS = paquete.getLabelStack().getTop();
-            paquete.getLabelStack().popTop();
-            conEtiqueta1 = true;
-            if ((eMPLS.getEXP() == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)
-                    || (eMPLS.getEXP() == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)
-                    || (eMPLS.getEXP() == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP)
-                    || (eMPLS.getEXP() == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
-                requiereLSPDeRespaldo = true;
+    public void handleMPLSPacket(TMPLSPDU packet, int incomingPortID) {
+        TMPLSLabel mplsLabel = null;
+        TSwitchingMatrixEntry switchingMatrixEntry = null;
+        boolean isLabeled = false;
+        boolean requireBackupLSP = false;
+        // FIX: Do not use harcoded values. Use class constants instead.
+        if (packet.getLabelStack().getTop().getLabel() == 1) {
+            mplsLabel = packet.getLabelStack().getTop();
+            packet.getLabelStack().popTop();
+            isLabeled = true;
+            if ((mplsLabel.getEXP() == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)
+                    || (mplsLabel.getEXP() == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)
+                    || (mplsLabel.getEXP() == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP)
+                    || (mplsLabel.getEXP() == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
+                requireBackupLSP = true;
             }
         }
-        int valorLABEL = paquete.getLabelStack().getTop().getLabel();
-        String IPDestinoFinal = paquete.getIPv4Header().getTailEndIPAddress();
-        emc = switchingMatrix.getEntry(pEntrada, valorLABEL, TSwitchingMatrixEntry.LABEL_ENTRY);
-        if (emc == null) {
-            if (conEtiqueta1) {
-                paquete.getLabelStack().pushTop(eMPLS);
+        int labelValue = packet.getLabelStack().getTop().getLabel();
+        String targetIPv4Address = packet.getIPv4Header().getTailEndIPAddress();
+        switchingMatrixEntry = this.switchingMatrix.getEntry(incomingPortID, labelValue, TSwitchingMatrixEntry.LABEL_ENTRY);
+        if (switchingMatrixEntry == null) {
+            if (isLabeled) {
+                packet.getLabelStack().pushTop(mplsLabel);
             }
-            discardPacket(paquete);
+            discardPacket(packet);
         } else {
-            int etiquetaActual = emc.getOutgoingLabel();
-            if (etiquetaActual == TSwitchingMatrixEntry.UNDEFINED) {
-                emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_REQUESTED);
-                solicitarTLDP(emc);
-                if (conEtiqueta1) {
-                    paquete.getLabelStack().pushTop(eMPLS);
+            int currentLabel = switchingMatrixEntry.getOutgoingLabel();
+            if (currentLabel == TSwitchingMatrixEntry.UNDEFINED) {
+                switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_REQUESTED);
+                requestTLDP(switchingMatrixEntry);
+                if (isLabeled) {
+                    packet.getLabelStack().pushTop(mplsLabel);
                 }
-                this.ports.getPort(emc.getIncomingPortID()).reEnqueuePacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
-                if (conEtiqueta1) {
-                    paquete.getLabelStack().pushTop(eMPLS);
+                this.ports.getPort(switchingMatrixEntry.getIncomingPortID()).reEnqueuePacket(packet);
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+                if (isLabeled) {
+                    packet.getLabelStack().pushTop(mplsLabel);
                 }
-                this.ports.getPort(emc.getIncomingPortID()).reEnqueuePacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
-                if (conEtiqueta1) {
-                    paquete.getLabelStack().pushTop(eMPLS);
+                this.ports.getPort(switchingMatrixEntry.getIncomingPortID()).reEnqueuePacket(packet);
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
+                if (isLabeled) {
+                    packet.getLabelStack().pushTop(mplsLabel);
                 }
-                discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                if (conEtiqueta1) {
-                    paquete.getLabelStack().pushTop(eMPLS);
+                discardPacket(packet);
+            } else if (currentLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
+                if (isLabeled) {
+                    packet.getLabelStack().pushTop(mplsLabel);
                 }
-                discardPacket(paquete);
-            } else if ((etiquetaActual > 15) || (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED)) {
-                int operacion = emc.getLabelStackOperation();
-                if (operacion == TSwitchingMatrixEntry.UNDEFINED) {
-                    if (conEtiqueta1) {
-                        paquete.getLabelStack().pushTop(eMPLS);
+                discardPacket(packet);
+                // FIX: Do not use hardcoded values. Use class constants instead.
+            } else if ((currentLabel > 15) || (currentLabel == TSwitchingMatrixEntry.LABEL_ASSIGNED)) {
+                int operation = switchingMatrixEntry.getLabelStackOperation();
+                // FIX: Replace conditional by Switch statement
+                if (operation == TSwitchingMatrixEntry.UNDEFINED) {
+                    if (isLabeled) {
+                        packet.getLabelStack().pushTop(mplsLabel);
                     }
-                    discardPacket(paquete);
-                } else if (operacion == TSwitchingMatrixEntry.PUSH_LABEL) {
-                    TMPLSLabel empls = new TMPLSLabel();
-                    empls.setBoS(false);
-                    empls.setEXP(0);
-                    empls.setLabel(emc.getOutgoingLabel());
-                    empls.setTTL(paquete.getLabelStack().getTop().getTTL() - 1);
-                    paquete.getLabelStack().pushTop(empls);
-                    if (conEtiqueta1) {
-                        paquete.getLabelStack().pushTop(eMPLS);
-                        paquete.getIPv4Header().getOptionsField().setCrossedActiveNode(this.getIPAddress());
-                        dmgp.addPacket(paquete);
+                    discardPacket(packet);
+                } else if (operation == TSwitchingMatrixEntry.PUSH_LABEL) {
+                    TMPLSLabel mplsLabelAux = new TMPLSLabel();
+                    // FIX: Do not use hardcoded values. Use class constants 
+                    // instead.
+                    mplsLabelAux.setBoS(false);
+                    mplsLabelAux.setEXP(0);
+                    mplsLabelAux.setLabel(switchingMatrixEntry.getOutgoingLabel());
+                    mplsLabelAux.setTTL(packet.getLabelStack().getTop().getTTL() - 1);
+                    packet.getLabelStack().pushTop(mplsLabelAux);
+                    if (isLabeled) {
+                        packet.getLabelStack().pushTop(mplsLabel);
+                        packet.getIPv4Header().getOptionsField().setCrossedActiveNode(this.getIPv4Address());
+                        this.dmgp.addPacket(packet);
                     }
-                    TPort pSalida = ports.getPort(emc.getOutgoingPortID());
-                    pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
+                    TPort outgoingPort = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID());
+                    outgoingPort.putPacketOnLink(packet, outgoingPort.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     try {
-                        this.generateSimulationEvent(new TSEPacketSwitched(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+                        this.generateSimulationEvent(new TSEPacketSwitched(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), packet.getSubtype()));
+                    } catch (Exception e) {
+                        // FIX: This is not a good practice. Avoid.
+                        e.printStackTrace();
+                    }
+                } else if (operation == TSwitchingMatrixEntry.POP_LABEL) {
+                    packet.getLabelStack().popTop();
+                    if (isLabeled) {
+                        packet.getLabelStack().pushTop(mplsLabel);
+                        packet.getIPv4Header().getOptionsField().setCrossedActiveNode(this.getIPv4Address());
+                        this.dmgp.addPacket(packet);
+                    }
+                    TPort outgoingPort = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID());
+                    outgoingPort.putPacketOnLink(packet, outgoingPort.getLink().getTargetNodeIDOfTrafficSentBy(this));
+                    try {
+                        this.generateSimulationEvent(new TSEPacketSwitched(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), packet.getSubtype()));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                } else if (operacion == TSwitchingMatrixEntry.POP_LABEL) {
-                    paquete.getLabelStack().popTop();
-                    if (conEtiqueta1) {
-                        paquete.getLabelStack().pushTop(eMPLS);
-                        paquete.getIPv4Header().getOptionsField().setCrossedActiveNode(this.getIPAddress());
-                        dmgp.addPacket(paquete);
+                } else if (operation == TSwitchingMatrixEntry.SWAP_LABEL) {
+                    if (requireBackupLSP) {
+                        requestTLDPForBackupLSP(switchingMatrixEntry);
                     }
-                    TPort pSalida = ports.getPort(emc.getOutgoingPortID());
-                    pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
-                    try {
-                        this.generateSimulationEvent(new TSEPacketSwitched(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    packet.getLabelStack().getTop().setLabel(switchingMatrixEntry.getOutgoingLabel());
+                    if (isLabeled) {
+                        packet.getLabelStack().pushTop(mplsLabel);
+                        packet.getIPv4Header().getOptionsField().setCrossedActiveNode(this.getIPv4Address());
+                        this.dmgp.addPacket(packet);
                     }
-                } else if (operacion == TSwitchingMatrixEntry.SWAP_LABEL) {
-                    if (requiereLSPDeRespaldo) {
-                        solicitarTLDPDeBackup(emc);
-                    }
-                    paquete.getLabelStack().getTop().setLabel(emc.getOutgoingLabel());
-                    if (conEtiqueta1) {
-                        paquete.getLabelStack().pushTop(eMPLS);
-                        paquete.getIPv4Header().getOptionsField().setCrossedActiveNode(this.getIPAddress());
-                        dmgp.addPacket(paquete);
-                    }
-                    TPort pSalida = ports.getPort(emc.getOutgoingPortID());
-                    pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
-                    if (emc.aBackupLSPHasBeenRequested()) {
-                        TInternalLink ei = (TInternalLink) pSalida.getLink();
+                    TPort outgoingPort = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID());
+                    outgoingPort.putPacketOnLink(packet, outgoingPort.getLink().getTargetNodeIDOfTrafficSentBy(this));
+                    if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
+                        TInternalLink ei = (TInternalLink) outgoingPort.getLink();
                         ei.setLSPUp();
                         ei.setBackupLSPDown();
-                        emc.setEntryIsForBackupLSP(false);
+                        switchingMatrixEntry.setEntryIsForBackupLSP(false);
                     }
                     try {
-                        this.generateSimulationEvent(new TSEPacketSwitched(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+                        this.generateSimulationEvent(new TSEPacketSwitched(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), packet.getSubtype()));
                     } catch (Exception e) {
+                        // FIX: This is not a good practice. Avoid.
                         e.printStackTrace();
                     }
-                } else if (operacion == TSwitchingMatrixEntry.NOOP) {
-                    TPort pSalida = ports.getPort(emc.getOutgoingPortID());
-                    pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
+                } else if (operation == TSwitchingMatrixEntry.NOOP) {
+                    TPort outgoingPort = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID());
+                    outgoingPort.putPacketOnLink(packet, outgoingPort.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     try {
-                        this.generateSimulationEvent(new TSEPacketSwitched(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+                        this.generateSimulationEvent(new TSEPacketSwitched(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), packet.getSubtype()));
                     } catch (Exception e) {
+                        // FIX: This is not a good practice. Avoid.
                         e.printStackTrace();
                     }
                 }
             } else {
-                if (conEtiqueta1) {
-                    paquete.getLabelStack().pushTop(eMPLS);
+                if (isLabeled) {
+                    packet.getLabelStack().pushTop(mplsLabel);
                 }
-                discardPacket(paquete);
+                discardPacket(packet);
             }
         }
     }
 
     /**
-     * Este m�todo trata una petici�n de etiquetas.
+     * This method handles a label request.
      *
-     * @param paquete Petici�n de etiquetas recibida de otro nodo.
-     * @param pEntrada Puerto de entrada de la petici�n de etiqueta.
+     * @param packet Label request received from an adjacent node.
+     * @param incomingPortID Port of this node from wich the label request has
+     * arrived.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
-    public void tratarSolicitudTLDP(TTLDPPDU paquete, int pEntrada) {
-        TSwitchingMatrixEntry emc = null;
-        emc = switchingMatrix.getEntry(paquete.getTLDPPayload().getTLDPIdentifier(), pEntrada);
-        if (emc == null) {
-            emc = crearEntradaAPartirDeTLDP(paquete, pEntrada);
+    public void handleTLDPRequest(TTLDPPDU packet, int incomingPortID) {
+        TSwitchingMatrixEntry switchingMatrixEntry = null;
+        switchingMatrixEntry = this.switchingMatrix.getEntry(packet.getTLDPPayload().getTLDPIdentifier(), incomingPortID);
+        if (switchingMatrixEntry == null) {
+            switchingMatrixEntry = createEntryFromTLDP(packet, incomingPortID);
         }
-        if (emc != null) {
-            int etiquetaActual = emc.getOutgoingLabel();
-            if (etiquetaActual == TSwitchingMatrixEntry.UNDEFINED) {
-                emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_REQUESTED);
-                this.solicitarTLDP(emc);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
-                // no hago nada. Se est� esperando una etiqueta.);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
-                enviarSolicitudNoTLDP(emc);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
-                enviarSolicitudOkTLDP(emc);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                sendTLDPWithdrawal(emc, pEntrada);
-            } else if (etiquetaActual > 15) {
-                enviarSolicitudOkTLDP(emc);
+        if (switchingMatrixEntry != null) {
+            int currentLabel = switchingMatrixEntry.getOutgoingLabel();
+            if (currentLabel == TSwitchingMatrixEntry.UNDEFINED) {
+                switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_REQUESTED);
+                this.requestTLDP(switchingMatrixEntry);
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+                // Do nothing. The Active LSR is waiting for a label
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
+                sendTLDPRequestRefuse(switchingMatrixEntry);
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
+                sendTLDPRequestOk(switchingMatrixEntry);
+            } else if (currentLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
+                sendTLDPWithdrawal(switchingMatrixEntry, incomingPortID);
+                // FIX: Do not use hardcoded values. Use class constants instead.
+            } else if (currentLabel > 15) {
+                sendTLDPRequestOk(switchingMatrixEntry);
             } else {
-                discardPacket(paquete);
+                discardPacket(packet);
             }
         } else {
-            discardPacket(paquete);
+            discardPacket(packet);
         }
     }
 
     /**
-     * Este m�todo trata un packet TLDP de eliminaci�n de etiqueta.
+     * This method handles a label withdrawal.
      *
-     * @param paquete Eliminaci�n de etiqueta recibida.
-     * @param pEntrada Puerto por el que se recibi�n la eliminaci�n de etiqueta.
+     * @param packet Label withdrawal received.
+     * @param incomingPortID Port of this node from wich the label withdrawal
+     * has arrived.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
-    public void tratarEliminacionTLDP(TTLDPPDU paquete, int pEntrada) {
-        TSwitchingMatrixEntry emc = null;
-        if (paquete.getLocalOrigin() == TTLDPPDU.CAME_BY_ENTRANCE) {
-            emc = switchingMatrix.getEntry(paquete.getTLDPPayload().getTLDPIdentifier(), pEntrada);
+    public void handleTLDPWithdrawal(TTLDPPDU packet, int incomingPortID) {
+        TSwitchingMatrixEntry switchingMatrixEntry = null;
+        if (packet.getLocalOrigin() == TTLDPPDU.CAME_BY_ENTRANCE) {
+            switchingMatrixEntry = this.switchingMatrix.getEntry(packet.getTLDPPayload().getTLDPIdentifier(), incomingPortID);
         } else {
-            emc = switchingMatrix.getEntry(paquete.getTLDPPayload().getTLDPIdentifier());
+            switchingMatrixEntry = this.switchingMatrix.getEntry(packet.getTLDPPayload().getTLDPIdentifier());
         }
-        if (emc == null) {
-            discardPacket(paquete);
-        } else if (emc.getIncomingPortID() == pEntrada) {
-            int etiquetaActual = emc.getOutgoingLabel();
-            if (etiquetaActual == TSwitchingMatrixEntry.UNDEFINED) {
-                emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
-                enviarEliminacionOkTLDP(emc, pEntrada);
-                sendTLDPWithdrawal(emc, emc.getOutgoingPortID());
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
-                emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
-                enviarEliminacionOkTLDP(emc, pEntrada);
-                sendTLDPWithdrawal(emc, emc.getOutgoingPortID());
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
-                emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
-                enviarEliminacionOkTLDP(emc, pEntrada);
-                sendTLDPWithdrawal(emc, emc.getOutgoingPortID());
-            } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                enviarEliminacionOkTLDP(emc, pEntrada);
-            } else if (etiquetaActual > 15) {
-                emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
-                enviarEliminacionOkTLDP(emc, pEntrada);
-                sendTLDPWithdrawal(emc, emc.getOutgoingPortID());
+        if (switchingMatrixEntry == null) {
+            discardPacket(packet);
+        } else if (switchingMatrixEntry.getIncomingPortID() == incomingPortID) {
+            int currentLabel = switchingMatrixEntry.getOutgoingLabel();
+            if (currentLabel == TSwitchingMatrixEntry.UNDEFINED) {
+                switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
+                sendTLDPWithdrawalOk(switchingMatrixEntry, incomingPortID);
+                sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getOutgoingPortID());
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+                switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
+                sendTLDPWithdrawalOk(switchingMatrixEntry, incomingPortID);
+                sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getOutgoingPortID());
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
+                switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
+                sendTLDPWithdrawalOk(switchingMatrixEntry, incomingPortID);
+                sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getOutgoingPortID());
+            } else if (currentLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
+                sendTLDPWithdrawalOk(switchingMatrixEntry, incomingPortID);
+                // FIX: Avoid using harcoded values. Use class constants 
+                // instead.
+            } else if (currentLabel > 15) {
+                switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
+                sendTLDPWithdrawalOk(switchingMatrixEntry, incomingPortID);
+                sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getOutgoingPortID());
             } else {
-                discardPacket(paquete);
+                discardPacket(packet);
             }
-            if (emc.backupLSPHasBeenEstablished() || emc.backupLSPShouldBeRemoved()) {
-                int etiquetaActualBackup = emc.getBackupOutgoingLabel();
-                if (etiquetaActualBackup == TSwitchingMatrixEntry.UNDEFINED) {
-                    emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
-                    sendTLDPWithdrawal(emc, emc.getBackupOutgoingPortID());
-                } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_REQUESTED) {
-                    emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
-                    sendTLDPWithdrawal(emc, emc.getBackupOutgoingPortID());
-                } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
-                    emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
-                    sendTLDPWithdrawal(emc, emc.getBackupOutgoingPortID());
-                } else if (etiquetaActualBackup == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                    // No hacemos nada... esperamos.
-                } else if (etiquetaActualBackup > 15) {
-                    emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
-                    sendTLDPWithdrawal(emc, emc.getBackupOutgoingPortID());
+            if (switchingMatrixEntry.backupLSPHasBeenEstablished() || switchingMatrixEntry.backupLSPShouldBeRemoved()) {
+                int currentBackupLabel = switchingMatrixEntry.getBackupOutgoingLabel();
+                if (currentBackupLabel == TSwitchingMatrixEntry.UNDEFINED) {
+                    switchingMatrixEntry.setBackupOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
+                    sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getBackupOutgoingPortID());
+                } else if (currentBackupLabel == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+                    switchingMatrixEntry.setBackupOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
+                    sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getBackupOutgoingPortID());
+                } else if (currentBackupLabel == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
+                    switchingMatrixEntry.setBackupOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
+                    sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getBackupOutgoingPortID());
+                } else if (currentBackupLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
+                    // Do nothing. Waiting for label removal...
+                    // FIX: Avoid using harcoded values. Use class constants 
+                    // instead.
+                } else if (currentBackupLabel > 15) {
+                    switchingMatrixEntry.setBackupOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
+                    sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getBackupOutgoingPortID());
                 } else {
-                    discardPacket(paquete);
+                    discardPacket(packet);
                 }
             }
-        } else if (emc.getOutgoingPortID() == pEntrada) {
-            int etiquetaActual = emc.getOutgoingLabel();
-            if (etiquetaActual == TSwitchingMatrixEntry.UNDEFINED) {
-                emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
-                enviarEliminacionOkTLDP(emc, pEntrada);
-                sendTLDPWithdrawal(emc, emc.getIncomingPortID());
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
-                emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
-                enviarEliminacionOkTLDP(emc, pEntrada);
-                sendTLDPWithdrawal(emc, emc.getIncomingPortID());
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
-                emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
-                enviarEliminacionOkTLDP(emc, pEntrada);
-                sendTLDPWithdrawal(emc, emc.getIncomingPortID());
-            } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                enviarEliminacionOkTLDP(emc, pEntrada);
-            } else if (etiquetaActual > 15) {
-                if (emc.backupLSPHasBeenEstablished()) {
-                    enviarEliminacionOkTLDP(emc, pEntrada);
-                    if (emc.getBackupOutgoingPortID() >= 0) {
-                        TInternalLink ei = (TInternalLink) ports.getPort(emc.getBackupOutgoingPortID()).getLink();
-                        ei.setLSPUp();
-                        ei.setBackupLSPDown();
+        } else if (switchingMatrixEntry.getOutgoingPortID() == incomingPortID) {
+            int currentLabel = switchingMatrixEntry.getOutgoingLabel();
+            if (currentLabel == TSwitchingMatrixEntry.UNDEFINED) {
+                switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
+                sendTLDPWithdrawalOk(switchingMatrixEntry, incomingPortID);
+                sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getIncomingPortID());
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+                switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
+                sendTLDPWithdrawalOk(switchingMatrixEntry, incomingPortID);
+                sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getIncomingPortID());
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
+                switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
+                sendTLDPWithdrawalOk(switchingMatrixEntry, incomingPortID);
+                sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getIncomingPortID());
+            } else if (currentLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
+                sendTLDPWithdrawalOk(switchingMatrixEntry, incomingPortID);
+                // FIX: Avoid using harcoded values. Use class constants 
+                // instead.
+            } else if (currentLabel > 15) {
+                if (switchingMatrixEntry.backupLSPHasBeenEstablished()) {
+                    sendTLDPWithdrawalOk(switchingMatrixEntry, incomingPortID);
+                    if (switchingMatrixEntry.getBackupOutgoingPortID() >= 0) {
+                        TInternalLink internalLinkAux = (TInternalLink) this.ports.getPort(switchingMatrixEntry.getBackupOutgoingPortID()).getLink();
+                        internalLinkAux.setLSPUp();
+                        internalLinkAux.setBackupLSPDown();
                     }
-                    emc.switchToBackupLSP();
+                    switchingMatrixEntry.switchToBackupLSP();
                 } else {
-                    emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
-                    enviarEliminacionOkTLDP(emc, pEntrada);
-                    sendTLDPWithdrawal(emc, emc.getIncomingPortID());
+                    switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
+                    sendTLDPWithdrawalOk(switchingMatrixEntry, incomingPortID);
+                    sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getIncomingPortID());
                 }
             } else {
-                discardPacket(paquete);
+                discardPacket(packet);
             }
-        } else if (emc.getBackupOutgoingPortID() == pEntrada) {
-            int etiquetaActualBackup = emc.getBackupOutgoingLabel();
-            if (etiquetaActualBackup == TSwitchingMatrixEntry.UNDEFINED) {
-                enviarEliminacionOkTLDP(emc, pEntrada);
-                emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
-                emc.setBackupOutgoingPortID(TSwitchingMatrixEntry.UNDEFINED);
-            } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_REQUESTED) {
-                enviarEliminacionOkTLDP(emc, pEntrada);
-                emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
-                emc.setBackupOutgoingPortID(TSwitchingMatrixEntry.UNDEFINED);
-            } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
-                enviarEliminacionOkTLDP(emc, pEntrada);
-                emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
-                emc.setBackupOutgoingPortID(TSwitchingMatrixEntry.UNDEFINED);
-            } else if (etiquetaActualBackup == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                enviarEliminacionOkTLDP(emc, pEntrada);
-                emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
-                emc.setBackupOutgoingPortID(TSwitchingMatrixEntry.UNDEFINED);
-            } else if (etiquetaActualBackup > 15) {
-                emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
-                enviarEliminacionOkTLDP(emc, pEntrada);
-                emc.setBackupOutgoingPortID(TSwitchingMatrixEntry.UNDEFINED);
+        } else if (switchingMatrixEntry.getBackupOutgoingPortID() == incomingPortID) {
+            int currentBackupLabel = switchingMatrixEntry.getBackupOutgoingLabel();
+            if (currentBackupLabel == TSwitchingMatrixEntry.UNDEFINED) {
+                sendTLDPWithdrawalOk(switchingMatrixEntry, incomingPortID);
+                switchingMatrixEntry.setBackupOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
+                switchingMatrixEntry.setBackupOutgoingPortID(TSwitchingMatrixEntry.UNDEFINED);
+            } else if (currentBackupLabel == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+                sendTLDPWithdrawalOk(switchingMatrixEntry, incomingPortID);
+                switchingMatrixEntry.setBackupOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
+                switchingMatrixEntry.setBackupOutgoingPortID(TSwitchingMatrixEntry.UNDEFINED);
+            } else if (currentBackupLabel == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
+                sendTLDPWithdrawalOk(switchingMatrixEntry, incomingPortID);
+                switchingMatrixEntry.setBackupOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
+                switchingMatrixEntry.setBackupOutgoingPortID(TSwitchingMatrixEntry.UNDEFINED);
+            } else if (currentBackupLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
+                sendTLDPWithdrawalOk(switchingMatrixEntry, incomingPortID);
+                switchingMatrixEntry.setBackupOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
+                switchingMatrixEntry.setBackupOutgoingPortID(TSwitchingMatrixEntry.UNDEFINED);
+                // FIX: Avoid using harcoded values. Use class constants 
+                // instead.
+            } else if (currentBackupLabel > 15) {
+                switchingMatrixEntry.setBackupOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
+                sendTLDPWithdrawalOk(switchingMatrixEntry, incomingPortID);
+                switchingMatrixEntry.setBackupOutgoingPortID(TSwitchingMatrixEntry.UNDEFINED);
             } else {
-                discardPacket(paquete);
+                discardPacket(packet);
             }
         }
     }
 
     /**
-     * Este m�todo trata un packet TLDP de confirmaci�n de etiqueta.
+     * This method handles a label acknowledge.
      *
-     * @param paquete Confirmaci�n de etiqueta.
-     * @param pEntrada Puerto por el que se ha recibido la confirmaci�n de
-     * etiquetas.
+     * @param packet Label acknowledge received.
+     * @param incomingPortID Port of this node from wich the label acknowledge
+     * has arrived.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
-    public void tratarSolicitudOkTLDP(TTLDPPDU paquete, int pEntrada) {
-        TSwitchingMatrixEntry emc = null;
-        emc = switchingMatrix.getEntry(paquete.getTLDPPayload().getTLDPIdentifier());
-        if (emc == null) {
-            discardPacket(paquete);
-        } else if (emc.getOutgoingPortID() == pEntrada) {
-            int etiquetaActual = emc.getOutgoingLabel();
-            if (etiquetaActual == TSwitchingMatrixEntry.UNDEFINED) {
-                discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
-                emc.setOutgoingLabel(paquete.getTLDPPayload().getLabel());
-                if (emc.getLabelOrFEC() == TSwitchingMatrixEntry.UNDEFINED) {
-                    emc.setLabelOrFEC(switchingMatrix.getNewLabel());
+    public void handleTLDPRequestOk(TTLDPPDU packet, int incomingPortID) {
+        TSwitchingMatrixEntry switchingMatrixEntry = null;
+        switchingMatrixEntry = this.switchingMatrix.getEntry(packet.getTLDPPayload().getTLDPIdentifier());
+        if (switchingMatrixEntry == null) {
+            discardPacket(packet);
+        } else if (switchingMatrixEntry.getOutgoingPortID() == incomingPortID) {
+            int currentLabel = switchingMatrixEntry.getOutgoingLabel();
+            if (currentLabel == TSwitchingMatrixEntry.UNDEFINED) {
+                discardPacket(packet);
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+                switchingMatrixEntry.setOutgoingLabel(packet.getTLDPPayload().getLabel());
+                if (switchingMatrixEntry.getLabelOrFEC() == TSwitchingMatrixEntry.UNDEFINED) {
+                    switchingMatrixEntry.setLabelOrFEC(this.switchingMatrix.getNewLabel());
                 }
-                TInternalLink et = (TInternalLink) ports.getPort(pEntrada).getLink();
-                if (et != null) {
-                    if (emc.aBackupLSPHasBeenRequested()) {
-                        et.setBackupLSP();
+                TInternalLink internalLink = (TInternalLink) this.ports.getPort(incomingPortID).getLink();
+                if (internalLink != null) {
+                    if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
+                        internalLink.setBackupLSP();
                     } else {
-                        et.setLSPUp();
+                        internalLink.setLSPUp();
                     }
                 }
-                enviarSolicitudOkTLDP(emc);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
-                discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
-                discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                discardPacket(paquete);
-            } else if (etiquetaActual > 15) {
-                discardPacket(paquete);
+                sendTLDPRequestOk(switchingMatrixEntry);
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
+                discardPacket(packet);
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
+                discardPacket(packet);
+            } else if (currentLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
+                discardPacket(packet);
+                // FIX: Avoid using harcoded values. Use class constants 
+                // instead.
+            } else if (currentLabel > 15) {
+                discardPacket(packet);
             } else {
-                discardPacket(paquete);
+                discardPacket(packet);
             }
-        } else if (emc.getBackupOutgoingPortID() == pEntrada) {
-            int etiquetaActualBackup = emc.getBackupOutgoingLabel();
-            if (etiquetaActualBackup == TSwitchingMatrixEntry.UNDEFINED) {
-                discardPacket(paquete);
-            } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_REQUESTED) {
-                emc.setBackupOutgoingLabel(paquete.getTLDPPayload().getLabel());
-                if (emc.getLabelOrFEC() == TSwitchingMatrixEntry.UNDEFINED) {
-                    emc.setLabelOrFEC(switchingMatrix.getNewLabel());
+        } else if (switchingMatrixEntry.getBackupOutgoingPortID() == incomingPortID) {
+            int currentBackupLabel = switchingMatrixEntry.getBackupOutgoingLabel();
+            if (currentBackupLabel == TSwitchingMatrixEntry.UNDEFINED) {
+                discardPacket(packet);
+            } else if (currentBackupLabel == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+                switchingMatrixEntry.setBackupOutgoingLabel(packet.getTLDPPayload().getLabel());
+                if (switchingMatrixEntry.getLabelOrFEC() == TSwitchingMatrixEntry.UNDEFINED) {
+                    switchingMatrixEntry.setLabelOrFEC(this.switchingMatrix.getNewLabel());
                 }
-                TInternalLink et = (TInternalLink) ports.getPort(pEntrada).getLink();
+                TInternalLink et = (TInternalLink) this.ports.getPort(incomingPortID).getLink();
                 if (et != null) {
                     et.setBackupLSP();
                 }
-            } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
-                discardPacket(paquete);
-            } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
-                discardPacket(paquete);
-            } else if (etiquetaActualBackup == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                discardPacket(paquete);
-            } else if (etiquetaActualBackup > 15) {
-                discardPacket(paquete);
+            } else if (currentBackupLabel == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
+                discardPacket(packet);
+            } else if (currentBackupLabel == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
+                discardPacket(packet);
+            } else if (currentBackupLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
+                discardPacket(packet);
+                // FIX: Avoid using harcoded values. Use class constants 
+                // instead.
+            } else if (currentBackupLabel > 15) {
+                discardPacket(packet);
             } else {
-                discardPacket(paquete);
+                discardPacket(packet);
             }
         }
     }
@@ -1041,9 +1136,9 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * etiquetas.
      * @since 2.0
      */
-    public void tratarSolicitudNoTLDP(TTLDPPDU paquete, int pEntrada) {
+    public void handleTLDPRefuseRequest(TTLDPPDU paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
-        emc = switchingMatrix.getEntry(paquete.getTLDPPayload().getTLDPIdentifier());
+        emc = this.switchingMatrix.getEntry(paquete.getTLDPPayload().getTLDPIdentifier());
         if (emc == null) {
             discardPacket(paquete);
         } else if (emc.getOutgoingPortID() == pEntrada) {
@@ -1052,7 +1147,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 discardPacket(paquete);
             } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
                 emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_UNAVAILABLE);
-                enviarSolicitudNoTLDP(emc);
+                sendTLDPRequestRefuse(emc);
             } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
                 discardPacket(paquete);
             } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
@@ -1070,7 +1165,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 discardPacket(paquete);
             } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_REQUESTED) {
                 emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.LABEL_UNAVAILABLE);
-                enviarSolicitudNoTLDP(emc);
+                sendTLDPRequestRefuse(emc);
             } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
                 discardPacket(paquete);
             } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
@@ -1087,19 +1182,19 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
 
     /**
      * Este m�todo trata un packet TLDP de confirmaci�n de eliminaci�n de
- etiqueta.
+     * etiqueta.
      *
      * @param paquete Paquete de confirmaci�n e eliminaci�n de etiqueta.
      * @param pEntrada Puerto por el que se ha recibido la confirmaci�n de
      * eliminaci�n de etiqueta.
      * @since 2.0
      */
-    public void tratarEliminacionOkTLDP(TTLDPPDU paquete, int pEntrada) {
+    public void handleTLDPWithdrawalOk(TTLDPPDU paquete, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
         if (paquete.getLocalOrigin() == TTLDPPDU.CAME_BY_ENTRANCE) {
-            emc = switchingMatrix.getEntry(paquete.getTLDPPayload().getTLDPIdentifier(), pEntrada);
+            emc = this.switchingMatrix.getEntry(paquete.getTLDPPayload().getTLDPIdentifier(), pEntrada);
         } else {
-            emc = switchingMatrix.getEntry(paquete.getTLDPPayload().getTLDPIdentifier());
+            emc = this.switchingMatrix.getEntry(paquete.getTLDPPayload().getTLDPIdentifier());
         }
         if (emc == null) {
             discardPacket(paquete);
@@ -1116,7 +1211,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             } else if ((etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL)
                     || (etiquetaActual == TSwitchingMatrixEntry.LABEL_WITHDRAWN)) {
                 if (emc.getOutgoingLabel() == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                    TPort pSalida = ports.getPort(emc.getOutgoingPortID());
+                    TPort pSalida = this.ports.getPort(emc.getOutgoingPortID());
                     if (pSalida != null) {
                         TInternalLink ei = (TInternalLink) pSalida.getLink();
                         if (emc.aBackupLSPHasBeenRequested()) {
@@ -1129,7 +1224,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 }
                 if (emc.getBackupOutgoingLabel() != TSwitchingMatrixEntry.LABEL_WITHDRAWN) {
                     if (emc.getBackupOutgoingPortID() >= 0) {
-                        TPort pSalida = ports.getPort(emc.getBackupOutgoingPortID());
+                        TPort pSalida = this.ports.getPort(emc.getBackupOutgoingPortID());
                         if (pSalida != null) {
                             TInternalLink ei = (TInternalLink) pSalida.getLink();
                             ei.setBackupLSPDown();
@@ -1137,7 +1232,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                         emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_WITHDRAWN);
                     }
                 }
-                TPort pSalida = ports.getPort(pEntrada);
+                TPort pSalida = this.ports.getPort(pEntrada);
                 if (pSalida != null) {
                     TInternalLink ei = (TInternalLink) pSalida.getLink();
                     if (emc.aBackupLSPHasBeenRequested()) {
@@ -1146,7 +1241,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                         ei.removeLSP();
                     }
                 }
-                switchingMatrix.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
+                this.switchingMatrix.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
             } else if (etiquetaActual > 15) {
                 discardPacket(paquete);
             } else {
@@ -1163,7 +1258,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
                 discardPacket(paquete);
             } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                TPort pSalida = ports.getPort(pEntrada);
+                TPort pSalida = this.ports.getPort(pEntrada);
                 TInternalLink ei = (TInternalLink) pSalida.getLink();
                 if (emc.aBackupLSPHasBeenRequested()) {
                     ei.setBackupLSPDown();
@@ -1171,7 +1266,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     ei.removeLSP();
                 }
                 if (emc.getBackupOutgoingLabel() == TSwitchingMatrixEntry.LABEL_WITHDRAWN) {
-                    switchingMatrix.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
+                    this.switchingMatrix.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
                 }
             } else if (etiquetaActual > 15) {
                 discardPacket(paquete);
@@ -1189,12 +1284,12 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
                 discardPacket(paquete);
             } else if (etiquetaActualBackup == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                TPort pSalida = ports.getPort(pEntrada);
+                TPort pSalida = this.ports.getPort(pEntrada);
                 TInternalLink ei = (TInternalLink) pSalida.getLink();
                 ei.setBackupLSPDown();
                 emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.LABEL_WITHDRAWN);
                 if (emc.getOutgoingLabel() == TSwitchingMatrixEntry.LABEL_WITHDRAWN) {
-                    switchingMatrix.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
+                    this.switchingMatrix.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
                 }
             } else if (etiquetaActualBackup > 15) {
                 discardPacket(paquete);
@@ -1211,15 +1306,15 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param emc Entrada de la matriz de conmutaci�n especificada.
      * @since 2.0
      */
-    public void enviarSolicitudOkTLDP(TSwitchingMatrixEntry emc) {
+    public void sendTLDPRequestOk(TSwitchingMatrixEntry emc) {
         if (emc != null) {
             if (emc.getUpstreamTLDPSessionID() != TSwitchingMatrixEntry.UNDEFINED) {
-                String IPLocal = this.getIPAddress();
-                String IPDestino = ports.getIPOfNodeLinkedTo(emc.getIncomingPortID());
+                String IPLocal = this.getIPv4Address();
+                String IPDestino = this.ports.getIPOfNodeLinkedTo(emc.getIncomingPortID());
                 if (IPDestino != null) {
                     TTLDPPDU nuevoTLDP = null;
                     try {
-                        nuevoTLDP = new TTLDPPDU(gIdent.getNextID(), IPLocal, IPDestino);
+                        nuevoTLDP = new TTLDPPDU(this.gIdent.getNextID(), IPLocal, IPDestino);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1233,7 +1328,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                         } else {
                             nuevoTLDP.setLocalTarget(TTLDPPDU.DIRECTION_BACKWARD);
                         }
-                        TPort pSalida = ports.getLocalPortConnectedToANodeWithIPAddress(IPDestino);
+                        TPort pSalida = this.ports.getLocalPortConnectedToANodeWithIPAddress(IPDestino);
                         pSalida.putPacketOnLink(nuevoTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
                             this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP, nuevoTLDP.getSize()));
@@ -1254,15 +1349,15 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param emc Entrada de la matriz de conmutaci�n correspondiente.
      * @since 2.0
      */
-    public void enviarSolicitudNoTLDP(TSwitchingMatrixEntry emc) {
+    public void sendTLDPRequestRefuse(TSwitchingMatrixEntry emc) {
         if (emc != null) {
             if (emc.getUpstreamTLDPSessionID() != TSwitchingMatrixEntry.UNDEFINED) {
-                String IPLocal = this.getIPAddress();
-                String IPDestino = ports.getIPOfNodeLinkedTo(emc.getIncomingPortID());
+                String IPLocal = this.getIPv4Address();
+                String IPDestino = this.ports.getIPOfNodeLinkedTo(emc.getIncomingPortID());
                 if (IPDestino != null) {
                     TTLDPPDU nuevoTLDP = null;
                     try {
-                        nuevoTLDP = new TTLDPPDU(gIdent.getNextID(), IPLocal, IPDestino);
+                        nuevoTLDP = new TTLDPPDU(this.gIdent.getNextID(), IPLocal, IPDestino);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1276,7 +1371,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                         } else {
                             nuevoTLDP.setLocalTarget(TTLDPPDU.DIRECTION_BACKWARD);
                         }
-                        TPort pSalida = ports.getLocalPortConnectedToANodeWithIPAddress(IPDestino);
+                        TPort pSalida = this.ports.getLocalPortConnectedToANodeWithIPAddress(IPDestino);
                         pSalida.putPacketOnLink(nuevoTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
                             this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP, nuevoTLDP.getSize()));
@@ -1299,14 +1394,14 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * eliminaci�n.
      * @param emc Entrada de la matriz de conmutaci�n especificada.
      */
-    public void enviarEliminacionOkTLDP(TSwitchingMatrixEntry emc, int puerto) {
+    public void sendTLDPWithdrawalOk(TSwitchingMatrixEntry emc, int puerto) {
         if (emc != null) {
-            String IPLocal = this.getIPAddress();
-            String IPDestino = ports.getIPOfNodeLinkedTo(puerto);
+            String IPLocal = this.getIPv4Address();
+            String IPDestino = this.ports.getIPOfNodeLinkedTo(puerto);
             if (IPDestino != null) {
                 TTLDPPDU nuevoTLDP = null;
                 try {
-                    nuevoTLDP = new TTLDPPDU(gIdent.getNextID(), IPLocal, IPDestino);
+                    nuevoTLDP = new TTLDPPDU(this.gIdent.getNextID(), IPLocal, IPDestino);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1328,7 +1423,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                             nuevoTLDP.setLocalTarget(TTLDPPDU.DIRECTION_BACKWARD);
                         }
                     }
-                    TPort pSalida = ports.getPort(puerto);
+                    TPort pSalida = this.ports.getPort(puerto);
                     pSalida.putPacketOnLink(nuevoTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     try {
                         this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), TAbstractPDU.TLDP, nuevoTLDP.getSize()));
@@ -1348,14 +1443,14 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param emc Entrada en la matriz de conmutaci�n especificada.
      * @since 2.0
      */
-    public void solicitarTLDP(TSwitchingMatrixEntry emc) {
-        String IPLocal = this.getIPAddress();
+    public void requestTLDP(TSwitchingMatrixEntry emc) {
+        String IPLocal = this.getIPv4Address();
         String IPDestinoFinal = emc.getTailEndIPAddress();
-        String IPSalto = topology.getNextHopRABANIPv4Address(IPLocal, IPDestinoFinal);
+        String IPSalto = this.topology.getNextHopRABANIPv4Address(IPLocal, IPDestinoFinal);
         if (IPSalto != null) {
             TTLDPPDU paqueteTLDP = null;
             try {
-                paqueteTLDP = new TTLDPPDU(gIdent.getNextID(), IPLocal, IPSalto);
+                paqueteTLDP = new TTLDPPDU(this.gIdent.getNextID(), IPLocal, IPSalto);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1369,7 +1464,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     paqueteTLDP.setLSPType(false);
                 }
                 paqueteTLDP.setLocalTarget(TTLDPPDU.DIRECTION_FORWARD);
-                TPort pSalida = ports.getLocalPortConnectedToANodeWithIPAddress(IPSalto);
+                TPort pSalida = this.ports.getLocalPortConnectedToANodeWithIPAddress(IPSalto);
                 if (pSalida != null) {
                     pSalida.putPacketOnLink(paqueteTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     emc.setOutgoingPortID(pSalida.getPortID());
@@ -1391,11 +1486,11 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param emc Entrada en la matriz de conmutaci�n especificada.
      * @since 2.0
      */
-    public void solicitarTLDPDeBackup(TSwitchingMatrixEntry emc) {
-        String IPLocal = this.getIPAddress();
+    public void requestTLDPForBackupLSP(TSwitchingMatrixEntry emc) {
+        String IPLocal = this.getIPv4Address();
         String IPDestinoFinal = emc.getTailEndIPAddress();
-        String IPSaltoPrincipal = ports.getIPOfNodeLinkedTo(emc.getOutgoingPortID());
-        String IPSalto = topology.getNextHopRABANIPv4Address(IPLocal, IPDestinoFinal, IPSaltoPrincipal);
+        String IPSaltoPrincipal = this.ports.getIPOfNodeLinkedTo(emc.getOutgoingPortID());
+        String IPSalto = this.topology.getNextHopRABANIPv4Address(IPLocal, IPDestinoFinal, IPSaltoPrincipal);
         if (IPSalto != null) {
             if (emc.getBackupOutgoingPortID() == TSwitchingMatrixEntry.UNDEFINED) {
                 if (emc.getBackupOutgoingLabel() == TSwitchingMatrixEntry.UNDEFINED) {
@@ -1414,7 +1509,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                                 paqueteTLDP.getTLDPPayload().setTLDPIdentifier(emc.getLocalTLDPSessionID());
                                 paqueteTLDP.setLSPType(true);
                                 paqueteTLDP.setLocalTarget(TTLDPPDU.DIRECTION_FORWARD);
-                                TPort pSalida = ports.getLocalPortConnectedToANodeWithIPAddress(IPSalto);
+                                TPort pSalida = this.ports.getLocalPortConnectedToANodeWithIPAddress(IPSalto);
                                 emc.setBackupOutgoingPortID(pSalida.getPortID());
                                 if (pSalida != null) {
                                     pSalida.putPacketOnLink(paqueteTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
@@ -1444,9 +1539,9 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     public void sendTLDPWithdrawal(TSwitchingMatrixEntry emc, int puerto) {
         if (emc != null) {
             emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
-            String IPLocal = this.getIPAddress();
+            String IPLocal = this.getIPv4Address();
             String IPDestinoFinal = emc.getTailEndIPAddress();
-            String IPSalto = ports.getIPOfNodeLinkedTo(puerto);
+            String IPSalto = this.ports.getIPOfNodeLinkedTo(puerto);
             if (IPSalto != null) {
                 TTLDPPDU paqueteTLDP = null;
                 try {
@@ -1471,7 +1566,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                             paqueteTLDP.setLocalTarget(TTLDPPDU.DIRECTION_BACKWARD);
                         }
                     }
-                    TPort pSalida = ports.getPort(puerto);
+                    TPort pSalida = this.ports.getPort(puerto);
                     if (pSalida != null) {
                         pSalida.putPacketOnLink(paqueteTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
@@ -1496,13 +1591,13 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      */
     public void solicitarTLDPTrasTimeout(TSwitchingMatrixEntry emc) {
         if (emc != null) {
-            String IPLocal = this.getIPAddress();
+            String IPLocal = this.getIPv4Address();
             String IPDestinoFinal = emc.getTailEndIPAddress();
-            String IPSalto = ports.getIPOfNodeLinkedTo(emc.getOutgoingPortID());
+            String IPSalto = this.ports.getIPOfNodeLinkedTo(emc.getOutgoingPortID());
             if (IPSalto != null) {
                 TTLDPPDU paqueteTLDP = null;
                 try {
-                    paqueteTLDP = new TTLDPPDU(gIdent.getNextID(), IPLocal, IPSalto);
+                    paqueteTLDP = new TTLDPPDU(this.gIdent.getNextID(), IPLocal, IPSalto);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1516,7 +1611,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                         paqueteTLDP.setLSPType(false);
                     }
                     paqueteTLDP.setLocalTarget(TTLDPPDU.DIRECTION_FORWARD);
-                    TPort pSalida = ports.getPort(emc.getOutgoingPortID());
+                    TPort pSalida = this.ports.getPort(emc.getOutgoingPortID());
                     if (pSalida != null) {
                         pSalida.putPacketOnLink(paqueteTLDP, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         try {
@@ -1602,14 +1697,14 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * inicializada.
      * @since 2.0
      */
-    public TSwitchingMatrixEntry crearEntradaAPartirDeTLDP(TTLDPPDU paqueteSolicitud, int pEntrada) {
+    public TSwitchingMatrixEntry createEntryFromTLDP(TTLDPPDU paqueteSolicitud, int pEntrada) {
         TSwitchingMatrixEntry emc = null;
         int IdTLDPAntecesor = paqueteSolicitud.getTLDPPayload().getTLDPIdentifier();
-        TPort puertoEntrada = ports.getPort(pEntrada);
+        TPort puertoEntrada = this.ports.getPort(pEntrada);
         String IPDestinoFinal = paqueteSolicitud.getTLDPPayload().getTailEndIPAddress();
-        String IPSalto = topology.getNextHopRABANIPv4Address(this.getIPAddress(), IPDestinoFinal);
+        String IPSalto = this.topology.getNextHopRABANIPv4Address(this.getIPv4Address(), IPDestinoFinal);
         if (IPSalto != null) {
-            TPort puertoSalida = ports.getLocalPortConnectedToANodeWithIPAddress(IPSalto);
+            TPort puertoSalida = this.ports.getLocalPortConnectedToANodeWithIPAddress(IPSalto);
             emc = new TSwitchingMatrixEntry();
             emc.setUpstreamTLDPSessionID(IdTLDPAntecesor);
             emc.setTailEndIPAddress(IPDestinoFinal);
@@ -1625,18 +1720,18 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             emc.setEntryType(TSwitchingMatrixEntry.LABEL_ENTRY);
             emc.setLabelStackOperation(TSwitchingMatrixEntry.SWAP_LABEL);
             try {
-                emc.setLocalTLDPSessionID(gIdentLDP.getNew());
+                emc.setLocalTLDPSessionID(this.gIdentLDP.getNew());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            switchingMatrix.addEntry(emc);
+            this.switchingMatrix.addEntry(emc);
         }
         return emc;
     }
 
     /**
      * Este m�todo descarta un packet del ndo y refleja este descarte en las
- estad�sticas del nodo.
+     * estad�sticas del nodo.
      *
      * @param paquete Paquete que queremos descartar.
      * @since 2.0
@@ -1707,15 +1802,15 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param t La topolog�a donde est� el nodo incluido.
      * @param recfg TRUE, si se est� reconfigurando el LSR. FALSE si se est�
      * configurando por primera vez.
-     * @return CORRECTA, si el nodo est� bien configurado. Un c�digo de error en
-     * caso contrario.
+     * @return OK, si el nodo est� bien configurado. Un c�digo de error en caso
+     * contrario.
      * @since 2.0
      */
     @Override
     public int validateConfig(TTopology t, boolean recfg) {
         this.setWellConfigured(false);
         if (this.getName().equals("")) {
-            return this.SIN_NOMBRE;
+            return TActiveLSRNode.UNNAMED;
         }
         boolean soloEspacios = true;
         for (int i = 0; i < this.getName().length(); i++) {
@@ -1724,28 +1819,28 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             }
         }
         if (soloEspacios) {
-            return this.SOLO_ESPACIOS;
+            return TActiveLSRNode.ONLY_BLANK_SPACES;
         }
         if (!recfg) {
             TNode tp = t.setFirstNodeNamed(this.getName());
             if (tp != null) {
-                return this.NOMBRE_YA_EXISTE;
+                return TActiveLSRNode.NAME_ALREADY_EXISTS;
             }
         } else {
             TNode tp = t.setFirstNodeNamed(this.getName());
             if (tp != null) {
                 if (this.topology.thereIsMoreThanANodeNamed(this.getName())) {
-                    return this.NOMBRE_YA_EXISTE;
+                    return TActiveLSRNode.NAME_ALREADY_EXISTS;
                 }
             }
         }
         this.setWellConfigured(true);
-        return this.CORRECTA;
+        return TActiveLSRNode.OK;
     }
 
     /**
      * Este m�todo transforma el c�digo de error de configuraci�n del nodo en un
- messageType aclaratorio.
+     * messageType aclaratorio.
      *
      * @param e C�digo de error.
      * @return Texto explicativo del c�digo de error.
@@ -1754,11 +1849,11 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     @Override
     public String getErrorMessage(int e) {
         switch (e) {
-            case SIN_NOMBRE:
+            case TActiveLSRNode.UNNAMED:
                 return (java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TConfigLSR.FALTA_NOMBRE"));
-            case NOMBRE_YA_EXISTE:
+            case TActiveLSRNode.NAME_ALREADY_EXISTS:
                 return (java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TConfigLSR.NOMBRE_REPETIDO"));
-            case SOLO_ESPACIOS:
+            case TActiveLSRNode.ONLY_BLANK_SPACES:
                 return (java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TNodoLSR.NombreNoSoloEspacios"));
         }
         return ("");
@@ -1778,7 +1873,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         cadena += "#";
         cadena += this.getName().replace('#', ' ');
         cadena += "#";
-        cadena += this.getIPAddress();
+        cadena += this.getIPv4Address();
         cadena += "#";
         cadena += this.getStatus();
         cadena += "#";
@@ -1792,7 +1887,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         cadena += "#";
         cadena += this.switchingPowerInMbps;
         cadena += "#";
-        cadena += this.getPorts().getBufferSizeInMB();
+        cadena += this.getPorts().getBufferSizeInMBytes();
         cadena += "#";
         cadena += this.dmgp.getDMGPSizeInKB();
         cadena += "#";
@@ -1814,18 +1909,18 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         if (valores.length != 13) {
             return false;
         }
-        this.setID(Integer.valueOf(valores[2]).intValue());
+        this.setID(Integer.parseInt(valores[2]));
         this.setName(valores[3]);
         this.setIPAddress(valores[4]);
-        this.setStatus(Integer.valueOf(valores[5]).intValue());
-        this.setShowName(Boolean.valueOf(valores[6]).booleanValue());
-        this.setGenerateStats(Boolean.valueOf(valores[7]).booleanValue());
-        int posX = Integer.valueOf(valores[8]).intValue();
-        int posY = Integer.valueOf(valores[9]).intValue();
+        this.setStatus(Integer.parseInt(valores[5]));
+        this.setShowName(Boolean.parseBoolean(valores[6]));
+        this.setGenerateStats(Boolean.parseBoolean(valores[7]));
+        int posX = Integer.parseInt(valores[8]);
+        int posY = Integer.parseInt(valores[9]);
         this.setPosition(new Point(posX + 24, posY + 24));
-        this.switchingPowerInMbps = Integer.valueOf(valores[10]).intValue();
-        this.getPorts().setBufferSizeInMB(Integer.valueOf(valores[11]).intValue());
-        this.dmgp.setDMGPSizeInKB(Integer.valueOf(valores[12]).intValue());
+        this.switchingPowerInMbps = Integer.parseInt(valores[10]);
+        this.getPorts().setBufferSizeInMB(Integer.parseInt(valores[11]));
+        this.dmgp.setDMGPSizeInKB(Integer.parseInt(valores[12]));
         return true;
     }
 
@@ -1837,7 +1932,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      */
     @Override
     public TStats getStats() {
-        return stats;
+        return this.stats;
     }
 
     /**
@@ -1848,35 +1943,13 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      */
     @Override
     public synchronized void setPorts(int num) {
-        ports = new TActivePortSet(num, this);
+        this.ports = new TActivePortSet(num, this);
     }
 
-    /**
-     * Esta constante indica que la configuraci�n del nodo es correcta.
-     *
-     * @since 2.0
-     */
-    public static final int CORRECTA = 0;
-    /**
-     * Esta constante indica que en la configuraci�n del nodo, falta el nombre.
-     *
-     * @since 2.0
-     */
-    public static final int SIN_NOMBRE = 1;
-    /**
-     * Esta constante indica que, en la configuraci�n del nodo, se ha elegido un
-     * nombre que ya est� siendo usado.
-     *
-     * @since 2.0
-     */
-    public static final int NOMBRE_YA_EXISTE = 2;
-    /**
-     * Esta constante indica que en la configuraci�n del nodo, el nombre elegido
-     * es err�neo porque solo cuenta con espacios.
-     *
-     * @since 2.0
-     */
-    public static final int SOLO_ESPACIOS = 3;
+    public static final int OK = 0;
+    public static final int UNNAMED = 1;
+    public static final int NAME_ALREADY_EXISTS = 2;
+    public static final int ONLY_BLANK_SPACES = 3;
 
     private TSwitchingMatrix switchingMatrix;
     private TLongIDGenerator gIdent;

@@ -139,7 +139,7 @@ public class TTopology {
         Iterator iterador = conjuntoNodos.iterator();
         while (iterador.hasNext()) {
             nodo = (TNode) iterador.next();
-            if (nodo.getIPAddress().equals(ip))
+            if (nodo.getIPv4Address().equals(ip))
                 return nodo;
         }
         return null;
@@ -218,7 +218,7 @@ public class TTopology {
             nodo = (TNode) iterador.next();
             if (nodo.getNodeType() == TNode.SENDER) {
                 emisor = (TSenderNode) nodo;
-                if (emisor.obtenerDestino().equals(nr.getIPAddress()))
+                if (emisor.obtenerDestino().equals(nr.getIPv4Address()))
                     return true;
             }
         }
@@ -806,7 +806,7 @@ public class TTopology {
         int siguienteSalto = obtenerSalto(origen, destino);
         TNode nt = this.obtenerNodo(siguienteSalto);
         if (nt != null)
-            return nt.getIPAddress();
+            return nt.getIPv4Address();
         return null;
     }
 
@@ -824,7 +824,7 @@ public class TTopology {
         int siguienteSalto = obtenerSaltoRABAN(origen, destino);
         TNode nt = this.obtenerNodo(siguienteSalto);
         if (nt != null)
-            return nt.getIPAddress();
+            return nt.getIPv4Address();
         return null;
     }
 
@@ -846,7 +846,7 @@ public class TTopology {
         int siguienteSalto = obtenerSaltoRABAN(origen, destino, nodoAEvitar);
         TNode nt = this.obtenerNodo(siguienteSalto);
         if (nt != null)
-            return nt.getIPAddress();
+            return nt.getIPv4Address();
         return null;
     }
 

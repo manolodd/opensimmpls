@@ -326,11 +326,11 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
         cadena += "#";
         cadena += this.obtenerDelay();
         cadena += "#";
-        cadena += this.getEnd1().getIPAddress();
+        cadena += this.getEnd1().getIPv4Address();
         cadena += "#";
         cadena += this.obtenerPuertoExtremo1();
         cadena += "#";
-        cadena += this.getEnd2().getIPAddress();
+        cadena += this.getEnd2().getIPv4Address();
         cadena += "#";
         cadena += this.obtenerPuertoExtremo2();
         cadena += "#";

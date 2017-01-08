@@ -243,7 +243,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
         cadena += "#";
         cadena += this.getName().replace('#', ' ');
         cadena += "#";
-        cadena += this.getIPAddress();
+        cadena += this.getIPv4Address();
         cadena += "#";
         cadena += this.getStatus();
         cadena += "#";

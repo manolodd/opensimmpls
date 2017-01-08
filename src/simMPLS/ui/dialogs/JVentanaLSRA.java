@@ -422,7 +422,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     configLSRA.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
     configLSRA.setShowName(verNombre.isSelected());
     int error = configLSRA.validateConfig(topo, this.reconfigurando);
-    if (error != TActiveLSRNode.CORRECTA) {
+    if (error != TActiveLSRNode.OK) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
         va.mostrarMensaje(configLSRA.getErrorMessage(error));
         va.show();

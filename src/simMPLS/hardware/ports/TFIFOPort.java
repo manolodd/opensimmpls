@@ -103,7 +103,7 @@ public class TFIFOPort extends TPort {
                 this.getPortSet().getParentNode().getStats().addStatsEntry(packet, TStats.ENTRADA);
             }
         } else {
-            if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= (parentPortSetAux.getBufferSizeInMB() * 1024 * 1024)) {
+            if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= (parentPortSetAux.getBufferSizeInMBytes() * 1024 * 1024)) {
                 this.buffer.addLast(packet);
                 parentPortSetAux.increasePortSetOccupancy(packet.getSize());
                 TSEPacketReceived packetReceivedEvent = new TSEPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getAvailableTime(), packetSubtype, packet.getSize());
@@ -145,7 +145,7 @@ public class TFIFOPort extends TPort {
             this.buffer.addLast(packet);
             parentPortSetAux.increasePortSetOccupancy(packet.getSize());
         } else {
-            if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= (parentPortSetAux.getBufferSizeInMB() * 1024 * 1024)) {
+            if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= (parentPortSetAux.getBufferSizeInMBytes() * 1024 * 1024)) {
                 this.buffer.addLast(packet);
                 parentPortSetAux.increasePortSetOccupancy(packet.getSize());
             } else {
@@ -215,7 +215,7 @@ public class TFIFOPort extends TPort {
             return 0;
         }
         TFIFOPortSet parentPortSetAux = (TFIFOPortSet) this.parentPortSet;
-        long congestion = (parentPortSetAux.getPortSetOccupancy() * 100) / (parentPortSetAux.getBufferSizeInMB() * 1024 * 1024);
+        long congestion = (parentPortSetAux.getPortSetOccupancy() * 100) / (parentPortSetAux.getBufferSizeInMBytes() * 1024 * 1024);
         return congestion;
     }
 

@@ -135,7 +135,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * @since 2.0
      */
     public int obtenerTamanioBuffer() {
-        return this.getPorts().getBufferSizeInMB();
+        return this.getPorts().getBufferSizeInMBytes();
     }
     
     /**
@@ -302,12 +302,12 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
             int idPaquete = paquete.getGPSRPPayload().getPacketID();
             String IPDestinoFinal = paquete.getIPv4Header().getTailEndIPAddress();
             TFIFOPort pSalida = null;
-            if (IPDestinoFinal.equals(this.getIPAddress())) {
+            if (IPDestinoFinal.equals(this.getIPv4Address())) {
                 // Un LSR no entiende peticiones GPSRP, por tanto no pueder
                 // haber mensajes GPSRP dirigidos a �l.
                 this.discardPacket(paquete);
             } else {
-                String IPSalida = this.topology.obtenerIPSalto(this.getIPAddress(), IPDestinoFinal);
+                String IPSalida = this.topology.obtenerIPSalto(this.getIPv4Address(), IPDestinoFinal);
                 pSalida = (TFIFOPort) this.ports.getLocalPortConnectedToANodeWithIPAddress(IPSalida);
                 if (pSalida != null) {
                     pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
@@ -666,7 +666,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     public void enviarSolicitudOkTLDP(TSwitchingMatrixEntry emc) {
         if (emc != null) {
             if (emc.getUpstreamTLDPSessionID() != TSwitchingMatrixEntry.UNDEFINED) {
-                String IPLocal = this.getIPAddress();
+                String IPLocal = this.getIPv4Address();
                 String IPDestino = ports.getIPOfNodeLinkedTo(emc.getIncomingPortID());
                 if (IPDestino != null) {
                     TTLDPPDU nuevoTLDP = null;
@@ -708,7 +708,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     public void enviarSolicitudNoTLDP(TSwitchingMatrixEntry emc) {
         if (emc != null) {
             if (emc.getUpstreamTLDPSessionID() != TSwitchingMatrixEntry.UNDEFINED) {
-                String IPLocal = this.getIPAddress();
+                String IPLocal = this.getIPv4Address();
                 String IPDestino = ports.getIPOfNodeLinkedTo(emc.getIncomingPortID());
                 if (IPDestino != null) {
                     TTLDPPDU nuevoTLDP = null;
@@ -750,7 +750,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      */
     public void enviarEliminacionOkTLDP(TSwitchingMatrixEntry emc, int puerto) {
         if (emc != null) {
-            String IPLocal = this.getIPAddress();
+            String IPLocal = this.getIPv4Address();
             String IPDestino = ports.getIPOfNodeLinkedTo(puerto);
             if (IPDestino != null) {
                 TTLDPPDU nuevoTLDP = null;
@@ -794,7 +794,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * @since 2.0
      */
     public void solicitarTLDP(TSwitchingMatrixEntry emc) {
-        String IPLocal = this.getIPAddress();
+        String IPLocal = this.getIPv4Address();
         String IPDestinoFinal = emc.getTailEndIPAddress();
         String IPSalto = topology.obtenerIPSalto(IPLocal, IPDestinoFinal);
         if (IPSalto != null) {
@@ -839,7 +839,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         if (emc != null) {
             if (emc.getUpstreamTLDPSessionID() != TSwitchingMatrixEntry.UNDEFINED) {
                 emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
-                String IPLocal = this.getIPAddress();
+                String IPLocal = this.getIPv4Address();
                 String IPDestinoFinal = emc.getTailEndIPAddress();
                 String IPSalto = ports.getIPOfNodeLinkedTo(puerto);
                 if (IPSalto != null) {
@@ -887,7 +887,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      */
     public void solicitarTLDPTrasTimeout(TSwitchingMatrixEntry emc) {
         if (emc != null) {
-            String IPLocal = this.getIPAddress();
+            String IPLocal = this.getIPv4Address();
             String IPDestinoFinal = emc.getTailEndIPAddress();
             String IPSalto = ports.getIPOfNodeLinkedTo(emc.getOutgoingPortID());
             if (IPSalto != null) {
@@ -994,7 +994,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         int IdTLDPAntecesor = paqueteSolicitud.getTLDPPayload().getTLDPIdentifier();
         TPort puertoEntrada = ports.getPort(pEntrada);
         String IPDestinoFinal = paqueteSolicitud.getTLDPPayload().getTailEndIPAddress();
-        String IPSalto = topology.obtenerIPSalto(this.getIPAddress(), IPDestinoFinal);
+        String IPSalto = topology.obtenerIPSalto(this.getIPv4Address(), IPDestinoFinal);
         if (IPSalto != null) {
             TPort puertoSalida = ports.getLocalPortConnectedToANodeWithIPAddress(IPSalto);
             emc = new TSwitchingMatrixEntry();
@@ -1141,7 +1141,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         cadena += "#";
         cadena += this.getName().replace('#', ' ');
         cadena += "#";
-        cadena += this.getIPAddress();
+        cadena += this.getIPv4Address();
         cadena += "#";
         cadena += this.getStatus();
         cadena += "#";
@@ -1155,7 +1155,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         cadena += "#";
         cadena += this.potenciaEnMb;
         cadena += "#";
-        cadena += this.getPorts().getBufferSizeInMB();
+        cadena += this.getPorts().getBufferSizeInMBytes();
         cadena += "#";
         return cadena;
     }

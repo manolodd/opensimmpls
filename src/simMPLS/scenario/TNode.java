@@ -230,7 +230,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @return La direcci�n IP del nodo.
      * @since 2.0
      */    
-    public String getIPAddress() {
+    public String getIPv4Address() {
         return IP;
     }
 

@@ -103,7 +103,7 @@ public class TFIFOPortSet extends TPortSet {
      * @since 2.0
      */
     @Override
-    public int getBufferSizeInMB() {
+    public int getBufferSizeInMBytes() {
         return this.portSetBufferSize;
     }
 
@@ -319,11 +319,11 @@ public class TFIFOPortSet extends TPortSet {
             if (!this.ports[i].isAvailable()) {
                 int targetNodeID = this.ports[i].getLink().getTargetNodeIDOfTrafficSentBy(this.parentNode);
                 if (targetNodeID == TLink.END_NODE_1) {
-                    if (this.ports[i].getLink().getEnd1().getIPAddress().equals(adjacentNodeIP)) {
+                    if (this.ports[i].getLink().getEnd1().getIPv4Address().equals(adjacentNodeIP)) {
                         return this.ports[i];
                     }
                 } else {
-                    if (this.ports[i].getLink().getEnd2().getIPAddress().equals(adjacentNodeIP)) {
+                    if (this.ports[i].getLink().getEnd2().getIPv4Address().equals(adjacentNodeIP)) {
                         return this.ports[i];
                     }
                 }
@@ -346,11 +346,11 @@ public class TFIFOPortSet extends TPortSet {
     public String getIPOfNodeLinkedTo(int portID) {
         if ((portID >= 0) && (portID < this.numberOfPorts)) {
             if (!this.ports[portID].isAvailable()) {
-                String IP2 = this.ports[portID].getLink().getEnd2().getIPAddress();
-                if (this.ports[portID].getLink().getEnd1().getIPAddress().equals(this.parentNode.getIPAddress())) {
-                    return this.ports[portID].getLink().getEnd2().getIPAddress();
+                String IP2 = this.ports[portID].getLink().getEnd2().getIPv4Address();
+                if (this.ports[portID].getLink().getEnd1().getIPv4Address().equals(this.parentNode.getIPv4Address())) {
+                    return this.ports[portID].getLink().getEnd2().getIPv4Address();
                 }
-                return this.ports[portID].getLink().getEnd1().getIPAddress();
+                return this.ports[portID].getLink().getEnd1().getIPv4Address();
             }
         }
         return null;
@@ -410,7 +410,7 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public void setArtificiallyCongested(boolean congestArtificially) {
-        long computationOf97Percent = (long) (this.getBufferSizeInMB() * 1017118.72);
+        long computationOf97Percent = (long) (this.getBufferSizeInMBytes() * 1017118.72);
         if (congestArtificially) {
             if (!this.artificiallyCongested) {
                 if (this.getPortSetOccupancy() < computationOf97Percent) {
