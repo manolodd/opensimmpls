@@ -1129,172 +1129,184 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo trata un packet TLDP de denegaci�n de etiqueta.
+     * This method handles a received TLDP packet containing a label refusal.
      *
-     * @param paquete Paquete de denegaci�n de etiquetas recibido.
-     * @param pEntrada Puerto por el que se ha recibido la denegaci�n de
-     * etiquetas.
+     * @param packet Label refusal received.
+     * @param incomingPortID Port of this node from wich the label refusal has
+     * arrived.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
-    public void handleTLDPRefuseRequest(TTLDPPDU paquete, int pEntrada) {
-        TSwitchingMatrixEntry emc = null;
-        emc = this.switchingMatrix.getEntry(paquete.getTLDPPayload().getTLDPIdentifier());
-        if (emc == null) {
-            discardPacket(paquete);
-        } else if (emc.getOutgoingPortID() == pEntrada) {
-            int etiquetaActual = emc.getOutgoingLabel();
-            if (etiquetaActual == TSwitchingMatrixEntry.UNDEFINED) {
-                discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
-                emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_UNAVAILABLE);
-                sendTLDPRequestRefuse(emc);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
-                discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
-                discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                discardPacket(paquete);
-            } else if (etiquetaActual > 15) {
-                discardPacket(paquete);
+    public void handleTLDPRefuseRequest(TTLDPPDU packet, int incomingPortID) {
+        TSwitchingMatrixEntry switchingMatrixEntry = null;
+        switchingMatrixEntry = this.switchingMatrix.getEntry(packet.getTLDPPayload().getTLDPIdentifier());
+        if (switchingMatrixEntry == null) {
+            discardPacket(packet);
+        } else if (switchingMatrixEntry.getOutgoingPortID() == incomingPortID) {
+            int currentLabel = switchingMatrixEntry.getOutgoingLabel();
+            if (currentLabel == TSwitchingMatrixEntry.UNDEFINED) {
+                discardPacket(packet);
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+                switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_UNAVAILABLE);
+                sendTLDPRequestRefuse(switchingMatrixEntry);
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
+                discardPacket(packet);
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
+                discardPacket(packet);
+            } else if (currentLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
+                discardPacket(packet);
+                // FIX: Avoid using harcoded values. Use class constants 
+                // instead.
+            } else if (currentLabel > 15) {
+                discardPacket(packet);
             } else {
-                discardPacket(paquete);
+                discardPacket(packet);
             }
-        } else if (emc.getBackupOutgoingPortID() == pEntrada) {
-            int etiquetaActualBackup = emc.getBackupOutgoingLabel();
-            if (etiquetaActualBackup == TSwitchingMatrixEntry.UNDEFINED) {
-                discardPacket(paquete);
-            } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_REQUESTED) {
-                emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.LABEL_UNAVAILABLE);
-                sendTLDPRequestRefuse(emc);
-            } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
-                discardPacket(paquete);
-            } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
-                discardPacket(paquete);
-            } else if (etiquetaActualBackup == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                discardPacket(paquete);
-            } else if (etiquetaActualBackup > 15) {
-                discardPacket(paquete);
+        } else if (switchingMatrixEntry.getBackupOutgoingPortID() == incomingPortID) {
+            int currentBackupLabel = switchingMatrixEntry.getBackupOutgoingLabel();
+            if (currentBackupLabel == TSwitchingMatrixEntry.UNDEFINED) {
+                discardPacket(packet);
+            } else if (currentBackupLabel == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+                switchingMatrixEntry.setBackupOutgoingLabel(TSwitchingMatrixEntry.LABEL_UNAVAILABLE);
+                sendTLDPRequestRefuse(switchingMatrixEntry);
+            } else if (currentBackupLabel == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
+                discardPacket(packet);
+            } else if (currentBackupLabel == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
+                discardPacket(packet);
+            } else if (currentBackupLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
+                discardPacket(packet);
+                // FIX: Avoid using harcoded values. Use class constants 
+                // instead.
+            } else if (currentBackupLabel > 15) {
+                discardPacket(packet);
             } else {
-                discardPacket(paquete);
+                discardPacket(packet);
             }
         }
     }
 
     /**
-     * Este m�todo trata un packet TLDP de confirmaci�n de eliminaci�n de
-     * etiqueta.
+     * This method handles a TLDP packet containing a label withdrawal
+     * acknowledgement.
      *
-     * @param paquete Paquete de confirmaci�n e eliminaci�n de etiqueta.
-     * @param pEntrada Puerto por el que se ha recibido la confirmaci�n de
-     * eliminaci�n de etiqueta.
+     * @param packet Label withdrawal acknowledgement received.
+     * @param incomingPortID Port of this node from wich the label withdrawal
+     * acknowledgement has arrived.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
-    public void handleTLDPWithdrawalOk(TTLDPPDU paquete, int pEntrada) {
-        TSwitchingMatrixEntry emc = null;
-        if (paquete.getLocalOrigin() == TTLDPPDU.CAME_BY_ENTRANCE) {
-            emc = this.switchingMatrix.getEntry(paquete.getTLDPPayload().getTLDPIdentifier(), pEntrada);
+    public void handleTLDPWithdrawalOk(TTLDPPDU packet, int incomingPortID) {
+        TSwitchingMatrixEntry switchingMatrixEntry = null;
+        if (packet.getLocalOrigin() == TTLDPPDU.CAME_BY_ENTRANCE) {
+            switchingMatrixEntry = this.switchingMatrix.getEntry(packet.getTLDPPayload().getTLDPIdentifier(), incomingPortID);
         } else {
-            emc = this.switchingMatrix.getEntry(paquete.getTLDPPayload().getTLDPIdentifier());
+            switchingMatrixEntry = this.switchingMatrix.getEntry(packet.getTLDPPayload().getTLDPIdentifier());
         }
-        if (emc == null) {
-            discardPacket(paquete);
-        } else if (emc.getIncomingPortID() == pEntrada) {
-            int etiquetaActual = emc.getOutgoingLabel();
-            if (etiquetaActual == TSwitchingMatrixEntry.UNDEFINED) {
-                discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
-                discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
-                discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
-                discardPacket(paquete);
-            } else if ((etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL)
-                    || (etiquetaActual == TSwitchingMatrixEntry.LABEL_WITHDRAWN)) {
-                if (emc.getOutgoingLabel() == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                    TPort pSalida = this.ports.getPort(emc.getOutgoingPortID());
-                    if (pSalida != null) {
-                        TInternalLink ei = (TInternalLink) pSalida.getLink();
-                        if (emc.aBackupLSPHasBeenRequested()) {
-                            ei.setBackupLSPDown();
+        if (switchingMatrixEntry == null) {
+            discardPacket(packet);
+        } else if (switchingMatrixEntry.getIncomingPortID() == incomingPortID) {
+            int currentLabel = switchingMatrixEntry.getOutgoingLabel();
+            if (currentLabel == TSwitchingMatrixEntry.UNDEFINED) {
+                discardPacket(packet);
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+                discardPacket(packet);
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
+                discardPacket(packet);
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
+                discardPacket(packet);
+            } else if ((currentLabel == TSwitchingMatrixEntry.REMOVING_LABEL)
+                    || (currentLabel == TSwitchingMatrixEntry.LABEL_WITHDRAWN)) {
+                if (switchingMatrixEntry.getOutgoingLabel() == TSwitchingMatrixEntry.REMOVING_LABEL) {
+                    TPort outgoingPort = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID());
+                    if (outgoingPort != null) {
+                        TInternalLink internalLink = (TInternalLink) outgoingPort.getLink();
+                        if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
+                            internalLink.setBackupLSPDown();
                         } else {
-                            ei.removeLSP();
+                            internalLink.removeLSP();
                         }
                     }
-                    emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_WITHDRAWN);
+                    switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_WITHDRAWN);
                 }
-                if (emc.getBackupOutgoingLabel() != TSwitchingMatrixEntry.LABEL_WITHDRAWN) {
-                    if (emc.getBackupOutgoingPortID() >= 0) {
-                        TPort pSalida = this.ports.getPort(emc.getBackupOutgoingPortID());
-                        if (pSalida != null) {
-                            TInternalLink ei = (TInternalLink) pSalida.getLink();
-                            ei.setBackupLSPDown();
+                if (switchingMatrixEntry.getBackupOutgoingLabel() != TSwitchingMatrixEntry.LABEL_WITHDRAWN) {
+                    if (switchingMatrixEntry.getBackupOutgoingPortID() >= 0) {
+                        TPort outgoingPort = this.ports.getPort(switchingMatrixEntry.getBackupOutgoingPortID());
+                        if (outgoingPort != null) {
+                            TInternalLink internalLink = (TInternalLink) outgoingPort.getLink();
+                            internalLink.setBackupLSPDown();
                         }
-                        emc.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_WITHDRAWN);
+                        switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_WITHDRAWN);
                     }
                 }
-                TPort pSalida = this.ports.getPort(pEntrada);
-                if (pSalida != null) {
-                    TInternalLink ei = (TInternalLink) pSalida.getLink();
-                    if (emc.aBackupLSPHasBeenRequested()) {
-                        ei.setBackupLSPDown();
+                TPort outgoingPort = this.ports.getPort(incomingPortID);
+                if (outgoingPort != null) {
+                    TInternalLink internalLink = (TInternalLink) outgoingPort.getLink();
+                    if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
+                        internalLink.setBackupLSPDown();
                     } else {
-                        ei.removeLSP();
+                        internalLink.removeLSP();
                     }
                 }
-                this.switchingMatrix.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
-            } else if (etiquetaActual > 15) {
-                discardPacket(paquete);
+                this.switchingMatrix.removeEntry(switchingMatrixEntry.getIncomingPortID(), switchingMatrixEntry.getLabelOrFEC(), switchingMatrixEntry.getEntryType());
+                // FIX: Avoid using harcoded values. Use class constants 
+                // instead.
+            } else if (currentLabel > 15) {
+                discardPacket(packet);
             } else {
-                discardPacket(paquete);
+                discardPacket(packet);
             }
-        } else if (emc.getOutgoingPortID() == pEntrada) {
-            int etiquetaActual = emc.getOutgoingLabel();
-            if (etiquetaActual == TSwitchingMatrixEntry.UNDEFINED) {
-                discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_REQUESTED) {
-                discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
-                discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
-                discardPacket(paquete);
-            } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                TPort pSalida = this.ports.getPort(pEntrada);
-                TInternalLink ei = (TInternalLink) pSalida.getLink();
-                if (emc.aBackupLSPHasBeenRequested()) {
-                    ei.setBackupLSPDown();
+        } else if (switchingMatrixEntry.getOutgoingPortID() == incomingPortID) {
+            int currentLabel = switchingMatrixEntry.getOutgoingLabel();
+            if (currentLabel == TSwitchingMatrixEntry.UNDEFINED) {
+                discardPacket(packet);
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+                discardPacket(packet);
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
+                discardPacket(packet);
+            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
+                discardPacket(packet);
+            } else if (currentLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
+                TPort outgoingPort = this.ports.getPort(incomingPortID);
+                TInternalLink internalLink = (TInternalLink) outgoingPort.getLink();
+                if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
+                    internalLink.setBackupLSPDown();
                 } else {
-                    ei.removeLSP();
+                    internalLink.removeLSP();
                 }
-                if (emc.getBackupOutgoingLabel() == TSwitchingMatrixEntry.LABEL_WITHDRAWN) {
-                    this.switchingMatrix.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
+                if (switchingMatrixEntry.getBackupOutgoingLabel() == TSwitchingMatrixEntry.LABEL_WITHDRAWN) {
+                    this.switchingMatrix.removeEntry(switchingMatrixEntry.getIncomingPortID(), switchingMatrixEntry.getLabelOrFEC(), switchingMatrixEntry.getEntryType());
                 }
-            } else if (etiquetaActual > 15) {
-                discardPacket(paquete);
+                // FIX: Avoid using harcoded values. Use class constants 
+                // instead.
+            } else if (currentLabel > 15) {
+                discardPacket(packet);
             } else {
-                discardPacket(paquete);
+                discardPacket(packet);
             }
-        } else if (emc.getBackupOutgoingPortID() == pEntrada) {
-            int etiquetaActualBackup = emc.getBackupOutgoingLabel();
-            if (etiquetaActualBackup == TSwitchingMatrixEntry.UNDEFINED) {
-                discardPacket(paquete);
-            } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_REQUESTED) {
-                discardPacket(paquete);
-            } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
-                discardPacket(paquete);
-            } else if (etiquetaActualBackup == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
-                discardPacket(paquete);
-            } else if (etiquetaActualBackup == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                TPort pSalida = this.ports.getPort(pEntrada);
-                TInternalLink ei = (TInternalLink) pSalida.getLink();
-                ei.setBackupLSPDown();
-                emc.setBackupOutgoingLabel(TSwitchingMatrixEntry.LABEL_WITHDRAWN);
-                if (emc.getOutgoingLabel() == TSwitchingMatrixEntry.LABEL_WITHDRAWN) {
-                    this.switchingMatrix.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
+        } else if (switchingMatrixEntry.getBackupOutgoingPortID() == incomingPortID) {
+            int currentBackupLabel = switchingMatrixEntry.getBackupOutgoingLabel();
+            if (currentBackupLabel == TSwitchingMatrixEntry.UNDEFINED) {
+                discardPacket(packet);
+            } else if (currentBackupLabel == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+                discardPacket(packet);
+            } else if (currentBackupLabel == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
+                discardPacket(packet);
+            } else if (currentBackupLabel == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
+                discardPacket(packet);
+            } else if (currentBackupLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
+                TPort outgoingPort = this.ports.getPort(incomingPortID);
+                TInternalLink internalLink = (TInternalLink) outgoingPort.getLink();
+                internalLink.setBackupLSPDown();
+                switchingMatrixEntry.setBackupOutgoingLabel(TSwitchingMatrixEntry.LABEL_WITHDRAWN);
+                if (switchingMatrixEntry.getOutgoingLabel() == TSwitchingMatrixEntry.LABEL_WITHDRAWN) {
+                    this.switchingMatrix.removeEntry(switchingMatrixEntry.getIncomingPortID(), switchingMatrixEntry.getLabelOrFEC(), switchingMatrixEntry.getEntryType());
                 }
-            } else if (etiquetaActualBackup > 15) {
-                discardPacket(paquete);
+                // FIX: Avoid using harcoded values. Use class constants 
+                // instead.
+            } else if (currentBackupLabel > 15) {
+                discardPacket(packet);
             } else {
-                discardPacket(paquete);
+                discardPacket(packet);
             }
         }
     }

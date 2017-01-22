@@ -1383,9 +1383,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     || (currentLabel == TSwitchingMatrixEntry.LABEL_WITHDRAWN)) {
                 if (switchingMatrixEntry.getOutgoingLabel() != TSwitchingMatrixEntry.LABEL_ASSIGNED) {
                     if (switchingMatrixEntry.getOutgoingLabel() == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                        TPort outgoingPortID = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID());
-                        if (outgoingPortID != null) {
-                            TLink link = outgoingPortID.getLink();
+                        TPort outgoingPort = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID());
+                        if (outgoingPort != null) {
+                            TLink link = outgoingPort.getLink();
                             if (link.getLinkType() == TLink.INTERNAL) {
                                 TInternalLink internalLink = (TInternalLink) link;
                                 if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
@@ -1402,9 +1402,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 if (switchingMatrixEntry.getBackupOutgoingLabel() != TSwitchingMatrixEntry.LABEL_ASSIGNED) {
                     if (switchingMatrixEntry.getBackupOutgoingLabel() == TSwitchingMatrixEntry.REMOVING_LABEL) {
                         if (switchingMatrixEntry.getBackupOutgoingPortID() >= 0) {
-                            TPort outgoingPortID = this.ports.getPort(switchingMatrixEntry.getBackupOutgoingPortID());
-                            if (outgoingPortID != null) {
-                                TLink link = outgoingPortID.getLink();
+                            TPort outgoingPort = this.ports.getPort(switchingMatrixEntry.getBackupOutgoingPortID());
+                            if (outgoingPort != null) {
+                                TLink link = outgoingPort.getLink();
                                 if (link.getLinkType() == TLink.INTERNAL) {
                                     TInternalLink internalLink = (TInternalLink) link;
                                     internalLink.setBackupLSPDown();
@@ -1415,9 +1415,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     }
                 }
                 if (switchingMatrixEntry.getIncomingPortID() != TSwitchingMatrixEntry.UNDEFINED) {
-                    TPort outgoingPortID = this.ports.getPort(incomingPortID);
-                    if (outgoingPortID != null) {
-                        TLink link = outgoingPortID.getLink();
+                    TPort outgoingPort = this.ports.getPort(incomingPortID);
+                    if (outgoingPort != null) {
+                        TLink link = outgoingPort.getLink();
                         if (link.getLinkType() == TLink.INTERNAL) {
                             TInternalLink internalLink = (TInternalLink) link;
                             if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
@@ -1447,8 +1447,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             } else if (currentLabel == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
                 discardPacket(packet);
             } else if (currentLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                TPort outgoingPortID = this.ports.getPort(incomingPortID);
-                TLink link = outgoingPortID.getLink();
+                TPort outgoingPort = this.ports.getPort(incomingPortID);
+                TLink link = outgoingPort.getLink();
                 if (link.getLinkType() == TLink.INTERNAL) {
                     TInternalLink internalLink = (TInternalLink) link;
                     if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
@@ -1470,18 +1470,18 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 discardPacket(packet);
             }
         } else if (switchingMatrixEntry.getBackupOutgoingPortID() == incomingPortID) {
-            int currentLabel = switchingMatrixEntry.getOutgoingLabel();
-            if (currentLabel == TSwitchingMatrixEntry.UNDEFINED) {
+            int currentBackupLabel = switchingMatrixEntry.getOutgoingLabel();
+            if (currentBackupLabel == TSwitchingMatrixEntry.UNDEFINED) {
                 discardPacket(packet);
-            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+            } else if (currentBackupLabel == TSwitchingMatrixEntry.LABEL_REQUESTED) {
                 discardPacket(packet);
-            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
+            } else if (currentBackupLabel == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
                 discardPacket(packet);
-            } else if (currentLabel == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
+            } else if (currentBackupLabel == TSwitchingMatrixEntry.LABEL_ASSIGNED) {
                 discardPacket(packet);
-            } else if (currentLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                TPort outgoingPortID = this.ports.getPort(incomingPortID);
-                TLink link = outgoingPortID.getLink();
+            } else if (currentBackupLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
+                TPort outgoingPort = this.ports.getPort(incomingPortID);
+                TLink link = outgoingPort.getLink();
                 if (link.getLinkType() == TLink.INTERNAL) {
                     TInternalLink internalLink = (TInternalLink) link;
                     if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
@@ -1497,7 +1497,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 this.switchingMatrix.removeEntry(switchingMatrixEntry.getIncomingPortID(), switchingMatrixEntry.getLabelOrFEC(), switchingMatrixEntry.getEntryType());
                 // FIX: Avoid using harcoded values. Use class constants 
                 // instead.
-            } else if (currentLabel > 15) {
+            } else if (currentBackupLabel > 15) {
                 discardPacket(packet);
             } else {
                 discardPacket(packet);
