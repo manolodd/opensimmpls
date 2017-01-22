@@ -1312,7 +1312,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo env�a una etiqueta al nodo que indique la entrada en la
+     * Este m�todo env �a una etiqueta al nodo que indique la entrada en la
      * matriz de conmutaci�n especificada.
      *
      * @param emc Entrada de la matriz de conmutaci�n especificada.
