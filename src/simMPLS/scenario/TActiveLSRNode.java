@@ -1625,15 +1625,15 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * This method re-sends all request that are waiting for a acknowledgement to
-     * a TLDP peer.
+     * This method re-sends all request that are waiting for a acknowledgement,
+     * after a timeout, to a TLDP peer.
      *
      * @param switchingMatrixEntry that contains the needed data to contact to
      * the TLP peer to re-send all unconfirmed TLDP requests.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     */    
-    public void solicitarTLDPTrasTimeout(TSwitchingMatrixEntry switchingMatrixEntry) {
+     */
+    public void resendTLDPRequestsAfterATimeout(TSwitchingMatrixEntry switchingMatrixEntry) {
         if (switchingMatrixEntry != null) {
             String localIPv4Address = this.getIPv4Address();
             String targetIPv4Address = switchingMatrixEntry.getTailEndIPAddress();
@@ -1684,7 +1684,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param puerto Puerto por el que se debe enviar la eliminaci�n.
      * @param emc Entrada de la matriz de conmutaci�n especificada.
      */
-    public void eliminarTLDPTrasTimeout(TSwitchingMatrixEntry emc, int puerto) {
+    public void removeTLDPSignalingAfterATimeout(TSwitchingMatrixEntry emc, int puerto) {
         sendTLDPWithdrawal(emc, puerto);
     }
 
@@ -1718,7 +1718,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     if (emc.shouldRetryExpiredTLDPRequest()) {
                         emc.resetTimeOut();
                         emc.decreaseAttempts();
-                        solicitarTLDPTrasTimeout(emc);
+                        resendTLDPRequestsAfterATimeout(emc);
                     }
                 } else if (emc.getOutgoingLabel() == TSwitchingMatrixEntry.REMOVING_LABEL) {
                     if (emc.shouldRetryExpiredTLDPRequest()) {
