@@ -73,7 +73,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         this.gIdent = new TLongIDGenerator();
         this.gIdentLDP = new TIDGenerator();
         //FIX: replace with class constants.
-        this.switchingPowerInMbps = 512;
+        this.routingPowerInMbps = 512;
         this.dmgp = new TDMGP();
         this.gpsrpRequests = new TGPSRPRequestsMatrix();
         this.stats = new TLERAStats();
@@ -114,7 +114,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      */
     public double getNsPerBit() {
         // FIX: replace al harcoded values for class constants
-        long bitsPerSecondRate = (long) (this.switchingPowerInMbps * 1048576L);
+        long bitsPerSecondRate = (long) (this.routingPowerInMbps * 1048576L);
         double nsPerBit = (double) ((double) 1000000000.0 / (long) bitsPerSecondRate);
         return nsPerBit;
     }
@@ -146,7 +146,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @return the current size of DMGP in KBytes.
      * @since 2.0
      */
-    public int getMaxSwitchableBitsWithCurrentNs() {
+    public int getMaxRouteableBitsWithCurrentNs() {
         double nsPerBit = getNsPerBit();
         double maxNumberOfBits = (double) ((double) this.availableNs / (double) nsPerBit);
         return (int) maxNumberOfBits;
@@ -163,7 +163,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      */
     public int getMaxRouteableOctectsWithCurrentNs() {
         // FIX: replace al harcoded values for class constants
-        double maxNumberOfOctects = ((double) getMaxSwitchableBitsWithCurrentNs() / (double) 8.0);
+        double maxNumberOfOctects = ((double) getMaxRouteableBitsWithCurrentNs() / (double) 8.0);
         return (int) maxNumberOfOctects;
     }
 
@@ -171,22 +171,22 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * This method gets the switching power of this LERA, in Mbps.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return the switching power of the node in Mbps.
+     * @return the routing power of the node in Mbps.
      * @since 2.0
      */
-    public int getSwitchingPowerInMbps() {
-        return this.switchingPowerInMbps;
+    public int getRoutingPowerInMbps() {
+        return this.routingPowerInMbps;
     }
 
     /**
      * This method sets the switching power of this LERA, in Mbps.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param switchingPowerInMbps the switching power of this LERA, in Mbps.
+     * @param routingPowerInMbps the routing power of this LERA, in Mbps.
      * @since 2.0
      */
-    public void setSwitchingPowerInMbps(int switchingPowerInMbps) {
-        this.switchingPowerInMbps = switchingPowerInMbps;
+    public void setRoutingPowerInMbps(int routingPowerInMbps) {
+        this.routingPowerInMbps = routingPowerInMbps;
     }
 
     /**
@@ -597,7 +597,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @since 2.0
      */
     @Override
-    public void runGoSPDUStoreAndRetransmitProtocol(TMPLSPDU packet, int outgoingPortID) {
+    public void runGPSRP(TMPLSPDU packet, int outgoingPortID) {
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         gpsrpRequestEntry = this.gpsrpRequests.addEntry(packet, outgoingPortID);
         if (gpsrpRequestEntry != null) {
@@ -2405,8 +2405,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 return TActiveLERNode.NAME_ALREADY_EXISTS;
             }
         } else {
-            TNode nodeAux = topology.setFirstNodeNamed(this.getName());
-            if (nodeAux != null) {
+            TNode nodeAux2 = topology.setFirstNodeNamed(this.getName());
+            if (nodeAux2 != null) {
                 if (this.topology.thereIsMoreThanANodeNamed(this.getName())) {
                     return TActiveLERNode.NAME_ALREADY_EXISTS;
                 }
@@ -2468,7 +2468,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         serializedElement += "#";
         serializedElement += this.obtenerPosicion().y;
         serializedElement += "#";
-        serializedElement += this.switchingPowerInMbps;
+        serializedElement += this.routingPowerInMbps;
         serializedElement += "#";
         serializedElement += this.getPorts().getBufferSizeInMBytes();
         serializedElement += "#";
@@ -2505,7 +2505,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         int coordX = Integer.parseInt(elementFields[8]);
         int coordY = Integer.parseInt(elementFields[9]);
         this.setPosition(new Point(coordX + 24, coordY + 24));
-        this.switchingPowerInMbps = Integer.parseInt(elementFields[10]);
+        this.routingPowerInMbps = Integer.parseInt(elementFields[10]);
         this.getPorts().setBufferSizeInMB(Integer.parseInt(elementFields[11]));
         this.dmgp.setDMGPSizeInKB(Integer.parseInt(elementFields[12]));
         return true;
@@ -2545,7 +2545,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     private TSwitchingMatrix switchingMatrix;
     private TLongIDGenerator gIdent;
     private TIDGenerator gIdentLDP;
-    private int switchingPowerInMbps;
+    private int routingPowerInMbps;
     private TDMGP dmgp;
     private TGPSRPRequestsMatrix gpsrpRequests;
     private TLERAStats stats;

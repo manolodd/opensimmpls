@@ -319,7 +319,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     * @param pSalida Puerto por el que se enviar� la solicitud.
     * @since 2.0
     */    
-    public void runGoSPDUStoreAndRetransmitProtocol(TMPLSPDU paquete, int pSalida) {
+    public void runGPSRP(TMPLSPDU paquete, int pSalida) {
     }
     
     /**

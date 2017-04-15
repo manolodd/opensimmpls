@@ -331,7 +331,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @param pSalida Puerto por el que se enviar� la solicitud.
      * @since 2.0
      */    
-    public abstract void runGoSPDUStoreAndRetransmitProtocol(TMPLSPDU paquete, int pSalida);
+    public abstract void runGPSRP(TMPLSPDU paquete, int pSalida);
     
     /**
      * Este m�todo averigua si al nodo le quedan ports libre o no.

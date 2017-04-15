@@ -510,7 +510,7 @@ public class TActivePort extends TPort {
             return true;
         } else {
             if (packet.getSubtype() == TAbstractPDU.MPLS_GOS) {
-                parentPortSetAux.getParentNode().runGoSPDUStoreAndRetransmitProtocol((TMPLSPDU) packet, this.portID);
+                parentPortSetAux.getParentNode().runGPSRP((TMPLSPDU) packet, this.portID);
             }
         }
         return false;

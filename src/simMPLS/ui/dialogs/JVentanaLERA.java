@@ -400,7 +400,7 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
         configLERA.setName(BKUPNombre);
         configLERA.setWellConfigured(true);
         configLERA.setBufferSizeInMBytes(BKUPTamBuffer);
-        configLERA.setSwitchingPowerInMbps(BKUPPotencia);
+        configLERA.setRoutingPowerInMbps(BKUPPotencia);
         configLERA.setGenerateStats(BKUPGenerarEstadisticas);
         configLERA.setDMGPSizeInKB(BKUPTamanioDMGP);
         reconfigurando = false;
@@ -418,7 +418,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     }
     configLERA.setDMGPSizeInKB(this.selectorDeTamanioDMGP.getValue());
     configLERA.setBufferSizeInMBytes(this.selectorDeTamanioBuffer.getValue());
-    configLERA.setSwitchingPowerInMbps(this.selectorDePotenciaDeConmutacion.getValue());
+    configLERA.setRoutingPowerInMbps(this.selectorDePotenciaDeConmutacion.getValue());
     configLERA.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
     configLERA.setName(nombreNodo.getText());
     configLERA.setShowName(verNombre.isSelected());
@@ -475,7 +475,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             BKUPGenerarEstadisticas = tnlera.isGeneratingStats();
             BKUPMostrarNombre = tnlera.getShowName();
             BKUPNombre = tnlera.getName();
-            BKUPPotencia = tnlera.getSwitchingPowerInMbps();
+            BKUPPotencia = tnlera.getRoutingPowerInMbps();
             BKUPTamBuffer = tnlera.getBufferSizeInMBytes();
             BKUPTamanioDMGP = tnlera.getDMGPSizeInKB();
 

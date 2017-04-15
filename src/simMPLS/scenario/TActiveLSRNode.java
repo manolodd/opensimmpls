@@ -426,7 +426,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 } else if (packet.getType() == TAbstractPDU.MPLS) {
                     handleMPLSPacket((TMPLSPDU) packet, readPort);
                 } else if (packet.getType() == TAbstractPDU.GPSRP) {
-                    conmutarGPSRP((TGPSRPPDU) packet, readPort);
+                    handleGPSRPPacket((TGPSRPPDU) packet, readPort);
                 } else {
                     this.availableNs += getNsRequiredForAllOctets(packet.getSize());
                     discardPacket(packet);
@@ -446,11 +446,11 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * This method switchs an incoming GPDRP packet.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param packet GPSRP packet to switch.
+     * @param packet GPSRP packet to route.
      * @param incomingPortID Port of this node where the packet has arrived.
      * @since 2.0
      */
-    public void conmutarGPSRP(TGPSRPPDU packet, int incomingPortID) {
+    public void handleGPSRPPacket(TGPSRPPDU packet, int incomingPortID) {
         if (packet != null) {
             int messageType = packet.getGPSRPPayload().getGPSRPMessageType();
             // FIX: flowID and packetID seems not to be used. If not necessary,
@@ -462,11 +462,11 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             if (targetIPv4Address.equals(this.getIPv4Address())) {
                 // FIX: Convert to a switch statement
                 if (messageType == TGPSRPPayload.RETRANSMISSION_REQUEST) {
-                    this.atenderPeticionGPSRP(packet, incomingPortID);
+                    this.handleGPSRPRetransmissionRequest(packet, incomingPortID);
                 } else if (messageType == TGPSRPPayload.RETRANSMISION_NOT_POSSIBLE) {
-                    this.atenderDenegacionGPSRP(packet, incomingPortID);
+                    this.handleGPSRPRetransmissionNotPossible(packet, incomingPortID);
                 } else if (messageType == TGPSRPPayload.RETRANSMISION_OK) {
-                    this.atenderAceptacionGPSRP(packet, incomingPortID);
+                    this.handleGPSRPRetransmissionOk(packet, incomingPortID);
                 }
             } else {
                 String nextHopIPv4Address = this.topology.getNextHopRABANIPv4Address(this.getIPv4Address(), targetIPv4Address);
@@ -494,7 +494,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param incomingPortID Port of this node where the packet has arrived.
      * @since 2.0
      */
-    public void atenderPeticionGPSRP(TGPSRPPDU packet, int incomingPortID) {
+    public void handleGPSRPRetransmissionRequest(TGPSRPPDU packet, int incomingPortID) {
         int flowID = packet.getGPSRPPayload().getFlowID();
         int packetID = packet.getGPSRPPayload().getPacketID();
         TMPLSPDU wantedPacket = (TMPLSPDU) this.dmgp.getPacket(flowID, packetID);
@@ -523,7 +523,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param incomingPortID Port of this node where the packet has arrived.
      * @since 2.0
      */
-    public void atenderDenegacionGPSRP(TGPSRPPDU packet, int incomingPortID) {
+    public void handleGPSRPRetransmissionNotPossible(TGPSRPPDU packet, int incomingPortID) {
         int flowID = packet.getGPSRPPayload().getFlowID();
         int packetID = packet.getGPSRPPayload().getPacketID();
         TGPSRPRequestEntry gpsrpRequestEntry = this.gpsrpRequests.getEntry(flowID, packetID);
@@ -551,7 +551,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param incomingPortID Port of this node where the packet has arrived.
      * @since 2.0
      */
-    public void atenderAceptacionGPSRP(TGPSRPPDU packet, int incomingPortID) {
+    public void handleGPSRPRetransmissionOk(TGPSRPPDU packet, int incomingPortID) {
         int flowID = packet.getGPSRPPayload().getFlowID();
         int packetID = packet.getGPSRPPayload().getPacketID();
         this.gpsrpRequests.removeEntry(flowID, packetID);
@@ -568,7 +568,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @since 2.0
      */
     @Override
-    public void runGoSPDUStoreAndRetransmitProtocol(TMPLSPDU packet, int outgoingPortID) {
+    public void runGPSRP(TMPLSPDU packet, int outgoingPortID) {
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         gpsrpRequestEntry = this.gpsrpRequests.addEntry(packet, outgoingPortID);
         if (gpsrpRequestEntry != null) {
@@ -1633,7 +1633,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
-    public void resendTLDPRequestsAfterATimeout(TSwitchingMatrixEntry switchingMatrixEntry) {
+    public void requestTLDPAfterTimeout(TSwitchingMatrixEntry switchingMatrixEntry) {
         if (switchingMatrixEntry != null) {
             String localIPv4Address = this.getIPv4Address();
             String targetIPv4Address = switchingMatrixEntry.getTailEndIPAddress();
@@ -1726,7 +1726,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     if (switchingMatrixEntry.shouldRetryExpiredTLDPRequest()) {
                         switchingMatrixEntry.resetTimeOut();
                         switchingMatrixEntry.decreaseAttempts();
-                        resendTLDPRequestsAfterATimeout(switchingMatrixEntry);
+                        requestTLDPAfterTimeout(switchingMatrixEntry);
                     }
                 } else if (switchingMatrixEntry.getOutgoingLabel() == TSwitchingMatrixEntry.REMOVING_LABEL) {
                     if (switchingMatrixEntry.shouldRetryExpiredTLDPRequest()) {
@@ -1745,7 +1745,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         this.switchingMatrix.getMonitor().unLock();
     }
 
-     /**
+    /**
      * This method creates a new entry in the switching matrix using data from
      * an incoming TLDP packet.
      *
@@ -1791,28 +1791,30 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo descarta un packet del ndo y refleja este descarte en las
-     * estad�sticas del nodo.
+     * This method discards a packet and update the corresponding stats.
      *
-     * @param paquete Paquete que queremos descartar.
+     * @param packet packet to be discarded.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public void discardPacket(TAbstractPDU paquete) {
+    public void discardPacket(TAbstractPDU packet) {
         try {
-            this.generateSimulationEvent(new TSEPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
-            this.stats.addStatsEntry(paquete, TStats.DISCARD);
+            this.generateSimulationEvent(new TSEPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), packet.getSubtype()));
+            this.stats.addStatsEntry(packet, TStats.DISCARD);
         } catch (Exception e) {
+            // FIX: this is ugly. Avoid.
             e.printStackTrace();
         }
-        paquete = null;
+        packet = null;
     }
 
     /**
-     * Este m�todo permite acceder a los ports del nodo directamtne.
+     * This gets the ports set of this node.
      *
-     * @return El conjunto de ports del nodo.
+     * @return the ports set of this node.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public TPortSet getPorts() {
@@ -1820,10 +1822,11 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo devuelve si el nodo tiene ports libres o no.
+     * This method checks whether the node has available ports or not.
      *
-     * @return TRUE, si el nodo tiene ports libres. FALSE en caso contrario.
+     * @return true, if the node has available ports. Otherwise, false.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public boolean hasAvailablePorts() {
@@ -1831,14 +1834,21 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo devuelve el peso del nodo, que debe ser tomado en cuenta por
-     * lo algoritmos de encaminamiento para calcular las rutas.
+     * This method computes the routing weight of this node. This has to do with
+     * the "Guarente of Service Support (GoS) over MPLS using Active Techniques"
+     * proposal. It allows the RABAN routing algorithm to balance the traffic
+     * over the network depending on some factors like the congestion level or
+     * the number of flows that are crossing the node at the moment.
      *
-     * @return El peso del LSRA..
+     * @return The routing weight of this node.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public long getRoutingWeight() {
+        // FIX: All harcoded values should be defined as class constants. They 
+        // are weights of the GoS proposal, but anyway, they should be 
+        // configured as class constans.
         long peso = 0;
         long pesoC = (long) (this.ports.getCongestionLevel() * (0.7));
         long pesoMC = (long) ((10 * this.switchingMatrix.getNumberOfEntries()) * (0.3));
@@ -1847,10 +1857,11 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo calcula si el nodo est� bien configurado o no.
+     * This method returns the configuration status of this node.
      *
-     * @return TRUE, si el ndoo est� bien configurado. FALSE en caso contrario.
+     * @return true, if the node is configured correctly. Otherwise, false.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public boolean isWellConfigured() {
@@ -1858,38 +1869,40 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo devuelve si el nodo est� bien configurado y si no, la raz�n.
+     * This method checks whether this node is configured correctly or not.
      *
-     * @param t La topolog�a donde est� el nodo incluido.
-     * @param recfg TRUE, si se est� reconfigurando el LSR. FALSE si se est�
-     * configurando por primera vez.
-     * @return OK, si el nodo est� bien configurado. Un c�digo de error en caso
-     * contrario.
+     * @param topology Topology to wich this node belongs to.
+     * @param reconfiguration true, if the node is being re-configured.
+     * Otherwise, false.
+     * @return TActiveLERNode.OK if the configuration is correct. Otherwise, an
+     * error code is returned. See public constants of error codes in this
+     * class.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public int validateConfig(TTopology t, boolean recfg) {
+    public int validateConfig(TTopology topology, boolean reconfiguration) {
         this.setWellConfigured(false);
         if (this.getName().equals("")) {
             return TActiveLSRNode.UNNAMED;
         }
-        boolean soloEspacios = true;
+        boolean onlyBlankSpaces = true;
         for (int i = 0; i < this.getName().length(); i++) {
             if (this.getName().charAt(i) != ' ') {
-                soloEspacios = false;
+                onlyBlankSpaces = false;
             }
         }
-        if (soloEspacios) {
+        if (onlyBlankSpaces) {
             return TActiveLSRNode.ONLY_BLANK_SPACES;
         }
-        if (!recfg) {
-            TNode tp = t.setFirstNodeNamed(this.getName());
-            if (tp != null) {
+        if (!reconfiguration) {
+            TNode nodeAux = topology.setFirstNodeNamed(this.getName());
+            if (nodeAux != null) {
                 return TActiveLSRNode.NAME_ALREADY_EXISTS;
             }
         } else {
-            TNode tp = t.setFirstNodeNamed(this.getName());
-            if (tp != null) {
+            TNode nodeAux2 = topology.setFirstNodeNamed(this.getName());
+            if (nodeAux2 != null) {
                 if (this.topology.thereIsMoreThanANodeNamed(this.getName())) {
                     return TActiveLSRNode.NAME_ALREADY_EXISTS;
                 }
@@ -1900,16 +1913,18 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo transforma el c�digo de error de configuraci�n del nodo en un
-     * messageType aclaratorio.
+     * This method generates an human-readable error message from a given error
+     * code specified as ana argument.
      *
-     * @param e C�digo de error.
-     * @return Texto explicativo del c�digo de error.
+     * @param errorCode the error code to witch the text message has to be
+     * generated.
+     * @return an String explaining the error.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public String getErrorMessage(int e) {
-        switch (e) {
+    public String getErrorMessage(int errorCode) {
+        switch (errorCode) {
             case TActiveLSRNode.UNNAMED:
                 return (java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TConfigLSR.FALTA_NOMBRE"));
             case TActiveLSRNode.NAME_ALREADY_EXISTS:
@@ -1921,75 +1936,82 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo permite transformar el nodo en una cadena de texto que se
-     * puede volcar f�cilmente a disco.
+     * This method serializes the configuration parameters of this node into an
+     * string that can be saved into disk.
      *
-     * @return Una cadena de texto que representa al nodo.
+     * @return an String containing all the configuration parameters of this
+     * node.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public String marshall() {
-        String cadena = "#LSRA#";
-        cadena += this.getID();
-        cadena += "#";
-        cadena += this.getName().replace('#', ' ');
-        cadena += "#";
-        cadena += this.getIPv4Address();
-        cadena += "#";
-        cadena += this.getStatus();
-        cadena += "#";
-        cadena += this.getShowName();
-        cadena += "#";
-        cadena += this.isGeneratingStats();
-        cadena += "#";
-        cadena += this.obtenerPosicion().x;
-        cadena += "#";
-        cadena += this.obtenerPosicion().y;
-        cadena += "#";
-        cadena += this.switchingPowerInMbps;
-        cadena += "#";
-        cadena += this.getPorts().getBufferSizeInMBytes();
-        cadena += "#";
-        cadena += this.dmgp.getDMGPSizeInKB();
-        cadena += "#";
-        return cadena;
+        String serializedElement = "#LSRA#";
+        serializedElement += this.getID();
+        serializedElement += "#";
+        serializedElement += this.getName().replace('#', ' ');
+        serializedElement += "#";
+        serializedElement += this.getIPv4Address();
+        serializedElement += "#";
+        serializedElement += this.getStatus();
+        serializedElement += "#";
+        serializedElement += this.getShowName();
+        serializedElement += "#";
+        serializedElement += this.isGeneratingStats();
+        serializedElement += "#";
+        serializedElement += this.obtenerPosicion().x;
+        serializedElement += "#";
+        serializedElement += this.obtenerPosicion().y;
+        serializedElement += "#";
+        serializedElement += this.switchingPowerInMbps;
+        serializedElement += "#";
+        serializedElement += this.getPorts().getBufferSizeInMBytes();
+        serializedElement += "#";
+        serializedElement += this.dmgp.getDMGPSizeInKB();
+        serializedElement += "#";
+        return serializedElement;
     }
 
     /**
-     * Este m�todo permite construir sobre la instancia actual, un LSR partiendo
-     * de la representaci�n serializada de otro.
+     * This method gets as an argument a serialized string that contains the
+     * needed parameters to configure an TActiveLSRNode and configure this node
+     * using them.
      *
-     * @param elemento �lemento serializado que se desea deserializar.
-     * @return TRUE, si se ha conseguido deserializar correctamente. FALSE en
-     * caso contrario.
+     * @param serializedElement A serialized representation of a TActiveLSRNode.
+     * @return true, whether the serialized string is correct and this node has
+     * been initialized correctly using the serialized values. Otherwise, false.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public boolean unMarshall(String elemento) {
-        String valores[] = elemento.split("#");
-        if (valores.length != 13) {
+    public boolean unMarshall(String serializedElement) {
+        // FIX: All fixed values in this method should be implemented as class
+        // constants instead of harcoded values.
+        String[] elementFields = serializedElement.split("#");
+        if (elementFields.length != 13) {
             return false;
         }
-        this.setID(Integer.parseInt(valores[2]));
-        this.setName(valores[3]);
-        this.setIPAddress(valores[4]);
-        this.setStatus(Integer.parseInt(valores[5]));
-        this.setShowName(Boolean.parseBoolean(valores[6]));
-        this.setGenerateStats(Boolean.parseBoolean(valores[7]));
-        int posX = Integer.parseInt(valores[8]);
-        int posY = Integer.parseInt(valores[9]);
-        this.setPosition(new Point(posX + 24, posY + 24));
-        this.switchingPowerInMbps = Integer.parseInt(valores[10]);
-        this.getPorts().setBufferSizeInMB(Integer.parseInt(valores[11]));
-        this.dmgp.setDMGPSizeInKB(Integer.parseInt(valores[12]));
+        this.setID(Integer.parseInt(elementFields[2]));
+        this.setName(elementFields[3]);
+        this.setIPAddress(elementFields[4]);
+        this.setStatus(Integer.parseInt(elementFields[5]));
+        this.setShowName(Boolean.parseBoolean(elementFields[6]));
+        this.setGenerateStats(Boolean.parseBoolean(elementFields[7]));
+        int coordX = Integer.parseInt(elementFields[8]);
+        int coordY = Integer.parseInt(elementFields[9]);
+        this.setPosition(new Point(coordX + 24, coordY + 24));
+        this.switchingPowerInMbps = Integer.parseInt(elementFields[10]);
+        this.getPorts().setBufferSizeInMB(Integer.parseInt(elementFields[11]));
+        this.dmgp.setDMGPSizeInKB(Integer.parseInt(elementFields[12]));
         return true;
     }
 
     /**
-     * Este m�todo permite acceder directamente a las estad�sticas del nodo.
+     * This node gets the stat of this node.
      *
-     * @return Las estad�sticas del nodo.
+     * @return The stats of this node.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public TStats getStats() {
@@ -1997,14 +2019,26 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo permite establecer el n�mero de ports que tendr� el nodo.
+     * This method gets the switching matrix of the node.
      *
-     * @param num N�mero de ports del nodo. Como mucho 8.
+     * @return the switching matrix of this node.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     */
+    public TSwitchingMatrix getSwitchingMatrix() {
+        return this.switchingMatrix;
+    }
+
+    /**
+     * This method sets the number of ports of this node.
+     *
+     * @param numPorts Number of ports of this node. The maximum allowed is 8.
+     * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public synchronized void setPorts(int num) {
-        this.ports = new TActivePortSet(num, this);
+    public synchronized void setPorts(int numPorts) {
+        this.ports = new TActivePortSet(numPorts, this);
     }
 
     public static final int OK = 0;
