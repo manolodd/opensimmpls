@@ -828,7 +828,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         if (emc != null) {
             if (emc.getUpstreamTLDPSessionID() != TSwitchingMatrixEntry.UNDEFINED) {
                 String IPLocal = this.getIPv4Address();
-                String IPDestino = ports.getIPOfNodeLinkedTo(emc.getIncomingPortID());
+                String IPDestino = ports.getIPv4OfNodeLinkedTo(emc.getIncomingPortID());
                 if (IPDestino != null) {
                     TTLDPPDU nuevoTLDP = null;
                     try {
@@ -838,7 +838,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                     }
                     if (nuevoTLDP != null) {
                         nuevoTLDP.getTLDPPayload().setTLDPMessageType(TTLDPPayload.LABEL_REQUEST_OK);
-                        nuevoTLDP.getTLDPPayload().setTargetIPAddress(emc.getTailEndIPAddress());
+                        nuevoTLDP.getTLDPPayload().setTargetIPAddress(emc.getTailEndIPv4Address());
                         nuevoTLDP.getTLDPPayload().setTLDPIdentifier(emc.getUpstreamTLDPSessionID());
                         nuevoTLDP.getTLDPPayload().setLabel(emc.getLabelOrFEC());
                         if (emc.aBackupLSPHasBeenRequested()) {
@@ -870,7 +870,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         if (emc != null) {
             if (emc.getUpstreamTLDPSessionID() != TSwitchingMatrixEntry.UNDEFINED) {
                 String IPLocal = this.getIPv4Address();
-                String IPDestino = ports.getIPOfNodeLinkedTo(emc.getIncomingPortID());
+                String IPDestino = ports.getIPv4OfNodeLinkedTo(emc.getIncomingPortID());
                 if (IPDestino != null) {
                     TTLDPPDU nuevoTLDP = null;
                     try {
@@ -880,7 +880,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                     }
                     if (nuevoTLDP != null) {
                         nuevoTLDP.getTLDPPayload().setTLDPMessageType(TTLDPPayload.LABEL_REQUEST_DENIED);
-                        nuevoTLDP.getTLDPPayload().setTargetIPAddress(emc.getTailEndIPAddress());
+                        nuevoTLDP.getTLDPPayload().setTargetIPAddress(emc.getTailEndIPv4Address());
                         nuevoTLDP.getTLDPPayload().setTLDPIdentifier(emc.getUpstreamTLDPSessionID());
                         nuevoTLDP.getTLDPPayload().setLabel(TSwitchingMatrixEntry.UNDEFINED);
                         if (emc.aBackupLSPHasBeenRequested()) {
@@ -912,7 +912,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     public void enviarEliminacionOkTLDP(TSwitchingMatrixEntry emc, int puerto) {
         if (emc != null) {
             String IPLocal = this.getIPv4Address();
-            String IPDestino = ports.getIPOfNodeLinkedTo(puerto);
+            String IPDestino = ports.getIPv4OfNodeLinkedTo(puerto);
             if (IPDestino != null) {
                 TTLDPPDU nuevoTLDP = null;
                 try {
@@ -922,7 +922,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                 }
                 if (nuevoTLDP != null) {
                     nuevoTLDP.getTLDPPayload().setTLDPMessageType(TTLDPPayload.LABEL_REVOMAL_REQUEST_OK);
-                    nuevoTLDP.getTLDPPayload().setTargetIPAddress(emc.getTailEndIPAddress());
+                    nuevoTLDP.getTLDPPayload().setTargetIPAddress(emc.getTailEndIPv4Address());
                     nuevoTLDP.getTLDPPayload().setLabel(TSwitchingMatrixEntry.UNDEFINED);
                     if (emc.getOutgoingPortID() == puerto) {
                         nuevoTLDP.getTLDPPayload().setTLDPIdentifier(emc.getLocalTLDPSessionID());
@@ -956,7 +956,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      */
     public void solicitarTLDP(TSwitchingMatrixEntry emc) {
         String IPLocal = this.getIPv4Address();
-        String IPDestinoFinal = emc.getTailEndIPAddress();
+        String IPDestinoFinal = emc.getTailEndIPv4Address();
         if (emc.getOutgoingLabel() != TSwitchingMatrixEntry.LABEL_ASSIGNED) {
             String IPSalto = topology.obtenerIPSalto(IPLocal, IPDestinoFinal);
             if (IPSalto != null) {
@@ -1002,8 +1002,8 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         if (emc != null) {
             emc.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
             String IPLocal = this.getIPv4Address();
-            String IPDestinoFinal = emc.getTailEndIPAddress();
-            String IPSalto = ports.getIPOfNodeLinkedTo(puerto);
+            String IPDestinoFinal = emc.getTailEndIPv4Address();
+            String IPSalto = ports.getIPv4OfNodeLinkedTo(puerto);
             if (IPSalto != null) {
                 TTLDPPDU paqueteTLDP = null;
                 try {
@@ -1049,8 +1049,8 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     public void solicitarTLDPTrasTimeout(TSwitchingMatrixEntry emc) {
         if (emc != null) {
             String IPLocal = this.getIPv4Address();
-            String IPDestinoFinal = emc.getTailEndIPAddress();
-            String IPSalto = ports.getIPOfNodeLinkedTo(emc.getOutgoingPortID());
+            String IPDestinoFinal = emc.getTailEndIPv4Address();
+            String IPSalto = ports.getIPv4OfNodeLinkedTo(emc.getOutgoingPortID());
             if (IPSalto != null) {
                 TTLDPPDU paqueteTLDP = null;
                 try {

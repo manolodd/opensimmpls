@@ -30,13 +30,13 @@ public abstract class TAbstractPDU implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param id Packet identifier.
-     * @param originIP IP addres of this packet's sender.
-     * @param targetIP IP addres of this packet's receiver.
+     * @param originIPv4 IP addres of this packet's sender.
+     * @param targetIPv4 IP addres of this packet's receiver.
      * @since 2.0
      */
-    public TAbstractPDU(long id, String originIP, String targetIP) {
+    public TAbstractPDU(long id, String originIPv4, String targetIPv4) {
         this.id = id;
-        this.IPv4Header = new TIPv4Header(originIP, targetIP);
+        this.IPv4Header = new TIPv4Header(originIPv4, targetIPv4);
     }
 
     /**

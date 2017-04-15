@@ -1517,7 +1517,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         if (switchingMatrixEntry != null) {
             if (switchingMatrixEntry.getUpstreamTLDPSessionID() != TSwitchingMatrixEntry.UNDEFINED) {
                 String localIPAddress = this.getIPv4Address();
-                String targetIPAddress = this.ports.getIPOfNodeLinkedTo(switchingMatrixEntry.getIncomingPortID());
+                String targetIPAddress = this.ports.getIPv4OfNodeLinkedTo(switchingMatrixEntry.getIncomingPortID());
                 if (targetIPAddress != null) {
                     TTLDPPDU newTLDP = null;
                     try {
@@ -1528,7 +1528,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     }
                     if (newTLDP != null) {
                         newTLDP.getTLDPPayload().setTLDPMessageType(TTLDPPayload.LABEL_REQUEST_OK);
-                        newTLDP.getTLDPPayload().setTargetIPAddress(switchingMatrixEntry.getTailEndIPAddress());
+                        newTLDP.getTLDPPayload().setTargetIPAddress(switchingMatrixEntry.getTailEndIPv4Address());
                         newTLDP.getTLDPPayload().setTLDPIdentifier(switchingMatrixEntry.getUpstreamTLDPSessionID());
                         newTLDP.getTLDPPayload().setLabel(switchingMatrixEntry.getLabelOrFEC());
                         if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
@@ -1563,7 +1563,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         if (switchingMatrixEntry != null) {
             if (switchingMatrixEntry.getUpstreamTLDPSessionID() != TSwitchingMatrixEntry.UNDEFINED) {
                 String localIPAddress = this.getIPv4Address();
-                String targetIPAddress = this.ports.getIPOfNodeLinkedTo(switchingMatrixEntry.getIncomingPortID());
+                String targetIPAddress = this.ports.getIPv4OfNodeLinkedTo(switchingMatrixEntry.getIncomingPortID());
                 if (targetIPAddress != null) {
                     TTLDPPDU tldpPacket = null;
                     try {
@@ -1574,7 +1574,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     }
                     if (tldpPacket != null) {
                         tldpPacket.getTLDPPayload().setTLDPMessageType(TTLDPPayload.LABEL_REQUEST_DENIED);
-                        tldpPacket.getTLDPPayload().setTargetIPAddress(switchingMatrixEntry.getTailEndIPAddress());
+                        tldpPacket.getTLDPPayload().setTargetIPAddress(switchingMatrixEntry.getTailEndIPv4Address());
                         tldpPacket.getTLDPPayload().setTLDPIdentifier(switchingMatrixEntry.getUpstreamTLDPSessionID());
                         tldpPacket.getTLDPPayload().setLabel(TSwitchingMatrixEntry.UNDEFINED);
                         if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
@@ -1610,7 +1610,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     public void sendTLDPWithdrawalOk(TSwitchingMatrixEntry switchingMatrixEntry, int portID) {
         if (switchingMatrixEntry != null) {
             String localIPAddress = this.getIPv4Address();
-            String targetIPAddress = this.ports.getIPOfNodeLinkedTo(portID);
+            String targetIPAddress = this.ports.getIPv4OfNodeLinkedTo(portID);
             if (targetIPAddress != null) {
                 TTLDPPDU tldpPacket = null;
                 try {
@@ -1621,7 +1621,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 }
                 if (tldpPacket != null) {
                     tldpPacket.getTLDPPayload().setTLDPMessageType(TTLDPPayload.LABEL_REVOMAL_REQUEST_OK);
-                    tldpPacket.getTLDPPayload().setTargetIPAddress(switchingMatrixEntry.getTailEndIPAddress());
+                    tldpPacket.getTLDPPayload().setTargetIPAddress(switchingMatrixEntry.getTailEndIPv4Address());
                     tldpPacket.getTLDPPayload().setLabel(TSwitchingMatrixEntry.UNDEFINED);
                     if (switchingMatrixEntry.getOutgoingPortID() == portID) {
                         tldpPacket.getTLDPPayload().setTLDPIdentifier(switchingMatrixEntry.getLocalTLDPSessionID());
@@ -1661,7 +1661,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      */
     public void requestTLDP(TSwitchingMatrixEntry switchingMatrixEntry) {
         String localIPAddress = this.getIPv4Address();
-        String tailEndIPAddress = switchingMatrixEntry.getTailEndIPAddress();
+        String tailEndIPAddress = switchingMatrixEntry.getTailEndIPv4Address();
         if (switchingMatrixEntry.getOutgoingLabel() != TSwitchingMatrixEntry.LABEL_ASSIGNED) {
             String nextHopIPAddress = this.topology.getNextHopRABANIPv4Address(localIPAddress, tailEndIPAddress);
             if (nextHopIPAddress != null) {
@@ -1709,8 +1709,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      */
     public void requestTLDPForBackupLSP(TSwitchingMatrixEntry switchingMatrixEntry) {
         String localIPAddress = this.getIPv4Address();
-        String tailEndIPAddress = switchingMatrixEntry.getTailEndIPAddress();
-        String nextHopToAvoidIPAddress = this.ports.getIPOfNodeLinkedTo(switchingMatrixEntry.getOutgoingPortID());
+        String tailEndIPAddress = switchingMatrixEntry.getTailEndIPv4Address();
+        String nextHopToAvoidIPAddress = this.ports.getIPv4OfNodeLinkedTo(switchingMatrixEntry.getOutgoingPortID());
         if (nextHopToAvoidIPAddress != null) {
             String nextHopIPAddress = this.topology.getNextHopRABANIPv4Address(localIPAddress, tailEndIPAddress, nextHopToAvoidIPAddress);
             if (nextHopIPAddress != null) {
@@ -1771,8 +1771,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         if (switchingMatrixEntry != null) {
             switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
             String localIPAddress = this.getIPv4Address();
-            String tailEndIPAddress = switchingMatrixEntry.getTailEndIPAddress();
-            String nextHopIPAddress = this.ports.getIPOfNodeLinkedTo(portID);
+            String tailEndIPAddress = switchingMatrixEntry.getTailEndIPv4Address();
+            String nextHopIPAddress = this.ports.getIPv4OfNodeLinkedTo(portID);
             if (nextHopIPAddress != null) {
                 TTLDPPDU tldpPacket = null;
                 try {
@@ -1826,8 +1826,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     public void requestTLDPAfterTimeout(TSwitchingMatrixEntry switchingMatrixEntry) {
         if (switchingMatrixEntry != null) {
             String localIPAddress = this.getIPv4Address();
-            String tailEndIPAddress = switchingMatrixEntry.getTailEndIPAddress();
-            String nextHopIPAddress = this.ports.getIPOfNodeLinkedTo(switchingMatrixEntry.getOutgoingPortID());
+            String tailEndIPAddress = switchingMatrixEntry.getTailEndIPv4Address();
+            String nextHopIPAddress = this.ports.getIPv4OfNodeLinkedTo(switchingMatrixEntry.getOutgoingPortID());
             if (nextHopIPAddress != null) {
                 TTLDPPDU tldpPacket = null;
                 try {

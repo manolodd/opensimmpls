@@ -343,7 +343,7 @@ public class TFIFOPortSet extends TPortSet {
      * @since 2.0
      */
     @Override
-    public String getIPOfNodeLinkedTo(int portID) {
+    public String getIPv4OfNodeLinkedTo(int portID) {
         if ((portID >= 0) && (portID < this.numberOfPorts)) {
             if (!this.ports[portID].isAvailable()) {
                 String IP2 = this.ports[portID].getLink().getEnd2().getIPv4Address();

@@ -40,7 +40,7 @@ public class TSwitchingMatrixEntry {
         this.backupLabel = TSwitchingMatrixEntry.UNDEFINED;
         this.labelStackOperation = TSwitchingMatrixEntry.UNDEFINED;
         this.entryType = TSwitchingMatrixEntry.LABEL_ENTRY;
-        this.tailEndIPAddress = "";
+        this.tailEndIPv4Address = "";
         this.localTLDPSessionID = TSwitchingMatrixEntry.UNDEFINED;
         this.upstreamTLDPSessionID = TSwitchingMatrixEntry.UNDEFINED;
         this.timeout = TSwitchingMatrixEntry.TIMEOUT;
@@ -457,8 +457,8 @@ public class TSwitchingMatrixEntry {
      * entry is going to.
      * @since 2.0
      */
-    public String getTailEndIPAddress() {
-        return this.tailEndIPAddress;
+    public String getTailEndIPv4Address() {
+        return this.tailEndIPv4Address;
     }
 
     /**
@@ -471,7 +471,7 @@ public class TSwitchingMatrixEntry {
      * @since 2.0
      */
     public void setTailEndIPAddress(String tailEndIPAddress) {
-        this.tailEndIPAddress = tailEndIPAddress;
+        this.tailEndIPv4Address = tailEndIPAddress;
     }
 
     /**
@@ -545,7 +545,7 @@ public class TSwitchingMatrixEntry {
         if (this.getLocalTLDPSessionID() == TSwitchingMatrixEntry.UNDEFINED) {
             return false;
         }
-        if (this.getTailEndIPAddress().equals("")) {
+        if (this.getTailEndIPv4Address().equals("")) {
             return false;
         }
         if (this.getOutgoingLabel() == TSwitchingMatrixEntry.UNDEFINED) {
@@ -594,7 +594,7 @@ public class TSwitchingMatrixEntry {
     private int backupLabel;
     private int labelStackOperation;
     private int entryType;
-    private String tailEndIPAddress;
+    private String tailEndIPv4Address;
     private int localTLDPSessionID;
     private int upstreamTLDPSessionID;
     private boolean isRequestForBackupLSP;

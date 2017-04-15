@@ -694,7 +694,7 @@ public class TTopology {
      * @return El generador de direcciones IP de la topolog�a.
      * @since 2.0
      */    
-    public TIPGenerator getIPAddressGenerator() {
+    public TIPGenerator getIPv4AddressGenerator() {
         return generadorIP;
     }
 

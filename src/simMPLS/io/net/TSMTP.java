@@ -67,8 +67,8 @@ public class TSMTP {
             int localDomainSlashPosition = -1;
             int localDomainLength = 0;
             this.remoteSMTPHost = InetAddress.getByName(remoteSMTPHost);
-            this.localIPAddress = InetAddress.getLocalHost();
-            this.localDomain = this.localIPAddress.toString();
+            this.localIPv4Address = InetAddress.getLocalHost();
+            this.localDomain = this.localIPv4Address.toString();
             localDomainLength = this.localDomain.length();
             for (int i = 0; i < localDomainLength; i++) {
                 if (this.localDomain.toCharArray()[i] == '/') {
@@ -108,8 +108,8 @@ public class TSMTP {
             int localDomainSlashPosition = -1;
             int localDomainLength = 0;
             this.remoteSMTPHost = InetAddress.getByName(remoteSMTPHost);
-            this.localIPAddress = InetAddress.getLocalHost();
-            this.localDomain = this.localIPAddress.toString();
+            this.localIPv4Address = InetAddress.getLocalHost();
+            this.localDomain = this.localIPv4Address.toString();
             localDomainLength = this.localDomain.length();
             for (int i = 0; i < localDomainLength; i++) {
                 if (this.localDomain.toCharArray()[i] == '/') {
@@ -208,7 +208,7 @@ public class TSMTP {
     public static final int MISCONFIGURATION_ERROR = -7;
 
     private InetAddress remoteSMTPHost;
-    private InetAddress localIPAddress;
+    private InetAddress localIPv4Address;
     private int remoteSMTPPort;
     private String remoteSMTPUser;
     private String receiverEmailAddress;

@@ -237,7 +237,7 @@ public abstract class TPortSet {
      * a link. If the port is not connected (is available), returns NULL.
      * @since 2.0
      */
-    public abstract String getIPOfNodeLinkedTo(int portID);
+    public abstract String getIPv4OfNodeLinkedTo(int portID);
 
     /**
      * This method, when implemented, will compute the global congestion level
