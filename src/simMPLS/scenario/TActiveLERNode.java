@@ -682,7 +682,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         if (outgoingPort != null) {
             TGPSRPPDU gpsrpPacket = null;
             try {
-                gpsrpPacket = new TGPSRPPDU(this.gIdent.getNextID(), this.getIPv4Address(), packet.getIPv4Header().getOriginIPAddress());
+                gpsrpPacket = new TGPSRPPDU(this.gIdent.getNextID(), this.getIPv4Address(), packet.getIPv4Header().getOriginIPv4Address());
             } catch (Exception e) {
                 //FIX: This is not a good practice. Avoid.
                 e.printStackTrace();
@@ -718,7 +718,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         if (outgoingPort != null) {
             TGPSRPPDU gpsrpPacket = null;
             try {
-                gpsrpPacket = new TGPSRPPDU(this.gIdent.getNextID(), this.getIPv4Address(), packet.getIPv4Header().getOriginIPAddress());
+                gpsrpPacket = new TGPSRPPDU(this.gIdent.getNextID(), this.getIPv4Address(), packet.getIPv4Header().getOriginIPv4Address());
             } catch (Exception e) {
                 //FIX: This is not a good practice. Avoid.
                 e.printStackTrace();
@@ -2149,7 +2149,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     public TMPLSPDU createMPLSPacket(TIPv4PDU ipv4Packet, TSwitchingMatrixEntry switchingMatrixEntry) {
         TMPLSPDU mplsPacket = null;
         try {
-            mplsPacket = new TMPLSPDU(this.gIdent.getNextID(), ipv4Packet.getIPv4Header().getOriginIPAddress(), ipv4Packet.getIPv4Header().getTailEndIPAddress(), ipv4Packet.getSize());
+            mplsPacket = new TMPLSPDU(this.gIdent.getNextID(), ipv4Packet.getIPv4Header().getOriginIPv4Address(), ipv4Packet.getIPv4Header().getTailEndIPAddress(), ipv4Packet.getSize());
         } catch (EIDGeneratorOverflow e) {
             // FIX: this is ugly. Avoid.
             e.printStackTrace();
@@ -2196,7 +2196,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     public TIPv4PDU createIPv4Packet(TMPLSPDU MPLSPacket, TSwitchingMatrixEntry switchingMatrixEntry) {
         TIPv4PDU ipv4Packet = null;
         try {
-            ipv4Packet = new TIPv4PDU(this.gIdent.getNextID(), MPLSPacket.getIPv4Header().getOriginIPAddress(), MPLSPacket.getIPv4Header().getTailEndIPAddress(), MPLSPacket.getTCPPayload().getSize());
+            ipv4Packet = new TIPv4PDU(this.gIdent.getNextID(), MPLSPacket.getIPv4Header().getOriginIPv4Address(), MPLSPacket.getIPv4Header().getTailEndIPAddress(), MPLSPacket.getTCPPayload().getSize());
         } catch (EIDGeneratorOverflow e) {
             // FIX: this is ugly. Avoid.
             e.printStackTrace();
@@ -2274,7 +2274,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public int classifyPacket(TAbstractPDU incomingPacket) {
-        String originIPAddress = incomingPacket.getIPv4Header().getOriginIPAddress();
+        String originIPAddress = incomingPacket.getIPv4Header().getOriginIPv4Address();
         String tailEndIPAddress = incomingPacket.getIPv4Header().getTailEndIPAddress();
         String FECString = originIPAddress + tailEndIPAddress;
         // FIX: According to Java documentation, hashCode() does not have a 

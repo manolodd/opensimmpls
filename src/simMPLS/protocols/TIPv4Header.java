@@ -84,7 +84,7 @@ public class TIPv4Header {
      * @return the IP address of the sender of this packet.
      * @since 2.0
      */
-    public String getOriginIPAddress() {
+    public String getOriginIPv4Address() {
         return this.originIP;
     }
 

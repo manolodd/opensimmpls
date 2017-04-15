@@ -653,7 +653,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         if (outgoingPort != null) {
             TGPSRPPDU gpsrpPacket = null;
             try {
-                gpsrpPacket = new TGPSRPPDU(this.gIdent.getNextID(), this.getIPv4Address(), packet.getIPv4Header().getOriginIPAddress());
+                gpsrpPacket = new TGPSRPPDU(this.gIdent.getNextID(), this.getIPv4Address(), packet.getIPv4Header().getOriginIPv4Address());
             } catch (Exception e) {
                 //FIX: This is not a good practice. Avoid.
                 e.printStackTrace();
@@ -689,7 +689,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         if (outgoingPort != null) {
             TGPSRPPDU gpsrpPacket = null;
             try {
-                gpsrpPacket = new TGPSRPPDU(this.gIdent.getNextID(), this.getIPv4Address(), packet.getIPv4Header().getOriginIPAddress());
+                gpsrpPacket = new TGPSRPPDU(this.gIdent.getNextID(), this.getIPv4Address(), packet.getIPv4Header().getOriginIPv4Address());
             } catch (Exception e) {
                 //FIX: This is not a good practice. Avoid.
                 e.printStackTrace();

@@ -1339,7 +1339,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     public TMPLSPDU crearPaqueteMPLS(TIPv4PDU paqueteIPv4, TSwitchingMatrixEntry emc) {
         TMPLSPDU paqueteMPLS = null;
         try {
-            paqueteMPLS = new TMPLSPDU(gIdent.getNextID(), paqueteIPv4.getIPv4Header().getOriginIPAddress(), paqueteIPv4.getIPv4Header().getTailEndIPAddress(), paqueteIPv4.getSize());
+            paqueteMPLS = new TMPLSPDU(gIdent.getNextID(), paqueteIPv4.getIPv4Header().getOriginIPv4Address(), paqueteIPv4.getIPv4Header().getTailEndIPAddress(), paqueteIPv4.getSize());
         } catch (EIDGeneratorOverflow e) {
             e.printStackTrace();
         }
@@ -1374,7 +1374,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     public TIPv4PDU crearPaqueteIPv4(TMPLSPDU paqueteMPLS, TSwitchingMatrixEntry emc) {
         TIPv4PDU paqueteIPv4 = null;
         try {
-            paqueteIPv4 = new TIPv4PDU(gIdent.getNextID(), paqueteMPLS.getIPv4Header().getOriginIPAddress(), paqueteMPLS.getIPv4Header().getTailEndIPAddress(), paqueteMPLS.getTCPPayload().getSize());
+            paqueteIPv4 = new TIPv4PDU(gIdent.getNextID(), paqueteMPLS.getIPv4Header().getOriginIPv4Address(), paqueteMPLS.getIPv4Header().getTailEndIPAddress(), paqueteMPLS.getTCPPayload().getSize());
         } catch (EIDGeneratorOverflow e) {
             e.printStackTrace();
         }
@@ -1450,7 +1450,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @since 2.0
      */
     public int clasificarPaquete(TAbstractPDU paquete) {
-        String IPOrigen = paquete.getIPv4Header().getOriginIPAddress();
+        String IPOrigen = paquete.getIPv4Header().getOriginIPv4Address();
         String IPDestino = paquete.getIPv4Header().getTailEndIPAddress();
         String cadenaFEC = cadenaFEC = IPOrigen + IPDestino;
         return cadenaFEC.hashCode();

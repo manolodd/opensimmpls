@@ -52,7 +52,7 @@ public class TMPLSPDU extends TAbstractPDU {
      */
     public TMPLSPDU getAClon() {
         long auxID = this.getID();
-        String auxOriginIP = this.getIPv4Header().getOriginIPAddress();
+        String auxOriginIP = this.getIPv4Header().getOriginIPv4Address();
         String auxTargetIP = this.getIPv4Header().getTailEndIPAddress();
         // FIX: Define a class constant instead of using this harcoded value
         int auxTCPPayloadSize = this.tcpPayload.getSize() - 20;

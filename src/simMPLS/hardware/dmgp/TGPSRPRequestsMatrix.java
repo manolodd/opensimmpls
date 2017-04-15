@@ -118,15 +118,15 @@ public class TGPSRPRequestsMatrix {
         this.monitor.lock();
         TGPSRPRequestEntry gpsrpRequestEntry = new TGPSRPRequestEntry(this.idGenerator.getNextID());
         gpsrpRequestEntry.setOutgoingPort(incomingPort);
-        gpsrpRequestEntry.setFlowID(mplsPacket.getIPv4Header().getOriginIPAddress().hashCode());
+        gpsrpRequestEntry.setFlowID(mplsPacket.getIPv4Header().getOriginIPv4Address().hashCode());
         gpsrpRequestEntry.setPacketID(mplsPacket.getIPv4Header().getGoSGlobalUniqueIdentifier());
         int numberOfCrossedNodes = mplsPacket.getIPv4Header().getOptionsField().getNumberOfCrossedActiveNodes();
         int i = 0;
-        String nextIP = "";
+        String nextIPv4 = "";
         for (i = 0; i < numberOfCrossedNodes; i++) {
-            nextIP = mplsPacket.getIPv4Header().getOptionsField().getCrossedActiveNode(i);
-            if (nextIP != null) {
-                gpsrpRequestEntry.setCrossedNodeIP(nextIP);
+            nextIPv4 = mplsPacket.getIPv4Header().getOptionsField().getCrossedActiveNode(i);
+            if (nextIPv4 != null) {
+                gpsrpRequestEntry.setCrossedNodeIP(nextIPv4);
             }
         }
         entries.add(gpsrpRequestEntry);

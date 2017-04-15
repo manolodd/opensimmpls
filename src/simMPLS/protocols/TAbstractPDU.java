@@ -99,7 +99,7 @@ public abstract class TAbstractPDU implements Comparable {
         if (this.getID() > pdu.getID()) {
             return 1;
         } else if (this.getID() == pdu.getID()) {
-            return (this.getIPv4Header().getOriginIPAddress().compareTo(pdu.getIPv4Header().getOriginIPAddress()));
+            return (this.getIPv4Header().getOriginIPv4Address().compareTo(pdu.getIPv4Header().getOriginIPv4Address()));
         } else {
             return -1;
         }
