@@ -1948,7 +1948,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      */
     public TSwitchingMatrixEntry createEntryFromTLDP(TTLDPPDU tldpPacket, int incomingPortID) {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
-        int predecessorTLDPId = tldpPacket.getTLDPPayload().getTLDPIdentifier();
+        int predecessorTLDPID = tldpPacket.getTLDPPayload().getTLDPIdentifier();
         TPort incomingPort = this.ports.getPort(incomingPortID);
         String tailEndIPAddress = tldpPacket.getTLDPPayload().getTailEndIPAddress();
         String nextHopIPAddress = this.topology.getNextHopRABANIPv4Address(this.getIPv4Address(), tailEndIPAddress);
@@ -1957,7 +1957,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             int incomingLink = TLink.EXTERNAL;
             int outgoingLink = TLink.INTERNAL;
             switchingMatrixEntry = new TSwitchingMatrixEntry();
-            switchingMatrixEntry.setUpstreamTLDPSessionID(predecessorTLDPId);
+            switchingMatrixEntry.setUpstreamTLDPSessionID(predecessorTLDPID);
             switchingMatrixEntry.setTailEndIPAddress(tailEndIPAddress);
             switchingMatrixEntry.setIncomingPortID(incomingPortID);
             switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);

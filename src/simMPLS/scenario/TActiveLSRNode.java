@@ -1677,106 +1677,117 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * Este m�todo reenv�a todas las eliminaciones de etiquetas pendientes de
-     * una entrada de la matriz de conmutaci�n.
+     * This method re-sends all the TLDP withdrawals that are pending, related
+     * to the specified switching matrix entry, after a timeout expiration.
      *
      * @since 2.0
-     * @param puerto Puerto por el que se debe enviar la eliminaci�n.
-     * @param emc Entrada de la matriz de conmutaci�n especificada.
+     * @param portID Port of this node from wich the label withdrawals will be
+     * sent.
+     * @param switchingMatrixEntry The switching matrix entry specified.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
-    public void removeTLDPSignalingAfterATimeout(TSwitchingMatrixEntry emc, int puerto) {
-        sendTLDPWithdrawal(emc, puerto);
+    public void labelWithdrawalAfterTimeout(TSwitchingMatrixEntry switchingMatrixEntry, int portID) {
+        sendTLDPWithdrawal(switchingMatrixEntry, portID);
     }
 
     /**
-     * Este m�todo reenv�a todas las eliminaciones de etiquetas pendientes de
-     * una entrada de la matriz de conmutaci�n a todos los ports necesarios.
+     * This method re-sends all the TLDP withdrawals that are pending, related
+     * to the specified switching matrix entry, after a timeout expiration. TLDP
+     * withdrawals will be sent by each port specified in the switching matrix
+     * entry.
      *
-     * @param emc Entrada de la matriz de conmutaci�n especificada.
      * @since 2.0
+     * @param switchingMatrixEntry The switching matrix entry specified.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
-    public void eliminarTLDPTrasTimeout(TSwitchingMatrixEntry emc) {
-        sendTLDPWithdrawal(emc, emc.getIncomingPortID());
-        sendTLDPWithdrawal(emc, emc.getOutgoingPortID());
-        sendTLDPWithdrawal(emc, emc.getBackupOutgoingPortID());
+    public void labelWithdrawalAfterTimeout(TSwitchingMatrixEntry switchingMatrixEntry) {
+        sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getIncomingPortID());
+        sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getOutgoingPortID());
+        sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getBackupOutgoingPortID());
     }
 
     /**
-     * Este m�todo decrementa los contadores para la retransmisi�n.
+     * This method decreases all retransmission counters for the this node.
      *
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void decreaseCounters() {
-        TSwitchingMatrixEntry emc = null;
+        TSwitchingMatrixEntry switchingMatrixEntry = null;
         this.switchingMatrix.getMonitor().lock();
-        Iterator it = this.switchingMatrix.getEntriesIterator();
-        while (it.hasNext()) {
-            emc = (TSwitchingMatrixEntry) it.next();
-            if (emc != null) {
-                emc.decreaseTimeOut(this.getTickDuration());
-                if (emc.getOutgoingLabel() == TSwitchingMatrixEntry.LABEL_REQUESTED) {
-                    if (emc.shouldRetryExpiredTLDPRequest()) {
-                        emc.resetTimeOut();
-                        emc.decreaseAttempts();
-                        resendTLDPRequestsAfterATimeout(emc);
+        Iterator entriesIterator = this.switchingMatrix.getEntriesIterator();
+        while (entriesIterator.hasNext()) {
+            switchingMatrixEntry = (TSwitchingMatrixEntry) entriesIterator.next();
+            if (switchingMatrixEntry != null) {
+                switchingMatrixEntry.decreaseTimeOut(this.getTickDuration());
+                // FIX: It is more efficient to use a switch clause instead of
+                // nested ifs.
+                if (switchingMatrixEntry.getOutgoingLabel() == TSwitchingMatrixEntry.LABEL_REQUESTED) {
+                    if (switchingMatrixEntry.shouldRetryExpiredTLDPRequest()) {
+                        switchingMatrixEntry.resetTimeOut();
+                        switchingMatrixEntry.decreaseAttempts();
+                        resendTLDPRequestsAfterATimeout(switchingMatrixEntry);
                     }
-                } else if (emc.getOutgoingLabel() == TSwitchingMatrixEntry.REMOVING_LABEL) {
-                    if (emc.shouldRetryExpiredTLDPRequest()) {
-                        emc.resetTimeOut();
-                        emc.decreaseAttempts();
-                        eliminarTLDPTrasTimeout(emc);
-                    } else if (!emc.areThereAvailableAttempts()) {
-                        it.remove();
+                } else if (switchingMatrixEntry.getOutgoingLabel() == TSwitchingMatrixEntry.REMOVING_LABEL) {
+                    if (switchingMatrixEntry.shouldRetryExpiredTLDPRequest()) {
+                        switchingMatrixEntry.resetTimeOut();
+                        switchingMatrixEntry.decreaseAttempts();
+                        labelWithdrawalAfterTimeout(switchingMatrixEntry);
+                    } else if (!switchingMatrixEntry.areThereAvailableAttempts()) {
+                        entriesIterator.remove();
                     }
                 } else {
-                    emc.resetTimeOut();
-                    emc.resetAttempts();
+                    switchingMatrixEntry.resetTimeOut();
+                    switchingMatrixEntry.resetAttempts();
                 }
             }
         }
         this.switchingMatrix.getMonitor().unLock();
     }
 
-    /**
-     * Este m�todo crea una nueva entrada en la matriz de conmutaci�n a partir
-     * de una solicitud de etiqueta recibida.
+     /**
+     * This method creates a new entry in the switching matrix using data from
+     * an incoming TLDP packet.
      *
-     * @param paqueteSolicitud Solicitud de etiqueta recibida.
-     * @param pEntrada Puerto por el que se ha recibido la solicitud.
-     * @return La nueva entrada en la matriz de conmutaci�n, creda, insertada e
-     * inicializada.
+     * @param tldpPacket the incoming packet. A label request.
+     * @param incomingPortID the port by wich the TLDP packet has arrived.
+     * @return A new switching matrix entry, already initialized and inserted in
+     * the switching matrix of this node.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
-    public TSwitchingMatrixEntry createEntryFromTLDP(TTLDPPDU paqueteSolicitud, int pEntrada) {
-        TSwitchingMatrixEntry emc = null;
-        int IdTLDPAntecesor = paqueteSolicitud.getTLDPPayload().getTLDPIdentifier();
-        TPort puertoEntrada = this.ports.getPort(pEntrada);
-        String IPDestinoFinal = paqueteSolicitud.getTLDPPayload().getTailEndIPAddress();
-        String IPSalto = this.topology.getNextHopRABANIPv4Address(this.getIPv4Address(), IPDestinoFinal);
-        if (IPSalto != null) {
-            TPort puertoSalida = this.ports.getLocalPortConnectedToANodeWithIPAddress(IPSalto);
-            emc = new TSwitchingMatrixEntry();
-            emc.setUpstreamTLDPSessionID(IdTLDPAntecesor);
-            emc.setTailEndIPAddress(IPDestinoFinal);
-            emc.setIncomingPortID(pEntrada);
-            emc.setOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
-            emc.setLabelOrFEC(TSwitchingMatrixEntry.UNDEFINED);
-            emc.setEntryIsForBackupLSP(paqueteSolicitud.getLSPType());
-            if (puertoSalida != null) {
-                emc.setOutgoingPortID(puertoSalida.getPortID());
+    public TSwitchingMatrixEntry createEntryFromTLDP(TTLDPPDU tldpPacket, int incomingPortID) {
+        TSwitchingMatrixEntry switchingMatrixEntry = null;
+        int predecessorTLDPID = tldpPacket.getTLDPPayload().getTLDPIdentifier();
+        // FIX: review the reason why this variable is nor used.
+        TPort incomingPort = this.ports.getPort(incomingPortID);
+        String tailEndIPAddress = tldpPacket.getTLDPPayload().getTailEndIPAddress();
+        String nextHopIPAddress = this.topology.getNextHopRABANIPv4Address(this.getIPv4Address(), tailEndIPAddress);
+        if (nextHopIPAddress != null) {
+            TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPAddress);
+            switchingMatrixEntry = new TSwitchingMatrixEntry();
+            switchingMatrixEntry.setUpstreamTLDPSessionID(predecessorTLDPID);
+            switchingMatrixEntry.setTailEndIPAddress(tailEndIPAddress);
+            switchingMatrixEntry.setIncomingPortID(incomingPortID);
+            switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
+            switchingMatrixEntry.setLabelOrFEC(TSwitchingMatrixEntry.UNDEFINED);
+            switchingMatrixEntry.setEntryIsForBackupLSP(tldpPacket.getLSPType());
+            if (outgoingPort != null) {
+                switchingMatrixEntry.setOutgoingPortID(outgoingPort.getPortID());
             } else {
-                emc.setOutgoingPortID(TSwitchingMatrixEntry.UNDEFINED);
+                switchingMatrixEntry.setOutgoingPortID(TSwitchingMatrixEntry.UNDEFINED);
             }
-            emc.setEntryType(TSwitchingMatrixEntry.LABEL_ENTRY);
-            emc.setLabelStackOperation(TSwitchingMatrixEntry.SWAP_LABEL);
+            switchingMatrixEntry.setEntryType(TSwitchingMatrixEntry.LABEL_ENTRY);
+            switchingMatrixEntry.setLabelStackOperation(TSwitchingMatrixEntry.SWAP_LABEL);
             try {
-                emc.setLocalTLDPSessionID(this.gIdentLDP.getNew());
+                switchingMatrixEntry.setLocalTLDPSessionID(this.gIdentLDP.getNew());
             } catch (Exception e) {
+                // FIX: this is ugly. Avoid.
                 e.printStackTrace();
             }
-            this.switchingMatrix.addEntry(emc);
+            this.switchingMatrix.addEntry(switchingMatrixEntry);
         }
-        return emc;
+        return switchingMatrixEntry;
     }
 
     /**
