@@ -930,9 +930,9 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                 } else if (et.getElementType() == TTopologyElement.LINK) {
                     TLink ent = (TLink) et;
                     if (ent.isBroken()) {
-                        ent.ponerEnlaceCaido(false);
+                        ent.setAsBrokenLink(false);
                     } else {
-                        ent.ponerEnlaceCaido(true);
+                        ent.setAsBrokenLink(true);
                     }
                 }
             } else {
