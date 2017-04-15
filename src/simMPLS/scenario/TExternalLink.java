@@ -15,51 +15,57 @@
  */
 package simMPLS.scenario;
 
+import java.util.Iterator;
 import simMPLS.protocols.TAbstractPDU;
 import simMPLS.hardware.timer.TTimerEvent;
 import simMPLS.hardware.timer.ITimerEventListener;
 import simMPLS.utils.EIDGeneratorOverflow;
 import simMPLS.utils.TLongIDGenerator;
-import java.util.*;
-import org.jfree.chart.*;
-import org.jfree.data.*;
 
 /**
- * Esta clase implementa un enlace de la topolog�a que ser� externo al dominio
- * MPLS.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements an exterlan link of the topology (a link that is
+ * outside the MPLS domain.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class TExternalLink extends TLink implements ITimerEventListener, Runnable {
 
     /**
      * Crea una nueva instancia de TEnlaceExterno
-     * @param identificador Identificador �nico para este elemento en la topolog�a.
-     * @param il Generador de identificadores para los eventos que genere este enlace externo.
+     *
+     * @param identificador Identificador �nico para este elemento en la
+     * topolog�a.
+     * @param il Generador de identificadores para los eventos que genere este
+     * enlace externo.
      * @param t Topologia en la que se encuentra este enlace externo.
      * @since 2.0
      */
     public TExternalLink(int identificador, TLongIDGenerator il, TTopology t) {
         super(identificador, il, t);
-        paso=0;
+        this.paso = 0;
     }
 
     /**
      * Este m�todo devuelve el tipo el enlace.
+     *
      * @return TLink.EXTERNAL, indicando que es un nodo externo.
      * @since 2.0
-     */    
+     */
+    @Override
     public int getLinkType() {
         return super.EXTERNAL;
     }
 
     /**
-     * Este m�todo recibe eventos de sincronizaci�n del reloj del simulador, que lo
-     * sincroniza todo.
-     * @param evt Evento de sincronizaci�n que el reloj del simulador env�a a este enlace externo.
+     * Este m�todo recibe eventos de sincronizaci�n del reloj del simulador, que
+     * lo sincroniza todo.
+     *
+     * @param evt Evento de sincronizaci�n que el reloj del simulador env�a a
+     * este enlace externo.
      * @since 2.0
-     */    
+     */
+    @Override
     public void receiveTimerEvent(TTimerEvent evt) {
         this.setStepDuration(evt.getStepDuration());
         this.setTimeInstant(evt.getUpperLimit());
@@ -69,15 +75,17 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
 
     /**
      * Este m�todo establece si el enlace se puede considerar como caido o no.
-     * @param ec TRUE, indica que queremos que el enlace caiga. FALSE indica que no lo queremos o
-     * que queremos que se levante si est� caido.
+     *
+     * @param brokenLink TRUE, indica que queremos que el enlace caiga. FALSE indica que
+     * no lo queremos o que queremos que se levante si est� caido.
      * @since 2.0
-     */    
-    public void ponerEnlaceCaido(boolean ec) {
-        enlaceCaido = ec;
-        if (ec) {
+     */
+    @Override
+    public void setAsBrokenLink(boolean brokenLink) {
+        this.enlaceCaido = brokenLink;
+        if (brokenLink) {
             try {
-                this.generateSimulationEvent(new TSELinkBroken(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
+                this.generateSimulationEvent(new TSEBrokenLink(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
                 this.cerrojo.lock();
                 TAbstractPDU paquete = null;
                 TLinkBufferEntry ebe = null;
@@ -96,59 +104,65 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
                 }
                 this.cerrojo.unLock();
             } catch (EIDGeneratorOverflow e) {
-                e.printStackTrace(); 
+                e.printStackTrace();
             }
         } else {
             try {
                 this.generateSimulationEvent(new TSELinkRecovered(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
             } catch (EIDGeneratorOverflow e) {
-                e.printStackTrace(); 
+                e.printStackTrace();
             }
         }
     }
-    
+
     /**
-     * Este m�todo se ejecuta cuando el hilo principal del enlace externo se ponne en
-     * funcionamiento. Es el n�cleo del enlace externo.
+     * Este m�todo se ejecuta cuando el hilo principal del enlace externo se
+     * ponne en funcionamiento. Es el n�cleo del enlace externo.
+     *
      * @since 2.0
-     */    
+     */
+    @Override
     public void run() {
         // Acciones a llevar a cabo durante el tic.
-        this.actualizarTiemposDeEspera();
-        this.adelantarPaquetesEnTransito();
-        this.pasarPaquetesADestino();
+        this.updateTransitDelay();
+        this.advancePacketInTransit();
+        this.deliverPacketsToDestination();
         // Acciones a llevar a cabo durante el tic.
     }
 
     /**
-     * Este m�todo toma todos los paquetes que en ese momento se encuentren circulando
-     * por el enlace externo y los avanza por el mismo hacia su destino.
+     * Este m�todo toma todos los paquetes que en ese momento se encuentren
+     * circulando por el enlace externo y los avanza por el mismo hacia su
+     * destino.
+     *
      * @since 2.0
-     */    
-    public void actualizarTiemposDeEspera() {
+     */
+    public void updateTransitDelay() {
         cerrojo.lock();
         Iterator it = buffer.iterator();
         while (it.hasNext()) {
             TLinkBufferEntry ebe = (TLinkBufferEntry) it.next();
             ebe.restarTiempoPaso(paso);
             long pctj = this.obtenerPorcentajeTransito(ebe.obtener100x100(), ebe.obtenerTiempoEspera());
-            if (ebe.obtenerDestino() == 1)
+            if (ebe.obtenerDestino() == 1) {
                 pctj = 100 - pctj;
+            }
             try {
                 this.generateSimulationEvent(new TSEPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), ebe.obtenerPaquete().getSubtype(), pctj));
             } catch (EIDGeneratorOverflow e) {
-                e.printStackTrace(); 
+                e.printStackTrace();
             }
         }
         cerrojo.unLock();
     }
 
     /**
-     * Este m�todo toma todos los paquetes que se encuentren circulando por el enlace
-     * externo y detecta todos aquellos que ya han llegado al destino.
+     * Este m�todo toma todos los paquetes que se encuentren circulando por el
+     * enlace externo y detecta todos aquellos que ya han llegado al destino.
+     *
      * @since 2.0
-     */    
-    public void adelantarPaquetesEnTransito() {
+     */
+    public void advancePacketInTransit() {
         cerrojo.lock();
         Iterator it = buffer.iterator();
         while (it.hasNext()) {
@@ -162,21 +176,24 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
         it = buffer.iterator();
         while (it.hasNext()) {
             TLinkBufferEntry ebe = (TLinkBufferEntry) it.next();
-            if (ebe.obtenerTiempoEspera() <= 0)
+            if (ebe.obtenerTiempoEspera() <= 0) {
                 it.remove();
+            }
         }
         cerrojo.unLock();
     }
 
     /**
-     * Este m�todo toma todos los paquetes que han llegado al destino y realiza la
-     * insercio�n de los mismos en el puerto correspondiente de dicho destino.
+     * Este m�todo toma todos los paquetes que han llegado al destino y realiza
+     * la insercio�n de los mismos en el puerto correspondiente de dicho
+     * destino.
+     *
      * @since 2.0
-     */    
-    public void pasarPaquetesADestino() {
+     */
+    public void deliverPacketsToDestination() {
         this.cerrojoLlegados.lock();
         Iterator it = bufferLlegadosADestino.iterator();
-        while (it.hasNext())  {
+        while (it.hasNext()) {
             TLinkBufferEntry ebe = (TLinkBufferEntry) it.next();
             if (ebe.obtenerDestino() == TLink.END_NODE_1) {
                 TNode nt = this.getEnd1();
@@ -189,56 +206,70 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
         }
         this.cerrojoLlegados.unLock();
     }
-    
+
     /**
-     * Este m�todo obtiene el peso del enlace externos que debe usar el algoritmo de
-     * routing para calcular rutas.
+     * Este m�todo obtiene el peso del enlace externos que debe usar el
+     * algoritmo de routing para calcular rutas.
+     *
      * @return El peso del enlace. En el enlace externo es el retardo.
      * @since 2.0
-     */    
-    public long obtenerPeso() {
+     */
+    @Override
+    public long getWeight() {
         long peso = this.obtenerDelay();
-        return peso; 
+        return peso;
     }
 
     /**
      * Este m�todo devuelve si el enlace externo est� bien configurado o no.
-     * @return TRUE, si la configuraci�n actual del enlace es correcta. FALSE en caso
-     * contrario.
+     *
+     * @return TRUE, si la configuraci�n actual del enlace es correcta. FALSE en
+     * caso contrario.
      * @since 2.0
-     */    
+     */
+    @Override
     public boolean isWellConfigured() {
+        // FIX: This method should be used correclty. In fact this does not do
+        // anything. Seems to be a mistake.
         return false;
     }
-    
+
     /**
-     * Este m�todo comprueba si el valor de todos los atributos configurables del
-     * enlace externo es v�lido o no.
+     * Este m�todo comprueba si el valor de todos los atributos configurables
+     * del enlace externo es v�lido o no.
+     *
      * @param t Topolog�a dentro de la cual se encuentra este enlace externo.
-     * @return CORRECTA, si la configuraci�n es correcta. Un codigo de error en caso contrario.
+     * @return CORRECTA, si la configuraci�n es correcta. Un codigo de error en
+     * caso contrario.
      * @since 2.0
-     */    
-    public int comprobar(TTopology t) {
+     */
+    public int isWellConfigured(TTopology t) {
+        // FIX: This method should be used correclty. In fact this does not do
+        // anything. Seems to be a mistake.
         return 0;
     }
-    
+
     /**
-     * Este m�todo transforma en un mensaje legible el c�digo de error devuelto por el
-     * m�todo <I>validateConfig(...)</I>
+     * Este m�todo transforma en un mensaje legible el c�digo de error devuelto
+     * por el m�todo <I>validateConfig(...)</I>
+     *
      * @param e El codigo de error que se quiere transformar.
      * @return El mensaje textual correspondiente a ese mensaje de error.
      * @since 2.0
-     */    
+     */
+    @Override
     public String getErrorMessage(int e) {
         return null;
     }
-    
+
     /**
-     * Este m�todo transforma el enlace externo en un representaci�n de texto que se
-     * puede almacenar en disco sin problemas.
+     * Este m�todo transforma el enlace externo en un representaci�n de texto
+     * que se puede almacenar en disco sin problemas.
+     *
      * @return El equivalente en texto del enlace externo completo.
      * @since 2.0
-     */    
+     */
+    @Override
     public String marshall() {
         String cadena = "#EnlaceExterno#";
         cadena += this.getID();
@@ -259,14 +290,16 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
         cadena += "#";
         return cadena;
     }
-    
+
     /**
-     * Este m�todo toma la representaci�n textual de un enlace externo completo y
-     * configura el objeto con los valores que obtiene.
+     * Este m�todo toma la representaci�n textual de un enlace externo completo
+     * y configura el objeto con los valores que obtiene.
+     *
      * @param elemento Enlace externo en su representaci�n serializada.
      * @return TRUE, si se deserializa correctamente, FALSE en caso contrario.
      * @since 2.0
-     */    
+     */
+    @Override
     public boolean unMarshall(String elemento) {
         TLinkConfig configEnlace = new TLinkConfig();
         String valores[] = elemento.split("#");
@@ -293,12 +326,14 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
         this.configurar(configEnlace, this.topologia, false);
         return true;
     }
-    
+
     /**
-     * Este m�todo reinicia los atributos de la clase, dejando la instancia como si se
-     * acabase de crear por el constructor.
+     * Este m�todo reinicia los atributos de la clase, dejando la instancia como
+     * si se acabase de crear por el constructor.
+     *
      * @since 2.0
-     */    
+     */
+    @Override
     public void reset() {
         this.cerrojo.lock();
         Iterator it = this.buffer.iterator();
@@ -314,12 +349,13 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
             it.remove();
         }
         this.cerrojoLlegados.unLock();
-        ponerEnlaceCaido(false);
+        setAsBrokenLink(false);
     }
-    
-    public long obtenerPesoRABAN() {
-        return this.obtenerPeso(); 
+
+    @Override
+    public long getRABANWeight() {
+        return this.getWeight();
     }
-    
+
     private long paso;
 }

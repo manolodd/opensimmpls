@@ -74,13 +74,13 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * que queremos que se levante si est� caido.
      * @since 2.0
      */    
-    public void ponerEnlaceCaido(boolean ec) {
+    public void setAsBrokenLink(boolean ec) {
         enlaceCaido = ec;
         if (ec) {
             try {
                 this.numeroDeLSPs = 0;
                 this.numeroDeLSPsDeBackup = 0;
-                this.generateSimulationEvent(new TSELinkBroken(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
+                this.generateSimulationEvent(new TSEBrokenLink(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
                 this.cerrojo.lock();
                 TAbstractPDU paquete = null;
                 TLinkBufferEntry ebe = null;
@@ -273,7 +273,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @return El peso del enlace.
      * @since 2.0
      */    
-    public long obtenerPeso() {
+    public long getWeight() {
         long peso = this.obtenerDelay();
         return peso; 
     }
@@ -393,10 +393,10 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
         this.cerrojoLlegados.unLock();
         numeroDeLSPs = 0;
         numeroDeLSPsDeBackup = 0;
-        ponerEnlaceCaido(false);
+        setAsBrokenLink(false);
     }
     
-    public long obtenerPesoRABAN() {
+    public long getRABANWeight() {
         long peso = 0;
         long pesoD = this.obtenerDelay();
         long pesoE1 = (long) ((double) (pesoD*0.10)) * this.getEnd1().getRoutingWeight();

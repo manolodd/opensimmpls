@@ -742,10 +742,10 @@ public class TTopology {
                 } else {
                     if (en.getLinkType() == TLink.EXTERNAL) {
                         TExternalLink ee = (TExternalLink) en;
-                        matrizAdyacencia[i][j] = ee.obtenerPeso();
+                        matrizAdyacencia[i][j] = ee.getWeight();
                     } else {
                         TInternalLink ei = (TInternalLink) en;
-                        matrizAdyacencia[i][j] = ei.obtenerPeso();
+                        matrizAdyacencia[i][j] = ei.getWeight();
                     }
                 }
             }
@@ -894,10 +894,10 @@ public class TTopology {
                 } else {
                     if (en.getLinkType() == TLink.EXTERNAL) {
                         TExternalLink ee = (TExternalLink) en;
-                        matrizAdyacencia[i][j] = ee.obtenerPesoRABAN();
+                        matrizAdyacencia[i][j] = ee.getRABANWeight();
                     } else {
                         TInternalLink ei = (TInternalLink) en;
-                        matrizAdyacencia[i][j] = ei.obtenerPesoRABAN();
+                        matrizAdyacencia[i][j] = ei.getRABANWeight();
                     }
                 }
             }
@@ -993,10 +993,10 @@ public class TTopology {
                 } else {
                     if (en.getLinkType() == TLink.EXTERNAL) {
                         TExternalLink ee = (TExternalLink) en;
-                        matrizAdyacencia[i][j] = ee.obtenerPesoRABAN();
+                        matrizAdyacencia[i][j] = ee.getRABANWeight();
                     } else {
                         TInternalLink ei = (TInternalLink) en;
-                        matrizAdyacencia[i][j] = ei.obtenerPesoRABAN();
+                        matrizAdyacencia[i][j] = ei.getRABANWeight();
                     }
                 }
                 // Aqu� se evita calcular un camino que pase por el enlace que

@@ -526,7 +526,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return Peso del enlace.
      * @since 2.0
      */
-    public abstract long obtenerPeso();
+    public abstract long getWeight();
     /**
      * Este m�todo obtiene el peso del enlace. Que ser� usado por el algoritmos de
      * encaminamiento RABAN. El peso incluye diversos factores y no exclusivamente
@@ -534,7 +534,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return Peso del enlace.
      * @since 2.0
      */
-    public abstract long obtenerPesoRABAN();
+    public abstract long getRABANWeight();
     /**
      * Este m�todo calcula si est� bien configurado el enlace.
      * @return TRUE, si est� bien configurado. FALSE en caso contrario.
@@ -567,7 +567,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @param ec TRUE, si el enlace debe aparecer como caido. FALSE en caso contrario.
      * @since 2.0
      */    
-    public abstract void ponerEnlaceCaido(boolean ec);
+    public abstract void setAsBrokenLink(boolean ec);
     /**
      * Este m�todo reinicia los atributos de la clase, dejando el enlace como recien
      * creado por el constructor.

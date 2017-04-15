@@ -57,15 +57,15 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param identifier the identifier of this active LER node that allow
      * referencing switchingMatrixIterator in the topology.
-     * @param ipAddress The IPv4 address assigned to this active LER.
+     * @param ipv4Address The IPv4 address assigned to this active LER.
      * @param longIDGenerator The idntifier generator that the active LER will
      * use to identify unambiguosly each event the switchingMatrixIterator
      * generates.
      * @param topology A reference to the topology this active LER belongs to.
      * @since 2.0
      */
-    public TActiveLERNode(int identifier, String ipAddress, TLongIDGenerator longIDGenerator, TTopology topology) {
-        super(identifier, ipAddress, longIDGenerator, topology);
+    public TActiveLERNode(int identifier, String ipv4Address, TLongIDGenerator longIDGenerator, TTopology topology) {
+        super(identifier, ipv4Address, longIDGenerator, topology);
         // FIX: This is an overridable method call in constructor that should be 
         // avoided.
         this.setPorts(TNode.NUM_LERA_PORTS);

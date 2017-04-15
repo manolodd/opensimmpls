@@ -22,7 +22,7 @@ package simMPLS.scenario;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TSELinkBroken extends TSimulationEvent {
+public class TSEBrokenLink extends TSimulationEvent {
 
     /**
      * Crea una nueva instancia de TESEnlaceCaido
@@ -31,7 +31,7 @@ public class TSELinkBroken extends TSimulationEvent {
      * @param emisor Enlace que emite el evento.
      * @param id Identificador �nico del evento.
      */
-    public TSELinkBroken(Object emisor, long id, long inst) {
+    public TSEBrokenLink(Object emisor, long id, long inst) {
         super(emisor, id, inst);
     }
 
