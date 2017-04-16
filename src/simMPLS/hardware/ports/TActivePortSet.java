@@ -385,11 +385,11 @@ public class TActivePortSet extends TPortSet {
             if (!this.ports[i].isAvailable()) {
                 int targetNodeID = this.ports[i].getLink().getTargetNodeIDOfTrafficSentBy(this.parentNode);
                 if (targetNodeID == TLink.END_NODE_1) {
-                    if (this.ports[i].getLink().getEnd1().getIPv4Address().equals(adjacentNodeIP)) {
+                    if (this.ports[i].getLink().getNodeAtEnd1().getIPv4Address().equals(adjacentNodeIP)) {
                         return this.ports[i];
                     }
                 } else {
-                    if (this.ports[i].getLink().getEnd2().getIPv4Address().equals(adjacentNodeIP)) {
+                    if (this.ports[i].getLink().getNodeAtEnd2().getIPv4Address().equals(adjacentNodeIP)) {
                         return this.ports[i];
                     }
                 }
@@ -412,11 +412,11 @@ public class TActivePortSet extends TPortSet {
     public String getIPv4OfNodeLinkedTo(int portID) {
         if ((portID >= 0) && (portID < this.numberOfPorts)) {
             if (!this.ports[portID].isAvailable()) {
-                String IPv42 = this.ports[portID].getLink().getEnd2().getIPv4Address();
-                if (this.ports[portID].getLink().getEnd1().getIPv4Address().equals(this.parentNode.getIPv4Address())) {
-                    return this.ports[portID].getLink().getEnd2().getIPv4Address();
+                String IPv42 = this.ports[portID].getLink().getNodeAtEnd2().getIPv4Address();
+                if (this.ports[portID].getLink().getNodeAtEnd1().getIPv4Address().equals(this.parentNode.getIPv4Address())) {
+                    return this.ports[portID].getLink().getNodeAtEnd2().getIPv4Address();
                 }
-                return this.ports[portID].getLink().getEnd1().getIPv4Address();
+                return this.ports[portID].getLink().getNodeAtEnd1().getIPv4Address();
             }
         }
         return null;

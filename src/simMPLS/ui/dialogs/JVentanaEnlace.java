@@ -439,9 +439,9 @@ private void clicEnDelayAvanzado(javax.swing.event.ChangeEvent evt) {//GEN-FIRST
 
 private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnCancelar
     if (this.reconfigurando) {
-        configEnlace.ponerNombre(BCKUPNombre);
-        configEnlace.ponerMostrarNombre(BCKUPMostrarNombre);
-        configEnlace.ponerDelay(BCKUPDelay);
+        configEnlace.setName(BCKUPNombre);
+        configEnlace.setShowName(BCKUPMostrarNombre);
+        configEnlace.setDelay(BCKUPDelay);
         this.reconfigurando = false;
         configEnlace.ponerValida(true);
     } else {
@@ -453,27 +453,27 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
 
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
     configEnlace.ponerValida(true);
-    configEnlace.ponerNombre(nombreEnlace.getText());
-    configEnlace.ponerMostrarNombre(verNombre.isSelected());
-    configEnlace.ponerDelay(this.delayAvanzado.getValue());
+    configEnlace.setName(nombreEnlace.getText());
+    configEnlace.setShowName(verNombre.isSelected());
+    configEnlace.setDelay(this.delayAvanzado.getValue());
     
     if (!this.reconfigurando) {
-        configEnlace.ponerNombreExtremo1((String) selectorExtremoIzquierdo.getSelectedItem());
-        configEnlace.ponerNombreExtremo2((String) selectorExtremoDerecho.getSelectedItem());
-        configEnlace.calcularTipo(topo);
+        configEnlace.setNameOfNodeAtEnd1((String) selectorExtremoIzquierdo.getSelectedItem());
+        configEnlace.setNameOfNodeAtEnd2((String) selectorExtremoDerecho.getSelectedItem());
+        configEnlace.discoverLinkType(topo);
         if (((String)this.selectorPuertoIzquierdo.getSelectedItem()).equals("")) {
-            configEnlace.ponerPuertoExtremo1(-1);
+            configEnlace.setPortOfNodeAtEnd1(-1);
         } else {
             String aux = (String) this.selectorPuertoIzquierdo.getSelectedItem();
             int aux2 = Integer.valueOf(aux).intValue();
-            configEnlace.ponerPuertoExtremo1(aux2);
+            configEnlace.setPortOfNodeAtEnd1(aux2);
         }
         if (((String)this.selectorPuertoDerecho.getSelectedItem()).equals("")) {
-            configEnlace.ponerPuertoExtremo2(-1);
+            configEnlace.setPortOfNodeAtEnd2(-1);
         } else {
             String aux = (String) this.selectorPuertoDerecho.getSelectedItem();
             int aux2 = Integer.valueOf(aux).intValue();
-            configEnlace.ponerPuertoExtremo2(aux2);
+            configEnlace.setPortOfNodeAtEnd2(aux2);
         }
     }
     int error = configEnlace.comprobar(topo, this.reconfigurando);

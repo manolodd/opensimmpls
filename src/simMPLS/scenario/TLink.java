@@ -54,11 +54,11 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
         puertoExtremo1 = -1;
         puertoExtremo2 = -1;
         buffer = Collections.synchronizedSortedSet(new TreeSet());
-        bufferLlegadosADestino = new TreeSet();
-        cerrojo = new TMonitor();
-        cerrojoLlegados = new TMonitor();
-        topologia = t;
-        enlaceCaido = false;
+        deliveredPacketsBuffer = new TreeSet();
+        packetsInTransitEntriesLock = new TMonitor();
+        deliveredPacketEntriesLock = new TMonitor();
+        topology = t;
+        linkIsBroken = false;
     }
     
     /**
@@ -67,7 +67,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @since 2.0
      */    
     public boolean isBroken() {
-        return enlaceCaido;
+        return linkIsBroken;
     }
     
     /**
@@ -95,7 +95,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return Valor calculado.
      * @since 2.0
      */    
-    public long obtenerPorcentajeTransito(long cienxcien, long xxcien) {
+    public long getTransitPercentage(long cienxcien, long xxcien) {
         return ((cienxcien-xxcien)*100)/cienxcien;
     }
     
@@ -122,21 +122,21 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
     
     /**
-     * Este m�todo permite establecer la topologia a la que pertenece el enlace.
+     * Este m�todo permite establecer la topology a la que pertenece el enlace.
      * @param t Topolog�a a la que pertenece el enlace.
      * @since 2.0
      */
     public void ponerTopologia(TTopology t) {
-        topologia = t;
+        topology = t;
     }
     
     /**
-     * Este m�todo permite obtener la topologia a la que pertenece el enlace.
+     * Este m�todo permite obtener la topology a la que pertenece el enlace.
      * @return La topolog�a a la que pertenece el enlace.
      * @since 2.0
      */
-    public TTopology obtenerTopologia() {
-        return topologia;
+    public TTopology getTopology() {
+        return topology;
     }
     
     /**
@@ -148,7 +148,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * el mismo.
      * @param topo Topolog�a a la que pertenece ele enlace.
      */
-    public void configurar(TLinkConfig tcenlace, TTopology topo, boolean recfg) {
+    public void configure(TLinkConfig tcenlace, TTopology topo, boolean recfg) {
         this.ponerNombre(tcenlace.obtenerNombre());
         this.ponerMostrarNombre(tcenlace.obtenerMostrarNombre());
         this.ponerDelay(tcenlace.obtenerDelay());
@@ -176,15 +176,15 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      */    
     public TLinkConfig obtenerConfiguracion() {
         TLinkConfig tce = new TLinkConfig();
-        tce.ponerNombre(this.obtenerNombre());
-        tce.ponerMostrarNombre(this.obtenerMostrarNombre());
-        if (this.getEnd1() != null)
-            tce.ponerNombreExtremo1(this.getEnd1().getName());
-        if (this.getEnd2() != null)
-            tce.ponerNombreExtremo2(this.getEnd2().getName());
-        tce.ponerDelay(this.obtenerDelay());
-        tce.ponerPuertoExtremo1(this.obtenerPuertoExtremo1());
-        tce.ponerPuertoExtremo2(this.obtenerPuertoExtremo2());
+        tce.setName(this.getName());
+        tce.setShowName(this.getShowName());
+        if (this.getNodeAtEnd1() != null)
+            tce.setNameOfNodeAtEnd1(this.getNodeAtEnd1().getName());
+        if (this.getNodeAtEnd2() != null)
+            tce.setNameOfNodeAtEnd2(this.getNodeAtEnd2().getName());
+        tce.setDelay(this.getDelay());
+        tce.setPortOfNodeAtEnd1(this.getPortOfNodeAtEnd1());
+        tce.setPortOfNodeAtEnd2(this.getPortOfNodeAtEnd2());
         return tce;
     }
     
@@ -226,7 +226,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return Retardo del enlace.
      * @since 2.0
      */
-    public int obtenerDelay() {
+    public int getDelay() {
         return delay;
     }
     
@@ -235,7 +235,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @param identificador Identificador del enlace.
      * @since 2.0
      */
-    public void ponerIdentificador(int identificador) {
+    public void setLinkID(int identificador) {
         id = identificador;
     }
     
@@ -262,7 +262,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return Nombre del enlace.
      * @since 2.0
      */
-    public String obtenerNombre() {
+    public String getName() {
         return nombre;
     }
     
@@ -280,7 +280,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return TRUE, si el nombre se esta mostrando. FALSE en caso contrario.
      * @since 2.0
      */
-    public boolean obtenerMostrarNombre() {
+    public boolean getShowName() {
         return mostrarNombre;
     }
     
@@ -289,7 +289,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return El nodo extremo izquierdo del enlace.
      * @since 2.0
      */
-    public TNode getEnd1() {
+    public TNode getNodeAtEnd1() {
         return extremo1;
     }
     
@@ -308,7 +308,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return El nodo del extremo derecho del enlace.
      * @since 2.0
      */
-    public TNode getEnd2() {
+    public TNode getNodeAtEnd2() {
         return extremo2;
     }
     
@@ -347,7 +347,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return Puerto del nodo extremo izquierdo.
      * @since 2.0
      */
-    public int obtenerPuertoExtremo1() {
+    public int getPortOfNodeAtEnd1() {
         return puertoExtremo1;
     }
     
@@ -367,7 +367,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return Puerto del nodo extremo derecho.
      * @since 2.0
      */
-    public int obtenerPuertoExtremo2() {
+    public int getPortOfNodeAtEnd2() {
         return puertoExtremo2;
     }
     
@@ -415,9 +415,9 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @since 2.0
      */
     public void carryPacket(TAbstractPDU paquete, int destino) {
-        cerrojo.lock();
-        buffer.add(new TLinkBufferEntry(paquete, this.obtenerDelay(), destino));
-        cerrojo.unLock();
+        packetsInTransitEntriesLock.lock();
+        buffer.add(new TLinkBufferEntry(paquete, this.getDelay(), destino));
+        packetsInTransitEntriesLock.unLock();
     }
     
     /**
@@ -469,12 +469,12 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
     
     /**
-     * Este m�todo devuelve el cerrojo del enlace.
-     * @return El cerrojo del enlace.
+     * Este m�todo devuelve el packetsInTransitEntriesLock del enlace.
+     * @return El packetsInTransitEntriesLock del enlace.
      * @since 2.0
      */
     public TMonitor obtenerCerrojo() {
-        return this.cerrojo;
+        return this.packetsInTransitEntriesLock;
     }
     
     /**
@@ -616,29 +616,29 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * Este atributo almacena temporalmente los paquetes que han llegado al destinio.
      * @since 2.0
      */    
-    protected TreeSet bufferLlegadosADestino;
+    protected TreeSet deliveredPacketsBuffer;
     
     /**
      * Este atributo es el monitor de la clase que permite sincronizaciones.
      * @since 2.0
      */
-    protected TMonitor cerrojo;
+    protected TMonitor packetsInTransitEntriesLock;
     /**
      * Este atributo es el monitor de la clase que permite sincronizaciones en el
      * buffer de paquetes lelgados al destino.
      * @since 2.0
      */    
-    protected TMonitor cerrojoLlegados;
+    protected TMonitor deliveredPacketEntriesLock;
     /**
      * Topolog�a a la cual pertenece el enlace.
      * @since 2.0
      */    
-    protected TTopology topologia;
+    protected TTopology topology;
     /**
      * Indica si el enlace est� funcionando o est� caido.
      * @since 2.0
      */    
-    protected boolean enlaceCaido;
+    protected boolean linkIsBroken;
     
     /**
      * Esta constante se usa para indicar que la configuraci�n del enlace es correcta.

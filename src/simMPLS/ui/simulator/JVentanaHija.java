@@ -1131,10 +1131,10 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                 ve.show();
                 if (ent.getLinkType() == TLink.EXTERNAL) {
                     TExternalLink ext = (TExternalLink) ent;
-                    ext.configurar(tceAux, this.escenario.getTopology(), true);
+                    ext.configure(tceAux, this.escenario.getTopology(), true);
                 } else if (ent.getLinkType() == TLink.INTERNAL) {
                     TInternalLink inte = (TInternalLink) ent;
-                    inte.configurar(tceAux, this.escenario.getTopology(), true);
+                    inte.configure(tceAux, this.escenario.getTopology(), true);
                 }
                 elementoDisenioClicDerecho = null;
                 panelDisenio.repaint();
@@ -1359,11 +1359,11 @@ private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
             try {
                 if (config.obtenerTipo() == TLink.INTERNAL) {
                     TInternalLink enlaceInterno = new TInternalLink(escenario.getTopology().getItemIdentifierGenerator().getNew(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
-                    enlaceInterno.configurar(config, escenario.getTopology(), false);
+                    enlaceInterno.configure(config, escenario.getTopology(), false);
                     escenario.getTopology().addLink(enlaceInterno);
                 } else {
                     TExternalLink enlaceExterno = new TExternalLink(escenario.getTopology().getItemIdentifierGenerator().getNew(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
-                    enlaceExterno.configurar(config, escenario.getTopology(), false);
+                    enlaceExterno.configure(config, escenario.getTopology(), false);
                     escenario.getTopology().addLink(enlaceExterno);
                 }
                 panelDisenio.repaint();
@@ -1466,7 +1466,7 @@ private void clicDerechoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
                 diseElementoPopUp.show(this, evt.getX()+7, evt.getY()+15);
             } else if (et.getElementType() == TTopologyElement.LINK) {
                 TLink ent = (TLink) et;
-                dVerNombreMenuItem.setSelected(ent.obtenerMostrarNombre());
+                dVerNombreMenuItem.setSelected(ent.getShowName());
                 elementoDisenioClicDerecho = et;
                 diseElementoPopUp.show(this, evt.getX()+7, evt.getY()+15);
             }
@@ -1634,7 +1634,7 @@ private void ratonSobrePanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:
             panelDisenio.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.PanelDisenio.IP") + nt.getIPv4Address());
         } else if (et.getElementType() == TTopologyElement.LINK) {
             TLink ent = (TLink) et;
-            panelDisenio.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.panelDisenio.Retardo") + ent.obtenerDelay() + java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.panelDisenio.ns"));
+            panelDisenio.setToolTipText(java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.panelDisenio.Retardo") + ent.getDelay() + java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("JVentanaHija.panelDisenio.ns"));
         }
     } else {
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));

@@ -256,7 +256,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @param puerto Puerto del conjunto de ports en el que deeamos depositar el paquete.
      * @since 2.0
      */    
-    public synchronized void ponerPaquete(TAbstractPDU paquete, int puerto) {
+    public synchronized void putPacket(TAbstractPDU paquete, int puerto) {
         cerrojo.lock();
         this.ports.getPort(puerto).addPacket(paquete);
         cerrojo.unLock();

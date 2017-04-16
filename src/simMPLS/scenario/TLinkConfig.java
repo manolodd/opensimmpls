@@ -45,7 +45,7 @@ public class TLinkConfig {
      * @param d Retardo deseado para el enlace
      * @since 2.0
      */    
-    public void ponerDelay(int d) {
+    public void setDelay(int d) {
         delay = d;
     }
     
@@ -100,7 +100,7 @@ public class TLinkConfig {
      * @since 2.0
      * @param n El nombre del enlace.
      */    
-    public void ponerNombre(String n) {
+    public void setName(String n) {
         nombre = n;
     }
 
@@ -118,7 +118,7 @@ public class TLinkConfig {
      * @since 2.0
      * @param p TRUE, si queremos que el nombre se muestre. FALSE en caso contrario.
      */    
-    public void ponerMostrarNombre(boolean p) {
+    public void setShowName(boolean p) {
         ponerNombre = p;
     }
 
@@ -127,7 +127,7 @@ public class TLinkConfig {
      * @since 2.0
      * @param n Nombre del ndo que ser� extremo izquierdo del enlace.
      */    
-    public void ponerNombreExtremo1(String n) {
+    public void setNameOfNodeAtEnd1(String n) {
         nombreExtremo1 = n;
     }
 
@@ -145,7 +145,7 @@ public class TLinkConfig {
      * @since 2.0
      * @param n El nombre del nodo que es extremo derecho del enlace.
      */    
-    public void ponerNombreExtremo2(String n) {
+    public void setNameOfNodeAtEnd2(String n) {
         nombreExtremo2 = n;
     }
 
@@ -173,7 +173,7 @@ public class TLinkConfig {
      * @since 2.0
      * @param p Puerto del nodo izquierdo al que se conecta el enlace.
      */    
-    public void ponerPuertoExtremo1(int p) {  
+    public void setPortOfNodeAtEnd1(int p) {  
         puertoExtremo1 = p;
     }
 
@@ -193,7 +193,7 @@ public class TLinkConfig {
      * @since 2.0
      * @param p Puerto del ndo derecho del enlace al que se conectar� �ste.
      */    
-    public void ponerPuertoExtremo2(int p) {  
+    public void setPortOfNodeAtEnd2(int p) {  
         puertoExtremo2 = p;
     }
 
@@ -235,8 +235,8 @@ public class TLinkConfig {
                 if (topo.existeMasDeUnEnlaceLlamado(nombre)) {
                     return this.NOMBRE_YA_EXISTE;
                 } else {
-                    if (e.getEnd1().getName().equals(this.obtenerNombreExtremo1())) {
-                        if (!e.getEnd2().getName().equals(this.obtenerNombreExtremo2())) {
+                    if (e.getNodeAtEnd1().getName().equals(this.obtenerNombreExtremo1())) {
+                        if (!e.getNodeAtEnd2().getName().equals(this.obtenerNombreExtremo2())) {
                             return this.NOMBRE_YA_EXISTE;
                         }
                     } else {
@@ -282,7 +282,7 @@ public class TLinkConfig {
      * @since 2.0
      * @param topo Topolog�a donde se encuentra el enlace.
      */    
-    public void calcularTipo(TTopology topo) {
+    public void discoverLinkType(TTopology topo) {
         TNode e1, e2;
         e1 = topo.setFirstNodeNamed(nombreExtremo1);
         e2 = topo.setFirstNodeNamed(nombreExtremo2);

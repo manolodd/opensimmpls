@@ -32,18 +32,20 @@ import simMPLS.utils.TLongIDGenerator;
 public class TExternalLink extends TLink implements ITimerEventListener, Runnable {
 
     /**
-     * Crea una nueva instancia de TEnlaceExterno
+     * This method is the constructor of the class. It creates a new instance of
+     * TExternalLink.
      *
-     * @param identificador Identificador �nico para este elemento en la
-     * topolog�a.
-     * @param il Generador de identificadores para los eventos que genere este
-     * enlace externo.
-     * @param t Topologia en la que se encuentra este enlace externo.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param linkID Unique identifier that identifies this link in the overall
+     * topology.
+     * @param longIDGenerator ID generator, to be used by this link to generate
+     * distinguisible simulation events.
+     * @param topology Topology this link belongs to.
      * @since 2.0
      */
-    public TExternalLink(int identificador, TLongIDGenerator il, TTopology t) {
-        super(identificador, il, t);
-        this.paso = 0;
+    public TExternalLink(int linkID, TLongIDGenerator longIDGenerator, TTopology topology) {
+        super(linkID, longIDGenerator, topology);
+        this.stepLength = 0;
     }
 
     /**
@@ -54,62 +56,68 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      */
     @Override
     public int getLinkType() {
-        return super.EXTERNAL;
+        return TLink.EXTERNAL;
     }
 
     /**
      * Este m�todo recibe eventos de sincronizaci�n del reloj del simulador, que
      * lo sincroniza todo.
      *
-     * @param evt Evento de sincronizaci�n que el reloj del simulador env�a a
-     * este enlace externo.
+     * @param timerEvent Evento de sincronizaci�n que el reloj del simulador
+     * env�a a este enlace externo.
      * @since 2.0
      */
     @Override
-    public void receiveTimerEvent(TTimerEvent evt) {
-        this.setStepDuration(evt.getStepDuration());
-        this.setTimeInstant(evt.getUpperLimit());
-        paso = evt.getStepDuration();
+    public void receiveTimerEvent(TTimerEvent timerEvent) {
+        this.setStepDuration(timerEvent.getStepDuration());
+        this.setTimeInstant(timerEvent.getUpperLimit());
+        this.stepLength = timerEvent.getStepDuration();
         this.startOperation();
     }
 
     /**
      * Este m�todo establece si el enlace se puede considerar como caido o no.
      *
-     * @param brokenLink TRUE, indica que queremos que el enlace caiga. FALSE indica que
-     * no lo queremos o que queremos que se levante si est� caido.
+     * @param linkIsBroken TRUE, indica que queremos que el enlace caiga. FALSE
+     * indica que no lo queremos o que queremos que se levante si est� caido.
      * @since 2.0
      */
     @Override
-    public void setAsBrokenLink(boolean brokenLink) {
-        this.enlaceCaido = brokenLink;
-        if (brokenLink) {
+    public void setAsBrokenLink(boolean linkIsBroken) {
+        this.linkIsBroken = linkIsBroken;
+        if (linkIsBroken) {
             try {
                 this.generateSimulationEvent(new TSEBrokenLink(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
-                this.cerrojo.lock();
-                TAbstractPDU paquete = null;
-                TLinkBufferEntry ebe = null;
-                Iterator it = this.buffer.iterator();
-                while (it.hasNext()) {
-                    ebe = (TLinkBufferEntry) it.next();
-                    paquete = ebe.obtenerPaquete();
-                    if (paquete != null) {
-                        if (ebe.obtenerDestino() == 1) {
-                            this.generateSimulationEvent(new TSEPacketDiscarded(this.getEnd2(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
-                        } else if (ebe.obtenerDestino() == 2) {
-                            this.generateSimulationEvent(new TSEPacketDiscarded(this.getEnd1(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+                this.packetsInTransitEntriesLock.lock();
+                TAbstractPDU packet = null;
+                TLinkBufferEntry bufferedPacketEntry = null;
+                Iterator bufferedPacketEntriesIterator = this.buffer.iterator();
+                while (bufferedPacketEntriesIterator.hasNext()) {
+                    bufferedPacketEntry = (TLinkBufferEntry) bufferedPacketEntriesIterator.next();
+                    packet = bufferedPacketEntry.getPacket();
+                    if (packet != null) {
+                        // FIX: do not use harcoded values. Use constants class
+                        // instead
+                        if (bufferedPacketEntry.getTargetEnd() == 1) {
+                            this.generateSimulationEvent(new TSEPacketDiscarded(this.getNodeAtEnd2(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), packet.getSubtype()));
+                            // FIX: do not use harcoded values. Use constants class
+                            // instead
+                        } else if (bufferedPacketEntry.getTargetEnd() == 2) {
+                            this.generateSimulationEvent(new TSEPacketDiscarded(this.getNodeAtEnd1(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), packet.getSubtype()));
                         }
                     }
-                    it.remove();
+                    bufferedPacketEntriesIterator.remove();
                 }
-                this.cerrojo.unLock();
+                this.packetsInTransitEntriesLock.unLock();
             } catch (EIDGeneratorOverflow e) {
+                // FIX: this is not a good practice
                 e.printStackTrace();
             }
         } else {
             try {
                 this.generateSimulationEvent(new TSELinkRecovered(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
             } catch (EIDGeneratorOverflow e) {
+                // FIX: this is not a good practice
                 e.printStackTrace();
             }
         }
@@ -123,11 +131,9 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      */
     @Override
     public void run() {
-        // Acciones a llevar a cabo durante el tic.
         this.updateTransitDelay();
         this.advancePacketInTransit();
         this.deliverPacketsToDestination();
-        // Acciones a llevar a cabo durante el tic.
     }
 
     /**
@@ -138,22 +144,25 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * @since 2.0
      */
     public void updateTransitDelay() {
-        cerrojo.lock();
-        Iterator it = buffer.iterator();
-        while (it.hasNext()) {
-            TLinkBufferEntry ebe = (TLinkBufferEntry) it.next();
-            ebe.restarTiempoPaso(paso);
-            long pctj = this.obtenerPorcentajeTransito(ebe.obtener100x100(), ebe.obtenerTiempoEspera());
-            if (ebe.obtenerDestino() == 1) {
-                pctj = 100 - pctj;
+        this.packetsInTransitEntriesLock.lock();
+        Iterator bufferedPacketEntriesIterator = this.buffer.iterator();
+        while (bufferedPacketEntriesIterator.hasNext()) {
+            TLinkBufferEntry bufferedPacketEntry = (TLinkBufferEntry) bufferedPacketEntriesIterator.next();
+            bufferedPacketEntry.substractStepLength(this.stepLength);
+            long transitPercentage = this.getTransitPercentage(bufferedPacketEntry.getTotalTransitDelay(), bufferedPacketEntry.getRemainingTransitDelay());
+            // FIX: do not use harcoded values. Use constants class instead.
+            if (bufferedPacketEntry.getTargetEnd() == 1) {
+                // FIX: do not use harcoded values. Use constants class instead.
+                transitPercentage = 100 - transitPercentage;
             }
             try {
-                this.generateSimulationEvent(new TSEPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), ebe.obtenerPaquete().getSubtype(), pctj));
+                this.generateSimulationEvent(new TSEPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), bufferedPacketEntry.getPacket().getSubtype(), transitPercentage));
             } catch (EIDGeneratorOverflow e) {
+                // FIX: This is not a good practice.
                 e.printStackTrace();
             }
         }
-        cerrojo.unLock();
+        this.packetsInTransitEntriesLock.unLock();
     }
 
     /**
@@ -163,24 +172,26 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * @since 2.0
      */
     public void advancePacketInTransit() {
-        cerrojo.lock();
-        Iterator it = buffer.iterator();
-        while (it.hasNext()) {
-            TLinkBufferEntry ebe = (TLinkBufferEntry) it.next();
-            if (ebe.obtenerTiempoEspera() <= 0) {
-                this.cerrojoLlegados.lock();
-                bufferLlegadosADestino.add(ebe);
-                this.cerrojoLlegados.unLock();
+        this.packetsInTransitEntriesLock.lock();
+        Iterator bufferedPacketEntriesIterator = this.buffer.iterator();
+        while (bufferedPacketEntriesIterator.hasNext()) {
+            TLinkBufferEntry bufferedPacketEntry = (TLinkBufferEntry) bufferedPacketEntriesIterator.next();
+            // FIX: Do not use harcoded values. Use constants class instead.
+            if (bufferedPacketEntry.getRemainingTransitDelay() <= 0) {
+                this.deliveredPacketEntriesLock.lock();
+                this.deliveredPacketsBuffer.add(bufferedPacketEntry);
+                this.deliveredPacketEntriesLock.unLock();
             }
         }
-        it = buffer.iterator();
-        while (it.hasNext()) {
-            TLinkBufferEntry ebe = (TLinkBufferEntry) it.next();
-            if (ebe.obtenerTiempoEspera() <= 0) {
-                it.remove();
+        bufferedPacketEntriesIterator = this.buffer.iterator();
+        while (bufferedPacketEntriesIterator.hasNext()) {
+            TLinkBufferEntry bufferedPacket = (TLinkBufferEntry) bufferedPacketEntriesIterator.next();
+            // FIX: Do not use harcoded values. Use constants class instead.
+            if (bufferedPacket.getRemainingTransitDelay() <= 0) {
+                bufferedPacketEntriesIterator.remove();
             }
         }
-        cerrojo.unLock();
+        this.packetsInTransitEntriesLock.unLock();
     }
 
     /**
@@ -191,33 +202,33 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * @since 2.0
      */
     public void deliverPacketsToDestination() {
-        this.cerrojoLlegados.lock();
-        Iterator it = bufferLlegadosADestino.iterator();
-        while (it.hasNext()) {
-            TLinkBufferEntry ebe = (TLinkBufferEntry) it.next();
-            if (ebe.obtenerDestino() == TLink.END_NODE_1) {
-                TNode nt = this.getEnd1();
-                nt.ponerPaquete(ebe.obtenerPaquete(), this.obtenerPuertoExtremo1());
+        this.deliveredPacketEntriesLock.lock();
+        Iterator deliveredPacketEntriesIterator = this.deliveredPacketsBuffer.iterator();
+        while (deliveredPacketEntriesIterator.hasNext()) {
+            TLinkBufferEntry deliveredPacketEntry = (TLinkBufferEntry) deliveredPacketEntriesIterator.next();
+            if (deliveredPacketEntry.getTargetEnd() == TLink.END_NODE_1) {
+                TNode nodeAux = this.getNodeAtEnd1();
+                nodeAux.putPacket(deliveredPacketEntry.getPacket(), this.getPortOfNodeAtEnd1());
             } else {
-                TNode nt = this.getEnd2();
-                nt.ponerPaquete(ebe.obtenerPaquete(), this.obtenerPuertoExtremo2());
+                TNode nodeAux = this.getNodeAtEnd2();
+                nodeAux.putPacket(deliveredPacketEntry.getPacket(), this.getPortOfNodeAtEnd2());
             }
-            it.remove();
+            deliveredPacketEntriesIterator.remove();
         }
-        this.cerrojoLlegados.unLock();
+        this.deliveredPacketEntriesLock.unLock();
     }
 
     /**
-     * Este m�todo obtiene el peso del enlace externos que debe usar el
+     * Este m�todo obtiene el weight del enlace externos que debe usar el
      * algoritmo de routing para calcular rutas.
      *
-     * @return El peso del enlace. En el enlace externo es el retardo.
+     * @return El weight del enlace. En el enlace externo es el retardo.
      * @since 2.0
      */
     @Override
     public long getWeight() {
-        long peso = this.obtenerDelay();
-        return peso;
+        long weight = this.getDelay();
+        return weight;
     }
 
     /**
@@ -238,12 +249,13 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * Este m�todo comprueba si el valor de todos los atributos configurables
      * del enlace externo es v�lido o no.
      *
-     * @param t Topolog�a dentro de la cual se encuentra este enlace externo.
+     * @param topology Topolog�a dentro de la cual se encuentra este enlace
+     * externo.
      * @return CORRECTA, si la configuraci�n es correcta. Un codigo de error en
      * caso contrario.
      * @since 2.0
      */
-    public int isWellConfigured(TTopology t) {
+    public int isWellConfigured(TTopology topology) {
         // FIX: This method should be used correclty. In fact this does not do
         // anything. Seems to be a mistake.
         return 0;
@@ -253,12 +265,12 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * Este m�todo transforma en un mensaje legible el c�digo de error devuelto
      * por el m�todo <I>validateConfig(...)</I>
      *
-     * @param e El codigo de error que se quiere transformar.
+     * @param errorCode El codigo de error que se quiere transformar.
      * @return El mensaje textual correspondiente a ese mensaje de error.
      * @since 2.0
      */
     @Override
-    public String getErrorMessage(int e) {
+    public String getErrorMessage(int errorCode) {
         return null;
     }
 
@@ -271,59 +283,61 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      */
     @Override
     public String marshall() {
-        String cadena = "#EnlaceExterno#";
-        cadena += this.getID();
-        cadena += "#";
-        cadena += this.obtenerNombre().replace('#', ' ');
-        cadena += "#";
-        cadena += this.obtenerMostrarNombre();
-        cadena += "#";
-        cadena += this.obtenerDelay();
-        cadena += "#";
-        cadena += this.getEnd1().getIPv4Address();
-        cadena += "#";
-        cadena += this.obtenerPuertoExtremo1();
-        cadena += "#";
-        cadena += this.getEnd2().getIPv4Address();
-        cadena += "#";
-        cadena += this.obtenerPuertoExtremo2();
-        cadena += "#";
-        return cadena;
+        String serializedElement = "#EnlaceExterno#";
+        serializedElement += this.getID();
+        serializedElement += "#";
+        serializedElement += this.getName().replace('#', ' ');
+        serializedElement += "#";
+        serializedElement += this.getShowName();
+        serializedElement += "#";
+        serializedElement += this.getDelay();
+        serializedElement += "#";
+        serializedElement += this.getNodeAtEnd1().getIPv4Address();
+        serializedElement += "#";
+        serializedElement += this.getPortOfNodeAtEnd1();
+        serializedElement += "#";
+        serializedElement += this.getNodeAtEnd2().getIPv4Address();
+        serializedElement += "#";
+        serializedElement += this.getPortOfNodeAtEnd2();
+        serializedElement += "#";
+        return serializedElement;
     }
 
     /**
      * Este m�todo toma la representaci�n textual de un enlace externo completo
-     * y configura el objeto con los valores que obtiene.
+     * y configura el objeto con los elementFields que obtiene.
      *
-     * @param elemento Enlace externo en su representaci�n serializada.
+     * @param serializedLink Enlace externo en su representaci�n serializada.
      * @return TRUE, si se deserializa correctamente, FALSE en caso contrario.
      * @since 2.0
      */
     @Override
-    public boolean unMarshall(String elemento) {
-        TLinkConfig configEnlace = new TLinkConfig();
-        String valores[] = elemento.split("#");
-        if (valores.length != 10) {
+    public boolean unMarshall(String serializedLink) {
+        TLinkConfig linkConfig = new TLinkConfig();
+        String[] elementFields = serializedLink.split("#");
+        // FIX: Do not use harcoded values. This affect to the entire method. 
+        // Use class constants instead.
+        if (elementFields.length != 10) {
             return false;
         }
-        this.ponerIdentificador(Integer.valueOf(valores[2]).intValue());
-        configEnlace.ponerNombre(valores[3]);
-        configEnlace.ponerMostrarNombre(Boolean.valueOf(valores[4]).booleanValue());
-        configEnlace.ponerDelay(Integer.valueOf(valores[5]).intValue());
-        String IP1 = valores[6];
-        String IP2 = valores[8];
-        TNode ex1 = this.obtenerTopologia().obtenerNodo(IP1);
-        TNode ex2 = this.obtenerTopologia().obtenerNodo(IP2);
-        if (!((ex1 == null) || (ex2 == null))) {
-            configEnlace.ponerNombreExtremo1(ex1.getName());
-            configEnlace.ponerNombreExtremo2(ex2.getName());
-            configEnlace.ponerPuertoExtremo1(Integer.valueOf(valores[7]).intValue());
-            configEnlace.ponerPuertoExtremo2(Integer.valueOf(valores[9]).intValue());
-            configEnlace.calcularTipo(this.topologia);
+        this.setLinkID(Integer.valueOf(elementFields[2]));
+        linkConfig.setName(elementFields[3]);
+        linkConfig.setShowName(Boolean.parseBoolean(elementFields[4]));
+        linkConfig.setDelay(Integer.parseInt(elementFields[5]));
+        String ipv4AddressOfNodeAtEND1 = elementFields[6];
+        String ipv4AddressOfNodeAtEND2 = elementFields[8];
+        TNode nodeAtEnd1 = this.getTopology().getNode(ipv4AddressOfNodeAtEND1);
+        TNode nodeAtEnd2 = this.getTopology().getNode(ipv4AddressOfNodeAtEND2);
+        if (!((nodeAtEnd1 == null) || (nodeAtEnd2 == null))) {
+            linkConfig.setNameOfNodeAtEnd1(nodeAtEnd1.getName());
+            linkConfig.setNameOfNodeAtEnd2(nodeAtEnd2.getName());
+            linkConfig.setPortOfNodeAtEnd1(Integer.parseInt(elementFields[7]));
+            linkConfig.setPortOfNodeAtEnd2(Integer.parseInt(elementFields[9]));
+            linkConfig.discoverLinkType(this.topology);
         } else {
             return false;
         }
-        this.configurar(configEnlace, this.topologia, false);
+        this.configure(linkConfig, this.topology, false);
         return true;
     }
 
@@ -335,27 +349,29 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      */
     @Override
     public void reset() {
-        this.cerrojo.lock();
-        Iterator it = this.buffer.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
+        this.packetsInTransitEntriesLock.lock();
+        Iterator bufferedPacketEntriesIterator = this.buffer.iterator();
+        while (bufferedPacketEntriesIterator.hasNext()) {
+            bufferedPacketEntriesIterator.next();
+            bufferedPacketEntriesIterator.remove();
         }
-        this.cerrojo.unLock();
-        this.cerrojoLlegados.lock();
-        it = this.bufferLlegadosADestino.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
+        this.packetsInTransitEntriesLock.unLock();
+        this.deliveredPacketEntriesLock.lock();
+        Iterator deliveredPacketEntriesIterator = this.deliveredPacketsBuffer.iterator();
+        while (deliveredPacketEntriesIterator.hasNext()) {
+            deliveredPacketEntriesIterator.next();
+            deliveredPacketEntriesIterator.remove();
         }
-        this.cerrojoLlegados.unLock();
-        setAsBrokenLink(false);
+        this.deliveredPacketEntriesLock.unLock();
+        this.setAsBrokenLink(false);
     }
 
     @Override
     public long getRABANWeight() {
+        // There is no RABAN weight for external links, so, the usual weight is
+        // returned.
         return this.getWeight();
     }
 
-    private long paso;
+    private long stepLength;
 }

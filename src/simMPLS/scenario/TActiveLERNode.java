@@ -2482,17 +2482,17 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * needed parameters to configure an TActiveLERNode and configure this node
      * using them.
      *
-     * @param serializedElement A serialized representation of a TActiveLERNode.
+     * @param serializedLERA A serialized representation of a TActiveLERNode.
      * @return true, whether the serialized string is correct and this node has
      * been initialized correctly using the serialized values. Otherwise, false.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public boolean unMarshall(String serializedElement) {
+    public boolean unMarshall(String serializedLERA) {
         // FIX: All fixed values in this method should be implemented as class
         // constants instead of harcoded values.
-        String[] elementFields = serializedElement.split("#");
+        String[] elementFields = serializedLERA.split("#");
         if (elementFields.length != 13) {
             return false;
         }

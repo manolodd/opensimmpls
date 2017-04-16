@@ -70,7 +70,7 @@ public class TSEPacketDiscarded extends TSimulationEvent {
         et = super.obtenerFuente();
         if (et.getElementType() == TTopologyElement.LINK) {
             ent = (TLink) et;
-            return ent.obtenerNombre();
+            return ent.getName();
         } else if (et.getElementType() == TTopologyElement.NODO) {
             nt = (TNode) et;
             return nt.getName();

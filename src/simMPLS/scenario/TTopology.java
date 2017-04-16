@@ -134,7 +134,7 @@ public class TTopology {
      * @return Nodo que busc�bamos.NULL si no existe.
      * @since 2.0
      */    
-    public TNode obtenerNodo(String ip) {
+    public TNode getNode(String ip) {
         TNode nodo = null;
         Iterator iterador = conjuntoNodos.iterator();
         while (iterador.hasNext()) {
@@ -195,7 +195,7 @@ public class TTopology {
         Iterator iterador = conjuntoEnlaces.iterator();
         while (iterador.hasNext()) {
             enlace = (TLink) iterador.next();
-            if (enlace.obtenerNombre().equals(nom))
+            if (enlace.getName().equals(nom))
                 cuantos++;
                 if (cuantos > 1)
                     return true;
@@ -237,7 +237,7 @@ public class TTopology {
         Iterator iterador = conjuntoEnlaces.iterator();
         while (iterador.hasNext()) {
             enlace = (TLink) iterador.next();
-            if (enlace.obtenerNombre().equals(nom))
+            if (enlace.getName().equals(nom))
                 return enlace;
         }
         return null;
@@ -426,13 +426,13 @@ public class TTopology {
             if (enlaceBuscado.getID() == enlace.getID()) {
                 if (enlaceBuscado.getLinkType() == TLink.EXTERNAL) {
                     TExternalLink enlaceTrasCast = (TExternalLink) enlaceBuscado;
-                    enlaceTrasCast.ponerExtremo1(enlace.getEnd1());
-                    enlaceTrasCast.ponerExtremo2(enlace.getEnd2());
+                    enlaceTrasCast.ponerExtremo1(enlace.getNodeAtEnd1());
+                    enlaceTrasCast.ponerExtremo2(enlace.getNodeAtEnd2());
                 }
                 else if (enlace.getLinkType() == TLink.INTERNAL) {
                     TInternalLink enlaceTrasCast = (TInternalLink) enlaceBuscado;
-                    enlaceTrasCast.ponerExtremo1(enlace.getEnd1());
-                    enlaceTrasCast.ponerExtremo2(enlace.getEnd2());
+                    enlaceTrasCast.ponerExtremo1(enlace.getNodeAtEnd1());
+                    enlaceTrasCast.ponerExtremo2(enlace.getNodeAtEnd2());
                 }
                 fin = true;
             }
@@ -587,9 +587,9 @@ public class TTopology {
         while (it.hasNext()) {
             e = (TLink) it.next();
             if (minimoDelay == 0) {
-                minimoDelay = e.obtenerDelay();
+                minimoDelay = e.getDelay();
             } else {
-                delayAux = e.obtenerDelay();
+                delayAux = e.getDelay();
                 if (delayAux < minimoDelay) {
                     minimoDelay = delayAux;
                 }
@@ -615,8 +615,8 @@ public class TTopology {
         TNode derecho;
         while (iterador.hasNext()) {
             enlace = (TLink) iterador.next();
-            izquierdo = enlace.getEnd1();
-            derecho = enlace.getEnd2();
+            izquierdo = enlace.getNodeAtEnd1();
+            derecho = enlace.getNodeAtEnd2();
             if ((derecho.getID() == extremo1) && (izquierdo.getID() == extremo2))
                 return true;
             if ((derecho.getID() == extremo2) && (izquierdo.getID() == extremo1))
@@ -640,8 +640,8 @@ public class TTopology {
         TNode derecho;
         while (iterador.hasNext()) {
             enlace = (TLink) iterador.next();
-            izquierdo = enlace.getEnd1();
-            derecho = enlace.getEnd2();
+            izquierdo = enlace.getNodeAtEnd1();
+            derecho = enlace.getNodeAtEnd2();
             if ((derecho.getID() == extremo1) && (izquierdo.getID() == extremo2))
                 return enlace;
             if ((derecho.getID() == extremo2) && (izquierdo.getID() == extremo1))
@@ -801,8 +801,8 @@ public class TTopology {
      * @since 2.0
      */    
     public synchronized String obtenerIPSalto(String IPorigen, String IPdestino) {
-        int origen = this.obtenerNodo(IPorigen).getID();
-        int destino = this.obtenerNodo(IPdestino).getID();
+        int origen = this.getNode(IPorigen).getID();
+        int destino = this.getNode(IPdestino).getID();
         int siguienteSalto = obtenerSalto(origen, destino);
         TNode nt = this.obtenerNodo(siguienteSalto);
         if (nt != null)
@@ -819,8 +819,8 @@ public class TTopology {
      * @since 2.0
      */    
     public synchronized String getNextHopRABANIPv4Address(String IPorigen, String IPdestino) {
-        int origen = this.obtenerNodo(IPorigen).getID();
-        int destino = this.obtenerNodo(IPdestino).getID();
+        int origen = this.getNode(IPorigen).getID();
+        int destino = this.getNode(IPdestino).getID();
         int siguienteSalto = obtenerSaltoRABAN(origen, destino);
         TNode nt = this.obtenerNodo(siguienteSalto);
         if (nt != null)
@@ -840,9 +840,9 @@ public class TTopology {
      * @param IPdestino Direcci�n IP del nodo al que se quiere llegar.
      */    
     public synchronized String getNextHopRABANIPv4Address(String IPorigen, String IPdestino, String IPNodoAEvitar) {
-        int origen = this.obtenerNodo(IPorigen).getID();
-        int destino = this.obtenerNodo(IPdestino).getID();
-        int nodoAEvitar = this.obtenerNodo(IPNodoAEvitar).getID();
+        int origen = this.getNode(IPorigen).getID();
+        int destino = this.getNode(IPdestino).getID();
+        int nodoAEvitar = this.getNode(IPNodoAEvitar).getID();
         int siguienteSalto = obtenerSaltoRABAN(origen, destino, nodoAEvitar);
         TNode nt = this.obtenerNodo(siguienteSalto);
         if (nt != null)

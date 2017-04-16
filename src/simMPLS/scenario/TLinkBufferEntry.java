@@ -53,7 +53,7 @@ public class TLinkBufferEntry implements Comparable {
      */    
     public int compareTo(Object o) {
         TLinkBufferEntry ebe = (TLinkBufferEntry) o;
-        TAbstractPDU pdu = ebe.obtenerPaquete();
+        TAbstractPDU pdu = ebe.getPacket();
         return this.paquete.compareTo(pdu);
     }
 
@@ -62,7 +62,7 @@ public class TLinkBufferEntry implements Comparable {
      * @return Paquete de la entrada del buffer.
      * @since 2.0
      */    
-    public TAbstractPDU obtenerPaquete() {
+    public TAbstractPDU getPacket() {
         return paquete;
     }
 
@@ -73,7 +73,7 @@ public class TLinkBufferEntry implements Comparable {
      * al destino.
      * @since 2.0
      */    
-    public long obtener100x100() {
+    public long getTotalTransitDelay() {
         return this.teInicial;
     }
 
@@ -103,7 +103,7 @@ public class TLinkBufferEntry implements Comparable {
      * @return Tiempo (en nanosegundos) que le falta al paquete para llegar al destino.
      * @since 2.0
      */    
-    public long obtenerTiempoEspera() {
+    public long getRemainingTransitDelay() {
         return te;
     }
 
@@ -114,7 +114,7 @@ public class TLinkBufferEntry implements Comparable {
      * @param paso Tiempo que se le resta al tiempo de espera del paquete.
      * @since 2.0
      */    
-    public void restarTiempoPaso(long paso) {
+    public void substractStepLength(long paso) {
         te -= paso;
         if (te < 0) 
             te = 0;
@@ -138,7 +138,7 @@ public class TLinkBufferEntry implements Comparable {
      * del enlace.
      * @since 2.0
      */    
-    public int obtenerDestino() {
+    public int getTargetEnd() {
         return destino;
     }
     

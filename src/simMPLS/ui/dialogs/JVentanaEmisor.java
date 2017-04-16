@@ -626,7 +626,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
         if (reconfigurando) {
             this.panelCoordenadas.setEnabled(false);
             this.panelCoordenadas.setToolTipText(null);
-            TNode nt = this.topo.obtenerNodo(emisor.obtenerDestino());
+            TNode nt = this.topo.getNode(emisor.obtenerDestino());
             if (nt != null) {
                 BKUPDestino = nt.getName();
             }
