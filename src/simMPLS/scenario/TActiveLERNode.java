@@ -2418,7 +2418,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
 
     /**
      * This method generates an human-readable error message from a given error
-     * code specified as ana argument.
+     * code specified as an argument.
      *
      * @param errorCode the error code to witch the text message has to be
      * generated.

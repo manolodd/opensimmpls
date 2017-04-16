@@ -49,9 +49,10 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
     }
 
     /**
-     * Este m�todo devuelve el tipo el enlace.
+     * This metod return the type of this link.
      *
-     * @return TLink.EXTERNAL, indicando que es un nodo externo.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TLink.EXTERNAL, that means that this is an external link.
      * @since 2.0
      */
     @Override
@@ -60,11 +61,13 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
     }
 
     /**
-     * Este m�todo recibe eventos de sincronizaci�n del reloj del simulador, que
-     * lo sincroniza todo.
+     * This event receives a synchronization event from the simulation clock
+     * that coordinates the global operation. This event allow the link to do
+     * things during a short period of time.
      *
-     * @param timerEvent Evento de sincronizaci�n que el reloj del simulador
-     * env�a a este enlace externo.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param timerEvent Synchronization event received from the simulation
+     * clock.
      * @since 2.0
      */
     @Override
@@ -76,10 +79,12 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
     }
 
     /**
-     * Este m�todo establece si el enlace se puede considerar como caido o no.
+     * This method establishes whether the links should be considered as a
+     * broken one or not.
      *
-     * @param linkIsBroken TRUE, indica que queremos que el enlace caiga. FALSE
-     * indica que no lo queremos o que queremos que se levante si est� caido.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param linkIsBroken TRUE, means that the link is considered as broken.
+     * FALSE means that it should be considered as up.
      * @since 2.0
      */
     @Override
@@ -124,9 +129,11 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
     }
 
     /**
-     * Este m�todo se ejecuta cuando el hilo principal del enlace externo se
-     * ponne en funcionamiento. Es el n�cleo del enlace externo.
+     * This method runs in it own thread and is started after a synchronization
+     * event is received and only during the time specified in that
+     * syncronization event. This is what the link does while running.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
@@ -137,10 +144,10 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
     }
 
     /**
-     * Este m�todo toma todos los paquetes que en ese momento se encuentren
-     * circulando por el enlace externo y los avanza por el mismo hacia su
-     * destino.
+     * This method pick up all packets in transit through this link and updates
+     * their remaining transit delay to the destination node.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void updateTransitDelay() {
@@ -166,9 +173,11 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
     }
 
     /**
-     * Este m�todo toma todos los paquetes que se encuentren circulando por el
-     * enlace externo y detecta todos aquellos que ya han llegado al destino.
+     * This method pick up all packets in transit through this link and advances
+     * them to the destination node. Also, it detects those packets that have
+     * already reached the target node.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void advancePacketInTransit() {
@@ -195,10 +204,10 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
     }
 
     /**
-     * Este m�todo toma todos los paquetes que han llegado al destino y realiza
-     * la insercio�n de los mismos en el puerto correspondiente de dicho
-     * destino.
+     * This method pick up all packets that have already reached the target node
+     * and deposits them in the corresponding por of that node.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void deliverPacketsToDestination() {
@@ -219,10 +228,12 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
     }
 
     /**
-     * Este m�todo obtiene el weight del enlace externos que debe usar el
-     * algoritmo de routing para calcular rutas.
+     * This method gets the weight of this link to be used in the global routing
+     * algoritm.
      *
-     * @return El weight del enlace. En el enlace externo es el retardo.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The weight measurement for this link. For an TExternalLink it is
+     * the link delay.
      * @since 2.0
      */
     @Override
@@ -232,53 +243,50 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
     }
 
     /**
-     * Este m�todo devuelve si el enlace externo est� bien configurado o no.
+     * This method checks wheter this external link is well configured or not.
      *
-     * @return TRUE, si la configuraci�n actual del enlace es correcta. FALSE en
-     * caso contrario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TRUE, if the configuration of this link is OK. Otherwise, returns
+     * FALSE.
      * @since 2.0
      */
     @Override
     public boolean isWellConfigured() {
         // FIX: This method should be used correclty. In fact this does not do
-        // anything. Seems to be a mistake.
+        // anything.
         return false;
     }
 
-    /**
-     * Este m�todo comprueba si el valor de todos los atributos configurables
-     * del enlace externo es v�lido o no.
-     *
-     * @param topology Topolog�a dentro de la cual se encuentra este enlace
-     * externo.
-     * @return CORRECTA, si la configuraci�n es correcta. Un codigo de error en
-     * caso contrario.
-     * @since 2.0
-     */
+    /*
     public int isWellConfigured(TTopology topology) {
         // FIX: This method should be used correclty. In fact this does not do
         // anything. Seems to be a mistake.
         return 0;
     }
-
+     */
     /**
-     * Este m�todo transforma en un mensaje legible el c�digo de error devuelto
-     * por el m�todo <I>validateConfig(...)</I>
+     * This method returns a human-readable message corresponding to a given
+     * error code.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param errorCode El codigo de error que se quiere transformar.
      * @return El mensaje textual correspondiente a ese mensaje de error.
      * @since 2.0
      */
     @Override
     public String getErrorMessage(int errorCode) {
+        // FIX: Review this method. In fact this is doing nothing and I cannot 
+        // remember the reason. It could be a mistake.
         return null;
     }
 
     /**
-     * Este m�todo transforma el enlace externo en un representaci�n de texto
-     * que se puede almacenar en disco sin problemas.
+     * This method serializes the configuration parameters of this external link
+     * into an string that can be saved into disk.
      *
-     * @return El equivalente en texto del enlace externo completo.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return an String containing all the configuration parameters of this
+     * external link.
      * @since 2.0
      */
     @Override
@@ -304,11 +312,15 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
     }
 
     /**
-     * Este m�todo toma la representaci�n textual de un enlace externo completo
-     * y configura el objeto con los elementFields que obtiene.
+     * This method gets as an argument a serialized string that contains the
+     * needed parameters to configure an TExternalLink and configure this
+     * external link using them.
      *
-     * @param serializedLink Enlace externo en su representaci�n serializada.
-     * @return TRUE, si se deserializa correctamente, FALSE en caso contrario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param serializedLink A serialized representation of a TExternalLink.
+     * @return true, whether the serialized string is correct and this external
+     * link has been initialized correctly using the serialized values.
+     * Otherwise, false.
      * @since 2.0
      */
     @Override
@@ -342,9 +354,10 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
     }
 
     /**
-     * Este m�todo reinicia los atributos de la clase, dejando la instancia como
-     * si se acabase de crear por el constructor.
+     * This method reset all the values and attribues of this external link as
+     * in the moment of its instantiation.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
@@ -366,6 +379,16 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
         this.setAsBrokenLink(false);
     }
 
+    /**
+     * This method gets the weight of this link to be used in the RABAN routing
+     * algorithm. As RABAN does not operates in external links, this methohd
+     * returns the same than the method getWeight().
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The RABAN weight measurement for this link. For an TExternalLink
+     * it is the link delay.
+     * @since 2.0
+     */
     @Override
     public long getRABANWeight() {
         // There is no RABAN weight for external links, so, the usual weight is
