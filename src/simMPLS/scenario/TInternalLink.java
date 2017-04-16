@@ -15,13 +15,12 @@
  */
 package simMPLS.scenario;
 
+import java.util.Iterator;
 import simMPLS.protocols.TAbstractPDU;
 import simMPLS.hardware.timer.ITimerEventListener;
 import simMPLS.utils.EIDGeneratorOverflow;
 import simMPLS.utils.TLongIDGenerator;
-import java.util.*;
-import org.jfree.chart.*;
-import org.jfree.data.*;
+
 
 /**
  * Esta clase implementa un enlace de la topolog�a que ser� interno al dominio
@@ -41,9 +40,9 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      */
     public TInternalLink(int identificador, TLongIDGenerator il, TTopology t) {
         super(identificador, il, t);
-        numeroDeLSPs = 0;
-        numeroDeLSPsDeBackup = 0;
-        paso = 0;
+        numberOfLSPs = 0;
+        numberOfBackupLSPs = 0;
+        stepLength = 0;
     }
 
     /**
@@ -51,6 +50,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @return TLink.INTERNAL, indicando que es un nodo interno.
      * @since 2.0
      */    
+    @Override
     public int getLinkType() {
         return super.INTERNAL;
     }
@@ -61,10 +61,11 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @param evt Evento de sincronizaci�n que el reloj del simulador env�a a este enlace interno.
      * @since 2.0
      */    
+    @Override
     public void receiveTimerEvent(simMPLS.hardware.timer.TTimerEvent evt) {
         this.setStepDuration(evt.getStepDuration());
         this.setTimeInstant(evt.getUpperLimit());
-        paso = evt.getStepDuration();
+        stepLength = evt.getStepDuration();
         this.startOperation();
     }
 
@@ -74,12 +75,13 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * que queremos que se levante si est� caido.
      * @since 2.0
      */    
+    @Override
     public void setAsBrokenLink(boolean ec) {
         linkIsBroken = ec;
         if (ec) {
             try {
-                this.numeroDeLSPs = 0;
-                this.numeroDeLSPsDeBackup = 0;
+                this.numberOfLSPs = 0;
+                this.numberOfBackupLSPs = 0;
                 this.generateSimulationEvent(new TSEBrokenLink(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
                 this.packetsInTransitEntriesLock.lock();
                 TAbstractPDU paquete = null;
@@ -115,6 +117,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * funcionamiento. Es el n�cleo del enlace interno.
      * @since 2.0
      */    
+    @Override
     public void run() {
         // Acciones a llevar a cabo durante el tic.
         this.actualizarTiemposDeEspera();
@@ -129,7 +132,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @since 2.0
      */    
     public boolean tieneLSPs() {
-        if (numeroDeLSPs > 0)
+        if (numberOfLSPs > 0)
             return true;
         return false;
     }
@@ -139,7 +142,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @since 2.0
      */    
     public void setLSPUp() {
-        numeroDeLSPs++;
+        numberOfLSPs++;
         try {
             this.generateSimulationEvent(new TSELSPEstablished(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
         } catch (Exception e) {
@@ -152,8 +155,8 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @since 2.0
      */    
     public void removeLSP() {
-        if (numeroDeLSPs > 0) {
-            numeroDeLSPs--;
+        if (numberOfLSPs > 0) {
+            numberOfLSPs--;
             try {
                 this.generateSimulationEvent(new TSELSPRemoved(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
             } catch (Exception e) {
@@ -169,7 +172,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @since 2.0
      */    
     public boolean tieneLSPsDeBackup() {
-        if (numeroDeLSPsDeBackup > 0)
+        if (numberOfBackupLSPs > 0)
             return true;
         return false;
     }
@@ -179,7 +182,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @since 2.0
      */    
     public void setBackupLSP() {
-        numeroDeLSPsDeBackup++;
+        numberOfBackupLSPs++;
     }
 
     /**
@@ -187,8 +190,8 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @since 2.0
      */    
     public void setBackupLSPDown() {
-        if (numeroDeLSPsDeBackup > 0)
-            numeroDeLSPsDeBackup--;
+        if (numberOfBackupLSPs > 0)
+            numberOfBackupLSPs--;
     }
 
     /**
@@ -201,7 +204,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
         Iterator it = buffer.iterator();
         while (it.hasNext()) {
             TLinkBufferEntry ebe = (TLinkBufferEntry) it.next();
-            ebe.substractStepLength(paso);
+            ebe.substractStepLength(stepLength);
             long pctj = this.getTransitPercentage(ebe.getTotalTransitDelay(), ebe.getRemainingTransitDelay());
             if (ebe.getTargetEnd() == 1)
                 pctj = 100 - pctj;
@@ -268,11 +271,12 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
     }
     
     /**
-     * Este m�todo obtiene el peso del enlace interno que debe usar el algoritmo de
-     * routing para calcular rutas.
-     * @return El peso del enlace.
+     * Este m�todo obtiene el rabanWeight del enlace interno que debe usar el algoritmo de
+ routing para calcular rutas.
+     * @return El rabanWeight del enlace.
      * @since 2.0
      */    
+    @Override
     public long getWeight() {
         long peso = this.getDelay();
         return peso; 
@@ -284,6 +288,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * contrario.
      * @since 2.0
      */    
+    @Override
     public boolean isWellConfigured() {
         return false;
     }
@@ -306,6 +311,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @return El mensaje textual correspondiente a ese mensaje de error.
      * @since 2.0
      */    
+    @Override
     public String getErrorMessage(int e) {
         return null;
     }
@@ -316,6 +322,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @return El equivalente en texto del enlace interno completo.
      * @since 2.0
      */    
+    @Override
     public String marshall() {
         String cadena = "#EnlaceInterno#";
         cadena += this.getID();
@@ -344,6 +351,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @return TRUE, si se deserializa correctamente, FALSE en caso contrario.
      * @since 2.0
      */    
+    @Override
     public boolean unMarshall(String elemento) {
         TLinkConfig configEnlace = new TLinkConfig();
         String valores[] = elemento.split("#");
@@ -376,6 +384,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * acabase de crear por el constructor.
      * @since 2.0
      */    
+    @Override
     public void reset() {
         this.packetsInTransitEntriesLock.lock();
         Iterator it = this.buffer.iterator();
@@ -391,25 +400,26 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
             it.remove();
         }
         this.deliveredPacketEntriesLock.unLock();
-        numeroDeLSPs = 0;
-        numeroDeLSPsDeBackup = 0;
+        numberOfLSPs = 0;
+        numberOfBackupLSPs = 0;
         setAsBrokenLink(false);
     }
     
+    @Override
     public long getRABANWeight() {
-        long peso = 0;
-        long pesoD = this.getDelay();
-        long pesoE1 = (long) ((double) (pesoD*0.10)) * this.getNodeAtEnd1().getRoutingWeight();
-        long pesoE2 = (long) ((double) (pesoD*0.10)) * this.getNodeAtEnd2().getRoutingWeight();
-        long pesoLSP = (long) ((double) (pesoD*0.05)) * this.numeroDeLSPs;
-        long pesoLSPB = (long) ((double) (pesoD*0.05)) * this.numeroDeLSPsDeBackup;
-        long pesoOnFly = (long) ((double) (pesoD*0.10)) * this.buffer.size();
-        long subPeso = (long) (pesoE1 + pesoE2 + pesoLSP + pesoLSPB + pesoOnFly);
-        peso = (long) ((pesoD*0.5) + (subPeso*0.5));
-        return peso; 
+        long rabanWeight = 0;
+        long delayWeight = this.getDelay();
+        long routingWeightOfNodeAtEnd1 = (long) ((double) (delayWeight*0.10)) * this.getNodeAtEnd1().getRoutingWeight();
+        long routingWeightOfNodeAtEnd2 = (long) ((double) (delayWeight*0.10)) * this.getNodeAtEnd2().getRoutingWeight();
+        long numberOfLSPsWeight = (long) ((double) (delayWeight*0.05)) * this.numberOfLSPs;
+        long numberOfBackupLSPsWeight = (long) ((double) (delayWeight*0.05)) * this.numberOfBackupLSPs;
+        long packetsInTransitWeight = (long) ((double) (delayWeight*0.10)) * this.buffer.size();
+        long subWeight = (long) (routingWeightOfNodeAtEnd1 + routingWeightOfNodeAtEnd2 + numberOfLSPsWeight + numberOfBackupLSPsWeight + packetsInTransitWeight);
+        rabanWeight = (long) ((delayWeight*0.5) + (subWeight*0.5));
+        return rabanWeight; 
     }
     
-    private int numeroDeLSPs;
-    private int numeroDeLSPsDeBackup;
-    private long paso;
+    private int numberOfLSPs;
+    private int numberOfBackupLSPs;
+    private long stepLength;
 }
