@@ -716,7 +716,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                 if (emc.getLabelOrFEC() == TSwitchingMatrixEntry.UNDEFINED) {
                     emc.setLabelOrFEC(matrizConmutacion.getNewLabel());
                 }
-                serializedLink et = (serializedLink) ports.getPort(emc.getOutgoingPortID()).getLink();
+                TInternalLink et = (TInternalLink) ports.getPort(emc.getOutgoingPortID()).getLink();
                 if (et != null) {
                     if (emc.aBackupLSPHasBeenRequested()) {
                         et.setAsUsedByABackupLSP();
@@ -801,7 +801,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                     TPort pSalida = ports.getPort(pEntrada);
                     TLink et = pSalida.getLink();
                     if (et.getLinkType() == TLink.INTERNAL) {
-                        serializedLink ei = (serializedLink) et;
+                        TInternalLink ei = (TInternalLink) et;
                         if (emc.aBackupLSPHasBeenRequested()) {
                             ei.unlinkFromABackupLSP();
                         } else {

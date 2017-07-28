@@ -1172,7 +1172,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     // FIX: Avoid using harcoded values. Use class constants 
                     // instead.
                     if (switchingMatrixEntry.getBackupOutgoingPortID() >= 0) {
-                        serializedLink internalLinkAux = (serializedLink) ports.getPort(switchingMatrixEntry.getBackupOutgoingPortID()).getLink();
+                        TInternalLink internalLinkAux = (TInternalLink) ports.getPort(switchingMatrixEntry.getBackupOutgoingPortID()).getLink();
                         internalLinkAux.setAsUsedByALSP();
                         internalLinkAux.unlinkFromABackupLSP();
                     }
@@ -1243,7 +1243,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 if (switchingMatrixEntry.getLabelOrFEC() == TSwitchingMatrixEntry.UNDEFINED) {
                     switchingMatrixEntry.setLabelOrFEC(this.switchingMatrix.getNewLabel());
                 }
-                serializedLink internalLink = (serializedLink) this.ports.getPort(incomingPortID).getLink();
+                TInternalLink internalLink = (TInternalLink) this.ports.getPort(incomingPortID).getLink();
                 if (internalLink != null) {
                     if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
                         internalLink.setAsUsedByABackupLSP();
@@ -1274,7 +1274,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 if (switchingMatrixEntry.getLabelOrFEC() == TSwitchingMatrixEntry.UNDEFINED) {
                     switchingMatrixEntry.setLabelOrFEC(this.switchingMatrix.getNewLabel());
                 }
-                serializedLink internalLink = (serializedLink) this.ports.getPort(incomingPortID).getLink();
+                TInternalLink internalLink = (TInternalLink) this.ports.getPort(incomingPortID).getLink();
                 internalLink.setAsUsedByABackupLSP();
                 sendTLDPRequestOk(switchingMatrixEntry);
             } else if (currentBackupLabel == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
@@ -1387,7 +1387,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                         if (outgoingPort != null) {
                             TLink link = outgoingPort.getLink();
                             if (link.getLinkType() == TLink.INTERNAL) {
-                                serializedLink internalLink = (serializedLink) link;
+                                TInternalLink internalLink = (TInternalLink) link;
                                 if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
                                     internalLink.unlinkFromABackupLSP();
                                 } else {
@@ -1406,7 +1406,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                             if (outgoingPort != null) {
                                 TLink link = outgoingPort.getLink();
                                 if (link.getLinkType() == TLink.INTERNAL) {
-                                    serializedLink internalLink = (serializedLink) link;
+                                    TInternalLink internalLink = (TInternalLink) link;
                                     internalLink.unlinkFromABackupLSP();
                                 }
                             }
@@ -1419,7 +1419,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     if (outgoingPort != null) {
                         TLink link = outgoingPort.getLink();
                         if (link.getLinkType() == TLink.INTERNAL) {
-                            serializedLink internalLink = (serializedLink) link;
+                            TInternalLink internalLink = (TInternalLink) link;
                             if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
                                 internalLink.unlinkFromABackupLSP();
                             } else {
@@ -1450,7 +1450,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 TPort outgoingPort = this.ports.getPort(incomingPortID);
                 TLink link = outgoingPort.getLink();
                 if (link.getLinkType() == TLink.INTERNAL) {
-                    serializedLink internalLink = (serializedLink) link;
+                    TInternalLink internalLink = (TInternalLink) link;
                     if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
                         internalLink.unlinkFromABackupLSP();
                     } else {
@@ -1483,7 +1483,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 TPort outgoingPort = this.ports.getPort(incomingPortID);
                 TLink link = outgoingPort.getLink();
                 if (link.getLinkType() == TLink.INTERNAL) {
-                    serializedLink internalLink = (serializedLink) link;
+                    TInternalLink internalLink = (TInternalLink) link;
                     if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
                         internalLink.unlinkFromABackupLSP();
                     } else {

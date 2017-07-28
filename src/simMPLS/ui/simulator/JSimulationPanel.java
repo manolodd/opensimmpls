@@ -22,7 +22,7 @@ import java.awt.image.*;
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
-import simMPLS.scenario.serializedLink;
+import simMPLS.scenario.TInternalLink;
 import simMPLS.scenario.TSENodeCongested;
 import simMPLS.scenario.TSEPacketDiscarded;
 import simMPLS.scenario.TSEPacketGenerated;
@@ -281,7 +281,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
 //
             if (!enlace.isBroken()) {
                 if (enlace.getLinkType() == TLink.INTERNAL) {
-                    serializedLink ei = (serializedLink) enlace;
+                    TInternalLink ei = (TInternalLink) enlace;
                     if (ei.isBeingUsedByAnyLSP()) {
                         float dash1[] = {5.0f};
                         BasicStroke dashed = new BasicStroke(0.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash1, 0.0f);
@@ -307,7 +307,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
 //
             if (!enlace.isBroken()) {
                 if (enlace.getLinkType() == TLink.INTERNAL) {
-                    serializedLink ei = (serializedLink) enlace;
+                    TInternalLink ei = (TInternalLink) enlace;
                     if (ei.isBeingUsedByAnyBackupLSP()) {
                         float dash1[] = {10.0f, 5.0f, 0.2f, 5.0f};
                         BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash1, 0.0f);

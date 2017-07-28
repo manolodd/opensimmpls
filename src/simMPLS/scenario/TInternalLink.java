@@ -28,7 +28,7 @@ import simMPLS.utils.TLongIDGenerator;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class serializedLink extends TLink implements ITimerEventListener, Runnable {
+public class TInternalLink extends TLink implements ITimerEventListener, Runnable {
 
     /**
      * This method is the constructor of the class. It creates a new instance of
@@ -42,7 +42,7 @@ public class serializedLink extends TLink implements ITimerEventListener, Runnab
      * @param topology Topology this link belongs to.
      * @since 2.0
      */
-    public serializedLink(int linkID, TLongIDGenerator longIDGenerator, TTopology topology) {
+    public TInternalLink(int linkID, TLongIDGenerator longIDGenerator, TTopology topology) {
         super(linkID, longIDGenerator, topology);
         //FIX: Use class constants instead of harcoded values
         this.numberOfLSPs = 0;
@@ -332,8 +332,8 @@ public class serializedLink extends TLink implements ITimerEventListener, Runnab
      * algoritm.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return The weight measurement for this link. For a serializedLink
-     * bufferedPacketEntriesIterator is the link delay.
+     * @return The weight measurement for this link. For a TInternalLink
+ bufferedPacketEntriesIterator is the link delay.
      * @since 2.0
      */
     @Override
@@ -407,11 +407,11 @@ public class serializedLink extends TLink implements ITimerEventListener, Runnab
 
     /**
      * This method gets as an argument a serialized string that contains the
-     * needed parameters to configure an serializedLink and configure this
-     * internal link using them.
+ needed parameters to configure an TInternalLink and configure this
+ internal link using them.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param serializedLink A serialized representation of a serializedLink.
+     * @param serializedLink A serialized representation of a TInternalLink.
      * @return true, whether the serialized string is correct and this external
      * link has been initialized correctly using the serialized values.
      * Otherwise, false.

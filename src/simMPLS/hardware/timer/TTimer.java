@@ -18,7 +18,7 @@ package simMPLS.hardware.timer;
 import java.util.Iterator;
 import java.util.TreeSet;
 import simMPLS.scenario.TExternalLink;
-import simMPLS.scenario.serializedLink;
+import simMPLS.scenario.TInternalLink;
 import simMPLS.scenario.TActiveLERNode;
 import simMPLS.scenario.TLERNode;
 import simMPLS.scenario.TActiveLSRNode;
@@ -277,7 +277,7 @@ public class TTimer implements Runnable {
                     break;
                 }
                 case TLink.INTERNAL: {
-                    linkAux = (serializedLink) linkAux;
+                    linkAux = (TInternalLink) linkAux;
                     break;
                 }
             }

@@ -435,7 +435,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                         TPort pSalida = ports.getPort(emc.getOutgoingPortID());
                         pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         if (emc.aBackupLSPHasBeenRequested()) {
-                            serializedLink ei = (serializedLink) pSalida.getLink();
+                            TInternalLink ei = (TInternalLink) pSalida.getLink();
                             ei.setAsUsedByALSP();
                             ei.unlinkFromABackupLSP();
                             emc.setEntryIsForBackupLSP(false);
@@ -560,7 +560,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                 if (emc.getLabelOrFEC() == TSwitchingMatrixEntry.UNDEFINED) {
                     emc.setLabelOrFEC(matrizConmutacion.getNewLabel());
                 }
-                serializedLink et = (serializedLink) ports.getPort(pEntrada).getLink();
+                TInternalLink et = (TInternalLink) ports.getPort(pEntrada).getLink();
                 if (et != null) {
                     if (emc.aBackupLSPHasBeenRequested()) {
                         et.setAsUsedByABackupLSP();
@@ -642,7 +642,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                 discardPacket(paquete);
             } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
                 TPort pSalida = ports.getPort(pEntrada);
-                serializedLink ei = (serializedLink) pSalida.getLink();
+                TInternalLink ei = (TInternalLink) pSalida.getLink();
                 if (emc.aBackupLSPHasBeenRequested()) {
                     ei.unlinkFromABackupLSP();
                 } else {
