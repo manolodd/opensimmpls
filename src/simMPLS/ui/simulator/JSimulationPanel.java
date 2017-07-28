@@ -1,5 +1,5 @@
 /* 
- * Copyright 2015 (C) Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com.
+ * Copyright (C) Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -282,7 +282,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
             if (!enlace.isBroken()) {
                 if (enlace.getLinkType() == TLink.INTERNAL) {
                     TInternalLink ei = (TInternalLink) enlace;
-                    if (ei.tieneLSPs()) {
+                    if (ei.isBeingUsedByAnyLSP()) {
                         float dash1[] = {5.0f};
                         BasicStroke dashed = new BasicStroke(0.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash1, 0.0f);
                         g2Dbuf.setColor(this.COLOR_LSP);
@@ -308,7 +308,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
             if (!enlace.isBroken()) {
                 if (enlace.getLinkType() == TLink.INTERNAL) {
                     TInternalLink ei = (TInternalLink) enlace;
-                    if (ei.tieneLSPsDeBackup()) {
+                    if (ei.hasBackupLSPs()) {
                         float dash1[] = {10.0f, 5.0f, 0.2f, 5.0f};
                         BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash1, 0.0f);
                         g2Dbuf.setColor(Color.BLACK);

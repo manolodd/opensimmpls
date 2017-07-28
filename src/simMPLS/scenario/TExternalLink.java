@@ -1,5 +1,5 @@
 /* 
- * Copyright 2015 (C) Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com.
+ * Copyright (C) Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,8 @@ import simMPLS.utils.EIDGeneratorOverflow;
 import simMPLS.utils.TLongIDGenerator;
 
 /**
- * This class implements an exterlan link of the topology (a link that is
- * outside the MPLS domain.
+ * This class implements an external link of the topology (a link that is
+ * outside the MPLS domain).
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
@@ -45,6 +45,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      */
     public TExternalLink(int linkID, TLongIDGenerator longIDGenerator, TTopology topology) {
         super(linkID, longIDGenerator, topology);
+        //FIX: Use class constants instead of harcoded values
         this.stepLength = 0;
     }
 
@@ -90,7 +91,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
     @Override
     public void setAsBrokenLink(boolean linkIsBroken) {
         this.linkIsBroken = linkIsBroken;
-        if (linkIsBroken) {
+        if (this.linkIsBroken) {
             try {
                 this.generateSimulationEvent(new TSEBrokenLink(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime()));
                 this.packetsInTransitEntriesLock.lock();
