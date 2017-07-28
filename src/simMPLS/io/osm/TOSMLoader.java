@@ -21,7 +21,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.zip.CRC32;
-import simMPLS.scenario.TInternalLink;
+import simMPLS.scenario.serializedLink;
 import simMPLS.scenario.TExternalLink;
 import simMPLS.scenario.TScenario;
 import simMPLS.scenario.TLERNode;
@@ -170,7 +170,7 @@ public class TOSMLoader {
             }
             externalLink = null;
         } else if (topologyString.startsWith("#EnlaceInterno#")) {
-            TInternalLink internalLink = new TInternalLink(0, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            serializedLink internalLink = new serializedLink(0, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (internalLink.unMarshall(topologyString)) {
                 this.scenario.getTopology().addLink(internalLink);
                 this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(internalLink.getID());

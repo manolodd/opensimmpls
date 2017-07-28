@@ -430,7 +430,7 @@ public class TTopology {
                     enlaceTrasCast.ponerExtremo2(enlace.getNodeAtEnd2());
                 }
                 else if (enlace.getLinkType() == TLink.INTERNAL) {
-                    TInternalLink enlaceTrasCast = (TInternalLink) enlaceBuscado;
+                    serializedLink enlaceTrasCast = (serializedLink) enlaceBuscado;
                     enlaceTrasCast.ponerExtremo1(enlace.getNodeAtEnd1());
                     enlaceTrasCast.ponerExtremo2(enlace.getNodeAtEnd2());
                 }
@@ -744,7 +744,7 @@ public class TTopology {
                         TExternalLink ee = (TExternalLink) en;
                         matrizAdyacencia[i][j] = ee.getWeight();
                     } else {
-                        TInternalLink ei = (TInternalLink) en;
+                        serializedLink ei = (serializedLink) en;
                         matrizAdyacencia[i][j] = ei.getWeight();
                     }
                 }
@@ -896,7 +896,7 @@ public class TTopology {
                         TExternalLink ee = (TExternalLink) en;
                         matrizAdyacencia[i][j] = ee.getRABANWeight();
                     } else {
-                        TInternalLink ei = (TInternalLink) en;
+                        serializedLink ei = (serializedLink) en;
                         matrizAdyacencia[i][j] = ei.getRABANWeight();
                     }
                 }
@@ -995,7 +995,7 @@ public class TTopology {
                         TExternalLink ee = (TExternalLink) en;
                         matrizAdyacencia[i][j] = ee.getRABANWeight();
                     } else {
-                        TInternalLink ei = (TInternalLink) en;
+                        serializedLink ei = (serializedLink) en;
                         matrizAdyacencia[i][j] = ei.getRABANWeight();
                     }
                 }

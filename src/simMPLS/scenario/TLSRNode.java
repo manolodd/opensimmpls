@@ -435,9 +435,9 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                         TPort pSalida = ports.getPort(emc.getOutgoingPortID());
                         pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
                         if (emc.aBackupLSPHasBeenRequested()) {
-                            TInternalLink ei = (TInternalLink) pSalida.getLink();
-                            ei.setLSPUp();
-                            ei.setBackupLSPDown();
+                            serializedLink ei = (serializedLink) pSalida.getLink();
+                            ei.setAsUsedByALSP();
+                            ei.unlinkFromABackupLSP();
                             emc.setEntryIsForBackupLSP(false);
                         }
                         try {
@@ -560,12 +560,12 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                 if (emc.getLabelOrFEC() == TSwitchingMatrixEntry.UNDEFINED) {
                     emc.setLabelOrFEC(matrizConmutacion.getNewLabel());
                 }
-                TInternalLink et = (TInternalLink) ports.getPort(pEntrada).getLink();
+                serializedLink et = (serializedLink) ports.getPort(pEntrada).getLink();
                 if (et != null) {
                     if (emc.aBackupLSPHasBeenRequested()) {
-                        et.setBackupLSP();
+                        et.setAsUsedByABackupLSP();
                     } else {
-                        et.setLSPUp();
+                        et.setAsUsedByALSP();
                     }
                 }
                 enviarSolicitudOkTLDP(emc);
@@ -642,11 +642,11 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                 discardPacket(paquete);
             } else if (etiquetaActual == TSwitchingMatrixEntry.REMOVING_LABEL) {
                 TPort pSalida = ports.getPort(pEntrada);
-                TInternalLink ei = (TInternalLink) pSalida.getLink();
+                serializedLink ei = (serializedLink) pSalida.getLink();
                 if (emc.aBackupLSPHasBeenRequested()) {
-                    ei.setBackupLSPDown();
+                    ei.unlinkFromABackupLSP();
                 } else {
-                    ei.removeLSP();
+                    ei.unlinkFromALSP();
                 }
                 matrizConmutacion.removeEntry(emc.getIncomingPortID(), emc.getLabelOrFEC(), emc.getEntryType());
             } else if (etiquetaActual > 15) {

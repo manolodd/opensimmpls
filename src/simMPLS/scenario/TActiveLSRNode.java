@@ -855,9 +855,9 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     TPort outgoingPort = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID());
                     outgoingPort.putPacketOnLink(packet, outgoingPort.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
-                        TInternalLink ei = (TInternalLink) outgoingPort.getLink();
-                        ei.setLSPUp();
-                        ei.setBackupLSPDown();
+                        serializedLink ei = (serializedLink) outgoingPort.getLink();
+                        ei.setAsUsedByALSP();
+                        ei.unlinkFromABackupLSP();
                         switchingMatrixEntry.setEntryIsForBackupLSP(false);
                     }
                     try {
@@ -1011,9 +1011,9 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 if (switchingMatrixEntry.backupLSPHasBeenEstablished()) {
                     sendTLDPWithdrawalOk(switchingMatrixEntry, incomingPortID);
                     if (switchingMatrixEntry.getBackupOutgoingPortID() >= 0) {
-                        TInternalLink internalLinkAux = (TInternalLink) this.ports.getPort(switchingMatrixEntry.getBackupOutgoingPortID()).getLink();
-                        internalLinkAux.setLSPUp();
-                        internalLinkAux.setBackupLSPDown();
+                        serializedLink internalLinkAux = (serializedLink) this.ports.getPort(switchingMatrixEntry.getBackupOutgoingPortID()).getLink();
+                        internalLinkAux.setAsUsedByALSP();
+                        internalLinkAux.unlinkFromABackupLSP();
                     }
                     switchingMatrixEntry.switchToBackupLSP();
                 } else {
@@ -1077,12 +1077,12 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 if (switchingMatrixEntry.getLabelOrFEC() == TSwitchingMatrixEntry.UNDEFINED) {
                     switchingMatrixEntry.setLabelOrFEC(this.switchingMatrix.getNewLabel());
                 }
-                TInternalLink internalLink = (TInternalLink) this.ports.getPort(incomingPortID).getLink();
+                serializedLink internalLink = (serializedLink) this.ports.getPort(incomingPortID).getLink();
                 if (internalLink != null) {
                     if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
-                        internalLink.setBackupLSP();
+                        internalLink.setAsUsedByABackupLSP();
                     } else {
-                        internalLink.setLSPUp();
+                        internalLink.setAsUsedByALSP();
                     }
                 }
                 sendTLDPRequestOk(switchingMatrixEntry);
@@ -1108,9 +1108,9 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 if (switchingMatrixEntry.getLabelOrFEC() == TSwitchingMatrixEntry.UNDEFINED) {
                     switchingMatrixEntry.setLabelOrFEC(this.switchingMatrix.getNewLabel());
                 }
-                TInternalLink et = (TInternalLink) this.ports.getPort(incomingPortID).getLink();
+                serializedLink et = (serializedLink) this.ports.getPort(incomingPortID).getLink();
                 if (et != null) {
-                    et.setBackupLSP();
+                    et.setAsUsedByABackupLSP();
                 }
             } else if (currentBackupLabel == TSwitchingMatrixEntry.LABEL_UNAVAILABLE) {
                 discardPacket(packet);
@@ -1219,11 +1219,11 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 if (switchingMatrixEntry.getOutgoingLabel() == TSwitchingMatrixEntry.REMOVING_LABEL) {
                     TPort outgoingPort = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID());
                     if (outgoingPort != null) {
-                        TInternalLink internalLink = (TInternalLink) outgoingPort.getLink();
+                        serializedLink internalLink = (serializedLink) outgoingPort.getLink();
                         if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
-                            internalLink.setBackupLSPDown();
+                            internalLink.unlinkFromABackupLSP();
                         } else {
-                            internalLink.removeLSP();
+                            internalLink.unlinkFromALSP();
                         }
                     }
                     switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_WITHDRAWN);
@@ -1232,19 +1232,19 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     if (switchingMatrixEntry.getBackupOutgoingPortID() >= 0) {
                         TPort outgoingPort = this.ports.getPort(switchingMatrixEntry.getBackupOutgoingPortID());
                         if (outgoingPort != null) {
-                            TInternalLink internalLink = (TInternalLink) outgoingPort.getLink();
-                            internalLink.setBackupLSPDown();
+                            serializedLink internalLink = (serializedLink) outgoingPort.getLink();
+                            internalLink.unlinkFromABackupLSP();
                         }
                         switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.LABEL_WITHDRAWN);
                     }
                 }
                 TPort outgoingPort = this.ports.getPort(incomingPortID);
                 if (outgoingPort != null) {
-                    TInternalLink internalLink = (TInternalLink) outgoingPort.getLink();
+                    serializedLink internalLink = (serializedLink) outgoingPort.getLink();
                     if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
-                        internalLink.setBackupLSPDown();
+                        internalLink.unlinkFromABackupLSP();
                     } else {
-                        internalLink.removeLSP();
+                        internalLink.unlinkFromALSP();
                     }
                 }
                 this.switchingMatrix.removeEntry(switchingMatrixEntry.getIncomingPortID(), switchingMatrixEntry.getLabelOrFEC(), switchingMatrixEntry.getEntryType());
@@ -1267,11 +1267,11 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 discardPacket(packet);
             } else if (currentLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
                 TPort outgoingPort = this.ports.getPort(incomingPortID);
-                TInternalLink internalLink = (TInternalLink) outgoingPort.getLink();
+                serializedLink internalLink = (serializedLink) outgoingPort.getLink();
                 if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
-                    internalLink.setBackupLSPDown();
+                    internalLink.unlinkFromABackupLSP();
                 } else {
-                    internalLink.removeLSP();
+                    internalLink.unlinkFromALSP();
                 }
                 if (switchingMatrixEntry.getBackupOutgoingLabel() == TSwitchingMatrixEntry.LABEL_WITHDRAWN) {
                     this.switchingMatrix.removeEntry(switchingMatrixEntry.getIncomingPortID(), switchingMatrixEntry.getLabelOrFEC(), switchingMatrixEntry.getEntryType());
@@ -1295,8 +1295,8 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 discardPacket(packet);
             } else if (currentBackupLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
                 TPort outgoingPort = this.ports.getPort(incomingPortID);
-                TInternalLink internalLink = (TInternalLink) outgoingPort.getLink();
-                internalLink.setBackupLSPDown();
+                serializedLink internalLink = (serializedLink) outgoingPort.getLink();
+                internalLink.unlinkFromABackupLSP();
                 switchingMatrixEntry.setBackupOutgoingLabel(TSwitchingMatrixEntry.LABEL_WITHDRAWN);
                 if (switchingMatrixEntry.getOutgoingLabel() == TSwitchingMatrixEntry.LABEL_WITHDRAWN) {
                     this.switchingMatrix.removeEntry(switchingMatrixEntry.getIncomingPortID(), switchingMatrixEntry.getLabelOrFEC(), switchingMatrixEntry.getEntryType());

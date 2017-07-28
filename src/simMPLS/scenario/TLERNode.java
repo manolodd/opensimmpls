@@ -716,12 +716,12 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                 if (emc.getLabelOrFEC() == TSwitchingMatrixEntry.UNDEFINED) {
                     emc.setLabelOrFEC(matrizConmutacion.getNewLabel());
                 }
-                TInternalLink et = (TInternalLink) ports.getPort(emc.getOutgoingPortID()).getLink();
+                serializedLink et = (serializedLink) ports.getPort(emc.getOutgoingPortID()).getLink();
                 if (et != null) {
                     if (emc.aBackupLSPHasBeenRequested()) {
-                        et.setBackupLSP();
+                        et.setAsUsedByABackupLSP();
                     } else {
-                        et.setLSPUp();
+                        et.setAsUsedByALSP();
                     }
                 }
                 enviarSolicitudOkTLDP(emc);
@@ -801,11 +801,11 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                     TPort pSalida = ports.getPort(pEntrada);
                     TLink et = pSalida.getLink();
                     if (et.getLinkType() == TLink.INTERNAL) {
-                        TInternalLink ei = (TInternalLink) et;
+                        serializedLink ei = (serializedLink) et;
                         if (emc.aBackupLSPHasBeenRequested()) {
-                            ei.setBackupLSPDown();
+                            ei.unlinkFromABackupLSP();
                         } else {
-                            ei.removeLSP();
+                            ei.unlinkFromALSP();
                         }
                     }
                 }

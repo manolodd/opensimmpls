@@ -29,7 +29,7 @@ import simMPLS.hardware.timer.EProgressEventGeneratorOnlyAllowASingleListener;
 import simMPLS.hardware.timer.TTimestamp;
 import simMPLS.io.osm.TOSMSaver;
 import simMPLS.scenario.TExternalLink;
-import simMPLS.scenario.TInternalLink;
+import simMPLS.scenario.serializedLink;
 import simMPLS.scenario.TActiveLERNode;
 import simMPLS.scenario.TLERNode;
 import simMPLS.scenario.TActiveLSRNode;
@@ -1133,7 +1133,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                     TExternalLink ext = (TExternalLink) ent;
                     ext.configure(tceAux, this.escenario.getTopology(), true);
                 } else if (ent.getLinkType() == TLink.INTERNAL) {
-                    TInternalLink inte = (TInternalLink) ent;
+                    serializedLink inte = (serializedLink) ent;
                     inte.configure(tceAux, this.escenario.getTopology(), true);
                 }
                 elementoDisenioClicDerecho = null;
@@ -1358,7 +1358,7 @@ private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
         if (config.obtenerValida()) {
             try {
                 if (config.obtenerTipo() == TLink.INTERNAL) {
-                    TInternalLink enlaceInterno = new TInternalLink(escenario.getTopology().getItemIdentifierGenerator().getNew(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
+                    serializedLink enlaceInterno = new serializedLink(escenario.getTopology().getItemIdentifierGenerator().getNew(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
                     enlaceInterno.configure(config, escenario.getTopology(), false);
                     escenario.getTopology().addLink(enlaceInterno);
                 } else {
