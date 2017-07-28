@@ -15,13 +15,13 @@
 - <b>OpenSimMPLS 2.0</b> (Still unreleased. Only source code available) will be released under the terms of Apache Software License 2.0.
 
 
-# AUTHORS
+# People behind OpenSimMPLS
 
-## Main author:
+## Author:
     
  - Manuel Domínguez-Dorado - <ingeniero@ManoloDominguez.com>
    
-## Other collaborators (release 1.0):
+## Other collaborators (only for release 1.0):
 
  - José Luis González Sánchez - <jlgs@unex.es>
  - Javier Carmona Murillo - <jcarmur@unex.es>
