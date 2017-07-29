@@ -75,7 +75,7 @@ public class TSenderStats extends TStats {
      * @return Datos dela gr�fica 1.
      * @since 2.0
      */
-    public org.jfree.data.AbstractDataset getDatasetOfChart1() {
+    public org.jfree.data.AbstractDataset getDataset1() {
         return this.paquetesSalientes;
     }
     
@@ -83,7 +83,7 @@ public class TSenderStats extends TStats {
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 2.
      * @return Datos dela gr�fica 2.
      * @since 2.0
-     */    public org.jfree.data.AbstractDataset getDatasetOfChart2() {
+     */    public org.jfree.data.AbstractDataset getDataset2() {
         return this.paquetesDescartados;
     }
     
@@ -91,7 +91,7 @@ public class TSenderStats extends TStats {
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 3.
      * @return Datos dela gr�fica 3.
      * @since 2.0
-     */    public org.jfree.data.AbstractDataset getDatasetOfChart3() {
+     */    public org.jfree.data.AbstractDataset getDataset3() {
         return null;
     }
     
@@ -99,7 +99,7 @@ public class TSenderStats extends TStats {
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 4.
      * @return Datos dela gr�fica 4.
      * @since 2.0
-     */    public org.jfree.data.AbstractDataset getDatasetOfChart4() {
+     */    public org.jfree.data.AbstractDataset getDataset4() {
         return null;
     }
     
@@ -107,7 +107,7 @@ public class TSenderStats extends TStats {
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 5.
      * @return Datos dela gr�fica 5.
      * @since 2.0
-     */    public org.jfree.data.AbstractDataset getDatasetOfChart5() {
+     */    public org.jfree.data.AbstractDataset getDataset5() {
         return null;
     }
     
@@ -115,7 +115,7 @@ public class TSenderStats extends TStats {
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 6.
      * @return Datos dela gr�fica 6.
      * @since 2.0
-     */    public org.jfree.data.AbstractDataset getDatasetOfChart6() {
+     */    public org.jfree.data.AbstractDataset getDataset6() {
         return null;
     }
 
@@ -198,7 +198,7 @@ public class TSenderStats extends TStats {
      * @return N�mero de gr�ficas del emisor.
      * @since 2.0
      */    
-    public int numberOfAvailableCharts() {
+    public int numberOfAvailableDatasets() {
         return 2;
     }
     
@@ -419,8 +419,8 @@ public class TSenderStats extends TStats {
      * @return T�tulo de la gr�fica 1.
      * @since 2.0
      */    
-    public String getTitleOfChart1() {
-        return TStats.PAQUETES_SALIENTES;
+    public String getTitleOfDataset1() {
+        return TStats.OUTGOING_PACKETS;
     }
     
     /**
@@ -428,8 +428,8 @@ public class TSenderStats extends TStats {
      * @return T�tulo de la gr�fica 2.
      * @since 2.0
      */    
-    public String getTitleOfChart2() {
-        return TStats.PAQUETES_DESCARTADOS;
+    public String getTitleOfDataset2() {
+        return TStats.DISCARDED_PACKETS;
     }
     
     /**
@@ -437,7 +437,7 @@ public class TSenderStats extends TStats {
      * @return T�tulo de la gr�fica 3.
      * @since 2.0
      */    
-    public String getTitleOfChart3() {
+    public String getTitleOfDataset3() {
         return null;
     }
     
@@ -446,7 +446,7 @@ public class TSenderStats extends TStats {
      * @return T�tulo de la gr�fica 4.
      * @since 2.0
      */    
-    public String getTitleOfChart4() {
+    public String getTitleOfDataset4() {
         return null;
     }
     
@@ -455,7 +455,7 @@ public class TSenderStats extends TStats {
      * @return T�tulo de la gr�fica 5.
      * @since 2.0
      */    
-    public String getTitleOfChart5() {
+    public String getTitleOfDataset5() {
         return null;
     }
     
@@ -464,7 +464,7 @@ public class TSenderStats extends TStats {
      * @return T�tulo de la gr�fica 6.
      * @since 2.0
      */    
-    public String getTitleOfChart6() {
+    public String getTitleOfDataset6() {
         return null;
     }
     

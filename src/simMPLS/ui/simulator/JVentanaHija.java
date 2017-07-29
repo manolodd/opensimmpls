@@ -2378,13 +2378,13 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
                     this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSRA));
                 }
 
-                int numeroGraficos = nt.getStats().numberOfAvailableCharts();
+                int numeroGraficos = nt.getStats().numberOfAvailableDatasets();
                 
                 if (numeroGraficos > 0) {
-                    grafico1 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfChart1(), 
+                    grafico1 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset1(), 
                                                              TStats.TIEMPO,
                                                              TStats.NUMERO_DE_PAQUETES,
-                                                             (XYSeriesCollection) nt.getStats().getDatasetOfChart1(),
+                                                             (XYSeriesCollection) nt.getStats().getDataset1(),
                                                              PlotOrientation.VERTICAL, 
                                                              true, true, true);
 
@@ -2407,10 +2407,10 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
                     this.panelAnalisis.add(panelGrafico1, gbc);
                 }
                 if (numeroGraficos > 1) {
-                    grafico2 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfChart2(), 
+                    grafico2 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset2(), 
                                                              TStats.TIEMPO,
                                                              TStats.NUMERO_DE_PAQUETES,
-                                                             (XYSeriesCollection) nt.getStats().getDatasetOfChart2(),
+                                                             (XYSeriesCollection) nt.getStats().getDataset2(),
                                                              PlotOrientation.VERTICAL, 
                                                              true, true, true);
                     grafico2.getPlot().setBackgroundPaint(Color.WHITE);
@@ -2432,10 +2432,10 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
                     this.panelAnalisis.add(panelGrafico2, gbc);
                 }
                 if (numeroGraficos > 2) {
-                    grafico3 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfChart3(), 
+                    grafico3 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset3(), 
                                                              TStats.TIEMPO,
                                                              TStats.NUMERO_DE_PAQUETES,
-                                                             (XYSeriesCollection) nt.getStats().getDatasetOfChart3(),
+                                                             (XYSeriesCollection) nt.getStats().getDataset3(),
                                                              PlotOrientation.VERTICAL, 
                                                              true, true, true);
                     grafico3.getPlot().setBackgroundPaint(Color.WHITE);
@@ -2457,10 +2457,10 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
                     this.panelAnalisis.add(panelGrafico3, gbc);
                 }
                 if (numeroGraficos > 3) {
-                    grafico4 = ChartFactory.createBarChart(nt.getStats().getTitleOfChart4(), 
+                    grafico4 = ChartFactory.createBarChart(nt.getStats().getTitleOfDataset4(), 
                                                              TStats.DESCRIPTION,
                                                              TStats.NUMERO,
-                                                             (DefaultCategoryDataset) nt.getStats().getDatasetOfChart4(),
+                                                             (DefaultCategoryDataset) nt.getStats().getDataset4(),
                                                              PlotOrientation.VERTICAL, 
                                                              true, true, true);
                     grafico4.getPlot().setBackgroundPaint(Color.WHITE);
@@ -2481,10 +2481,10 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
                     this.panelAnalisis.add(panelGrafico4, gbc);
                 }
                 if (numeroGraficos > 4) {
-                    grafico5 = ChartFactory.createBarChart(nt.getStats().getTitleOfChart5(), 
+                    grafico5 = ChartFactory.createBarChart(nt.getStats().getTitleOfDataset5(), 
                                                              TStats.DESCRIPTION,
                                                              TStats.NUMERO,
-                                                             (DefaultCategoryDataset) nt.getStats().getDatasetOfChart5(),
+                                                             (DefaultCategoryDataset) nt.getStats().getDataset5(),
                                                              PlotOrientation.VERTICAL, 
                                                              true, true, true);
                     grafico5.getPlot().setBackgroundPaint(Color.WHITE);
@@ -2505,10 +2505,10 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
                     this.panelAnalisis.add(panelGrafico5, gbc);
                 }
                 if (numeroGraficos > 5) {
-                    grafico6 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfChart6(), 
+                    grafico6 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset6(), 
                                                              TStats.TIEMPO,
                                                              TStats.NUMERO_DE_PAQUETES,
-                                                             (XYSeriesCollection) nt.getStats().getDatasetOfChart6(),
+                                                             (XYSeriesCollection) nt.getStats().getDataset6(),
                                                              PlotOrientation.VERTICAL, 
                                                              true, true, true);
                     grafico6.getPlot().setBackgroundPaint(Color.WHITE);

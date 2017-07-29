@@ -91,7 +91,7 @@ public class TLSRAStats extends TStats {
      * @return Datos de la gr�fica 1.
      * @since 2.0
      */    
-    public org.jfree.data.AbstractDataset getDatasetOfChart1() {
+    public org.jfree.data.AbstractDataset getDataset1() {
         return this.paquetesEntrantes;
     }
     
@@ -100,7 +100,7 @@ public class TLSRAStats extends TStats {
      * @return Datos de la gr�fica 2.
      * @since 2.0
      */    
-    public org.jfree.data.AbstractDataset getDatasetOfChart2() {
+    public org.jfree.data.AbstractDataset getDataset2() {
         return this.paquetesSalientes;
     }
     
@@ -109,7 +109,7 @@ public class TLSRAStats extends TStats {
      * @return Datos de la gr�fica 3.
      * @since 2.0
      */    
-    public org.jfree.data.AbstractDataset getDatasetOfChart3() {
+    public org.jfree.data.AbstractDataset getDataset3() {
         return this.paquetesDescartados;
     }
     
@@ -118,7 +118,7 @@ public class TLSRAStats extends TStats {
      * @return Datos de la gr�fica 4.
      * @since 2.0
      */    
-    public org.jfree.data.AbstractDataset getDatasetOfChart4() {
+    public org.jfree.data.AbstractDataset getDataset4() {
         return this.retransmisionesAtendidas;
     }
     
@@ -127,7 +127,7 @@ public class TLSRAStats extends TStats {
      * @return Datos de la gr�fica 5.
      * @since 2.0
      */    
-    public org.jfree.data.AbstractDataset getDatasetOfChart5() {
+    public org.jfree.data.AbstractDataset getDataset5() {
         return this.recuperacionesLocales;
     }
     
@@ -136,7 +136,7 @@ public class TLSRAStats extends TStats {
      * @return Datos de la gr�fica 6.
      * @since 2.0
      */    
-    public org.jfree.data.AbstractDataset getDatasetOfChart6() {
+    public org.jfree.data.AbstractDataset getDataset6() {
         return null;
     }
 
@@ -245,7 +245,7 @@ public class TLSRAStats extends TStats {
      * @return El n�mero de gr�ficas del LSRA.
      * @since 2.0
      */    
-    public int numberOfAvailableCharts() {
+    public int numberOfAvailableDatasets() {
         return 5;
     }
     
@@ -513,8 +513,8 @@ public class TLSRAStats extends TStats {
      * @return T�tulo de la gr�fica 1.
      * @since 2.0
      */    
-    public String getTitleOfChart1() {
-        return TStats.PAQUETES_ENTRANTES;
+    public String getTitleOfDataset1() {
+        return TStats.INCOMING_PACKETS;
     }
     
     /**
@@ -522,8 +522,8 @@ public class TLSRAStats extends TStats {
      * @return T�tulo de la gr�fica 2.
      * @since 2.0
      */    
-    public String getTitleOfChart2() {
-        return TStats.PAQUETES_SALIENTES;
+    public String getTitleOfDataset2() {
+        return TStats.OUTGOING_PACKETS;
     }
     
     /**
@@ -531,8 +531,8 @@ public class TLSRAStats extends TStats {
      * @return T�tulo de la gr�fica 3.
      * @since 2.0
      */    
-    public String getTitleOfChart3() {
-        return TStats.PAQUETES_DESCARTADOS;
+    public String getTitleOfDataset3() {
+        return TStats.DISCARDED_PACKETS;
     }
     
     /**
@@ -540,8 +540,8 @@ public class TLSRAStats extends TStats {
      * @return T�tulo de la gr�fica 4.
      * @since 2.0
      */    
-    public String getTitleOfChart4() {
-        return TStats.RETRANSMISIONES_ATENDIDAS;
+    public String getTitleOfDataset4() {
+        return TStats.RETRANSMISSIONS_MANAGED;
     }
     
     /**
@@ -549,8 +549,8 @@ public class TLSRAStats extends TStats {
      * @return T�tulo de la gr�fica 5.
      * @since 2.0
      */    
-    public String getTitleOfChart5() {
-        return TStats.RECUPERACIONES_LOCALES;
+    public String getTitleOfDataset5() {
+        return TStats.LOCAL_RECOVERIES_MANAGED;
     }
     
     /**
@@ -558,7 +558,7 @@ public class TLSRAStats extends TStats {
      * @return T�tulo de la gr�fica 6.
      * @since 2.0
      */    
-    public String getTitleOfChart6() {
+    public String getTitleOfDataset6() {
         return null;
     }
     

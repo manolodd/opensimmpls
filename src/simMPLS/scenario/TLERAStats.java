@@ -24,17 +24,18 @@ import simMPLS.protocols.TGPSRPPayload;
 import simMPLS.protocols.TAbstractPDU;
 
 /**
- * Esta clase implementa las estad�sticas para un nodo LERA.
+ * This class implements a statistics collector for an active LER (LERA).
  *
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class TLERAStats extends TStats {
 
     /**
-     * Crea una nueva instancia de TEstadisticasLERA
+     * This method is the constructor of the class. It creates a new instance of
+     * TLERAStats.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TLERAStats() {
@@ -71,7 +72,7 @@ public class TLERAStats extends TStats {
         this.discardedMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
         this.discardedTLDPPackets = new XYSeries(TStats.TLDP);
         this.discardedGPSRPPackets = new XYSeries(TStats.GPSRP);
-        // Temporal data to be consolidated -----------
+        // Temporary data to be consolidated -----------
         this.incomingIPv4PacketsOfThisTimeInstant = 0;
         this.incomingIPv4GOS1PacketsOfThisTimeInstant = 0;
         this.incomingIPv4GOS2PacketsOfThisTimeInstant = 0;
@@ -116,84 +117,110 @@ public class TLERAStats extends TStats {
     }
 
     /**
-     * Este m�todo permite obtener los datos necesario para generar la gr�fica
-     * 1.
+     * This method returns the dataset #1 of the LERA node associated to this
+     * TLERAStats that can be represented in a GUI or used by any other
+     * statistics processor. Dataset #1 contains values related to incoming
+     * packets.
      *
-     * @return Datos para la gr�fica 1.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the dataset #1 of this TLERAStatsthat contains values related to
+     * incoming packets.
      * @since 2.0
      */
     @Override
-    public AbstractDataset getDatasetOfChart1() {
+    public AbstractDataset getDataset1() {
         return this.incomingPackets;
     }
 
     /**
-     * Este m�todo permite obtener los datos necesario para generar la gr�fica
-     * 2.
+     * This method returns the dataset #2 of the LERA node associated to this
+     * TLERAStats that can be represented in a GUI or used by any other
+     * statistics processor. Dataset #2 contains values related to outgoing
+     * packets.
      *
-     * @return Datos para la gr�fica 2.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the dataset #2 of this TLERAStats that contains values related to
+     * outgoing packets.
      * @since 2.0
      */
     @Override
-    public AbstractDataset getDatasetOfChart2() {
+    public AbstractDataset getDataset2() {
         return this.outgoingPackets;
     }
 
     /**
-     * Este m�todo permite obtener los datos necesario para generar la gr�fica
-     * 3.
+     * This method returns the dataset #3 of the LERA node associated to this
+     * TLERAStats that can be represented in a GUI or used by any other
+     * statistics processor. Dataset #3 contains values related to discarded
+     * packets.
      *
-     * @return Datos para la gr�fica 3.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the dataset #3 of this TLERAStats that contains values related to
+     * discarded packets.
      * @since 2.0
      */
     @Override
-    public AbstractDataset getDatasetOfChart3() {
+    public AbstractDataset getDataset3() {
         return this.discardedPackets;
     }
 
     /**
-     * Este m�todo permite obtener los datos necesario para generar la gr�fica
-     * 4.
+     * This method returns the dataset #4 of the LERA node associated to this
+     * TLERAStats node that can be represented in a GUI or used by any other
+     * statistics processor. Dataset #4 contains values related to the number of
+     * retransmissions that have been managed.
      *
-     * @return Datos para la gr�fica 4.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the dataset #4 of this TLERAStats that contains values related to
+     * the number of retransmissions that have been managed.
      * @since 2.0
      */
     @Override
-    public AbstractDataset getDatasetOfChart4() {
+    public AbstractDataset getDataset4() {
         return this.retransmissionsManaged;
     }
 
     /**
-     * Este m�todo permite obtener los datos necesario para generar la gr�fica
-     * 5.
+     * This method returns the dataset #5 of the LERA node associated to this
+     * TLERAStats node that can be represented in a GUI or used by any other
+     * statistics processor. Dataset #5 contains values related to the number of
+     * local recoveries that have been managed.
      *
-     * @return Datos para la gr�fica 5.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the dataset #5 of this TLERAStats that contains values related to
+     * the number of local recoveries that have been managed.
      * @since 2.0
      */
     @Override
-    public AbstractDataset getDatasetOfChart5() {
+    public AbstractDataset getDataset5() {
         return this.localRecoveriesManaged;
     }
 
     /**
-     * Este m�todo permite obtener los datos necesario para generar la gr�fica
-     * 6.
+     * This method returns the dataset #6 of the LERA node associated to this
+     * TLERAStats node that can be represented in a GUI or used by any other
+     * statistics processor. There are not Dataset #6 in a TLERAStats so null is
+     * always returned.
      *
-     * @return Datos para la gr�fica 6.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return There are not Dataset #6 in a TLERAStats so null is returned.
      * @since 2.0
      */
     @Override
-    public AbstractDataset getDatasetOfChart6() {
+    public AbstractDataset getDataset6() {
         return null;
     }
 
     /**
-     * Este metodo permite aumentar las estad�sticas a�adiendo para ello las del
-     * packet especificado.
+     * This method takes into account the packet and type of entry passed as a
+     * parameter, updating the stats information to include this new
+     * information.
      *
-     * @param packet Paquete a contabilizar.
-     * @param entryType INCOMING, OUTGOING o DISCARD, dependiendo de si el
- packet entra en el nodod, sale de el o es descartado.
+     * @param packet new packet as a source of information to update stats of
+     * this TLERAStats.
+     * @param entryType INCOMING, OUTGOING o DISCARD, dependiendo on whether the
+     * packet is incoming, outgoing or being discarded in the LERA associated to
+     * this TLERAStats.
      * @since 2.0
      */
     @Override
@@ -331,21 +358,22 @@ public class TLERAStats extends TStats {
     }
 
     /**
-     * Este m�todo permite obtener el n�mero de gr�ficas que genera el nodo
-     * LERA.
+     * This method returns the number of datasets that are available in this
+     * TLERAStats.
      *
-     * @return El n�mero de gr�ficas que genera el LERA.
+     * @return the number of available datasets in this TLERAStats that are 5.
      * @since 2.0
      */
     @Override
-    public int numberOfAvailableCharts() {
+    public int numberOfAvailableDatasets() {
         return 5;
     }
 
     /**
-     * Este m�todo reinicia los valores de los atributos de la clase, dejando la
-     * instancia como si acabase de ser creada por el constructor.
+     * This method reset all the values and attribues of this TLERAStats as in
+     * the moment of its instantiation.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
@@ -425,11 +453,15 @@ public class TLERAStats extends TStats {
     }
 
     /**
-     * Este m�todo actualiza las estad�sticas con los �ltimos datos estad�sticos
-     * existentes desde la �ltima vez que se llam� a este m�todo.
+     * This method groups the latests data added to this TLERAStats by the time
+     * instant passed as an argument. In this way aggregated statistics are
+     * generated and the dataset contains only information that is relevant for
+     * the units used in OpenSimMPLS (the tick or time instant). This reduces
+     * the dataset size and the time of processing.
      *
-     * @param timeInstant Instante de tiempo al que se atribuir�n los ultimos
-     * datos existentes.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param timeInstant the time instant (in simulation terms) by wich the
+     * latest data contained in the datases will be grouped/aggregated.
      * @since 2.0
      */
     @Override
@@ -751,68 +783,81 @@ public class TLERAStats extends TStats {
     }
 
     /**
-     * Este m�todo permite obtener el t�tulo de la gr�fica 1.
+     * This method returns the title of dataset #1 of this TLERAStats node. In
+     * this case is a descriptive text about "incoming packets".
      *
-     * @return T�tulo de la gr�fica 1.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a descriptive text about "incoming packets".
      * @since 2.0
      */
     @Override
-    public String getTitleOfChart1() {
-        return TStats.PAQUETES_ENTRANTES;
+    public String getTitleOfDataset1() {
+        return TStats.INCOMING_PACKETS;
     }
 
     /**
-     * Este m�todo permite obtener el t�tulo de la gr�fica 2.
+     * This method returns the title of dataset #2 of this TLERAStats node. In
+     * this case is a descriptive text about "outgoing packets".
      *
-     * @return T�tulo de la gr�fica 2.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a descriptive text about "outgoing packets".
      * @since 2.0
      */
     @Override
-    public String getTitleOfChart2() {
-        return TStats.PAQUETES_SALIENTES;
+    public String getTitleOfDataset2() {
+        return TStats.OUTGOING_PACKETS;
     }
 
     /**
-     * Este m�todo permite obtener el t�tulo de la gr�fica 3.
+     * This method returns the title of dataset #3 of this TLERAStats node. In
+     * this case is a descriptive text about "discarded packets".
      *
-     * @return T�tulo de la gr�fica 3.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a descriptive text about "discarded packets".
      * @since 2.0
      */
     @Override
-    public String getTitleOfChart3() {
-        return TStats.PAQUETES_DESCARTADOS;
+    public String getTitleOfDataset3() {
+        return TStats.DISCARDED_PACKETS;
     }
 
     /**
-     * Este m�todo permite obtener el t�tulo de la gr�fica 4.
+     * This method returns the title of dataset #4 of this TLERAStats node. In
+     * this case is a descriptive text about "retransmissions managed".
      *
-     * @return T�tulo de la gr�fica 4.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a descriptive text about "retransmissions managed".
      * @since 2.0
      */
     @Override
-    public String getTitleOfChart4() {
-        return TStats.RETRANSMISIONES_ATENDIDAS;
+    public String getTitleOfDataset4() {
+        return TStats.RETRANSMISSIONS_MANAGED;
     }
 
     /**
-     * Este m�todo permite obtener el t�tulo de la gr�fica 5.
+     * This method returns the title of dataset #5 of this TLERAStats node. In
+     * this case is a descriptive text about "local recoveries".
      *
-     * @return T�tulo de la gr�fica 5.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a descriptive text about "local recoveries".
      * @since 2.0
      */
     @Override
-    public String getTitleOfChart5() {
-        return TStats.RECUPERACIONES_LOCALES;
+    public String getTitleOfDataset5() {
+        return TStats.LOCAL_RECOVERIES_MANAGED;
     }
 
     /**
-     * Este m�todo permite obtener el t�tulo de la gr�fica 6.
+     * This method returns the title of dataset #6 of this TLERAStats node.
+     * There is not a dataset #6 in a TLERAStats so, null is always returned.
      *
-     * @return T�tulo de la gr�fica 6.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return There is not a dataset #6 in a TLERAStats so, null is always
+     * returned.
      * @since 2.0
      */
     @Override
-    public String getTitleOfChart6() {
+    public String getTitleOfDataset6() {
         return null;
     }
 
