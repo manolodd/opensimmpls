@@ -15,13 +15,13 @@
  */
 package simMPLS.scenario;
 
+import org.jfree.data.DefaultCategoryDataset;
+import org.jfree.data.XYSeries;
+import org.jfree.data.XYSeriesCollection;
 import simMPLS.protocols.TGPSRPPDU;
 import simMPLS.protocols.TGPSRPPayload;
 import simMPLS.protocols.TAbstractPDU;
-import org.jfree.chart.*;
-import org.jfree.chart.labels.*;
-import org.jfree.chart.plot.*;
-import org.jfree.data.*;
+
 
 /**
  * Esta clase implementa las estad�sticas para un nodo LERA.
@@ -115,6 +115,7 @@ public class TLERAStats extends TStats {
      * @return Datos para la gr�fica 1.
      * @since 2.0
      */    
+    @Override
     public org.jfree.data.AbstractDataset obtenerDatosGrafica1() {
         return this.paquetesEntrantes;
     }
@@ -124,6 +125,7 @@ public class TLERAStats extends TStats {
      * @return Datos para la gr�fica 2.
      * @since 2.0
      */    
+    @Override
     public org.jfree.data.AbstractDataset obtenerDatosGrafica2() {
         return this.paquetesSalientes;
     }
@@ -133,6 +135,7 @@ public class TLERAStats extends TStats {
      * @return Datos para la gr�fica 3.
      * @since 2.0
      */    
+    @Override
     public org.jfree.data.AbstractDataset obtenerDatosGrafica3() {
         return this.paquetesDescartados;
     }
@@ -142,6 +145,7 @@ public class TLERAStats extends TStats {
      * @return Datos para la gr�fica 4.
      * @since 2.0
      */    
+    @Override
     public org.jfree.data.AbstractDataset obtenerDatosGrafica4() {
         return this.retransmisionesAtendidas;
     }
@@ -151,6 +155,7 @@ public class TLERAStats extends TStats {
      * @return Datos para la gr�fica 5.
      * @since 2.0
      */    
+    @Override
     public org.jfree.data.AbstractDataset obtenerDatosGrafica5() {
         return this.recuperacionesLocales;
     }
@@ -160,6 +165,7 @@ public class TLERAStats extends TStats {
      * @return Datos para la gr�fica 6.
      * @since 2.0
      */    
+    @Override
     public org.jfree.data.AbstractDataset obtenerDatosGrafica6() {
         return null;
     }
@@ -172,6 +178,7 @@ public class TLERAStats extends TStats {
  de el o es descartado.
      * @since 2.0
      */    
+    @Override
     public void addStatsEntry(TAbstractPDU paquete, int entrada) {
         if (this.estadisticasActivas) {
             int tipoPaquete = paquete.getSubtype();
@@ -310,6 +317,7 @@ public class TLERAStats extends TStats {
      * @return El n�mero de gr�ficas que genera el LERA.
      * @since 2.0
      */    
+    @Override
     public int obtenerNumeroGraficas() {
         return 5;
     }
@@ -319,6 +327,7 @@ public class TLERAStats extends TStats {
      * instancia como si acabase de ser creada por el constructor.
      * @since 2.0
      */    
+    @Override
     public void reset() {
     	paquetesEntrantes = new XYSeriesCollection();
     	paquetesSalientes = new XYSeriesCollection();
@@ -400,6 +409,7 @@ public class TLERAStats extends TStats {
      * @param instante Instante de tiempo al que se atribuir�n los ultimos datos existentes.
      * @since 2.0
      */    
+    @Override
     public void consolidateData(long instante) {
         if (this.estadisticasActivas) {
             if (tEIPV4 > 0) {
@@ -722,6 +732,7 @@ public class TLERAStats extends TStats {
      * @return T�tulo de la gr�fica 1.
      * @since 2.0
      */    
+    @Override
     public String obtenerTitulo1() {
         return TStats.PAQUETES_ENTRANTES;
     }
@@ -731,6 +742,7 @@ public class TLERAStats extends TStats {
      * @return T�tulo de la gr�fica 2.
      * @since 2.0
      */    
+    @Override
     public String obtenerTitulo2() {
         return TStats.PAQUETES_SALIENTES;
     }
@@ -740,6 +752,7 @@ public class TLERAStats extends TStats {
      * @return T�tulo de la gr�fica 3.
      * @since 2.0
      */    
+    @Override
     public String obtenerTitulo3() {
         return TStats.PAQUETES_DESCARTADOS;
     }
@@ -749,6 +762,7 @@ public class TLERAStats extends TStats {
      * @return T�tulo de la gr�fica 4.
      * @since 2.0
      */    
+    @Override
     public String obtenerTitulo4() {
         return TStats.RETRANSMISIONES_ATENDIDAS;
     }
@@ -758,6 +772,7 @@ public class TLERAStats extends TStats {
      * @return T�tulo de la gr�fica 5.
      * @since 2.0
      */    
+    @Override
     public String obtenerTitulo5() {
         return TStats.RECUPERACIONES_LOCALES;
     }
@@ -767,6 +782,7 @@ public class TLERAStats extends TStats {
      * @return T�tulo de la gr�fica 6.
      * @since 2.0
      */    
+    @Override
     public String obtenerTitulo6() {
         return null;
     }
