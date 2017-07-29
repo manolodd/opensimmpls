@@ -73,7 +73,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         this.switchingPowerInMbps = 512;
         this.dmgp = new TDMGP();
         this.gpsrpRequests = new TGPSRPRequestsMatrix();
-        this.stats = new TLSRAStats();
+        this.stats = new TActiveLSRStats();
     }
 
     /**
@@ -2052,5 +2052,5 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     private int switchingPowerInMbps;
     private TDMGP dmgp;
     private TGPSRPRequestsMatrix gpsrpRequests;
-    private TLSRAStats stats;
+    private TActiveLSRStats stats;
 }
