@@ -310,7 +310,7 @@ public abstract class TStats {
      * Esta constante es un texto que representa a la descripci�n de categor�as.
      * @since 2.0
      */    
-    public static final String DESCRIPCION = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEstadisticas.Descripcion");
+    public static final String DESCRIPTION = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEstadisticas.Descripcion");
     
     /**
      * Esta constante indica un paquete entrante en el nodo.

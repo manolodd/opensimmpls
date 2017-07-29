@@ -2458,7 +2458,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
                 }
                 if (numeroGraficos > 3) {
                     grafico4 = ChartFactory.createBarChart(nt.getStats().getTitleOfChart4(), 
-                                                             TStats.DESCRIPCION,
+                                                             TStats.DESCRIPTION,
                                                              TStats.NUMERO,
                                                              (DefaultCategoryDataset) nt.getStats().getDatasetOfChart4(),
                                                              PlotOrientation.VERTICAL, 
@@ -2482,7 +2482,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
                 }
                 if (numeroGraficos > 4) {
                     grafico5 = ChartFactory.createBarChart(nt.getStats().getTitleOfChart5(), 
-                                                             TStats.DESCRIPCION,
+                                                             TStats.DESCRIPTION,
                                                              TStats.NUMERO,
                                                              (DefaultCategoryDataset) nt.getStats().getDatasetOfChart5(),
                                                              PlotOrientation.VERTICAL, 
