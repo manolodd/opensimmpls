@@ -24,7 +24,7 @@ import simMPLS.protocols.TGPSRPPayload;
 import simMPLS.protocols.TAbstractPDU;
 
 /**
- * This class implements a statistics collector for an active LER (LERA).
+ * This class implements a statistics collector for an active LER.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
@@ -33,7 +33,7 @@ public class TActiveLERStats extends TStats {
 
     /**
      * This method is the constructor of the class. It creates a new instance of
-     * TLERAStats.
+     * TActiveLERStats.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
@@ -119,14 +119,14 @@ public class TActiveLERStats extends TStats {
     }
 
     /**
-     * This method returns the dataset #1 of the LERA node associated to this
- TActiveLERStats that can be represented in a GUI or used by any other
- statistics processor. Dataset #1 contains values related to incoming
-     * packets.
+     * This method returns the dataset #1 of the Active LER node associated to
+     * this TActiveLERStats that can be represented in a GUI or used by any
+     * other statistics processor. Dataset #1 contains values related to
+     * incoming packets.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return the dataset #1 of this TLERAStatsthat contains values related to
-     * incoming packets.
+     * @return the dataset #1 of this TActiveLERStatsthat contains values
+     * related to incoming packets.
      * @since 2.0
      */
     @Override
@@ -135,14 +135,14 @@ public class TActiveLERStats extends TStats {
     }
 
     /**
-     * This method returns the dataset #2 of the LERA node associated to this
- TActiveLERStats that can be represented in a GUI or used by any other
- statistics processor. Dataset #2 contains values related to outgoing
-     * packets.
+     * This method returns the dataset #2 of the Active LER node associated to
+     * this TActiveLERStats that can be represented in a GUI or used by any
+     * other statistics processor. Dataset #2 contains values related to
+     * outgoing packets.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return the dataset #2 of this TActiveLERStats that contains values related to
- outgoing packets.
+     * @return the dataset #2 of this TActiveLERStats that contains values
+     * related to outgoing packets.
      * @since 2.0
      */
     @Override
@@ -151,14 +151,14 @@ public class TActiveLERStats extends TStats {
     }
 
     /**
-     * This method returns the dataset #3 of the LERA node associated to this
- TActiveLERStats that can be represented in a GUI or used by any other
- statistics processor. Dataset #3 contains values related to discarded
-     * packets.
+     * This method returns the dataset #3 of the Active LER node associated to
+     * this TActiveLERStats that can be represented in a GUI or used by any
+     * other statistics processor. Dataset #3 contains values related to
+     * discarded packets.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return the dataset #3 of this TActiveLERStats that contains values related to
- discarded packets.
+     * @return the dataset #3 of this TActiveLERStats that contains values
+     * related to discarded packets.
      * @since 2.0
      */
     @Override
@@ -167,14 +167,14 @@ public class TActiveLERStats extends TStats {
     }
 
     /**
-     * This method returns the dataset #4 of the LERA node associated to this
- TActiveLERStats node that can be represented in a GUI or used by any other
- statistics processor. Dataset #4 contains values related to the number of
-     * retransmissions that have been managed.
+     * This method returns the dataset #4 of the Active LER node associated to
+     * this TActiveLERStats node that can be represented in a GUI or used by any
+     * other statistics processor. Dataset #4 contains values related to the
+     * number of retransmissions that have been managed.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return the dataset #4 of this TActiveLERStats that contains values related to
- the number of retransmissions that have been managed.
+     * @return the dataset #4 of this TActiveLERStats that contains values
+     * related to the number of retransmissions that have been managed.
      * @since 2.0
      */
     @Override
@@ -183,14 +183,14 @@ public class TActiveLERStats extends TStats {
     }
 
     /**
-     * This method returns the dataset #5 of the LERA node associated to this
- TActiveLERStats node that can be represented in a GUI or used by any other
- statistics processor. Dataset #5 contains values related to the number of
-     * local recoveries that have been managed.
+     * This method returns the dataset #5 of the Active LER node associated to
+     * this TActiveLERStats node that can be represented in a GUI or used by any
+     * other statistics processor. Dataset #5 contains values related to the
+     * number of local recoveries that have been managed.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return the dataset #5 of this TActiveLERStats that contains values related to
- the number of local recoveries that have been managed.
+     * @return the dataset #5 of this TActiveLERStats that contains values
+     * related to the number of local recoveries that have been managed.
      * @since 2.0
      */
     @Override
@@ -199,13 +199,14 @@ public class TActiveLERStats extends TStats {
     }
 
     /**
-     * This method returns the dataset #6 of the LERA node associated to this
- TActiveLERStats node that can be represented in a GUI or used by any other
- statistics processor. There are not Dataset #6 in a TActiveLERStats so null is
- always returned.
+     * This method returns the dataset #6 of the Active LER node associated to
+     * this TActiveLERStats node that can be represented in a GUI or used by any
+     * other statistics processor. There are not Dataset #6 in a TActiveLERStats
+     * so null is always returned.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return There are not Dataset #6 in a TActiveLERStats so null is returned.
+     * @return There are not Dataset #6 in a TActiveLERStats so null is
+     * returned.
      * @since 2.0
      */
     @Override
@@ -219,10 +220,10 @@ public class TActiveLERStats extends TStats {
      * information.
      *
      * @param packet new packet as a source of information to update stats of
- this TActiveLERStats.
+     * this TActiveLERStats.
      * @param entryType INCOMING, OUTGOING o DISCARD, dependiendo on whether the
- packet is incoming, outgoing or being discarded in the LERA associated to
- this TActiveLERStats.
+     * packet is incoming, outgoing or being discarded in the Active LER
+     * associated to this TActiveLERStats.
      * @since 2.0
      */
     @Override
@@ -371,9 +372,10 @@ public class TActiveLERStats extends TStats {
 
     /**
      * This method returns the number of datasets that are available in this
- TActiveLERStats.
+     * TActiveLERStats.
      *
-     * @return the number of available datasets in this TActiveLERStats that are 5.
+     * @return the number of available datasets in this TActiveLERStats that are
+     * 5.
      * @since 2.0
      */
     @Override
@@ -383,8 +385,8 @@ public class TActiveLERStats extends TStats {
     }
 
     /**
-     * This method reset all the values and attribues of this TActiveLERStats as in
- the moment of its instantiation.
+     * This method reset all the values and attribues of this TActiveLERStats as
+     * in the moment of its instantiation.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
@@ -469,8 +471,8 @@ public class TActiveLERStats extends TStats {
     }
 
     /**
-     * This method groups the latests data added to this TActiveLERStats by the time
- instant passed as an argument. In this way aggregated statistics are
+     * This method groups the latests data added to this TActiveLERStats by the
+     * time instant passed as an argument. In this way aggregated statistics are
      * generated and the dataset contains only information that is relevant for
      * the units used in OpenSimMPLS (the tick or time instant). This reduces
      * the dataset size and the time of processing.
@@ -891,8 +893,8 @@ public class TActiveLERStats extends TStats {
     }
 
     /**
-     * This method returns the title of dataset #1 of this TActiveLERStats node. In
-     * this case is a descriptive text about "incoming packets".
+     * This method returns the title of dataset #1 of this TActiveLERStats node.
+     * In this case is a descriptive text about "incoming packets".
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return a descriptive text about "incoming packets".
@@ -904,8 +906,8 @@ public class TActiveLERStats extends TStats {
     }
 
     /**
-     * This method returns the title of dataset #2 of this TActiveLERStats node. In
-     * this case is a descriptive text about "outgoing packets".
+     * This method returns the title of dataset #2 of this TActiveLERStats node.
+     * In this case is a descriptive text about "outgoing packets".
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return a descriptive text about "outgoing packets".
@@ -917,8 +919,8 @@ public class TActiveLERStats extends TStats {
     }
 
     /**
-     * This method returns the title of dataset #3 of this TActiveLERStats node. In
-     * this case is a descriptive text about "discarded packets".
+     * This method returns the title of dataset #3 of this TActiveLERStats node.
+     * In this case is a descriptive text about "discarded packets".
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return a descriptive text about "discarded packets".
@@ -930,8 +932,8 @@ public class TActiveLERStats extends TStats {
     }
 
     /**
-     * This method returns the title of dataset #4 of this TActiveLERStats node. In
-     * this case is a descriptive text about "retransmissions managed".
+     * This method returns the title of dataset #4 of this TActiveLERStats node.
+     * In this case is a descriptive text about "retransmissions managed".
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return a descriptive text about "retransmissions managed".
@@ -943,8 +945,8 @@ public class TActiveLERStats extends TStats {
     }
 
     /**
-     * This method returns the title of dataset #5 of this TActiveLERStats node. In
-     * this case is a descriptive text about "local recoveries".
+     * This method returns the title of dataset #5 of this TActiveLERStats node.
+     * In this case is a descriptive text about "local recoveries".
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return a descriptive text about "local recoveries".
@@ -957,11 +959,12 @@ public class TActiveLERStats extends TStats {
 
     /**
      * This method returns the title of dataset #6 of this TActiveLERStats node.
-     * There is not a dataset #6 in a TActiveLERStats so, null is always returned.
+     * There is not a dataset #6 in a TActiveLERStats so, null is always
+     * returned.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return There is not a dataset #6 in a TActiveLERStats so, null is always
- returned.
+     * returned.
      * @since 2.0
      */
     @Override
