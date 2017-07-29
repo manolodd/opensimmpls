@@ -76,7 +76,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         this.routingPowerInMbps = 512;
         this.dmgp = new TDMGP();
         this.gpsrpRequests = new TGPSRPRequestsMatrix();
-        this.stats = new TLERAStats();
+        this.stats = new TActiveLERStats();
     }
 
     /**
@@ -2548,5 +2548,5 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     private int routingPowerInMbps;
     private TDMGP dmgp;
     private TGPSRPRequestsMatrix gpsrpRequests;
-    private TLERAStats stats;
+    private TActiveLERStats stats;
 }
