@@ -75,7 +75,7 @@ public class TSenderStats extends TStats {
      * @return Datos dela gr�fica 1.
      * @since 2.0
      */
-    public org.jfree.data.AbstractDataset obtenerDatosGrafica1() {
+    public org.jfree.data.AbstractDataset getDatasetOfChart1() {
         return this.paquetesSalientes;
     }
     
@@ -83,7 +83,7 @@ public class TSenderStats extends TStats {
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 2.
      * @return Datos dela gr�fica 2.
      * @since 2.0
-     */    public org.jfree.data.AbstractDataset obtenerDatosGrafica2() {
+     */    public org.jfree.data.AbstractDataset getDatasetOfChart2() {
         return this.paquetesDescartados;
     }
     
@@ -91,7 +91,7 @@ public class TSenderStats extends TStats {
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 3.
      * @return Datos dela gr�fica 3.
      * @since 2.0
-     */    public org.jfree.data.AbstractDataset obtenerDatosGrafica3() {
+     */    public org.jfree.data.AbstractDataset getDatasetOfChart3() {
         return null;
     }
     
@@ -99,7 +99,7 @@ public class TSenderStats extends TStats {
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 4.
      * @return Datos dela gr�fica 4.
      * @since 2.0
-     */    public org.jfree.data.AbstractDataset obtenerDatosGrafica4() {
+     */    public org.jfree.data.AbstractDataset getDatasetOfChart4() {
         return null;
     }
     
@@ -107,7 +107,7 @@ public class TSenderStats extends TStats {
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 5.
      * @return Datos dela gr�fica 5.
      * @since 2.0
-     */    public org.jfree.data.AbstractDataset obtenerDatosGrafica5() {
+     */    public org.jfree.data.AbstractDataset getDatasetOfChart5() {
         return null;
     }
     
@@ -115,7 +115,7 @@ public class TSenderStats extends TStats {
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 6.
      * @return Datos dela gr�fica 6.
      * @since 2.0
-     */    public org.jfree.data.AbstractDataset obtenerDatosGrafica6() {
+     */    public org.jfree.data.AbstractDataset getDatasetOfChart6() {
         return null;
     }
 
@@ -123,23 +123,23 @@ public class TSenderStats extends TStats {
      * Este m�todo amplia las estad�sticas, a�adiendo las del nuevo paquete
      * especificado.
      * @param paquete Paquete que se desea contabilizar en las estad�sticas.
-     * @param entrada ENTRADA, SALIDA o DISCARD, dependiendo de si el paquete entra en el nodo, sale
+     * @param entrada INCOMING, OUTGOING o DISCARD, dependiendo de si el paquete entra en el nodo, sale
  de �l o es descartado.
      * @since 2.0
      */    
-    public void addStatsEntry(TAbstractPDU paquete, int entrada) {
-        if (this.estadisticasActivas) {
+    public void addStatEntry(TAbstractPDU paquete, int entrada) {
+        if (this.statsEnabled) {
             int tipoPaquete = paquete.getSubtype();
             int GoS = 0;
             if (tipoPaquete == TAbstractPDU.MPLS) {
-                if (entrada == TStats.SALIDA) {
+                if (entrada == TStats.OUTGOING) {
                     this.tSMPLS++;
                 } else if (entrada == TStats.DISCARD) {
                     this.tDMPLS++;
                 }
             } else if (tipoPaquete == TAbstractPDU.MPLS_GOS) {
                 GoS = paquete.getIPv4Header().getOptionsField().getRequestedGoSLevel();
-                if (entrada == TStats.SALIDA) {
+                if (entrada == TStats.OUTGOING) {
                     if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tSMPLS++;
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
@@ -161,14 +161,14 @@ public class TSenderStats extends TStats {
                     }
                 }
             } else if (tipoPaquete == TAbstractPDU.IPV4) {
-                if (entrada == TStats.SALIDA) {
+                if (entrada == TStats.OUTGOING) {
                     this.tSIPV4++;
                 } else if (entrada == TStats.DISCARD) {
                     this.tDIPV4++;
                 }
             } else if (tipoPaquete == TAbstractPDU.IPV4_GOS) {
                 GoS = paquete.getIPv4Header().getOptionsField().getRequestedGoSLevel();
-                if (entrada == TStats.SALIDA) {
+                if (entrada == TStats.OUTGOING) {
                     if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tSIPV4++;
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
@@ -198,7 +198,7 @@ public class TSenderStats extends TStats {
      * @return N�mero de gr�ficas del emisor.
      * @since 2.0
      */    
-    public int obtenerNumeroGraficas() {
+    public int numberOfAvailableCharts() {
         return 2;
     }
     
@@ -251,7 +251,7 @@ public class TSenderStats extends TStats {
      * @since 2.0
      */    
     public void consolidateData(long instante) {
-        if (this.estadisticasActivas) {
+        if (this.statsEnabled) {
             if (tSIPV4 > 0) {
 		if (salientesIPv4.getItemCount() == 0) {
                     this.salientesIPv4.add(instante-1, 0);
@@ -419,7 +419,7 @@ public class TSenderStats extends TStats {
      * @return T�tulo de la gr�fica 1.
      * @since 2.0
      */    
-    public String obtenerTitulo1() {
+    public String getTitleOfChart1() {
         return TStats.PAQUETES_SALIENTES;
     }
     
@@ -428,7 +428,7 @@ public class TSenderStats extends TStats {
      * @return T�tulo de la gr�fica 2.
      * @since 2.0
      */    
-    public String obtenerTitulo2() {
+    public String getTitleOfChart2() {
         return TStats.PAQUETES_DESCARTADOS;
     }
     
@@ -437,7 +437,7 @@ public class TSenderStats extends TStats {
      * @return T�tulo de la gr�fica 3.
      * @since 2.0
      */    
-    public String obtenerTitulo3() {
+    public String getTitleOfChart3() {
         return null;
     }
     
@@ -446,7 +446,7 @@ public class TSenderStats extends TStats {
      * @return T�tulo de la gr�fica 4.
      * @since 2.0
      */    
-    public String obtenerTitulo4() {
+    public String getTitleOfChart4() {
         return null;
     }
     
@@ -455,7 +455,7 @@ public class TSenderStats extends TStats {
      * @return T�tulo de la gr�fica 5.
      * @since 2.0
      */    
-    public String obtenerTitulo5() {
+    public String getTitleOfChart5() {
         return null;
     }
     
@@ -464,7 +464,7 @@ public class TSenderStats extends TStats {
      * @return T�tulo de la gr�fica 6.
      * @since 2.0
      */    
-    public String obtenerTitulo6() {
+    public String getTitleOfChart6() {
         return null;
     }
     

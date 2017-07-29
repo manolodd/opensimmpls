@@ -35,7 +35,7 @@ public abstract class TStats {
      * @since 2.0
      */
     public TStats() {
-        estadisticasActivas = false;
+        statsEnabled = false;
     }
 
     /**
@@ -44,7 +44,7 @@ public abstract class TStats {
      * @param a TRUE, activa las estad�sticas. FALSE las desactiva.
      */    
     public void activateStats(boolean a) {
-        this.estadisticasActivas = a;
+        this.statsEnabled = a;
     }
 
     /**
@@ -52,82 +52,82 @@ public abstract class TStats {
      * @since 2.0
      * @return Datos de la gr�fica 1.
      */    
-    public abstract AbstractDataset obtenerDatosGrafica1();
+    public abstract AbstractDataset getDatasetOfChart1();
     /**
      * Este m�todo obtiene los datos de la gr�fica 2.
      * @since 2.0
      * @return Datos de la gr�fica 2.
      */    
-    public abstract AbstractDataset obtenerDatosGrafica2();
+    public abstract AbstractDataset getDatasetOfChart2();
     /**
      * Este m�todo obtiene los datos de la gr�fica 3.
      * @since 2.0
      * @return Datos de la gr�fica 3.
      */    
-    public abstract AbstractDataset obtenerDatosGrafica3();
+    public abstract AbstractDataset getDatasetOfChart3();
     /**
      * Este m�todo obtiene los datos de la gr�fica 4.
      * @since 2.0
      * @return Datos de la gr�fica 4.
      */    
-    public abstract AbstractDataset obtenerDatosGrafica4();
+    public abstract AbstractDataset getDatasetOfChart4();
     /**
      * Este m�todo obtiene los datos de la gr�fica 5.
      * @since 2.0
      * @return Datos de la gr�fica 5.
      */    
-    public abstract AbstractDataset obtenerDatosGrafica5();
+    public abstract AbstractDataset getDatasetOfChart5();
     /**
      * Este m�todo obtiene los datos de la gr�fica 6.
      * @since 2.0
      * @return Datos de la gr�fica 6.
      */    
-    public abstract AbstractDataset obtenerDatosGrafica6();
+    public abstract AbstractDataset getDatasetOfChart6();
     /**
      * Este m�todo obtiene el t�tulo de la gr�fica 1.
      * @return El t�tulo de la gr�fica 1
      * @since 2.0
      */
-    public abstract String obtenerTitulo1();
+    public abstract String getTitleOfChart1();
     /**
      * Este m�todo obtiene el t�tulo de la gr�fica 2.
      * @return El t�tulo de la gr�fica 2
      * @since 2.0
      */
-    public abstract String obtenerTitulo2();
+    public abstract String getTitleOfChart2();
     /**
      * Este m�todo obtiene el t�tulo de la gr�fica 3.
      * @return El t�tulo de la gr�fica 3
      * @since 2.0
      */
-    public abstract String obtenerTitulo3();
+    public abstract String getTitleOfChart3();
     /**
      * Este m�todo obtiene el t�tulo de la gr�fica 4.
      * @return El t�tulo de la gr�fica 4
      * @since 2.0
      */
-    public abstract String obtenerTitulo4();
+    public abstract String getTitleOfChart4();
     /**
      * Este m�todo obtiene el t�tulo de la gr�fica 5.
      * @return El t�tulo de la gr�fica 5
      * @since 2.0
      */
-    public abstract String obtenerTitulo5();
+    public abstract String getTitleOfChart5();
     /**
      * Este m�todo obtiene el t�tulo de la gr�fica 6.
      * @return El t�tulo de la gr�fica 6
      * @since 2.0
      */
-    public abstract String obtenerTitulo6();
+    public abstract String getTitleOfChart6();
     /**
      * Este m�todo modifica las estad�sticas, a�adiendo las necesarias para el paquete
      * especificado.
      * @param paquete Paquete que se desea anotar en las estad�sticas.
-     * @param entrada ENTRADA, SALIDA, DISCARD dependiendo si el paquete ha entrado del nodo, sallido
+     * @param entrada INCOMING, OUTGOING, DISCARD dependiendo si el paquete ha entrado del nodo, sallido
  o ha sido descartado.
      * @since 2.0
      */    
-    public abstract void addStatsEntry(TAbstractPDU paquete, int entrada);
+    public abstract void addStatEntry(TAbstractPDU paquete, int entrada);
     /**
      * Este m�todo a�ade los datos modificados desde la �ltima vez que se llam� a este
      * m�todo, en las estad�sticas.
@@ -140,7 +140,7 @@ public abstract class TStats {
      * @return N�mero de gr�ficas.
      * @since 2.0
      */    
-    public abstract int obtenerNumeroGraficas();
+    public abstract int numberOfAvailableCharts();
     /**
      * Reinicia las estad�sticas y las deja como si acabasen de ser creadas por el
      * constructor.
@@ -152,7 +152,7 @@ public abstract class TStats {
      * Este atributo almacenar� si las estad�sticas est�n activada o no.
      * @since 2.0
      */    
-    protected boolean estadisticasActivas;
+    protected boolean statsEnabled;
     
     /**
      * Esta constante es un texto que representa a paquetes de tipo IPv4
@@ -270,42 +270,42 @@ public abstract class TStats {
      * Esta constante es un texto que representa a las retransmisiones realizadas
      * @since 2.0
      */    
-    public static final String RETRANSMISIONES_REALIZADAS = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEstadisticas.Retransmisiones_realizadas");
+    public static final String RETRANSMISSIONS_REALIZED = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEstadisticas.Retransmisiones_realizadas");
     /**
      * Esta constante es un texto que representa a las retransmisiones no realizadas.
      * @since 2.0
      */    
-    public static final String RETRANSMISIONES_NO_REALIZADAS = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEstadisticas.Retransmisiones_no_realizadas");
+    public static final String RETRANSMISSIONS_UNREALIZED = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEstadisticas.Retransmisiones_no_realizadas");
     /**
      * Esta constante es un texto que representa a las solicitudes recibidas
      * @since 2.0
      */    
-    public static final String SOLICITUDES_RECIBIDAS = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEstadisticas.Solicitudes_recibidas");
+    public static final String RETRANSMISSION_REQUESTS_RECEIVED = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEstadisticas.Solicitudes_recibidas");
     /**
      * Esta constante es un texto que representa a los paquetes con GoS perdidos
      * @since 2.0
      */    
-    public static final String PAQUETES_GOS_PERDIDOS = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEstadisticas.Paquetes_GoS_perdidos");
+    public static final String GOS_PACKETS_LOST = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEstadisticas.Paquetes_GoS_perdidos");
     /**
      * Esta constante es un texto que representa a las solicitudes emitidas.
      * @since 2.0
      */    
-    public static final String SOLICITUDES_EMITIDAS = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEstadisticas.Solicitudes_emitidas");
+    public static final String RETRANSMISSION_REQUESTS_SENT = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEstadisticas.Solicitudes_emitidas");
     /**
      * Esta constante es un texto que representa a las solicitudes sin respuestas.
      * @since 2.0
      */    
-    public static final String SOLICITUDES_SIN_RESPUESTA_AUN = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEstadisticas.Solicitudes_sin_respuesta_aun");
+    public static final String RETRANSMISSION_REQUESTS_STILL_UNANSWERED = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEstadisticas.Solicitudes_sin_respuesta_aun");
     /**
      * Esta constante es un texto que representa a los paquetes con GoS recuperados
      * @since 2.0
      */    
-    public static final String PAQUETES_GOS_RECUPERADOS = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEstadisticas.Paquetes_GoS_recuperados");
+    public static final String GOS_PACKETS_RECOVERED = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEstadisticas.Paquetes_GoS_recuperados");
     /**
      * Esta constante es un texto que representa a los paquetes con GoS no recuperados.
      * @since 2.0
      */    
-    public static final String PAQUETES_GOS_NO_RECUPERADOS = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEstadisticas.Paquetes_GoS_no_recuperados");
+    public static final String GOS_PACKETS_UNRECOVERED = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes").getString("TEstadisticas.Paquetes_GoS_no_recuperados");
     /**
      * Esta constante es un texto que representa a la descripci�n de categor�as.
      * @since 2.0
@@ -316,12 +316,12 @@ public abstract class TStats {
      * Esta constante indica un paquete entrante en el nodo.
      * @since 2.0
      */    
-    public static final int ENTRADA = -1;
+    public static final int INCOMING = -1;
     /**
      * Esta constante indica un paquete saliente del nodo.
      * @since 2.0
      */    
-    public static final int SALIDA = -2;
+    public static final int OUTGOING = -2;
     /**
      * Esta constante indica un paquete descartado en el nodo.
      * @since 2.0

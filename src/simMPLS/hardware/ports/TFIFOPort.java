@@ -100,7 +100,7 @@ public class TFIFOPort extends TPort {
             TSEPacketReceived packetReceivedEvent = new TSEPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getAvailableTime(), packetSubtype, packet.getSize());
             parentNode.simulationEventsListener.captureSimulationEvents(packetReceivedEvent);
             if (this.getPortSet().getParentNode().getStats() != null) {
-                this.getPortSet().getParentNode().getStats().addStatsEntry(packet, TStats.ENTRADA);
+                this.getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.INCOMING);
             }
         } else {
             if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= (parentPortSetAux.getBufferSizeInMBytes() * 1024 * 1024)) {
@@ -109,7 +109,7 @@ public class TFIFOPort extends TPort {
                 TSEPacketReceived packetReceivedEvent = new TSEPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getAvailableTime(), packetSubtype, packet.getSize());
                 parentNode.simulationEventsListener.captureSimulationEvents(packetReceivedEvent);
                 if (this.getPortSet().getParentNode().getStats() != null) {
-                    this.getPortSet().getParentNode().getStats().addStatsEntry(packet, TStats.ENTRADA);
+                    this.getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.INCOMING);
                 }
             } else {
                 this.discardPacket(packet);

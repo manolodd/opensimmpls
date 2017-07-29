@@ -590,7 +590,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     public void discardPacket(TAbstractPDU paquete) {
         try {
             this.generateSimulationEvent(new TSEPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
-            this.estadisticas.addStatsEntry(paquete, TStats.DISCARD);
+            this.estadisticas.addStatEntry(paquete, TStats.DISCARD);
         } catch (Exception e) {
             e.printStackTrace(); 
         }

@@ -104,7 +104,7 @@ public class TLERStats extends TStats {
      * @return Datos de la gr�fica 1.
      * @since 2.0
      */    
-    public org.jfree.data.AbstractDataset obtenerDatosGrafica1() {
+    public org.jfree.data.AbstractDataset getDatasetOfChart1() {
         return this.paquetesEntrantes;
     }
     
@@ -113,7 +113,7 @@ public class TLERStats extends TStats {
      * @return Datos de la gr�fica 2.
      * @since 2.0
      */    
-    public org.jfree.data.AbstractDataset obtenerDatosGrafica2() {
+    public org.jfree.data.AbstractDataset getDatasetOfChart2() {
         return this.paquetesSalientes;
     }
     
@@ -122,7 +122,7 @@ public class TLERStats extends TStats {
      * @return Datos de la gr�fica 3.
      * @since 2.0
      */    
-    public org.jfree.data.AbstractDataset obtenerDatosGrafica3() {
+    public org.jfree.data.AbstractDataset getDatasetOfChart3() {
         return this.paquetesDescartados;
     }
     
@@ -131,7 +131,7 @@ public class TLERStats extends TStats {
      * @return Datos de la gr�fica 4.
      * @since 2.0
      */    
-    public org.jfree.data.AbstractDataset obtenerDatosGrafica4() {
+    public org.jfree.data.AbstractDataset getDatasetOfChart4() {
         return null;
     }
     
@@ -140,7 +140,7 @@ public class TLERStats extends TStats {
      * @return Datos de la gr�fica 5.
      * @since 2.0
      */    
-    public org.jfree.data.AbstractDataset obtenerDatosGrafica5() {
+    public org.jfree.data.AbstractDataset getDatasetOfChart5() {
         return null;
     }
     
@@ -149,7 +149,7 @@ public class TLERStats extends TStats {
      * @return Datos de la gr�fica 6.
      * @since 2.0
      */    
-    public org.jfree.data.AbstractDataset obtenerDatosGrafica6() {
+    public org.jfree.data.AbstractDataset getDatasetOfChart6() {
         return null;
     }
 
@@ -157,41 +157,41 @@ public class TLERStats extends TStats {
      * Este m�todo permite aumentar las estad�sticas a�adiendo las del paquete
      * especificado.
      * @param paquete Paquete del que se desea contabilizar las estad�asticas.
-     * @param entrada ENTRADA, SALIDA o DISCARD, dependiendo de si el paquete entra en el nodo, sale
+     * @param entrada INCOMING, OUTGOING o DISCARD, dependiendo de si el paquete entra en el nodo, sale
  de el o es descartado.
      * @since 2.0
      */    
-    public void addStatsEntry(TAbstractPDU paquete, int entrada) {
-        if (this.estadisticasActivas) {
+    public void addStatEntry(TAbstractPDU paquete, int entrada) {
+        if (this.statsEnabled) {
             int tipoPaquete = paquete.getSubtype();
             int GoS = 0;
             if (tipoPaquete == TAbstractPDU.TLDP) {
-                if (entrada == TStats.SALIDA) {
+                if (entrada == TStats.OUTGOING) {
                     this.tSTLDP++;
                 } else if (entrada == TStats.DISCARD) {
                     this.tDTLDP++;
-                } else if (entrada == TStats.ENTRADA) {
+                } else if (entrada == TStats.INCOMING) {
                     this.tETLDP++;
                 }
             } else if (tipoPaquete == TAbstractPDU.GPSRP) {
-                if (entrada == TStats.SALIDA) {
+                if (entrada == TStats.OUTGOING) {
                     this.tSGPSRP++;
                 } else if (entrada == TStats.DISCARD) {
                     this.tDGPSRP++;
-                } else if (entrada == TStats.ENTRADA) {
+                } else if (entrada == TStats.INCOMING) {
                     this.tEGPSRP++;
                 }
             } else if (tipoPaquete == TAbstractPDU.MPLS) {
-                if (entrada == TStats.SALIDA) {
+                if (entrada == TStats.OUTGOING) {
                     this.tSMPLS++;
                 } else if (entrada == TStats.DISCARD) {
                     this.tDMPLS++;
-                } else if (entrada == TStats.ENTRADA) {
+                } else if (entrada == TStats.INCOMING) {
                     this.tEMPLS++;
                 }
             } else if (tipoPaquete == TAbstractPDU.MPLS_GOS) {
                 GoS = paquete.getIPv4Header().getOptionsField().getRequestedGoSLevel();
-                if (entrada == TStats.SALIDA) {
+                if (entrada == TStats.OUTGOING) {
                     if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tSMPLS++;
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
@@ -211,7 +211,7 @@ public class TLERStats extends TStats {
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.tDMPLS_GOS3++;
                     }
-                } else if (entrada == TStats.ENTRADA) {
+                } else if (entrada == TStats.INCOMING) {
                     if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tEMPLS++;
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
@@ -223,16 +223,16 @@ public class TLERStats extends TStats {
                     }
                 }
             } else if (tipoPaquete == TAbstractPDU.IPV4) {
-                if (entrada == TStats.SALIDA) {
+                if (entrada == TStats.OUTGOING) {
                     this.tSIPV4++;
                 } else if (entrada == TStats.DISCARD) {
                     this.tDIPV4++;
-                } else if (entrada == TStats.ENTRADA) {
+                } else if (entrada == TStats.INCOMING) {
                     this.tEIPV4++;
                 }
             } else if (tipoPaquete == TAbstractPDU.IPV4_GOS) {
                 GoS = paquete.getIPv4Header().getOptionsField().getRequestedGoSLevel();
-                if (entrada == TStats.SALIDA) {
+                if (entrada == TStats.OUTGOING) {
                     if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tSIPV4++;
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
@@ -252,7 +252,7 @@ public class TLERStats extends TStats {
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.tDIPV4_GOS3++;
                     }
-                } else if (entrada == TStats.ENTRADA) {
+                } else if (entrada == TStats.INCOMING) {
                     if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tEIPV4++;
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
@@ -272,7 +272,7 @@ public class TLERStats extends TStats {
      * @return N�mero de gr�ficas de LER.
      * @since 2.0
      */    
-    public int obtenerNumeroGraficas() {
+    public int numberOfAvailableCharts() {
         return 3;
     }
     
@@ -354,7 +354,7 @@ public class TLERStats extends TStats {
      * @since 2.0
      */    
     public void consolidateData(long instante) {
-        if (this.estadisticasActivas) {
+        if (this.statsEnabled) {
             if (tEIPV4 > 0) {
                 if (entrantesIPv4.getItemCount() == 0) {
                     this.entrantesIPv4.add(instante-1, 0 );
@@ -662,7 +662,7 @@ public class TLERStats extends TStats {
      * @return T�tulo de la gr�fica 1.
      * @since 2.0
      */    
-    public String obtenerTitulo1() {
+    public String getTitleOfChart1() {
         return TStats.PAQUETES_ENTRANTES;
     }
     
@@ -671,7 +671,7 @@ public class TLERStats extends TStats {
      * @return T�tulo de la gr�fica 2.
      * @since 2.0
      */    
-    public String obtenerTitulo2() {
+    public String getTitleOfChart2() {
         return TStats.PAQUETES_SALIENTES;
     }
     
@@ -680,7 +680,7 @@ public class TLERStats extends TStats {
      * @return T�tulo de la gr�fica 3.
      * @since 2.0
      */    
-    public String obtenerTitulo3() {
+    public String getTitleOfChart3() {
         return TStats.PAQUETES_DESCARTADOS;
     }
     
@@ -689,7 +689,7 @@ public class TLERStats extends TStats {
      * @return T�tulo de la gr�fica 4.
      * @since 2.0
      */    
-    public String obtenerTitulo4() {
+    public String getTitleOfChart4() {
         return null;
     }
     
@@ -698,7 +698,7 @@ public class TLERStats extends TStats {
      * @return T�tulo de la gr�fica 5.
      * @since 2.0
      */    
-    public String obtenerTitulo5() {
+    public String getTitleOfChart5() {
         return null;
     }
     
@@ -707,7 +707,7 @@ public class TLERStats extends TStats {
      * @return T�tulo de la gr�fica 6.
      * @since 2.0
      */    
-    public String obtenerTitulo6() {
+    public String getTitleOfChart6() {
         return null;
     }
     

@@ -2251,7 +2251,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     public void discardPacket(TAbstractPDU packet) {
         try {
             this.generateSimulationEvent(new TSEPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), packet.getSubtype()));
-            this.stats.addStatsEntry(packet, TStats.DISCARD);
+            this.stats.addStatEntry(packet, TStats.DISCARD);
         } catch (Exception e) {
             // FIX: this is ugly. Avoid.
             e.printStackTrace();

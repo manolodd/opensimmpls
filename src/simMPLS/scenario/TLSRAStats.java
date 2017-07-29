@@ -91,7 +91,7 @@ public class TLSRAStats extends TStats {
      * @return Datos de la gr�fica 1.
      * @since 2.0
      */    
-    public org.jfree.data.AbstractDataset obtenerDatosGrafica1() {
+    public org.jfree.data.AbstractDataset getDatasetOfChart1() {
         return this.paquetesEntrantes;
     }
     
@@ -100,7 +100,7 @@ public class TLSRAStats extends TStats {
      * @return Datos de la gr�fica 2.
      * @since 2.0
      */    
-    public org.jfree.data.AbstractDataset obtenerDatosGrafica2() {
+    public org.jfree.data.AbstractDataset getDatasetOfChart2() {
         return this.paquetesSalientes;
     }
     
@@ -109,7 +109,7 @@ public class TLSRAStats extends TStats {
      * @return Datos de la gr�fica 3.
      * @since 2.0
      */    
-    public org.jfree.data.AbstractDataset obtenerDatosGrafica3() {
+    public org.jfree.data.AbstractDataset getDatasetOfChart3() {
         return this.paquetesDescartados;
     }
     
@@ -118,7 +118,7 @@ public class TLSRAStats extends TStats {
      * @return Datos de la gr�fica 4.
      * @since 2.0
      */    
-    public org.jfree.data.AbstractDataset obtenerDatosGrafica4() {
+    public org.jfree.data.AbstractDataset getDatasetOfChart4() {
         return this.retransmisionesAtendidas;
     }
     
@@ -127,7 +127,7 @@ public class TLSRAStats extends TStats {
      * @return Datos de la gr�fica 5.
      * @since 2.0
      */    
-    public org.jfree.data.AbstractDataset obtenerDatosGrafica5() {
+    public org.jfree.data.AbstractDataset getDatasetOfChart5() {
         return this.recuperacionesLocales;
     }
     
@@ -136,7 +136,7 @@ public class TLSRAStats extends TStats {
      * @return Datos de la gr�fica 6.
      * @since 2.0
      */    
-    public org.jfree.data.AbstractDataset obtenerDatosGrafica6() {
+    public org.jfree.data.AbstractDataset getDatasetOfChart6() {
         return null;
     }
 
@@ -144,67 +144,67 @@ public class TLSRAStats extends TStats {
      * Este m�todo amplia las estad�sticas a�adiendo las correspondientes al paquete
      * especificado.
      * @param paquete Paquete que se desea contabilizar.
-     * @param entrada ENTRADA, SALIDA o DISCARD, dependiendo de si el paquete entra en el nodo, sale
+     * @param entrada INCOMING, OUTGOING o DISCARD, dependiendo de si el paquete entra en el nodo, sale
  de �l o es descartado.
      * @since 2.0
      */    
-    public void addStatsEntry(TAbstractPDU paquete, int entrada) {
-        if (this.estadisticasActivas) {
+    public void addStatEntry(TAbstractPDU paquete, int entrada) {
+        if (this.statsEnabled) {
             int tipoPaquete = paquete.getSubtype();
             int GoS = 0;
             if (tipoPaquete == TAbstractPDU.TLDP) {
-                if (entrada == TStats.SALIDA) {
+                if (entrada == TStats.OUTGOING) {
                     this.tSTLDP++;
                 } else if (entrada == TStats.DISCARD) {
                     this.tDTLDP++;
-                } else if (entrada == TStats.ENTRADA) {
+                } else if (entrada == TStats.INCOMING) {
                     this.tETLDP++;
                 }
             } else if (tipoPaquete == TAbstractPDU.GPSRP) {
                 TGPSRPPDU pGPSRP = (TGPSRPPDU) paquete;
                 int mensaje = pGPSRP.getGPSRPPayload().getGPSRPMessageType();
                 if (mensaje == TGPSRPPayload.RETRANSMISSION_REQUEST) {
-                    if (entrada == TStats.SALIDA) {
+                    if (entrada == TStats.OUTGOING) {
                         this.tSGPSRP++;
                         solicitudesEmitidas++;
                     } else if (entrada == TStats.DISCARD) {
                         this.tDGPSRP++;
-                    } else if (entrada == TStats.ENTRADA) {
+                    } else if (entrada == TStats.INCOMING) {
                         this.tEGPSRP++;
                         solicitudesRecibidas++;
                     }
                 } else if (mensaje == TGPSRPPayload.RETRANSMISION_NOT_POSSIBLE) {
-                    if (entrada == TStats.SALIDA) {
+                    if (entrada == TStats.OUTGOING) {
                         this.tSGPSRP++;
                         retransmisionesNoRealizadas++;
                     } else if (entrada == TStats.DISCARD) {
                         this.tDGPSRP++;
-                    } else if (entrada == TStats.ENTRADA) {
+                    } else if (entrada == TStats.INCOMING) {
                         this.tEGPSRP++;
                         paquetesGoSNoRecuperados++;
                     }
                 } else if (mensaje == TGPSRPPayload.RETRANSMISION_OK) {
-                    if (entrada == TStats.SALIDA) {
+                    if (entrada == TStats.OUTGOING) {
                         this.tSGPSRP++;
                         retransmisionesRealizadas++;
                     } else if (entrada == TStats.DISCARD) {
                         this.tDGPSRP++;
-                    } else if (entrada == TStats.ENTRADA) {
+                    } else if (entrada == TStats.INCOMING) {
                         this.tEGPSRP++;
                         paquetesGoSRecuperados++;
                     }
                 }
             } else if (tipoPaquete == TAbstractPDU.MPLS) {
-                if (entrada == TStats.SALIDA) {
+                if (entrada == TStats.OUTGOING) {
                     this.tSMPLS++;
                 } else if (entrada == TStats.DISCARD) {
                     this.tDMPLS++;
-                } else if (entrada == TStats.ENTRADA) {
+                } else if (entrada == TStats.INCOMING) {
                     this.tEMPLS++;
                 }
             } else if (tipoPaquete == TAbstractPDU.MPLS_GOS) {
                 GoS = paquete.getIPv4Header().getOptionsField().getRequestedGoSLevel();
-                if (entrada == TStats.SALIDA) {
+                if (entrada == TStats.OUTGOING) {
                     if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tSMPLS++;
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
@@ -225,7 +225,7 @@ public class TLSRAStats extends TStats {
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.tDMPLS_GOS3++;
                     }
-                } else if (entrada == TStats.ENTRADA) {
+                } else if (entrada == TStats.INCOMING) {
                     if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.tEMPLS++;
                     } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
@@ -245,7 +245,7 @@ public class TLSRAStats extends TStats {
      * @return El n�mero de gr�ficas del LSRA.
      * @since 2.0
      */    
-    public int obtenerNumeroGraficas() {
+    public int numberOfAvailableCharts() {
         return 5;
     }
     
@@ -312,7 +312,7 @@ public class TLSRAStats extends TStats {
      * @since 2.0
      */    
     public void consolidateData(long instante) {
-        if (this.estadisticasActivas) {
+        if (this.statsEnabled) {
             if (tEMPLS > 0) {
                 if (entrantesMPLS.getItemCount() == 0) {
                     this.entrantesMPLS.add(instante-1, 0);
@@ -493,18 +493,18 @@ public class TLSRAStats extends TStats {
                 }
             }
             
-            this.retransmisionesAtendidas.addValue(this.solicitudesRecibidas, TStats.SOLICITUDES_RECIBIDAS, "");
-            this.retransmisionesAtendidas.addValue(this.retransmisionesRealizadas, TStats.RETRANSMISIONES_REALIZADAS, "");
-            this.retransmisionesAtendidas.addValue(this.retransmisionesNoRealizadas, TStats.RETRANSMISIONES_NO_REALIZADAS, "");
-            this.recuperacionesLocales.addValue(this.paquetesGoSPerdido, TStats.PAQUETES_GOS_PERDIDOS, "");
-            this.recuperacionesLocales.addValue(this.solicitudesEmitidas, TStats.SOLICITUDES_EMITIDAS, "");
-            this.recuperacionesLocales.addValue(this.paquetesGoSRecuperados, TStats.PAQUETES_GOS_RECUPERADOS, "");
-            this.recuperacionesLocales.addValue(this.paquetesGoSNoRecuperados, TStats.PAQUETES_GOS_NO_RECUPERADOS, "");
+            this.retransmisionesAtendidas.addValue(this.solicitudesRecibidas, TStats.RETRANSMISSION_REQUESTS_RECEIVED, "");
+            this.retransmisionesAtendidas.addValue(this.retransmisionesRealizadas, TStats.RETRANSMISSIONS_REALIZED, "");
+            this.retransmisionesAtendidas.addValue(this.retransmisionesNoRealizadas, TStats.RETRANSMISSIONS_UNREALIZED, "");
+            this.recuperacionesLocales.addValue(this.paquetesGoSPerdido, TStats.GOS_PACKETS_LOST, "");
+            this.recuperacionesLocales.addValue(this.solicitudesEmitidas, TStats.RETRANSMISSION_REQUESTS_SENT, "");
+            this.recuperacionesLocales.addValue(this.paquetesGoSRecuperados, TStats.GOS_PACKETS_RECOVERED, "");
+            this.recuperacionesLocales.addValue(this.paquetesGoSNoRecuperados, TStats.GOS_PACKETS_UNRECOVERED, "");
             int sinRespuesta = (solicitudesEmitidas - paquetesGoSRecuperados - paquetesGoSNoRecuperados);
             if (sinRespuesta < 0) {
                 sinRespuesta = 0;
             }
-            this.recuperacionesLocales.addValue(sinRespuesta, TStats.SOLICITUDES_SIN_RESPUESTA_AUN, "");
+            this.recuperacionesLocales.addValue(sinRespuesta, TStats.RETRANSMISSION_REQUESTS_STILL_UNANSWERED, "");
         }
     }    
     
@@ -513,7 +513,7 @@ public class TLSRAStats extends TStats {
      * @return T�tulo de la gr�fica 1.
      * @since 2.0
      */    
-    public String obtenerTitulo1() {
+    public String getTitleOfChart1() {
         return TStats.PAQUETES_ENTRANTES;
     }
     
@@ -522,7 +522,7 @@ public class TLSRAStats extends TStats {
      * @return T�tulo de la gr�fica 2.
      * @since 2.0
      */    
-    public String obtenerTitulo2() {
+    public String getTitleOfChart2() {
         return TStats.PAQUETES_SALIENTES;
     }
     
@@ -531,7 +531,7 @@ public class TLSRAStats extends TStats {
      * @return T�tulo de la gr�fica 3.
      * @since 2.0
      */    
-    public String obtenerTitulo3() {
+    public String getTitleOfChart3() {
         return TStats.PAQUETES_DESCARTADOS;
     }
     
@@ -540,7 +540,7 @@ public class TLSRAStats extends TStats {
      * @return T�tulo de la gr�fica 4.
      * @since 2.0
      */    
-    public String obtenerTitulo4() {
+    public String getTitleOfChart4() {
         return TStats.RETRANSMISIONES_ATENDIDAS;
     }
     
@@ -549,7 +549,7 @@ public class TLSRAStats extends TStats {
      * @return T�tulo de la gr�fica 5.
      * @since 2.0
      */    
-    public String obtenerTitulo5() {
+    public String getTitleOfChart5() {
         return TStats.RECUPERACIONES_LOCALES;
     }
     
@@ -558,7 +558,7 @@ public class TLSRAStats extends TStats {
      * @return T�tulo de la gr�fica 6.
      * @since 2.0
      */    
-    public String obtenerTitulo6() {
+    public String getTitleOfChart6() {
         return null;
     }
     

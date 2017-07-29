@@ -15,6 +15,7 @@
  */
 package simMPLS.scenario;
 
+import org.jfree.data.AbstractDataset;
 import org.jfree.data.DefaultCategoryDataset;
 import org.jfree.data.XYSeries;
 import org.jfree.data.XYSeriesCollection;
@@ -22,841 +23,869 @@ import simMPLS.protocols.TGPSRPPDU;
 import simMPLS.protocols.TGPSRPPayload;
 import simMPLS.protocols.TAbstractPDU;
 
-
 /**
  * Esta clase implementa las estad�sticas para un nodo LERA.
+ *
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
 public class TLERAStats extends TStats {
-    
+
     /**
      * Crea una nueva instancia de TEstadisticasLERA
+     *
      * @since 2.0
      */
     public TLERAStats() {
-    	paquetesEntrantes = new XYSeriesCollection();
-    	paquetesSalientes = new XYSeriesCollection();
-    	paquetesDescartados = new XYSeriesCollection();
-    	salientesIPv4 = new XYSeries(TStats.IPV4);
-    	salientesIPv4_GOS1 = new XYSeries(TStats.IPV4_GOS1);
-    	salientesIPv4_GOS2 = new XYSeries(TStats.IPV4_GOS2);
-    	salientesIPv4_GOS3 = new XYSeries(TStats.IPV4_GOS3);
-    	salientesMPLS = new XYSeries(TStats.MPLS);
-    	salientesMPLS_GOS1 = new XYSeries(TStats.MPLS_GOS1);
-    	salientesMPLS_GOS2 = new XYSeries(TStats.MPLS_GOS2);
-    	salientesMPLS_GOS3 = new XYSeries(TStats.MPLS_GOS3);
-    	salientesTLDP = new XYSeries(TStats.TLDP);
-    	salientesGPSRP = new XYSeries(TStats.GPSRP);
-    	entrantesIPv4 = new XYSeries(TStats.IPV4);
-    	entrantesIPv4_GOS1 = new XYSeries(TStats.IPV4_GOS1);
-    	entrantesIPv4_GOS2 = new XYSeries(TStats.IPV4_GOS2);
-    	entrantesIPv4_GOS3 = new XYSeries(TStats.IPV4_GOS3);
-    	entrantesMPLS = new XYSeries(TStats.MPLS);
-    	entrantesMPLS_GOS1 = new XYSeries(TStats.MPLS_GOS1);
-    	entrantesMPLS_GOS2 = new XYSeries(TStats.MPLS_GOS2);
-    	entrantesMPLS_GOS3 = new XYSeries(TStats.MPLS_GOS3);
-    	entrantesTLDP = new XYSeries(TStats.TLDP);
-    	entrantesGPSRP = new XYSeries(TStats.GPSRP);
-        descartadosIPv4 = new XYSeries(TStats.IPV4);
-    	descartadosIPv4_GOS1 = new XYSeries(TStats.IPV4_GOS1);
-    	descartadosIPv4_GOS2 = new XYSeries(TStats.IPV4_GOS2);
-    	descartadosIPv4_GOS3 = new XYSeries(TStats.IPV4_GOS3);
-	descartadosMPLS = new XYSeries(TStats.MPLS);
-	descartadosMPLS_GOS1 = new XYSeries(TStats.MPLS_GOS1);
-	descartadosMPLS_GOS2 = new XYSeries(TStats.MPLS_GOS2);
-	descartadosMPLS_GOS3 = new XYSeries(TStats.MPLS_GOS3);
-    	descartadosTLDP = new XYSeries(TStats.TLDP);
-    	descartadosGPSRP = new XYSeries(TStats.GPSRP);
-        tEIPV4 = 0;
-        tEIPV4_GOS1 = 0;
-        tEIPV4_GOS2 = 0;
-        tEIPV4_GOS3 = 0;
-        tEMPLS = 0;
-        tEMPLS_GOS1 = 0;
-        tEMPLS_GOS2 = 0;
-        tEMPLS_GOS3 = 0;
-        tETLDP = 0;
-        tEGPSRP = 0;
-        tSIPV4 = 0;
-        tSIPV4_GOS1 = 0;
-        tSIPV4_GOS2 = 0;
-        tSIPV4_GOS3 = 0;
-        tSMPLS = 0;
-        tSMPLS_GOS1 = 0;
-        tSMPLS_GOS2 = 0;
-        tSMPLS_GOS3 = 0;
-        tSTLDP = 0;
-        tSGPSRP = 0;
-        tDIPV4 = 0;
-        tDIPV4_GOS1 = 0;
-        tDIPV4_GOS2 = 0;
-        tDIPV4_GOS3 = 0;
-        tDMPLS = 0;
-        tDMPLS_GOS1 = 0;
-        tDMPLS_GOS2 = 0;
-        tDMPLS_GOS3 = 0;
-        tDTLDP = 0;
-        tDGPSRP = 0;
-        retransmisionesAtendidas = new DefaultCategoryDataset();
-        solicitudesRecibidas = 0;
-        retransmisionesRealizadas = 0;
-        retransmisionesNoRealizadas = 0;
-        recuperacionesLocales = new DefaultCategoryDataset();
-        paquetesGoSPerdido = 0;
-        solicitudesEmitidas = 0;
-        paquetesGoSRecuperados = 0;
-        paquetesGoSNoRecuperados = 0;
+        this.incomingPackets = new XYSeriesCollection();
+        this.outgoingPackets = new XYSeriesCollection();
+        this.discardedPackets = new XYSeriesCollection();
+        this.outgoingIPv4Packets = new XYSeries(TStats.IPV4);
+        this.outgoingIPv4GOS1Packets = new XYSeries(TStats.IPV4_GOS1);
+        this.outgoingIPv4GOS2Packets = new XYSeries(TStats.IPV4_GOS2);
+        this.outgoingIPv4GOS3Packets = new XYSeries(TStats.IPV4_GOS3);
+        this.outgoingMPLSPackets = new XYSeries(TStats.MPLS);
+        this.outgoingMPLSGOS1Packets = new XYSeries(TStats.MPLS_GOS1);
+        this.outgoingMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
+        this.outgoingMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
+        this.outgoingTLDPPackets = new XYSeries(TStats.TLDP);
+        this.ourgoingGPSRPPackets = new XYSeries(TStats.GPSRP);
+        this.incomingIPv4Packets = new XYSeries(TStats.IPV4);
+        this.incomingIPv4GOS1Packets = new XYSeries(TStats.IPV4_GOS1);
+        this.incomingIPv4GOS2Packets = new XYSeries(TStats.IPV4_GOS2);
+        this.incomingIPv4GOS3Packets = new XYSeries(TStats.IPV4_GOS3);
+        this.incomingMPLSPackets = new XYSeries(TStats.MPLS);
+        this.incomingMPLSGOS1Packets = new XYSeries(TStats.MPLS_GOS1);
+        this.incomingMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
+        this.incomingMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
+        this.incomingTLDPPackets = new XYSeries(TStats.TLDP);
+        this.incomingGPSRPPackets = new XYSeries(TStats.GPSRP);
+        this.discardedIPv4Packets = new XYSeries(TStats.IPV4);
+        this.discardedIPv4GOS1Packets = new XYSeries(TStats.IPV4_GOS1);
+        this.discardedIPv4GOS2Packets = new XYSeries(TStats.IPV4_GOS2);
+        this.discardedIPv4GOS3Packets = new XYSeries(TStats.IPV4_GOS3);
+        this.discardedMPLSPackets = new XYSeries(TStats.MPLS);
+        this.discardedMPLSGOS1Packets = new XYSeries(TStats.MPLS_GOS1);
+        this.discardedMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
+        this.discardedMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
+        this.discardedTLDPPackets = new XYSeries(TStats.TLDP);
+        this.discardedGPSRPPackets = new XYSeries(TStats.GPSRP);
+        // Temporal data to be consolidated -----------
+        this.incomingIPv4PacketsOfThisTimeInstant = 0;
+        this.incomingIPv4GOS1PacketsOfThisTimeInstant = 0;
+        this.incomingIPv4GOS2PacketsOfThisTimeInstant = 0;
+        this.incomingIPv4GOS3PacketsOfThisTimeInstant = 0;
+        this.incomingMPLSPacketsOfThisTimeInstant = 0;
+        this.incomingMPLSGOS1PacketsOfThisTimeInstant = 0;
+        this.incomingMPLSGOS2PacketsOfThisTimeInstant = 0;
+        this.incomingMPLSGOS3PacketsOfThisTimeInstant = 0;
+        this.incomingTLDPPacketsOfThisTimeInstant = 0;
+        this.incomingGPSRPPacketsOfThisTimeInstant = 0;
+        this.outgoingIPv4PacketsOfThisTimeInstant = 0;
+        this.outgoingIPv4GOS1PacketsOfThisTimeInstant = 0;
+        this.outgoingIPv4GOS2PacketsOfThisTimeInstant = 0;
+        this.outgoingIPv4GOS3PacketsOfThisTimeInstant = 0;
+        this.outgoingMPLSPacketsOfThisTimeInstant = 0;
+        this.outgoingMPLSGOS1PacketsOfThisTimeInstant = 0;
+        this.outgoingMPLSGOS2PacketsOfThisTimeInstant = 0;
+        this.outgoingMPLSGOS3PacketsOfThisTimeInstant = 0;
+        this.outgoingTLDPPacketsOfThisTimeInstant = 0;
+        this.outgoingGPSRPPacketsOfThisTimeInstant = 0;
+        this.discardedIPv4PacketsOfThisTimeInstant = 0;
+        this.discardedIPv4GOS1PacketsOfThisTimeInstant = 0;
+        this.discardedIPv4GOS2PacketsOfThisTimeInstant = 0;
+        this.discardedIPv4GOS3PacketsOfThisTimeInstant = 0;
+        this.discardedMPLSPacketsOfThisTimeInstant = 0;
+        this.discardedMPLSGOS1PacketsOfThisTimeInstant = 0;
+        this.discardedMPLSGOS2PacketsOfThisTimeInstant = 0;
+        this.discardedMPLSGOS3PacketsOfThisTimeInstant = 0;
+        this.discardedTLDPPacketsOfThisTimeInstant = 0;
+        this.discardedGPSRPPacketsOfThisTimeInstant = 0;
+        // ------------------------------------------
+        this.retransmissionsManaged = new DefaultCategoryDataset();
+        this.retransmissionRequestsReceived = 0;
+        this.retransmissionsRealized = 0;
+        this.retransmisionsUnrealized = 0;
+
+        this.localRecoveriesManaged = new DefaultCategoryDataset();
+        this.GOSPacketsLost = 0;
+        this.retransmissionRequestsSent = 0;
+        this.GOSPacketsRecovered = 0;
+        this.GOSPacketsUnrecovered = 0;
     }
-    
+
     /**
-     * Este m�todo permite obtener los datos necesario para generar la gr�fica 1.
+     * Este m�todo permite obtener los datos necesario para generar la gr�fica
+     * 1.
+     *
      * @return Datos para la gr�fica 1.
      * @since 2.0
-     */    
+     */
     @Override
-    public org.jfree.data.AbstractDataset obtenerDatosGrafica1() {
-        return this.paquetesEntrantes;
+    public AbstractDataset getDatasetOfChart1() {
+        return this.incomingPackets;
     }
-    
+
     /**
-     * Este m�todo permite obtener los datos necesario para generar la gr�fica 2.
+     * Este m�todo permite obtener los datos necesario para generar la gr�fica
+     * 2.
+     *
      * @return Datos para la gr�fica 2.
      * @since 2.0
-     */    
+     */
     @Override
-    public org.jfree.data.AbstractDataset obtenerDatosGrafica2() {
-        return this.paquetesSalientes;
+    public AbstractDataset getDatasetOfChart2() {
+        return this.outgoingPackets;
     }
-    
+
     /**
-     * Este m�todo permite obtener los datos necesario para generar la gr�fica 3.
+     * Este m�todo permite obtener los datos necesario para generar la gr�fica
+     * 3.
+     *
      * @return Datos para la gr�fica 3.
      * @since 2.0
-     */    
+     */
     @Override
-    public org.jfree.data.AbstractDataset obtenerDatosGrafica3() {
-        return this.paquetesDescartados;
+    public AbstractDataset getDatasetOfChart3() {
+        return this.discardedPackets;
     }
-    
+
     /**
-     * Este m�todo permite obtener los datos necesario para generar la gr�fica 4.
+     * Este m�todo permite obtener los datos necesario para generar la gr�fica
+     * 4.
+     *
      * @return Datos para la gr�fica 4.
      * @since 2.0
-     */    
+     */
     @Override
-    public org.jfree.data.AbstractDataset obtenerDatosGrafica4() {
-        return this.retransmisionesAtendidas;
+    public AbstractDataset getDatasetOfChart4() {
+        return this.retransmissionsManaged;
     }
-    
+
     /**
-     * Este m�todo permite obtener los datos necesario para generar la gr�fica 5.
+     * Este m�todo permite obtener los datos necesario para generar la gr�fica
+     * 5.
+     *
      * @return Datos para la gr�fica 5.
      * @since 2.0
-     */    
+     */
     @Override
-    public org.jfree.data.AbstractDataset obtenerDatosGrafica5() {
-        return this.recuperacionesLocales;
+    public AbstractDataset getDatasetOfChart5() {
+        return this.localRecoveriesManaged;
     }
-    
+
     /**
-     * Este m�todo permite obtener los datos necesario para generar la gr�fica 6.
+     * Este m�todo permite obtener los datos necesario para generar la gr�fica
+     * 6.
+     *
      * @return Datos para la gr�fica 6.
      * @since 2.0
-     */    
+     */
     @Override
-    public org.jfree.data.AbstractDataset obtenerDatosGrafica6() {
+    public AbstractDataset getDatasetOfChart6() {
         return null;
     }
 
     /**
      * Este metodo permite aumentar las estad�sticas a�adiendo para ello las del
-     * paquete especificado.
-     * @param paquete Paquete a contabilizar.
-     * @param entrada ENTRADA, SALIDA o DISCARD, dependiendo de si el paquete entra en el nodod, sale
- de el o es descartado.
+     * packet especificado.
+     *
+     * @param packet Paquete a contabilizar.
+     * @param entryType INCOMING, OUTGOING o DISCARD, dependiendo de si el
+ packet entra en el nodod, sale de el o es descartado.
      * @since 2.0
-     */    
+     */
     @Override
-    public void addStatsEntry(TAbstractPDU paquete, int entrada) {
-        if (this.estadisticasActivas) {
-            int tipoPaquete = paquete.getSubtype();
-            int GoS = 0;
-            if (tipoPaquete == TAbstractPDU.TLDP) {
-                if (entrada == TStats.SALIDA) {
-                    this.tSTLDP++;
-                } else if (entrada == TStats.DISCARD) {
-                    this.tDTLDP++;
-                } else if (entrada == TStats.ENTRADA) {
-                    this.tETLDP++;
+    public void addStatEntry(TAbstractPDU packet, int entryType) {
+        if (this.statsEnabled) {
+            int packetType = packet.getSubtype();
+            int GOSLevel = 0;
+            if (packetType == TAbstractPDU.TLDP) {
+                if (entryType == TStats.OUTGOING) {
+                    this.outgoingTLDPPacketsOfThisTimeInstant++;
+                } else if (entryType == TStats.DISCARD) {
+                    this.discardedTLDPPacketsOfThisTimeInstant++;
+                } else if (entryType == TStats.INCOMING) {
+                    this.incomingTLDPPacketsOfThisTimeInstant++;
                 }
-            } else if (tipoPaquete == TAbstractPDU.GPSRP) {
-                TGPSRPPDU pGPSRP = (TGPSRPPDU) paquete;
-                int mensaje = pGPSRP.getGPSRPPayload().getGPSRPMessageType();
-                if (mensaje == TGPSRPPayload.RETRANSMISSION_REQUEST) {
-                    if (entrada == TStats.SALIDA) {
-                        this.tSGPSRP++;
-                        solicitudesEmitidas++;
-                    } else if (entrada == TStats.DISCARD) {
-                        this.tDGPSRP++;
-                    } else if (entrada == TStats.ENTRADA) {
-                        this.tEGPSRP++;
-                        solicitudesRecibidas++;
+            } else if (packetType == TAbstractPDU.GPSRP) {
+                TGPSRPPDU GPSRPPacket = (TGPSRPPDU) packet;
+                int messageType = GPSRPPacket.getGPSRPPayload().getGPSRPMessageType();
+                if (messageType == TGPSRPPayload.RETRANSMISSION_REQUEST) {
+                    if (entryType == TStats.OUTGOING) {
+                        this.outgoingGPSRPPacketsOfThisTimeInstant++;
+                        this.retransmissionRequestsSent++;
+                    } else if (entryType == TStats.DISCARD) {
+                        this.discardedGPSRPPacketsOfThisTimeInstant++;
+                    } else if (entryType == TStats.INCOMING) {
+                        this.incomingGPSRPPacketsOfThisTimeInstant++;
+                        this.retransmissionRequestsReceived++;
                     }
-                } else if (mensaje == TGPSRPPayload.RETRANSMISION_NOT_POSSIBLE) {
-                    if (entrada == TStats.SALIDA) {
-                        this.tSGPSRP++;
-                        retransmisionesNoRealizadas++;
-                    } else if (entrada == TStats.DISCARD) {
-                        this.tDGPSRP++;
-                    } else if (entrada == TStats.ENTRADA) {
-                        this.tEGPSRP++;
-                        paquetesGoSNoRecuperados++;
+                } else if (messageType == TGPSRPPayload.RETRANSMISION_NOT_POSSIBLE) {
+                    if (entryType == TStats.OUTGOING) {
+                        this.outgoingGPSRPPacketsOfThisTimeInstant++;
+                        this.retransmisionsUnrealized++;
+                    } else if (entryType == TStats.DISCARD) {
+                        this.discardedGPSRPPacketsOfThisTimeInstant++;
+                    } else if (entryType == TStats.INCOMING) {
+                        this.incomingGPSRPPacketsOfThisTimeInstant++;
+                        this.GOSPacketsUnrecovered++;
                     }
-                } else if (mensaje == TGPSRPPayload.RETRANSMISION_OK) {
-                    if (entrada == TStats.SALIDA) {
-                        this.tSGPSRP++;
-                        retransmisionesRealizadas++;
-                    } else if (entrada == TStats.DISCARD) {
-                        this.tDGPSRP++;
-                    } else if (entrada == TStats.ENTRADA) {
-                        this.tEGPSRP++;
-                        paquetesGoSRecuperados++;
-                    }
-                }
-            } else if (tipoPaquete == TAbstractPDU.MPLS) {
-                if (entrada == TStats.SALIDA) {
-                    this.tSMPLS++;
-                } else if (entrada == TStats.DISCARD) {
-                    this.tDMPLS++;
-                } else if (entrada == TStats.ENTRADA) {
-                    this.tEMPLS++;
-                }
-            } else if (tipoPaquete == TAbstractPDU.MPLS_GOS) {
-                GoS = paquete.getIPv4Header().getOptionsField().getRequestedGoSLevel();
-                if (entrada == TStats.SALIDA) {
-                    if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
-                        this.tSMPLS++;
-                    } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
-                        this.tSMPLS_GOS1++;
-                    } else if ((GoS == TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
-                        this.tSMPLS_GOS2++;
-                    } else if ((GoS == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
-                        this.tSMPLS_GOS3++;
-                    }
-                } else if (entrada == TStats.DISCARD) {
-                    paquetesGoSPerdido++;
-                    if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
-                        this.tDMPLS++;
-                    } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
-                        this.tDMPLS_GOS1++;
-                    } else if ((GoS == TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
-                        this.tDMPLS_GOS2++;
-                    } else if ((GoS == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
-                        this.tDMPLS_GOS3++;
-                    }
-                } else if (entrada == TStats.ENTRADA) {
-                    if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
-                        this.tEMPLS++;
-                    } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
-                        this.tEMPLS_GOS1++;
-                    } else if ((GoS == TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
-                        this.tEMPLS_GOS2++;
-                    } else if ((GoS == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
-                        this.tEMPLS_GOS3++;
+                } else if (messageType == TGPSRPPayload.RETRANSMISION_OK) {
+                    if (entryType == TStats.OUTGOING) {
+                        this.outgoingGPSRPPacketsOfThisTimeInstant++;
+                        this.retransmissionsRealized++;
+                    } else if (entryType == TStats.DISCARD) {
+                        this.discardedGPSRPPacketsOfThisTimeInstant++;
+                    } else if (entryType == TStats.INCOMING) {
+                        this.incomingGPSRPPacketsOfThisTimeInstant++;
+                        this.GOSPacketsRecovered++;
                     }
                 }
-            } else if (tipoPaquete == TAbstractPDU.IPV4) {
-                if (entrada == TStats.SALIDA) {
-                    this.tSIPV4++;
-                } else if (entrada == TStats.DISCARD) {
-                    this.tDIPV4++;
-                } else if (entrada == TStats.ENTRADA) {
-                    this.tEIPV4++;
+            } else if (packetType == TAbstractPDU.MPLS) {
+                if (entryType == TStats.OUTGOING) {
+                    this.outgoingMPLSPacketsOfThisTimeInstant++;
+                } else if (entryType == TStats.DISCARD) {
+                    this.discardedMPLSPacketsOfThisTimeInstant++;
+                } else if (entryType == TStats.INCOMING) {
+                    this.incomingMPLSPacketsOfThisTimeInstant++;
                 }
-            } else if (tipoPaquete == TAbstractPDU.IPV4_GOS) {
-                GoS = paquete.getIPv4Header().getOptionsField().getRequestedGoSLevel();
-                if (entrada == TStats.SALIDA) {
-                    if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
-                        this.tSIPV4++;
-                    } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
-                        this.tSIPV4_GOS1++;
-                    } else if ((GoS == TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
-                        this.tSIPV4_GOS2++;
-                    } else if ((GoS == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
-                        this.tSIPV4_GOS3++;
+            } else if (packetType == TAbstractPDU.MPLS_GOS) {
+                GOSLevel = packet.getIPv4Header().getOptionsField().getRequestedGoSLevel();
+                if (entryType == TStats.OUTGOING) {
+                    if ((GOSLevel == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
+                        this.outgoingMPLSPacketsOfThisTimeInstant++;
+                    } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
+                        this.outgoingMPLSGOS1PacketsOfThisTimeInstant++;
+                    } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
+                        this.outgoingMPLSGOS2PacketsOfThisTimeInstant++;
+                    } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
+                        this.outgoingMPLSGOS3PacketsOfThisTimeInstant++;
                     }
-                } else if (entrada == TStats.DISCARD) {
-                    if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
-                        this.tDIPV4++;
-                    } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
-                        this.tDIPV4_GOS1++;
-                    } else if ((GoS == TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
-                        this.tDIPV4_GOS2++;
-                    } else if ((GoS == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
-                        this.tDIPV4_GOS3++;
+                } else if (entryType == TStats.DISCARD) {
+                    this.GOSPacketsLost++;
+                    if ((GOSLevel == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
+                        this.discardedMPLSPacketsOfThisTimeInstant++;
+                    } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
+                        this.discardedMPLSGOS1PacketsOfThisTimeInstant++;
+                    } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
+                        this.discardedMPLSGOS2PacketsOfThisTimeInstant++;
+                    } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
+                        this.discardedMPLSGOS3PacketsOfThisTimeInstant++;
                     }
-                } else if (entrada == TStats.ENTRADA) {
-                    if ((GoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
-                        this.tEIPV4++;
-                    } else if ((GoS == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
-                        this.tEIPV4_GOS1++;
-                    } else if ((GoS == TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
-                        this.tEIPV4_GOS2++;
-                    } else if ((GoS == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GoS == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
-                        this.tEIPV4_GOS3++;
+                } else if (entryType == TStats.INCOMING) {
+                    if ((GOSLevel == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
+                        this.incomingMPLSPacketsOfThisTimeInstant++;
+                    } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
+                        this.incomingMPLSGOS1PacketsOfThisTimeInstant++;
+                    } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
+                        this.incomingMPLSGOS2PacketsOfThisTimeInstant++;
+                    } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
+                        this.incomingMPLSGOS3PacketsOfThisTimeInstant++;
+                    }
+                }
+            } else if (packetType == TAbstractPDU.IPV4) {
+                if (entryType == TStats.OUTGOING) {
+                    this.outgoingIPv4PacketsOfThisTimeInstant++;
+                } else if (entryType == TStats.DISCARD) {
+                    this.discardedIPv4PacketsOfThisTimeInstant++;
+                } else if (entryType == TStats.INCOMING) {
+                    this.incomingIPv4PacketsOfThisTimeInstant++;
+                }
+            } else if (packetType == TAbstractPDU.IPV4_GOS) {
+                GOSLevel = packet.getIPv4Header().getOptionsField().getRequestedGoSLevel();
+                if (entryType == TStats.OUTGOING) {
+                    if ((GOSLevel == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
+                        this.outgoingIPv4PacketsOfThisTimeInstant++;
+                    } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
+                        this.outgoingIPv4GOS1PacketsOfThisTimeInstant++;
+                    } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
+                        this.outgoingIPv4GOS2PacketsOfThisTimeInstant++;
+                    } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
+                        this.outgoingIPv4GOS3PacketsOfThisTimeInstant++;
+                    }
+                } else if (entryType == TStats.DISCARD) {
+                    if ((GOSLevel == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
+                        this.discardedIPv4PacketsOfThisTimeInstant++;
+                    } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
+                        this.discardedIPv4GOS1PacketsOfThisTimeInstant++;
+                    } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
+                        this.discardedIPv4GOS2PacketsOfThisTimeInstant++;
+                    } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
+                        this.discardedIPv4GOS3PacketsOfThisTimeInstant++;
+                    }
+                } else if (entryType == TStats.INCOMING) {
+                    if ((GOSLevel == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
+                        this.incomingIPv4PacketsOfThisTimeInstant++;
+                    } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
+                        this.incomingIPv4GOS1PacketsOfThisTimeInstant++;
+                    } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP)) {
+                        this.incomingIPv4GOS2PacketsOfThisTimeInstant++;
+                    } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
+                        this.incomingIPv4GOS3PacketsOfThisTimeInstant++;
                     }
                 }
             }
         }
     }
-    
+
     /**
-     * Este m�todo permite obtener el n�mero de gr�ficas que genera el nodo LERA.
+     * Este m�todo permite obtener el n�mero de gr�ficas que genera el nodo
+     * LERA.
+     *
      * @return El n�mero de gr�ficas que genera el LERA.
      * @since 2.0
-     */    
+     */
     @Override
-    public int obtenerNumeroGraficas() {
+    public int numberOfAvailableCharts() {
         return 5;
     }
-    
+
     /**
      * Este m�todo reinicia los valores de los atributos de la clase, dejando la
      * instancia como si acabase de ser creada por el constructor.
+     *
      * @since 2.0
-     */    
+     */
     @Override
     public void reset() {
-    	paquetesEntrantes = new XYSeriesCollection();
-    	paquetesSalientes = new XYSeriesCollection();
-    	paquetesDescartados = new XYSeriesCollection();
-    	salientesIPv4 = new XYSeries(TStats.IPV4);
-    	salientesIPv4_GOS1 = new XYSeries(TStats.IPV4_GOS1);
-    	salientesIPv4_GOS2 = new XYSeries(TStats.IPV4_GOS2);
-    	salientesIPv4_GOS3 = new XYSeries(TStats.IPV4_GOS3);
-    	salientesMPLS = new XYSeries(TStats.MPLS);
-    	salientesMPLS_GOS1 = new XYSeries(TStats.MPLS_GOS1);
-    	salientesMPLS_GOS2 = new XYSeries(TStats.MPLS_GOS2);
-    	salientesMPLS_GOS3 = new XYSeries(TStats.MPLS_GOS3);
-    	salientesTLDP = new XYSeries(TStats.TLDP);
-    	salientesGPSRP = new XYSeries(TStats.GPSRP);
-    	entrantesIPv4 = new XYSeries(TStats.IPV4);
-    	entrantesIPv4_GOS1 = new XYSeries(TStats.IPV4_GOS1);
-    	entrantesIPv4_GOS2 = new XYSeries(TStats.IPV4_GOS2);
-    	entrantesIPv4_GOS3 = new XYSeries(TStats.IPV4_GOS3);
-    	entrantesMPLS = new XYSeries(TStats.MPLS);
-    	entrantesMPLS_GOS1 = new XYSeries(TStats.MPLS_GOS1);
-    	entrantesMPLS_GOS2 = new XYSeries(TStats.MPLS_GOS2);
-    	entrantesMPLS_GOS3 = new XYSeries(TStats.MPLS_GOS3);
-    	entrantesTLDP = new XYSeries(TStats.TLDP);
-    	entrantesGPSRP = new XYSeries(TStats.GPSRP);
-        descartadosIPv4 = new XYSeries(TStats.IPV4);
-    	descartadosIPv4_GOS1 = new XYSeries(TStats.IPV4_GOS1);
-    	descartadosIPv4_GOS2 = new XYSeries(TStats.IPV4_GOS2);
-    	descartadosIPv4_GOS3 = new XYSeries(TStats.IPV4_GOS3);
-	descartadosMPLS = new XYSeries(TStats.MPLS);
-	descartadosMPLS_GOS1 = new XYSeries(TStats.MPLS_GOS1);
-	descartadosMPLS_GOS2 = new XYSeries(TStats.MPLS_GOS2);
-	descartadosMPLS_GOS3 = new XYSeries(TStats.MPLS_GOS3);
-    	descartadosTLDP = new XYSeries(TStats.TLDP);
-    	descartadosGPSRP = new XYSeries(TStats.GPSRP);
-        tEIPV4 = 0;
-        tEIPV4_GOS1 = 0;
-        tEIPV4_GOS2 = 0;
-        tEIPV4_GOS3 = 0;
-        tEMPLS = 0;
-        tEMPLS_GOS1 = 0;
-        tEMPLS_GOS2 = 0;
-        tEMPLS_GOS3 = 0;
-        tETLDP = 0;
-        tEGPSRP = 0;
-        tSIPV4 = 0;
-        tSIPV4_GOS1 = 0;
-        tSIPV4_GOS2 = 0;
-        tSIPV4_GOS3 = 0;
-        tSMPLS = 0;
-        tSMPLS_GOS1 = 0;
-        tSMPLS_GOS2 = 0;
-        tSMPLS_GOS3 = 0;
-        tSTLDP = 0;
-        tSGPSRP = 0;
-        tDIPV4 = 0;
-        tDIPV4_GOS1 = 0;
-        tDIPV4_GOS2 = 0;
-        tDIPV4_GOS3 = 0;
-        tDMPLS = 0;
-        tDMPLS_GOS1 = 0;
-        tDMPLS_GOS2 = 0;
-        tDMPLS_GOS3 = 0;
-        tDTLDP = 0;
-        tDGPSRP = 0;
-        retransmisionesAtendidas = new DefaultCategoryDataset();
-        solicitudesRecibidas = 0;
-        retransmisionesRealizadas = 0;
-        retransmisionesNoRealizadas = 0;
-        recuperacionesLocales = new DefaultCategoryDataset();
-        paquetesGoSPerdido = 0;
-        solicitudesEmitidas = 0;
-        paquetesGoSRecuperados = 0;
-        paquetesGoSNoRecuperados = 0;
+        this.incomingPackets = new XYSeriesCollection();
+        this.outgoingPackets = new XYSeriesCollection();
+        this.discardedPackets = new XYSeriesCollection();
+        this.outgoingIPv4Packets = new XYSeries(TStats.IPV4);
+        this.outgoingIPv4GOS1Packets = new XYSeries(TStats.IPV4_GOS1);
+        this.outgoingIPv4GOS2Packets = new XYSeries(TStats.IPV4_GOS2);
+        this.outgoingIPv4GOS3Packets = new XYSeries(TStats.IPV4_GOS3);
+        this.outgoingMPLSPackets = new XYSeries(TStats.MPLS);
+        this.outgoingMPLSGOS1Packets = new XYSeries(TStats.MPLS_GOS1);
+        this.outgoingMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
+        this.outgoingMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
+        this.outgoingTLDPPackets = new XYSeries(TStats.TLDP);
+        this.ourgoingGPSRPPackets = new XYSeries(TStats.GPSRP);
+        this.incomingIPv4Packets = new XYSeries(TStats.IPV4);
+        this.incomingIPv4GOS1Packets = new XYSeries(TStats.IPV4_GOS1);
+        this.incomingIPv4GOS2Packets = new XYSeries(TStats.IPV4_GOS2);
+        this.incomingIPv4GOS3Packets = new XYSeries(TStats.IPV4_GOS3);
+        this.incomingMPLSPackets = new XYSeries(TStats.MPLS);
+        this.incomingMPLSGOS1Packets = new XYSeries(TStats.MPLS_GOS1);
+        this.incomingMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
+        this.incomingMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
+        this.incomingTLDPPackets = new XYSeries(TStats.TLDP);
+        this.incomingGPSRPPackets = new XYSeries(TStats.GPSRP);
+        this.discardedIPv4Packets = new XYSeries(TStats.IPV4);
+        this.discardedIPv4GOS1Packets = new XYSeries(TStats.IPV4_GOS1);
+        this.discardedIPv4GOS2Packets = new XYSeries(TStats.IPV4_GOS2);
+        this.discardedIPv4GOS3Packets = new XYSeries(TStats.IPV4_GOS3);
+        this.discardedMPLSPackets = new XYSeries(TStats.MPLS);
+        this.discardedMPLSGOS1Packets = new XYSeries(TStats.MPLS_GOS1);
+        this.discardedMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
+        this.discardedMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
+        this.discardedTLDPPackets = new XYSeries(TStats.TLDP);
+        this.discardedGPSRPPackets = new XYSeries(TStats.GPSRP);
+        this.incomingIPv4PacketsOfThisTimeInstant = 0;
+        this.incomingIPv4GOS1PacketsOfThisTimeInstant = 0;
+        this.incomingIPv4GOS2PacketsOfThisTimeInstant = 0;
+        this.incomingIPv4GOS3PacketsOfThisTimeInstant = 0;
+        this.incomingMPLSPacketsOfThisTimeInstant = 0;
+        this.incomingMPLSGOS1PacketsOfThisTimeInstant = 0;
+        this.incomingMPLSGOS2PacketsOfThisTimeInstant = 0;
+        this.incomingMPLSGOS3PacketsOfThisTimeInstant = 0;
+        this.incomingTLDPPacketsOfThisTimeInstant = 0;
+        this.incomingGPSRPPacketsOfThisTimeInstant = 0;
+        this.outgoingIPv4PacketsOfThisTimeInstant = 0;
+        this.outgoingIPv4GOS1PacketsOfThisTimeInstant = 0;
+        this.outgoingIPv4GOS2PacketsOfThisTimeInstant = 0;
+        this.outgoingIPv4GOS3PacketsOfThisTimeInstant = 0;
+        this.outgoingMPLSPacketsOfThisTimeInstant = 0;
+        this.outgoingMPLSGOS1PacketsOfThisTimeInstant = 0;
+        this.outgoingMPLSGOS2PacketsOfThisTimeInstant = 0;
+        this.outgoingMPLSGOS3PacketsOfThisTimeInstant = 0;
+        this.outgoingTLDPPacketsOfThisTimeInstant = 0;
+        this.outgoingGPSRPPacketsOfThisTimeInstant = 0;
+        this.discardedIPv4PacketsOfThisTimeInstant = 0;
+        this.discardedIPv4GOS1PacketsOfThisTimeInstant = 0;
+        this.discardedIPv4GOS2PacketsOfThisTimeInstant = 0;
+        this.discardedIPv4GOS3PacketsOfThisTimeInstant = 0;
+        this.discardedMPLSPacketsOfThisTimeInstant = 0;
+        this.discardedMPLSGOS1PacketsOfThisTimeInstant = 0;
+        this.discardedMPLSGOS2PacketsOfThisTimeInstant = 0;
+        this.discardedMPLSGOS3PacketsOfThisTimeInstant = 0;
+        this.discardedTLDPPacketsOfThisTimeInstant = 0;
+        this.discardedGPSRPPacketsOfThisTimeInstant = 0;
+        this.retransmissionsManaged = new DefaultCategoryDataset();
+        this.retransmissionRequestsReceived = 0;
+        this.retransmissionsRealized = 0;
+        this.retransmisionsUnrealized = 0;
+        this.localRecoveriesManaged = new DefaultCategoryDataset();
+        this.GOSPacketsLost = 0;
+        this.retransmissionRequestsSent = 0;
+        this.GOSPacketsRecovered = 0;
+        this.GOSPacketsUnrecovered = 0;
     }
-    
+
     /**
      * Este m�todo actualiza las estad�sticas con los �ltimos datos estad�sticos
      * existentes desde la �ltima vez que se llam� a este m�todo.
-     * @param instante Instante de tiempo al que se atribuir�n los ultimos datos existentes.
+     *
+     * @param timeInstant Instante de tiempo al que se atribuir�n los ultimos
+     * datos existentes.
      * @since 2.0
-     */    
+     */
     @Override
-    public void consolidateData(long instante) {
-        if (this.estadisticasActivas) {
-            if (tEIPV4 > 0) {
-                if (entrantesIPv4.getItemCount() == 0) {
-                    this.entrantesIPv4.add(instante-1, 0 );
-                    this.entrantesIPv4.add(instante, tEIPV4);
-                    this.paquetesEntrantes.addSeries(entrantesIPv4);
+    public void consolidateData(long timeInstant) {
+        if (this.statsEnabled) {
+            if (incomingIPv4PacketsOfThisTimeInstant > 0) {
+                if (incomingIPv4Packets.getItemCount() == 0) {
+                    this.incomingIPv4Packets.add(timeInstant - 1, 0);
+                    this.incomingIPv4Packets.add(timeInstant, incomingIPv4PacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(incomingIPv4Packets);
                 } else {
-                    this.entrantesIPv4.add(instante, tEIPV4);
+                    this.incomingIPv4Packets.add(timeInstant, incomingIPv4PacketsOfThisTimeInstant);
                 }
             }
 
-            if (tEIPV4_GOS1 > 0) {
-                if (entrantesIPv4_GOS1.getItemCount() == 0) {
-                    this.entrantesIPv4_GOS1.add(instante-1, 0 );
-                    this.entrantesIPv4_GOS1.add(instante, tEIPV4_GOS1);
-                    this.paquetesEntrantes.addSeries(entrantesIPv4_GOS1);
+            if (incomingIPv4GOS1PacketsOfThisTimeInstant > 0) {
+                if (incomingIPv4GOS1Packets.getItemCount() == 0) {
+                    this.incomingIPv4GOS1Packets.add(timeInstant - 1, 0);
+                    this.incomingIPv4GOS1Packets.add(timeInstant, incomingIPv4GOS1PacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(incomingIPv4GOS1Packets);
                 } else {
-                    this.entrantesIPv4_GOS1.add(instante, tEIPV4_GOS1);
+                    this.incomingIPv4GOS1Packets.add(timeInstant, incomingIPv4GOS1PacketsOfThisTimeInstant);
                 }
             }
 
-            if (tEIPV4_GOS2 > 0) {
-                if (entrantesIPv4_GOS2.getItemCount() == 0) {
-                    this.entrantesIPv4_GOS2.add(instante-1, 0 );
-                    this.entrantesIPv4_GOS2.add(instante, tEIPV4_GOS2);
-                    this.paquetesEntrantes.addSeries(entrantesIPv4_GOS2);
+            if (incomingIPv4GOS2PacketsOfThisTimeInstant > 0) {
+                if (incomingIPv4GOS2Packets.getItemCount() == 0) {
+                    this.incomingIPv4GOS2Packets.add(timeInstant - 1, 0);
+                    this.incomingIPv4GOS2Packets.add(timeInstant, incomingIPv4GOS2PacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(incomingIPv4GOS2Packets);
                 } else {
-                    this.entrantesIPv4_GOS2.add(instante, tEIPV4_GOS2);
+                    this.incomingIPv4GOS2Packets.add(timeInstant, incomingIPv4GOS2PacketsOfThisTimeInstant);
                 }
             }
 
-            if (tEIPV4_GOS3 > 0) {
-                if (entrantesIPv4_GOS3.getItemCount() == 0) {
-                    this.entrantesIPv4_GOS3.add(instante-1, 0 );
-                    this.entrantesIPv4_GOS3.add(instante, tEIPV4_GOS3);
-                    this.paquetesEntrantes.addSeries(entrantesIPv4_GOS3);
+            if (incomingIPv4GOS3PacketsOfThisTimeInstant > 0) {
+                if (incomingIPv4GOS3Packets.getItemCount() == 0) {
+                    this.incomingIPv4GOS3Packets.add(timeInstant - 1, 0);
+                    this.incomingIPv4GOS3Packets.add(timeInstant, incomingIPv4GOS3PacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(incomingIPv4GOS3Packets);
                 } else {
-                    this.entrantesIPv4_GOS3.add(instante, tEIPV4_GOS3);
+                    this.incomingIPv4GOS3Packets.add(timeInstant, incomingIPv4GOS3PacketsOfThisTimeInstant);
                 }
             }
 
-            if (tEMPLS > 0) {
-                if (entrantesMPLS.getItemCount() == 0) {
-                    this.entrantesMPLS.add(instante-1, 0 );
-                    this.entrantesMPLS.add(instante, tEMPLS);
-                    this.paquetesEntrantes.addSeries(entrantesMPLS);
+            if (incomingMPLSPacketsOfThisTimeInstant > 0) {
+                if (incomingMPLSPackets.getItemCount() == 0) {
+                    this.incomingMPLSPackets.add(timeInstant - 1, 0);
+                    this.incomingMPLSPackets.add(timeInstant, incomingMPLSPacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(incomingMPLSPackets);
                 } else {
-                    this.entrantesMPLS.add(instante, tEMPLS);
+                    this.incomingMPLSPackets.add(timeInstant, incomingMPLSPacketsOfThisTimeInstant);
                 }
             }
 
-            if (tEMPLS_GOS1 > 0) {
-                if (entrantesMPLS_GOS1.getItemCount() == 0) {
-                    this.entrantesMPLS_GOS1.add(instante-1, 0 );
-                    this.entrantesMPLS_GOS1.add(instante, tEMPLS_GOS1);
-                    this.paquetesEntrantes.addSeries(entrantesMPLS_GOS1);
+            if (incomingMPLSGOS1PacketsOfThisTimeInstant > 0) {
+                if (incomingMPLSGOS1Packets.getItemCount() == 0) {
+                    this.incomingMPLSGOS1Packets.add(timeInstant - 1, 0);
+                    this.incomingMPLSGOS1Packets.add(timeInstant, incomingMPLSGOS1PacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(incomingMPLSGOS1Packets);
                 } else {
-                    this.entrantesMPLS_GOS1.add(instante, tEMPLS_GOS1);
+                    this.incomingMPLSGOS1Packets.add(timeInstant, incomingMPLSGOS1PacketsOfThisTimeInstant);
                 }
             }
 
-            if (tEMPLS_GOS2 > 0) {
-                if (entrantesMPLS_GOS2.getItemCount() == 0) {
-                    this.entrantesMPLS_GOS2.add(instante-1, 0 );
-                    this.entrantesMPLS_GOS2.add(instante, tEMPLS_GOS2);
-                    this.paquetesEntrantes.addSeries(entrantesMPLS_GOS2);
+            if (incomingMPLSGOS2PacketsOfThisTimeInstant > 0) {
+                if (incomingMPLSGOS2Packets.getItemCount() == 0) {
+                    this.incomingMPLSGOS2Packets.add(timeInstant - 1, 0);
+                    this.incomingMPLSGOS2Packets.add(timeInstant, incomingMPLSGOS2PacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(incomingMPLSGOS2Packets);
                 } else {
-                    this.entrantesMPLS_GOS2.add(instante, tEMPLS_GOS2);
+                    this.incomingMPLSGOS2Packets.add(timeInstant, incomingMPLSGOS2PacketsOfThisTimeInstant);
                 }
             }
 
-            if (tEMPLS_GOS3 > 0) {
-                if (entrantesMPLS_GOS3.getItemCount() == 0) {
-                    this.entrantesMPLS_GOS3.add(instante-1, 0 );
-                    this.entrantesMPLS_GOS3.add(instante, tEMPLS_GOS3);
-                    this.paquetesEntrantes.addSeries(entrantesMPLS_GOS3);
+            if (incomingMPLSGOS3PacketsOfThisTimeInstant > 0) {
+                if (incomingMPLSGOS3Packets.getItemCount() == 0) {
+                    this.incomingMPLSGOS3Packets.add(timeInstant - 1, 0);
+                    this.incomingMPLSGOS3Packets.add(timeInstant, incomingMPLSGOS3PacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(incomingMPLSGOS3Packets);
                 } else {
-                    this.entrantesMPLS_GOS3.add(instante, tEMPLS_GOS3);
+                    this.incomingMPLSGOS3Packets.add(timeInstant, incomingMPLSGOS3PacketsOfThisTimeInstant);
                 }
             }
 
-            if (tETLDP > 0) {
-                if (entrantesTLDP.getItemCount() == 0) {
-                    this.entrantesTLDP.add(instante-1, 0 );
-                    this.entrantesTLDP.add(instante, tETLDP);
-                    this.paquetesEntrantes.addSeries(entrantesTLDP);
+            if (incomingTLDPPacketsOfThisTimeInstant > 0) {
+                if (incomingTLDPPackets.getItemCount() == 0) {
+                    this.incomingTLDPPackets.add(timeInstant - 1, 0);
+                    this.incomingTLDPPackets.add(timeInstant, incomingTLDPPacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(incomingTLDPPackets);
                 } else {
-                    this.entrantesTLDP.add(instante, tETLDP);
+                    this.incomingTLDPPackets.add(timeInstant, incomingTLDPPacketsOfThisTimeInstant);
                 }
             }
 
-            if (tEGPSRP > 0) {
-                if (entrantesGPSRP.getItemCount() == 0) {
-                    this.entrantesGPSRP.add(instante-1, 0 );
-                    this.entrantesGPSRP.add(instante, tEGPSRP);
-                    this.paquetesEntrantes.addSeries(entrantesGPSRP);
+            if (incomingGPSRPPacketsOfThisTimeInstant > 0) {
+                if (incomingGPSRPPackets.getItemCount() == 0) {
+                    this.incomingGPSRPPackets.add(timeInstant - 1, 0);
+                    this.incomingGPSRPPackets.add(timeInstant, incomingGPSRPPacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(incomingGPSRPPackets);
                 } else {
-                    this.entrantesGPSRP.add(instante, tEGPSRP);
+                    this.incomingGPSRPPackets.add(timeInstant, incomingGPSRPPacketsOfThisTimeInstant);
                 }
             }
 
-            if (tSIPV4 > 0) {
-                if (salientesIPv4.getItemCount() == 0) {
-                    this.salientesIPv4.add(instante-1, 0 );
-                    this.salientesIPv4.add(instante, tSIPV4);
-                    this.paquetesSalientes.addSeries(salientesIPv4);
+            if (outgoingIPv4PacketsOfThisTimeInstant > 0) {
+                if (outgoingIPv4Packets.getItemCount() == 0) {
+                    this.outgoingIPv4Packets.add(timeInstant - 1, 0);
+                    this.outgoingIPv4Packets.add(timeInstant, outgoingIPv4PacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(outgoingIPv4Packets);
                 } else {
-                    this.salientesIPv4.add(instante, tSIPV4);
-                }
-            }
-            
-            if (tSIPV4_GOS1 > 0) {
-                if (salientesIPv4_GOS1.getItemCount() == 0) {
-                    this.salientesIPv4_GOS1.add(instante-1, 0 );
-                    this.salientesIPv4_GOS1.add(instante, tSIPV4_GOS1);
-                    this.paquetesSalientes.addSeries(salientesIPv4_GOS1);
-                } else {
-                    this.salientesIPv4_GOS1.add(instante, tSIPV4_GOS1);
-                }
-            }
-            
-            if (tSIPV4_GOS2 > 0) {
-                if (salientesIPv4_GOS2.getItemCount() == 0) {
-                    this.salientesIPv4_GOS2.add(instante-1, 0 );
-                    this.salientesIPv4_GOS2.add(instante, tSIPV4_GOS2);
-                    this.paquetesSalientes.addSeries(salientesIPv4_GOS2);
-                } else {
-                    this.salientesIPv4_GOS2.add(instante, tSIPV4_GOS2);
-                }
-            }
-            
-            if (tSIPV4_GOS3 > 0) {
-                if (salientesIPv4_GOS3.getItemCount() == 0) {
-                    this.salientesIPv4_GOS3.add(instante-1, 0 );
-                    this.salientesIPv4_GOS3.add(instante, tSIPV4_GOS3);
-                    this.paquetesSalientes.addSeries(salientesIPv4_GOS3);
-                } else {
-                    this.salientesIPv4_GOS3.add(instante, tSIPV4_GOS3);
-                }
-            }
-            
-            if (tSMPLS > 0) {
-                if (salientesMPLS.getItemCount() == 0) {
-                    this.salientesMPLS.add(instante-1, 0 );
-                    this.salientesMPLS.add(instante, tSMPLS);
-                    this.paquetesSalientes.addSeries(salientesMPLS);
-                } else {
-                    this.salientesMPLS.add(instante, tSMPLS);
-                }
-            }
-            
-            if (tSMPLS_GOS1 > 0) {
-                if (salientesMPLS_GOS1.getItemCount() == 0) {
-                    this.salientesMPLS_GOS1.add(instante-1, 0 );
-                    this.salientesMPLS_GOS1.add(instante, tSMPLS_GOS1);
-                    this.paquetesSalientes.addSeries(salientesMPLS_GOS1);
-                } else {
-                    this.salientesMPLS_GOS1.add(instante, tSMPLS_GOS1);
-                }
-            }
-            
-            if (tSMPLS_GOS2 > 0) {
-                if (salientesMPLS_GOS2.getItemCount() == 0) {
-                    this.salientesMPLS_GOS2.add(instante-1, 0 );
-                    this.salientesMPLS_GOS2.add(instante, tSMPLS_GOS2);
-                    this.paquetesSalientes.addSeries(salientesMPLS_GOS2);
-                } else {
-                    this.salientesMPLS_GOS2.add(instante, tSMPLS_GOS2);
-                }
-            }
-            
-            if (tSMPLS_GOS3 > 0) {
-                if (salientesMPLS_GOS3.getItemCount() == 0) {
-                    this.salientesMPLS_GOS3.add(instante-1, 0 );
-                    this.salientesMPLS_GOS3.add(instante, tSMPLS_GOS3);
-                    this.paquetesSalientes.addSeries(salientesMPLS_GOS3);
-                } else {
-                    this.salientesMPLS_GOS3.add(instante, tSMPLS_GOS3);
-                }
-            }
-            
-            if (tSTLDP > 0) {
-                if (salientesTLDP.getItemCount() == 0) {
-                    this.salientesTLDP.add(instante-1, 0 );
-                    this.salientesTLDP.add(instante, tSTLDP);
-                    this.paquetesSalientes.addSeries(salientesTLDP);
-                } else {
-                    this.salientesTLDP.add(instante, tSTLDP);
-                }
-            }
-            
-            if (tSGPSRP > 0) {
-                if (salientesGPSRP.getItemCount() == 0) {
-                    this.salientesGPSRP.add(instante-1, 0 );
-                    this.salientesGPSRP.add(instante, tSGPSRP);
-                    this.paquetesSalientes.addSeries(salientesGPSRP);
-                } else {
-                    this.salientesGPSRP.add(instante, tSGPSRP);
-                }
-            }
-                    
-            if (tDIPV4 > 0) {
-                if (descartadosIPv4.getItemCount() == 0) {
-                    this.descartadosIPv4.add(instante-1, 0 );
-                    this.descartadosIPv4.add(instante, tDIPV4);
-                    this.paquetesDescartados.addSeries(descartadosIPv4);
-                } else {
-                    this.descartadosIPv4.add(instante, tDIPV4);
-                }
-            }
-                    
-            if (tDIPV4_GOS1 > 0) {
-                if (descartadosIPv4_GOS1.getItemCount() == 0) {
-                    this.descartadosIPv4_GOS1.add(instante-1, 0 );
-                    this.descartadosIPv4_GOS1.add(instante, tDIPV4_GOS1);
-                    this.paquetesDescartados.addSeries(descartadosIPv4_GOS1);
-                } else {
-                    this.descartadosIPv4_GOS1.add(instante, tDIPV4_GOS1);
+                    this.outgoingIPv4Packets.add(timeInstant, outgoingIPv4PacketsOfThisTimeInstant);
                 }
             }
 
-            if (tDIPV4_GOS2 > 0) {
-                if (descartadosIPv4_GOS2.getItemCount() == 0) {
-                    this.descartadosIPv4_GOS2.add(instante-1, 0 );
-                    this.descartadosIPv4_GOS2.add(instante, tDIPV4_GOS2);
-                    this.paquetesDescartados.addSeries(descartadosIPv4_GOS2);
+            if (outgoingIPv4GOS1PacketsOfThisTimeInstant > 0) {
+                if (outgoingIPv4GOS1Packets.getItemCount() == 0) {
+                    this.outgoingIPv4GOS1Packets.add(timeInstant - 1, 0);
+                    this.outgoingIPv4GOS1Packets.add(timeInstant, outgoingIPv4GOS1PacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(outgoingIPv4GOS1Packets);
                 } else {
-                    this.descartadosIPv4_GOS2.add(instante, tDIPV4_GOS2);
+                    this.outgoingIPv4GOS1Packets.add(timeInstant, outgoingIPv4GOS1PacketsOfThisTimeInstant);
                 }
             }
 
-            if (tDIPV4_GOS3 > 0) {
-                if (descartadosIPv4_GOS3.getItemCount() == 0) {
-                    this.descartadosIPv4_GOS3.add(instante-1, 0 );
-                    this.descartadosIPv4_GOS3.add(instante, tDIPV4_GOS3);
-                    this.paquetesDescartados.addSeries(descartadosIPv4_GOS3);
+            if (outgoingIPv4GOS2PacketsOfThisTimeInstant > 0) {
+                if (outgoingIPv4GOS2Packets.getItemCount() == 0) {
+                    this.outgoingIPv4GOS2Packets.add(timeInstant - 1, 0);
+                    this.outgoingIPv4GOS2Packets.add(timeInstant, outgoingIPv4GOS2PacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(outgoingIPv4GOS2Packets);
                 } else {
-                    this.descartadosIPv4_GOS3.add(instante, tDIPV4_GOS3);
+                    this.outgoingIPv4GOS2Packets.add(timeInstant, outgoingIPv4GOS2PacketsOfThisTimeInstant);
                 }
             }
 
-            if (tDMPLS > 0) {
-                if (descartadosMPLS.getItemCount() == 0) {
-                    this.descartadosMPLS.add(instante-1, 0 );
-                    this.descartadosMPLS.add(instante, tDMPLS);
-                    this.paquetesDescartados.addSeries(descartadosMPLS);
+            if (outgoingIPv4GOS3PacketsOfThisTimeInstant > 0) {
+                if (outgoingIPv4GOS3Packets.getItemCount() == 0) {
+                    this.outgoingIPv4GOS3Packets.add(timeInstant - 1, 0);
+                    this.outgoingIPv4GOS3Packets.add(timeInstant, outgoingIPv4GOS3PacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(outgoingIPv4GOS3Packets);
                 } else {
-                    this.descartadosMPLS.add(instante, tDMPLS);
+                    this.outgoingIPv4GOS3Packets.add(timeInstant, outgoingIPv4GOS3PacketsOfThisTimeInstant);
                 }
             }
 
-            if (tDMPLS_GOS1 > 0) {
-                if (descartadosMPLS_GOS1.getItemCount() == 0) {
-                    this.descartadosMPLS_GOS1.add(instante-1, 0 );
-                    this.descartadosMPLS_GOS1.add(instante, tDMPLS_GOS1);
-                    this.paquetesDescartados.addSeries(descartadosMPLS_GOS1);
+            if (outgoingMPLSPacketsOfThisTimeInstant > 0) {
+                if (outgoingMPLSPackets.getItemCount() == 0) {
+                    this.outgoingMPLSPackets.add(timeInstant - 1, 0);
+                    this.outgoingMPLSPackets.add(timeInstant, outgoingMPLSPacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(outgoingMPLSPackets);
                 } else {
-                    this.descartadosMPLS_GOS1.add(instante, tDMPLS_GOS1);
+                    this.outgoingMPLSPackets.add(timeInstant, outgoingMPLSPacketsOfThisTimeInstant);
                 }
             }
 
-            if (tDMPLS_GOS2 > 0) {
-                if (descartadosMPLS_GOS2.getItemCount() == 0) {
-                    this.descartadosMPLS_GOS2.add(instante-1, 0 );
-                    this.descartadosMPLS_GOS2.add(instante, tDMPLS_GOS2);
-                    this.paquetesDescartados.addSeries(descartadosMPLS_GOS2);
+            if (outgoingMPLSGOS1PacketsOfThisTimeInstant > 0) {
+                if (outgoingMPLSGOS1Packets.getItemCount() == 0) {
+                    this.outgoingMPLSGOS1Packets.add(timeInstant - 1, 0);
+                    this.outgoingMPLSGOS1Packets.add(timeInstant, outgoingMPLSGOS1PacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(outgoingMPLSGOS1Packets);
                 } else {
-                    this.descartadosMPLS_GOS2.add(instante, tDMPLS_GOS2);
+                    this.outgoingMPLSGOS1Packets.add(timeInstant, outgoingMPLSGOS1PacketsOfThisTimeInstant);
                 }
             }
 
-            if (tDMPLS_GOS3 > 0) {
-                if (descartadosMPLS_GOS3.getItemCount() == 0) {
-                    this.descartadosMPLS_GOS3.add(instante-1, 0 );
-                    this.descartadosMPLS_GOS3.add(instante, tDMPLS_GOS3);
-                    this.paquetesDescartados.addSeries(descartadosMPLS_GOS3);
+            if (outgoingMPLSGOS2PacketsOfThisTimeInstant > 0) {
+                if (outgoingMPLSGOS2Packets.getItemCount() == 0) {
+                    this.outgoingMPLSGOS2Packets.add(timeInstant - 1, 0);
+                    this.outgoingMPLSGOS2Packets.add(timeInstant, outgoingMPLSGOS2PacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(outgoingMPLSGOS2Packets);
                 } else {
-                    this.descartadosMPLS_GOS3.add(instante, tDMPLS_GOS3);
+                    this.outgoingMPLSGOS2Packets.add(timeInstant, outgoingMPLSGOS2PacketsOfThisTimeInstant);
                 }
             }
 
-            if (tDTLDP > 0) {
-                if (descartadosTLDP.getItemCount() == 0) {
-                    this.descartadosTLDP.add(instante-1, 0 );
-                    this.descartadosTLDP.add(instante, tDTLDP);
-                    this.paquetesDescartados.addSeries(descartadosTLDP);
+            if (outgoingMPLSGOS3PacketsOfThisTimeInstant > 0) {
+                if (outgoingMPLSGOS3Packets.getItemCount() == 0) {
+                    this.outgoingMPLSGOS3Packets.add(timeInstant - 1, 0);
+                    this.outgoingMPLSGOS3Packets.add(timeInstant, outgoingMPLSGOS3PacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(outgoingMPLSGOS3Packets);
                 } else {
-                    this.descartadosTLDP.add(instante, tDTLDP);
+                    this.outgoingMPLSGOS3Packets.add(timeInstant, outgoingMPLSGOS3PacketsOfThisTimeInstant);
                 }
             }
 
-            if (tDGPSRP > 0) {
-                if (descartadosGPSRP.getItemCount() == 0) {
-                    this.descartadosGPSRP.add(instante-1, 0 );
-                    this.descartadosGPSRP.add(instante, tDGPSRP);
-                    this.paquetesDescartados.addSeries(descartadosGPSRP);
+            if (outgoingTLDPPacketsOfThisTimeInstant > 0) {
+                if (outgoingTLDPPackets.getItemCount() == 0) {
+                    this.outgoingTLDPPackets.add(timeInstant - 1, 0);
+                    this.outgoingTLDPPackets.add(timeInstant, outgoingTLDPPacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(outgoingTLDPPackets);
                 } else {
-                    this.descartadosGPSRP.add(instante, tDGPSRP);
+                    this.outgoingTLDPPackets.add(timeInstant, outgoingTLDPPacketsOfThisTimeInstant);
                 }
             }
-            
-            this.retransmisionesAtendidas.addValue(this.solicitudesRecibidas, TStats.SOLICITUDES_RECIBIDAS, "");
-            this.retransmisionesAtendidas.addValue(this.retransmisionesRealizadas, TStats.RETRANSMISIONES_REALIZADAS, "");
-            this.retransmisionesAtendidas.addValue(this.retransmisionesNoRealizadas, TStats.RETRANSMISIONES_NO_REALIZADAS, "");
-            this.recuperacionesLocales.addValue(this.paquetesGoSPerdido, TStats.PAQUETES_GOS_PERDIDOS, "");
-            this.recuperacionesLocales.addValue(this.solicitudesEmitidas, TStats.SOLICITUDES_EMITIDAS, "");
-            this.recuperacionesLocales.addValue(this.paquetesGoSRecuperados, TStats.PAQUETES_GOS_RECUPERADOS, "");
-            this.recuperacionesLocales.addValue(this.paquetesGoSNoRecuperados, TStats.PAQUETES_GOS_NO_RECUPERADOS, "");
-            int sinRespuesta = (solicitudesEmitidas - paquetesGoSRecuperados - paquetesGoSNoRecuperados);
-            if (sinRespuesta < 0) {
-                sinRespuesta = 0;
+
+            if (outgoingGPSRPPacketsOfThisTimeInstant > 0) {
+                if (ourgoingGPSRPPackets.getItemCount() == 0) {
+                    this.ourgoingGPSRPPackets.add(timeInstant - 1, 0);
+                    this.ourgoingGPSRPPackets.add(timeInstant, outgoingGPSRPPacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(ourgoingGPSRPPackets);
+                } else {
+                    this.ourgoingGPSRPPackets.add(timeInstant, outgoingGPSRPPacketsOfThisTimeInstant);
+                }
             }
-            this.recuperacionesLocales.addValue(sinRespuesta, TStats.SOLICITUDES_SIN_RESPUESTA_AUN, "");
+
+            if (discardedIPv4PacketsOfThisTimeInstant > 0) {
+                if (discardedIPv4Packets.getItemCount() == 0) {
+                    this.discardedIPv4Packets.add(timeInstant - 1, 0);
+                    this.discardedIPv4Packets.add(timeInstant, discardedIPv4PacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(discardedIPv4Packets);
+                } else {
+                    this.discardedIPv4Packets.add(timeInstant, discardedIPv4PacketsOfThisTimeInstant);
+                }
+            }
+
+            if (discardedIPv4GOS1PacketsOfThisTimeInstant > 0) {
+                if (discardedIPv4GOS1Packets.getItemCount() == 0) {
+                    this.discardedIPv4GOS1Packets.add(timeInstant - 1, 0);
+                    this.discardedIPv4GOS1Packets.add(timeInstant, discardedIPv4GOS1PacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(discardedIPv4GOS1Packets);
+                } else {
+                    this.discardedIPv4GOS1Packets.add(timeInstant, discardedIPv4GOS1PacketsOfThisTimeInstant);
+                }
+            }
+
+            if (discardedIPv4GOS2PacketsOfThisTimeInstant > 0) {
+                if (discardedIPv4GOS2Packets.getItemCount() == 0) {
+                    this.discardedIPv4GOS2Packets.add(timeInstant - 1, 0);
+                    this.discardedIPv4GOS2Packets.add(timeInstant, discardedIPv4GOS2PacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(discardedIPv4GOS2Packets);
+                } else {
+                    this.discardedIPv4GOS2Packets.add(timeInstant, discardedIPv4GOS2PacketsOfThisTimeInstant);
+                }
+            }
+
+            if (discardedIPv4GOS3PacketsOfThisTimeInstant > 0) {
+                if (discardedIPv4GOS3Packets.getItemCount() == 0) {
+                    this.discardedIPv4GOS3Packets.add(timeInstant - 1, 0);
+                    this.discardedIPv4GOS3Packets.add(timeInstant, discardedIPv4GOS3PacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(discardedIPv4GOS3Packets);
+                } else {
+                    this.discardedIPv4GOS3Packets.add(timeInstant, discardedIPv4GOS3PacketsOfThisTimeInstant);
+                }
+            }
+
+            if (discardedMPLSPacketsOfThisTimeInstant > 0) {
+                if (discardedMPLSPackets.getItemCount() == 0) {
+                    this.discardedMPLSPackets.add(timeInstant - 1, 0);
+                    this.discardedMPLSPackets.add(timeInstant, discardedMPLSPacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(discardedMPLSPackets);
+                } else {
+                    this.discardedMPLSPackets.add(timeInstant, discardedMPLSPacketsOfThisTimeInstant);
+                }
+            }
+
+            if (discardedMPLSGOS1PacketsOfThisTimeInstant > 0) {
+                if (discardedMPLSGOS1Packets.getItemCount() == 0) {
+                    this.discardedMPLSGOS1Packets.add(timeInstant - 1, 0);
+                    this.discardedMPLSGOS1Packets.add(timeInstant, discardedMPLSGOS1PacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(discardedMPLSGOS1Packets);
+                } else {
+                    this.discardedMPLSGOS1Packets.add(timeInstant, discardedMPLSGOS1PacketsOfThisTimeInstant);
+                }
+            }
+
+            if (discardedMPLSGOS2PacketsOfThisTimeInstant > 0) {
+                if (discardedMPLSGOS2Packets.getItemCount() == 0) {
+                    this.discardedMPLSGOS2Packets.add(timeInstant - 1, 0);
+                    this.discardedMPLSGOS2Packets.add(timeInstant, discardedMPLSGOS2PacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(discardedMPLSGOS2Packets);
+                } else {
+                    this.discardedMPLSGOS2Packets.add(timeInstant, discardedMPLSGOS2PacketsOfThisTimeInstant);
+                }
+            }
+
+            if (discardedMPLSGOS3PacketsOfThisTimeInstant > 0) {
+                if (discardedMPLSGOS3Packets.getItemCount() == 0) {
+                    this.discardedMPLSGOS3Packets.add(timeInstant - 1, 0);
+                    this.discardedMPLSGOS3Packets.add(timeInstant, discardedMPLSGOS3PacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(discardedMPLSGOS3Packets);
+                } else {
+                    this.discardedMPLSGOS3Packets.add(timeInstant, discardedMPLSGOS3PacketsOfThisTimeInstant);
+                }
+            }
+
+            if (discardedTLDPPacketsOfThisTimeInstant > 0) {
+                if (discardedTLDPPackets.getItemCount() == 0) {
+                    this.discardedTLDPPackets.add(timeInstant - 1, 0);
+                    this.discardedTLDPPackets.add(timeInstant, discardedTLDPPacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(discardedTLDPPackets);
+                } else {
+                    this.discardedTLDPPackets.add(timeInstant, discardedTLDPPacketsOfThisTimeInstant);
+                }
+            }
+
+            if (discardedGPSRPPacketsOfThisTimeInstant > 0) {
+                if (discardedGPSRPPackets.getItemCount() == 0) {
+                    this.discardedGPSRPPackets.add(timeInstant - 1, 0);
+                    this.discardedGPSRPPackets.add(timeInstant, discardedGPSRPPacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(discardedGPSRPPackets);
+                } else {
+                    this.discardedGPSRPPackets.add(timeInstant, discardedGPSRPPacketsOfThisTimeInstant);
+                }
+            }
+
+            this.retransmissionsManaged.addValue(this.retransmissionRequestsReceived, TStats.RETRANSMISSION_REQUESTS_RECEIVED, "");
+            this.retransmissionsManaged.addValue(this.retransmissionsRealized, TStats.RETRANSMISSIONS_REALIZED, "");
+            this.retransmissionsManaged.addValue(this.retransmisionsUnrealized, TStats.RETRANSMISSIONS_UNREALIZED, "");
+            this.localRecoveriesManaged.addValue(this.GOSPacketsLost, TStats.GOS_PACKETS_LOST, "");
+            this.localRecoveriesManaged.addValue(this.retransmissionRequestsSent, TStats.RETRANSMISSION_REQUESTS_SENT, "");
+            this.localRecoveriesManaged.addValue(this.GOSPacketsRecovered, TStats.GOS_PACKETS_RECOVERED, "");
+            this.localRecoveriesManaged.addValue(this.GOSPacketsUnrecovered, TStats.GOS_PACKETS_UNRECOVERED, "");
+            int retransmissionRequestsStillUnanswered = (retransmissionRequestsSent - GOSPacketsRecovered - GOSPacketsUnrecovered);
+            if (retransmissionRequestsStillUnanswered < 0) {
+                retransmissionRequestsStillUnanswered = 0;
+            }
+            this.localRecoveriesManaged.addValue(retransmissionRequestsStillUnanswered, TStats.RETRANSMISSION_REQUESTS_STILL_UNANSWERED, "");
         }
-    }    
-    
+    }
+
     /**
      * Este m�todo permite obtener el t�tulo de la gr�fica 1.
+     *
      * @return T�tulo de la gr�fica 1.
      * @since 2.0
-     */    
+     */
     @Override
-    public String obtenerTitulo1() {
+    public String getTitleOfChart1() {
         return TStats.PAQUETES_ENTRANTES;
     }
-    
+
     /**
      * Este m�todo permite obtener el t�tulo de la gr�fica 2.
+     *
      * @return T�tulo de la gr�fica 2.
      * @since 2.0
-     */    
+     */
     @Override
-    public String obtenerTitulo2() {
+    public String getTitleOfChart2() {
         return TStats.PAQUETES_SALIENTES;
     }
-    
+
     /**
      * Este m�todo permite obtener el t�tulo de la gr�fica 3.
+     *
      * @return T�tulo de la gr�fica 3.
      * @since 2.0
-     */    
+     */
     @Override
-    public String obtenerTitulo3() {
+    public String getTitleOfChart3() {
         return TStats.PAQUETES_DESCARTADOS;
     }
-    
+
     /**
      * Este m�todo permite obtener el t�tulo de la gr�fica 4.
+     *
      * @return T�tulo de la gr�fica 4.
      * @since 2.0
-     */    
+     */
     @Override
-    public String obtenerTitulo4() {
+    public String getTitleOfChart4() {
         return TStats.RETRANSMISIONES_ATENDIDAS;
     }
-    
+
     /**
      * Este m�todo permite obtener el t�tulo de la gr�fica 5.
+     *
      * @return T�tulo de la gr�fica 5.
      * @since 2.0
-     */    
+     */
     @Override
-    public String obtenerTitulo5() {
+    public String getTitleOfChart5() {
         return TStats.RECUPERACIONES_LOCALES;
     }
-    
+
     /**
      * Este m�todo permite obtener el t�tulo de la gr�fica 6.
+     *
      * @return T�tulo de la gr�fica 6.
      * @since 2.0
-     */    
+     */
     @Override
-    public String obtenerTitulo6() {
+    public String getTitleOfChart6() {
         return null;
     }
-    
-    private int tEIPV4;
-    private int tEIPV4_GOS1;
-    private int tEIPV4_GOS2;
-    private int tEIPV4_GOS3;
-    private int tEMPLS;
-    private int tEMPLS_GOS1;
-    private int tEMPLS_GOS2;
-    private int tEMPLS_GOS3;
-    private int tETLDP;
-    private int tEGPSRP;
-    private int tSIPV4;
-    private int tSIPV4_GOS1;
-    private int tSIPV4_GOS2;
-    private int tSIPV4_GOS3;
-    private int tSMPLS;
-    private int tSMPLS_GOS1;
-    private int tSMPLS_GOS2;
-    private int tSMPLS_GOS3;
-    private int tSTLDP;
-    private int tSGPSRP;
-    private int tDIPV4;
-    private int tDIPV4_GOS1;
-    private int tDIPV4_GOS2;
-    private int tDIPV4_GOS3;
-    private int tDMPLS;
-    private int tDMPLS_GOS1;
-    private int tDMPLS_GOS2;
-    private int tDMPLS_GOS3;
-    private int tDTLDP;
-    private int tDGPSRP;
-    private XYSeriesCollection paquetesEntrantes;
-    private XYSeriesCollection paquetesSalientes;
-    private XYSeriesCollection paquetesDescartados;
-    private XYSeries entrantesIPv4;
-    private XYSeries entrantesIPv4_GOS1;
-    private XYSeries entrantesIPv4_GOS2;
-    private XYSeries entrantesIPv4_GOS3;
-    private XYSeries entrantesMPLS;
-    private XYSeries entrantesMPLS_GOS1;
-    private XYSeries entrantesMPLS_GOS2;
-    private XYSeries entrantesMPLS_GOS3;
-    private XYSeries entrantesTLDP;
-    private XYSeries entrantesGPSRP;
-    private XYSeries salientesIPv4;
-    private XYSeries salientesIPv4_GOS1;
-    private XYSeries salientesIPv4_GOS2;
-    private XYSeries salientesIPv4_GOS3;
-    private XYSeries salientesMPLS;
-    private XYSeries salientesMPLS_GOS1;
-    private XYSeries salientesMPLS_GOS2;
-    private XYSeries salientesMPLS_GOS3;
-    private XYSeries salientesTLDP;
-    private XYSeries salientesGPSRP;
-    private XYSeries descartadosIPv4;
-    private XYSeries descartadosIPv4_GOS1;
-    private XYSeries descartadosIPv4_GOS2;
-    private XYSeries descartadosIPv4_GOS3;
-    private XYSeries descartadosMPLS;
-    private XYSeries descartadosMPLS_GOS1;
-    private XYSeries descartadosMPLS_GOS2;
-    private XYSeries descartadosMPLS_GOS3;
-    private XYSeries descartadosTLDP;
-    private XYSeries descartadosGPSRP;
-    private DefaultCategoryDataset retransmisionesAtendidas;
-    private int solicitudesRecibidas;
-    private int retransmisionesRealizadas;
-    private int retransmisionesNoRealizadas;
-    private DefaultCategoryDataset recuperacionesLocales;
-    private int paquetesGoSPerdido;
-    private int solicitudesEmitidas;
-    private int paquetesGoSRecuperados;
-    private int paquetesGoSNoRecuperados;
+
+    private int incomingIPv4PacketsOfThisTimeInstant;
+    private int incomingIPv4GOS1PacketsOfThisTimeInstant;
+    private int incomingIPv4GOS2PacketsOfThisTimeInstant;
+    private int incomingIPv4GOS3PacketsOfThisTimeInstant;
+    private int incomingMPLSPacketsOfThisTimeInstant;
+    private int incomingMPLSGOS1PacketsOfThisTimeInstant;
+    private int incomingMPLSGOS2PacketsOfThisTimeInstant;
+    private int incomingMPLSGOS3PacketsOfThisTimeInstant;
+    private int incomingTLDPPacketsOfThisTimeInstant;
+    private int incomingGPSRPPacketsOfThisTimeInstant;
+    private int outgoingIPv4PacketsOfThisTimeInstant;
+    private int outgoingIPv4GOS1PacketsOfThisTimeInstant;
+    private int outgoingIPv4GOS2PacketsOfThisTimeInstant;
+    private int outgoingIPv4GOS3PacketsOfThisTimeInstant;
+    private int outgoingMPLSPacketsOfThisTimeInstant;
+    private int outgoingMPLSGOS1PacketsOfThisTimeInstant;
+    private int outgoingMPLSGOS2PacketsOfThisTimeInstant;
+    private int outgoingMPLSGOS3PacketsOfThisTimeInstant;
+    private int outgoingTLDPPacketsOfThisTimeInstant;
+    private int outgoingGPSRPPacketsOfThisTimeInstant;
+    private int discardedIPv4PacketsOfThisTimeInstant;
+    private int discardedIPv4GOS1PacketsOfThisTimeInstant;
+    private int discardedIPv4GOS2PacketsOfThisTimeInstant;
+    private int discardedIPv4GOS3PacketsOfThisTimeInstant;
+    private int discardedMPLSPacketsOfThisTimeInstant;
+    private int discardedMPLSGOS1PacketsOfThisTimeInstant;
+    private int discardedMPLSGOS2PacketsOfThisTimeInstant;
+    private int discardedMPLSGOS3PacketsOfThisTimeInstant;
+    private int discardedTLDPPacketsOfThisTimeInstant;
+    private int discardedGPSRPPacketsOfThisTimeInstant;
+    private XYSeriesCollection incomingPackets;
+    private XYSeriesCollection outgoingPackets;
+    private XYSeriesCollection discardedPackets;
+    private XYSeries incomingIPv4Packets;
+    private XYSeries incomingIPv4GOS1Packets;
+    private XYSeries incomingIPv4GOS2Packets;
+    private XYSeries incomingIPv4GOS3Packets;
+    private XYSeries incomingMPLSPackets;
+    private XYSeries incomingMPLSGOS1Packets;
+    private XYSeries incomingMPLSGOS2Packets;
+    private XYSeries incomingMPLSGOS3Packets;
+    private XYSeries incomingTLDPPackets;
+    private XYSeries incomingGPSRPPackets;
+    private XYSeries outgoingIPv4Packets;
+    private XYSeries outgoingIPv4GOS1Packets;
+    private XYSeries outgoingIPv4GOS2Packets;
+    private XYSeries outgoingIPv4GOS3Packets;
+    private XYSeries outgoingMPLSPackets;
+    private XYSeries outgoingMPLSGOS1Packets;
+    private XYSeries outgoingMPLSGOS2Packets;
+    private XYSeries outgoingMPLSGOS3Packets;
+    private XYSeries outgoingTLDPPackets;
+    private XYSeries ourgoingGPSRPPackets;
+    private XYSeries discardedIPv4Packets;
+    private XYSeries discardedIPv4GOS1Packets;
+    private XYSeries discardedIPv4GOS2Packets;
+    private XYSeries discardedIPv4GOS3Packets;
+    private XYSeries discardedMPLSPackets;
+    private XYSeries discardedMPLSGOS1Packets;
+    private XYSeries discardedMPLSGOS2Packets;
+    private XYSeries discardedMPLSGOS3Packets;
+    private XYSeries discardedTLDPPackets;
+    private XYSeries discardedGPSRPPackets;
+    private DefaultCategoryDataset retransmissionsManaged;
+    private int retransmissionRequestsReceived;
+    private int retransmissionsRealized;
+    private int retransmisionsUnrealized;
+    private DefaultCategoryDataset localRecoveriesManaged;
+    private int GOSPacketsLost;
+    private int retransmissionRequestsSent;
+    private int GOSPacketsRecovered;
+    private int GOSPacketsUnrecovered;
 }
