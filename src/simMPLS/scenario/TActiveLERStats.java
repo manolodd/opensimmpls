@@ -51,7 +51,7 @@ public class TActiveLERStats extends TStats {
         this.outgoingMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
         this.outgoingMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
         this.outgoingTLDPPackets = new XYSeries(TStats.TLDP);
-        this.ourgoingGPSRPPackets = new XYSeries(TStats.GPSRP);
+        this.outgoingGPSRPPackets = new XYSeries(TStats.GPSRP);
         this.incomingIPv4Packets = new XYSeries(TStats.IPV4);
         this.incomingIPv4GOS1Packets = new XYSeries(TStats.IPV4_GOS1);
         this.incomingIPv4GOS2Packets = new XYSeries(TStats.IPV4_GOS2);
@@ -405,7 +405,7 @@ public class TActiveLERStats extends TStats {
         this.outgoingMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
         this.outgoingMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
         this.outgoingTLDPPackets = new XYSeries(TStats.TLDP);
-        this.ourgoingGPSRPPackets = new XYSeries(TStats.GPSRP);
+        this.outgoingGPSRPPackets = new XYSeries(TStats.GPSRP);
         this.incomingIPv4Packets = new XYSeries(TStats.IPV4);
         this.incomingIPv4GOS1Packets = new XYSeries(TStats.IPV4_GOS1);
         this.incomingIPv4GOS2Packets = new XYSeries(TStats.IPV4_GOS2);
@@ -486,392 +486,392 @@ public class TActiveLERStats extends TStats {
     public void consolidateData(long timeInstant) {
         if (this.statsEnabled) {
             // FIX: do not use harcoded values. Use class constants instead.
-            if (incomingIPv4PacketsOfThisTimeInstant > 0) {
+            if (this.incomingIPv4PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (incomingIPv4Packets.getItemCount() == 0) {
+                if (this.incomingIPv4Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.incomingIPv4Packets.add(timeInstant - 1, 0);
-                    this.incomingIPv4Packets.add(timeInstant, incomingIPv4PacketsOfThisTimeInstant);
-                    this.incomingPackets.addSeries(incomingIPv4Packets);
+                    this.incomingIPv4Packets.add(timeInstant, this.incomingIPv4PacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(this.incomingIPv4Packets);
                 } else {
-                    this.incomingIPv4Packets.add(timeInstant, incomingIPv4PacketsOfThisTimeInstant);
+                    this.incomingIPv4Packets.add(timeInstant, this.incomingIPv4PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (incomingIPv4GOS1PacketsOfThisTimeInstant > 0) {
+            if (this.incomingIPv4GOS1PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (incomingIPv4GOS1Packets.getItemCount() == 0) {
+                if (this.incomingIPv4GOS1Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.incomingIPv4GOS1Packets.add(timeInstant - 1, 0);
-                    this.incomingIPv4GOS1Packets.add(timeInstant, incomingIPv4GOS1PacketsOfThisTimeInstant);
-                    this.incomingPackets.addSeries(incomingIPv4GOS1Packets);
+                    this.incomingIPv4GOS1Packets.add(timeInstant, this.incomingIPv4GOS1PacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(this.incomingIPv4GOS1Packets);
                 } else {
-                    this.incomingIPv4GOS1Packets.add(timeInstant, incomingIPv4GOS1PacketsOfThisTimeInstant);
+                    this.incomingIPv4GOS1Packets.add(timeInstant, this.incomingIPv4GOS1PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (incomingIPv4GOS2PacketsOfThisTimeInstant > 0) {
+            if (this.incomingIPv4GOS2PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (incomingIPv4GOS2Packets.getItemCount() == 0) {
+                if (this.incomingIPv4GOS2Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.incomingIPv4GOS2Packets.add(timeInstant - 1, 0);
-                    this.incomingIPv4GOS2Packets.add(timeInstant, incomingIPv4GOS2PacketsOfThisTimeInstant);
-                    this.incomingPackets.addSeries(incomingIPv4GOS2Packets);
+                    this.incomingIPv4GOS2Packets.add(timeInstant, this.incomingIPv4GOS2PacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(this.incomingIPv4GOS2Packets);
                 } else {
-                    this.incomingIPv4GOS2Packets.add(timeInstant, incomingIPv4GOS2PacketsOfThisTimeInstant);
+                    this.incomingIPv4GOS2Packets.add(timeInstant, this.incomingIPv4GOS2PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (incomingIPv4GOS3PacketsOfThisTimeInstant > 0) {
+            if (this.incomingIPv4GOS3PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (incomingIPv4GOS3Packets.getItemCount() == 0) {
+                if (this.incomingIPv4GOS3Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.incomingIPv4GOS3Packets.add(timeInstant - 1, 0);
-                    this.incomingIPv4GOS3Packets.add(timeInstant, incomingIPv4GOS3PacketsOfThisTimeInstant);
-                    this.incomingPackets.addSeries(incomingIPv4GOS3Packets);
+                    this.incomingIPv4GOS3Packets.add(timeInstant, this.incomingIPv4GOS3PacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(this.incomingIPv4GOS3Packets);
                 } else {
-                    this.incomingIPv4GOS3Packets.add(timeInstant, incomingIPv4GOS3PacketsOfThisTimeInstant);
+                    this.incomingIPv4GOS3Packets.add(timeInstant, this.incomingIPv4GOS3PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (incomingMPLSPacketsOfThisTimeInstant > 0) {
+            if (this.incomingMPLSPacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (incomingMPLSPackets.getItemCount() == 0) {
+                if (this.incomingMPLSPackets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.incomingMPLSPackets.add(timeInstant - 1, 0);
-                    this.incomingMPLSPackets.add(timeInstant, incomingMPLSPacketsOfThisTimeInstant);
-                    this.incomingPackets.addSeries(incomingMPLSPackets);
+                    this.incomingMPLSPackets.add(timeInstant, this.incomingMPLSPacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(this.incomingMPLSPackets);
                 } else {
-                    this.incomingMPLSPackets.add(timeInstant, incomingMPLSPacketsOfThisTimeInstant);
+                    this.incomingMPLSPackets.add(timeInstant, this.incomingMPLSPacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (incomingMPLSGOS1PacketsOfThisTimeInstant > 0) {
+            if (this.incomingMPLSGOS1PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (incomingMPLSGOS1Packets.getItemCount() == 0) {
+                if (this.incomingMPLSGOS1Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.incomingMPLSGOS1Packets.add(timeInstant - 1, 0);
-                    this.incomingMPLSGOS1Packets.add(timeInstant, incomingMPLSGOS1PacketsOfThisTimeInstant);
-                    this.incomingPackets.addSeries(incomingMPLSGOS1Packets);
+                    this.incomingMPLSGOS1Packets.add(timeInstant, this.incomingMPLSGOS1PacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(this.incomingMPLSGOS1Packets);
                 } else {
-                    this.incomingMPLSGOS1Packets.add(timeInstant, incomingMPLSGOS1PacketsOfThisTimeInstant);
+                    this.incomingMPLSGOS1Packets.add(timeInstant, this.incomingMPLSGOS1PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (incomingMPLSGOS2PacketsOfThisTimeInstant > 0) {
+            if (this.incomingMPLSGOS2PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (incomingMPLSGOS2Packets.getItemCount() == 0) {
+                if (this.incomingMPLSGOS2Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.incomingMPLSGOS2Packets.add(timeInstant - 1, 0);
-                    this.incomingMPLSGOS2Packets.add(timeInstant, incomingMPLSGOS2PacketsOfThisTimeInstant);
-                    this.incomingPackets.addSeries(incomingMPLSGOS2Packets);
+                    this.incomingMPLSGOS2Packets.add(timeInstant, this.incomingMPLSGOS2PacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(this.incomingMPLSGOS2Packets);
                 } else {
-                    this.incomingMPLSGOS2Packets.add(timeInstant, incomingMPLSGOS2PacketsOfThisTimeInstant);
+                    this.incomingMPLSGOS2Packets.add(timeInstant, this.incomingMPLSGOS2PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (incomingMPLSGOS3PacketsOfThisTimeInstant > 0) {
+            if (this.incomingMPLSGOS3PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (incomingMPLSGOS3Packets.getItemCount() == 0) {
+                if (this.incomingMPLSGOS3Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.incomingMPLSGOS3Packets.add(timeInstant - 1, 0);
-                    this.incomingMPLSGOS3Packets.add(timeInstant, incomingMPLSGOS3PacketsOfThisTimeInstant);
-                    this.incomingPackets.addSeries(incomingMPLSGOS3Packets);
+                    this.incomingMPLSGOS3Packets.add(timeInstant, this.incomingMPLSGOS3PacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(this.incomingMPLSGOS3Packets);
                 } else {
-                    this.incomingMPLSGOS3Packets.add(timeInstant, incomingMPLSGOS3PacketsOfThisTimeInstant);
+                    this.incomingMPLSGOS3Packets.add(timeInstant, this.incomingMPLSGOS3PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (incomingTLDPPacketsOfThisTimeInstant > 0) {
+            if (this.incomingTLDPPacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (incomingTLDPPackets.getItemCount() == 0) {
+                if (this.incomingTLDPPackets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.incomingTLDPPackets.add(timeInstant - 1, 0);
-                    this.incomingTLDPPackets.add(timeInstant, incomingTLDPPacketsOfThisTimeInstant);
-                    this.incomingPackets.addSeries(incomingTLDPPackets);
+                    this.incomingTLDPPackets.add(timeInstant, this.incomingTLDPPacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(this.incomingTLDPPackets);
                 } else {
-                    this.incomingTLDPPackets.add(timeInstant, incomingTLDPPacketsOfThisTimeInstant);
+                    this.incomingTLDPPackets.add(timeInstant, this.incomingTLDPPacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (incomingGPSRPPacketsOfThisTimeInstant > 0) {
+            if (this.incomingGPSRPPacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (incomingGPSRPPackets.getItemCount() == 0) {
+                if (this.incomingGPSRPPackets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.incomingGPSRPPackets.add(timeInstant - 1, 0);
-                    this.incomingGPSRPPackets.add(timeInstant, incomingGPSRPPacketsOfThisTimeInstant);
-                    this.incomingPackets.addSeries(incomingGPSRPPackets);
+                    this.incomingGPSRPPackets.add(timeInstant, this.incomingGPSRPPacketsOfThisTimeInstant);
+                    this.incomingPackets.addSeries(this.incomingGPSRPPackets);
                 } else {
-                    this.incomingGPSRPPackets.add(timeInstant, incomingGPSRPPacketsOfThisTimeInstant);
+                    this.incomingGPSRPPackets.add(timeInstant, this.incomingGPSRPPacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (outgoingIPv4PacketsOfThisTimeInstant > 0) {
+            if (this.outgoingIPv4PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (outgoingIPv4Packets.getItemCount() == 0) {
+                if (this.outgoingIPv4Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.outgoingIPv4Packets.add(timeInstant - 1, 0);
-                    this.outgoingIPv4Packets.add(timeInstant, outgoingIPv4PacketsOfThisTimeInstant);
-                    this.outgoingPackets.addSeries(outgoingIPv4Packets);
+                    this.outgoingIPv4Packets.add(timeInstant, this.outgoingIPv4PacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(this.outgoingIPv4Packets);
                 } else {
-                    this.outgoingIPv4Packets.add(timeInstant, outgoingIPv4PacketsOfThisTimeInstant);
+                    this.outgoingIPv4Packets.add(timeInstant, this.outgoingIPv4PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (outgoingIPv4GOS1PacketsOfThisTimeInstant > 0) {
+            if (this.outgoingIPv4GOS1PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (outgoingIPv4GOS1Packets.getItemCount() == 0) {
+                if (this.outgoingIPv4GOS1Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.outgoingIPv4GOS1Packets.add(timeInstant - 1, 0);
-                    this.outgoingIPv4GOS1Packets.add(timeInstant, outgoingIPv4GOS1PacketsOfThisTimeInstant);
-                    this.outgoingPackets.addSeries(outgoingIPv4GOS1Packets);
+                    this.outgoingIPv4GOS1Packets.add(timeInstant, this.outgoingIPv4GOS1PacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(this.outgoingIPv4GOS1Packets);
                 } else {
-                    this.outgoingIPv4GOS1Packets.add(timeInstant, outgoingIPv4GOS1PacketsOfThisTimeInstant);
+                    this.outgoingIPv4GOS1Packets.add(timeInstant, this.outgoingIPv4GOS1PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (outgoingIPv4GOS2PacketsOfThisTimeInstant > 0) {
+            if (this.outgoingIPv4GOS2PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (outgoingIPv4GOS2Packets.getItemCount() == 0) {
+                if (this.outgoingIPv4GOS2Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.outgoingIPv4GOS2Packets.add(timeInstant - 1, 0);
-                    this.outgoingIPv4GOS2Packets.add(timeInstant, outgoingIPv4GOS2PacketsOfThisTimeInstant);
-                    this.outgoingPackets.addSeries(outgoingIPv4GOS2Packets);
+                    this.outgoingIPv4GOS2Packets.add(timeInstant, this.outgoingIPv4GOS2PacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(this.outgoingIPv4GOS2Packets);
                 } else {
-                    this.outgoingIPv4GOS2Packets.add(timeInstant, outgoingIPv4GOS2PacketsOfThisTimeInstant);
+                    this.outgoingIPv4GOS2Packets.add(timeInstant, this.outgoingIPv4GOS2PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (outgoingIPv4GOS3PacketsOfThisTimeInstant > 0) {
+            if (this.outgoingIPv4GOS3PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (outgoingIPv4GOS3Packets.getItemCount() == 0) {
+                if (this.outgoingIPv4GOS3Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.outgoingIPv4GOS3Packets.add(timeInstant - 1, 0);
-                    this.outgoingIPv4GOS3Packets.add(timeInstant, outgoingIPv4GOS3PacketsOfThisTimeInstant);
-                    this.outgoingPackets.addSeries(outgoingIPv4GOS3Packets);
+                    this.outgoingIPv4GOS3Packets.add(timeInstant, this.outgoingIPv4GOS3PacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(this.outgoingIPv4GOS3Packets);
                 } else {
-                    this.outgoingIPv4GOS3Packets.add(timeInstant, outgoingIPv4GOS3PacketsOfThisTimeInstant);
+                    this.outgoingIPv4GOS3Packets.add(timeInstant, this.outgoingIPv4GOS3PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (outgoingMPLSPacketsOfThisTimeInstant > 0) {
+            if (this.outgoingMPLSPacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (outgoingMPLSPackets.getItemCount() == 0) {
+                if (this.outgoingMPLSPackets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.outgoingMPLSPackets.add(timeInstant - 1, 0);
-                    this.outgoingMPLSPackets.add(timeInstant, outgoingMPLSPacketsOfThisTimeInstant);
-                    this.outgoingPackets.addSeries(outgoingMPLSPackets);
+                    this.outgoingMPLSPackets.add(timeInstant, this.outgoingMPLSPacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(this.outgoingMPLSPackets);
                 } else {
-                    this.outgoingMPLSPackets.add(timeInstant, outgoingMPLSPacketsOfThisTimeInstant);
+                    this.outgoingMPLSPackets.add(timeInstant, this.outgoingMPLSPacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (outgoingMPLSGOS1PacketsOfThisTimeInstant > 0) {
+            if (this.outgoingMPLSGOS1PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (outgoingMPLSGOS1Packets.getItemCount() == 0) {
+                if (this.outgoingMPLSGOS1Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.outgoingMPLSGOS1Packets.add(timeInstant - 1, 0);
-                    this.outgoingMPLSGOS1Packets.add(timeInstant, outgoingMPLSGOS1PacketsOfThisTimeInstant);
-                    this.outgoingPackets.addSeries(outgoingMPLSGOS1Packets);
+                    this.outgoingMPLSGOS1Packets.add(timeInstant, this.outgoingMPLSGOS1PacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(this.outgoingMPLSGOS1Packets);
                 } else {
-                    this.outgoingMPLSGOS1Packets.add(timeInstant, outgoingMPLSGOS1PacketsOfThisTimeInstant);
+                    this.outgoingMPLSGOS1Packets.add(timeInstant, this.outgoingMPLSGOS1PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (outgoingMPLSGOS2PacketsOfThisTimeInstant > 0) {
+            if (this.outgoingMPLSGOS2PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (outgoingMPLSGOS2Packets.getItemCount() == 0) {
+                if (this.outgoingMPLSGOS2Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.outgoingMPLSGOS2Packets.add(timeInstant - 1, 0);
-                    this.outgoingMPLSGOS2Packets.add(timeInstant, outgoingMPLSGOS2PacketsOfThisTimeInstant);
-                    this.outgoingPackets.addSeries(outgoingMPLSGOS2Packets);
+                    this.outgoingMPLSGOS2Packets.add(timeInstant, this.outgoingMPLSGOS2PacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(this.outgoingMPLSGOS2Packets);
                 } else {
-                    this.outgoingMPLSGOS2Packets.add(timeInstant, outgoingMPLSGOS2PacketsOfThisTimeInstant);
+                    this.outgoingMPLSGOS2Packets.add(timeInstant, this.outgoingMPLSGOS2PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (outgoingMPLSGOS3PacketsOfThisTimeInstant > 0) {
+            if (this.outgoingMPLSGOS3PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (outgoingMPLSGOS3Packets.getItemCount() == 0) {
+                if (this.outgoingMPLSGOS3Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.outgoingMPLSGOS3Packets.add(timeInstant - 1, 0);
-                    this.outgoingMPLSGOS3Packets.add(timeInstant, outgoingMPLSGOS3PacketsOfThisTimeInstant);
-                    this.outgoingPackets.addSeries(outgoingMPLSGOS3Packets);
+                    this.outgoingMPLSGOS3Packets.add(timeInstant, this.outgoingMPLSGOS3PacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(this.outgoingMPLSGOS3Packets);
                 } else {
-                    this.outgoingMPLSGOS3Packets.add(timeInstant, outgoingMPLSGOS3PacketsOfThisTimeInstant);
+                    this.outgoingMPLSGOS3Packets.add(timeInstant, this.outgoingMPLSGOS3PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (outgoingTLDPPacketsOfThisTimeInstant > 0) {
+            if (this.outgoingTLDPPacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (outgoingTLDPPackets.getItemCount() == 0) {
+                if (this.outgoingTLDPPackets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.outgoingTLDPPackets.add(timeInstant - 1, 0);
-                    this.outgoingTLDPPackets.add(timeInstant, outgoingTLDPPacketsOfThisTimeInstant);
-                    this.outgoingPackets.addSeries(outgoingTLDPPackets);
+                    this.outgoingTLDPPackets.add(timeInstant, this.outgoingTLDPPacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(this.outgoingTLDPPackets);
                 } else {
-                    this.outgoingTLDPPackets.add(timeInstant, outgoingTLDPPacketsOfThisTimeInstant);
+                    this.outgoingTLDPPackets.add(timeInstant, this.outgoingTLDPPacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (outgoingGPSRPPacketsOfThisTimeInstant > 0) {
+            if (this.outgoingGPSRPPacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (ourgoingGPSRPPackets.getItemCount() == 0) {
+                if (this.outgoingGPSRPPackets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
-                    this.ourgoingGPSRPPackets.add(timeInstant - 1, 0);
-                    this.ourgoingGPSRPPackets.add(timeInstant, outgoingGPSRPPacketsOfThisTimeInstant);
-                    this.outgoingPackets.addSeries(ourgoingGPSRPPackets);
+                    this.outgoingGPSRPPackets.add(timeInstant - 1, 0);
+                    this.outgoingGPSRPPackets.add(timeInstant, this.outgoingGPSRPPacketsOfThisTimeInstant);
+                    this.outgoingPackets.addSeries(this.outgoingGPSRPPackets);
                 } else {
-                    this.ourgoingGPSRPPackets.add(timeInstant, outgoingGPSRPPacketsOfThisTimeInstant);
+                    this.outgoingGPSRPPackets.add(timeInstant, this.outgoingGPSRPPacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (discardedIPv4PacketsOfThisTimeInstant > 0) {
+            if (this.discardedIPv4PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (discardedIPv4Packets.getItemCount() == 0) {
+                if (this.discardedIPv4Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.discardedIPv4Packets.add(timeInstant - 1, 0);
-                    this.discardedIPv4Packets.add(timeInstant, discardedIPv4PacketsOfThisTimeInstant);
-                    this.discardedPackets.addSeries(discardedIPv4Packets);
+                    this.discardedIPv4Packets.add(timeInstant, this.discardedIPv4PacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(this.discardedIPv4Packets);
                 } else {
-                    this.discardedIPv4Packets.add(timeInstant, discardedIPv4PacketsOfThisTimeInstant);
+                    this.discardedIPv4Packets.add(timeInstant, this.discardedIPv4PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (discardedIPv4GOS1PacketsOfThisTimeInstant > 0) {
+            if (this.discardedIPv4GOS1PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (discardedIPv4GOS1Packets.getItemCount() == 0) {
+                if (this.discardedIPv4GOS1Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.discardedIPv4GOS1Packets.add(timeInstant - 1, 0);
-                    this.discardedIPv4GOS1Packets.add(timeInstant, discardedIPv4GOS1PacketsOfThisTimeInstant);
-                    this.discardedPackets.addSeries(discardedIPv4GOS1Packets);
+                    this.discardedIPv4GOS1Packets.add(timeInstant, this.discardedIPv4GOS1PacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(this.discardedIPv4GOS1Packets);
                 } else {
-                    this.discardedIPv4GOS1Packets.add(timeInstant, discardedIPv4GOS1PacketsOfThisTimeInstant);
+                    this.discardedIPv4GOS1Packets.add(timeInstant, this.discardedIPv4GOS1PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (discardedIPv4GOS2PacketsOfThisTimeInstant > 0) {
+            if (this.discardedIPv4GOS2PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (discardedIPv4GOS2Packets.getItemCount() == 0) {
+                if (this.discardedIPv4GOS2Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.discardedIPv4GOS2Packets.add(timeInstant - 1, 0);
-                    this.discardedIPv4GOS2Packets.add(timeInstant, discardedIPv4GOS2PacketsOfThisTimeInstant);
-                    this.discardedPackets.addSeries(discardedIPv4GOS2Packets);
+                    this.discardedIPv4GOS2Packets.add(timeInstant, this.discardedIPv4GOS2PacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(this.discardedIPv4GOS2Packets);
                 } else {
-                    this.discardedIPv4GOS2Packets.add(timeInstant, discardedIPv4GOS2PacketsOfThisTimeInstant);
+                    this.discardedIPv4GOS2Packets.add(timeInstant, this.discardedIPv4GOS2PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (discardedIPv4GOS3PacketsOfThisTimeInstant > 0) {
+            if (this.discardedIPv4GOS3PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (discardedIPv4GOS3Packets.getItemCount() == 0) {
+                if (this.discardedIPv4GOS3Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.discardedIPv4GOS3Packets.add(timeInstant - 1, 0);
-                    this.discardedIPv4GOS3Packets.add(timeInstant, discardedIPv4GOS3PacketsOfThisTimeInstant);
-                    this.discardedPackets.addSeries(discardedIPv4GOS3Packets);
+                    this.discardedIPv4GOS3Packets.add(timeInstant, this.discardedIPv4GOS3PacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(this.discardedIPv4GOS3Packets);
                 } else {
-                    this.discardedIPv4GOS3Packets.add(timeInstant, discardedIPv4GOS3PacketsOfThisTimeInstant);
+                    this.discardedIPv4GOS3Packets.add(timeInstant, this.discardedIPv4GOS3PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (discardedMPLSPacketsOfThisTimeInstant > 0) {
+            if (this.discardedMPLSPacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (discardedMPLSPackets.getItemCount() == 0) {
+                if (this.discardedMPLSPackets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.discardedMPLSPackets.add(timeInstant - 1, 0);
-                    this.discardedMPLSPackets.add(timeInstant, discardedMPLSPacketsOfThisTimeInstant);
-                    this.discardedPackets.addSeries(discardedMPLSPackets);
+                    this.discardedMPLSPackets.add(timeInstant, this.discardedMPLSPacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(this.discardedMPLSPackets);
                 } else {
-                    this.discardedMPLSPackets.add(timeInstant, discardedMPLSPacketsOfThisTimeInstant);
+                    this.discardedMPLSPackets.add(timeInstant, this.discardedMPLSPacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (discardedMPLSGOS1PacketsOfThisTimeInstant > 0) {
+            if (this.discardedMPLSGOS1PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (discardedMPLSGOS1Packets.getItemCount() == 0) {
+                if (this.discardedMPLSGOS1Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.discardedMPLSGOS1Packets.add(timeInstant - 1, 0);
-                    this.discardedMPLSGOS1Packets.add(timeInstant, discardedMPLSGOS1PacketsOfThisTimeInstant);
-                    this.discardedPackets.addSeries(discardedMPLSGOS1Packets);
+                    this.discardedMPLSGOS1Packets.add(timeInstant, this.discardedMPLSGOS1PacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(this.discardedMPLSGOS1Packets);
                 } else {
-                    this.discardedMPLSGOS1Packets.add(timeInstant, discardedMPLSGOS1PacketsOfThisTimeInstant);
+                    this.discardedMPLSGOS1Packets.add(timeInstant, this.discardedMPLSGOS1PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (discardedMPLSGOS2PacketsOfThisTimeInstant > 0) {
+            if (this.discardedMPLSGOS2PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (discardedMPLSGOS2Packets.getItemCount() == 0) {
+                if (this.discardedMPLSGOS2Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.discardedMPLSGOS2Packets.add(timeInstant - 1, 0);
-                    this.discardedMPLSGOS2Packets.add(timeInstant, discardedMPLSGOS2PacketsOfThisTimeInstant);
-                    this.discardedPackets.addSeries(discardedMPLSGOS2Packets);
+                    this.discardedMPLSGOS2Packets.add(timeInstant, this.discardedMPLSGOS2PacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(this.discardedMPLSGOS2Packets);
                 } else {
-                    this.discardedMPLSGOS2Packets.add(timeInstant, discardedMPLSGOS2PacketsOfThisTimeInstant);
+                    this.discardedMPLSGOS2Packets.add(timeInstant, this.discardedMPLSGOS2PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (discardedMPLSGOS3PacketsOfThisTimeInstant > 0) {
+            if (this.discardedMPLSGOS3PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (discardedMPLSGOS3Packets.getItemCount() == 0) {
+                if (this.discardedMPLSGOS3Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.discardedMPLSGOS3Packets.add(timeInstant - 1, 0);
-                    this.discardedMPLSGOS3Packets.add(timeInstant, discardedMPLSGOS3PacketsOfThisTimeInstant);
-                    this.discardedPackets.addSeries(discardedMPLSGOS3Packets);
+                    this.discardedMPLSGOS3Packets.add(timeInstant, this.discardedMPLSGOS3PacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(this.discardedMPLSGOS3Packets);
                 } else {
-                    this.discardedMPLSGOS3Packets.add(timeInstant, discardedMPLSGOS3PacketsOfThisTimeInstant);
+                    this.discardedMPLSGOS3Packets.add(timeInstant, this.discardedMPLSGOS3PacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (discardedTLDPPacketsOfThisTimeInstant > 0) {
+            if (this.discardedTLDPPacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (discardedTLDPPackets.getItemCount() == 0) {
+                if (this.discardedTLDPPackets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.discardedTLDPPackets.add(timeInstant - 1, 0);
-                    this.discardedTLDPPackets.add(timeInstant, discardedTLDPPacketsOfThisTimeInstant);
-                    this.discardedPackets.addSeries(discardedTLDPPackets);
+                    this.discardedTLDPPackets.add(timeInstant, this.discardedTLDPPacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(this.discardedTLDPPackets);
                 } else {
-                    this.discardedTLDPPackets.add(timeInstant, discardedTLDPPacketsOfThisTimeInstant);
+                    this.discardedTLDPPackets.add(timeInstant, this.discardedTLDPPacketsOfThisTimeInstant);
                 }
             }
 
             // FIX: do not use harcoded values. Use class constants instead.
-            if (discardedGPSRPPacketsOfThisTimeInstant > 0) {
+            if (this.discardedGPSRPPacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
-                if (discardedGPSRPPackets.getItemCount() == 0) {
+                if (this.discardedGPSRPPackets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
                     this.discardedGPSRPPackets.add(timeInstant - 1, 0);
-                    this.discardedGPSRPPackets.add(timeInstant, discardedGPSRPPacketsOfThisTimeInstant);
-                    this.discardedPackets.addSeries(discardedGPSRPPackets);
+                    this.discardedGPSRPPackets.add(timeInstant, this.discardedGPSRPPacketsOfThisTimeInstant);
+                    this.discardedPackets.addSeries(this.discardedGPSRPPackets);
                 } else {
-                    this.discardedGPSRPPackets.add(timeInstant, discardedGPSRPPacketsOfThisTimeInstant);
+                    this.discardedGPSRPPackets.add(timeInstant, this.discardedGPSRPPacketsOfThisTimeInstant);
                 }
             }
 
@@ -882,7 +882,7 @@ public class TActiveLERStats extends TStats {
             this.localRecoveriesManaged.addValue(this.retransmissionRequestsSent, TStats.RETRANSMISSION_REQUESTS_SENT, "");
             this.localRecoveriesManaged.addValue(this.GOSPacketsRecovered, TStats.GOS_PACKETS_RECOVERED, "");
             this.localRecoveriesManaged.addValue(this.GOSPacketsUnrecovered, TStats.GOS_PACKETS_UNRECOVERED, "");
-            int retransmissionRequestsStillUnanswered = (retransmissionRequestsSent - GOSPacketsRecovered - GOSPacketsUnrecovered);
+            int retransmissionRequestsStillUnanswered = (this.retransmissionRequestsSent - this.GOSPacketsRecovered - this.GOSPacketsUnrecovered);
             // FIX: do not use harcoded values. Use class constants instead.
             if (retransmissionRequestsStillUnanswered < 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
@@ -1024,7 +1024,7 @@ public class TActiveLERStats extends TStats {
     private XYSeries outgoingMPLSGOS2Packets;
     private XYSeries outgoingMPLSGOS3Packets;
     private XYSeries outgoingTLDPPackets;
-    private XYSeries ourgoingGPSRPPackets;
+    private XYSeries outgoingGPSRPPackets;
     private XYSeries discardedIPv4Packets;
     private XYSeries discardedIPv4GOS1Packets;
     private XYSeries discardedIPv4GOS2Packets;
