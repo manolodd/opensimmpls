@@ -1,6 +1,8 @@
 # Project status (Master, JDK1.8)
 
-[![Build Status](https://travis-ci.org/manolodd/opensimmpls.svg?branch=master)](https://travis-ci.org/manolodd/opensimmpls)
+- Master [![Build Status](https://travis-ci.org/manolodd/opensimmpls.svg?branch=master)](https://travis-ci.org/manolodd/opensimmpls)
+
+- Development (v2.0) [![Build Status](https://travis-ci.org/manolodd/opensimmpls.svg?branch=development_v2.0)](https://travis-ci.org/manolodd/opensimmpls)
 
 # THE PROJECT
 
