@@ -2,7 +2,7 @@
 
 - Master branch [![Build Status](https://travis-ci.org/manolodd/opensimmpls.svg?branch=master)](https://travis-ci.org/manolodd/opensimmpls)
 
-- Development (v2.0) branch [![Build Status](https://travis-ci.org/manolodd/opensimmpls.svg?branch=development_v2.0)](https://travis-ci.org/manolodd/opensimmpls)
+- Development_v2.0 branch [![Build Status](https://travis-ci.org/manolodd/opensimmpls.svg?branch=development_v2.0)](https://travis-ci.org/manolodd/opensimmpls)
 
 # THE PROJECT
 
