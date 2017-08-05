@@ -87,7 +87,7 @@ limitations under the License.
              minus the .jar extension. It should not have spaces.
              <property name="store.jar.name" value="MyJarName"/>
         -->
-        <property name="store.bin.jar.name" value="openSimMPLS-bin-v1.2"/>
+        <property name="store.bin.jar.name" value="openSimMPLS-bin-v2.0"/>
 
 
         <!-- don't edit below this line -->
@@ -124,7 +124,7 @@ limitations under the License.
              minus the .jar extension. It should not have spaces.
              <property name="store.jar.name" value="MyJarName"/>
         -->
-        <property name="store.example.zip.name" value="openSimMPLS-examples-v1.2"/>
+        <property name="store.example.zip.name" value="openSimMPLS-examples-v2.0"/>
 
         <!-- don't edit below this line -->
 
