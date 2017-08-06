@@ -1,4 +1,4 @@
-# Project status (compiled using Java 1.8)
+# PROJECT STATUS (Compiled using Java 1.8)
 
 - Master branch [![Build Status](https://travis-ci.org/manolodd/opensimmpls.svg?branch=master)](https://travis-ci.org/manolodd/opensimmpls)
 
@@ -76,7 +76,7 @@ be released under its current OSS licence. They are:
 Thanks folks!
 
 
-#HOW TO CONTRIBUTE
+# HOW TO CONTRIBUTE
 
 OpenSimMPLS is opensource software. We encourage you to modify it as much as 
 possible; but We would like you to send this modifications back and, hence, 
