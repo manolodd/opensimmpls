@@ -86,7 +86,7 @@ If you want to contribute to OpenSimMPLS project, follow these instructions:
  - Create a branch in your local cloned GIT repository. I recommend to name this branch as "opensimmpls-festureyouaredeveloping" or something similar.
  - Do all modifications on this branch, file additions or deletions, modifications, commits...
  - Push your modifications to your remote github OpenSimMPLS repository.
- - Go again to yout GitHub account, choose your OpenSimMPLS repository and then your "opensimmpls-festureyouaredeveloping" branch (since the previous step, this branch should be there) and click on the green button at the left. This will guide you to make a pull request (send your modifications on your own OpenSimMPLS repository to OpenSimMPLS main repository from where you did your fork at the beginning).
+ - Go again to yout GitHub account, choose your OpenSimMPLS repository and then your "opensimmpls-festureyouaredeveloping" branch (since the previous step, this branch should be there) and click on the green button at the left. This will guide you to make a pull request (send your modifications on your own OpenSimMPLS repository to OpenSimMPLS main repository from where you did your fork at the beginning). Choose the development branch of OpenSimMPLS as base branch to merge.
  - That's all; I will have your contribution and I will try to merge it into the development branch of OpenSimMPLS. Please, comment your contribution as much as possible; I have to be able to understand your contribution.
 
 This is a very easy process. However, if it is very difficult to you, simply send me all your modifications (scenario, sources, documentation...) to:
