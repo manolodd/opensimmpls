@@ -35,7 +35,7 @@
     
 Please, refer always to the project home page at:
 
- - http://www.manolodominguez.com/projects/opensimmpls/
+ - http://opensimmpls.manolodominguez.com/
 
 # COMPILING FROM SOURCES
 
