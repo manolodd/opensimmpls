@@ -33,10 +33,9 @@ import com.manolodominguez.opensimmpls.hardware.ports.TPortSet;
 import com.manolodominguez.opensimmpls.utils.EIDGeneratorOverflow;
 import com.manolodominguez.opensimmpls.utils.TIDGenerator;
 import com.manolodominguez.opensimmpls.utils.TLongIDGenerator;
-import java.awt.*;
-import java.util.*;
-import org.jfree.chart.*;
-import org.jfree.data.*;
+import java.awt.Point;
+import java.util.Iterator;
+
 
 /**
  * Esta clase implementa un Label Edge Router (LER) de entrada/salida del dominio
@@ -61,7 +60,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      */
     public TLERNode(int identificador, String d, TLongIDGenerator il, TTopology t) {
         super(identificador, d, il, t);
-        this.setPorts(super.NUM_PUERTOS_LER);
+        this.setPorts(TNode.NUM_PUERTOS_LER);
         matrizConmutacion = new TSwitchingMatrix();
         gIdent = new TLongIDGenerator();
         gIdentLDP = new TIDGenerator();
@@ -160,6 +159,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * por el constructor.
      * @since 2.0
      */
+    @Override
     public void reset() {
         this.ports.reset();
         matrizConmutacion.reset();
@@ -175,8 +175,9 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @return LER. Indica que el nodo es de este tipo.
      * @since 2.0
      */
+    @Override
     public int getNodeType() {
-        return super.LER;
+        return TNode.LER;
     }
     
     /**
@@ -186,6 +187,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @param evt Evento de reloj que sincroniza la ejecuci�n de los elementos de la topology.
      * @since 2.0
      */
+    @Override
     public void receiveTimerEvent(TTimerEvent evt) {
         this.setStepDuration(evt.getStepDuration());
         this.setTimeInstant(evt.getUpperLimit());
@@ -203,6 +205,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * reloj que el LER estar� en funcionamiento.
      * @since 2.0
      */
+    @Override
     public void run() {
         // Acciones a llevar a cabo durante el tic.
         try {
