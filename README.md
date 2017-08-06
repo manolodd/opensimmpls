@@ -17,7 +17,7 @@
 - <b>OpenSimMPLS 2.0</b> (Still unreleased. Only source code available) will be released under the terms of Apache Software License 2.0.
 
 
-# People behind OpenSimMPLS
+# PEOPLE BEHIND OPENSIMMPLS
 
 ## Author:
     
@@ -33,7 +33,7 @@ Please, refer always to the project home page at:
 
  - http://www.manolodominguez.com/projects/opensimmpls/
 
-# Compiling from sources
+# COMPILING FROM SOURCES
 
 You can download latest compiled stable releases from the releases section of 
 this repository. However, if you want to test new features (please, do it and 
@@ -73,10 +73,10 @@ be released under its current OSS licence. They are:
 - slf4j-api - MIT - https://www.slf4j.org/
 - slf4j-simple - MIT - https://www.slf4j.org/
 
-Thanks folks!!
+Thanks folks!
+
 
 #HOW TO CONTRIBUTE
-
 
 OpenSimMPLS is opensource software. We encourage you to modify it as much as 
 possible; but We would like you to send this modifications back and, hence, 
