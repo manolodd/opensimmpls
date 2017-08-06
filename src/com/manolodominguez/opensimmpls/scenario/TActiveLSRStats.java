@@ -95,73 +95,113 @@ public class TActiveLSRStats extends TStats {
     }
     
     /**
-     * Este m�todo permite obtener los datos necesario para generar la gr�fica 1.
-     * @return Datos de la gr�fica 1.
+     * This method returns the dataset #1 of the Active LSR node associated to
+     * this TActiveLSRStats that can be represented in a GUI or used by any
+     * other statistics processor. Dataset #1 contains values related to
+     * incoming packets.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the dataset #1 of this TActiveLSRStatsthat contains values
+     * related to incoming packets.
      * @since 2.0
-     */    
+     */  
     @Override
     public AbstractDataset getDataset1() {
         return this.incomingPackets;
     }
     
     /**
-     * Este m�todo permite obtener los datos necesario para generar la gr�fica 2.
-     * @return Datos de la gr�fica 2.
+     * This method returns the dataset #2 of the Active LSR node associated to
+     * this TActiveLSRStats that can be represented in a GUI or used by any
+     * other statistics processor. Dataset #2 contains values related to
+     * outgoing packets.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the dataset #2 of this TActiveLSRStats that contains values
+     * related to outgoing packets.
      * @since 2.0
-     */    
+     */   
     @Override
     public AbstractDataset getDataset2() {
         return this.outgoingPackets;
     }
     
     /**
-     * Este m�todo permite obtener los datos necesario para generar la gr�fica 3.
-     * @return Datos de la gr�fica 3.
+     * This method returns the dataset #3 of the Active LSR node associated to
+     * this TActiveLSRStats that can be represented in a GUI or used by any
+     * other statistics processor. Dataset #3 contains values related to
+     * discarded packets.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the dataset #3 of this TActiveLSRStats that contains values
+     * related to discarded packets.
      * @since 2.0
-     */    
+     */ 
     @Override
     public AbstractDataset getDataset3() {
         return this.discardedPackets;
     }
     
     /**
-     * Este m�todo permite obtener los datos necesario para generar la gr�fica 4.
-     * @return Datos de la gr�fica 4.
+     * This method returns the dataset #4 of the Active LSR node associated to
+     * this TActiveLSRStats node that can be represented in a GUI or used by any
+     * other statistics processor. Dataset #4 contains values related to the
+     * number of retransmissions that have been managed.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the dataset #4 of this TActiveLSRStats that contains values
+     * related to the number of retransmissions that have been managed.
      * @since 2.0
-     */    
+     */  
     @Override
     public AbstractDataset getDataset4() {
         return this.retransmissionsManaged;
     }
     
     /**
-     * Este m�todo permite obtener los datos necesario para generar la gr�fica 5.
-     * @return Datos de la gr�fica 5.
+     * This method returns the dataset #5 of the Active LSR node associated to
+     * this TActiveLSRStats node that can be represented in a GUI or used by any
+     * other statistics processor. Dataset #5 contains values related to the
+     * number of local recoveries that have been managed.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the dataset #5 of this TActiveLSRStats that contains values
+     * related to the number of local recoveries that have been managed.
      * @since 2.0
-     */    
+     */ 
     @Override
     public AbstractDataset getDataset5() {
         return this.localRecoveriesManaged;
     }
     
     /**
-     * Este m�todo permite obtener los datos necesario para generar la gr�fica 6.
-     * @return Datos de la gr�fica 6.
+     * This method returns the dataset #6 of the Active LSR node associated to
+     * this TActiveLSRStats node that can be represented in a GUI or used by any
+     * other statistics processor. There are not Dataset #6 in a TActiveLSRStats
+     * so null is always returned.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return There are not Dataset #6 in a TActiveLSRStats so null is
+     * returned.
      * @since 2.0
-     */    
+     */
     @Override
     public AbstractDataset getDataset6() {
         return null;
     }
 
     /**
-     * Este m�todo amplia las estad�sticas a�adiendo las correspondientes al packet
- especificado.
-     * @param packet Paquete que se desea contabilizar.
-     * @param entryType INCOMING, OUTGOING o DISCARD, dependiendo de si el packet entra en el nodo, sale
- de �l o es descartado.
+     * This method takes into account the packet and type of entry passed as a
+     * parameter, updating the stats information to include this new
+     * information.
+     *
+     * @param packet new packet as a source of information to update stats of
+     * this TActiveLSRStats.
+     * @param entryType INCOMING, OUTGOING o DISCARD, dependiendo on whether the
+     * packet is incoming, outgoing or being discarded in the Active LSR
+     * associated to this TActiveLSRStats.
      * @since 2.0
-     */    
+     */ 
     @Override
     public void addStatEntry(TAbstractPDU packet, int entryType) {
         if (this.statsEnabled) {
@@ -265,10 +305,13 @@ public class TActiveLSRStats extends TStats {
     }
     
     /**
-     * Este m�todo permite obtener el n�mero de graficas del LSRA.
-     * @return El n�mero de gr�ficas del LSRA.
+     * This method returns the number of datasets that are available in this
+     * TActiveLSRStats.
+     *
+     * @return the number of available datasets in this TActiveLSRStats that are
+     * 5.
      * @since 2.0
-     */    
+     */  
     @Override
     public int numberOfAvailableDatasets() {
         // FIX: do not use harcoded values. Use class constants instead.
@@ -276,10 +319,12 @@ public class TActiveLSRStats extends TStats {
     }
     
     /**
-     * Este m�todo reinicia los atributos de la clase, dejando las instancia como si
-     * acabase de ser creada por el constructor.
+     * This method reset all the values and attribues of this TActiveLSRStats as
+     * in the moment of its instantiation.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
+     */  
     @Override
     public void reset() {
     	this.incomingPackets = new XYSeriesCollection();
@@ -336,11 +381,17 @@ public class TActiveLSRStats extends TStats {
     }
     
     /**
-     * Este m�todo actualiza las estad�sticas con los ultimos datos recogidos desde la
-     * �ltima llamada a este m�todo.
-     * @param timeInstant Instante de tiempo al que se atribuir�n los ultimso datos.
+     * This method groups the latests data added to this TActiveLSRStats by the
+     * time instant passed as an argument. In this way aggregated statistics are
+     * generated and the dataset contains only information that is relevant for
+     * the units used in OpenSimMPLS (the tick or time instant). This reduces
+     * the dataset size and the time of processing.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param timeInstant the time instant (in simulation terms) by wich the
+     * latest data contained in the datases will be grouped/aggregated.
      * @since 2.0
-     */    
+     */
     @Override
     public void consolidateData(long timeInstant) {
         if (this.statsEnabled) {
@@ -596,60 +647,80 @@ public class TActiveLSRStats extends TStats {
     }    
     
     /**
-     * Este m�todo permite obtener el t�tulo de la gr�fica 1.
-     * @return T�tulo de la gr�fica 1.
+     * This method returns the title of dataset #1 of this TActiveLSRStats node.
+     * In this case is a descriptive text about "incoming packets".
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a descriptive text about "incoming packets".
      * @since 2.0
-     */    
+     */  
     @Override
     public String getTitleOfDataset1() {
         return TStats.INCOMING_PACKETS;
     }
     
     /**
-     * Este m�todo permite obtener el t�tulo de la gr�fica 2.
-     * @return T�tulo de la gr�fica 2.
+     * This method returns the title of dataset #2 of this TActiveLSRStats node.
+     * In this case is a descriptive text about "outgoing packets".
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a descriptive text about "outgoing packets".
      * @since 2.0
-     */    
+     */  
     @Override
     public String getTitleOfDataset2() {
         return TStats.OUTGOING_PACKETS;
     }
     
     /**
-     * Este m�todo permite obtener el t�tulo de la gr�fica 3.
-     * @return T�tulo de la gr�fica 3.
+     * This method returns the title of dataset #3 of this TActiveLSRStats node.
+     * In this case is a descriptive text about "discarded packets".
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a descriptive text about "discarded packets".
      * @since 2.0
-     */    
+     */   
     @Override
     public String getTitleOfDataset3() {
         return TStats.DISCARDED_PACKETS;
     }
     
     /**
-     * Este m�todo permite obtener el t�tulo de la gr�fica 4.
-     * @return T�tulo de la gr�fica 4.
+     * This method returns the title of dataset #4 of this TActiveLSRStats node.
+     * In this case is a descriptive text about "retransmissions managed".
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a descriptive text about "retransmissions managed".
      * @since 2.0
-     */    
+     */  
     @Override
     public String getTitleOfDataset4() {
         return TStats.RETRANSMISSIONS_MANAGED;
     }
     
     /**
-     * Este m�todo permite obtener el t�tulo de la gr�fica 5.
-     * @return T�tulo de la gr�fica 5.
+     * This method returns the title of dataset #5 of this TActiveLSRStats node.
+     * In this case is a descriptive text about "local recoveries".
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a descriptive text about "local recoveries".
      * @since 2.0
-     */    
+     */
     @Override
     public String getTitleOfDataset5() {
         return TStats.LOCAL_RECOVERIES_MANAGED;
     }
     
     /**
-     * Este m�todo permite obtener el t�tulo de la gr�fica 6.
-     * @return T�tulo de la gr�fica 6.
+     * This method returns the title of dataset #6 of this TActiveLSRStats node.
+     * There is not a dataset #6 in a TActiveLSRStats so, null is always
+     * returned.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return There is not a dataset #6 in a TActiveLSRStats so, null is always
+     * returned.
      * @since 2.0
-     */    
+     */ 
     @Override
     public String getTitleOfDataset6() {
         return null;
