@@ -11,11 +11,15 @@
 ![OpenSimMPLS logo](https://github.com/manolodd/opensimmpls/blob/master/src/imagenes/splash.png?raw=true)
 
 # LICENSE
+
+## Current version:
  
-- <b>OpenSimMPLS 1.0</b> was released under the terms of GPLv2.0+.
-- <b>OpenSimMPLS 1.1</b> was released under the terms of GPLv3.0+.
 - <b>OpenSimMPLS 2.0</b> (Still unreleased. Only source code available) will be released under the terms of Apache Software License 2.0.
 
+## Previous versions:
+
+- <b>OpenSimMPLS 1.1</b> was released under the terms of GPLv3.0+.
+- <b>OpenSimMPLS 1.0</b> was released under the terms of GPLv2.0+.
 
 # PEOPLE BEHIND OPENSIMMPLS
 
