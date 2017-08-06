@@ -684,10 +684,10 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      */    
     public String getErrorMessage(int e) {
         switch (e) {
-            case SIN_NOMBRE: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TConfigEmisor.FALTA_NOMBRE"));
-            case NOMBRE_YA_EXISTE: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TConfigEmisor.NOMBRE_REPETIDO"));
-            case SOLO_ESPACIOS: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TNodoEmisor.NoSoloEspacios"));
-            case SIN_DESTINO: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TNodoEmisor.DestinoParaElTrafico"));
+            case SIN_NOMBRE: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TConfigEmisor.FALTA_NOMBRE"));
+            case NOMBRE_YA_EXISTE: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TConfigEmisor.NOMBRE_REPETIDO"));
+            case SOLO_ESPACIOS: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TNodoEmisor.NoSoloEspacios"));
+            case SIN_DESTINO: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TNodoEmisor.DestinoParaElTrafico"));
         }
         return ("");
     }

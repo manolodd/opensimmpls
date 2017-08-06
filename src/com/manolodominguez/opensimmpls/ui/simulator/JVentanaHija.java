@@ -140,10 +140,10 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         }
         this.mlsPorTic.setValue(1);
         this.pasoNs.setMaximum(duracionMs.getValue()*1000000 + this.duracionNs.getValue());
-        this.etiquetaMlsPorTic.setText(this.mlsPorTic.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Simulacion.EtiquetaMsTic"));
-        this.etiquetaDuracionMs.setText(this.duracionMs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija._ms."));
-        this.etiquetaDuracionNs.setText(this.duracionNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija._ns."));
-        this.etiquetaPasoNs.setText(this.pasoNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija_ns."));
+        this.etiquetaMlsPorTic.setText(this.mlsPorTic.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Simulacion.EtiquetaMsTic"));
+        this.etiquetaDuracionMs.setText(this.duracionMs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija._ms."));
+        this.etiquetaDuracionNs.setText(this.duracionNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija._ns."));
+        this.etiquetaPasoNs.setText(this.pasoNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija_ns."));
         controlTemporizacionDesactivado = false;
         escenario.ponerPanelSimulacion(this.panelSimulacion);
         panelGrafico1 = null;
@@ -237,8 +237,8 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         diseElementoPopUp.setFont(new java.awt.Font("Dialog", 0, 12));
         dEliminarMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
-        dEliminarMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.PopUpDisenio.mne.Delete").charAt(0));
-        dEliminarMenuItem.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.PopUpDisenio.Delete"));
+        dEliminarMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.PopUpDisenio.mne.Delete").charAt(0));
+        dEliminarMenuItem.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.PopUpDisenio.Delete"));
         dEliminarMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clicEnPopUpDisenioEliminar(evt);
@@ -248,8 +248,8 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         diseElementoPopUp.add(dEliminarMenuItem);
 
         dVerNombreMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
-        dVerNombreMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.PopUpDisenio.mne.verNombre").charAt(0));
-        dVerNombreMenuItem.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.PopUpDisenio.verNombre"));
+        dVerNombreMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.PopUpDisenio.mne.verNombre").charAt(0));
+        dVerNombreMenuItem.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.PopUpDisenio.verNombre"));
         dVerNombreMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clicEnPopUpDisenioVerNombre(evt);
@@ -261,8 +261,8 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         diseElementoPopUp.add(jSeparator1);
 
         dPropiedadesMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
-        dPropiedadesMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.PopUpDisenio.mne.Propiedades").charAt(0));
-        dPropiedadesMenuItem.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.PopUpDisenio.Propiedades"));
+        dPropiedadesMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.PopUpDisenio.mne.Propiedades").charAt(0));
+        dPropiedadesMenuItem.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.PopUpDisenio.Propiedades"));
         dPropiedadesMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clicEnPropiedadesPopUpDisenioElemento(evt);
@@ -273,8 +273,8 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         diseFondoPopUp.setFont(new java.awt.Font("Dialog", 0, 12));
         dVerNombresNodosMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
-        dVerNombresNodosMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("popUpDisenioFondo.mne.verTodosNodos").charAt(0));
-        dVerNombresNodosMenuItem.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("popUpDisenioFondo.verTodosNodos"));
+        dVerNombresNodosMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("popUpDisenioFondo.mne.verTodosNodos").charAt(0));
+        dVerNombresNodosMenuItem.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("popUpDisenioFondo.verTodosNodos"));
         dVerNombresNodosMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clicEnPopUpDisenioFondoVerNombreNodos(evt);
@@ -284,8 +284,8 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         diseFondoPopUp.add(dVerNombresNodosMenuItem);
 
         dOcultarNombresNodosMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
-        dOcultarNombresNodosMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("popUpDisenioFondo.mne.ocultarTodosNodos").charAt(0));
-        dOcultarNombresNodosMenuItem.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("popUpDisenioFondo.ocultarTodosNodos"));
+        dOcultarNombresNodosMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("popUpDisenioFondo.mne.ocultarTodosNodos").charAt(0));
+        dOcultarNombresNodosMenuItem.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("popUpDisenioFondo.ocultarTodosNodos"));
         dOcultarNombresNodosMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clicEnPopUpDisenioFondoOcultarNombreNodos(evt);
@@ -295,8 +295,8 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         diseFondoPopUp.add(dOcultarNombresNodosMenuItem);
 
         dVerNombresEnlacesMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
-        dVerNombresEnlacesMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("popUpDisenioFondo.mne.verTodosEnlaces").charAt(0));
-        dVerNombresEnlacesMenuItem.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("popUpDisenioFondo.verTodosEnlaces"));
+        dVerNombresEnlacesMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("popUpDisenioFondo.mne.verTodosEnlaces").charAt(0));
+        dVerNombresEnlacesMenuItem.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("popUpDisenioFondo.verTodosEnlaces"));
         dVerNombresEnlacesMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clicEnPopUpDisenioFondoVerNombreEnlaces(evt);
@@ -306,8 +306,8 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         diseFondoPopUp.add(dVerNombresEnlacesMenuItem);
 
         dOcultarNombresEnlacesMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
-        dOcultarNombresEnlacesMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("popUpDisenioFondo.mne.ocultarTodosEnlaces").charAt(0));
-        dOcultarNombresEnlacesMenuItem.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("popUpDisenioFondo.ocultarTodosEnlaces"));
+        dOcultarNombresEnlacesMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("popUpDisenioFondo.mne.ocultarTodosEnlaces").charAt(0));
+        dOcultarNombresEnlacesMenuItem.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("popUpDisenioFondo.ocultarTodosEnlaces"));
         dOcultarNombresEnlacesMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clicEnPopUpDisenioFondoOcultarNombreEnlaces(evt);
@@ -319,8 +319,8 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         diseFondoPopUp.add(jSeparator2);
 
         dEliminarTodoMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
-        dEliminarTodoMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("popUpDisenioFondo.mne.eliminarTodo").charAt(0));
-        dEliminarTodoMenuItem.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("popUpDisenioFondo.borrarTodo"));
+        dEliminarTodoMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("popUpDisenioFondo.mne.eliminarTodo").charAt(0));
+        dEliminarTodoMenuItem.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("popUpDisenioFondo.borrarTodo"));
         dEliminarTodoMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clicEnPopUpDisenioFondoEliminar(evt);
@@ -332,7 +332,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Titulo"));
+        setTitle(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Titulo"));
         setFont(new java.awt.Font("Dialog", 0, 12));
         setFrameIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ICONO_VENTANA_INTERNA_MENU));
         setNormalBounds(new java.awt.Rectangle(10, 10, 100, 100));
@@ -347,7 +347,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         panelBotonesDisenio.setBorder(new javax.swing.border.EtchedBorder());
         iconoEmisor.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.EMISOR_MENU));
-        iconoEmisor.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Topic.Emisor"));
+        iconoEmisor.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Topic.Emisor"));
         iconoEmisor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 ratonEntraEnIconoEmisor(evt);
@@ -363,7 +363,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         panelBotonesDisenio.add(iconoEmisor);
 
         iconoReceptor.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.RECEPTOR_MENU));
-        iconoReceptor.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Topic.Receptor"));
+        iconoReceptor.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Topic.Receptor"));
         iconoReceptor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 ratonEntraEnIconoReceptor(evt);
@@ -379,7 +379,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         panelBotonesDisenio.add(iconoReceptor);
 
         iconoLER.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LER_MENU));
-        iconoLER.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Topic.LER"));
+        iconoLER.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Topic.LER"));
         iconoLER.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 ratonEntraEnIconoLER(evt);
@@ -395,7 +395,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         panelBotonesDisenio.add(iconoLER);
 
         iconoLERA.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LERA_MENU));
-        iconoLERA.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Topic.LERActivo"));
+        iconoLERA.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Topic.LERActivo"));
         iconoLERA.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 ratonEntraEnIconoLERA(evt);
@@ -411,7 +411,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         panelBotonesDisenio.add(iconoLERA);
 
         iconoLSR.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSR_MENU));
-        iconoLSR.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Topic.LSR"));
+        iconoLSR.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Topic.LSR"));
         iconoLSR.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 ratonEntraEnIconoLSR(evt);
@@ -427,7 +427,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         panelBotonesDisenio.add(iconoLSR);
 
         iconoLSRA.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSRA_MENU));
-        iconoLSRA.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Topic.LSRActivo"));
+        iconoLSRA.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Topic.LSRActivo"));
         iconoLSRA.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 ratonEntraEnIconoLSRA(evt);
@@ -443,7 +443,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         panelBotonesDisenio.add(iconoLSRA);
 
         iconoEnlace.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ENLACE_MENU));
-        iconoEnlace.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Topic.Enlace"));
+        iconoEnlace.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Topic.Enlace"));
         iconoEnlace.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 clicEnAniadirEnlace(evt);
@@ -489,7 +489,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         panelDisenioSuperior.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Tab.Disenio"), dispensadorDeImagenes.obtenerIcono(TImagesBroker.DISENIO), panelDisenioSuperior, java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.A_panel_to_design_network_topology"));
+        jTabbedPane1.addTab(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Tab.Disenio"), dispensadorDeImagenes.obtenerIcono(TImagesBroker.DISENIO), panelDisenioSuperior, java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.A_panel_to_design_network_topology"));
 
         panelSimulacionSuperior.setLayout(new java.awt.BorderLayout());
 
@@ -497,7 +497,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         panelBotonesSimulacion.setBorder(new javax.swing.border.EtchedBorder());
         iconoComenzar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_GENERAR));
-        iconoComenzar.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Topic.Generar"));
+        iconoComenzar.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Topic.Generar"));
         iconoComenzar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 ratonEntraEnIconoComenzar(evt);
@@ -513,7 +513,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         panelBotonesSimulacion.add(iconoComenzar);
 
         iconoFinalizar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_PARAR));
-        iconoFinalizar.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Topic.Finalizar"));
+        iconoFinalizar.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Topic.Finalizar"));
         iconoFinalizar.setEnabled(false);
         iconoFinalizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -530,7 +530,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         panelBotonesSimulacion.add(iconoFinalizar);
 
         iconoReanudar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_COMENZAR));
-        iconoReanudar.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Topic.Simulacion"));
+        iconoReanudar.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Topic.Simulacion"));
         iconoReanudar.setEnabled(false);
         iconoReanudar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -547,7 +547,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         panelBotonesSimulacion.add(iconoReanudar);
 
         iconoPausar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_PAUSA));
-        iconoPausar.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Topic.Detener"));
+        iconoPausar.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Topic.Detener"));
         iconoPausar.setEnabled(false);
         iconoPausar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -564,7 +564,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         panelBotonesSimulacion.add(iconoPausar);
 
         barraDeProgreso.setFont(new java.awt.Font("Dialog", 0, 12));
-        barraDeProgreso.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.BarraProgreso.tooltip"));
+        barraDeProgreso.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.BarraProgreso.tooltip"));
         barraDeProgreso.setStringPainted(true);
         panelBotonesSimulacion.add(barraDeProgreso);
 
@@ -573,7 +573,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         mlsPorTic.setMinimum(1);
         mlsPorTic.setMinorTickSpacing(1);
         mlsPorTic.setSnapToTicks(true);
-        mlsPorTic.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Simulacion.SelectorDeVelocidad.tooltip"));
+        mlsPorTic.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Simulacion.SelectorDeVelocidad.tooltip"));
         mlsPorTic.setPreferredSize(new java.awt.Dimension(100, 20));
         mlsPorTic.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -587,7 +587,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         etiquetaMlsPorTic.setForeground(new java.awt.Color(102, 102, 102));
         panelBotonesSimulacion.add(etiquetaMlsPorTic);
 
-        crearTraza.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.Create_trace_file"));
+        crearTraza.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.Create_trace_file"));
         panelBotonesSimulacion.add(crearTraza);
 
         panelSimulacionSuperior.add(panelBotonesSimulacion, java.awt.BorderLayout.NORTH);
@@ -618,14 +618,14 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         panelSimulacionSuperior.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Tab.Simulacion"), dispensadorDeImagenes.obtenerIcono(TImagesBroker.SIMULACION), panelSimulacionSuperior, java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.A_panel_to_generate_and_play_simulation."));
+        jTabbedPane1.addTab(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Tab.Simulacion"), dispensadorDeImagenes.obtenerIcono(TImagesBroker.SIMULACION), panelSimulacionSuperior, java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.A_panel_to_generate_and_play_simulation."));
 
         panelAnalisisSuperior.setLayout(new java.awt.BorderLayout());
 
         panelSeleccionElemento.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         panelSeleccionElemento.setBorder(new javax.swing.border.EtchedBorder());
-        jLabel1.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.SelcUnElemParaVerDatos"));
+        jLabel1.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.SelcUnElemParaVerDatos"));
         panelSeleccionElemento.add(jLabel1);
 
         selectorElementoEstadisticas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
@@ -649,7 +649,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         etiquetaEstadisticasTituloEscenario.setBackground(new java.awt.Color(252, 246, 226));
         etiquetaEstadisticasTituloEscenario.setFont(new java.awt.Font("Arial", 1, 18));
         etiquetaEstadisticasTituloEscenario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        etiquetaEstadisticasTituloEscenario.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.TituloDelEscenario"));
+        etiquetaEstadisticasTituloEscenario.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.TituloDelEscenario"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         panelFijo.add(etiquetaEstadisticasTituloEscenario, gridBagConstraints);
@@ -658,7 +658,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         etiquetaEstadisticasNombreAutor.setFont(new java.awt.Font("Arial", 1, 14));
         etiquetaEstadisticasNombreAutor.setForeground(new java.awt.Color(102, 0, 51));
         etiquetaEstadisticasNombreAutor.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        etiquetaEstadisticasNombreAutor.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.AutorDelEscenario"));
+        etiquetaEstadisticasNombreAutor.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.AutorDelEscenario"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -670,7 +670,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         areaEstadisticasDescripcion.setFont(new java.awt.Font("MonoSpaced", 0, 11));
         areaEstadisticasDescripcion.setLineWrap(true);
         areaEstadisticasDescripcion.setRows(3);
-        areaEstadisticasDescripcion.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.DescripcionDelEscenario"));
+        areaEstadisticasDescripcion.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.DescripcionDelEscenario"));
         areaEstadisticasDescripcion.setWrapStyleWord(true);
         areaEstadisticasDescripcion.setMinimumSize(new java.awt.Dimension(500, 16));
         areaEstadisticasDescripcion.setPreferredSize(new java.awt.Dimension(500, 48));
@@ -685,7 +685,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         etiquetaNombreElementoEstadistica.setBackground(new java.awt.Color(252, 246, 226));
         etiquetaNombreElementoEstadistica.setFont(new java.awt.Font("Arial", 1, 14));
         etiquetaNombreElementoEstadistica.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        etiquetaNombreElementoEstadistica.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.SeleccioneNodoAInspeccionar"));
+        etiquetaNombreElementoEstadistica.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.SeleccioneNodoAInspeccionar"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -697,7 +697,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         panelAnalisisSuperior.add(jScrollPane4, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.Analisis"), dispensadorDeImagenes.obtenerIcono(TImagesBroker.ANALISIS), panelAnalisisSuperior, java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.Analisis.Tooltip"));
+        jTabbedPane1.addTab(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.Analisis"), dispensadorDeImagenes.obtenerIcono(TImagesBroker.ANALISIS), panelAnalisisSuperior, java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.Analisis.Tooltip"));
 
         panelOpcionesSuperior.setLayout(new java.awt.BorderLayout());
 
@@ -707,10 +707,10 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         panelOpciones.setPreferredSize(new java.awt.Dimension(380, 230));
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
-        jPanel3.setBorder(new javax.swing.border.TitledBorder(null, java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.GParameters"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12)));
+        jPanel3.setBorder(new javax.swing.border.TitledBorder(null, java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.GParameters"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12)));
         jLabel5.setFont(new java.awt.Font("Dialog", 0, 12));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Scene_title"));
+        jLabel5.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Scene_title"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -719,7 +719,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel3.add(jLabel5, gridBagConstraints);
 
-        nombreEscenario.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Type_a__title_of_the_scene"));
+        nombreEscenario.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Type_a__title_of_the_scene"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 200.0;
@@ -728,7 +728,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         jLabel6.setFont(new java.awt.Font("Dialog", 0, 12));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel6.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Scene_author"));
+        jLabel6.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Scene_author"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -736,7 +736,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel3.add(jLabel6, gridBagConstraints);
 
-        nombreAutor.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Type_de_name_of_the_author"));
+        nombreAutor.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Type_de_name_of_the_author"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -747,7 +747,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         jLabel7.setFont(new java.awt.Font("Dialog", 0, 12));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Description"));
+        jLabel7.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Description"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -755,7 +755,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel3.add(jLabel7, gridBagConstraints);
 
-        descripcionEscenario.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Enter_a_short_description."));
+        descripcionEscenario.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Enter_a_short_description."));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -775,10 +775,10 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
-        jPanel2.setBorder(new javax.swing.border.TitledBorder(null, java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.TParameters"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12)));
+        jPanel2.setBorder(new javax.swing.border.TitledBorder(null, java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.TParameters"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12)));
         jLabel3.setFont(new java.awt.Font("Dialog", 0, 12));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Duration"));
+        jLabel3.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Duration"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 100.0;
@@ -788,7 +788,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         duracionMs.setMajorTickSpacing(2);
         duracionMs.setMaximum(2);
         duracionMs.setMinorTickSpacing(1);
-        duracionMs.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Slide_it_to_change_the_ms._component_of_simulation_duration."));
+        duracionMs.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Slide_it_to_change_the_ms._component_of_simulation_duration."));
         duracionMs.setValue(0);
         duracionMs.setMaximumSize(new java.awt.Dimension(30, 20));
         duracionMs.setMinimumSize(new java.awt.Dimension(30, 24));
@@ -807,7 +807,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         etiquetaDuracionMs.setFont(new java.awt.Font("Dialog", 0, 10));
         etiquetaDuracionMs.setForeground(new java.awt.Color(102, 102, 102));
-        etiquetaDuracionMs.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.ms."));
+        etiquetaDuracionMs.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.ms."));
         etiquetaDuracionMs.setMaximumSize(new java.awt.Dimension(30, 14));
         etiquetaDuracionMs.setMinimumSize(new java.awt.Dimension(30, 14));
         etiquetaDuracionMs.setPreferredSize(new java.awt.Dimension(30, 14));
@@ -820,7 +820,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         duracionNs.setMajorTickSpacing(1000);
         duracionNs.setMaximum(999999);
         duracionNs.setMinorTickSpacing(100);
-        duracionNs.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Slide_it_to_change_the_ns._component_of_simulation_duration."));
+        duracionNs.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Slide_it_to_change_the_ns._component_of_simulation_duration."));
         duracionNs.setValue(100000);
         duracionNs.setMaximumSize(new java.awt.Dimension(32767, 20));
         duracionNs.setMinimumSize(new java.awt.Dimension(36, 20));
@@ -839,7 +839,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         etiquetaDuracionNs.setFont(new java.awt.Font("Dialog", 0, 10));
         etiquetaDuracionNs.setForeground(new java.awt.Color(102, 102, 102));
-        etiquetaDuracionNs.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.ns."));
+        etiquetaDuracionNs.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.ns."));
         etiquetaDuracionNs.setMaximumSize(new java.awt.Dimension(40, 14));
         etiquetaDuracionNs.setMinimumSize(new java.awt.Dimension(40, 14));
         etiquetaDuracionNs.setPreferredSize(new java.awt.Dimension(40, 14));
@@ -851,7 +851,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         jLabel4.setFont(new java.awt.Font("Dialog", 0, 12));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel4.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Step"));
+        jLabel4.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Step"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -864,7 +864,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         pasoNs.setMaximum(999999);
         pasoNs.setMinimum(1);
         pasoNs.setMinorTickSpacing(100);
-        pasoNs.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Slide_it_to_change_the_step_duration_(ns).."));
+        pasoNs.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Slide_it_to_change_the_step_duration_(ns).."));
         pasoNs.setValue(10000);
         pasoNs.setMaximumSize(new java.awt.Dimension(32767, 20));
         pasoNs.setPreferredSize(new java.awt.Dimension(100, 20));
@@ -884,7 +884,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         etiquetaPasoNs.setFont(new java.awt.Font("Dialog", 0, 10));
         etiquetaPasoNs.setForeground(new java.awt.Color(102, 102, 102));
-        etiquetaPasoNs.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.ns."));
+        etiquetaPasoNs.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.ns."));
         etiquetaPasoNs.setMaximumSize(new java.awt.Dimension(40, 14));
         etiquetaPasoNs.setMinimumSize(new java.awt.Dimension(40, 14));
         etiquetaPasoNs.setPreferredSize(new java.awt.Dimension(40, 14));
@@ -909,7 +909,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
 
         panelOpcionesSuperior.add(jScrollPane3, java.awt.BorderLayout.NORTH);
 
-        jTabbedPane1.addTab(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Options"), dispensadorDeImagenes.obtenerIcono(TImagesBroker.OPCIONES), panelOpcionesSuperior, java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Options_about_the_scene"));
+        jTabbedPane1.addTab(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Options"), dispensadorDeImagenes.obtenerIcono(TImagesBroker.OPCIONES), panelOpcionesSuperior, java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Options_about_the_scene"));
 
         getContentPane().add(jTabbedPane1, java.awt.BorderLayout.CENTER);
 
@@ -968,7 +968,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             this.etiquetaEstadisticasNombreAutor.setText(this.nombreAutor.getText());
             this.areaEstadisticasDescripcion.setText(this.descripcionEscenario.getText());
             this.etiquetaNombreElementoEstadistica.setIcon(null);
-            this.etiquetaNombreElementoEstadistica.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.SeleccioneElNodoAInspeccionar"));
+            this.etiquetaNombreElementoEstadistica.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.SeleccioneElNodoAInspeccionar"));
             gbc = new java.awt.GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 0;
@@ -1167,9 +1167,9 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             } else {
                 pasoNs.setMaximum(duracionTotal);
             }
-            this.etiquetaDuracionMs.setText(this.duracionMs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija._ms."));
-            this.etiquetaDuracionNs.setText(this.duracionNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija._ns."));
-            this.etiquetaPasoNs.setText(this.pasoNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija._ns."));
+            this.etiquetaDuracionMs.setText(this.duracionMs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija._ms."));
+            this.etiquetaDuracionNs.setText(this.duracionNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija._ns."));
+            this.etiquetaPasoNs.setText(this.pasoNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija._ns."));
             escenario.getSimulation().setDuration(new TTimestamp(duracionMs.getValue(), duracionNs.getValue()).getTotalAsNanoseconds());
             escenario.getSimulation().setStep(pasoNs.getValue());
         }
@@ -1211,7 +1211,7 @@ private void clicEnDuracionMs(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:ev
  * @param evt El evento que hace que se dispare este m�todo.
  */
 private void mlsPorTicCambiado(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mlsPorTicCambiado
-    this.etiquetaMlsPorTic.setText(this.mlsPorTic.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Simulacion.etiquetaMsTic"));
+    this.etiquetaMlsPorTic.setText(this.mlsPorTic.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Simulacion.etiquetaMsTic"));
     panelSimulacion.ponerMlsPorTic(this.mlsPorTic.getValue());
 }//GEN-LAST:event_mlsPorTicCambiado
 
@@ -1286,7 +1286,7 @@ private void clicEnPopUpDisenioFondoVerNombreNodos(java.awt.event.ActionEvent ev
  */
 private void clicEnPopUpDisenioFondoEliminar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoEliminar
     JVentanaBooleana vb = new JVentanaBooleana(this.VentanaPadre, true, this.dispensadorDeImagenes);
-    vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.PreguntaBorrarTodo"));
+    vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.PreguntaBorrarTodo"));
     vb.show();
     boolean respuesta = vb.obtenerRespuesta();
     if (respuesta) {
@@ -1324,10 +1324,10 @@ public void ponerEscenario(TScenario esc) {
     this.pasoNs.setValue((int) pas);
     esc.getSimulation().setDuration(durac);
     esc.getSimulation().setStep(pas);
-    this.etiquetaMlsPorTic.setText(this.mlsPorTic.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.Simulacion.EtiquetaMsTic"));
-    this.etiquetaDuracionMs.setText(this.duracionMs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija._ms."));
-    this.etiquetaDuracionNs.setText(this.duracionNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija._ns."));
-    this.etiquetaPasoNs.setText(this.pasoNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija_ns."));
+    this.etiquetaMlsPorTic.setText(this.mlsPorTic.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.Simulacion.EtiquetaMsTic"));
+    this.etiquetaDuracionMs.setText(this.duracionMs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija._ms."));
+    this.etiquetaDuracionNs.setText(this.duracionNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija._ns."));
+    this.etiquetaPasoNs.setText(this.pasoNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija_ns."));
     this.nombreAutor.setText(esc.obtenerAutor());
     this.nombreAutor.setCaretPosition(1);
     this.nombreEscenario.setText(esc.obtenerTitulo());
@@ -1347,7 +1347,7 @@ public void ponerEscenario(TScenario esc) {
 private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirEnlace
     if (escenario.getTopology().obtenerNumeroDeNodos() < 2) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(VentanaPadre, true, dispensadorDeImagenes);
-        va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.ErrorAlMenosDosNodos"));
+        va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.ErrorAlMenosDosNodos"));
         va.show();
     } else {
         TLinkConfig config = new TLinkConfig();
@@ -1388,7 +1388,7 @@ private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
  */
 private void clicEnPopUpDisenioEliminar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioEliminar
     JVentanaBooleana vb = new JVentanaBooleana(this.VentanaPadre, true, this.dispensadorDeImagenes);
-    vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.preguntaAlEliminar"));
+    vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.preguntaAlEliminar"));
     vb.show();
     boolean respuesta = vb.obtenerRespuesta();
     if (respuesta) {
@@ -1399,7 +1399,7 @@ private void clicEnPopUpDisenioEliminar(java.awt.event.ActionEvent evt) {//GEN-F
                     if (this.escenario.getTopology().hayTraficoDirigidoAMi((TReceiverNode) nt)) {
                         JVentanaAdvertencia va;
                         va = new JVentanaAdvertencia(VentanaPadre, true, dispensadorDeImagenes);
-                        va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.NoPuedoBorrarReceptor"));
+                        va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.NoPuedoBorrarReceptor"));
                         va.show();
                         elementoDisenioClicDerecho = null;
                     } else {
@@ -1594,25 +1594,25 @@ private void ratonSobrePanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIR
         if (et.getElementType() == TTopologyElement.NODO) {
             TNode nt = (TNode) et;
             if (nt.getPorts().isArtificiallyCongested()) {
-                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.Congestion") +nt.getPorts().getCongestionLevel()+ java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.POrcentaje")+java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.paraDejarDeCongestionar"));
+                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.Congestion") +nt.getPorts().getCongestionLevel()+ java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.POrcentaje")+java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.paraDejarDeCongestionar"));
             } else {
-                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.Congestion") +nt.getPorts().getCongestionLevel()+ java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.POrcentaje")+java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaHija.paraCongestionar"));
+                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.Congestion") +nt.getPorts().getCongestionLevel()+ java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.POrcentaje")+java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaHija.paraCongestionar"));
             }
         } else if (et.getElementType() == TTopologyElement.LINK) {
             TLink ent = (TLink) et;
             if (ent.isBroken()) {
-                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.EnlaceRoto"));
+                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.EnlaceRoto"));
             } else {
-                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.EnlaceFuncionando"));
+                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.EnlaceFuncionando"));
             }
         }
     } else {
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         this.panelSimulacion.setToolTipText(null); 
         if (!this.panelSimulacion.obtenerMostrarLeyenda()) {
-            this.panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.VerLeyenda")); 
+            this.panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.VerLeyenda")); 
         } else{
-            this.panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.OcultarLeyenda")); 
+            this.panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.OcultarLeyenda")); 
         }
     }
 }//GEN-LAST:event_ratonSobrePanelSimulacion
@@ -1631,10 +1631,10 @@ private void ratonSobrePanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
         if (et.getElementType() == TTopologyElement.NODO) {
             TNode nt = (TNode) et;
-            panelDisenio.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.PanelDisenio.IP") + nt.getIPv4Address());
+            panelDisenio.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.PanelDisenio.IP") + nt.getIPv4Address());
         } else if (et.getElementType() == TTopologyElement.LINK) {
             TLink ent = (TLink) et;
-            panelDisenio.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.panelDisenio.Retardo") + ent.getDelay() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.panelDisenio.ns"));
+            panelDisenio.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.panelDisenio.Retardo") + ent.getDelay() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.panelDisenio.ns"));
         }
     } else {
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -2007,7 +2007,7 @@ private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-
     }
     if (!hayDestino) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(VentanaPadre, true, dispensadorDeImagenes);
-        va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.NecesitaHaberUnReceptor"));
+        va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.NecesitaHaberUnReceptor"));
         va.show();
     } else {
         TSenderNode emisor = null;
@@ -2202,8 +2202,8 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
         dialogoGuardar.setFileFilter(new JOSMFilter());
         dialogoGuardar.setDialogType(JFileChooser.CUSTOM_DIALOG);
         dialogoGuardar.setApproveButtonMnemonic('A');
-        dialogoGuardar.setApproveButtonText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.DialogoGuardar.OK"));
-        dialogoGuardar.setDialogTitle(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.DialogoGuardar.Almacenar")+ this.getTitle() +java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("-"));
+        dialogoGuardar.setApproveButtonText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.DialogoGuardar.OK"));
+        dialogoGuardar.setDialogTitle(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.DialogoGuardar.Almacenar")+ this.getTitle() +java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("-"));
         dialogoGuardar.setAcceptAllFileFilterUsed(false);
         dialogoGuardar.setSelectedFile(new File(this.getTitle()));
         dialogoGuardar.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -2216,10 +2216,10 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
                 ext = nombreFich.substring(i+1).toLowerCase();
             }
             if (ext == null) {
-                nombreFich += java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString(".osm");
+                nombreFich += java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString(".osm");
             } else {
-                if (!ext.equals(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("osm"))) {
-                    nombreFich += java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString(".osm");
+                if (!ext.equals(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("osm"))) {
+                    nombreFich += java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString(".osm");
                 }
             }
             dialogoGuardar.setSelectedFile(new File(nombreFich));
@@ -2228,7 +2228,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             this.setTitle(this.escenario.obtenerFichero().getName());
             TOSMSaver almacenador = new TOSMSaver(escenario);
             JVentanaBooleana vb = new JVentanaBooleana(this.VentanaPadre, true, this.dispensadorDeImagenes);
-            vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.PreguntaEmpotrarCRC"));
+            vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.PreguntaEmpotrarCRC"));
             vb.show();
             boolean conCRC = vb.obtenerRespuesta();
             boolean correcto = almacenador.save(escenario.obtenerFichero(), conCRC);
@@ -2263,7 +2263,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
         
         if (!guardado) {
             JVentanaBooleana vb = new JVentanaBooleana(VentanaPadre, true, dispensadorDeImagenes);
-            vb.mostrarPregunta(this.getTitle() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.DialogoGuardar.GuardarPrimeraVez"));
+            vb.mostrarPregunta(this.getTitle() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.DialogoGuardar.GuardarPrimeraVez"));
             vb.show();
             boolean respuesta = vb.obtenerRespuesta();
             vb.dispose();
@@ -2274,14 +2274,14 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             // No se hace nada, ya est� todo guardado correctamente.
         } else if ((guardado) && (modificado)) {
             JVentanaBooleana vb = new JVentanaBooleana(VentanaPadre, true, dispensadorDeImagenes);
-            vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.DialogoGuardar.CambiosSinguardar1")+ " " + this.getTitle()+ " " + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.DialogoGuardar.CambiosSinguardar2"));
+            vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.DialogoGuardar.CambiosSinguardar1")+ " " + this.getTitle()+ " " + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.DialogoGuardar.CambiosSinguardar2"));
             vb.show();
             boolean respuesta = vb.obtenerRespuesta();
             vb.dispose();
             if (respuesta) {
                 TOSMSaver almacenador = new TOSMSaver(escenario);
                 JVentanaBooleana vb2 = new JVentanaBooleana(this.VentanaPadre, true, this.dispensadorDeImagenes);
-                vb2.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.PreguntaEmpotrarCRC"));
+                vb2.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.PreguntaEmpotrarCRC"));
                 vb2.show();
                 boolean conCRC = vb2.obtenerRespuesta();
                 boolean correcto = almacenador.save(escenario.obtenerFichero(), conCRC);
@@ -2307,7 +2307,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
         } else {
             TOSMSaver almacenador = new TOSMSaver(escenario);
             JVentanaBooleana vb = new JVentanaBooleana(this.VentanaPadre, true, this.dispensadorDeImagenes);
-            vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.PreguntaEmpotrarCRC"));
+            vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.PreguntaEmpotrarCRC"));
             vb.show();
             boolean conCRC = vb.obtenerRespuesta();
             boolean correcto = almacenador.save(escenario.obtenerFichero(), conCRC);

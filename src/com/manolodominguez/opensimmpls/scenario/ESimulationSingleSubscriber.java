@@ -44,7 +44,7 @@ public class ESimulationSingleSubscriber extends Exception {
      */
     @Override
     public String toString() {
-        return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("ESimulacionUnSoloSuscriptor.toString"));
+        return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("ESimulacionUnSoloSuscriptor.toString"));
     }
 
 }

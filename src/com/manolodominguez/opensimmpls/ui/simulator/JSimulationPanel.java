@@ -676,7 +676,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
     public void dibujarTicActual(Graphics2D g2D) {
         int posX = 8;
         int posY = 18;
-        String textoTic = this.ticActual+ " " +java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JPanelSimulacion.Ns");
+        String textoTic = this.ticActual+ " " +java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JPanelSimulacion.Ns");
         FontMetrics fm = this.getFontMetrics(this.getFont());
         int anchoTexto = fm.charsWidth(textoTic.toCharArray(), 0, textoTic.length());
         g2Dbuf.setColor(Color.LIGHT_GRAY);
@@ -902,16 +902,16 @@ public class JSimulationPanel extends javax.swing.JPanel {
     private static Color COLOR_FONDO_DOMINIO;
     private static Color COLOR_LSP;
     
-    private static final String PAQUETE_IPV4 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JPanelSimulacion.Paquete_IPv4");
-    private static final String PAQUETE_IPV4_GOS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JPanelSimulacion.Paquete_IPv4_GOS");
-    private static final String PAQUETE_MPLS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JPanelSimulacion.Paquete_MPLS");
-    private static final String PAQUETE_MPLS_GOS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JPanelSimulacion.Paquete_MPLS_GOS");
-    private static final String PAQUETE_TLDP = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JPanelSimulacion.Paquete_TLDP");
-    private static final String PAQUETE_GPSRP = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JPanelSimulacion.Paquete_GPSRP");
-    private static final String LSP_NORMAL = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JPanelSimulacion.LSP");
-    private static final String LSP_BACKUP = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JPanelSimulacion.LSP_de_respaldo");
-    private static final String PAQUETE_RECIBIDO = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("Paquete_recibido");
-    private static final String PAQUETE_ENVIADO = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JPanelSimulacion.Paquete_enviado");
-    private static final String PAQUETE_CONMUTADO = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JPanelSimulacion.Paquete_conmutado");
-    private static final String PAQUETE_GENERADO = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JPanelSimulacion.Paquete_generado");
+    private static final String PAQUETE_IPV4 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JPanelSimulacion.Paquete_IPv4");
+    private static final String PAQUETE_IPV4_GOS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JPanelSimulacion.Paquete_IPv4_GOS");
+    private static final String PAQUETE_MPLS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JPanelSimulacion.Paquete_MPLS");
+    private static final String PAQUETE_MPLS_GOS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JPanelSimulacion.Paquete_MPLS_GOS");
+    private static final String PAQUETE_TLDP = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JPanelSimulacion.Paquete_TLDP");
+    private static final String PAQUETE_GPSRP = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JPanelSimulacion.Paquete_GPSRP");
+    private static final String LSP_NORMAL = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JPanelSimulacion.LSP");
+    private static final String LSP_BACKUP = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JPanelSimulacion.LSP_de_respaldo");
+    private static final String PAQUETE_RECIBIDO = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("Paquete_recibido");
+    private static final String PAQUETE_ENVIADO = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JPanelSimulacion.Paquete_enviado");
+    private static final String PAQUETE_CONMUTADO = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JPanelSimulacion.Paquete_conmutado");
+    private static final String PAQUETE_GENERADO = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JPanelSimulacion.Paquete_generado");
 }

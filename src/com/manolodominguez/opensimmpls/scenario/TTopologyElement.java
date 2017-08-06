@@ -188,7 +188,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
             try {
                 this.hilo.join();
             } catch (Exception e) {
-                System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TElementoTopologia.ErrorFinReloj") + e.toString());
+                System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TElementoTopologia.ErrorFinReloj") + e.toString());
             };
         }
     }

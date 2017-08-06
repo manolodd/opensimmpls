@@ -64,7 +64,7 @@ public class JVentanaAyuda extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations"); // NOI18N
         setTitle(bundle.getString("JVentanaAyuda.Contents")); // NOI18N
         setResizable(false);
         getContentPane().setLayout(new java.awt.FlowLayout());
@@ -109,7 +109,7 @@ public class JVentanaAyuda extends javax.swing.JDialog {
         jPanel2.setOpaque(false);
 
         jButton1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR));
-        jButton1.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaAyuda.OK.Mnemonico").charAt(0));
+        jButton1.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaAyuda.OK.Mnemonico").charAt(0));
         jButton1.setText(bundle.getString("VentanaAyuda.OK")); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

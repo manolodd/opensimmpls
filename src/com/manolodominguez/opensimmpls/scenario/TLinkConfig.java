@@ -265,13 +265,13 @@ public class TLinkConfig {
      */    
     public String obtenerMensajeError(int error) {
         switch (error) {
-            case SIN_NOMBRE: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TConfigEnlace.FALTA_NOMBRE"));
-            case SOLO_ESPACIOS: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TConfigEnlace.NoSoloEspacios"));
-            case NOMBRE_YA_EXISTE: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TConfigEnlace.NombreYaUsado"));
-            case FALTA_PUERTO_1: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TConfigEnlace.SeleccionrPuertoIzquierdo"));
-            case FALTA_PUERTO_2: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TConfigEnlace.SeleccionarPuertoDerecho"));
-            case FALTA_EXTREMO_1: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TConfigEnlace.SeleccionarExtremoIzquierdo"));
-            case FALTA_EXTREMO_2: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TConfigEnlace.SeleccionarExtremoDerecho"));
+            case SIN_NOMBRE: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TConfigEnlace.FALTA_NOMBRE"));
+            case SOLO_ESPACIOS: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TConfigEnlace.NoSoloEspacios"));
+            case NOMBRE_YA_EXISTE: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TConfigEnlace.NombreYaUsado"));
+            case FALTA_PUERTO_1: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TConfigEnlace.SeleccionrPuertoIzquierdo"));
+            case FALTA_PUERTO_2: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TConfigEnlace.SeleccionarPuertoDerecho"));
+            case FALTA_EXTREMO_1: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TConfigEnlace.SeleccionarExtremoIzquierdo"));
+            case FALTA_EXTREMO_2: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TConfigEnlace.SeleccionarExtremoDerecho"));
         }
         return ("");
     }

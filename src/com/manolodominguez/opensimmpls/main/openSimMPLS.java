@@ -41,30 +41,30 @@ public class openSimMPLS {
      */
     public static void mostrarGPL() {
         try {
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("Open_SimMPLS_1.0_"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("Guarantee_of_Service_(GoS)_support_over_MPLS_using_active_techniques."));
+            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("Open_SimMPLS_1.0_"));
+            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("Guarantee_of_Service_(GoS)_support_over_MPLS_using_active_techniques."));
             System.out.println();
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("(C)_Copyright_2004"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("Manuel_Dom�nguez_Dorado"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("manolodd@eresmas.com"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("http://manolodd.virtualave.net"));
+            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("(C)_Copyright_2004"));
+            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("Manuel_Dom�nguez_Dorado"));
+            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("manolodd@eresmas.com"));
+            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("http://manolodd.virtualave.net"));
             System.out.println();
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("This_program_is_free_software;_you_can_redistribute_it_and/or_modify"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("it_under_the_terms_of_the_GNU_General_Public_License_as_published_by"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("the_Free_Software_Foundation;_either_version_2_of_the_License,_or"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("(at_your_option)_any_later_version."));
+            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("This_program_is_free_software;_you_can_redistribute_it_and/or_modify"));
+            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("it_under_the_terms_of_the_GNU_General_Public_License_as_published_by"));
+            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("the_Free_Software_Foundation;_either_version_2_of_the_License,_or"));
+            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("(at_your_option)_any_later_version."));
             System.out.println();
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("This_program_is_distributed_in_the_hope_that_it_will_be_useful,"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("but_WITHOUT_ANY_WARRANTY;_without_even_the_implied_warranty_of"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("MERCHANTABILITY_or_FITNESS_FOR_A_PARTICULAR_PURPOSE.__See_the"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("GNU_General_Public_License_for_more_details."));
+            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("This_program_is_distributed_in_the_hope_that_it_will_be_useful,"));
+            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("but_WITHOUT_ANY_WARRANTY;_without_even_the_implied_warranty_of"));
+            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("MERCHANTABILITY_or_FITNESS_FOR_A_PARTICULAR_PURPOSE.__See_the"));
+            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("GNU_General_Public_License_for_more_details."));
             System.out.println();
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("You_should_have_received_a_copy_of_the_GNU_General_Public_License"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("along_with_this_program;_if_not,_write_to_the_Free_Software"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("Foundation,_Inc.,_59_Temple_Place,_Suite_330,_Boston,_MA__02111-1307__USA"));
+            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("You_should_have_received_a_copy_of_the_GNU_General_Public_License"));
+            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("along_with_this_program;_if_not,_write_to_the_Free_Software"));
+            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("Foundation,_Inc.,_59_Temple_Place,_Suite_330,_Boston,_MA__02111-1307__USA"));
             System.exit(0);
         } catch (Exception e) {
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("Error_trying_to_translate."));
+            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("Error_trying_to_translate."));
         }
     }
 
@@ -96,9 +96,9 @@ public class openSimMPLS {
         }
         splash = new com.manolodominguez.opensimmpls.ui.splash.JSplash();
         splash.show();
-        splash.ponerTexto(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("Loading_icons..."));
+        splash.ponerTexto(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("Loading_icons..."));
         imagesBroker = new TImagesBroker();
-        splash.ponerTexto(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("openSimMPLS.generandoInterfaz"));
+        splash.ponerTexto(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("openSimMPLS.generandoInterfaz"));
         simulator = new JSimulador(imagesBroker);
         java.awt.Dimension tamPantalla = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         simulator.setBounds(0, 0, tamPantalla.width, tamPantalla.height);

@@ -28,7 +28,7 @@ public class JSplash extends javax.swing.JFrame {
      */
     public JSplash() {
         initComponents();
-        setIconImage(new javax.swing.ImageIcon(this.getClass().getResource(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("/imagenes/splash_menu.png"))).getImage());
+        setIconImage(new javax.swing.ImageIcon(this.getClass().getResource(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("/imagenes/splash_menu.png"))).getImage());
     }
 
     /** Este m�todo se llama desde el constructor para dar los valores por defecto a los
@@ -43,7 +43,7 @@ public class JSplash extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
-        setName(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JSplash"));
+        setName(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JSplash"));
         setResizable(false);
         setUndecorated(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -52,11 +52,11 @@ public class JSplash extends javax.swing.JFrame {
             }
         });
 
-        Texto.setFont(new java.awt.Font(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("Arial"), 0, 12));
-        Texto.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("Starting..."));
+        Texto.setFont(new java.awt.Font(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("Arial"), 0, 12));
+        Texto.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("Starting..."));
         getContentPane().add(Texto, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 16, 260, 20));
 
-        Imagen.setIcon(new javax.swing.ImageIcon(getClass().getResource(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("/imagenes/splash_inicio.png"))));
+        Imagen.setIcon(new javax.swing.ImageIcon(getClass().getResource(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("/imagenes/splash_inicio.png"))));
         getContentPane().add(Imagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
 
         pack();

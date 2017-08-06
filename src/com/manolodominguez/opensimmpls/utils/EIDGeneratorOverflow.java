@@ -35,7 +35,7 @@ public class EIDGeneratorOverflow extends Exception {
      * @since 2.0
      */
     public String toString() {
-        return(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("EDesbordeDelIdentificador.texto"));
+        return(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("EDesbordeDelIdentificador.texto"));
     }
     
 }

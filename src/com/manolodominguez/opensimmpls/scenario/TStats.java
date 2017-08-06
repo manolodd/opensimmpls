@@ -158,159 +158,159 @@ public abstract class TStats {
      * Esta constante es un texto que representa a paquetes de tipo IPv4
      * @since 2.0
      */    
-    public static final String IPV4 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.IPv4");
+    public static final String IPV4 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.IPv4");
     /**
      * Esta constante es un texto que representa a paquetes IPv4 con GoS 1
      * @since 2.0
      */    
-    public static final String IPV4_GOS1 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.IPv4_GoS1");
+    public static final String IPV4_GOS1 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.IPv4_GoS1");
     /**
      * Esta constante es un texto que representa a paquetes IPv4 con GoS 2
      * @since 2.0
      */    
-    public static final String IPV4_GOS2 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.IPv4_GoS2");
+    public static final String IPV4_GOS2 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.IPv4_GoS2");
     /**
      * Esta constante es un texto que representa a paquetes IPv4 con GoS 3
      * @since 2.0
      */    
-    public static final String IPV4_GOS3 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.IPv4_Gos3");
+    public static final String IPV4_GOS3 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.IPv4_Gos3");
     /**
      * Esta constante es un texto que representa a paquetes MPLS
      * @since 2.0
      */    
-    public static final String MPLS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.MPLS");
+    public static final String MPLS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.MPLS");
     /**
      * Esta constante es un texto que representa a paquetes MPLS con GoS 1
      * @since 2.0
      */    
-    public static final String MPLS_GOS1 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.MPLS_GoS1");
+    public static final String MPLS_GOS1 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.MPLS_GoS1");
     /**
      * Esta constante es un texto que representa a paquetes MPLS con GoS 2
      * @since 2.0
      */    
-    public static final String MPLS_GOS2 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.MPLS_GoS2");
+    public static final String MPLS_GOS2 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.MPLS_GoS2");
     /**
      * Esta constante es un texto que representa a paquetes MPLS con GoS 3
      * @since 2.0
      */    
-    public static final String MPLS_GOS3 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.MPLS_GoS3");
+    public static final String MPLS_GOS3 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.MPLS_GoS3");
     /**
      * Esta constante es un texto que representa a paquetes TLDP
      * @since 2.0
      */    
-    public static final String TLDP = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.TLDP");
+    public static final String TLDP = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.TLDP");
     /**
      * Esta constante es un texto que representa a paquetes GPSRP
      * @since 2.0
      */    
-    public static final String GPSRP = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.GPSRP");
+    public static final String GPSRP = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.GPSRP");
     
     /**
      * Esta constante es un texto que representa al tiempo
      * @since 2.0
      */    
-    public static final String TIEMPO = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Tiempo_ns");
+    public static final String TIEMPO = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Tiempo_ns");
     /**
      * Esta constante es un texto que representa al n�mero de paquetes
      * @since 2.0
      */    
-    public static final String NUMERO_DE_PAQUETES = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Numero_de_paquetes");
+    public static final String NUMERO_DE_PAQUETES = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Numero_de_paquetes");
     /**
      * Esta constante es un texto que representa al n�mero
      * @since 2.0
      */    
-    public static final String NUMERO = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Numero");
+    public static final String NUMERO = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Numero");
     /**
      * Esta constante es un texto que representa al tama�o de la DMGP
      * @since 2.0
      */    
-    public static final String TAMANIO_DMGP = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Tamanio_DMGP_Kilobytes");
+    public static final String TAMANIO_DMGP = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Tamanio_DMGP_Kilobytes");
     
     /**
      * Esta constante es un texto que representa a los paquetes salientes
      * @since 2.0
      */    
-    public static final String OUTGOING_PACKETS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Paquetes_salientes");
+    public static final String OUTGOING_PACKETS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Paquetes_salientes");
     /**
      * Esta constante es un texto que representa a los paquetes entrantes.
      * @since 2.0
      */    
-    public static final String INCOMING_PACKETS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Paquetes_entrantes");
+    public static final String INCOMING_PACKETS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Paquetes_entrantes");
     /**
      * Esta constante es un texto que representa a los paquetes descartados.
      * @since 2.0
      */    
-    public static final String DISCARDED_PACKETS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Paquetes_descartados");
+    public static final String DISCARDED_PACKETS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Paquetes_descartados");
     /**
      * Esta constante es un texto que representa a los paquetes recuperados.
      * @since 2.0
      */    
-    public static final String PAQUETES_RECUPERADOS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Paquetes_recuperados");
+    public static final String PAQUETES_RECUPERADOS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Paquetes_recuperados");
     /**
      * Esta constante es un texto que representa a los paquetes no recuperados.
      * @since 2.0
      */    
-    public static final String PAQUETES_NO_RECUPERADOS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Paquetes_no_recuperados");
+    public static final String PAQUETES_NO_RECUPERADOS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Paquetes_no_recuperados");
     /**
      * Esta constante es un texto que representa a las recuperaciones locales
      * @since 2.0
      */    
-    public static final String LOCAL_RECOVERIES_MANAGED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Recuperaciones_locales_de_paquetes_con_GoS");
+    public static final String LOCAL_RECOVERIES_MANAGED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Recuperaciones_locales_de_paquetes_con_GoS");
     /**
      * Esta constante es un texto que representa a las retransmisiones atendidas
      * @since 2.0
      */    
-    public static final String RETRANSMISSIONS_MANAGED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Retransmisiones_de_paquetes_con_GoS_atendidas");
+    public static final String RETRANSMISSIONS_MANAGED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Retransmisiones_de_paquetes_con_GoS_atendidas");
     /**
      * Esta constante es un texto que representa a las solicitudes atendidas.
      * @since 2.0
      */    
-    public static final String SOLICITUDES_ATENDIDAS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Solicitudes_atendidas");
+    public static final String SOLICITUDES_ATENDIDAS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Solicitudes_atendidas");
     /**
      * Esta constante es un texto que representa a las retransmisiones realizadas
      * @since 2.0
      */    
-    public static final String RETRANSMISSIONS_REALIZED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Retransmisiones_realizadas");
+    public static final String RETRANSMISSIONS_REALIZED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Retransmisiones_realizadas");
     /**
      * Esta constante es un texto que representa a las retransmisiones no realizadas.
      * @since 2.0
      */    
-    public static final String RETRANSMISSIONS_UNREALIZED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Retransmisiones_no_realizadas");
+    public static final String RETRANSMISSIONS_UNREALIZED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Retransmisiones_no_realizadas");
     /**
      * Esta constante es un texto que representa a las solicitudes recibidas
      * @since 2.0
      */    
-    public static final String RETRANSMISSION_REQUESTS_RECEIVED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Solicitudes_recibidas");
+    public static final String RETRANSMISSION_REQUESTS_RECEIVED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Solicitudes_recibidas");
     /**
      * Esta constante es un texto que representa a los paquetes con GoS perdidos
      * @since 2.0
      */    
-    public static final String GOS_PACKETS_LOST = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Paquetes_GoS_perdidos");
+    public static final String GOS_PACKETS_LOST = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Paquetes_GoS_perdidos");
     /**
      * Esta constante es un texto que representa a las solicitudes emitidas.
      * @since 2.0
      */    
-    public static final String RETRANSMISSION_REQUESTS_SENT = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Solicitudes_emitidas");
+    public static final String RETRANSMISSION_REQUESTS_SENT = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Solicitudes_emitidas");
     /**
      * Esta constante es un texto que representa a las solicitudes sin respuestas.
      * @since 2.0
      */    
-    public static final String RETRANSMISSION_REQUESTS_STILL_UNANSWERED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Solicitudes_sin_respuesta_aun");
+    public static final String RETRANSMISSION_REQUESTS_STILL_UNANSWERED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Solicitudes_sin_respuesta_aun");
     /**
      * Esta constante es un texto que representa a los paquetes con GoS recuperados
      * @since 2.0
      */    
-    public static final String GOS_PACKETS_RECOVERED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Paquetes_GoS_recuperados");
+    public static final String GOS_PACKETS_RECOVERED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Paquetes_GoS_recuperados");
     /**
      * Esta constante es un texto que representa a los paquetes con GoS no recuperados.
      * @since 2.0
      */    
-    public static final String GOS_PACKETS_UNRECOVERED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Paquetes_GoS_no_recuperados");
+    public static final String GOS_PACKETS_UNRECOVERED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Paquetes_GoS_no_recuperados");
     /**
      * Esta constante es un texto que representa a la descripci�n de categor�as.
      * @since 2.0
      */    
-    public static final String DESCRIPTION = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TEstadisticas.Descripcion");
+    public static final String DESCRIPTION = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TEstadisticas.Descripcion");
     
     /**
      * Esta constante indica un paquete entrante en el nodo.

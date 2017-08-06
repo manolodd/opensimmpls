@@ -66,12 +66,12 @@ public class JVentanaEnlace extends javax.swing.JDialog {
         BCKUPCrearEstadisticas = false;
         BCKUPDelay = 1000;
         this.delayFacil.removeAllItems();
-        this.delayFacil.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.Personalized"));
-        this.delayFacil.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.Too_fast"));
-        this.delayFacil.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.Fast"));
-        this.delayFacil.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.Normal"));
-        this.delayFacil.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.Low"));
-        this.delayFacil.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaHija.Too_low"));
+        this.delayFacil.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.Personalized"));
+        this.delayFacil.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.Too_fast"));
+        this.delayFacil.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.Fast"));
+        this.delayFacil.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.Normal"));
+        this.delayFacil.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.Low"));
+        this.delayFacil.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaHija.Too_low"));
         this.delayFacil.setSelectedIndex(0);
     }
 
@@ -112,7 +112,7 @@ public class JVentanaEnlace extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations"); // NOI18N
         setTitle(bundle.getString("VentanaEnlace.titulo")); // NOI18N
         setModal(true);
         setResizable(false);
@@ -259,7 +259,7 @@ public class JVentanaEnlace extends javax.swing.JDialog {
 
         jButton2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jButton2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR));
-        jButton2.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaEnlace.botones.mne.Aceptar").charAt(0));
+        jButton2.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaEnlace.botones.mne.Aceptar").charAt(0));
         jButton2.setText(bundle.getString("VentanaEnlace.boton.Ok")); // NOI18N
         jButton2.setToolTipText(bundle.getString("JVentanaEnlace.Adds_the_link_to_the_topology.")); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -271,7 +271,7 @@ public class JVentanaEnlace extends javax.swing.JDialog {
 
         jButton3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jButton3.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.CANCELAR));
-        jButton3.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("VentanaEnlace.botones.mne.Cancelar").charAt(0));
+        jButton3.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaEnlace.botones.mne.Cancelar").charAt(0));
         jButton3.setText(bundle.getString("VentanaEnlace.boton.Cancel")); // NOI18N
         jButton3.setToolTipText(bundle.getString("JVentanaEnlace.Cancel_the_operation")); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -429,12 +429,12 @@ private void clicEnDelayFacil(java.awt.event.ActionEvent evt) {//GEN-FIRST:event
             break;
         }
     }
-    this.etiquetaDelay.setText(this.delayAvanzado.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaEnlace._ns."));
+    this.etiquetaDelay.setText(this.delayAvanzado.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaEnlace._ns."));
 }//GEN-LAST:event_clicEnDelayFacil
 
 private void clicEnDelayAvanzado(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_clicEnDelayAvanzado
     this.delayFacil.setSelectedIndex(0);
-    this.etiquetaDelay.setText(this.delayAvanzado.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JVentanaEnlace._ns."));
+    this.etiquetaDelay.setText(this.delayAvanzado.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaEnlace._ns."));
 }//GEN-LAST:event_clicEnDelayAvanzado
 
 private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnCancelar

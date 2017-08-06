@@ -48,7 +48,7 @@ public class JOSMFilter extends FileFilter {
         if (!f.isDirectory()) {
             String extension = this.getExtension(f);
             if (extension != null) {
-                if (extension.equals(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JSelectorFicheros.ExtensionOsm"))) {
+                if (extension.equals(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JSelectorFicheros.ExtensionOsm"))) {
                     return true;
                 } else {
                     return false;
@@ -79,6 +79,6 @@ public class JOSMFilter extends FileFilter {
      * @since 2.0
      */
     public String getDescription() {
-        return java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("JSelectorFicheros.DescripcionOSM");
+        return java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JSelectorFicheros.DescripcionOSM");
     }
 }

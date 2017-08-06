@@ -478,7 +478,7 @@ public class TTimer implements Runnable {
             try {
                 this.thread.join();
             } catch (Exception e) {
-                System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TReloj.ErrorAlEsperarFinalizacionDelReloj") + e.toString());
+                System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TReloj.ErrorAlEsperarFinalizacionDelReloj") + e.toString());
             };
         }
     }

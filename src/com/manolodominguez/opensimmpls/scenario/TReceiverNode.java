@@ -225,9 +225,9 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      */    
     public String getErrorMessage(int e) {
         switch (e) {
-            case SIN_NOMBRE: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TConfigReceptor.FALTA_NOMBRE"));
-            case NOMBRE_YA_EXISTE: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TConfigReceptor.NOMBRE_REPETIDO"));
-            case SOLO_ESPACIOS: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/lenguajes/lenguajes").getString("TNodoReceptor.NombreNoSoloEspacios"));
+            case SIN_NOMBRE: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TConfigReceptor.FALTA_NOMBRE"));
+            case NOMBRE_YA_EXISTE: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TConfigReceptor.NOMBRE_REPETIDO"));
+            case SOLO_ESPACIOS: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TNodoReceptor.NombreNoSoloEspacios"));
         }
         return ("");
     }
