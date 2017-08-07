@@ -471,12 +471,12 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * Esta constante identifica el n�mero de puerto que tiene un LER.
      * @since 2.0
      */    
-    public static final int NUM_PUERTOS_LER = 8;
+    public static final int NUM_LER_PORTS = 8;
     /**
      * Esta constante identifica el n�mero de puerto que tiene un LER activo.
      * @since 2.0
      */    
-    public static final int NUM_LERA_PORTS = 8;
+    public static final int NUM_ACTIVE_LER_PORTS = 8;
     /**
      * Esta constante identifica el n�mero de puerto que tiene un LSR.
      * @since 2.0

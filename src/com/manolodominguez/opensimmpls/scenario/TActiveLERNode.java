@@ -68,7 +68,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         super(identifier, ipv4Address, longIDGenerator, topology);
         // FIX: This is an overridable method call in constructor that should be 
         // avoided.
-        this.setPorts(TNode.NUM_LERA_PORTS);
+        this.setPorts(TNode.NUM_ACTIVE_LER_PORTS);
         this.switchingMatrix = new TSwitchingMatrix();
         this.gIdent = new TLongIDGenerator();
         this.gIdentLDP = new TIDGenerator();
@@ -138,12 +138,14 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * This method gets the number of bits that this LERA can route with the
-     * available number of nanoseconds it has. The more switching power the LERA
-     * has, the more bits it can switch with the same number of nanoseconds.
+     * This method gets the number of bits that this Active LER can route with
+     * the available number of nanoseconds it has. The more switching power the
+     * Active LER has, the more bits it can switch with the same number of
+     * nanoseconds.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return the current size of DMGP in KBytes.
+     * @return the number of bits the node can route with the current available
+     * number of nanoseconds.
      * @since 2.0
      */
     public int getMaxRouteableBitsWithCurrentNs() {
@@ -153,12 +155,14 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * This method gets the number of octects that this LERA can route with the
-     * available number of nanoseconds it has. The more switching power the LERA
-     * has, the more octects it can switch with the same number of nanoseconds.
+     * This method gets the number of octects that this Active LER can route
+     * with the available number of nanoseconds it has. The more switching power
+     * the Active LER has, the more octects it can switch with the same number
+     * of nanoseconds.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return the current size of DMGP in KBytes.
+     * @return the number of octects the node can route with the current
+     * available number of nanoseconds.
      * @since 2.0
      */
     public int getMaxRouteableOctectsWithCurrentNs() {
@@ -168,7 +172,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * This method gets the switching power of this LERA, in Mbps.
+     * This method gets the switching power of this Active LER, in Mbps.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the routing power of the node in Mbps.
@@ -179,10 +183,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * This method sets the switching power of this LERA, in Mbps.
+     * This method sets the switching power of this Active LER, in Mbps.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param routingPowerInMbps the routing power of this LERA, in Mbps.
+     * @param routingPowerInMbps the routing power of this Active LER, in Mbps.
      * @since 2.0
      */
     public void setRoutingPowerInMbps(int routingPowerInMbps) {
@@ -190,10 +194,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * This method gets the size of this LERA's buffer, in MBytes.
+     * This method gets the size of this Active LER's buffer, in MBytes.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return the size of this LERA's buffer, in MBytes.
+     * @return the size of this Active LER's buffer, in MBytes.
      * @since 2.0
      */
     public int getBufferSizeInMBytes() {
@@ -201,10 +205,11 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     }
 
     /**
-     * This method sets the size of this LERA's buffer, in MBytes.
+     * This method sets the size of this Active LER's buffer, in MBytes.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param bufferSizeInMBytes the size of this LERA's buffer, in MBytes.
+     * @param bufferSizeInMBytes the size of this Active LER's buffer, in
+     * MBytes.
      * @since 2.0
      */
     public void setBufferSizeInMBytes(int bufferSizeInMBytes) {
@@ -246,11 +251,11 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
 
     /**
      * This method receive a timer event from the simulation's global timer. It
-     * does some initial tasks and then wake up the LERA to start doing its
-     * work.
+     * does some initial tasks and then wake up the Active LER to start doing
+     * its work.
      *
      * @param timerEvent a timer event that is used to synchronize all nodes and
-     * that inclues a number of nanoseconds to be used by the LERA.
+     * that inclues a number of nanoseconds to be used by the Active LER.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -269,7 +274,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
 
     /**
      * This method starts all tasks that has to be executed during a timer tick.
-     * The number of nanoseconds of this tick is the time this LERA will work.
+     * The number of nanoseconds of this tick is the time this Active LER will
+     * work.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
