@@ -161,11 +161,11 @@ public class TSMTP {
                             printStream.println("DATA");
                             remoteSMTPHostResponse = bufferedReader.readLine();
                             if (remoteSMTPHostResponse.startsWith("354")) {
-                                printStream.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TSMTP.Subject"));
-                                printStream.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TSMTP.XSoftware"));
-                                printStream.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TSMTP.Programador"));
-                                printStream.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TSMTP.ProgramadorWeb"));
-                                printStream.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TSMTP.ProgramadorEmail"));
+                                printStream.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TSMTP.Subject"));
+                                printStream.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TSMTP.XSoftware"));
+                                printStream.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TSMTP.Programador"));
+                                printStream.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TSMTP.ProgramadorWeb"));
+                                printStream.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TSMTP.ProgramadorEmail"));
                                 printStream.println(messageBody);
                                 printStream.println(".");
                                 remoteSMTPHostResponse = bufferedReader.readLine();

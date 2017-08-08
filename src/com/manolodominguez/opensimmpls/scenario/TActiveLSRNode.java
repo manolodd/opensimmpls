@@ -1926,11 +1926,11 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     public String getErrorMessage(int errorCode) {
         switch (errorCode) {
             case TActiveLSRNode.UNNAMED:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TConfigLSR.FALTA_NOMBRE"));
+                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigLSR.FALTA_NOMBRE"));
             case TActiveLSRNode.NAME_ALREADY_EXISTS:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TConfigLSR.NOMBRE_REPETIDO"));
+                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigLSR.NOMBRE_REPETIDO"));
             case TActiveLSRNode.ONLY_BLANK_SPACES:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TNodoLSR.NombreNoSoloEspacios"));
+                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TNodoLSR.NombreNoSoloEspacios"));
         }
         return ("");
     }

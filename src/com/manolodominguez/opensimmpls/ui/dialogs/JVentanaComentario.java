@@ -79,7 +79,7 @@ public class JVentanaComentario extends javax.swing.JDialog {
         remitente = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations"); // NOI18N
         setTitle(bundle.getString("JVentanaComentario.ContactarAutores")); // NOI18N
         setModal(true);
         setResizable(false);
@@ -96,7 +96,7 @@ public class JVentanaComentario extends javax.swing.JDialog {
 
         jButton2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jButton2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.SOBRE_EMAIL));
-        jButton2.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaComentario.mnemonico.enviar").charAt(0));
+        jButton2.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaComentario.mnemonico.enviar").charAt(0));
         jButton2.setText(bundle.getString("JVentanaComentario.Send")); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -107,7 +107,7 @@ public class JVentanaComentario extends javax.swing.JDialog {
 
         jButton3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jButton3.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.CANCELAR));
-        jButton3.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaComentario.mnemonico.cancelar").charAt(0));
+        jButton3.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaComentario.mnemonico.cancelar").charAt(0));
         jButton3.setText(bundle.getString("JVentanaComentario.Cancel")); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -161,7 +161,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
             int estadoEnvio = enviadorDeCorreo.sendNotification(this.comentario.getText());
             if (estadoEnvio != 0) {
                 JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
-                va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaComentario.ErrorEnviando"));
+                va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaComentario.ErrorEnviando"));
                 va.show();
             } else {
                 this.setVisible(false);
@@ -169,22 +169,22 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
             }
         } else {
             JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
-            va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaComentario.ErrorAlConectar"));
+            va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaComentario.ErrorAlConectar"));
             va.show();
         }
     } else {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
         switch (estado) {
             case SERVIDOR_VACIO:{
-                va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaComentario.debePonerSMTP"));
+                va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaComentario.debePonerSMTP"));
                 break;
             }
             case REMITE_VACIO:{
-                va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaComentario.DebePonerSuEmail"));
+                va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaComentario.DebePonerSuEmail"));
                 break;
             }
             case SIN_COMENTARIO: {
-                va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaComentario.DebePonerComentario"));
+                va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaComentario.DebePonerComentario"));
                 break;
             }
         }

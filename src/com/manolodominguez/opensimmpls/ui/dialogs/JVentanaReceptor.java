@@ -64,8 +64,8 @@ public class JVentanaReceptor extends javax.swing.JDialog {
         java.awt.Dimension tamPadre=ventanaPadre.getSize();
         setLocation((tamPadre.width-tamFrame.width)/2, (tamPadre.height-tamFrame.height)/2);
         configReceptor = null;
-        coordenadaX.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaEmisor.X=_") + panelCoordenadas.obtenerXReal());
-        coordenadaY.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaEmisor.Y=_") + panelCoordenadas.obtenerYReal());
+        coordenadaX.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.X=_") + panelCoordenadas.obtenerXReal());
+        coordenadaY.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.Y=_") + panelCoordenadas.obtenerYReal());
         BKUPMostrarNombre = true;
         BKUPNombre = "";
         reconfigurando = false;
@@ -100,7 +100,7 @@ public class JVentanaReceptor extends javax.swing.JDialog {
 
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        setTitle(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaReceptor.titulo"));
+        setTitle(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaReceptor.titulo"));
         setModal(true);
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -115,24 +115,24 @@ public class JVentanaReceptor extends javax.swing.JDialog {
         panelGeneral.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         iconoReceptor.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.RECEPTOR));
-        iconoReceptor.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaReceptor.descripcion"));
+        iconoReceptor.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaReceptor.descripcion"));
         panelGeneral.add(iconoReceptor, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
         etiquetaNombre.setFont(new java.awt.Font("Dialog", 0, 12));
-        etiquetaNombre.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaReceptor.etiquetaNombre"));
+        etiquetaNombre.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaReceptor.etiquetaNombre"));
         panelGeneral.add(etiquetaNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 80, 120, -1));
 
         panelGeneral.add(nombreNodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 105, 125, -1));
 
         panelPosicion.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        panelPosicion.setBorder(new javax.swing.border.TitledBorder(null, java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaReceptor.titulogrupo"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12)));
+        panelPosicion.setBorder(new javax.swing.border.TitledBorder(null, java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaReceptor.titulogrupo"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12)));
         coordenadaX.setFont(new java.awt.Font("Dialog", 0, 12));
-        coordenadaX.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaReceptor.X=_"));
+        coordenadaX.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaReceptor.X=_"));
         panelPosicion.add(coordenadaX, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, -1, -1));
 
         coordenadaY.setFont(new java.awt.Font("Dialog", 0, 12));
-        coordenadaY.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaReceptor.Y=_"));
+        coordenadaY.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaReceptor.Y=_"));
         panelPosicion.add(coordenadaY, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
 
         panelCoordenadas.setBackground(new java.awt.Color(255, 255, 255));
@@ -154,19 +154,19 @@ public class JVentanaReceptor extends javax.swing.JDialog {
 
         verNombre.setFont(new java.awt.Font("Dialog", 0, 12));
         verNombre.setSelected(true);
-        verNombre.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaReceptor.verNombre"));
+        verNombre.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaReceptor.verNombre"));
         panelGeneral.add(verNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 135, -1, -1));
 
-        panelPestanias.addTab(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaReceptor.tab.General"), panelGeneral);
+        panelPestanias.addTab(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaReceptor.tab.General"), panelGeneral);
 
         panelRapido.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         iconoEnlace1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ASISTENTE));
-        iconoEnlace1.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaReceptor.configuracionSencilla"));
+        iconoEnlace1.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaReceptor.configuracionSencilla"));
         panelRapido.add(iconoEnlace1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
         selectorGenerarEstadisticaFacil.setFont(new java.awt.Font("Dialog", 0, 12));
-        selectorGenerarEstadisticaFacil.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaReceptor.generarEstadisticas"));
+        selectorGenerarEstadisticaFacil.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaReceptor.generarEstadisticas"));
         selectorGenerarEstadisticaFacil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clicEnGenerarEstadisticaFacil(evt);
@@ -175,16 +175,16 @@ public class JVentanaReceptor extends javax.swing.JDialog {
 
         panelRapido.add(selectorGenerarEstadisticaFacil, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 125, -1, -1));
 
-        panelPestanias.addTab(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaReceptor.tab.Fast"), panelRapido);
+        panelPestanias.addTab(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaReceptor.tab.Fast"), panelRapido);
 
         panelAvanzado.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         iconoEnlace2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.AVANZADA));
-        iconoEnlace2.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaReceptor.configuracionAvanzada"));
+        iconoEnlace2.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaReceptor.configuracionAvanzada"));
         panelAvanzado.add(iconoEnlace2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
         selectorGenerarEstadisticaAvanzada.setFont(new java.awt.Font("Dialog", 0, 12));
-        selectorGenerarEstadisticaAvanzada.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("JVentanaReceptor.GenerEstadisticas"));
+        selectorGenerarEstadisticaAvanzada.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaReceptor.GenerEstadisticas"));
         selectorGenerarEstadisticaAvanzada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clicEnGenerarEstadisticaAvanzada(evt);
@@ -193,7 +193,7 @@ public class JVentanaReceptor extends javax.swing.JDialog {
 
         panelAvanzado.add(selectorGenerarEstadisticaAvanzada, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 125, -1, -1));
 
-        panelPestanias.addTab(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaReceptor.tab.Advanced"), panelAvanzado);
+        panelPestanias.addTab(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaReceptor.tab.Advanced"), panelAvanzado);
 
         panelPrincipal.add(panelPestanias, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 370, 240));
 
@@ -201,8 +201,8 @@ public class JVentanaReceptor extends javax.swing.JDialog {
 
         jButton2.setFont(new java.awt.Font("Dialog", 0, 12));
         jButton2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR));
-        jButton2.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaReceptor.botones.mne.Aceptar").charAt(0));
-        jButton2.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaReceptor.boton.Ok"));
+        jButton2.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaReceptor.botones.mne.Aceptar").charAt(0));
+        jButton2.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaReceptor.boton.Ok"));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clicEnAceptar(evt);
@@ -213,8 +213,8 @@ public class JVentanaReceptor extends javax.swing.JDialog {
 
         jButton3.setFont(new java.awt.Font("Dialog", 0, 12));
         jButton3.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.CANCELAR));
-        jButton3.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaReceptor.botones.mne.Cancelar").charAt(0));
-        jButton3.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaReceptor.boton.Cancel"));
+        jButton3.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaReceptor.botones.mne.Cancelar").charAt(0));
+        jButton3.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaReceptor.boton.Cancel"));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clicEnCancelar(evt);
@@ -273,8 +273,8 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
 private void clicEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnPanelCoordenadas
     if (evt.getButton() == MouseEvent.BUTTON1) {
         panelCoordenadas.ponerCoordenadasReducidas(evt.getPoint());
-        coordenadaX.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaEmisor.X=_") + panelCoordenadas.obtenerXReal());
-        coordenadaY.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("VentanaEmisor.Y=_") + panelCoordenadas.obtenerYReal());
+        coordenadaX.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.X=_") + panelCoordenadas.obtenerXReal());
+        coordenadaY.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.Y=_") + panelCoordenadas.obtenerYReal());
         panelCoordenadas.repaint();
     }
 }//GEN-LAST:event_clicEnPanelCoordenadas

@@ -2436,11 +2436,11 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     public String getErrorMessage(int errorCode) {
         switch (errorCode) {
             case TActiveLERNode.UNNAMED:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TConfigLER.FALTA_NOMBRE"));
+                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigLER.FALTA_NOMBRE"));
             case TActiveLERNode.NAME_ALREADY_EXISTS:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TConfigLER.NOMBRE_REPETIDO"));
+                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigLER.NOMBRE_REPETIDO"));
             case TActiveLERNode.ONLY_BLANK_SPACES:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TNodoLER.NombreNoSoloEspacios"));
+                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TNodoLER.NombreNoSoloEspacios"));
         }
         return ("");
     }

@@ -40,7 +40,7 @@ public class EProgressEventGeneratorOnlyAllowASingleListener extends Exception {
      * @return A string explaining the cause of the exception.
      */
     public String toString() {
-        return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("EProgresoUnSoloSuscriptor.texto"));
+        return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("EProgresoUnSoloSuscriptor.texto"));
     }
 
 }

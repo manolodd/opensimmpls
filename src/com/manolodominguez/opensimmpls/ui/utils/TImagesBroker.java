@@ -783,7 +783,7 @@ public class TImagesBroker {
         try {
             cargarImagenes();
         } catch (Exception e) {
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TDispensadorDeImagenes.error"));
+            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TDispensadorDeImagenes.error"));
         }
     }
 

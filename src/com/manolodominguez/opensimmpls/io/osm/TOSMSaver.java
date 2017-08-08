@@ -67,19 +67,19 @@ public class TOSMSaver {
             Iterator auxIterator;
             this.outputStream = new FileOutputStream(outputFile);
             this.output = new PrintStream(this.outputStream);
-            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TAlmacenadorOSM.asteriscos"));
-            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TAlmacenadorOSM.GeneradoPor"));
-            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TAlmacenadorOSM.blanco"));
-            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TAlmacenadorOSM.NoSeDebeModificarEsteFichero"));
-            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TAlmacenadorOSM.PorqueIncorporaUnCodigoCRCParaQue"));
-            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TAlmacenadorOSM.SimuladorPuedaComprobarSuIntegridad"));
-            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TAlmacenadorOSM.ElSimuladorLoPodriaDetectarComoUn"));
-            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TAlmacenadorOSM.FicheroCorrupto"));
-            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TAlmacenadorOSM.asteriscos"));
+            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TAlmacenadorOSM.asteriscos"));
+            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TAlmacenadorOSM.GeneradoPor"));
+            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TAlmacenadorOSM.blanco"));
+            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TAlmacenadorOSM.NoSeDebeModificarEsteFichero"));
+            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TAlmacenadorOSM.PorqueIncorporaUnCodigoCRCParaQue"));
+            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TAlmacenadorOSM.SimuladorPuedaComprobarSuIntegridad"));
+            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TAlmacenadorOSM.ElSimuladorLoPodriaDetectarComoUn"));
+            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TAlmacenadorOSM.FicheroCorrupto"));
+            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TAlmacenadorOSM.asteriscos"));
             this.output.println();
-            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TAlmacenadorOSM.asteriscos"));
-            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TAlmacenadorOSM.DefinicionGlobalDelEscenario"));
-            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TAlmacenadorOSM.asteriscos"));
+            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TAlmacenadorOSM.asteriscos"));
+            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TAlmacenadorOSM.DefinicionGlobalDelEscenario"));
+            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TAlmacenadorOSM.asteriscos"));
             this.output.println();
             this.output.println("@?Escenario");
             this.scenarioCRC.update("@?Escenario".getBytes());
@@ -96,9 +96,9 @@ public class TOSMSaver {
             this.output.println("@!Escenario");
             this.scenarioCRC.update("@!Escenario".getBytes());
             this.output.println();
-            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TAlmacenadorOSM.asteriscos"));
-            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TAlmacenadorOSM.DefinicionDeLaTopologiaDelEscenario"));
-            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TAlmacenadorOSM.asteriscos"));
+            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TAlmacenadorOSM.asteriscos"));
+            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TAlmacenadorOSM.DefinicionDeLaTopologiaDelEscenario"));
+            this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TAlmacenadorOSM.asteriscos"));
             this.output.println();
             this.output.println("@?Topologia");
             this.output.println();
@@ -140,9 +140,9 @@ public class TOSMSaver {
             if (createCRC) {
                 String auxCRCHash = Long.toString(this.scenarioCRC.getValue());
                 this.output.println();
-                this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TAlmacenadorOSM.asteriscos"));
-                this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TAlmacenadorOSM.CodigoCRCParaLaIntegridadDelFichero"));
-                this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("TAlmacenadorOSM.asteriscos"));
+                this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TAlmacenadorOSM.asteriscos"));
+                this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TAlmacenadorOSM.CodigoCRCParaLaIntegridadDelFichero"));
+                this.output.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TAlmacenadorOSM.asteriscos"));
                 this.output.println();
                 this.output.println("@CRC#" + auxCRCHash);
             }

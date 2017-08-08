@@ -35,6 +35,6 @@ public class EIPOverflow extends Exception {
      * @since 2.0
      */
     public String toString() {
-        return(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/translations/translations").getString("GeneradorIP.LlegoAlLimite"));
+        return(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("GeneradorIP.LlegoAlLimite"));
     }
 }
