@@ -108,8 +108,8 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
 
     /**
      * This method gets the number of bits that this LER can route with the
-     * available number of nanoseconds it has. The more switching power the LER
-     * has, the more bits it can switch with the same number of nanoseconds.
+ available number of nanoseconds switchingMatrixIterator has. The more switching power the LER
+ has, the more bits switchingMatrixIterator can switch with the same number of nanoseconds.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the number of bits the node can route with the current available
@@ -124,8 +124,8 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
 
     /**
      * This method gets the number of octects that this LER can route with the
-     * available number of nanoseconds it has. The more switching power the LER
-     * has, the more octects it can switch with the same number of nanoseconds.
+ available number of nanoseconds switchingMatrixIterator has. The more switching power the LER
+ has, the more octects switchingMatrixIterator can switch with the same number of nanoseconds.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the number of octects the node can route with the current
@@ -161,29 +161,32 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     }
 
     /**
-     * Este m�todo obtiene el tama�o del buffer del nodo.
+     * This method gets the size of this LER's buffer, in MBytes.
      *
-     * @return Tama�o del buffer del nodo en MB.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the size of this LER's buffer, in MBytes.
      * @since 2.0
      */
-    public int obtenerTamanioBuffer() {
+    public int getBufferSizeInMBytes() {
         return this.getPorts().getBufferSizeInMBytes();
     }
 
     /**
-     * Este m�todo permite establecer el tama�o del buffer del nodo.
+     * This method sets the size of this LER's buffer, in MBytes.
      *
-     * @param tb Tama�o el buffer deseado para el nodo, en MB.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param bufferSizeInMBytes the size of this LER's buffer, in MBytes.
      * @since 2.0
      */
-    public void ponerTamanioBuffer(int tb) {
-        this.getPorts().setBufferSizeInMB(tb);
+    public void setBufferSizeInMBytes(int bufferSizeInMBytes) {
+        this.getPorts().setBufferSizeInMB(bufferSizeInMBytes);
     }
 
     /**
-     * Este m�todo reinicia los atributos de la clase como si acabasen de ser
-     * creados por el constructor.
+     * This method restart the attributes of the class as in the creation of the
+     * instance.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
@@ -198,9 +201,11 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     }
 
     /**
-     * Este m�todo indica el tipo de nodo de que se trata la instancia actual.
+     * This method gets the type of this node. In this case, switchingMatrixIterator will return the
+ constant TNode.LER.
      *
-     * @return LER. Indica que el nodo es de este tipo.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the constant TNode.LER.
      * @since 2.0
      */
     @Override
@@ -209,166 +214,174 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     }
 
     /**
-     * Este m�todo inicia el hilo de ejecuci�n del LER, para que entre en
-     * funcionamiento. Adem�s controla el tiempo de que dispone el LER para
-     * conmutar paquetes.
+     * This method receive a timer event from the simulation's global timer. It
+     * does some initial tasks and then wake up the LER to start doing its work.
      *
-     * @param evt Evento de reloj que sincroniza la ejecuci�n de los elementos
-     * de la topology.
+     * @param timerEvent a timer event that is used to synchronize all nodes and
+     * that inclues a number of nanoseconds to be used by the LER.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
-    public void receiveTimerEvent(TTimerEvent evt) {
-        this.setStepDuration(evt.getStepDuration());
-        this.setTimeInstant(evt.getUpperLimit());
+    public void receiveTimerEvent(TTimerEvent timerEvent) {
+        this.setStepDuration(timerEvent.getStepDuration());
+        this.setTimeInstant(timerEvent.getUpperLimit());
         if (this.getPorts().isThereAnyPacketToRoute()) {
-            this.availableNs += evt.getStepDuration();
+            this.availableNs += timerEvent.getStepDuration();
         } else {
             this.handleGPSRPPacket();
-            this.availableNs = evt.getStepDuration();
+            this.availableNs = timerEvent.getStepDuration();
         }
         this.startOperation();
     }
 
     /**
-     * Llama a las acciones que se tienen que ejecutar en el transcurso del tic
-     * de reloj que el LER estar� en funcionamiento.
+     * This method starts all tasks that has to be executed during a timer tick.
+     * The number of nanoseconds of this tick is the time this LER will
+     * work.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
     public void run() {
-        // Acciones a llevar a cabo durante el tic.
+        // Actions to be done during the timer tick.
         try {
             this.generateSimulationEvent(new TSENodeCongested(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), this.getPorts().getCongestionLevel()));
         } catch (Exception e) {
+            // FIX: this is not a good practice. Avoid.
             e.printStackTrace();
         }
-        this.comprobarElEstadoDeLasComunicaciones();
-        this.decrementarContadores();
-        this.encaminarPaquetes();
+        this.checkConnectivityStatus();
+        this.decreaseCounters();
+        this.routePackets();
         this.stats.consolidateData(this.getAvailableTime());
-        // Acciones a llevar a cabo durante el tic.
     }
 
     /**
-     * Este m�todo comprueba que haya conectividad con sus nodos adyacentes, es
-     * decir, que no haya caido ning�n enlace. Si ha caido alg�n enlace,
-     * entonces genera la correspondiente se�alizaci�n para notificar este
-     * hecho.
+     * This method check wether the connectivity to the neighbors nodes exists.
+     * Let's say, this check whether a link of this node is down. If so, this
+     * method generates the corresponding event to notify the situation.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void comprobarElEstadoDeLasComunicaciones() {
-        boolean eliminar = false;
-        TSwitchingMatrixEntry emc = null;
-        int idPuerto = 0;
-        TPort puertoSalida = null;
-        TPort puertoEntrada = null;
-        TLink et = null;
-        TLink et2 = null;
+    public void checkConnectivityStatus() {
+        boolean removeSwitchingMatrixEntry = false;
+        TSwitchingMatrixEntry switchingMatrixEntry = null;
+        // FIX: Avoid using harcoded values
+        int portIDAux = 0;
+        TPort outgoingPort = null;
+        TPort incomingPort = null;
+        TLink linkAux1 = null;
+        TLink linkAux2 = null;
         this.switchingMatrix.getMonitor().lock();
-        Iterator it = switchingMatrix.getEntriesIterator();
-        while (it.hasNext()) {
-            emc = (TSwitchingMatrixEntry) it.next();
-            if (emc != null) {
-                idPuerto = emc.getOutgoingPortID();
-                if ((idPuerto >= 0) && (idPuerto < this.ports.getNumberOfPorts())) {
-                    puertoSalida = this.ports.getPort(idPuerto);
-                    if (puertoSalida != null) {
-                        et = puertoSalida.getLink();
-                        if (et != null) {
-                            if ((et.isBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
-                                puertoEntrada = this.ports.getPort(emc.getIncomingPortID());
-                                et = puertoEntrada.getLink();
-                                if (et.getLinkType() == TLink.INTERNAL) {
-                                    labelWithdrawal(emc, emc.getIncomingPortID());
+        Iterator switchingMatrixIterator = switchingMatrix.getEntriesIterator();
+        while (switchingMatrixIterator.hasNext()) {
+            switchingMatrixEntry = (TSwitchingMatrixEntry) switchingMatrixIterator.next();
+            if (switchingMatrixEntry != null) {
+                portIDAux = switchingMatrixEntry.getOutgoingPortID();
+                // FIX: Avoid using harcoded values
+                if ((portIDAux >= 0) && (portIDAux < this.ports.getNumberOfPorts())) {
+                    outgoingPort = this.ports.getPort(portIDAux);
+                    if (outgoingPort != null) {
+                        linkAux1 = outgoingPort.getLink();
+                        if (linkAux1 != null) {
+                            if ((linkAux1.isBroken()) && (switchingMatrixEntry.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
+                                incomingPort = this.ports.getPort(switchingMatrixEntry.getIncomingPortID());
+                                linkAux1 = incomingPort.getLink();
+                                if (linkAux1.getLinkType() == TLink.INTERNAL) {
+                                    labelWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getIncomingPortID());
                                 } else {
-                                    eliminar = true;
+                                    removeSwitchingMatrixEntry = true;
                                 }
                             }
                         }
                     }
                 }
-                idPuerto = emc.getIncomingPortID();
-                if ((idPuerto >= 0) && (idPuerto < this.ports.getNumberOfPorts())) {
-                    puertoEntrada = this.ports.getPort(idPuerto);
-                    if (puertoEntrada != null) {
-                        et = puertoEntrada.getLink();
-                        if (et != null) {
-                            if ((et.isBroken()) && (emc.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
-                                puertoSalida = this.ports.getPort(emc.getOutgoingPortID());
-                                et = puertoSalida.getLink();
-                                if (et.getLinkType() == TLink.INTERNAL) {
-                                    labelWithdrawal(emc, emc.getOutgoingPortID());
+                portIDAux = switchingMatrixEntry.getIncomingPortID();
+                // FIX: Avoid using harcoded values
+                if ((portIDAux >= 0) && (portIDAux < this.ports.getNumberOfPorts())) {
+                    incomingPort = this.ports.getPort(portIDAux);
+                    if (incomingPort != null) {
+                        linkAux1 = incomingPort.getLink();
+                        if (linkAux1 != null) {
+                            if ((linkAux1.isBroken()) && (switchingMatrixEntry.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
+                                outgoingPort = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID());
+                                linkAux1 = outgoingPort.getLink();
+                                if (linkAux1.getLinkType() == TLink.INTERNAL) {
+                                    labelWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getOutgoingPortID());
                                 } else {
-                                    eliminar = false;
+                                    removeSwitchingMatrixEntry = false;
                                 }
                             }
                         }
                     }
                 }
-                if ((emc.getIncomingPortID() >= 0) && ((emc.getOutgoingPortID() >= 0))) {
-                    et = ports.getPort(emc.getIncomingPortID()).getLink();
-                    et2 = ports.getPort(emc.getOutgoingPortID()).getLink();
-                    if (et.isBroken() && et2.isBroken()) {
-                        eliminar = true;
+                // FIX: Avoid using harcoded values
+                if ((switchingMatrixEntry.getIncomingPortID() >= 0) && ((switchingMatrixEntry.getOutgoingPortID() >= 0))) {
+                    linkAux1 = this.ports.getPort(switchingMatrixEntry.getIncomingPortID()).getLink();
+                    linkAux2 = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID()).getLink();
+                    if (linkAux1.isBroken() && linkAux2.isBroken()) {
+                        removeSwitchingMatrixEntry = true;
                     }
-                    if (et.isBroken() && (et2.getLinkType() == TLink.EXTERNAL)) {
-                        eliminar = true;
+                    if (linkAux1.isBroken() && (linkAux2.getLinkType() == TLink.EXTERNAL)) {
+                        removeSwitchingMatrixEntry = true;
                     }
-                    if ((et.getLinkType() == TLink.EXTERNAL) && et2.isBroken()) {
-                        eliminar = true;
+                    if ((linkAux1.getLinkType() == TLink.EXTERNAL) && linkAux2.isBroken()) {
+                        removeSwitchingMatrixEntry = true;
                     }
                 } else {
-                    eliminar = true;
+                    removeSwitchingMatrixEntry = true;
                 }
-                if (eliminar) {
-                    it.remove();
+                if (removeSwitchingMatrixEntry) {
+                    switchingMatrixIterator.remove();
                 }
             } else {
-                it.remove();
+                switchingMatrixIterator.remove();
             }
         }
         this.switchingMatrix.getMonitor().unLock();
     }
 
     /**
-     * Este m�todo lee del puerto que corresponda seg�n el turno Round Robin
-     * consecutivamente hasta que se termina el cr�dito. Si tiene posibilidad de
-     * conmutar y/o encaminar un paquete, lo hace, llamando para ello a los
-     * m�todos correspondiente segun el paquete. Si el paquete est� mal formado
-     * o es desconocido, lo descarta.
+     * This method read read the port to which it is up following a Round Robin
+     * algorithm. It does that until it consumes all the available nanoseconds
+     * for the current tick/step. If it is able to switch or route a given
+     * incoming packet, it does it. If it is a martian packet, the packet is
+     * discarded.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void encaminarPaquetes() {
-        boolean conmute = false;
-        int puertoLeido = 0;
-        TAbstractPDU paquete = null;
-        int octetosQuePuedoMandar = this.getMaxRouteableOctectsWithCurrentNs();
-        while (this.getPorts().canSwitchPacket(octetosQuePuedoMandar)) {
-            conmute = true;
-            paquete = this.ports.getNextPacket();
-            puertoLeido = this.ports.getReadPort();
-            if (paquete != null) {
-                if (paquete.getType() == TAbstractPDU.IPV4) {
-                    this.conmutarIPv4((TIPv4PDU) paquete, puertoLeido);
-                } else if (paquete.getType() == TAbstractPDU.TLDP) {
-                    this.conmutarTLDP((TTLDPPDU) paquete, puertoLeido);
-                } else if (paquete.getType() == TAbstractPDU.MPLS) {
-                    this.conmutarMPLS((TMPLSPDU) paquete, puertoLeido);
-                } else if (paquete.getType() == TAbstractPDU.GPSRP) {
-                    this.conmutarGPSRP((TGPSRPPDU) paquete, puertoLeido);
+    public void routePackets() {
+        boolean atLeastOnePacketRouted = false;
+        int readPort = 0;
+        TAbstractPDU packet = null;
+        int routeableOctectsWithCurrentNs = this.getMaxRouteableOctectsWithCurrentNs();
+        while (this.getPorts().canSwitchPacket(routeableOctectsWithCurrentNs)) {
+            atLeastOnePacketRouted = true;
+            packet = this.ports.getNextPacket();
+            readPort = this.ports.getReadPort();
+            if (packet != null) {
+                // FIX: Convert to a switch statement
+                if (packet.getType() == TAbstractPDU.IPV4) {
+                    this.handleIPv4Packet((TIPv4PDU) packet, readPort);
+                } else if (packet.getType() == TAbstractPDU.TLDP) {
+                    this.handleTLDPPacket((TTLDPPDU) packet, readPort);
+                } else if (packet.getType() == TAbstractPDU.MPLS) {
+                    this.handleMPLSPacket((TMPLSPDU) packet, readPort);
+                } else if (packet.getType() == TAbstractPDU.GPSRP) {
+                    this.handleGPSRPPacket((TGPSRPPDU) packet, readPort);
                 } else {
-                    this.availableNs += this.getNsRequiredForAllOctets(paquete.getSize());
-                    discardPacket(paquete);
+                    this.availableNs += this.getNsRequiredForAllOctets(packet.getSize());
+                    this.discardPacket(packet);
                 }
-                this.availableNs -= this.getNsRequiredForAllOctets(paquete.getSize());
-                octetosQuePuedoMandar = this.getMaxRouteableOctectsWithCurrentNs();
+                this.availableNs -= this.getNsRequiredForAllOctets(packet.getSize());
+                routeableOctectsWithCurrentNs = this.getMaxRouteableOctectsWithCurrentNs();
             }
         }
-        if (conmute) {
+        if (atLeastOnePacketRouted) {
             this.handleGPSRPPacket();
         } else {
             this.increaseStepsWithoutEmitting();
@@ -376,13 +389,13 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     }
 
     /**
-     * Este m�todo conmuta un paquete GPSRP.
+     * Este m�todo conmuta un packet GPSRP.
      *
      * @param paquete Paquete GPSRP a conmutar.
-     * @param pEntrada Puerto por el que ha entrado el paquete.
+     * @param pEntrada Puerto por el que ha entrado el packet.
      * @since 2.0
      */
-    public void conmutarGPSRP(TGPSRPPDU paquete, int pEntrada) {
+    public void handleGPSRPPacket(TGPSRPPDU paquete, int pEntrada) {
         if (paquete != null) {
             int mensaje = paquete.getGPSRPPayload().getGPSRPMessageType();
             int flujo = paquete.getGPSRPPayload().getFlowID();
@@ -412,17 +425,17 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
 
     /**
      * Este m�todo comprueba si existe una entrada en la tabla de encaminamiento
-     * para el paquete entrante. Si no es as�, clasifica el paquete y, si es
-     * necesario, reencola el paquete y solicita una etiqueta para poder
-     * enviarlo. Una vez que tiene entrada en la tabla de encaminamiento,
-     * reenv�a el paquete hacia el interior del dominio MPLS o hacia el
-     * exterior, segun corresponda.
+ para el packet entrante. Si no es as�, clasifica el packet y, si es
+ necesario, reencola el packet y solicita una etiqueta para poder
+ enviarlo. Una vez que tiene entrada en la tabla de encaminamiento,
+ reenv�a el packet hacia el interior del dominio MPLS o hacia el
+ exterior, segun corresponda.
      *
      * @param paquete Paquete IPv4 de entrada.
-     * @param pEntrada Puerto por el que ha accedido al nodo el paquete.
+     * @param pEntrada Puerto por el que ha accedido al nodo el packet.
      * @since 2.0
      */
-    public void conmutarIPv4(TIPv4PDU paquete, int pEntrada) {
+    public void handleIPv4Packet(TIPv4PDU paquete, int pEntrada) {
         int valorFEC = clasificarPaquete(paquete);
         String IPDestinoFinal = paquete.getIPv4Header().getTailEndIPAddress();
         TSwitchingMatrixEntry emc = null;
@@ -484,16 +497,16 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     }
 
     /**
-     * Este m�todo se llama cuando se recibe un paquete TLDP con informaci�n
-     * sobre las etiquetas a use. El m�todo realiza sobre las matriz de
+     * Este m�todo se llama cuando se recibe un packet TLDP con informaci�n
+ sobre las etiquetas a use. El m�todo realiza sobre las matriz de
      * encaminamiento la operaci�n que sea necesario y propaga el cambio al nodo
      * adyacente que corresponda.
      *
      * @param paquete Paquete TLDP recibido.
-     * @param pEntrada Puerto por el que se ha recibido el paquete TLDP.
+     * @param pEntrada Puerto por el que se ha recibido el packet TLDP.
      * @since 2.0
      */
-    public void conmutarTLDP(TTLDPPDU paquete, int pEntrada) {
+    public void handleTLDPPacket(TTLDPPDU paquete, int pEntrada) {
         if (paquete.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REQUEST) {
             this.tratarSolicitudTLDP(paquete, pEntrada);
         } else if (paquete.getTLDPPayload().getTLDPMessageType() == TTLDPPayload.LABEL_REQUEST_OK) {
@@ -509,17 +522,17 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
 
     /**
      * Este m�todo comprueba si existe una entrada en la tabla de encaminamiento
-     * para el paquete entrante. Si no es as�, clasifica el paquete y, si es
-     * necesario, reencola el paquete y solicita una etiqueta para poder
-     * enviarlo. Una vez que tiene entrada en la tabla de encaminamiento,
-     * reenv�a el paquete hacia el siguiente nodo del dominio MPLS o hacia el
-     * exterior, segun corresponda.
+ para el packet entrante. Si no es as�, clasifica el packet y, si es
+ necesario, reencola el packet y solicita una etiqueta para poder
+ enviarlo. Una vez que tiene entrada en la tabla de encaminamiento,
+ reenv�a el packet hacia el siguiente nodo del dominio MPLS o hacia el
+ exterior, segun corresponda.
      *
      * @param paquete Paquete MPLS recibido.
-     * @param pEntrada Puerto por el que ha llegado el paquete MPLS recibido.
+     * @param pEntrada Puerto por el que ha llegado el packet MPLS recibido.
      * @since 2.0
      */
-    public void conmutarMPLS(TMPLSPDU paquete, int pEntrada) {
+    public void handleMPLSPacket(TMPLSPDU paquete, int pEntrada) {
         TMPLSLabel eMPLS = null;
         TSwitchingMatrixEntry emc = null;
         boolean conEtiqueta1 = false;
@@ -688,7 +701,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     }
 
     /**
-     * Este m�todo trata un paquete TLDP de eliminaci�n de etiqueta.
+     * Este m�todo trata un packet TLDP de eliminaci�n de etiqueta.
      *
      * @param paquete Eliminaci�n de etiqueta recibida.
      * @param pEntrada Puerto por el que se recibi�n la eliminaci�n de etiqueta.
@@ -736,7 +749,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     }
 
     /**
-     * Este m�todo trata un paquete TLDP de confirmaci�n de etiqueta.
+     * Este m�todo trata un packet TLDP de confirmaci�n de etiqueta.
      *
      * @param paquete Confirmaci�n de etiqueta.
      * @param pEntrada Puerto por el que se ha recibido la confirmaci�n de
@@ -781,7 +794,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     }
 
     /**
-     * Este m�todo trata un paquete TLDP de denegaci�n de etiqueta.
+     * Este m�todo trata un packet TLDP de denegaci�n de etiqueta.
      *
      * @param paquete Paquete de denegaci�n de etiquetas recibido.
      * @param pEntrada Puerto por el que se ha recibido la denegaci�n de
@@ -815,8 +828,8 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     }
 
     /**
-     * Este m�todo trata un paquete TLDP de confirmaci�n de eliminaci�n de
-     * etiqueta.
+     * Este m�todo trata un packet TLDP de confirmaci�n de eliminaci�n de
+ etiqueta.
      *
      * @param paquete Paquete de confirmaci�n e eliminaci�n de etiqueta.
      * @param pEntrada Puerto por el que se ha recibido la confirmaci�n de
@@ -1166,7 +1179,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      *
      * @since 2.0
      */
-    public void decrementarContadores() {
+    public void decreaseCounters() {
         TSwitchingMatrixEntry emc = null;
         this.switchingMatrix.getMonitor().lock();
         Iterator it = this.switchingMatrix.getEntriesIterator();
@@ -1199,10 +1212,10 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
 
     /**
      * Este m�todo crea una nueva entrada en la matriz de conmutaci�n con los
-     * datos de un paquete TLDP entrante.
+ datos de un packet TLDP entrante.
      *
      * @param paqueteSolicitud Paquete TLDP entrante, de solicitud de etiqueta.
-     * @param pEntrada Puerto de entrada del paquete TLDP.
+     * @param pEntrada Puerto de entrada del packet TLDP.
      * @return La entrada de la matriz de conmutaci�n, ya creada, insertada e
      * inicializada.
      * @since 2.0
@@ -1264,10 +1277,10 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
 
     /**
      * Este m�todo crea una nueva entrada en la matriz de conmutaci�n bas�ndose
-     * en un paquete IPv4 recibido.
+ en un packet IPv4 recibido.
      *
      * @param paqueteIPv4 Paquete IPv4 recibido.
-     * @param pEntrada Puerto por el que ha llegado el paquete IPv4.
+     * @param pEntrada Puerto por el que ha llegado el packet IPv4.
      * @return La entrada de la matriz de conmutaci�n, creada, insertada e
      * inicializada.
      * @since 2.0
@@ -1325,10 +1338,10 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
 
     /**
      * Este m�todo crea una nueva entrada en la matriz de conmutaci�n bas�ndose
-     * en un paquete MPLS recibido.
+ en un packet MPLS recibido.
      *
      * @param paqueteMPLS Paquete MPLS recibido.
-     * @param pEntrada Puerto por el que ha llegado el paquete MPLS.
+     * @param pEntrada Puerto por el que ha llegado el packet MPLS.
      * @return La entrada de la matriz de conmutaci�n, creada, insertada e
      * inicializada.
      * @since 2.0
@@ -1387,16 +1400,16 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     }
 
     /**
-     * Este m�todo toma un paquete IPv4 y la entrada de la matriz de conmutaci�n
-     * asociada al mismo y crea un paquete MPLS etiquetado correctamente que
-     * contiene dicho paquete IPv4 listo para ser transmitido hacia el interior
-     * del dominio.
+     * Este m�todo toma un packet IPv4 y la entrada de la matriz de conmutaci�n
+ asociada al mismo y crea un packet MPLS etiquetado correctamente que
+ contiene dicho packet IPv4 listo para ser transmitido hacia el interior
+ del dominio.
      *
      * @param paqueteIPv4 Paquete IPv4 que se debe etiquetar.
-     * @param emc Entrada de la matriz de conmutaci�n asociada al paquete IPv4
-     * que se desea etiquetar.
-     * @return El paquete IPv4 de entrada, convertido en un paquete MPLS
-     * correctamente etiquetado.
+     * @param emc Entrada de la matriz de conmutaci�n asociada al packet IPv4
+ que se desea etiquetar.
+     * @return El packet IPv4 de entrada, convertido en un packet MPLS
+ correctamente etiquetado.
      * @since 2.0
      */
     public TMPLSPDU crearPaqueteMPLS(TIPv4PDU paqueteIPv4, TSwitchingMatrixEntry emc) {
@@ -1425,15 +1438,15 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     }
 
     /**
-     * Este m�todo toma como par�metro un paquete MPLS y su entrada en la matriz
-     * de conmutaci�n asociada. Extrae del paquete MPLS el paquete IP
-     * correspondiente y actualiza sus valores correctamente.
+     * Este m�todo toma como par�metro un packet MPLS y su entrada en la matriz
+ de conmutaci�n asociada. Extrae del packet MPLS el packet IP
+ correspondiente y actualiza sus valores correctamente.
      *
      * @param paqueteMPLS Paquete MPLS cuyo contenido de nivel IPv4 se desea
      * extraer.
-     * @param emc Entrada de la matriz de conmutaci�n asociada al paquete MPLS.
-     * @return Paquete IPv4 que corresponde al paquete MPLS una vez que se ha
-     * eliminado toda la informaci�n MLPS; que se ha desetiquetado.
+     * @param emc Entrada de la matriz de conmutaci�n asociada al packet MPLS.
+     * @return Paquete IPv4 que corresponde al packet MPLS una vez que se ha
+ eliminado toda la informaci�n MLPS; que se ha desetiquetado.
      * @since 2.0
      */
     public TIPv4PDU crearPaqueteIPv4(TMPLSPDU paqueteMPLS, TSwitchingMatrixEntry emc) {
@@ -1461,13 +1474,13 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     }
 
     /**
-     * Este m�todo comprueba si un paquete recibido es un paquete del interior
-     * del dominio MPLS o es un paquete externo al mismo.
+     * Este m�todo comprueba si un packet recibido es un packet del interior
+ del dominio MPLS o es un packet externo al mismo.
      *
      * @param paquete Paquete que ha llegado al nodo.
-     * @param pEntrada Puerto por el que ha llegado el paquete al nodo.
-     * @return true, si el paquete es exterior al dominio MPLS. false en caso
-     * contrario.
+     * @param pEntrada Puerto por el que ha llegado el packet al nodo.
+     * @return true, si el packet es exterior al dominio MPLS. false en caso
+ contrario.
      * @since 2.0
      */
     public boolean esUnPaqueteExterno(TAbstractPDU paquete, int pEntrada) {
@@ -1482,20 +1495,20 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     }
 
     /**
-     * Este m�todo contabiliza un paquete recibido o conmutado en las
-     * estad�sticas del nodo.
+     * Este m�todo contabiliza un packet recibido o conmutado en las
+ estad�sticas del nodo.
      *
-     * @param paquete paquete que se desa contabilizar.
-     * @param deEntrada TRUE, si el paquete se ha recibido en el nodo. FALSE so
-     * el paquete ha salido del nodo.
+     * @param paquete packet que se desa contabilizar.
+     * @param deEntrada TRUE, si el packet se ha recibido en el nodo. FALSE so
+ el packet ha salido del nodo.
      * @since 2.0
      */
     public void contabilizarPaquete(TAbstractPDU paquete, boolean deEntrada) {
     }
 
     /**
-     * Este m�todo descarta un paquete en el nodo y refleja dicho descarte en
-     * las estad�sticas del nodo.
+     * Este m�todo descarta un packet en el nodo y refleja dicho descarte en
+ las estad�sticas del nodo.
      *
      * @param paquete Paquete que se quiere descartar.
      * @since 2.0
@@ -1512,15 +1525,15 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     }
 
     /**
-     * Este m�todo toma como parametro un paquete, supuestamente sin etiquetar,
-     * y lo clasifica. Esto significa que determina el FEC_ENTRY al que
-     * pertenece el paquete. Este valor se calcula como el c�digo HASH
-     * practicado a la concatenaci�n de la IP de origen y la IP de destino. En
-     * la pr�ctica esto significa que paquetes con el mismo origen y con el
-     * mismo destino pertenecer�n al mismo FEC_ENTRY.
+     * Este m�todo toma como parametro un packet, supuestamente sin etiquetar,
+ y lo clasifica. Esto significa que determina el FEC_ENTRY al que
+ pertenece el packet. Este valor se calcula como el c�digo HASH
+ practicado a la concatenaci�n de la IP de origen y la IP de destino. En
+ la pr�ctica esto significa que paquetes con el mismo origen y con el
+ mismo destino pertenecer�n al mismo FEC_ENTRY.
      *
-     * @param paquete El paquete que se desea clasificar.
-     * @return El FEC_ENTRY al que pertenece el paquete pasado por par�metros.
+     * @param paquete El packet que se desea clasificar.
+     * @return El FEC_ENTRY al que pertenece el packet pasado por par�metros.
      * @since 2.0
      */
     public int clasificarPaquete(TAbstractPDU paquete) {
@@ -1760,7 +1773,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
 
     /**
      * Este m�todo no hace nada en un LSR. En un nodo activoPermitir� solicitar
-     * a un nodo activo la retransmisi�n de un paquete.
+ a un nodo activo la retransmisi�n de un packet.
      *
      * @param paquete Paquete cuya retransmisi�n se est� solicitando.
      * @param pSalida Puerto por el que se enviar� la solicitud.

@@ -363,7 +363,7 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
         configLER.setShowName(BKUPMostrarNombre);
         configLER.setName(BKUPNombre);
         configLER.setWellConfigured(true);
-        configLER.ponerTamanioBuffer(BKUPTamBuffer);
+        configLER.setBufferSizeInMBytes(BKUPTamBuffer);
         configLER.setRoutingPowerInMbps(BKUPPotencia);
         configLER.setGenerateStats(BKUPGenerarEstadisticas);
         reconfigurando = false;
@@ -379,7 +379,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     if (!this.reconfigurando){
         configLER.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
-    configLER.ponerTamanioBuffer(this.selectorDeTamanioBuffer.getValue());
+    configLER.setBufferSizeInMBytes(this.selectorDeTamanioBuffer.getValue());
     configLER.setRoutingPowerInMbps(this.selectorDePotenciaDeConmutacion.getValue());
     configLER.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
     configLER.setName(nombreNodo.getText());
@@ -438,7 +438,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             BKUPMostrarNombre = tnler.getShowName();
             BKUPNombre = tnler.getName();
             BKUPPotencia = tnler.getRoutingPowerInMbps();
-            BKUPTamBuffer = tnler.obtenerTamanioBuffer();
+            BKUPTamBuffer = tnler.getBufferSizeInMBytes();
 
             this.selectorDeGenerarEstadisticasAvanzado.setSelected(BKUPGenerarEstadisticas);
             this.selectorDeGenerarEstadisticasSencillo.setSelected(BKUPGenerarEstadisticas);

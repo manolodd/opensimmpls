@@ -372,9 +372,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                         }
                     }
                 }
+                // FIX: Avoid using harcoded values
                 if ((switchingMatrixEntry.getIncomingPortID() >= 0) && ((switchingMatrixEntry.getOutgoingPortID() >= 0))) {
-                    linkAux1 = ports.getPort(switchingMatrixEntry.getIncomingPortID()).getLink();
-                    linkAux2 = ports.getPort(switchingMatrixEntry.getOutgoingPortID()).getLink();
+                    linkAux1 = this.ports.getPort(switchingMatrixEntry.getIncomingPortID()).getLink();
+                    linkAux2 = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID()).getLink();
                     if (linkAux1.isBroken() && linkAux2.isBroken()) {
                         removeSwitchingMatrixEntry = true;
                     }
@@ -464,7 +465,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     handleGPSRPPacket((TGPSRPPDU) packet, readPort);
                 } else {
                     this.availableNs += getNsRequiredForAllOctets(packet.getSize());
-                    discardPacket(packet);
+                    this.discardPacket(packet);
                 }
                 this.availableNs -= getNsRequiredForAllOctets(packet.getSize());
                 routeableOctectsWithCurrentNs = this.getMaxRouteableOctectsWithCurrentNs();
