@@ -377,7 +377,7 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
     configLER.setWellConfigured(true);
     if (!this.reconfigurando){
-        configLER.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
+        configLER.setScreenPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
     configLER.setBufferSizeInMBytes(this.selectorDeTamanioBuffer.getValue());
     configLER.setRoutingPowerInMbps(this.selectorDePotenciaDeConmutacion.getValue());
@@ -386,7 +386,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     configLER.setShowName(verNombre.isSelected());
     configLER.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
     int error = configLER.validateConfig(topo, this.reconfigurando);
-    if (error != TLERNode.CORRECTA) {
+    if (error != TLERNode.OK) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
         va.mostrarMensaje(configLER.getErrorMessage(error));
         va.show();

@@ -225,7 +225,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
             nd = (TNode) itd.next();
             if ((nd.getNodeType() == TNode.LER) ||
                (nd.getNodeType() == TNode.LERA)) {
-                   pol.addPoint(nd.obtenerPosicion().x+24, nd.obtenerPosicion().y+24);
+                   pol.addPoint(nd.getScreenPosition().x+24, nd.getScreenPosition().y+24);
                    vertices ++;
                }
         };
@@ -261,8 +261,8 @@ public class JSimulationPanel extends javax.swing.JPanel {
         Iterator ite = topologia.getLinksIterator();
         while (ite.hasNext()) {
             TLink enlace = (TLink) ite.next();
-            Point inicio = enlace.getNodeAtEnd1().obtenerPosicion();
-            Point fin = enlace.getNodeAtEnd2().obtenerPosicion();
+            Point inicio = enlace.getNodeAtEnd1().getScreenPosition();
+            Point fin = enlace.getNodeAtEnd2().getScreenPosition();
             int del = enlace.getDelay();
             g2Dbuf.setStroke(new BasicStroke((float) obtenerGrosorEnlace(del)));
             if (enlace.getLinkType() == TLink.EXTERNAL) {
@@ -333,10 +333,10 @@ public class JSimulationPanel extends javax.swing.JPanel {
             if (enlace.getShowName()) {
                 FontMetrics fm = this.getFontMetrics(this.getFont());
                 int anchoTexto = fm.charsWidth(enlace.getName().toCharArray(), 0, enlace.getName().length());
-                int posX1 = enlace.getNodeAtEnd1().obtenerPosicion().x+24;
-                int posY1 = enlace.getNodeAtEnd1().obtenerPosicion().y+24;
-                int posX2 = enlace.getNodeAtEnd2().obtenerPosicion().x+24;
-                int posY2 = enlace.getNodeAtEnd2().obtenerPosicion().y+24;
+                int posX1 = enlace.getNodeAtEnd1().getScreenPosition().x+24;
+                int posY1 = enlace.getNodeAtEnd1().getScreenPosition().y+24;
+                int posX2 = enlace.getNodeAtEnd2().getScreenPosition().x+24;
+                int posY2 = enlace.getNodeAtEnd2().getScreenPosition().y+24;
                 int posX = Math.min(posX1, posX2) + ((Math.max(posX1, posX2) - Math.min(posX1, posX2)) / 2) - (anchoTexto / 2);
                 int posY = Math.min(posY1, posY2) + ((Math.max(posY1, posY2) - Math.min(posY1, posY2)) / 2) + 5;
                 g2Dbuf.setColor(this.COLOR_NOMBRE_ENLACE);
@@ -358,7 +358,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
         Iterator ite = topologia.getNodesIterator();
         while (ite.hasNext()) {
             TNode nodo = (TNode) ite.next();
-            Point posicion = nodo.obtenerPosicion();
+            Point posicion = nodo.getScreenPosition();
 
             if ((posicion.x+48) > maxX)
                 maxX = posicion.x+48;
@@ -415,8 +415,8 @@ public class JSimulationPanel extends javax.swing.JPanel {
             if (nodo.getShowName()) {
                 FontMetrics fm = this.getFontMetrics(this.getFont());
                 int anchoTexto = fm.charsWidth(nodo.getName().toCharArray(), 0, nodo.getName().length());
-                int posX = (nodo.obtenerPosicion().x + 24) - ((anchoTexto/2));
-                int posY = nodo.obtenerPosicion().y+60;
+                int posX = (nodo.getScreenPosition().x + 24) - ((anchoTexto/2));
+                int posY = nodo.getScreenPosition().y+60;
                 g2Dbuf.setColor(Color.WHITE);
                 g2Dbuf.fillRoundRect(posX-3, posY-13, anchoTexto+5, 17, 10, 10);
                 g2Dbuf.setColor(Color.GRAY);
@@ -509,7 +509,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
                     } else if (evento.getSubtype() == TSimulationEvent.PACKET_DISCARDED) {
                         TSEPacketDiscarded epd = (TSEPacketDiscarded) evento;
                         TNode nt = (TNode) epd.obtenerFuente();
-                        Point p = nt.obtenerPosicion();
+                        Point p = nt.getScreenPosition();
                         if (epd.obtenerTipoPaquete() == TAbstractPDU.GPSRP) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_GOS_CAE), p.x, p.y+24, null);
                         } else if (epd.obtenerTipoPaquete() == TAbstractPDU.TLDP) {
@@ -528,27 +528,27 @@ public class JSimulationPanel extends javax.swing.JPanel {
                     } else if (evento.getSubtype() == TSimulationEvent.PACKET_GENERATED) {
                         TSEPacketGenerated epg = (TSEPacketGenerated) evento;
                         TNode nt = (TNode) epg.obtenerFuente();
-                        Point p = nt.obtenerPosicion();
+                        Point p = nt.getScreenPosition();
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PAQUETE_GENERADO), p.x+8, p.y-16, null);
                     } else if (evento.getSubtype() == TSimulationEvent.PACKET_SENT) {
                         TSEPacketSent epe = (TSEPacketSent) evento;
                         TNode nt = (TNode) epe.obtenerFuente();
-                        Point p = nt.obtenerPosicion();
+                        Point p = nt.getScreenPosition();
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PAQUETE_EMITIDO), p.x+24, p.y-16, null);
                     } else if (evento.getSubtype() == TSimulationEvent.PACKET_RECEIVED) {
                         TSEPacketReceived epr = (TSEPacketReceived) evento;
                         TNode nt = (TNode) epr.obtenerFuente();
-                        Point p = nt.obtenerPosicion();
+                        Point p = nt.getScreenPosition();
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PAQUETE_RECIBIDO), p.x-8, p.y-16, null);
                     } else if (evento.getSubtype() == TSimulationEvent.PACKET_SWITCHED) {
                         TSEPacketSwitched epr = (TSEPacketSwitched) evento;
                         TNode nt = (TNode) epr.obtenerFuente();
-                        Point p = nt.obtenerPosicion();
+                        Point p = nt.getScreenPosition();
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PAQUETE_CONMUTADO), p.x+40, p.y-16, null);
                     } else if (evento.getSubtype() == TSimulationEvent.PACKET_ROUTED) {
                         TSEPacketRouted epr = (TSEPacketRouted) evento;
                         TNode nt = (TNode) epr.obtenerFuente();
-                        Point p = nt.obtenerPosicion();
+                        Point p = nt.getScreenPosition();
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PAQUETE_CONMUTADO), p.x+40, p.y-16, null);
                     }
                 }
@@ -576,7 +576,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
                     if (evento.getSubtype() == TSimulationEvent.NODE_CONGESTED) {
                         TSENodeCongested enc = (TSENodeCongested) evento;
                         TNode nt = (TNode) enc.obtenerFuente();
-                        Point p = nt.obtenerPosicion();
+                        Point p = nt.getScreenPosition();
                         int tipo = nt.getNodeType();
                         long cong = enc.obtenerPorcentajeCongestion();
                         if ((cong >= 50) && (cong < 75)) {

@@ -1031,7 +1031,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                     p2.y = 0;
                 if (p2.y > panelDisenio.getSize().height)
                     p2.y = panelDisenio.getSize().height;
-                nodoSeleccionado.setPosition(new Point(p2.x, p2.y));
+                nodoSeleccionado.setScreenPosition(new Point(p2.x, p2.y));
                 panelSimulacion.repaint();
                 this.escenario.setModified(true);
             }
@@ -1661,7 +1661,7 @@ private void arrastrandoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
                 p2.y = 0;
             if (p2.y > panelDisenio.getSize().height)
                 p2.y = panelDisenio.getSize().height;
-            nodoSeleccionado.setPosition(new Point(p2.x, p2.y));
+            nodoSeleccionado.setScreenPosition(new Point(p2.x, p2.y));
             panelDisenio.repaint();
             this.escenario.setModified(true);
         }

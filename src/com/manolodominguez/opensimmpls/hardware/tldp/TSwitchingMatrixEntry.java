@@ -150,7 +150,7 @@ public class TSwitchingMatrixEntry {
      * @param isRequestForBackupLSP TRUE, if the entry has a backup LSP
      * requests. Otherwise, returns false.
      */
-    public void setEntryIsForBackupLSP(boolean isRequestForBackupLSP) {
+    public void setEntryAsForBackupLSP(boolean isRequestForBackupLSP) {
         this.isRequestForBackupLSP = isRequestForBackupLSP;
     }
 

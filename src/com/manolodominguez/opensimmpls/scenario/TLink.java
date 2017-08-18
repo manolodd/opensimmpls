@@ -108,10 +108,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      */    
     public Point obtenerCoordenadasPaquete(long porcentaje) {
         Point coordenadas = new Point(0, 0);
-        int x1 = extremo1.obtenerPosicion().x+24;
-        int y1 = extremo1.obtenerPosicion().y+24;
-        int x2 = extremo2.obtenerPosicion().x+24;
-        int y2 = extremo2.obtenerPosicion().y+24;
+        int x1 = extremo1.getScreenPosition().x+24;
+        int y1 = extremo1.getScreenPosition().y+24;
+        int x2 = extremo2.getScreenPosition().x+24;
+        int y2 = extremo2.getScreenPosition().y+24;
         coordenadas.x = x1;
         coordenadas.y = y1;
         int distanciaX = (x2-x1);
@@ -328,7 +328,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @since 2.0
      */
     public Point obtenerPosicion1() {
-        return extremo1.obtenerPosicion();
+        return extremo1.getScreenPosition();
     }
     
     /**
@@ -377,7 +377,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @since 2.0
      */
     public Point obtenerPosicion2() {
-        return extremo2.obtenerPosicion();
+        return extremo2.getScreenPosition();
     }
     
     /**
@@ -427,10 +427,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @since 2.0
      */
     public boolean estaEnPosicion(Point p) {
-        int x1 = extremo1.obtenerPosicion().x+24;
-        int y1 = extremo1.obtenerPosicion().y+24;
-        int x2 = extremo2.obtenerPosicion().x+24;
-        int y2 = extremo2.obtenerPosicion().y+24;
+        int x1 = extremo1.getScreenPosition().x+24;
+        int y1 = extremo1.getScreenPosition().y+24;
+        int x2 = extremo2.getScreenPosition().x+24;
+        int y2 = extremo2.getScreenPosition().y+24;
         int dx, dy, pasos, k;
         double incrementox, incrementoy, x, y;
         

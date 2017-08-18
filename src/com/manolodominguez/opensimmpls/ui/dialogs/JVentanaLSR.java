@@ -376,7 +376,7 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
     configLSR.setWellConfigured(true);
     if (!this.reconfigurando){
-        configLSR.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
+        configLSR.setScreenPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
     configLSR.ponerTamanioBuffer(this.selectorDeTamanioBuffer.getValue());
     configLSR.ponerPotenciaEnMb(this.selectorDePotenciaDeConmutacion.getValue());

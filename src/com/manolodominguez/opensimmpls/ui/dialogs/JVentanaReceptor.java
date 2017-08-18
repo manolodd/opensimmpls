@@ -254,7 +254,7 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
     configReceptor.setWellConfigured(true);
     if (!this.reconfigurando){
-        configReceptor.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
+        configReceptor.setScreenPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
     configReceptor.setName(nombreNodo.getText());
     configReceptor.setShowName(verNombre.isSelected());

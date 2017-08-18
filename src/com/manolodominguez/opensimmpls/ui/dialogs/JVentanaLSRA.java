@@ -413,7 +413,7 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
     configLSRA.setWellConfigured(true);
     if (!this.reconfigurando){
-        configLSRA.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
+        configLSRA.setScreenPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
     configLSRA.setDMGPSizeInKB(this.selectorDeTamanioDMGP.getValue());
     configLSRA.setBufferSizeInMBytes(this.selectorDeTamanioBuffer.getValue());

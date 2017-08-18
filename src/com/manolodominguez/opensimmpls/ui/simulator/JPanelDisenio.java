@@ -121,7 +121,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
             nd = (TNode) itd.next();
             if ((nd.getNodeType() == TNode.LER) ||
                (nd.getNodeType() == TNode.LERA)) {
-                   pol.addPoint(nd.obtenerPosicion().x+24, nd.obtenerPosicion().y+24);
+                   pol.addPoint(nd.getScreenPosition().x+24, nd.getScreenPosition().y+24);
                    vertices ++;
                }
         };
@@ -157,8 +157,8 @@ public class JPanelDisenio extends javax.swing.JPanel {
         Iterator ite = topologia.getLinksIterator();
         while (ite.hasNext()) {
             TLink enlace = (TLink) ite.next();
-            Point inicio = enlace.getNodeAtEnd1().obtenerPosicion();
-            Point fin = enlace.getNodeAtEnd2().obtenerPosicion();
+            Point inicio = enlace.getNodeAtEnd1().getScreenPosition();
+            Point fin = enlace.getNodeAtEnd2().getScreenPosition();
             int del = enlace.getDelay();
             g2Dbuf.setStroke(new BasicStroke((float) obtenerGrosorEnlace(del)));
             if (enlace.getLinkType() == TLink.EXTERNAL) {
@@ -171,10 +171,10 @@ public class JPanelDisenio extends javax.swing.JPanel {
             if (enlace.getShowName()) {
                 FontMetrics fm = this.getFontMetrics(this.getFont());
                 int anchoTexto = fm.charsWidth(enlace.getName().toCharArray(), 0, enlace.getName().length());
-                int posX1 = enlace.getNodeAtEnd1().obtenerPosicion().x+24;
-                int posY1 = enlace.getNodeAtEnd1().obtenerPosicion().y+24;
-                int posX2 = enlace.getNodeAtEnd2().obtenerPosicion().x+24;
-                int posY2 = enlace.getNodeAtEnd2().obtenerPosicion().y+24;
+                int posX1 = enlace.getNodeAtEnd1().getScreenPosition().x+24;
+                int posY1 = enlace.getNodeAtEnd1().getScreenPosition().y+24;
+                int posX2 = enlace.getNodeAtEnd2().getScreenPosition().x+24;
+                int posY2 = enlace.getNodeAtEnd2().getScreenPosition().y+24;
                 int posX = Math.min(posX1, posX2) + ((Math.max(posX1, posX2) - Math.min(posX1, posX2)) / 2) - (anchoTexto / 2);
                 int posY = Math.min(posY1, posY2) + ((Math.max(posY1, posY2) - Math.min(posY1, posY2)) / 2) + 5;
                 g2Dbuf.setColor(new Color(255, 254, 226));
@@ -196,7 +196,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
         Iterator ite = topologia.getNodesIterator();
         while (ite.hasNext()) {
             TNode nodo = (TNode) ite.next();
-            Point posicion = nodo.obtenerPosicion();
+            Point posicion = nodo.getScreenPosition();
 
             if ((posicion.x+48) > maxX)
                 maxX = posicion.x+48;
@@ -253,8 +253,8 @@ public class JPanelDisenio extends javax.swing.JPanel {
             if (nodo.getShowName()) {
                 FontMetrics fm = this.getFontMetrics(this.getFont());
                 int anchoTexto = fm.charsWidth(nodo.getName().toCharArray(), 0, nodo.getName().length());
-                int posX = (nodo.obtenerPosicion().x + 24) - ((anchoTexto/2));
-                int posY = nodo.obtenerPosicion().y+60;
+                int posX = (nodo.getScreenPosition().x + 24) - ((anchoTexto/2));
+                int posY = nodo.getScreenPosition().y+60;
                 g2Dbuf.setColor(Color.WHITE);
                 g2Dbuf.fillRoundRect(posX-3, posY-13, anchoTexto+5, 17, 10, 10);
                 g2Dbuf.setColor(Color.GRAY);

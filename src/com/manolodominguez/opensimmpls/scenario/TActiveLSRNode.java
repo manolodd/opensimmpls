@@ -858,7 +858,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                         TInternalLink ei = (TInternalLink) outgoingPort.getLink();
                         ei.setAsUsedByALSP();
                         ei.unlinkFromABackupLSP();
-                        switchingMatrixEntry.setEntryIsForBackupLSP(false);
+                        switchingMatrixEntry.setEntryAsForBackupLSP(false);
                     }
                     try {
                         this.generateSimulationEvent(new TSEPacketSwitched(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), packet.getSubtype()));
@@ -1771,7 +1771,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             switchingMatrixEntry.setIncomingPortID(incomingPortID);
             switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
             switchingMatrixEntry.setLabelOrFEC(TSwitchingMatrixEntry.UNDEFINED);
-            switchingMatrixEntry.setEntryIsForBackupLSP(tldpPacket.getLSPType());
+            switchingMatrixEntry.setEntryAsForBackupLSP(tldpPacket.getLSPType());
             if (outgoingPort != null) {
                 switchingMatrixEntry.setOutgoingPortID(outgoingPort.getPortID());
             } else {
@@ -1959,9 +1959,9 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         serializedElement += "#";
         serializedElement += this.isGeneratingStats();
         serializedElement += "#";
-        serializedElement += this.obtenerPosicion().x;
+        serializedElement += this.getScreenPosition().x;
         serializedElement += "#";
-        serializedElement += this.obtenerPosicion().y;
+        serializedElement += this.getScreenPosition().y;
         serializedElement += "#";
         serializedElement += this.switchingPowerInMbps;
         serializedElement += "#";
@@ -1999,7 +1999,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         this.setGenerateStats(Boolean.parseBoolean(elementFields[7]));
         int coordX = Integer.parseInt(elementFields[8]);
         int coordY = Integer.parseInt(elementFields[9]);
-        this.setPosition(new Point(coordX + 24, coordY + 24));
+        this.setScreenPosition(new Point(coordX + 24, coordY + 24));
         this.switchingPowerInMbps = Integer.parseInt(elementFields[10]);
         this.getPorts().setBufferSizeInMB(Integer.parseInt(elementFields[11]));
         this.dmgp.setDMGPSizeInKB(Integer.parseInt(elementFields[12]));

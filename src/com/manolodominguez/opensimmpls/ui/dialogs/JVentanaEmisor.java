@@ -560,7 +560,7 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
     emisor.setWellConfigured(true);
     if (!this.reconfigurando){
-        emisor.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
+        emisor.setScreenPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
     emisor.setName(nombreNodo.getText());
     emisor.setShowName(verNombre.isSelected());

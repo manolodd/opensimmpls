@@ -251,9 +251,9 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
         cadena += "#";
         cadena += this.isGeneratingStats();
         cadena += "#";
-        cadena += this.obtenerPosicion().x;
+        cadena += this.getScreenPosition().x;
         cadena += "#";
-        cadena += this.obtenerPosicion().y;
+        cadena += this.getScreenPosition().y;
         cadena += "#";
         return cadena;
     }
@@ -278,7 +278,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
         this.setGenerateStats(Boolean.valueOf(valores[7]).booleanValue());
         int posX = Integer.valueOf(valores[8]).intValue();
         int posY = Integer.valueOf(valores[9]).intValue();
-        this.setPosition(new Point(posX+24, posY+24));
+        this.setScreenPosition(new Point(posX+24, posY+24));
         return true;
     }
     

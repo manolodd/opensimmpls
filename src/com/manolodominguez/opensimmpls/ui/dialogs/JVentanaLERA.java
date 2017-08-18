@@ -414,7 +414,7 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
     configLERA.setWellConfigured(true);
     if (!this.reconfigurando){
-        configLERA.setPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
+        configLERA.setScreenPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
     configLERA.setDMGPSizeInKB(this.selectorDeTamanioDMGP.getValue());
     configLERA.setBufferSizeInMBytes(this.selectorDeTamanioBuffer.getValue());

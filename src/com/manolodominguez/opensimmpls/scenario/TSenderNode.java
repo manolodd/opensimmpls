@@ -355,7 +355,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                     } catch (Exception e) {
                         e.printStackTrace(); 
                     }
-                    if (this.topology.obtenerIPSalto(this.getIPv4Address(), this.obtenerDestino()) != null) {
+                    if (this.topology.getNextHopIPv4Address(this.getIPv4Address(), this.obtenerDestino()) != null) {
                         pt.putPacketOnLink(paqueteConTamanio, pt.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     } else {
                         discardPacket(paqueteConTamanio);
@@ -713,9 +713,9 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         cadena += "#";
         cadena += this.isGeneratingStats();
         cadena += "#";
-        cadena += this.obtenerPosicion().x;
+        cadena += this.getScreenPosition().x;
         cadena += "#";
-        cadena += this.obtenerPosicion().y;
+        cadena += this.getScreenPosition().y;
         cadena += "#";
         cadena += this.obtenerDestino();
         cadena += "#";
@@ -754,7 +754,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         this.setGenerateStats(Boolean.valueOf(valores[7]).booleanValue());
         int posX = Integer.valueOf(valores[8]).intValue();
         int posY = Integer.valueOf(valores[9]).intValue();
-        this.setPosition(new Point(posX+24, posY+24));
+        this.setScreenPosition(new Point(posX+24, posY+24));
         this.IPDestino = valores[10];
         this.ponerLSPDeBackup(Boolean.valueOf(valores[11]).booleanValue());
         this.ponerNivelDeGoS(Integer.valueOf(valores[12]).intValue());

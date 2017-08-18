@@ -286,37 +286,37 @@ public class TTopology {
                 if (nodo.getNodeType() == TNode.SENDER) {
                     TSenderNode nodoTrasCast = (TSenderNode) nodoBuscado;
                     nodoTrasCast.setName(nodo.getName());
-                    nodoTrasCast.setPosition(nodo.obtenerPosicion());
+                    nodoTrasCast.setScreenPosition(nodo.getScreenPosition());
                 }
                 else if (nodo.getNodeType() == TNode.RECEIVER) {
                     TSenderNode nodoTrasCast = (TSenderNode) nodoBuscado;
                     nodoTrasCast.setName(nodo.getName());
-                    nodoTrasCast.setPosition(nodo.obtenerPosicion());
+                    nodoTrasCast.setScreenPosition(nodo.getScreenPosition());
                 }
                 else if (nodo.getNodeType() == TNode.RECEIVER) {
                     TReceiverNode nodoTrasCast = (TReceiverNode) nodoBuscado;
                     nodoTrasCast.setName(nodo.getName());
-                    nodoTrasCast.setPosition(nodo.obtenerPosicion());
+                    nodoTrasCast.setScreenPosition(nodo.getScreenPosition());
                 }
                 else if (nodo.getNodeType() == TNode.LER) {
                     TLERNode nodoTrasCast = (TLERNode) nodoBuscado;
                     nodoTrasCast.setName(nodo.getName());
-                    nodoTrasCast.setPosition(nodo.obtenerPosicion());
+                    nodoTrasCast.setScreenPosition(nodo.getScreenPosition());
                 }
                 else if (nodo.getNodeType() == TNode.LERA) {
                     TActiveLERNode nodoTrasCast = (TActiveLERNode) nodoBuscado;
                     nodoTrasCast.setName(nodo.getName());
-                    nodoTrasCast.setPosition(nodo.obtenerPosicion());
+                    nodoTrasCast.setScreenPosition(nodo.getScreenPosition());
                 }
                 else if (nodo.getNodeType() == TNode.LSR) {
                     TLSRNode nodoTrasCast = (TLSRNode) nodoBuscado;
                     nodoTrasCast.setName(nodo.getName());
-                    nodoTrasCast.setPosition(nodo.obtenerPosicion());
+                    nodoTrasCast.setScreenPosition(nodo.getScreenPosition());
                 }
                 else if (nodo.getNodeType() == TNode.LSRA) {
                     TActiveLSRNode nodoTrasCast = (TActiveLSRNode) nodoBuscado;
                     nodoTrasCast.setName(nodo.getName());
-                    nodoTrasCast.setPosition(nodo.obtenerPosicion());
+                    nodoTrasCast.setScreenPosition(nodo.getScreenPosition());
                 }
                 fin = true;
             }
@@ -800,7 +800,7 @@ public class TTopology {
      * @return IP del nodo que es siguiente salto para llegar del origen al destino.
      * @since 2.0
      */    
-    public synchronized String obtenerIPSalto(String IPorigen, String IPdestino) {
+    public synchronized String getNextHopIPv4Address(String IPorigen, String IPdestino) {
         int origen = this.getNode(IPorigen).getID();
         int destino = this.getNode(IPdestino).getID();
         int siguienteSalto = obtenerSalto(origen, destino);

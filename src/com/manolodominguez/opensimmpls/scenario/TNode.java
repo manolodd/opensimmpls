@@ -155,7 +155,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @return Las coordenadas del panel de simulaci�n donde se encuentra el nodo.
      * @since 2.0
      */    
-    public Point obtenerPosicion() {
+    public Point getScreenPosition() {
         return posicion;
     }
 
@@ -165,7 +165,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @param p Las coordenadas del panel de simulaci�n elegidas para el nodo.
      * @since 2.0
      */    
-    public void setPosition(Point p) {
+    public void setScreenPosition(Point p) {
         posicion.x = p.x - (ANCHO_ICONOS/2);
         posicion.y = p.y - (ALTO_ICONOS/2);
     }

@@ -307,7 +307,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                 // haber mensajes GPSRP dirigidos a �l.
                 this.discardPacket(paquete);
             } else {
-                String IPSalida = this.topology.obtenerIPSalto(this.getIPv4Address(), IPDestinoFinal);
+                String IPSalida = this.topology.getNextHopIPv4Address(this.getIPv4Address(), IPDestinoFinal);
                 pSalida = (TFIFOPort) this.ports.getLocalPortConnectedToANodeWithIPAddress(IPSalida);
                 if (pSalida != null) {
                     pSalida.putPacketOnLink(paquete, pSalida.getLink().getTargetNodeIDOfTrafficSentBy(this));
@@ -438,7 +438,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                             TInternalLink ei = (TInternalLink) pSalida.getLink();
                             ei.setAsUsedByALSP();
                             ei.unlinkFromABackupLSP();
-                            emc.setEntryIsForBackupLSP(false);
+                            emc.setEntryAsForBackupLSP(false);
                         }
                         try {
                             this.generateSimulationEvent(new TSEPacketSwitched(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
@@ -796,7 +796,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     public void solicitarTLDP(TSwitchingMatrixEntry emc) {
         String IPLocal = this.getIPv4Address();
         String IPDestinoFinal = emc.getTailEndIPv4Address();
-        String IPSalto = topology.obtenerIPSalto(IPLocal, IPDestinoFinal);
+        String IPSalto = topology.getNextHopIPv4Address(IPLocal, IPDestinoFinal);
         if (IPSalto != null) {
             TTLDPPDU paqueteTLDP = null;
             try {
@@ -994,7 +994,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         int IdTLDPAntecesor = paqueteSolicitud.getTLDPPayload().getTLDPIdentifier();
         TPort puertoEntrada = ports.getPort(pEntrada);
         String IPDestinoFinal = paqueteSolicitud.getTLDPPayload().getTailEndIPAddress();
-        String IPSalto = topology.obtenerIPSalto(this.getIPv4Address(), IPDestinoFinal);
+        String IPSalto = topology.getNextHopIPv4Address(this.getIPv4Address(), IPDestinoFinal);
         if (IPSalto != null) {
             TPort puertoSalida = ports.getLocalPortConnectedToANodeWithIPAddress(IPSalto);
             emc = new TSwitchingMatrixEntry();
@@ -1003,7 +1003,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
             emc.setIncomingPortID(pEntrada);
             emc.setOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
             emc.setLabelOrFEC(TSwitchingMatrixEntry.UNDEFINED);
-            emc.setEntryIsForBackupLSP(paqueteSolicitud.getLSPType());
+            emc.setEntryAsForBackupLSP(paqueteSolicitud.getLSPType());
             if (puertoSalida != null) {
                 emc.setOutgoingPortID(puertoSalida.getPortID());
             } else {
@@ -1149,9 +1149,9 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         cadena += "#";
         cadena += this.isGeneratingStats();
         cadena += "#";
-        cadena += this.obtenerPosicion().x;
+        cadena += this.getScreenPosition().x;
         cadena += "#";
-        cadena += this.obtenerPosicion().y;
+        cadena += this.getScreenPosition().y;
         cadena += "#";
         cadena += this.potenciaEnMb;
         cadena += "#";
@@ -1180,7 +1180,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         this.setGenerateStats(Boolean.valueOf(valores[7]).booleanValue());
         int posX = Integer.valueOf(valores[8]).intValue();
         int posY = Integer.valueOf(valores[9]).intValue();
-        this.setPosition(new Point(posX+24, posY+24));
+        this.setScreenPosition(new Point(posX+24, posY+24));
         this.potenciaEnMb = Integer.valueOf(valores[10]).intValue();
         this.getPorts().setBufferSizeInMB(Integer.valueOf(valores[11]).intValue());
         return true;
