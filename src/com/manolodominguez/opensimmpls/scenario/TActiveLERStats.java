@@ -221,7 +221,7 @@ public class TActiveLERStats extends TStats {
      *
      * @param packet new packet as a source of information to update stats of
      * this TActiveLERStats.
-     * @param entryType INCOMING, OUTGOING o DISCARD, dependiendo on whether the
+     * @param entryType INCOMING, OUTGOING o DISCARD, depending on whether the
      * packet is incoming, outgoing or being discarded in the Active LER
      * associated to this TActiveLERStats.
      * @since 2.0
