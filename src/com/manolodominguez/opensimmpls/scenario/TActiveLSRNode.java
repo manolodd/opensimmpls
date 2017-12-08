@@ -140,7 +140,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * has, the more bits it can switch with the same number of nanoseconds.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return the current size of DMGP in KBytes.
+     * @return The number of bits that can be switched.
      * @since 2.0
      */
     public int getMaxSwitchableBitsWithCurrentNs() {
@@ -155,7 +155,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * has, the more octects it can switch with the same number of nanoseconds.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return the current size of DMGP in KBytes.
+     * @return The number of octects that can be switched.
      * @since 2.0
      */
     public int getMaxSwitchableOctectsWithCurrentNs() {
@@ -412,6 +412,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      */
     public void switchPackets() {
         boolean atLeastOnePacketSwitched = false;
+        // FIX: use class constant instead of hardcoded values
         int readPort = 0;
         TAbstractPDU packet = null;
         int switchableOctectsWithCurrentNs = this.getMaxSwitchableOctectsWithCurrentNs();
@@ -766,6 +767,8 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             }
         }
         int labelValue = packet.getLabelStack().getTop().getLabel();
+        // FIX: targetIPv4Address seems to be unused. Check and remove if 
+        // needed
         String targetIPv4Address = packet.getIPv4Header().getTailEndIPAddress();
         switchingMatrixEntry = this.switchingMatrix.getEntry(incomingPortID, labelValue, TSwitchingMatrixEntry.LABEL_ENTRY);
         if (switchingMatrixEntry == null) {
@@ -797,7 +800,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     packet.getLabelStack().pushTop(mplsLabel);
                 }
                 discardPacket(packet);
-                // FIX: Do not use hardcoded values. Use class constants instead.
+            // FIX: Do not use hardcoded values. Use class constants instead.
             } else if ((currentLabel > 15) || (currentLabel == TSwitchingMatrixEntry.LABEL_ASSIGNED)) {
                 int operation = switchingMatrixEntry.getLabelStackOperation();
                 // FIX: Replace conditional by Switch statement
@@ -840,6 +843,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     try {
                         this.generateSimulationEvent(new TSEPacketSwitched(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), packet.getSubtype()));
                     } catch (Exception e) {
+                        // FIX: This is not a good practice. Avoid.
                         e.printStackTrace();
                     }
                 } else if (operation == TSwitchingMatrixEntry.SWAP_LABEL) {
@@ -855,9 +859,9 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     TPort outgoingPort = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID());
                     outgoingPort.putPacketOnLink(packet, outgoingPort.getLink().getTargetNodeIDOfTrafficSentBy(this));
                     if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
-                        TInternalLink ei = (TInternalLink) outgoingPort.getLink();
-                        ei.setAsUsedByALSP();
-                        ei.unlinkFromABackupLSP();
+                        TInternalLink internalLinkAux = (TInternalLink) outgoingPort.getLink();
+                        internalLinkAux.setAsUsedByALSP();
+                        internalLinkAux.unlinkFromABackupLSP();
                         switchingMatrixEntry.setEntryAsForBackupLSP(false);
                     }
                     try {
