@@ -917,7 +917,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 sendTLDPRequestOk(switchingMatrixEntry);
             } else if (currentLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
                 sendTLDPWithdrawal(switchingMatrixEntry, incomingPortID);
-                // FIX: Do not use hardcoded values. Use class constants instead.
+            // FIX: Do not use hardcoded values. Use class constants instead.
             } else if (currentLabel > 15) {
                 sendTLDPRequestOk(switchingMatrixEntry);
             } else {
@@ -962,8 +962,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getOutgoingPortID());
             } else if (currentLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
                 sendTLDPWithdrawalOk(switchingMatrixEntry, incomingPortID);
-                // FIX: Avoid using harcoded values. Use class constants 
-                // instead.
+            // FIX: Avoid using harcoded values. Use class constants instead.
             } else if (currentLabel > 15) {
                 switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.REMOVING_LABEL);
                 sendTLDPWithdrawalOk(switchingMatrixEntry, incomingPortID);
@@ -1096,8 +1095,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 discardPacket(packet);
             } else if (currentLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
                 discardPacket(packet);
-                // FIX: Avoid using harcoded values. Use class constants 
-                // instead.
+            // FIX: Avoid using harcoded values. Use class constants instead.
             } else if (currentLabel > 15) {
                 discardPacket(packet);
             } else {
@@ -1122,8 +1120,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 discardPacket(packet);
             } else if (currentBackupLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
                 discardPacket(packet);
-                // FIX: Avoid using harcoded values. Use class constants 
-                // instead.
+            // FIX: Avoid using harcoded values. Use class constants instead.
             } else if (currentBackupLabel > 15) {
                 discardPacket(packet);
             } else {
@@ -1159,8 +1156,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 discardPacket(packet);
             } else if (currentLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
                 discardPacket(packet);
-                // FIX: Avoid using harcoded values. Use class constants 
-                // instead.
+            // FIX: Avoid using harcoded values. Use class constants instead.
             } else if (currentLabel > 15) {
                 discardPacket(packet);
             } else {
@@ -1252,8 +1248,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     }
                 }
                 this.switchingMatrix.removeEntry(switchingMatrixEntry.getIncomingPortID(), switchingMatrixEntry.getLabelOrFEC(), switchingMatrixEntry.getEntryType());
-                // FIX: Avoid using harcoded values. Use class constants 
-                // instead.
+            // FIX: Avoid using harcoded values. Use class constants instead.
             } else if (currentLabel > 15) {
                 discardPacket(packet);
             } else {
@@ -1765,13 +1760,13 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         int predecessorTLDPID = tldpPacket.getTLDPPayload().getTLDPIdentifier();
         // FIX: review the reason why this variable is nor used.
         TPort incomingPort = this.ports.getPort(incomingPortID);
-        String tailEndIPAddress = tldpPacket.getTLDPPayload().getTailEndIPAddress();
-        String nextHopIPAddress = this.topology.getNextHopRABANIPv4Address(this.getIPv4Address(), tailEndIPAddress);
-        if (nextHopIPAddress != null) {
-            TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPAddress);
+        String targetIPv4Address = tldpPacket.getTLDPPayload().getTailEndIPAddress();
+        String nextHopIPv4Address = this.topology.getNextHopRABANIPv4Address(this.getIPv4Address(), targetIPv4Address);
+        if (nextHopIPv4Address != null) {
+            TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPv4Address);
             switchingMatrixEntry = new TSwitchingMatrixEntry();
             switchingMatrixEntry.setUpstreamTLDPSessionID(predecessorTLDPID);
-            switchingMatrixEntry.setTailEndIPAddress(tailEndIPAddress);
+            switchingMatrixEntry.setTailEndIPAddress(targetIPv4Address);
             switchingMatrixEntry.setIncomingPortID(incomingPortID);
             switchingMatrixEntry.setOutgoingLabel(TSwitchingMatrixEntry.UNDEFINED);
             switchingMatrixEntry.setLabelOrFEC(TSwitchingMatrixEntry.UNDEFINED);
@@ -1853,11 +1848,11 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         // FIX: All harcoded values should be defined as class constants. They 
         // are weights of the GoS proposal, but anyway, they should be 
         // configured as class constans.
-        long peso = 0;
-        long pesoC = (long) (this.ports.getCongestionLevel() * (0.7));
-        long pesoMC = (long) ((10 * this.switchingMatrix.getNumberOfEntries()) * (0.3));
-        peso = pesoC + pesoMC;
-        return peso;
+        long weight = 0;
+        long congestionWeight = (long) (this.ports.getCongestionLevel() * (0.7));
+        long switchingMatrixWeight = (long) ((10 * this.switchingMatrix.getNumberOfEntries()) * (0.3));
+        weight = congestionWeight + switchingMatrixWeight;
+        return weight;
     }
 
     /**
@@ -1878,7 +1873,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @param topology Topology to wich this node belongs to.
      * @param reconfiguration true, if the node is being re-configured.
      * Otherwise, false.
-     * @return TActiveLERNode.OK if the configuration is correct. Otherwise, an
+     * @return TActiveLSRNode.OK if the configuration is correct. Otherwise, an
      * error code is returned. See public constants of error codes in this
      * class.
      * @since 2.0

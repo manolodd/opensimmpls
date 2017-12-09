@@ -384,7 +384,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     configLSR.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
     configLSR.setShowName(verNombre.isSelected());
     int error = configLSR.validateConfig(topo, this.reconfigurando);
-    if (error != TLSRNode.CORRECTA) {
+    if (error != TLSRNode.OK) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
         va.mostrarMensaje(configLSR.getErrorMessage(error));
         va.show();
