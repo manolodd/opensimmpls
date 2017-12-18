@@ -30,7 +30,7 @@ import org.jfree.data.XYSeriesCollection;
  * @version 2.0
  */
 public class TActiveLSRStats extends TStats {
-    
+
     /**
      * This method is the constructor of the class. It creates a new instance of
      * TActiveLSRStats.
@@ -39,27 +39,27 @@ public class TActiveLSRStats extends TStats {
      * @since 2.0
      */
     public TActiveLSRStats() {
-    	this.incomingPackets = new XYSeriesCollection();
-    	this.outgoingPackets = new XYSeriesCollection();
-    	this.discardedPackets = new XYSeriesCollection();
-    	this.outgoingMPLSPackets = new XYSeries(TStats.MPLS);
-    	this.outgoingMPLSGOS1Packets = new XYSeries(TStats.MPLS_GOS1);
-    	this.outgoingMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
-    	this.outgoingMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
-    	this.outgoingTLDPPackets = new XYSeries(TStats.TLDP);
-    	this.outgoingGPSRPPackets = new XYSeries(TStats.GPSRP);
-    	this.incomingMPLSPackets = new XYSeries(TStats.MPLS);
-    	this.incomingMPLSGOS1Packets = new XYSeries(TStats.MPLS_GOS1);
-    	this.incomingMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
-    	this.incomingMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
-    	this.incomingTLDPPackets = new XYSeries(TStats.TLDP);
-    	this.incomingGPSRPPackets = new XYSeries(TStats.GPSRP);
-	this.discardedMPLSPackets = new XYSeries(TStats.MPLS);
-	this.discardedMPLSGOS1Packets = new XYSeries(TStats.MPLS_GOS1);
-	this.discardedMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
-	this.discardedMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
-    	this.discardedTLDPPackets = new XYSeries(TStats.TLDP);
-    	this.discardedGPSRPPackets = new XYSeries(TStats.GPSRP);
+        this.incomingPackets = new XYSeriesCollection();
+        this.outgoingPackets = new XYSeriesCollection();
+        this.discardedPackets = new XYSeriesCollection();
+        this.outgoingMPLSPackets = new XYSeries(TStats.MPLS);
+        this.outgoingMPLSGOS1Packets = new XYSeries(TStats.MPLS_GOS1);
+        this.outgoingMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
+        this.outgoingMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
+        this.outgoingTLDPPackets = new XYSeries(TStats.TLDP);
+        this.outgoingGPSRPPackets = new XYSeries(TStats.GPSRP);
+        this.incomingMPLSPackets = new XYSeries(TStats.MPLS);
+        this.incomingMPLSGOS1Packets = new XYSeries(TStats.MPLS_GOS1);
+        this.incomingMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
+        this.incomingMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
+        this.incomingTLDPPackets = new XYSeries(TStats.TLDP);
+        this.incomingGPSRPPackets = new XYSeries(TStats.GPSRP);
+        this.discardedMPLSPackets = new XYSeries(TStats.MPLS);
+        this.discardedMPLSGOS1Packets = new XYSeries(TStats.MPLS_GOS1);
+        this.discardedMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
+        this.discardedMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
+        this.discardedTLDPPackets = new XYSeries(TStats.TLDP);
+        this.discardedGPSRPPackets = new XYSeries(TStats.GPSRP);
         // Temporary data to be consolidated -----------
         // FIX: Do use class constants instead of hardcoded values.
         this.incomingMPLSPacketsOfThisTimeInstant = 0;
@@ -93,7 +93,7 @@ public class TActiveLSRStats extends TStats {
         this.GOSPacketsRecovered = 0;
         this.GOSPacketsUnrecovered = 0;
     }
-    
+
     /**
      * This method returns the dataset #1 of the Active LSR node associated to
      * this TActiveLSRStats that can be represented in a GUI or used by any
@@ -104,12 +104,12 @@ public class TActiveLSRStats extends TStats {
      * @return the dataset #1 of this TActiveLSRStatsthat contains values
      * related to incoming packets.
      * @since 2.0
-     */  
+     */
     @Override
     public AbstractDataset getDataset1() {
         return this.incomingPackets;
     }
-    
+
     /**
      * This method returns the dataset #2 of the Active LSR node associated to
      * this TActiveLSRStats that can be represented in a GUI or used by any
@@ -120,12 +120,12 @@ public class TActiveLSRStats extends TStats {
      * @return the dataset #2 of this TActiveLSRStats that contains values
      * related to outgoing packets.
      * @since 2.0
-     */   
+     */
     @Override
     public AbstractDataset getDataset2() {
         return this.outgoingPackets;
     }
-    
+
     /**
      * This method returns the dataset #3 of the Active LSR node associated to
      * this TActiveLSRStats that can be represented in a GUI or used by any
@@ -136,12 +136,12 @@ public class TActiveLSRStats extends TStats {
      * @return the dataset #3 of this TActiveLSRStats that contains values
      * related to discarded packets.
      * @since 2.0
-     */ 
+     */
     @Override
     public AbstractDataset getDataset3() {
         return this.discardedPackets;
     }
-    
+
     /**
      * This method returns the dataset #4 of the Active LSR node associated to
      * this TActiveLSRStats node that can be represented in a GUI or used by any
@@ -152,12 +152,12 @@ public class TActiveLSRStats extends TStats {
      * @return the dataset #4 of this TActiveLSRStats that contains values
      * related to the number of retransmissions that have been managed.
      * @since 2.0
-     */  
+     */
     @Override
     public AbstractDataset getDataset4() {
         return this.retransmissionsManaged;
     }
-    
+
     /**
      * This method returns the dataset #5 of the Active LSR node associated to
      * this TActiveLSRStats node that can be represented in a GUI or used by any
@@ -168,12 +168,12 @@ public class TActiveLSRStats extends TStats {
      * @return the dataset #5 of this TActiveLSRStats that contains values
      * related to the number of local recoveries that have been managed.
      * @since 2.0
-     */ 
+     */
     @Override
     public AbstractDataset getDataset5() {
         return this.localRecoveriesManaged;
     }
-    
+
     /**
      * This method returns the dataset #6 of the Active LSR node associated to
      * this TActiveLSRStats node that can be represented in a GUI or used by any
@@ -201,7 +201,7 @@ public class TActiveLSRStats extends TStats {
      * packet is incoming, outgoing or being discarded in the Active LSR
      * associated to this TActiveLSRStats.
      * @since 2.0
-     */ 
+     */
     @Override
     public void addStatEntry(TAbstractPDU packet, int entryType) {
         if (this.statsEnabled) {
@@ -303,51 +303,51 @@ public class TActiveLSRStats extends TStats {
             }
         }
     }
-    
+
     /**
      * This method returns the number of datasets that are available in this
      * TActiveLSRStats.
      *
-     * @return the number of available datasets in this TActiveLSRStats that are
+     * @return the number of available datasets in this TActiveLSRStats that is
      * 5.
      * @since 2.0
-     */  
+     */
     @Override
     public int numberOfAvailableDatasets() {
         // FIX: do not use harcoded values. Use class constants instead.
         return 5;
     }
-    
+
     /**
      * This method reset all the values and attribues of this TActiveLSRStats as
      * in the moment of its instantiation.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */  
+     */
     @Override
     public void reset() {
-    	this.incomingPackets = new XYSeriesCollection();
-    	this.outgoingPackets = new XYSeriesCollection();
-    	this.discardedPackets = new XYSeriesCollection();
-    	this.outgoingMPLSPackets = new XYSeries(TStats.MPLS);
-    	this.outgoingMPLSGOS1Packets = new XYSeries(TStats.MPLS_GOS1);
-    	this.outgoingMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
-    	this.outgoingMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
-    	this.outgoingTLDPPackets = new XYSeries(TStats.TLDP);
-    	this.outgoingGPSRPPackets = new XYSeries(TStats.GPSRP);
-    	this.incomingMPLSPackets = new XYSeries(TStats.MPLS);
-    	this.incomingMPLSGOS1Packets = new XYSeries(TStats.MPLS_GOS1);
-    	this.incomingMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
-    	this.incomingMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
-    	this.incomingTLDPPackets = new XYSeries(TStats.TLDP);
-    	this.incomingGPSRPPackets = new XYSeries(TStats.GPSRP);
-	this.discardedMPLSPackets = new XYSeries(TStats.MPLS);
-	this.discardedMPLSGOS1Packets = new XYSeries(TStats.MPLS_GOS1);
-	this.discardedMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
-	this.discardedMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
-    	this.discardedTLDPPackets = new XYSeries(TStats.TLDP);
-    	this.discardedGPSRPPackets = new XYSeries(TStats.GPSRP);
+        this.incomingPackets = new XYSeriesCollection();
+        this.outgoingPackets = new XYSeriesCollection();
+        this.discardedPackets = new XYSeriesCollection();
+        this.outgoingMPLSPackets = new XYSeries(TStats.MPLS);
+        this.outgoingMPLSGOS1Packets = new XYSeries(TStats.MPLS_GOS1);
+        this.outgoingMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
+        this.outgoingMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
+        this.outgoingTLDPPackets = new XYSeries(TStats.TLDP);
+        this.outgoingGPSRPPackets = new XYSeries(TStats.GPSRP);
+        this.incomingMPLSPackets = new XYSeries(TStats.MPLS);
+        this.incomingMPLSGOS1Packets = new XYSeries(TStats.MPLS_GOS1);
+        this.incomingMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
+        this.incomingMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
+        this.incomingTLDPPackets = new XYSeries(TStats.TLDP);
+        this.incomingGPSRPPackets = new XYSeries(TStats.GPSRP);
+        this.discardedMPLSPackets = new XYSeries(TStats.MPLS);
+        this.discardedMPLSGOS1Packets = new XYSeries(TStats.MPLS_GOS1);
+        this.discardedMPLSGOS2Packets = new XYSeries(TStats.MPLS_GOS2);
+        this.discardedMPLSGOS3Packets = new XYSeries(TStats.MPLS_GOS3);
+        this.discardedTLDPPackets = new XYSeries(TStats.TLDP);
+        this.discardedGPSRPPackets = new XYSeries(TStats.GPSRP);
         // FIX: do not use harcoded values. Use class constants instead.
         this.incomingMPLSPacketsOfThisTimeInstant = 0;
         this.incomingMPLSGOS1PacketsOfThisTimeInstant = 0;
@@ -379,7 +379,7 @@ public class TActiveLSRStats extends TStats {
         this.GOSPacketsRecovered = 0;
         this.GOSPacketsUnrecovered = 0;
     }
-    
+
     /**
      * This method groups the latests data added to this TActiveLSRStats by the
      * time instant passed as an argument. In this way aggregated statistics are
@@ -400,235 +400,235 @@ public class TActiveLSRStats extends TStats {
                 // FIX: do not use harcoded values. Use class constants instead.
                 if (incomingMPLSPackets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
-                    this.incomingMPLSPackets.add(timeInstant-1, 0);
+                    this.incomingMPLSPackets.add(timeInstant - 1, 0);
                     this.incomingMPLSPackets.add(timeInstant, this.incomingMPLSPacketsOfThisTimeInstant);
                     this.incomingPackets.addSeries(this.incomingMPLSPackets);
                 } else {
                     this.incomingMPLSPackets.add(timeInstant, this.incomingMPLSPacketsOfThisTimeInstant);
                 }
             }
-            
+
             // FIX: do not use harcoded values. Use class constants instead.
             if (this.incomingMPLSGOS1PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
                 if (this.incomingMPLSGOS1Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
-                    this.incomingMPLSGOS1Packets.add(timeInstant-1, 0);
+                    this.incomingMPLSGOS1Packets.add(timeInstant - 1, 0);
                     this.incomingMPLSGOS1Packets.add(timeInstant, this.incomingMPLSGOS1PacketsOfThisTimeInstant);
                     this.incomingPackets.addSeries(this.incomingMPLSGOS1Packets);
                 } else {
                     this.incomingMPLSGOS1Packets.add(timeInstant, this.incomingMPLSGOS1PacketsOfThisTimeInstant);
                 }
             }
-            
+
             // FIX: do not use harcoded values. Use class constants instead.
             if (this.incomingMPLSGOS2PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
                 if (this.incomingMPLSGOS2Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
-                    this.incomingMPLSGOS2Packets.add(timeInstant-1, 0);
+                    this.incomingMPLSGOS2Packets.add(timeInstant - 1, 0);
                     this.incomingMPLSGOS2Packets.add(timeInstant, this.incomingMPLSGOS2PacketsOfThisTimeInstant);
                     this.incomingPackets.addSeries(this.incomingMPLSGOS2Packets);
                 } else {
                     this.incomingMPLSGOS2Packets.add(timeInstant, this.incomingMPLSGOS2PacketsOfThisTimeInstant);
                 }
             }
-            
+
             // FIX: do not use harcoded values. Use class constants instead.
             if (this.incomingMPLSGOS3PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
                 if (this.incomingMPLSGOS3Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
-                    this.incomingMPLSGOS3Packets.add(timeInstant-1, 0);
+                    this.incomingMPLSGOS3Packets.add(timeInstant - 1, 0);
                     this.incomingMPLSGOS3Packets.add(timeInstant, this.incomingMPLSGOS3PacketsOfThisTimeInstant);
                     this.incomingPackets.addSeries(this.incomingMPLSGOS3Packets);
                 } else {
                     this.incomingMPLSGOS3Packets.add(timeInstant, this.incomingMPLSGOS3PacketsOfThisTimeInstant);
                 }
             }
-            
+
             // FIX: do not use harcoded values. Use class constants instead.
             if (this.incomingTLDPPacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
                 if (this.incomingTLDPPackets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
-                    this.incomingTLDPPackets.add(timeInstant-1, 0);
+                    this.incomingTLDPPackets.add(timeInstant - 1, 0);
                     this.incomingTLDPPackets.add(timeInstant, this.incomingTLDPPacketsOfThisTimeInstant);
                     this.incomingPackets.addSeries(this.incomingTLDPPackets);
                 } else {
                     this.incomingTLDPPackets.add(timeInstant, this.incomingTLDPPacketsOfThisTimeInstant);
                 }
             }
-            
+
             // FIX: do not use harcoded values. Use class constants instead.
             if (this.incomingGPSRPPacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
                 if (incomingGPSRPPackets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
-                    this.incomingGPSRPPackets.add(timeInstant-1, 0);
+                    this.incomingGPSRPPackets.add(timeInstant - 1, 0);
                     this.incomingGPSRPPackets.add(timeInstant, this.incomingGPSRPPacketsOfThisTimeInstant);
                     this.incomingPackets.addSeries(this.incomingGPSRPPackets);
                 } else {
                     this.incomingGPSRPPackets.add(timeInstant, this.incomingGPSRPPacketsOfThisTimeInstant);
                 }
             }
-                    
+
             // FIX: do not use harcoded values. Use class constants instead.
             if (this.outgoingMPLSPacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
                 if (this.outgoingMPLSPackets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
-                    this.outgoingMPLSPackets.add(timeInstant-1, 0);
+                    this.outgoingMPLSPackets.add(timeInstant - 1, 0);
                     this.outgoingMPLSPackets.add(timeInstant, this.outgoingMPLSPacketsOfThisTimeInstant);
                     this.outgoingPackets.addSeries(this.outgoingMPLSPackets);
                 } else {
                     this.outgoingMPLSPackets.add(timeInstant, this.outgoingMPLSPacketsOfThisTimeInstant);
                 }
             }
-                    
+
             // FIX: do not use harcoded values. Use class constants instead.
             if (this.outgoingMPLSGOS1PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
                 if (this.outgoingMPLSGOS1Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
-                    this.outgoingMPLSGOS1Packets.add(timeInstant-1, 0);
+                    this.outgoingMPLSGOS1Packets.add(timeInstant - 1, 0);
                     this.outgoingMPLSGOS1Packets.add(timeInstant, this.outgoingMPLSGOS1PacketsOfThisTimeInstant);
                     this.outgoingPackets.addSeries(this.outgoingMPLSGOS1Packets);
                 } else {
                     this.outgoingMPLSGOS1Packets.add(timeInstant, this.outgoingMPLSGOS1PacketsOfThisTimeInstant);
                 }
             }
-                    
+
             // FIX: do not use harcoded values. Use class constants instead.
             if (this.outgoingMPLSGOS2PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
                 if (this.outgoingMPLSGOS2Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
-                    this.outgoingMPLSGOS2Packets.add(timeInstant-1, 0);
+                    this.outgoingMPLSGOS2Packets.add(timeInstant - 1, 0);
                     this.outgoingMPLSGOS2Packets.add(timeInstant, this.outgoingMPLSGOS2PacketsOfThisTimeInstant);
                     this.outgoingPackets.addSeries(this.outgoingMPLSGOS2Packets);
                 } else {
                     this.outgoingMPLSGOS2Packets.add(timeInstant, this.outgoingMPLSGOS2PacketsOfThisTimeInstant);
                 }
             }
-                    
+
             // FIX: do not use harcoded values. Use class constants instead.
             if (this.outgoingMPLSGOS3PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
                 if (this.outgoingMPLSGOS3Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
-                    this.outgoingMPLSGOS3Packets.add(timeInstant-1, 0);
+                    this.outgoingMPLSGOS3Packets.add(timeInstant - 1, 0);
                     this.outgoingMPLSGOS3Packets.add(timeInstant, this.outgoingMPLSGOS3PacketsOfThisTimeInstant);
                     this.outgoingPackets.addSeries(this.outgoingMPLSGOS3Packets);
                 } else {
                     this.outgoingMPLSGOS3Packets.add(timeInstant, this.outgoingMPLSGOS3PacketsOfThisTimeInstant);
                 }
             }
-                    
+
             // FIX: do not use harcoded values. Use class constants instead.
             if (this.outgoingTLDPPacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
                 if (this.outgoingTLDPPackets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
-                    this.outgoingTLDPPackets.add(timeInstant-1, 0);
+                    this.outgoingTLDPPackets.add(timeInstant - 1, 0);
                     this.outgoingTLDPPackets.add(timeInstant, this.outgoingTLDPPacketsOfThisTimeInstant);
                     this.outgoingPackets.addSeries(this.outgoingTLDPPackets);
                 } else {
                     this.outgoingTLDPPackets.add(timeInstant, this.outgoingTLDPPacketsOfThisTimeInstant);
                 }
             }
-                    
+
             // FIX: do not use harcoded values. Use class constants instead.
             if (this.outgoingGPSRPPacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
                 if (this.outgoingGPSRPPackets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
-                    this.outgoingGPSRPPackets.add(timeInstant-1, 0);
+                    this.outgoingGPSRPPackets.add(timeInstant - 1, 0);
                     this.outgoingGPSRPPackets.add(timeInstant, this.outgoingGPSRPPacketsOfThisTimeInstant);
                     this.outgoingPackets.addSeries(this.outgoingGPSRPPackets);
                 } else {
                     this.outgoingGPSRPPackets.add(timeInstant, this.outgoingGPSRPPacketsOfThisTimeInstant);
                 }
             }
-                    
+
             // FIX: do not use harcoded values. Use class constants instead.
             if (this.discardedMPLSPacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
                 if (this.discardedMPLSPackets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
-                    this.discardedMPLSPackets.add(timeInstant-1, 0);
+                    this.discardedMPLSPackets.add(timeInstant - 1, 0);
                     this.discardedMPLSPackets.add(timeInstant, this.discardedMPLSPacketsOfThisTimeInstant);
                     this.discardedPackets.addSeries(this.discardedMPLSPackets);
                 } else {
                     this.discardedMPLSPackets.add(timeInstant, this.discardedMPLSPacketsOfThisTimeInstant);
                 }
             }
-                    
+
             // FIX: do not use harcoded values. Use class constants instead.
             if (this.discardedMPLSGOS1PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
                 if (this.discardedMPLSGOS1Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
-                    this.discardedMPLSGOS1Packets.add(timeInstant-1, 0);
+                    this.discardedMPLSGOS1Packets.add(timeInstant - 1, 0);
                     this.discardedMPLSGOS1Packets.add(timeInstant, this.discardedMPLSGOS1PacketsOfThisTimeInstant);
                     this.discardedPackets.addSeries(this.discardedMPLSGOS1Packets);
                 } else {
                     this.discardedMPLSGOS1Packets.add(timeInstant, this.discardedMPLSGOS1PacketsOfThisTimeInstant);
                 }
             }
-                    
+
             // FIX: do not use harcoded values. Use class constants instead.
             if (this.discardedMPLSGOS2PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
                 if (this.discardedMPLSGOS2Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
-                    this.discardedMPLSGOS2Packets.add(timeInstant-1, 0);
+                    this.discardedMPLSGOS2Packets.add(timeInstant - 1, 0);
                     this.discardedMPLSGOS2Packets.add(timeInstant, this.discardedMPLSGOS2PacketsOfThisTimeInstant);
                     this.discardedPackets.addSeries(this.discardedMPLSGOS2Packets);
                 } else {
                     this.discardedMPLSGOS2Packets.add(timeInstant, this.discardedMPLSGOS2PacketsOfThisTimeInstant);
                 }
             }
-                    
+
             // FIX: do not use harcoded values. Use class constants instead.
             if (this.discardedMPLSGOS3PacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
                 if (this.discardedMPLSGOS3Packets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
-                    this.discardedMPLSGOS3Packets.add(timeInstant-1, 0);
+                    this.discardedMPLSGOS3Packets.add(timeInstant - 1, 0);
                     this.discardedMPLSGOS3Packets.add(timeInstant, this.discardedMPLSGOS3PacketsOfThisTimeInstant);
                     this.discardedPackets.addSeries(this.discardedMPLSGOS3Packets);
                 } else {
                     this.discardedMPLSGOS3Packets.add(timeInstant, this.discardedMPLSGOS3PacketsOfThisTimeInstant);
                 }
             }
-                    
+
             // FIX: do not use harcoded values. Use class constants instead.
             if (this.discardedTLDPPacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
                 if (this.discardedTLDPPackets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
-                    this.discardedTLDPPackets.add(timeInstant-1, 0);
+                    this.discardedTLDPPackets.add(timeInstant - 1, 0);
                     this.discardedTLDPPackets.add(timeInstant, this.discardedTLDPPacketsOfThisTimeInstant);
                     this.discardedPackets.addSeries(this.discardedTLDPPackets);
                 } else {
                     this.discardedTLDPPackets.add(timeInstant, this.discardedTLDPPacketsOfThisTimeInstant);
                 }
             }
-                    
+
             // FIX: do not use harcoded values. Use class constants instead.
             if (this.discardedGPSRPPacketsOfThisTimeInstant > 0) {
                 // FIX: do not use harcoded values. Use class constants instead.
                 if (this.discardedGPSRPPackets.getItemCount() == 0) {
                     // FIX: do not use harcoded values. Use class constants instead.
-                    this.discardedGPSRPPackets.add(timeInstant-1, 0);
+                    this.discardedGPSRPPackets.add(timeInstant - 1, 0);
                     this.discardedGPSRPPackets.add(timeInstant, this.discardedGPSRPPacketsOfThisTimeInstant);
                     this.discardedPackets.addSeries(this.discardedGPSRPPackets);
                 } else {
                     this.discardedGPSRPPackets.add(timeInstant, this.discardedGPSRPPacketsOfThisTimeInstant);
                 }
             }
-            
+
             this.retransmissionsManaged.addValue(this.retransmissionRequestsReceived, TStats.RETRANSMISSION_REQUESTS_RECEIVED, "");
             this.retransmissionsManaged.addValue(this.retransmissionsRealized, TStats.RETRANSMISSIONS_REALIZED, "");
             this.retransmissionsManaged.addValue(this.retransmisionsUnrealized, TStats.RETRANSMISSIONS_UNREALIZED, "");
@@ -644,8 +644,8 @@ public class TActiveLSRStats extends TStats {
             }
             this.localRecoveriesManaged.addValue(retransmissionRequestsStillUnanswered, TStats.RETRANSMISSION_REQUESTS_STILL_UNANSWERED, "");
         }
-    }    
-    
+    }
+
     /**
      * This method returns the title of dataset #1 of this TActiveLSRStats node.
      * In this case is a descriptive text about "incoming packets".
@@ -653,12 +653,12 @@ public class TActiveLSRStats extends TStats {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return a descriptive text about "incoming packets".
      * @since 2.0
-     */  
+     */
     @Override
     public String getTitleOfDataset1() {
         return TStats.INCOMING_PACKETS;
     }
-    
+
     /**
      * This method returns the title of dataset #2 of this TActiveLSRStats node.
      * In this case is a descriptive text about "outgoing packets".
@@ -666,12 +666,12 @@ public class TActiveLSRStats extends TStats {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return a descriptive text about "outgoing packets".
      * @since 2.0
-     */  
+     */
     @Override
     public String getTitleOfDataset2() {
         return TStats.OUTGOING_PACKETS;
     }
-    
+
     /**
      * This method returns the title of dataset #3 of this TActiveLSRStats node.
      * In this case is a descriptive text about "discarded packets".
@@ -679,12 +679,12 @@ public class TActiveLSRStats extends TStats {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return a descriptive text about "discarded packets".
      * @since 2.0
-     */   
+     */
     @Override
     public String getTitleOfDataset3() {
         return TStats.DISCARDED_PACKETS;
     }
-    
+
     /**
      * This method returns the title of dataset #4 of this TActiveLSRStats node.
      * In this case is a descriptive text about "retransmissions managed".
@@ -692,12 +692,12 @@ public class TActiveLSRStats extends TStats {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return a descriptive text about "retransmissions managed".
      * @since 2.0
-     */  
+     */
     @Override
     public String getTitleOfDataset4() {
         return TStats.RETRANSMISSIONS_MANAGED;
     }
-    
+
     /**
      * This method returns the title of dataset #5 of this TActiveLSRStats node.
      * In this case is a descriptive text about "local recoveries".
@@ -710,7 +710,7 @@ public class TActiveLSRStats extends TStats {
     public String getTitleOfDataset5() {
         return TStats.LOCAL_RECOVERIES_MANAGED;
     }
-    
+
     /**
      * This method returns the title of dataset #6 of this TActiveLSRStats node.
      * There is not a dataset #6 in a TActiveLSRStats so, null is always
@@ -720,12 +720,12 @@ public class TActiveLSRStats extends TStats {
      * @return There is not a dataset #6 in a TActiveLSRStats so, null is always
      * returned.
      * @since 2.0
-     */ 
+     */
     @Override
     public String getTitleOfDataset6() {
         return null;
     }
-    
+
     private int incomingMPLSPacketsOfThisTimeInstant;
     private int incomingMPLSGOS1PacketsOfThisTimeInstant;
     private int incomingMPLSGOS2PacketsOfThisTimeInstant;
