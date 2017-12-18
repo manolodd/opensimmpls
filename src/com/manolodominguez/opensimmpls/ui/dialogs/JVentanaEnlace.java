@@ -293,7 +293,7 @@ private void clicEnCambioNodoDerecho(java.awt.event.ActionEvent evt) {//GEN-FIRS
     this.selectorPuertoDerecho.addItem("");
     this.selectorPuertoDerecho.setSelectedIndex(0);
     if (this.selectorExtremoDerecho.getSelectedIndex() != 0) {
-        TNode seleccionado = topo.setFirstNodeNamed((String) selectorExtremoDerecho.getSelectedItem());
+        TNode seleccionado = topo.getFirstNodeNamed((String) selectorExtremoDerecho.getSelectedItem());
         Iterator it = topo.getNodesIterator();
         TNode nt;
         if (seleccionado != null) {
@@ -319,7 +319,7 @@ private void clicEnCambioNodoIzquierdo(java.awt.event.ActionEvent evt) {//GEN-FI
     this.selectorPuertoDerecho.addItem("");
     this.selectorPuertoDerecho.setSelectedIndex(0);
     if (this.selectorExtremoIzquierdo.getSelectedIndex() != 0) {
-        TNode seleccionado = topo.setFirstNodeNamed((String) selectorExtremoIzquierdo.getSelectedItem());
+        TNode seleccionado = topo.getFirstNodeNamed((String) selectorExtremoIzquierdo.getSelectedItem());
         Iterator it = topo.getNodesIterator();
         TNode nt;
         if (seleccionado != null) {
@@ -458,22 +458,22 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     configEnlace.setDelay(this.delayAvanzado.getValue());
     
     if (!this.reconfigurando) {
-        configEnlace.setNameOfNodeAtEnd1((String) selectorExtremoIzquierdo.getSelectedItem());
-        configEnlace.setNameOfNodeAtEnd2((String) selectorExtremoDerecho.getSelectedItem());
+        configEnlace.setHeadEndNodeName((String) selectorExtremoIzquierdo.getSelectedItem());
+        configEnlace.setTailEndNodeName((String) selectorExtremoDerecho.getSelectedItem());
         configEnlace.discoverLinkType(topo);
         if (((String)this.selectorPuertoIzquierdo.getSelectedItem()).equals("")) {
-            configEnlace.setPortOfNodeAtEnd1(-1);
+            configEnlace.setHeadEndNodePortID(-1);
         } else {
             String aux = (String) this.selectorPuertoIzquierdo.getSelectedItem();
             int aux2 = Integer.valueOf(aux).intValue();
-            configEnlace.setPortOfNodeAtEnd1(aux2);
+            configEnlace.setHeadEndNodePortID(aux2);
         }
         if (((String)this.selectorPuertoDerecho.getSelectedItem()).equals("")) {
-            configEnlace.setPortOfNodeAtEnd2(-1);
+            configEnlace.setTailEndNodePortID(-1);
         } else {
             String aux = (String) this.selectorPuertoDerecho.getSelectedItem();
             int aux2 = Integer.valueOf(aux).intValue();
-            configEnlace.setPortOfNodeAtEnd2(aux2);
+            configEnlace.setTailEndNodePortID(aux2);
         }
     }
     int error = configEnlace.comprobar(topo, this.reconfigurando);
@@ -506,14 +506,14 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
         configEnlace = tcenlace;
         if (recfg) {
             this.reconfigurando = recfg;
-            BCKUPNombre = tcenlace.obtenerNombre();
-            BCKUPMostrarNombre = tcenlace.obtenerMostrarNombre();
-            BCKUPDelay = tcenlace.obtenerDelay();
+            BCKUPNombre = tcenlace.getName();
+            BCKUPMostrarNombre = tcenlace.getShowName();
+            BCKUPDelay = tcenlace.getDelay();
 
-            this.nombreEnlace.setText(tcenlace.obtenerNombre());
-            this.verNombre.setSelected(tcenlace.obtenerMostrarNombre());
+            this.nombreEnlace.setText(tcenlace.getName());
+            this.verNombre.setSelected(tcenlace.getShowName());
             this.delayFacil.setSelectedIndex(0);
-            this.delayAvanzado.setValue(tcenlace.obtenerDelay());
+            this.delayAvanzado.setValue(tcenlace.getDelay());
             
             this.selectorExtremoIzquierdo.setEnabled(false);
             this.selectorPuertoIzquierdo.setEnabled(false);
@@ -521,19 +521,19 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
             this.selectorPuertoDerecho.setEnabled(false);
             
             this.selectorExtremoIzquierdo.removeAllItems();
-            this.selectorExtremoIzquierdo.addItem(tcenlace.obtenerNombreExtremo1());
+            this.selectorExtremoIzquierdo.addItem(tcenlace.getHeadEndNodeName());
             this.selectorExtremoIzquierdo.setSelectedIndex(0);
 
             this.selectorPuertoIzquierdo.removeAllItems();
-            this.selectorPuertoIzquierdo.addItem(""+tcenlace.obtenerPuertoExtremo1());
+            this.selectorPuertoIzquierdo.addItem(""+tcenlace.getHeadEndNodePortID());
             this.selectorPuertoIzquierdo.setSelectedIndex(0);
             
             this.selectorExtremoDerecho.removeAllItems();
-            this.selectorExtremoDerecho.addItem(tcenlace.obtenerNombreExtremo2());
+            this.selectorExtremoDerecho.addItem(tcenlace.getTailEndNodeName());
             this.selectorExtremoDerecho.setSelectedIndex(0);
 
             this.selectorPuertoDerecho.removeAllItems();
-            this.selectorPuertoDerecho.addItem(""+tcenlace.obtenerPuertoExtremo2());
+            this.selectorPuertoDerecho.addItem(""+tcenlace.getTailEndNodePortID());
             this.selectorPuertoDerecho.setSelectedIndex(0);
         }
     }

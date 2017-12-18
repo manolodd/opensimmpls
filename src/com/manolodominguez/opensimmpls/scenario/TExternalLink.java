@@ -105,11 +105,11 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
                         // FIX: do not use harcoded values. Use constants class
                         // instead
                         if (bufferedPacketEntry.getTargetEnd() == 1) {
-                            this.generateSimulationEvent(new TSEPacketDiscarded(this.getNodeAtEnd2(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), packet.getSubtype()));
+                            this.generateSimulationEvent(new TSEPacketDiscarded(this.getTailEndNode(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), packet.getSubtype()));
                             // FIX: do not use harcoded values. Use constants class
                             // instead
                         } else if (bufferedPacketEntry.getTargetEnd() == 2) {
-                            this.generateSimulationEvent(new TSEPacketDiscarded(this.getNodeAtEnd1(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), packet.getSubtype()));
+                            this.generateSimulationEvent(new TSEPacketDiscarded(this.getHeadEndNode(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), packet.getSubtype()));
                         }
                     }
                     bufferedPacketEntriesIterator.remove();
@@ -157,7 +157,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
         while (bufferedPacketEntriesIterator.hasNext()) {
             TLinkBufferEntry bufferedPacketEntry = (TLinkBufferEntry) bufferedPacketEntriesIterator.next();
             bufferedPacketEntry.substractStepLength(this.stepLength);
-            long transitPercentage = this.getTransitPercentage(bufferedPacketEntry.getTotalTransitDelay(), bufferedPacketEntry.getRemainingTransitDelay());
+            long transitPercentage = this.getCurrentTransitPercentage(bufferedPacketEntry.getTotalTransitDelay(), bufferedPacketEntry.getRemainingTransitDelay());
             // FIX: do not use harcoded values. Use constants class instead.
             if (bufferedPacketEntry.getTargetEnd() == 1) {
                 // FIX: do not use harcoded values. Use constants class instead.
@@ -216,12 +216,12 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
         Iterator deliveredPacketEntriesIterator = this.deliveredPacketsBuffer.iterator();
         while (deliveredPacketEntriesIterator.hasNext()) {
             TLinkBufferEntry deliveredBufferedPacketEntry = (TLinkBufferEntry) deliveredPacketEntriesIterator.next();
-            if (deliveredBufferedPacketEntry.getTargetEnd() == TLink.END_NODE_1) {
-                TNode nodeAux = this.getNodeAtEnd1();
-                nodeAux.putPacket(deliveredBufferedPacketEntry.getPacket(), this.getPortOfNodeAtEnd1());
+            if (deliveredBufferedPacketEntry.getTargetEnd() == TLink.HEAD_END_NODE) {
+                TNode nodeAux = this.getHeadEndNode();
+                nodeAux.putPacket(deliveredBufferedPacketEntry.getPacket(), this.getHeadEndNodePortID());
             } else {
-                TNode nodeAux = this.getNodeAtEnd2();
-                nodeAux.putPacket(deliveredBufferedPacketEntry.getPacket(), this.getPortOfNodeAtEnd2());
+                TNode nodeAux = this.getTailEndNode();
+                nodeAux.putPacket(deliveredBufferedPacketEntry.getPacket(), this.getTailEndNodePortID());
             }
             deliveredPacketEntriesIterator.remove();
         }
@@ -295,13 +295,13 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
         serializedElement += "#";
         serializedElement += this.getDelay();
         serializedElement += "#";
-        serializedElement += this.getNodeAtEnd1().getIPv4Address();
+        serializedElement += this.getHeadEndNode().getIPv4Address();
         serializedElement += "#";
-        serializedElement += this.getPortOfNodeAtEnd1();
+        serializedElement += this.getHeadEndNodePortID();
         serializedElement += "#";
-        serializedElement += this.getNodeAtEnd2().getIPv4Address();
+        serializedElement += this.getTailEndNode().getIPv4Address();
         serializedElement += "#";
-        serializedElement += this.getPortOfNodeAtEnd2();
+        serializedElement += this.getTailEndNodePortID();
         serializedElement += "#";
         return serializedElement;
     }
@@ -327,7 +327,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
         if (elementFields.length != 10) {
             return false;
         }
-        this.setLinkID(Integer.valueOf(elementFields[2]));
+        this.getID(Integer.valueOf(elementFields[2]));
         linkConfig.setName(elementFields[3]);
         linkConfig.setShowName(Boolean.parseBoolean(elementFields[4]));
         linkConfig.setDelay(Integer.parseInt(elementFields[5]));
@@ -336,10 +336,10 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
         TNode nodeAtEnd1 = this.getTopology().getNode(ipv4AddressOfNodeAtEND1);
         TNode nodeAtEnd2 = this.getTopology().getNode(ipv4AddressOfNodeAtEND2);
         if (!((nodeAtEnd1 == null) || (nodeAtEnd2 == null))) {
-            linkConfig.setNameOfNodeAtEnd1(nodeAtEnd1.getName());
-            linkConfig.setNameOfNodeAtEnd2(nodeAtEnd2.getName());
-            linkConfig.setPortOfNodeAtEnd1(Integer.parseInt(elementFields[7]));
-            linkConfig.setPortOfNodeAtEnd2(Integer.parseInt(elementFields[9]));
+            linkConfig.setHeadEndNodeName(nodeAtEnd1.getName());
+            linkConfig.setTailEndNodeName(nodeAtEnd2.getName());
+            linkConfig.setHeadEndNodePortID(Integer.parseInt(elementFields[7]));
+            linkConfig.setTailEndNodePortID(Integer.parseInt(elementFields[9]));
             linkConfig.discoverLinkType(this.topology);
         } else {
             return false;

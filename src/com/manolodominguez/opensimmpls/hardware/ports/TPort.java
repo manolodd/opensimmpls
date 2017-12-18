@@ -146,13 +146,13 @@ public abstract class TPort {
         if (this.link != null) {
             if (!this.link.isBroken()) {
                 if (this.link.getLinkType() == TLink.INTERNAL) {
-                    this.link.carryPacket(packet, endID);
+                    this.link.deliverPacketToNode(packet, endID);
                     if (this.getPortSet().getParentNode().getStats() != null) {
                         this.getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.OUTGOING);
                     }
                 } else {
                     if ((packet.getType() != TAbstractPDU.GPSRP) && (packet.getType() != TAbstractPDU.TLDP)) {
-                        this.link.carryPacket(packet, endID);
+                        this.link.deliverPacketToNode(packet, endID);
                         if (this.getPortSet().getParentNode().getStats() != null) {
                             this.getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.OUTGOING);
                         }

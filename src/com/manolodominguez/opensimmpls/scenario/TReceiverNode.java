@@ -200,11 +200,11 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
         if (soloEspacios)
             return this.SOLO_ESPACIOS;
         if (!recfg) {
-            TNode tp = t.setFirstNodeNamed(this.getName());
+            TNode tp = t.getFirstNodeNamed(this.getName());
             if (tp != null)
                 return this.NOMBRE_YA_EXISTE;
         } else {
-            TNode tp = t.setFirstNodeNamed(this.getName());
+            TNode tp = t.getFirstNodeNamed(this.getName());
             if (tp != null) {
                 if (this.topology.thereIsMoreThanANodeNamed(this.getName())) {
                     return this.NOMBRE_YA_EXISTE;

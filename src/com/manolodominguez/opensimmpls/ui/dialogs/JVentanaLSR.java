@@ -362,9 +362,9 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
         configLSR.setShowName(BKUPMostrarNombre);
         configLSR.setName(BKUPNombre);
         configLSR.setWellConfigured(true);
-        configLSR.ponerTamanioBuffer(BKUPTamBuffer);
+        configLSR.setBufferSizeInMBytes(BKUPTamBuffer);
         configLSR.setGenerateStats(BKUPGenerarEstadisticas);
-        configLSR.ponerPotenciaEnMb(BKUPPotencia);
+        configLSR.setSwitchingPowerInMbps(BKUPPotencia);
         reconfigurando = false;
     } else {
         configLSR.setWellConfigured(false);
@@ -378,8 +378,8 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     if (!this.reconfigurando){
         configLSR.setScreenPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
     }
-    configLSR.ponerTamanioBuffer(this.selectorDeTamanioBuffer.getValue());
-    configLSR.ponerPotenciaEnMb(this.selectorDePotenciaDeConmutacion.getValue());
+    configLSR.setBufferSizeInMBytes(this.selectorDeTamanioBuffer.getValue());
+    configLSR.setSwitchingPowerInMbps(this.selectorDePotenciaDeConmutacion.getValue());
     configLSR.setName(nombreNodo.getText());
     configLSR.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
     configLSR.setShowName(verNombre.isSelected());

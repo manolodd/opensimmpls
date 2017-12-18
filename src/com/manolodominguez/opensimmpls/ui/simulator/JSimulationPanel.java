@@ -261,8 +261,8 @@ public class JSimulationPanel extends javax.swing.JPanel {
         Iterator ite = topologia.getLinksIterator();
         while (ite.hasNext()) {
             TLink enlace = (TLink) ite.next();
-            Point inicio = enlace.getNodeAtEnd1().getScreenPosition();
-            Point fin = enlace.getNodeAtEnd2().getScreenPosition();
+            Point inicio = enlace.getHeadEndNode().getScreenPosition();
+            Point fin = enlace.getTailEndNode().getScreenPosition();
             int del = enlace.getDelay();
             g2Dbuf.setStroke(new BasicStroke((float) obtenerGrosorEnlace(del)));
             if (enlace.getLinkType() == TLink.EXTERNAL) {
@@ -333,10 +333,10 @@ public class JSimulationPanel extends javax.swing.JPanel {
             if (enlace.getShowName()) {
                 FontMetrics fm = this.getFontMetrics(this.getFont());
                 int anchoTexto = fm.charsWidth(enlace.getName().toCharArray(), 0, enlace.getName().length());
-                int posX1 = enlace.getNodeAtEnd1().getScreenPosition().x+24;
-                int posY1 = enlace.getNodeAtEnd1().getScreenPosition().y+24;
-                int posX2 = enlace.getNodeAtEnd2().getScreenPosition().x+24;
-                int posY2 = enlace.getNodeAtEnd2().getScreenPosition().y+24;
+                int posX1 = enlace.getHeadEndNode().getScreenPosition().x+24;
+                int posY1 = enlace.getHeadEndNode().getScreenPosition().y+24;
+                int posX2 = enlace.getTailEndNode().getScreenPosition().x+24;
+                int posY2 = enlace.getTailEndNode().getScreenPosition().y+24;
                 int posX = Math.min(posX1, posX2) + ((Math.max(posX1, posX2) - Math.min(posX1, posX2)) / 2) - (anchoTexto / 2);
                 int posY = Math.min(posY1, posY2) + ((Math.max(posY1, posY2) - Math.min(posY1, posY2)) / 2) + 5;
                 g2Dbuf.setColor(this.COLOR_NOMBRE_ENLACE);
@@ -492,7 +492,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
                     if (evento.getSubtype() == TSimulationEvent.PACKET_ON_FLY) {
                         TSEPacketOnFly ept = (TSEPacketOnFly) evento;
                         TLink et = (TLink) ept.obtenerFuente();
-                        Point p = et.obtenerCoordenadasPaquete(ept.obtenerPorcentajeTransito());
+                        Point p = et.getScreenPacketPosition(ept.obtenerPorcentajeTransito());
                         if (ept.obtenerTipoPaquete() == TAbstractPDU.GPSRP) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_GOS), p.x-14, p.y-14, null);
                         } else if (ept.obtenerTipoPaquete() == TAbstractPDU.TLDP) {
@@ -651,11 +651,11 @@ public class JSimulationPanel extends javax.swing.JPanel {
                 if (evento != null) {
                     if (evento.getSubtype() == TSimulationEvent.LINK_BROKEN) {
                         TLink ent = (TLink) evento.obtenerFuente();
-                        Point p = ent.obtenerCoordenadasPaquete(50);
+                        Point p = ent.getScreenPacketPosition(50);
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.ENLACE_CAIDO), p.x-41, p.y-41, null);
                     } else if (evento.getSubtype() == TSimulationEvent.LINK_RECOVERED) {
                         TLink ent = (TLink) evento.obtenerFuente();
-                        Point p = ent.obtenerCoordenadasPaquete(50);
+                        Point p = ent.getScreenPacketPosition(50);
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.ENLACE_RECUPERADO), p.x-41, p.y-41, null);
                     }
                 }

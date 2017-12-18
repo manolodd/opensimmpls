@@ -92,7 +92,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      */
     public void ponerDestino(String d) {
         if (!d.equals("")) {
-            TNode nt = this.topology.setFirstNodeNamed(d);
+            TNode nt = this.topology.getFirstNodeNamed(d);
             if (nt != null) {
                 IPDestino = nt.getIPv4Address();
             }
@@ -356,7 +356,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                         e.printStackTrace(); 
                     }
                     if (this.topology.getNextHopIPv4Address(this.getIPv4Address(), this.obtenerDestino()) != null) {
-                        pt.putPacketOnLink(paqueteConTamanio, pt.getLink().getTargetNodeIDOfTrafficSentBy(this));
+                        pt.putPacketOnLink(paqueteConTamanio, pt.getLink().getDestinationOfTrafficSentBy(this));
                     } else {
                         discardPacket(paqueteConTamanio);
                     }
@@ -655,11 +655,11 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         if (soloEspacios)
             return this.SOLO_ESPACIOS;
         if (!recfg) {
-            TNode tp = t.setFirstNodeNamed(this.getName());
+            TNode tp = t.getFirstNodeNamed(this.getName());
             if (tp != null)
                 return this.NOMBRE_YA_EXISTE;
         } else {
-            TNode tp = t.setFirstNodeNamed(this.getName());
+            TNode tp = t.getFirstNodeNamed(this.getName());
             if (tp != null) {
                 if (this.topology.thereIsMoreThanANodeNamed(this.getName())) {
                     return this.NOMBRE_YA_EXISTE;

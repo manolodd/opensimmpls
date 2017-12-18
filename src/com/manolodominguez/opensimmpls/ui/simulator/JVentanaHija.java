@@ -1125,7 +1125,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                 panelDisenio.repaint();
             } else {
                 TLink ent = (TLink) elementoDisenioClicDerecho;
-                TLinkConfig tceAux = ent.obtenerConfiguracion();
+                TLinkConfig tceAux = ent.getConfig();
                 JVentanaEnlace ve = new JVentanaEnlace(escenario.getTopology(), dispensadorDeImagenes, VentanaPadre, true);
                 ve.ponerConfiguracion(tceAux, true);
                 ve.show();
@@ -1225,7 +1225,7 @@ private void clicEnPopUpDisenioFondoOcultarNombreEnlaces(java.awt.event.ActionEv
     TLink enlaceAux;
     while (it.hasNext()) {
         enlaceAux = (TLink) it.next();
-        enlaceAux.ponerMostrarNombre(false);
+        enlaceAux.setShowName(false);
     }
     panelDisenio.repaint();
     this.escenario.setModified(true);
@@ -1241,7 +1241,7 @@ private void clicEnPopUpDisenioFondoVerNombreEnlaces(java.awt.event.ActionEvent 
     TLink enlaceAux;
     while (it.hasNext()) {
         enlaceAux = (TLink) it.next();
-        enlaceAux.ponerMostrarNombre(true);
+        enlaceAux.setShowName(true);
     }
     panelDisenio.repaint();
     this.escenario.setModified(true);
@@ -1439,7 +1439,7 @@ private void clicEnPopUpDisenioVerNombre(java.awt.event.ActionEvent evt) {//GEN-
             panelDisenio.repaint();
         } else {
             TLink ent = (TLink) elementoDisenioClicDerecho;
-            ent.ponerMostrarNombre(dVerNombreMenuItem.isSelected());
+            ent.setShowName(dVerNombreMenuItem.isSelected());
             elementoDisenioClicDerecho = null;
             panelDisenio.repaint();
         }
@@ -2327,7 +2327,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             this.etiquetaEstadisticasNombreAutor.setText(this.nombreAutor.getText());
             this.areaEstadisticasDescripcion.setText(this.descripcionEscenario.getText());
             this.etiquetaNombreElementoEstadistica.setText(nombre);
-            TNode nt = this.escenario.getTopology().setFirstNodeNamed(nombre);
+            TNode nt = this.escenario.getTopology().getFirstNodeNamed(nombre);
             gbc = new java.awt.GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 0;

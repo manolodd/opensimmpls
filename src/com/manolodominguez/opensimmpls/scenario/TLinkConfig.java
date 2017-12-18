@@ -54,7 +54,7 @@ public class TLinkConfig {
      * @return El retardo del enlace.
      * @since 2.0
      */    
-    public int obtenerDelay() {
+    public int getDelay() {
         return delay;
     }
     
@@ -109,7 +109,7 @@ public class TLinkConfig {
      * @since 2.0
      * @return El nombre del enlace.
      */    
-    public String obtenerNombre() {
+    public String getName() {
         return nombre;
     }
 
@@ -127,7 +127,7 @@ public class TLinkConfig {
      * @since 2.0
      * @param n Nombre del ndo que ser� extremo izquierdo del enlace.
      */    
-    public void setNameOfNodeAtEnd1(String n) {
+    public void setHeadEndNodeName(String n) {
         nombreExtremo1 = n;
     }
 
@@ -136,7 +136,7 @@ public class TLinkConfig {
      * @since 2.0
      * @return El nombre del nodo que es extremo izquierdo del enlace.
      */    
-    public String obtenerNombreExtremo1() {
+    public String getHeadEndNodeName() {
         return nombreExtremo1;
     }
 
@@ -145,7 +145,7 @@ public class TLinkConfig {
      * @since 2.0
      * @param n El nombre del nodo que es extremo derecho del enlace.
      */    
-    public void setNameOfNodeAtEnd2(String n) {
+    public void setTailEndNodeName(String n) {
         nombreExtremo2 = n;
     }
 
@@ -154,7 +154,7 @@ public class TLinkConfig {
      * @since 2.0
      * @return El nombre del nodo que es extremo derecho del enlace.
      */    
-    public String obtenerNombreExtremo2() {
+    public String getTailEndNodeName() {
         return nombreExtremo2;
     }
 
@@ -163,7 +163,7 @@ public class TLinkConfig {
      * @since 2.0
      * @return TRUE, si el nombre se est� mostrando. FALSE en caso contrario.
      */    
-    public boolean obtenerMostrarNombre() {
+    public boolean getShowName() {
         return ponerNombre;
     }
 
@@ -173,7 +173,7 @@ public class TLinkConfig {
      * @since 2.0
      * @param p Puerto del nodo izquierdo al que se conecta el enlace.
      */    
-    public void setPortOfNodeAtEnd1(int p) {  
+    public void setHeadEndNodePortID(int p) {  
         puertoExtremo1 = p;
     }
 
@@ -183,7 +183,7 @@ public class TLinkConfig {
      * @since 2.0
      * @return El puerto del ndo izquierdo del enlace al que �ste est� conectado.
      */    
-    public int obtenerPuertoExtremo1() {  
+    public int getHeadEndNodePortID() {  
         return puertoExtremo1;
     }
 
@@ -193,7 +193,7 @@ public class TLinkConfig {
      * @since 2.0
      * @param p Puerto del ndo derecho del enlace al que se conectar� �ste.
      */    
-    public void setPortOfNodeAtEnd2(int p) {  
+    public void setTailEndNodePortID(int p) {  
         puertoExtremo2 = p;
     }
 
@@ -203,7 +203,7 @@ public class TLinkConfig {
      * @since 2.0
      * @return El puerto del nodo derecho del enlace al que este est� conectado.
      */    
-    public int obtenerPuertoExtremo2() {  
+    public int getTailEndNodePortID() {  
         return puertoExtremo2;
     }
 
@@ -235,8 +235,8 @@ public class TLinkConfig {
                 if (topo.existeMasDeUnEnlaceLlamado(nombre)) {
                     return this.NOMBRE_YA_EXISTE;
                 } else {
-                    if (e.getNodeAtEnd1().getName().equals(this.obtenerNombreExtremo1())) {
-                        if (!e.getNodeAtEnd2().getName().equals(this.obtenerNombreExtremo2())) {
+                    if (e.getHeadEndNode().getName().equals(this.getHeadEndNodeName())) {
+                        if (!e.getTailEndNode().getName().equals(this.getTailEndNodeName())) {
                             return this.NOMBRE_YA_EXISTE;
                         }
                     } else {
@@ -284,8 +284,8 @@ public class TLinkConfig {
      */    
     public void discoverLinkType(TTopology topo) {
         TNode e1, e2;
-        e1 = topo.setFirstNodeNamed(nombreExtremo1);
-        e2 = topo.setFirstNodeNamed(nombreExtremo2);
+        e1 = topo.getFirstNodeNamed(nombreExtremo1);
+        e2 = topo.getFirstNodeNamed(nombreExtremo2);
         if ((e1 != null) && (e2 != null)) {
             int tipo1 = e1.getNodeType();
             int tipo2 = e2.getNodeType();

@@ -152,7 +152,7 @@ public class TTopology {
      * @return Nodo que busc�bamos. NULL si no existe.
      * @since 2.0
      */    
-    public TNode setFirstNodeNamed(String nom) {
+    public TNode getFirstNodeNamed(String nom) {
         TNode nodo = null;
         Iterator iterador = conjuntoNodos.iterator();
         while (iterador.hasNext()) {
@@ -349,7 +349,7 @@ public class TTopology {
         while ((iterador.hasNext()) && (!fin)) {
             enlace = (TLink) iterador.next();
             if (enlace.getID() == identificador) {
-                enlace.desconectarDePuertos();
+                enlace.disconnectFromPorts();
                 enlace.ponerPurgar(true);
                 iterador.remove();
                 fin = true;
@@ -397,7 +397,7 @@ public class TTopology {
         Iterator iterador = conjuntoEnlaces.iterator();
         while (iterador.hasNext()) {
             enlace = (TLink) iterador.next();
-            if (enlace.estaEnPosicion(p))
+            if (enlace.crossesScreenPosition(p))
                 return enlace;
         }
         return null;
@@ -426,13 +426,13 @@ public class TTopology {
             if (enlaceBuscado.getID() == enlace.getID()) {
                 if (enlaceBuscado.getLinkType() == TLink.EXTERNAL) {
                     TExternalLink enlaceTrasCast = (TExternalLink) enlaceBuscado;
-                    enlaceTrasCast.ponerExtremo1(enlace.getNodeAtEnd1());
-                    enlaceTrasCast.ponerExtremo2(enlace.getNodeAtEnd2());
+                    enlaceTrasCast.setHeadEndNode(enlace.getHeadEndNode());
+                    enlaceTrasCast.setTailEndNode(enlace.getTailEndNode());
                 }
                 else if (enlace.getLinkType() == TLink.INTERNAL) {
                     TInternalLink enlaceTrasCast = (TInternalLink) enlaceBuscado;
-                    enlaceTrasCast.ponerExtremo1(enlace.getNodeAtEnd1());
-                    enlaceTrasCast.ponerExtremo2(enlace.getNodeAtEnd2());
+                    enlaceTrasCast.setHeadEndNode(enlace.getHeadEndNode());
+                    enlaceTrasCast.setTailEndNode(enlace.getTailEndNode());
                 }
                 fin = true;
             }
@@ -484,8 +484,8 @@ public class TTopology {
         Iterator iterador = conjuntoEnlaces.iterator();
         while (iterador.hasNext()) {
             enlace = (TLink) iterador.next();
-            if (enlace.conectadoA(identificador)) {
-                enlace.desconectarDePuertos();
+            if (enlace.isConnectedTo(identificador)) {
+                enlace.disconnectFromPorts();
                 enlace.ponerPurgar(true);
                 iterador.remove();
             }
@@ -534,7 +534,7 @@ public class TTopology {
         TLink e;
         while (it.hasNext()) {
             e = (TLink) it.next();
-            e.desconectarDePuertos();
+            e.disconnectFromPorts();
             e.ponerPurgar(true);
             it.remove();
         }
@@ -615,8 +615,8 @@ public class TTopology {
         TNode derecho;
         while (iterador.hasNext()) {
             enlace = (TLink) iterador.next();
-            izquierdo = enlace.getNodeAtEnd1();
-            derecho = enlace.getNodeAtEnd2();
+            izquierdo = enlace.getHeadEndNode();
+            derecho = enlace.getTailEndNode();
             if ((derecho.getID() == extremo1) && (izquierdo.getID() == extremo2))
                 return true;
             if ((derecho.getID() == extremo2) && (izquierdo.getID() == extremo1))
@@ -640,8 +640,8 @@ public class TTopology {
         TNode derecho;
         while (iterador.hasNext()) {
             enlace = (TLink) iterador.next();
-            izquierdo = enlace.getNodeAtEnd1();
-            derecho = enlace.getNodeAtEnd2();
+            izquierdo = enlace.getHeadEndNode();
+            derecho = enlace.getTailEndNode();
             if ((derecho.getID() == extremo1) && (izquierdo.getID() == extremo2))
                 return enlace;
             if ((derecho.getID() == extremo2) && (izquierdo.getID() == extremo1))
