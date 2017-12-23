@@ -47,6 +47,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      */
     public TLink(int identifier, TLongIDGenerator longIDGenerator, TTopology topology) {
         super(TTopologyElement.LINK, longIDGenerator);
+        // FIX: Use class constants instead of harcoded values in every case.
         this.identifier = identifier;
         this.headEndNode = null;
         this.tailEndNode = null;
@@ -88,10 +89,13 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     public int compareTo(Object anotherLink) {
         TLink linkAux = (TLink) anotherLink;
         if (TLink.this.getID() < linkAux.getID()) {
+            // FIX: Use class constants instead of harcoded values.
             return -1;
         } else if (TLink.this.getID() == linkAux.getID()) {
+            // FIX: Use class constants instead of harcoded values.
             return 0;
         }
+        // FIX: Use class constants instead of harcoded values.
         return 1;
     }
 
@@ -109,6 +113,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @since 2.0
      */
     public long getCurrentTransitPercentage(long totalTransitDelay, long remainingDelay) {
+        // FIX: Use class constants instead of harcoded values.
         return ((totalTransitDelay - remainingDelay) * 100) / totalTransitDelay;
     }
 
@@ -124,6 +129,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return Coordinates of the screen where the packet has to be displayed.
      */
     public Point getScreenPacketPosition(long transitPercentage) {
+        // FIX: Use class constants instead of harcoded values in every case.
         Point screenPacketPosition = new Point(0, 0);
         int x1 = this.headEndNode.getScreenPosition().x + 24;
         int y1 = this.headEndNode.getScreenPosition().y + 24;
@@ -243,6 +249,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @since 2.0
      */
     public void setDelay(int delay) {
+        // FIX: Use class constants instead of harcoded values in every case.
         if (delay <= 0) {
             this.delay = 1;
         } else {
@@ -515,6 +522,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @since 2.0
      */
     public boolean crossesScreenPosition(Point screenPosition) {
+        // FIX: Use class constants instead of harcoded values.
         int x1 = this.headEndNode.getScreenPosition().x + 24;
         int y1 = this.headEndNode.getScreenPosition().y + 24;
         int x2 = this.tailEndNode.getScreenPosition().x + 24;
@@ -541,6 +549,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
             x = x1;
             y = y1;
 
+            // FIX: Use class constants instead of harcoded values.
             if ((x >= screenPosition.x - 3) && (x <= screenPosition.x + 3)
                     && (y >= screenPosition.y - 3) && (y <= screenPosition.y + 3)) {
                 return true;
@@ -548,6 +557,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
             for (k = 1; k <= steps; k++) {
                 x += incrementX;
                 y += incrementY;
+                // FIX: Use class constants instead of harcoded values.
                 if ((x >= screenPosition.x - 3) && (x <= screenPosition.x + 3)
                         && (y >= screenPosition.y - 3) && (y <= screenPosition.y + 3)) {
                     return true;
