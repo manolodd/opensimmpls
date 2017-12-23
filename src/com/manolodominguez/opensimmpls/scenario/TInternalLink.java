@@ -59,7 +59,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      */
     @Override
     public int getLinkType() {
-        return TLink.INTERNAL;
+        return TLink.INTERNAL_LINK;
     }
 
     /**

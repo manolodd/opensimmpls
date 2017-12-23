@@ -35,7 +35,7 @@ public class TLinkConfig {
         delay = 1;
         valida = false;
         ponerNombre = false;
-        tipoEnlace = TLink.INTERNAL;
+        tipoEnlace = TLink.INTERNAL_LINK;
         puertoExtremo1 = -1;
         puertoExtremo2 = -1;
     }
@@ -291,9 +291,9 @@ public class TLinkConfig {
             int tipo2 = e2.getNodeType();
             if ((tipo1 == TNode.SENDER) || (tipo1 == TNode.RECEIVER) ||
                 (tipo2 == TNode.SENDER) || (tipo2 == TNode.RECEIVER))
-                this.ponerTipo(TLink.EXTERNAL);
+                this.ponerTipo(TLink.EXTERNAL_LINK);
             else
-                this.ponerTipo(TLink.INTERNAL);
+                this.ponerTipo(TLink.INTERNAL_LINK);
         }
     }
 

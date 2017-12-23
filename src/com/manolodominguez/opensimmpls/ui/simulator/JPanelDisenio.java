@@ -161,7 +161,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
             Point fin = enlace.getTailEndNode().getScreenPosition();
             int del = enlace.getDelay();
             g2Dbuf.setStroke(new BasicStroke((float) obtenerGrosorEnlace(del)));
-            if (enlace.getLinkType() == TLink.EXTERNAL) {
+            if (enlace.getLinkType() == TLink.EXTERNAL_LINK) {
                 g2Dbuf.setColor(Color.GRAY);
             } else {
                 g2Dbuf.setColor(Color.BLUE);

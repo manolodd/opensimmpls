@@ -344,7 +344,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                             if ((linkAux1.isBroken()) && (switchingMatrixEntry.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
                                 incomingPort = this.ports.getPort(switchingMatrixEntry.getIncomingPortID());
                                 linkAux1 = incomingPort.getLink();
-                                if (linkAux1.getLinkType() == TLink.INTERNAL) {
+                                if (linkAux1.getLinkType() == TLink.INTERNAL_LINK) {
                                     this.sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getIncomingPortID());
                                 } else {
                                     removeSwitchingMatrixEntry = true;
@@ -363,7 +363,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                             if ((linkAux1.isBroken()) && (switchingMatrixEntry.getOutgoingLabel() != TSwitchingMatrixEntry.REMOVING_LABEL)) {
                                 outgoingPort = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID());
                                 linkAux1 = outgoingPort.getLink();
-                                if (linkAux1.getLinkType() == TLink.INTERNAL) {
+                                if (linkAux1.getLinkType() == TLink.INTERNAL_LINK) {
                                     this.sendTLDPWithdrawal(switchingMatrixEntry, switchingMatrixEntry.getOutgoingPortID());
                                 } else {
                                     removeSwitchingMatrixEntry = false;
@@ -379,10 +379,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     if (linkAux1.isBroken() && linkAux2.isBroken()) {
                         removeSwitchingMatrixEntry = true;
                     }
-                    if (linkAux1.isBroken() && (linkAux2.getLinkType() == TLink.EXTERNAL)) {
+                    if (linkAux1.isBroken() && (linkAux2.getLinkType() == TLink.EXTERNAL_LINK)) {
                         removeSwitchingMatrixEntry = true;
                     }
-                    if ((linkAux1.getLinkType() == TLink.EXTERNAL) && linkAux2.isBroken()) {
+                    if ((linkAux1.getLinkType() == TLink.EXTERNAL_LINK) && linkAux2.isBroken()) {
                         removeSwitchingMatrixEntry = true;
                     }
                 } else {
@@ -1395,7 +1395,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                         TPort outgoingPort = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID());
                         if (outgoingPort != null) {
                             TLink link = outgoingPort.getLink();
-                            if (link.getLinkType() == TLink.INTERNAL) {
+                            if (link.getLinkType() == TLink.INTERNAL_LINK) {
                                 TInternalLink internalLink = (TInternalLink) link;
                                 if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
                                     internalLink.unlinkFromABackupLSP();
@@ -1415,7 +1415,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                             TPort outgoingPort = this.ports.getPort(switchingMatrixEntry.getBackupOutgoingPortID());
                             if (outgoingPort != null) {
                                 TLink link = outgoingPort.getLink();
-                                if (link.getLinkType() == TLink.INTERNAL) {
+                                if (link.getLinkType() == TLink.INTERNAL_LINK) {
                                     TInternalLink internalLink = (TInternalLink) link;
                                     internalLink.unlinkFromABackupLSP();
                                 }
@@ -1428,7 +1428,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     TPort outgoingPort = this.ports.getPort(incomingPortID);
                     if (outgoingPort != null) {
                         TLink link = outgoingPort.getLink();
-                        if (link.getLinkType() == TLink.INTERNAL) {
+                        if (link.getLinkType() == TLink.INTERNAL_LINK) {
                             TInternalLink internalLink = (TInternalLink) link;
                             if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
                                 internalLink.unlinkFromABackupLSP();
@@ -1459,7 +1459,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             } else if (currentLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
                 TPort outgoingPort = this.ports.getPort(incomingPortID);
                 TLink link = outgoingPort.getLink();
-                if (link.getLinkType() == TLink.INTERNAL) {
+                if (link.getLinkType() == TLink.INTERNAL_LINK) {
                     TInternalLink internalLink = (TInternalLink) link;
                     if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
                         internalLink.unlinkFromABackupLSP();
@@ -1492,7 +1492,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             } else if (currentBackupLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
                 TPort outgoingPort = this.ports.getPort(incomingPortID);
                 TLink link = outgoingPort.getLink();
-                if (link.getLinkType() == TLink.INTERNAL) {
+                if (link.getLinkType() == TLink.INTERNAL_LINK) {
                     TInternalLink internalLink = (TInternalLink) link;
                     if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
                         internalLink.unlinkFromABackupLSP();
@@ -1968,8 +1968,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         String nextHopIPv4Address = this.topology.getNextHopRABANIPv4Address(this.getIPv4Address(), tailEndIPv4Address);
         if (nextHopIPv4Address != null) {
             TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPv4Address);
-            int incomingLink = TLink.EXTERNAL;
-            int outgoingLink = TLink.INTERNAL;
+            int incomingLink = TLink.EXTERNAL_LINK;
+            int outgoingLink = TLink.INTERNAL_LINK;
             switchingMatrixEntry = new TSwitchingMatrixEntry();
             switchingMatrixEntry.setUpstreamTLDPSessionID(predecessorTLDPID);
             switchingMatrixEntry.setTailEndIPAddress(tailEndIPv4Address);
@@ -1988,16 +1988,16 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             if (outgoingPort != null) {
                 outgoingLink = outgoingPort.getLink().getLinkType();
             }
-            if ((incomingLink == TLink.EXTERNAL) && (outgoingLink == TLink.EXTERNAL)) {
+            if ((incomingLink == TLink.EXTERNAL_LINK) && (outgoingLink == TLink.EXTERNAL_LINK)) {
                 switchingMatrixEntry.setEntryType(TSwitchingMatrixEntry.FEC_ENTRY);
                 switchingMatrixEntry.setLabelStackOperation(TSwitchingMatrixEntry.NOOP);
-            } else if ((incomingLink == TLink.EXTERNAL) && (outgoingLink == TLink.INTERNAL)) {
+            } else if ((incomingLink == TLink.EXTERNAL_LINK) && (outgoingLink == TLink.INTERNAL_LINK)) {
                 switchingMatrixEntry.setEntryType(TSwitchingMatrixEntry.FEC_ENTRY);
                 switchingMatrixEntry.setLabelStackOperation(TSwitchingMatrixEntry.PUSH_LABEL);
-            } else if ((incomingLink == TLink.INTERNAL) && (outgoingLink == TLink.EXTERNAL)) {
+            } else if ((incomingLink == TLink.INTERNAL_LINK) && (outgoingLink == TLink.EXTERNAL_LINK)) {
                 switchingMatrixEntry.setEntryType(TSwitchingMatrixEntry.LABEL_ENTRY);
                 switchingMatrixEntry.setLabelStackOperation(TSwitchingMatrixEntry.POP_LABEL);
-            } else if ((incomingLink == TLink.INTERNAL) && (outgoingLink == TLink.INTERNAL)) {
+            } else if ((incomingLink == TLink.INTERNAL_LINK) && (outgoingLink == TLink.INTERNAL_LINK)) {
                 switchingMatrixEntry.setEntryType(TSwitchingMatrixEntry.LABEL_ENTRY);
                 switchingMatrixEntry.setLabelStackOperation(TSwitchingMatrixEntry.SWAP_LABEL);
             }
@@ -2036,8 +2036,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         if (outgoingPortID != null) {
             TPort incomingPort = this.ports.getPort(incomingPortID);
             TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPAddress(outgoingPortID);
-            int incomingLink = TLink.EXTERNAL;
-            int outgoingLink = TLink.INTERNAL;
+            int incomingLink = TLink.EXTERNAL_LINK;
+            int outgoingLink = TLink.INTERNAL_LINK;
             switchingMatrixEntry = new TSwitchingMatrixEntry();
             switchingMatrixEntry.setUpstreamTLDPSessionID(TSwitchingMatrixEntry.UNDEFINED);
             switchingMatrixEntry.setTailEndIPAddress(tailEndIPv4Address);
@@ -2054,15 +2054,15 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             if (incomingPort != null) {
                 incomingLink = incomingPort.getLink().getLinkType();
             }
-            if ((incomingLink == TLink.EXTERNAL) && (outgoingLink == TLink.EXTERNAL)) {
+            if ((incomingLink == TLink.EXTERNAL_LINK) && (outgoingLink == TLink.EXTERNAL_LINK)) {
                 switchingMatrixEntry.setEntryType(TSwitchingMatrixEntry.FEC_ENTRY);
                 switchingMatrixEntry.setLabelStackOperation(TSwitchingMatrixEntry.NOOP);
-            } else if ((incomingLink == TLink.EXTERNAL) && (outgoingLink == TLink.INTERNAL)) {
+            } else if ((incomingLink == TLink.EXTERNAL_LINK) && (outgoingLink == TLink.INTERNAL_LINK)) {
                 switchingMatrixEntry.setEntryType(TSwitchingMatrixEntry.FEC_ENTRY);
                 switchingMatrixEntry.setLabelStackOperation(TSwitchingMatrixEntry.PUSH_LABEL);
-            } else if ((incomingLink == TLink.INTERNAL) && (outgoingLink == TLink.EXTERNAL)) {
+            } else if ((incomingLink == TLink.INTERNAL_LINK) && (outgoingLink == TLink.EXTERNAL_LINK)) {
                 // Not possible
-            } else if ((incomingLink == TLink.INTERNAL) && (outgoingLink == TLink.INTERNAL)) {
+            } else if ((incomingLink == TLink.INTERNAL_LINK) && (outgoingLink == TLink.INTERNAL_LINK)) {
                 // Not possible
             }
             if (this.isExitActiveLER(tailEndIPv4Address)) {
@@ -2100,8 +2100,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         if (nextHopIPv4Address != null) {
             TPort incomingPort = this.ports.getPort(incomingPortID);
             TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPv4Address);
-            int incomingLink = TLink.EXTERNAL;
-            int outgoingLink = TLink.INTERNAL;
+            int incomingLink = TLink.EXTERNAL_LINK;
+            int outgoingLink = TLink.INTERNAL_LINK;
             switchingMatrixEntry = new TSwitchingMatrixEntry();
             switchingMatrixEntry.setUpstreamTLDPSessionID(TSwitchingMatrixEntry.UNDEFINED);
             switchingMatrixEntry.setTailEndIPAddress(tailEndIPv4Address);
@@ -2118,16 +2118,16 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             if (incomingPort != null) {
                 incomingLink = incomingPort.getLink().getLinkType();
             }
-            if ((incomingLink == TLink.EXTERNAL) && (outgoingLink == TLink.EXTERNAL)) {
+            if ((incomingLink == TLink.EXTERNAL_LINK) && (outgoingLink == TLink.EXTERNAL_LINK)) {
                 switchingMatrixEntry.setEntryType(TSwitchingMatrixEntry.LABEL_ENTRY);
                 switchingMatrixEntry.setLabelStackOperation(TSwitchingMatrixEntry.NOOP);
-            } else if ((incomingLink == TLink.EXTERNAL) && (outgoingLink == TLink.INTERNAL)) {
+            } else if ((incomingLink == TLink.EXTERNAL_LINK) && (outgoingLink == TLink.INTERNAL_LINK)) {
                 switchingMatrixEntry.setEntryType(TSwitchingMatrixEntry.LABEL_ENTRY);
                 switchingMatrixEntry.setLabelStackOperation(TSwitchingMatrixEntry.PUSH_LABEL);
-            } else if ((incomingLink == TLink.INTERNAL) && (outgoingLink == TLink.EXTERNAL)) {
+            } else if ((incomingLink == TLink.INTERNAL_LINK) && (outgoingLink == TLink.EXTERNAL_LINK)) {
                 switchingMatrixEntry.setEntryType(TSwitchingMatrixEntry.LABEL_ENTRY);
                 switchingMatrixEntry.setLabelStackOperation(TSwitchingMatrixEntry.POP_LABEL);
-            } else if ((incomingLink == TLink.INTERNAL) && (outgoingLink == TLink.INTERNAL)) {
+            } else if ((incomingLink == TLink.INTERNAL_LINK) && (outgoingLink == TLink.INTERNAL_LINK)) {
                 switchingMatrixEntry.setEntryType(TSwitchingMatrixEntry.LABEL_ENTRY);
                 switchingMatrixEntry.setLabelStackOperation(TSwitchingMatrixEntry.SWAP_LABEL);
             }
@@ -2251,7 +2251,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             return true;
         }
         TPort incomingPort = this.ports.getPort(incomingPortID);
-        return incomingPort.getLink().getLinkType() == TLink.EXTERNAL;
+        return incomingPort.getLink().getLinkType() == TLink.EXTERNAL_LINK;
     }
 
     /**
@@ -2356,7 +2356,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     public boolean isExitActiveLER(String targetIPAddress) {
         TPort portAux = this.ports.getLocalPortConnectedToANodeWithIPAddress(targetIPAddress);
         if (portAux != null) {
-            if (portAux.getLink().getLinkType() == TLink.EXTERNAL) {
+            if (portAux.getLink().getLinkType() == TLink.EXTERNAL_LINK) {
                 return true;
             }
         }

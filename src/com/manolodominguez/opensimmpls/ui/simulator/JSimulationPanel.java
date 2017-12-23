@@ -265,7 +265,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
             Point fin = enlace.getTailEndNode().getScreenPosition();
             int del = enlace.getDelay();
             g2Dbuf.setStroke(new BasicStroke((float) obtenerGrosorEnlace(del)));
-            if (enlace.getLinkType() == TLink.EXTERNAL) {
+            if (enlace.getLinkType() == TLink.EXTERNAL_LINK) {
                 g2Dbuf.setColor(Color.GRAY);
             } else {
                 g2Dbuf.setColor(Color.BLUE);
@@ -280,7 +280,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
             g2Dbuf.setStroke(new BasicStroke((float) 1));
 //
             if (!enlace.isBroken()) {
-                if (enlace.getLinkType() == TLink.INTERNAL) {
+                if (enlace.getLinkType() == TLink.INTERNAL_LINK) {
                     TInternalLink ei = (TInternalLink) enlace;
                     if (ei.isBeingUsedByAnyLSP()) {
                         float dash1[] = {5.0f};
@@ -306,7 +306,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
 //
 //
             if (!enlace.isBroken()) {
-                if (enlace.getLinkType() == TLink.INTERNAL) {
+                if (enlace.getLinkType() == TLink.INTERNAL_LINK) {
                     TInternalLink ei = (TInternalLink) enlace;
                     if (ei.isBeingUsedByAnyBackupLSP()) {
                         float dash1[] = {10.0f, 5.0f, 0.2f, 5.0f};

@@ -424,12 +424,12 @@ public class TTopology {
         while ((iterador.hasNext()) && (!fin)) {
             enlaceBuscado = (TLink) iterador.next();
             if (enlaceBuscado.getID() == enlace.getID()) {
-                if (enlaceBuscado.getLinkType() == TLink.EXTERNAL) {
+                if (enlaceBuscado.getLinkType() == TLink.EXTERNAL_LINK) {
                     TExternalLink enlaceTrasCast = (TExternalLink) enlaceBuscado;
                     enlaceTrasCast.setHeadEndNode(enlace.getHeadEndNode());
                     enlaceTrasCast.setTailEndNode(enlace.getTailEndNode());
                 }
-                else if (enlace.getLinkType() == TLink.INTERNAL) {
+                else if (enlace.getLinkType() == TLink.INTERNAL_LINK) {
                     TInternalLink enlaceTrasCast = (TInternalLink) enlaceBuscado;
                     enlaceTrasCast.setHeadEndNode(enlace.getHeadEndNode());
                     enlaceTrasCast.setTailEndNode(enlace.getTailEndNode());
@@ -740,7 +740,7 @@ public class TTopology {
                         matrizAdyacencia[i][j] = this.PESO_INFINITO;
                     }
                 } else {
-                    if (en.getLinkType() == TLink.EXTERNAL) {
+                    if (en.getLinkType() == TLink.EXTERNAL_LINK) {
                         TExternalLink ee = (TExternalLink) en;
                         matrizAdyacencia[i][j] = ee.getWeight();
                     } else {
@@ -892,7 +892,7 @@ public class TTopology {
                         matrizAdyacencia[i][j] = this.PESO_INFINITO;
                     }
                 } else {
-                    if (en.getLinkType() == TLink.EXTERNAL) {
+                    if (en.getLinkType() == TLink.EXTERNAL_LINK) {
                         TExternalLink ee = (TExternalLink) en;
                         matrizAdyacencia[i][j] = ee.getRABANWeight();
                     } else {
@@ -991,7 +991,7 @@ public class TTopology {
                         matrizAdyacencia[i][j] = this.PESO_INFINITO;
                     }
                 } else {
-                    if (en.getLinkType() == TLink.EXTERNAL) {
+                    if (en.getLinkType() == TLink.EXTERNAL_LINK) {
                         TExternalLink ee = (TExternalLink) en;
                         matrizAdyacencia[i][j] = ee.getRABANWeight();
                     } else {

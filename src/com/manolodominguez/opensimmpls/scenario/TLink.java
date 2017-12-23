@@ -64,9 +64,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo averigua si el enlace est� caido o no.
+     * This method check whether the link is broken or not.
      *
-     * @return TRUE, si el enlace est� caido. FALSE en caso contrario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TRUE, if the link is broken. Otherwise, returns FALSE.
      * @since 2.0
      */
     public boolean isBroken() {
@@ -74,13 +75,13 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo compara la instancia actual con otro objeto del mismo tipo,
-     * para averiguar la posici�n ordinal de uno con respecto al otro.
+     * This method compares the current instance to another instance of TLink to
+     * know the ordinal position of one to respect the other.
      *
-     * @param anotherLink Enlace de la topolog�a con el que se va a comparar la
-     * instancia actual.
-     * @return -1, 0 � 1, dependiendo de si la instancia actual es menor, igual
-     * o mayor que la pasada por par�metro, en t�rminos de orden.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param anotherLink a TLink instance to be compared to the current one.
+     * @return -1, 0 or 1 depending on whether the current instance is lesser,
+     * equal or greater than the one specified as an argument.
      * @since 2.0
      */
     @Override
@@ -95,12 +96,16 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo calcula qu� porcentaje de tr�nsito que lleva recorrido un
-     * paquete concreto, sabiendo que ha recorrido ya un porcentaje determinado.
+     * This method return the percentage of the total transit delay that a given
+     * packet has already been "waiting" before reaching the tail end node.
      *
-     * @param totalTransitDelay Cien por cien.
-     * @param remainingDelay Equis por ciento.
-     * @return Valor calculado.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param totalTransitDelay The total transit delay required to go over the
+     * link.
+     * @param remainingDelay The part of totalTransitDelay that has not yet been
+     * covered.
+     * @return The percentage of the totalTransitDdelay that has been already
+     * covered.
      * @since 2.0
      */
     public long getCurrentTransitPercentage(long totalTransitDelay, long remainingDelay) {
@@ -108,13 +113,15 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo calcula las coordenadas donde debe dibujarse un paquete que
-     * ha recorrido ya un porcentaje concreto de su tr�nsito.
+     * This method computes the coordinates of the screen where a given packet
+     * has to be displayed knowing the percentaje of the total transit delay
+     * that it has been going through the link.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     * @param transitPercentage Porcentaje recorrido ya por el paquete en el
-     * enlace.
-     * @return Coordenadas donde dibujar el paquete.
+     * @param transitPercentage Percentage of the total transit delay that the
+     * packet has been going through the link.
+     * @return Coordinates of the screen where the packet has to be displayed.
      */
     public Point getScreenPacketPosition(long transitPercentage) {
         Point screenPacketPosition = new Point(0, 0);
@@ -132,9 +139,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permite establecer la topology a la que pertenece el enlace.
+     * This method allow setting the topology to wich this link belongs to.
      *
-     * @param topology Topolog�a a la que pertenece el enlace.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param topology topology to wich this link belongs to.
      * @since 2.0
      */
     public void setTopology(TTopology topology) {
@@ -142,9 +150,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permite obtener la topology a la que pertenece el enlace.
+     * This method gets the topology to wich this link belongs to.
      *
-     * @return La topolog�a a la que pertenece el enlace.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The topology to wich this link belongs to.
      * @since 2.0
      */
     public TTopology getTopology() {
@@ -152,14 +161,14 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo configura el enlace.
+     * This method establishes the configuration of the link.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     * @param isAReconfiguration TRUE, si se est� reconfigurando el enlace.
-     * FALSE si se est� configurando por primera vez.
-     * @param linkConfig Objeto de configuraci�n del enlace que contiene una
-     * configuraci�n para el mismo.
-     * @param topology Topolog�a a la que pertenece ele enlace.
+     * @param isAReconfiguration TRUE, if the link is being reconfigured. FALSE
+     * if the link is being configured for the first time.
+     * @param linkConfig The configuration object for this link.
+     * @param topology Topology the link belongs to.
      */
     public void configure(TLinkConfig linkConfig, TTopology topology, boolean isAReconfiguration) {
         this.setName(linkConfig.getName());
@@ -183,9 +192,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo obtiene un objeto con la configuraci�n completa del enlace.
+     * This method gets the configuration of this link.
      *
-     * @return Configuraci�n completa del enlace.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The configuration object of this link.
      * @since 2.0
      */
     public TLinkConfig getConfig() {
@@ -205,9 +215,9 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo libera el enlace, desconect�ndolo de los posibles nodos a los
-     * que est� "enganchado".
+     * This method disconnect the link from all ports.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void disconnectFromPorts() {
@@ -226,9 +236,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo establece el retardo del enlace.
+     * This method sets the delay of this link
      *
-     * @param delay Retardo del enlace.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param delay the delay of this link.
      * @since 2.0
      */
     public void setDelay(int delay) {
@@ -240,9 +251,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo obtiene el retardo del enlace.
+     * This method gets the delay of this link
      *
-     * @return Retardo del enlace.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the delay of this link.
      * @since 2.0
      */
     public int getDelay() {
@@ -250,9 +262,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo establece el identificador �nico del enlace.
+     * This method established the link unique identifier.
      *
-     * @param identifier Identificador del enlace.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param identifier the unique identifier for this link in the topology.
      * @since 2.0
      */
     public void getID(int identifier) {
@@ -260,9 +273,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permite obtener el identificador �nico del enlace.
+     * This method gets the link unique identifier.
      *
-     * @return Identificador unico del enlace.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the unique identifier for this link in the topology.
      * @since 2.0
      */
     public int getID() {
@@ -270,9 +284,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permite establecer el nombre del enlace.
+     * This method sets the name of the link.
      *
-     * @param name Nombre del enlace.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param name The name of the link.
      * @since 2.0
      */
     public void setName(String name) {
@@ -280,9 +295,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permite obtener el nombre del enlace.
+     * This method gets the name of the link
      *
-     * @return Nombre del enlace.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The name of the link.
      * @since 2.0
      */
     public String getName() {
@@ -290,11 +306,12 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permite especificar si el nombre del enlace se ha de ver o
-     * no.
+     * This method allows setting whether the name of the link should be
+     * displayed in the simulator or not.
      *
-     * @param showName TRUE, si el nombre debe mostrarse. FALSE en caso
-     * contrario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param showName TRUE, if the name of the link should be visible.
+     * Otherwise, FALSE.
      * @since 2.0
      */
     public void setShowName(boolean showName) {
@@ -302,9 +319,12 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permite obtener si el nombre del enlace se ha de ver o no.
+     * This method allows getting whether the name of the link should be
+     * displayed in the simulator or not.
      *
-     * @return TRUE, si el nombre se esta mostrando. FALSE en caso contrario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TRUE, if the name of the link is currently visible. Otherwise,
+     * FALSE.
      * @since 2.0
      */
     public boolean getShowName() {
@@ -312,10 +332,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo obtiene el nodo que est� al final del extremo izquierdo del
-     * enlace.
+     * This method gets the node connected to the head end of this link.
      *
-     * @return El nodo extremo izquierdo del enlace.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the node connected to the head end of this link.
      * @since 2.0
      */
     public TNode getHeadEndNode() {
@@ -323,11 +343,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permite establecer el nodo que estar� conectado al extremo
-     * izquierdo del enlace.
+     * This method sets the node to be connected to the head end of this link.
      *
-     * @param headEndNode Nodo que estar� conectado al extremo izquierdo del
-     * enalace.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param headEndNode the node to be connected to the head end of this link.
      * @since 2.0
      */
     public void setHeadEndNode(TNode headEndNode) {
@@ -335,10 +354,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo obtiene el nodo que est� al final del extremo derecho del
-     * enlace.
+     * This method gets the node connected to the head end of this link.
      *
-     * @return El nodo del extremo derecho del enlace.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the node connected to the tail end of this link.
      * @since 2.0
      */
     public TNode getTailEndNode() {
@@ -346,10 +365,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permite establecer el nodo que estar� conectado al extremo
-     * derecho del enlace.
+     * This method sets the node to be connected to the head end of this link.
      *
-     * @param tailEndNode Nodo del extremo derecho del enlace.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param tailEndNode the node to be connected to the tail end of this link.
      * @since 2.0
      */
     public void setTailEndNode(TNode tailEndNode) {
@@ -357,9 +376,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo obtiene la posici�n del extremo izquierdo del enlace.
+     * This method get the position of the head end node in the screen.
      *
-     * @return Posicio�n del extremo izquierdo del enlace.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the position of the head end node in the screen.
      * @since 2.0
      */
     public Point getHeadEndScreenPosition() {
@@ -367,10 +387,12 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo establece el puerto del nodo extremo izquierdo al que est�
-     * conectado el enlace.
+     * This method defines the port ID of the node at the head end of the link
+     * where the link is connected.
      *
-     * @param portID Puerto del nodo extremo izquierdo.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param portID the port ID of the node at the head end of the link where
+     * the link is connected.
      * @since 2.0
      */
     public void setHeadEndNodePortID(int portID) {
@@ -378,10 +400,12 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permite obtener el puerto del nodo extremo izquierdo al que
-     * est� conectado el enlace.
+     * This method gets the port ID of the node at the head end of the link
+     * where the link is connected.
      *
-     * @return Puerto del nodo extremo izquierdo.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the port ID of the node at the head end of the link where the
+     * link is connected.
      * @since 2.0
      */
     public int getHeadEndNodePortID() {
@@ -389,10 +413,12 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo establece el puerto del nodo extremo derecho al que est�
-     * conectado el enlace.
+     * This method defines the port ID of the node at the tail end of the link
+     * where the link is connected.
      *
-     * @param portID Puerto del nodo extremo derecho.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param portID the port ID of the node at the tail end of the link where
+     * the link is connected.
      * @since 2.0
      */
     public void setTailEndNodePortID(int portID) {
@@ -400,10 +426,12 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permite obtener el puerto del nodo extremo derecho al que
-     * est� conectado el enlace.
+     * This method gets the port ID of the node at the tail end of the link
+     * where the link is connected.
      *
-     * @return Puerto del nodo extremo derecho.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the port ID of the node at the tail end of the link where the
+     * link is connected.
      * @since 2.0
      */
     public int getTailEndNodePortID() {
@@ -411,9 +439,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo obtiene la posici�n del nodo extremo derecho del enlace.
+     * This method get the position of the tail end node in the screen.
      *
-     * @return Posici�n del nodo extremo derecho del enlace.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the position of the tail end node in the screen.
      * @since 2.0
      */
     public Point getTailEndScreenPosition() {
@@ -421,10 +450,13 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo comprueba si el enlace est� conectad a un nodo concreto.
+     * This method checks whether the link is connected to the node specified as
+     * an argument.
      *
-     * @param node Nodo al que se desea saber si el enlace est� conectado o no.
-     * @return TRUE, si est� conectado. FALSE en caso contrario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param node the node we want to check.
+     * @return TRUE, if the link is connected to the node specified. Otherwise,
+     * FALSE.
      * @since 2.0
      */
     public boolean isConnectedTo(TNode node) {
@@ -438,11 +470,13 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo comprueba si el enlace est� conectad a un nodo concreto.
+     * This method checks whether the link is connected to the node specified as
+     * an argument through its node ID.
      *
-     * @param nodeID Identificador del nodo al que se desea saber si el enlace
-     * est� conectado o no.
-     * @return TRUE, si est� conectado. FALSE en caso contrario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param nodeID the node ID of the node we want to check.
+     * @return TRUE, if the link is connected to the node specified by the node
+     * ID specified. Otherwise, FALSE.
      * @since 2.0
      */
     public boolean isConnectedTo(int nodeID) {
@@ -456,10 +490,12 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo coloca un paquete desde el enlace al nodo destino.
+     * This method removes a packet from the link and delivers it to the
+     * corresponding node.
      *
-     * @param packet Paquete que se desea trasladar.
-     * @param nodeID Nodo destino del paquete en el enlace.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packet packet that has reached the target node.
+     * @param nodeID node ID of the node that has to receive the packet.
      * @since 2.0
      */
     public void deliverPacketToNode(TAbstractPDU packet, int nodeID) {
@@ -469,12 +505,13 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo comprueba si dada unas coordenadas, el enlace pasa por dicha
-     * posici�n.
+     * This method checks if, given some screen coordinates, these coordinates
+     * correspond to this link.
      *
-     * @param screenPosition Posici�n.
-     * @return TRUE, si el enlace pasa por esa posici�n. FALSE en caso
-     * contrario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param screenPosition Screen coordinates.
+     * @return TRUE, if these coordinates correspond to the link. Otherwise,
+     * FALSE.
      * @since 2.0
      */
     public boolean crossesScreenPosition(Point screenPosition) {
@@ -485,12 +522,12 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
         int dx, dy, steps, k;
         double incrementX, incrementY, x, y;
 
-        if ((x1 == x2) && (y1 == y2)) // Para l�neas que son s�lo un punto.
+        if ((x1 == x2) && (y1 == y2)) // Lines that are a single point.
         {
             if ((screenPosition.x == x1) && (screenPosition.y == y1)) {
                 return true;
             }
-        } else // Para el resto de l�neas.
+        } else // Rest of lines.
         {
             dx = x2 - x1;
             dy = y2 - y1;
@@ -521,9 +558,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo devuelve el packetsInTransitEntriesLock del enlace.
+     * This method gets the monitor used to the packets in transit of this link.
      *
-     * @return El packetsInTransitEntriesLock del enlace.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the monitor used to the packets in transit of this link.
      * @since 2.0
      */
     public TMonitor getLock() {
@@ -531,12 +569,13 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo comprueba cu�l de los dos extremos del enlace es el nodo
-     * pasado por par�metro.
+     * This method checks whether the node specified as an argument is the one
+     * connected to he head end of the link or to the tail end of the link.
      *
-     * @param node Nodo que realiza la consulta.
-     * @return END_NODE_1, si el nodo es el extremo 1. END_NODE_2 si es el
-     * extremo 2.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param node node that is going to be checked.
+     * @return TLink.HEAD_END_NODE if the node specified as an argument is
+     * connected to the head end of the link. Otherwise, TLink.TAIL_END_NODE
      * @since 2.0
      */
     public int whichEndIs(TNode node) {
@@ -547,12 +586,14 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo calcula a qu� extremo del enlace se debe enviar un paquete
-     * dado el nodo quelo env�a.
+     * This node gets the node ID of the node connected to the link that has to
+     * receive a given packet taking into account that the node that sent the
+     * packet is the one specified as an argument
      *
-     * @param node Nodo que env�a el paquete y que hace la consulta.
-     * @return END_NODE_1 si el paquete debe ir al extremo 1. EXTREMO 2 si debe
-     * ir al extremo 2.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param node The node that sent a given packet.
+     * @return TLink.TAIL_END_NODE if the node specified as an argument is
+     * connected to the head end of the link. Otherwise, TLink.HEAD_END_NODE.
      * @since 2.0
      */
     public int getDestinationOfTrafficSentBy(TNode node) {
@@ -562,37 +603,129 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
         return TLink.HEAD_END_NODE;
     }
 
+    /**
+     * This method gets the link type. It should be implemented by subclasses.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return A link type that should be defined as a constant in TLink.
+     * @since 2.0
+     */
     public abstract int getLinkType();
 
+    /**
+     * This method receives a timer event to do things. It should be implemented
+     * by subclasses.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The timer event that triggers the link operation.
+     * @since 2.0
+     */
     @Override
     public abstract void receiveTimerEvent(TTimerEvent evt);
 
+    /**
+     * This method is called once the link receivers a timer event and has to do
+     * things in it own thread. To be implemented by all subclasses.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
     @Override
     public abstract void run();
 
+    /**
+     * This method gets the weight of this link to be used by the standard
+     * routing algorithm. To be implemented by all subclasses.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the weight of this link.
+     * @since 2.0
+     */
     public abstract long getWeight();
 
+    /**
+     * This method gets the weight of this link to be used by the RABAN routing
+     * algorithm (See "Guarantee of Service Support (GoS) over MPLS using Active
+     * Techniques"). To be implemented by all subclasses.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the RABAN weight of this link.
+     * @since 2.0
+     */
     public abstract long getRABANWeight();
 
+    /**
+     * This method checks whether the link is well configured or not. To be
+     * implemented by all subclasses.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TRUE, if the link is well configured. Otherwise, FALSE.
+     * @since 2.0
+     */
     @Override
     public abstract boolean isWellConfigured();
 
+    /**
+     * This method returns a human-readable error message that corresponds to
+     * the error code specified as an argument. To be implemented by all
+     * subclasses.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param errorCode a numeric error code.
+     * @return A human-readable error message corresponding to the error code
+     * specified as an argument.
+     * @since 2.0
+     */
     @Override
-    public abstract String getErrorMessage(int error);
+    public abstract String getErrorMessage(int errorCode);
 
+    /**
+     * This method serializes the link as a OSM (Open SimMpls) string. To be
+     * implemented by all subclasses.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return This link as a serialized string.
+     * @since 2.0
+     */
     @Override
     public abstract String marshall();
 
+    /**
+     * This method deserializes the link from an OSM (Open SimMpls) string to a
+     * TLink (or subclass) instance. To be implemented by all subclasses.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param serializedLink The serialized version of a link
+     * @return TRUE, if the serialized string is a correct link definition and a
+     * TLink (or subclass) has been configured from it. Oterwhise, FALSE.
+     * @since 2.0
+     */
     @Override
     public abstract boolean unMarshall(String serializedLink);
 
+    /**
+     * This method sets this links as a broken one. To be implemented by all
+     * subclasses.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param isBroken TRUE if the link has to be set as broken. Otherwise,
+     * FALSE.
+     * @since 2.0
+     */
     public abstract void setAsBrokenLink(boolean isBroken);
 
+    /**
+     * This method sets default values for all attributes as if the instances is
+     * created new. To be implemented by all subclasses.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
     @Override
     public abstract void reset();
 
-    public static final int INTERNAL = 0;
-    public static final int EXTERNAL = 1;
+    public static final int INTERNAL_LINK = 0;
+    public static final int EXTERNAL_LINK = 1;
     public static final int HEAD_END_NODE = 1;
     public static final int TAIL_END_NODE = 2;
 

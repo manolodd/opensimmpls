@@ -272,11 +272,11 @@ public class TTimer implements Runnable {
         while (linksIterator.hasNext()) {
             linkAux = (TLink) linksIterator.next();
             switch (linkAux.getLinkType()) {
-                case TLink.EXTERNAL: {
+                case TLink.EXTERNAL_LINK: {
                     linkAux = (TExternalLink) linkAux;
                     break;
                 }
-                case TLink.INTERNAL: {
+                case TLink.INTERNAL_LINK: {
                     linkAux = (TInternalLink) linkAux;
                     break;
                 }

@@ -58,7 +58,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      */
     @Override
     public int getLinkType() {
-        return TLink.EXTERNAL;
+        return TLink.EXTERNAL_LINK;
     }
 
     /**

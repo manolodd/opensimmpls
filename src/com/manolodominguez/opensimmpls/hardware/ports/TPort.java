@@ -145,7 +145,7 @@ public abstract class TPort {
     public void putPacketOnLink(TAbstractPDU packet, int endID) {
         if (this.link != null) {
             if (!this.link.isBroken()) {
-                if (this.link.getLinkType() == TLink.INTERNAL) {
+                if (this.link.getLinkType() == TLink.INTERNAL_LINK) {
                     this.link.deliverPacketToNode(packet, endID);
                     if (this.getPortSet().getParentNode().getStats() != null) {
                         this.getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.OUTGOING);

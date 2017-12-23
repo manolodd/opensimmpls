@@ -1129,10 +1129,10 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                 JVentanaEnlace ve = new JVentanaEnlace(escenario.getTopology(), dispensadorDeImagenes, VentanaPadre, true);
                 ve.ponerConfiguracion(tceAux, true);
                 ve.show();
-                if (ent.getLinkType() == TLink.EXTERNAL) {
+                if (ent.getLinkType() == TLink.EXTERNAL_LINK) {
                     TExternalLink ext = (TExternalLink) ent;
                     ext.configure(tceAux, this.escenario.getTopology(), true);
-                } else if (ent.getLinkType() == TLink.INTERNAL) {
+                } else if (ent.getLinkType() == TLink.INTERNAL_LINK) {
                     TInternalLink inte = (TInternalLink) ent;
                     inte.configure(tceAux, this.escenario.getTopology(), true);
                 }
@@ -1357,7 +1357,7 @@ private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
         venlace.show();
         if (config.obtenerValida()) {
             try {
-                if (config.obtenerTipo() == TLink.INTERNAL) {
+                if (config.obtenerTipo() == TLink.INTERNAL_LINK) {
                     TInternalLink enlaceInterno = new TInternalLink(escenario.getTopology().getItemIdentifierGenerator().getNew(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
                     enlaceInterno.configure(config, escenario.getTopology(), false);
                     escenario.getTopology().addLink(enlaceInterno);
