@@ -502,12 +502,14 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param packet packet that has reached the target node.
-     * @param nodeID node ID of the node that has to receive the packet.
+     * @param endNode TLink.TAIL_END_NODE or TLink.HEAD_END_NODE, depending on
+     * whether the target node is connected to the tail end of the link or to
+     * the head end, respectively. Links are full duplex.
      * @since 2.0
      */
-    public void deliverPacketToNode(TAbstractPDU packet, int nodeID) {
+    public void deliverPacketToNode(TAbstractPDU packet, int endNode) {
         this.packetsInTransitEntriesLock.lock();
-        this.buffer.add(new TLinkBufferEntry(packet, this.getDelay(), nodeID));
+        this.buffer.add(new TLinkBufferEntry(packet, this.getDelay(), endNode));
         this.packetsInTransitEntriesLock.unLock();
     }
 

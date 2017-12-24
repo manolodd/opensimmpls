@@ -34,8 +34,8 @@ public abstract class TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     * @param portID the id of the port. This is the unique id
- ti distinguish the port within the parent port set.
+     * @param portID the id of the port. This is the unique id ti distinguish
+     * the port within the parent port set.
      * @param parentPortSet A reference to the parent port set this port belongs
      * to.
      */
@@ -138,24 +138,23 @@ public abstract class TPort {
      * identify to where the packet is going to.
      *
      * @param packet The packet to be delivered through the link.
-     * @param endID 1, if the packet has to be delivered to the end 1. 2, if the
-     * packet has to be delivered to the end 2.
+     * @param endNode TLink.TAIL_END_NODE or TLink.HEAD_END_NODE, depending on
+     * whether the target node is connected to the tail end of the link or to
+     * the head end, respectively. Links are full duplex.
      * @since 2.0
      */
-    public void putPacketOnLink(TAbstractPDU packet, int endID) {
+    public void putPacketOnLink(TAbstractPDU packet, int endNode) {
         if (this.link != null) {
             if (!this.link.isBroken()) {
                 if (this.link.getLinkType() == TLink.INTERNAL_LINK) {
-                    this.link.deliverPacketToNode(packet, endID);
+                    this.link.deliverPacketToNode(packet, endNode);
                     if (this.getPortSet().getParentNode().getStats() != null) {
                         this.getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.OUTGOING);
                     }
-                } else {
-                    if ((packet.getType() != TAbstractPDU.GPSRP) && (packet.getType() != TAbstractPDU.TLDP)) {
-                        this.link.deliverPacketToNode(packet, endID);
-                        if (this.getPortSet().getParentNode().getStats() != null) {
-                            this.getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.OUTGOING);
-                        }
+                } else if ((packet.getType() != TAbstractPDU.GPSRP) && (packet.getType() != TAbstractPDU.TLDP)) {
+                    this.link.deliverPacketToNode(packet, endNode);
+                    if (this.getPortSet().getParentNode().getStats() != null) {
+                        this.getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.OUTGOING);
                     }
                 }
             } else {
