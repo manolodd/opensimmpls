@@ -244,7 +244,7 @@ public class TLinkConfig {
      * This method checks whether the link is configured correctly or not taking
      * into account the information of this TLinkConfig.
      *
-     * @param topology Topology to wich the link belongs to.
+     * @param topology Topology the link belongs to.
      * @param reconfiguration TRUE, if the link is being re-configured.
      * Otherwise, FALSE.
      * @return TLinkConfig.OK if the configuration is correct. Otherwise, an

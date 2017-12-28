@@ -95,7 +95,7 @@ public class TTopology {
         Iterator iterador = conjuntoNodos.iterator();
         while ((iterador.hasNext()) && (!fin)) {
             nodo = (TNode) iterador.next();
-            if (nodo.getID() == identificador) {
+            if (nodo.getNodeID() == identificador) {
                 nodo.ponerPurgar(true);
                 iterador.remove();
                 fin = true;
@@ -108,7 +108,7 @@ public class TTopology {
      * @param n
      */    
     private void eliminarSoloNodo(TNode n) {
-        eliminarSoloNodo(n.getID());
+        eliminarSoloNodo(n.getNodeID());
     }
 
     /**
@@ -122,7 +122,7 @@ public class TTopology {
         Iterator iterador = conjuntoNodos.iterator();
         while (iterador.hasNext()) {
             nodo = (TNode) iterador.next();
-            if (nodo.getID() == identificador)
+            if (nodo.getNodeID() == identificador)
                 return nodo;
         }
         return null;
@@ -255,7 +255,7 @@ public class TTopology {
         Iterator iterador = conjuntoNodos.iterator();
         while (iterador.hasNext()) {
             nodo = (TNode) iterador.next();
-            if (nodo.estaEnPosicion(p))
+            if (nodo.isInScreenPosition(p))
                 return nodo;
         }
         return null;
@@ -282,7 +282,7 @@ public class TTopology {
         Iterator iterador = conjuntoNodos.iterator();
         while ((iterador.hasNext()) && (!fin)) {
             nodoBuscado = (TNode) iterador.next();
-            if (nodoBuscado.getID() == nodo.getID()) {
+            if (nodoBuscado.getNodeID() == nodo.getNodeID()) {
                 if (nodo.getNodeType() == TNode.SENDER) {
                     TSenderNode nodoTrasCast = (TSenderNode) nodoBuscado;
                     nodoTrasCast.setName(nodo.getName());
@@ -500,7 +500,7 @@ public class TTopology {
      * @since 2.0
      */    
     public void eliminarNodo(TNode n) {
-        eliminarNodo(n.getID());
+        eliminarNodo(n.getNodeID());
     }
 
     /**
@@ -617,9 +617,9 @@ public class TTopology {
             enlace = (TLink) iterador.next();
             izquierdo = enlace.getHeadEndNode();
             derecho = enlace.getTailEndNode();
-            if ((derecho.getID() == extremo1) && (izquierdo.getID() == extremo2))
+            if ((derecho.getNodeID() == extremo1) && (izquierdo.getNodeID() == extremo2))
                 return true;
-            if ((derecho.getID() == extremo2) && (izquierdo.getID() == extremo1))
+            if ((derecho.getNodeID() == extremo2) && (izquierdo.getNodeID() == extremo1))
                 return true;
         }
         return false;
@@ -642,9 +642,9 @@ public class TTopology {
             enlace = (TLink) iterador.next();
             izquierdo = enlace.getHeadEndNode();
             derecho = enlace.getTailEndNode();
-            if ((derecho.getID() == extremo1) && (izquierdo.getID() == extremo2))
+            if ((derecho.getNodeID() == extremo1) && (izquierdo.getNodeID() == extremo2))
                 return enlace;
-            if ((derecho.getID() == extremo2) && (izquierdo.getID() == extremo1))
+            if ((derecho.getNodeID() == extremo2) && (izquierdo.getNodeID() == extremo1))
                 return enlace;
         }
         return null;
@@ -719,7 +719,7 @@ public class TTopology {
         Iterator it = this.getNodesIterator();
         while (it.hasNext()) {
             nt = (TNode) it.next();
-            equivalencia[i] = nt.getID();
+            equivalencia[i] = nt.getNodeID();
             if (equivalencia[i] == origen)
                 origen2 = i;
             else if (equivalencia[i] == destino)
@@ -801,8 +801,8 @@ public class TTopology {
      * @since 2.0
      */    
     public synchronized String getNextHopIPv4Address(String IPorigen, String IPdestino) {
-        int origen = this.getNode(IPorigen).getID();
-        int destino = this.getNode(IPdestino).getID();
+        int origen = this.getNode(IPorigen).getNodeID();
+        int destino = this.getNode(IPdestino).getNodeID();
         int siguienteSalto = obtenerSalto(origen, destino);
         TNode nt = this.obtenerNodo(siguienteSalto);
         if (nt != null)
@@ -819,8 +819,8 @@ public class TTopology {
      * @since 2.0
      */    
     public synchronized String getNextHopRABANIPv4Address(String IPorigen, String IPdestino) {
-        int origen = this.getNode(IPorigen).getID();
-        int destino = this.getNode(IPdestino).getID();
+        int origen = this.getNode(IPorigen).getNodeID();
+        int destino = this.getNode(IPdestino).getNodeID();
         int siguienteSalto = obtenerSaltoRABAN(origen, destino);
         TNode nt = this.obtenerNodo(siguienteSalto);
         if (nt != null)
@@ -840,9 +840,9 @@ public class TTopology {
      * @param IPdestino Direcci�n IP del nodo al que se quiere llegar.
      */    
     public synchronized String getNextHopRABANIPv4Address(String IPorigen, String IPdestino, String IPNodoAEvitar) {
-        int origen = this.getNode(IPorigen).getID();
-        int destino = this.getNode(IPdestino).getID();
-        int nodoAEvitar = this.getNode(IPNodoAEvitar).getID();
+        int origen = this.getNode(IPorigen).getNodeID();
+        int destino = this.getNode(IPdestino).getNodeID();
+        int nodoAEvitar = this.getNode(IPNodoAEvitar).getNodeID();
         int siguienteSalto = obtenerSaltoRABAN(origen, destino, nodoAEvitar);
         TNode nt = this.obtenerNodo(siguienteSalto);
         if (nt != null)
@@ -871,7 +871,7 @@ public class TTopology {
         Iterator it = this.getNodesIterator();
         while (it.hasNext()) {
             nt = (TNode) it.next();
-            equivalencia[i] = nt.getID();
+            equivalencia[i] = nt.getNodeID();
             if (equivalencia[i] == origen)
                 origen2 = i;
             else if (equivalencia[i] == destino)
@@ -968,7 +968,7 @@ public class TTopology {
         Iterator it = this.getNodesIterator();
         while (it.hasNext()) {
             nt = (TNode) it.next();
-            equivalencia[i] = nt.getID();
+            equivalencia[i] = nt.getNodeID();
             if (equivalencia[i] == origen)
                 origen2 = i;
             else if (equivalencia[i] == destino)

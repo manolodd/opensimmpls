@@ -1946,7 +1946,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     @Override
     public String marshall() {
         String serializedElement = "#LSRA#";
-        serializedElement += this.getID();
+        serializedElement += this.getNodeID();
         serializedElement += "#";
         serializedElement += this.getName().replace('#', ' ');
         serializedElement += "#";
@@ -1990,9 +1990,9 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         if (elementFields.length != 13) {
             return false;
         }
-        this.setID(Integer.parseInt(elementFields[2]));
+        this.setNodeID(Integer.parseInt(elementFields[2]));
         this.setName(elementFields[3]);
-        this.setIPAddress(elementFields[4]);
+        this.setIPv4Address(elementFields[4]);
         this.setSelected(Integer.parseInt(elementFields[5]));
         this.setShowName(Boolean.parseBoolean(elementFields[6]));
         this.setGenerateStats(Boolean.parseBoolean(elementFields[7]));

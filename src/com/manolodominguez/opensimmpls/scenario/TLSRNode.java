@@ -1331,7 +1331,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     @Override
     public String marshall() {
         String serializedElement = "#LSR#";
-        serializedElement += this.getID();
+        serializedElement += this.getNodeID();
         serializedElement += "#";
         serializedElement += this.getName().replace('#', ' ');
         serializedElement += "#";
@@ -1373,9 +1373,9 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         if (elementFields.length != 12) {
             return false;
         }
-        this.setID(Integer.parseInt(elementFields[2]));
+        this.setNodeID(Integer.parseInt(elementFields[2]));
         this.setName(elementFields[3]);
-        this.setIPAddress(elementFields[4]);
+        this.setIPv4Address(elementFields[4]);
         this.setSelected(Integer.parseInt(elementFields[5]));
         this.setShowName(Boolean.parseBoolean(elementFields[6]));
         this.setGenerateStats(Boolean.parseBoolean(elementFields[7]));
@@ -1420,6 +1420,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      */
     @Override
     public void runGPSRP(TMPLSPDU packet, int outgoingPortID) {
+        // FIX: This does nothing in a non-active node.
     }
 
     public static final int OK = 0;

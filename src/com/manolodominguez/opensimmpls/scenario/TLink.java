@@ -467,10 +467,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @since 2.0
      */
     public boolean isConnectedTo(TNode node) {
-        if (this.headEndNode.getID() == node.getID()) {
+        if (this.headEndNode.getNodeID() == node.getNodeID()) {
             return true;
         }
-        if (this.tailEndNode.getID() == node.getID()) {
+        if (this.tailEndNode.getNodeID() == node.getNodeID()) {
             return true;
         }
         return false;
@@ -487,10 +487,10 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @since 2.0
      */
     public boolean isConnectedTo(int nodeID) {
-        if (this.headEndNode.getID() == nodeID) {
+        if (this.headEndNode.getNodeID() == nodeID) {
             return true;
         }
-        if (this.tailEndNode.getID() == nodeID) {
+        if (this.tailEndNode.getNodeID() == nodeID) {
             return true;
         }
         return false;
@@ -591,7 +591,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @since 2.0
      */
     public int whichEndIs(TNode node) {
-        if (node.getID() == this.headEndNode.getID()) {
+        if (node.getNodeID() == this.headEndNode.getNodeID()) {
             return TLink.HEAD_END_NODE;
         }
         return TLink.TAIL_END_NODE;
@@ -609,7 +609,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @since 2.0
      */
     public int getDestinationOfTrafficSentBy(TNode node) {
-        if (node.getID() == this.headEndNode.getID()) {
+        if (node.getNodeID() == this.headEndNode.getNodeID()) {
             return TLink.TAIL_END_NODE;
         }
         return TLink.HEAD_END_NODE;
@@ -619,7 +619,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * This method gets the link type. It should be implemented by subclasses.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return A link type that should be defined as a constant in TLink.
+     * @return A link type that should be defined as a constant in this class.
      * @since 2.0
      */
     public abstract int getLinkType();
@@ -629,15 +629,15 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * by subclasses.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param evt The timer event that triggers the link operation.
+     * @param timerEvent The timer event that triggers the link operation.
      * @since 2.0
      */
     @Override
-    public abstract void receiveTimerEvent(TTimerEvent evt);
+    public abstract void receiveTimerEvent(TTimerEvent timerEvent);
 
     /**
-     * This method is called once the link receivers a timer event and has to do
-     * things in it own thread. To be implemented by all subclasses.
+     * This method is called once the link receives a timer event and has to do
+     * things in its own thread. To be implemented by all subclasses.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0

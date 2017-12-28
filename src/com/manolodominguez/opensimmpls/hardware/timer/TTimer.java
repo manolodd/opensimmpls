@@ -155,7 +155,7 @@ public class TTimer implements Runnable {
             TNode timerEventListenerAux = (TNode) timerEventListener;
             while (iterator.hasNext()) {
                 nodeAux = (TNode) iterator.next();
-                if (nodeAux.getID() == timerEventListenerAux.getID()) {
+                if (nodeAux.getNodeID() == timerEventListenerAux.getNodeID()) {
                     iterator.remove();
                 }
             }

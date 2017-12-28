@@ -701,7 +701,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      */    
     public String marshall() {
         String cadena = "#Emisor#";
-        cadena += this.getID();
+        cadena += this.getNodeID();
         cadena += "#";
         cadena += this.getName().replace('#', ' ');
         cadena += "#";
@@ -746,9 +746,9 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         if (valores.length != 17) {
             return false;
         }
-        this.setID(Integer.valueOf(valores[2]).intValue());
+        this.setNodeID(Integer.valueOf(valores[2]).intValue());
         this.setName(valores[3]);
-        this.setIPAddress(valores[4]);
+        this.setIPv4Address(valores[4]);
         this.setSelected(Integer.valueOf(valores[5]).intValue());
         this.setShowName(Boolean.valueOf(valores[6]).booleanValue());
         this.setGenerateStats(Boolean.valueOf(valores[7]).booleanValue());

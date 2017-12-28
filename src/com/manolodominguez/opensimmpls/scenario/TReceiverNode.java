@@ -239,7 +239,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      */    
     public String marshall() {
         String cadena = "#Receptor#";
-        cadena += this.getID();
+        cadena += this.getNodeID();
         cadena += "#";
         cadena += this.getName().replace('#', ' ');
         cadena += "#";
@@ -270,9 +270,9 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
         if (valores.length != 10) {
             return false;
         }
-        this.setID(Integer.valueOf(valores[2]).intValue());
+        this.setNodeID(Integer.valueOf(valores[2]).intValue());
         this.setName(valores[3]);
-        this.setIPAddress(valores[4]);
+        this.setIPv4Address(valores[4]);
         this.setSelected(Integer.valueOf(valores[5]).intValue());
         this.setShowName(Boolean.valueOf(valores[6]).booleanValue());
         this.setGenerateStats(Boolean.valueOf(valores[7]).booleanValue());

@@ -25,24 +25,25 @@ import com.manolodominguez.opensimmpls.utils.TLongIDGenerator;
 import java.awt.Point;
 
 /**
- * Esta es una superclase abstracta de la cual deben heredar todos los nodos
- * axistentes en el simulador.
+ * This class implements a node of the topology. It is an abstract class that
+ * has to be implemented by all subclassess.
  *
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public abstract class TNode extends TTopologyElement implements Comparable, ITimerEventListener, Runnable {
 
     /**
-     * Crea una nueva instancia de TNodoTopologia.
+     * This is the constructor of the class. It will be called from all
+     * subclassess to create a new instance.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     * @param nodeID Identificador unico para el nodo en la topology.
-     * @param ipv4Address Direcci�n IP del nodo.
-     * @param identifierGenerator Generador de identificadores para los eventos
-     * que deba emitir el nodo.
-     * @param topology Topologia donde se encuentra el nodo inclu�do.
+     * @param nodeID The node identifier that is unique in the topology.
+     * @param ipv4Address IPv4 address of the node.
+     * @param identifierGenerator An identifier generator that will be used to
+     * generate unique identifiers for events.
+     * @param topology Topology the node belongs to.
      */
     public TNode(int nodeID, String ipv4Address, TLongIDGenerator identifierGenerator, TTopology topology) {
         super(TTopologyElement.NODO, identifierGenerator);
@@ -63,67 +64,76 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permite establecer las estad�sticas del nodo.
+     * This method sets whether the node has to generate statistics or not.
      *
-     * @param generateStatistics Estad�sticas para el nodo.
+     * @param generateStatistics TRUE, if the node has to generate statistics.
+     * Otherwise, FALSE.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public void setGenerateStats(boolean generateStatistics) {
         this.generateStatistics = generateStatistics;
     }
 
     /**
-     * Este m�todo permite acceder directamente a las estad�sticas del nodo.
+     * This method gets whether the node has to generate statistics or not.
      *
-     * @return las estad�sticas del nodo.
+     * @return TRUE, if the node has to generate statistics. Otherwise, FALSE.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public boolean isGeneratingStats() {
         return this.generateStatistics;
     }
 
     /**
-     * Este m�todo permite comparar para ordenar, este nodo con cualquier otro.
+     * This method compares the current instance to another instance of TNode to
+     * know the ordinal position of one to respect the other.
      *
-     * @param anotherNode Nodo con el que se va a comparar.
-     * @return -1, 0 o 1, dependiendo de si ordinalmente el nodo actual es
-     * menor, igual o mayor que el pasado por par�metros.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param anotherNode a TNode instance to be compared to the current one.
+     * @return -1, 0 or 1 depending on whether the current instance is lesser,
+     * equal or greater than the one specified as an argument.
      * @since 2.0
      */
+    @Override
     public int compareTo(Object anotherNode) {
-        TNode n = (TNode) anotherNode;
-        if (getID() < n.getID()) {
+        TNode nodeAux = (TNode) anotherNode;
+        if (getNodeID() < nodeAux.getNodeID()) {
             return -1;
-        } else if (getID() == n.getID()) {
+        } else if (getNodeID() == nodeAux.getNodeID()) {
             return 0;
         }
         return 1;
     }
 
     /**
-     * Eeste m�todo permite establecer la topology donde se encuentra el nodo.
+     * This method allow setting the topology to wich this node belongs to.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param topology topology to wich this node belongs to.
      * @since 2.0
-     * @param topology Topolog�a donde se encuentra el nodo.
      */
-    public void ponerTopologia(TTopology topology) {
+    public void setTopology(TTopology topology) {
         this.topology = topology;
     }
 
     /**
-     * Este m�todo permite obtener la topology donde se encuentra el nodo.
+     * This method allow getting the topology to wich this node belongs to.
      *
-     * @return Topolog�a donde se encuentra el nodo.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return topology to wich this node belongs to.
      * @since 2.0
      */
-    public TTopology obtenerTopologia() {
+    public TTopology getTopology() {
         return this.topology;
     }
 
     /**
-     * Este m�todo permite obtener el nombre del nodo.
+     * This method gets the name of the node.
      *
-     * @return Nombre del nodo.
+     * @return the name of the node.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public String getName() {
@@ -131,41 +141,43 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permite establecer el nombre del nodo.
+     * This method sets the name of the node.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     * @param name nombre deseado para el nodo.
+     * @param name the name of the node.
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * Este m�todo permite obtener el identificador del nodo.
+     * This method gets the unique identifier of the node.
      *
-     * @return El identificador unico del nodo.
+     * @return the unique identifier of the node.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public int getID() {
+    public int getNodeID() {
         return this.nodeID;
     }
 
     /**
-     * Este m�todo permite establecer el identificador del nodo.
+     * This method sets the unique identifier of the node.
      *
-     * @param nodeID El identificador unico del nodo.
+     * @param nodeID the unique identifier of the node.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void setID(int nodeID) {
+    public void setNodeID(int nodeID) {
         this.nodeID = nodeID;
     }
 
     /**
-     * Este m�todo permite obtener la posici�n del panel de simulaci�n donde se
-     * encuentra el nodo.
+     * This method gets the position of this node in the simulator screen.
      *
-     * @return Las coordenadas del panel de simulaci�n donde se encuentra el
-     * nodo.
+     * @return the position of this node in the simulator screen.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public Point getScreenPosition() {
@@ -173,11 +185,10 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�topdo permite establecer las coordenadas del panel de simulaci�n
-     * donde se mostrar� el nodo.
+     * This method sets the position of this node in the simulator screen.
      *
-     * @param screenPosition Las coordenadas del panel de simulaci�n elegidas
-     * para el nodo.
+     * @param screenPosition the position of this node in the simulator screen.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void setScreenPosition(Point screenPosition) {
@@ -186,26 +197,29 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permite obtener si el nodo est� en una posici�n dada o no.
+     * This method allow knowing whether a given screen position match the
+     * position of the node in the simulator screen or not.
      *
-     * @param p Coordenadas donde queremos saber si est� el nodo o no.
-     * @return TRUE, si el nodo est� en ess coordenadas. FALSE en caso
-     * contrario.
+     * @param screenPosition screen position.
+     * @return TRUE, if the screen position match the position of the node in
+     * the simulator screen. Otherwise, FALSE.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public boolean estaEnPosicion(Point p) {
-        if ((p.x >= this.screenPosition.x) && (p.x <= (this.screenPosition.x + TNode.ICONS_WIDTH))
-                && (p.y >= this.screenPosition.y) && (p.y <= (this.screenPosition.y + TNode.ICONS_HEIGHT))) {
+    public boolean isInScreenPosition(Point screenPosition) {
+        if ((screenPosition.x >= this.screenPosition.x) && (screenPosition.x <= (this.screenPosition.x + TNode.ICONS_WIDTH))
+                && (screenPosition.y >= this.screenPosition.y) && (screenPosition.y <= (this.screenPosition.y + TNode.ICONS_HEIGHT))) {
             return true;
         }
         return false;
     }
 
     /**
-     * Este m�todo permite obtener si el nodo est� seleccionado o no.
+     * This method allow knowing whether the node is currently selected or not.
      *
-     * @return SELECCIONADO, si el nodo est� seleccionado. DESELECCIONADO en
-     * caso contrario.
+     * @return TNode.SELECTED, if the node is selected in the simulator.
+     * Otherwise, TNode.UNSELECTED.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public int isSelected() {
@@ -213,10 +227,11 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permite seleccionar o deseleccionar el nodo.
+     * This method sets whether the node is currently selected or not.
      *
-     * @param selected SELECCIONADO, si queremos que el nodo est� seleccionado.
-     * DESELECCIONADO en caso contrario.
+     * @param selected TNode.SELECTED, if the node is selected in the simulator.
+     * Otherwise, TNode.UNSELECTED.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void setSelected(int selected) {
@@ -224,11 +239,12 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permite establecer si queremos que se muestre el nombre del
-     * nodo en la pantalla o no.
+     * This method sets whether the name of the node has to be shown in the
+     * simulator screen or not.
      *
-     * @param showName TRUE, si queremos ver el nombre del nodo. FALSE en caso
-     * contrario.
+     * @param showName TRUE, if the name of the node has to be displayed on the
+     * simulator screen. Oterwise, FALSE.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void setShowName(boolean showName) {
@@ -240,11 +256,12 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permite saber si se est� mostrando el nombre del nodo en la
-     * pantalla o no.
+     * This method allow knowing whether the name of the node has to be shown in
+     * the simulator screen or not.
      *
-     * @return TRUE, si se est� mostrando el nombre del nodo. FALSE en caso
-     * contrario.
+     * @return TRUE, if the name of the node has to be displayed on the
+     * simulator screen. Oterwise, FALSE.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public boolean nameMustBeDisplayed() {
@@ -252,9 +269,10 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permie obtener la direcci�n IP del nodo.
+     * This method sets the IPv4 address of the node.
      *
-     * @return La direcci�n IP del nodo.
+     * @return the IPv4 address of the node.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public String getIPv4Address() {
@@ -262,29 +280,31 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * este m�todo permite establecer la direcci�n IP del nodo.
+     * This method gets the IPv4 address of the node.
      *
-     * @param ipv4Address Direcci�n IP deseada para el nodo.
+     * @param ipv4Address the IPv4 address of the node.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void setIPAddress(String ipv4Address) {
+    public void setIPv4Address(String ipv4Address) {
         this.ipv4Address = ipv4Address;
     }
 
     /**
-     * Este m�todo permite establecer el n�mero de ports que tendr� el nodo.
+     * This method sets the number of ports of this node.
      *
-     * @param numPorts El n�mero de ports deseados para el nodo. 8 como mucho.
+     * @param numPorts the number of ports of this node.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public abstract void setPorts(int numPorts);
 
     /**
-     * Este m�todo permite poner un paquete en el buffer de entrada del nodo.
+     * This method put a packet in the incoming port of the node.
      *
-     * @param packet Paquete que deseamo poner.
-     * @param portID Puerto del conjunto de ports en el que deeamos depositar el
-     * paquete.
+     * @param packet Packet that arrives the node.
+     * @param portID Port ID of port of this node where the packet is put.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public synchronized void putPacket(TAbstractPDU packet, int portID) {
@@ -294,9 +314,10 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo incrementa en 1 el n�mero de tics que hace que el nodo no
-     * emite un paquete.
+     * This method increases in 1 the number of ticks that the node has been
+     * without emitting a packet.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void increaseTicksWithoutEmitting() {
@@ -304,9 +325,10 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo coloca a cero el n�mero de pasos que el nodo ha estado sin
-     * emitir un paquete.
+     * This method sets to 0 the number of ticks that the node has been without
+     * emitting a packet.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void resetTicksWithoutEmitting() {
@@ -314,10 +336,12 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo obtiene el n�mero pasos que el nodo lleva sin emitir un
-     * paquete.
+     * This method gets the number of ticks that the node has been without
+     * emitting a packet.
      *
-     * @return El n�mero de pasos
+     * @return the number of ticks that the node has been without emitting a
+     * packet
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public int getTicksWithoutEmitting() {
@@ -325,147 +349,174 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     }
 
     /**
-     * Este m�todo permite descartar un paquete en el nodo.
+     * This method discard a packet from this node.
      *
-     * @param packet Paquete que deseamos descartar.
+     * @param packet packet to be discarded.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public abstract void discardPacket(TAbstractPDU packet);
 
     /**
-     * Este m�todo permite acceder directamente a los ports del nodo.
+     * This method gets the ports set of this node.
      *
-     * @return El conjunto de ports del nodo.
+     * @return the ports set of this node.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public abstract TPortSet getPorts();
 
     /**
-     * Este m�todo permite obtener eventos de sincronizaci�n del reloj principal
-     * del simulador.
+     * This method receives a timer event to do things. It should be implemented
+     * by subclasses.
      *
-     * @param timerEvent Evento enviado por el reloj principal del simulador.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param timerEvent The timer event that triggers the link operation.
      * @since 2.0
      */
     @Override
     public abstract void receiveTimerEvent(TTimerEvent timerEvent);
 
     /**
-     * Este m�todo permite obtener el tipo de nodo al que pertenece la instancia
-     * actual.
+     * This method gets the node type. It should be implemented by subclasses.
      *
-     * @return El tipo del nodo. Una de las constantes definidas en la clase.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return A node type that should be defined as a constant in this class.
      * @since 2.0
      */
     public abstract int getNodeType();
 
     /**
-     * Este m�todo se ponen en funcionamiento cuando el hilo independiente del
-     * nodo entra en funcionamiento. En �l se codifica toda la funcionalidad del
-     * nodo.
+     * This method is called once the node receives a timer event and has to do
+     * things in its own thread. To be implemented by all subclasses.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
     public abstract void run();
 
     /**
-     * Este m�todo debe ser implementado. Permitir� solicitar a un nodo activo
-     * la retransmisi�n de un paquete.
+     * This method start the GPSRP protocol to request the retransmission of a
+     * lost packet part of wich has been recovered before discarding it. It has
+     * to be implemented by all subclasses.
      *
-     * @param packet Paquete cuya retransmisi�n se est� solicitando.
-     * @param outgoingPortID Puerto por el que se enviar� la solicitud.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param mplsPacket incomplete MPLS packet that want to be recovered
+     * locally.
+     * @param outgoingPortID Port of this node through wich the GPSRP
+     * retransmission request is going to be sent.
      * @since 2.0
      */
     // FIX: This should be an abstract method of a new abstract class called
     // TActiveNode. TLERNode and TLSRNode should inherit from TNode and 
     // TActiveLERNode and TActiveLSRNode should inherit from this new 
     // TActiveNode class
-    public abstract void runGPSRP(TMPLSPDU packet, int outgoingPortID);
+    public abstract void runGPSRP(TMPLSPDU mplsPacket, int outgoingPortID);
 
     /**
-     * Este m�todo averigua si al nodo le quedan ports libre o no.
+     * This method checks whether the node has available ports or not. It should
+     * be implemented by all subclasses.
      *
-     * @return TRUE, si quedan ports libres al nodo. FALSE en caso contrario.
+     * @return true, if the node has available ports. Otherwise, false.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public abstract boolean hasAvailablePorts();
 
     /**
-     * Este m�todo devuelve el peso del nodo, que debe ser tenido en cuenta por
-     * los algoritmos de encaminamiento.
+     * This method computes the routing weight of this node, to be used by
+     * routing algorithms. This has to be implemented by all subclasses.
      *
      * @since 2.0
-     * @return El peso del nodo.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the routing weight of this node.
      */
     public abstract long getRoutingWeight();
 
     /**
-     * Este m�todo devuelve si el nodo est� bien configurado o no.
+     * This method checks whether the node is well configured or not. To be
+     * implemented by all subclasses.
      *
-     * @return TRUE, si el nodo est� bien configurado. FALSE en caso contrario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TRUE, if the node is well configured. Otherwise, FALSE.
      * @since 2.0
      */
     @Override
     public abstract boolean isWellConfigured();
 
     /**
-     * Este m�todo comprueba la configuraci�n del nodo y devuelve un codigo que
-     * expresa esta situaci�n.
+     * This method checks whether the node is configured correctly or not. It
+     * has to be implemented by all subclasses.
      *
-     * @param topology Topolog�a donde se encuentra el nodo.
-     * @param reconfiguration TRUE, si se est� reconfigurando el nodod. FALSE si
-     * se est� configurando por primera vez.
-     * @return CORRECTA, si la configuraci�n es correcta. Un c�digo de error en
-     * caso contrario.
+     * @param topology Topology the node belongs to.
+     * @param reconfiguration TRUE, if the node is being re-configured.
+     * Otherwise, FALSE.
+     * @return 0 if the configuration is correct. Otherwise, an error code is
+     * returned. See public constants of error codes in the implementing
+     * subclasses.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
+    // FIX: TNode.OK with value 0 should be created in this class. The rest of
+    // error codes can be defined in subclasses. 
     public abstract int validateConfig(TTopology topology, boolean reconfiguration);
 
     /**
-     * Este m�todo transofmra el c�digo de error de la configuraci�n de un nodo
-     * en un texto inteligible.
+     * This method generates an human-readable error message from a given error
+     * code specified as an argument. To be implemented by all subclassess.
      *
-     * @param errorCode C�digo de error.
-     * @return Un texto explicando el codigo de error.
+     * @param errorCode the error code to witch the text message has to be
+     * generated. One of the public constants defined in the corresponding
+     * implementing subclasses.
+     * @return an String explaining the error.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public abstract String getErrorMessage(int errorCode);
 
     /**
-     * Este m�todo transforma el nodo en una repreentaci�n de texto que se puede
-     * volcar a disco.
+     * This method serializes the configuration parameters of this node into an
+     * string that can be saved into disk. To be implemented by all subclassess.
      *
-     * @return La cadena de texto que representa al nodo.
+     * @return an String containing all the configuration parameters of this
+     * node.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public abstract String marshall();
 
     /**
-     * Este m�todo toma un nodo serializado y lo deserializa.
+     * This method gets as an argument a serialized string that contains the
+     * needed parameters to configure the node. It will be used by subclasses to
+     * configure this node using them.
      *
-     * @param serializedElement Elemento serializado (texto).
-     * @return TRUE, si se consigue deserializar sin problemas. FALSe en caso
-     * contrario.
+     * @param serializedElement A serialized representation of a node.
+     * @return TRUE, whether the serialized string is correct and this node has
+     * been initialized correctly using the serialized values. Otherwise, FALSE.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public abstract boolean unMarshall(String serializedElement);
 
     /**
-     * Este m�todo permite acceder directamente a las estad�sticas del nodo.
+     * This node gets the stat of this node. It has to be implemented by all
+     * subclasses.
      *
-     * @return Estad�sticas del nodo.
+     * @return The stats of this node.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     public abstract TStats getStats();
 
     /**
-     * Este m�todo reinicia los atributos de la clase, dej�ndolos como recien
-     * iniciados por el constructor.
+     * This method restart the attributes of the class as in the creation of the
+     * instance. It has to be implemented by all subclasses.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
@@ -501,6 +552,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     private String ipv4Address;
     private TMonitor lock;
     private boolean generateStatistics;
+    // FIX: Do not use harcoded values. Use class constant.
     private int ticksWithoutEmittingBeforeAlert = 0;
 
     protected TPortSet ports;

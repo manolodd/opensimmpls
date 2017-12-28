@@ -118,7 +118,7 @@ public class TOSMLoader {
             TReceiverNode receiver = new TReceiverNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (receiver.unMarshall(topologyString)) {
                 this.scenario.getTopology().addNode(receiver);
-                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(receiver.getID());
+                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(receiver.getNodeID());
                 this.scenario.getTopology().getIPv4AddressGenerator().setValueIfGreater(receiver.getIPv4Address());
             }
             receiver = null;
@@ -126,7 +126,7 @@ public class TOSMLoader {
             TSenderNode sender = new TSenderNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (sender.unMarshall(topologyString)) {
                 this.scenario.getTopology().addNode(sender);
-                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(sender.getID());
+                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(sender.getNodeID());
                 this.scenario.getTopology().getIPv4AddressGenerator().setValueIfGreater(sender.getIPv4Address());
             }
             sender = null;
@@ -134,7 +134,7 @@ public class TOSMLoader {
             TLERNode ler = new TLERNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (ler.unMarshall(topologyString)) {
                 this.scenario.getTopology().addNode(ler);
-                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(ler.getID());
+                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(ler.getNodeID());
                 this.scenario.getTopology().getIPv4AddressGenerator().setValueIfGreater(ler.getIPv4Address());
             }
             ler = null;
@@ -142,7 +142,7 @@ public class TOSMLoader {
             TActiveLERNode activeLER = new TActiveLERNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (activeLER.unMarshall(topologyString)) {
                 this.scenario.getTopology().addNode(activeLER);
-                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(activeLER.getID());
+                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(activeLER.getNodeID());
                 this.scenario.getTopology().getIPv4AddressGenerator().setValueIfGreater(activeLER.getIPv4Address());
             }
             activeLER = null;
@@ -150,7 +150,7 @@ public class TOSMLoader {
             TLSRNode lsr = new TLSRNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (lsr.unMarshall(topologyString)) {
                 this.scenario.getTopology().addNode(lsr);
-                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(lsr.getID());
+                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(lsr.getNodeID());
                 this.scenario.getTopology().getIPv4AddressGenerator().setValueIfGreater(lsr.getIPv4Address());
             }
             lsr = null;
@@ -158,7 +158,7 @@ public class TOSMLoader {
             TActiveLSRNode activeLSR = new TActiveLSRNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (activeLSR.unMarshall(topologyString)) {
                 this.scenario.getTopology().addNode(activeLSR);
-                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(activeLSR.getID());
+                this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(activeLSR.getNodeID());
                 this.scenario.getTopology().getIPv4AddressGenerator().setValueIfGreater(activeLSR.getIPv4Address());
             }
             activeLSR = null;
