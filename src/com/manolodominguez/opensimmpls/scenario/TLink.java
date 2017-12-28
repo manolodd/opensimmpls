@@ -178,8 +178,8 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      */
     public void configure(TLinkConfig linkConfig, TTopology topology, boolean isAReconfiguration) {
         this.setName(linkConfig.getName());
-        this.setShowName(linkConfig.getShowName());
-        this.setDelay(linkConfig.getDelay());
+        this.setShowName(linkConfig.nameMustBeDisplayed());
+        this.setDelay(linkConfig.getLinkDelay());
         if (!isAReconfiguration) {
             this.setHeadEndNode(topology.getFirstNodeNamed(linkConfig.getHeadEndNodeName()));
             this.setTailEndNode(topology.getFirstNodeNamed(linkConfig.getTailEndNodeName()));
@@ -214,7 +214,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
         if (this.getTailEndNode() != null) {
             linkConfig.setTailEndNodeName(this.getTailEndNode().getName());
         }
-        linkConfig.setDelay(this.getDelay());
+        linkConfig.setLinkDelay(this.getDelay());
         linkConfig.setHeadEndNodePortID(this.getHeadEndNodePortID());
         linkConfig.setTailEndNodePortID(this.getTailEndNodePortID());
         return linkConfig;

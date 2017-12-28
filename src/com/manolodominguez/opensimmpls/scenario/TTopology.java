@@ -189,7 +189,7 @@ public class TTopology {
      * @return TRUE si existe m�s de un enlace con el mismo nombre. FALSE en caso contrario.
      * @since 2.0
      */    
-    public boolean existeMasDeUnEnlaceLlamado(String nom) {
+    public boolean thereIsMoreThanALinkNamed(String nom) {
         int cuantos = 0;
         TLink enlace = null;
         Iterator iterador = conjuntoEnlaces.iterator();
@@ -232,7 +232,7 @@ public class TTopology {
      * @return El enlace buscado. NULL si no existe.
      * @since 2.0
      */    
-    public TLink obtenerPrimerEnlaceLlamado(String nom) {
+    public TLink getFirstLinkNamed(String nom) {
         TLink enlace = null;
         Iterator iterador = conjuntoEnlaces.iterator();
         while (iterador.hasNext()) {

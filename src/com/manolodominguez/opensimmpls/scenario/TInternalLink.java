@@ -429,7 +429,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
         this.getID(Integer.parseInt(elementFields[2]));
         linkConfig.setName(elementFields[3]);
         linkConfig.setShowName(Boolean.valueOf(elementFields[4]));
-        linkConfig.setDelay(Integer.parseInt(elementFields[5]));
+        linkConfig.setLinkDelay(Integer.parseInt(elementFields[5]));
         String ipv4AddressOfNodeAtEND1 = elementFields[6];
         String ipv4AddressOfNodeAtEND2 = elementFields[8];
         TNode nodeAtEnd1 = this.getTopology().getNode(ipv4AddressOfNodeAtEND1);

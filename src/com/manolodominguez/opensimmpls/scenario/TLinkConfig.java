@@ -15,344 +15,365 @@
  */
 package com.manolodominguez.opensimmpls.scenario;
 
-import java.awt.*;
-
 /**
- * Esta clase implementa un objeto que almacenar� la configuraci�n completa de un enlace.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements an object that will contain the needed values to
+ * configure a link.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class TLinkConfig {
 
     /**
-     * Crea una nueva instancia de TConfigEnlace
+     * This methods is the constructor of the class. It creates a new instance
+     * of TLinkConfig.
      */
     public TLinkConfig() {
-        nombre = "";
-        nombreExtremo1 = "";
-        nombreExtremo2 = "";
-        delay = 1;
-        valida = false;
-        ponerNombre = false;
-        tipoEnlace = TLink.INTERNAL_LINK;
-        puertoExtremo1 = -1;
-        puertoExtremo2 = -1;
+        this.name = "";
+        this.headEndNodeName = "";
+        this.tailEndNodeName = "";
+        this.linkDelay = 1;
+        this.wellConfigured = false;
+        this.showName = false;
+        this.linkType = TLink.INTERNAL_LINK;
+        this.headEndNodePortID = -1;
+        this.tailEndNodePortID = -1;
     }
 
     /**
-     * Este m�todo establece el retardo para el enlace.
-     * @param d Retardo deseado para el enlace
+     * This method sets the link delay (in nanoseconds).
+     *
+     * @param linkDelay the link delay (in nanoseconds).
      * @since 2.0
-     */    
-    public void setDelay(int d) {
-        delay = d;
-    }
-    
-    /**
-     * Este m�todo devuelve el retardo del enlace.
-     * @return El retardo del enlace.
-     * @since 2.0
-     */    
-    public int getDelay() {
-        return delay;
-    }
-    
-    /**
-     * Este m�todo establece la configuraci�n del enlace como v�lida.
-     * @since 2.0
-     * @param v TRUE, indica que la configuraci�n es v�lida. FALSE, lo contrario.
-     */    
-    public void ponerValida(boolean v) {
-        valida = v;
-    }
-    
-    /**
-     * Este m�todo averigua si la configuraci�n de enlace es v�lida o no.
-     * @since 2.0
-     * @return TRUE, si la configuraci�n es v�lida. FALSE en caso contrario.
-     */    
-    public boolean obtenerValida() {
-        return valida;
-    }
-    
-    /**
-     * Este m�todo establece si el enlace es externo o interno al dominio MPLS.
-     * @since 2.0
-     * @param t EXTERO, si se desea que el enlace sea externo. INTERNAL, si se desea que sea
- interno.
-     */    
-    public void ponerTipo(int t) {
-        tipoEnlace = t;
+     */
+    public void setLinkDelay(int linkDelay) {
+        this.linkDelay = linkDelay;
     }
 
     /**
-     * Este m�todo averigua el tipo del enlace.
+     * This method gets the link delay (in nanoseconds).
+     *
+     * @return the link delay (in nanoseconds).
      * @since 2.0
-     * @return EXTERNAL, si el enlace es externo. INTERNAL si el enlace es interno.
-     */    
-    public int obtenerTipo() {
-        return tipoEnlace;
+     */
+    public int getLinkDelay() {
+        return this.linkDelay;
     }
 
     /**
-     * Este m�todo establece el nombre del enlace.
+     * This method sets the link config as a valid or not valid.
+     *
      * @since 2.0
-     * @param n El nombre del enlace.
-     */    
-    public void setName(String n) {
-        nombre = n;
+     * @param wellConfigured TRUE, if the link config is valid. Otherwise,
+     * FALSE.
+     */
+    public void setWellConfigured(boolean wellConfigured) {
+        this.wellConfigured = wellConfigured;
     }
 
     /**
-     * Este m�todo obtiene el nombre del enlace.
+     * This method gets whether the link config is valid or not valid.
+     *
      * @since 2.0
-     * @return El nombre del enlace.
-     */    
+     * @return TRUE, if the link config is valid. Otherwise, FALSE.
+     */
+    public boolean isWellConfigured() {
+        return this.wellConfigured;
+    }
+
+    /**
+     * This method establish the type of the link (enternal or internal).
+     *
+     * @since 2.0
+     * @param linkType TLink.EXTERNAL_LINK, if it is a external link.
+     * TLink.INTERNAL_LINK if the link is internal.
+     */
+    public void setLinkType(int linkType) {
+        this.linkType = linkType;
+    }
+
+    /**
+     * This method gets the type of the link (enternal or internal).
+     *
+     * @since 2.0
+     * @return TLink.EXTERNAL_LINK, if it is a external link.
+     * TLink.INTERNAL_LINK if the link is internal.
+     */
+    public int getLinkType() {
+        return this.linkType;
+    }
+
+    /**
+     * This method sets the name of the link.
+     *
+     * @since 2.0
+     * @param name the name of the link.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * This method gets the name of the link.
+     *
+     * @since 2.0
+     * @return the name of the link.
+     */
     public String getName() {
-        return nombre;
+        return this.name;
     }
 
     /**
-     * Este m�todo establece si el nombre del enlace se debe mostrar o no.
+     * This method sets whether the name of the link has to be displayed in the
+     * simulator or not.
+     *
      * @since 2.0
-     * @param p TRUE, si queremos que el nombre se muestre. FALSE en caso contrario.
-     */    
-    public void setShowName(boolean p) {
-        ponerNombre = p;
+     * @param showName TRUE, if the name has to be displayed. Otherwise, FALSE.
+     */
+    public void setShowName(boolean showName) {
+        this.showName = showName;
     }
 
     /**
-     * Este m�todo establece el nombre del nodo que ser� extremo izquierdo del enlace.
+     * This method sets the name of the node connected to the head end of the
+     * link.
+     *
      * @since 2.0
-     * @param n Nombre del ndo que ser� extremo izquierdo del enlace.
-     */    
-    public void setHeadEndNodeName(String n) {
-        nombreExtremo1 = n;
+     * @param headEndNodeName the name of the node connected to the head end of
+     * the link.
+     */
+    public void setHeadEndNodeName(String headEndNodeName) {
+        this.headEndNodeName = headEndNodeName;
     }
 
     /**
-     * Este m�todo obtiene el nombre del nodo que es extremo izquierdo del enlace.
+     * This method gets the name of the node connected to the head end of the
+     * link.
+     *
      * @since 2.0
-     * @return El nombre del nodo que es extremo izquierdo del enlace.
-     */    
+     * @return the name of the node connected to the head end of the link.
+     */
     public String getHeadEndNodeName() {
-        return nombreExtremo1;
+        return this.headEndNodeName;
     }
 
     /**
-     * Este m�todo establece el nombre del nodo que ser� extremo derecho del enlace.
+     * This method sets the name of the node connected to the tail end of the
+     * link.
+     *
      * @since 2.0
-     * @param n El nombre del nodo que es extremo derecho del enlace.
-     */    
-    public void setTailEndNodeName(String n) {
-        nombreExtremo2 = n;
+     * @param tailEndNodeName the name of the node connected to the tail end of
+     * the link.
+     */
+    public void setTailEndNodeName(String tailEndNodeName) {
+        this.tailEndNodeName = tailEndNodeName;
     }
 
     /**
-     * Este m�todo obtiene el nombre del nodo que es extremo derecho del enlace.
+     * This method gets the name of the node connected to the tail end of the
+     * link.
+     *
      * @since 2.0
-     * @return El nombre del nodo que es extremo derecho del enlace.
-     */    
+     * @return the name of the node connected to the tail end of the link.
+     */
     public String getTailEndNodeName() {
-        return nombreExtremo2;
+        return this.tailEndNodeName;
     }
 
     /**
-     * Este m�todo averigua si actualmente el enlace est� mostrando el nombre.
+     * This method gets whether the name of the link has to be displayed in the
+     * simulator or not.
+     *
      * @since 2.0
-     * @return TRUE, si el nombre se est� mostrando. FALSE en caso contrario.
-     */    
-    public boolean getShowName() {
-        return ponerNombre;
+     * @return TRUE, if the name has to be displayed. Otherwise, FALSE.
+     */
+    public boolean nameMustBeDisplayed() {
+        return this.showName;
     }
 
     /**
-     * Este m�todo establece a qu� puerto del nodo extremo izquierdo del enlace se va a
-     * conectar �ste.
+     * This method sets the port ID of the node to wich the head end of the link
+     * is connected.
+     *
      * @since 2.0
-     * @param p Puerto del nodo izquierdo al que se conecta el enlace.
-     */    
-    public void setHeadEndNodePortID(int p) {  
-        puertoExtremo1 = p;
+     * @param headEndNodePortID the port ID of the node to wich the head end of
+     * the link is connected.
+     */
+    public void setHeadEndNodePortID(int headEndNodePortID) {
+        this.headEndNodePortID = headEndNodePortID;
     }
 
     /**
-     * Este m�todo obtiene el puerto del nodo izquierdo del enlace al que este est�
-     * conectado.
+     * This method gets the port ID of the node to wich the head end of the link
+     * is connected.
+     *
      * @since 2.0
-     * @return El puerto del ndo izquierdo del enlace al que �ste est� conectado.
-     */    
-    public int getHeadEndNodePortID() {  
-        return puertoExtremo1;
+     * @return the port ID of the node to wich the head end of the link is
+     * connected.
+     */
+    public int getHeadEndNodePortID() {
+        return this.headEndNodePortID;
     }
 
     /**
-     * Este m�todo establece a qu� puerto del nodo extremo derecho del enlace se va a
-     * conectar �ste.
+     * This method sets the port ID of the node to wich the tail end of the link
+     * is connected.
+     *
      * @since 2.0
-     * @param p Puerto del ndo derecho del enlace al que se conectar� �ste.
-     */    
-    public void setTailEndNodePortID(int p) {  
-        puertoExtremo2 = p;
+     * @param tailEndNodePortID the port ID of the node to wich the tail end of
+     * the link is connected.
+     */
+    public void setTailEndNodePortID(int tailEndNodePortID) {
+        this.tailEndNodePortID = tailEndNodePortID;
     }
 
     /**
-     * Este m�todo obtiene el puerto del nodo derecho del enlace al que �ste est�
-     * conectado.
+     * This method gets the port ID of the node to wich the tail end of the link
+     * is connected.
+     *
      * @since 2.0
-     * @return El puerto del nodo derecho del enlace al que este est� conectado.
-     */    
-    public int getTailEndNodePortID() {  
-        return puertoExtremo2;
+     * @return the port ID of the node to wich the tail end of the link is
+     * connected.
+     */
+    public int getTailEndNodePortID() {
+        return this.tailEndNodePortID;
     }
 
     /**
-     * Este m�todo comprueba que la configuraci�n del enlace sea correcta.
+     * This method checks whether the link is configured correctly or not taking
+     * into account the information of this TLinkConfig.
+     *
+     * @param topology Topology to wich the link belongs to.
+     * @param reconfiguration TRUE, if the link is being re-configured.
+     * Otherwise, FALSE.
+     * @return TLinkConfig.OK if the configuration is correct. Otherwise, an
+     * error code is returned. See public constants of error codes in this
+     * class.
      * @since 2.0
-     * @param topo Topolog�a donde est� insertado el enlace.
-     * @param recfg TRUE, si se est� reconfigurando el enlace. FALSE si se est� insertando nuevo.
-     * @return CORRECTA, si la configuraci�n es correcta. Un codigo de error correspondiente a
-     * una de las constantes de la clase en caso contrario.
-     */    
-    public int comprobar(TTopology topo, boolean recfg) {
-        if (nombre.equals(""))
-            return this.SIN_NOMBRE;
-        boolean soloEspacios = true;
-        for (int i=0; i < nombre.length(); i++){
-            if (nombre.charAt(i) != ' ')
-                soloEspacios = false;
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     */
+    public int validateConfig(TTopology topology, boolean reconfiguration) {
+        // FIX: It seems like a call to setWellConfigured(false) is missing 
+        // here. Check
+        if (this.name.equals("")) {
+            return TLinkConfig.UNNAMED;
         }
-        if (soloEspacios)
-            return this.SOLO_ESPACIOS;
-        if (!recfg) {
-            TLink e = topo.obtenerPrimerEnlaceLlamado(nombre);
-            if (e != null)
-                return this.NOMBRE_YA_EXISTE;
+        boolean onlyBlankSpaces = true;
+        for (int i = 0; i < this.name.length(); i++) {
+            if (this.name.charAt(i) != ' ') {
+                onlyBlankSpaces = false;
+            }
+        }
+        if (onlyBlankSpaces) {
+            return TLinkConfig.ONLY_BLANK_SPACES;
+        }
+        if (!reconfiguration) {
+            TLink linkAux = topology.getFirstLinkNamed(this.name);
+            if (linkAux != null) {
+                return TLinkConfig.NAME_ALREADY_EXISTS;
+            }
         } else {
-            TLink e = topo.obtenerPrimerEnlaceLlamado(nombre);
-            if (e != null) {
-                if (topo.existeMasDeUnEnlaceLlamado(nombre)) {
-                    return this.NOMBRE_YA_EXISTE;
-                } else {
-                    if (e.getHeadEndNode().getName().equals(this.getHeadEndNodeName())) {
-                        if (!e.getTailEndNode().getName().equals(this.getTailEndNodeName())) {
-                            return this.NOMBRE_YA_EXISTE;
-                        }
-                    } else {
-                        return this.NOMBRE_YA_EXISTE;
+            TLink linkAux2 = topology.getFirstLinkNamed(this.name);
+            if (linkAux2 != null) {
+                if (topology.thereIsMoreThanALinkNamed(this.name)) {
+                    return TLinkConfig.NAME_ALREADY_EXISTS;
+                } else if (linkAux2.getHeadEndNode().getName().equals(this.getHeadEndNodeName())) {
+                    if (!linkAux2.getTailEndNode().getName().equals(this.getTailEndNodeName())) {
+                        return TLinkConfig.NAME_ALREADY_EXISTS;
                     }
+                } else {
+                    return TLinkConfig.NAME_ALREADY_EXISTS;
                 }
             }
         }
-        if ((this.nombreExtremo1.equals("")) || (this.nombreExtremo1 == null))
-            return this.FALTA_EXTREMO_1;
-        if ((this.nombreExtremo2.equals("")) || (this.nombreExtremo2 == null))
-            return this.FALTA_EXTREMO_2;
-        if (puertoExtremo1 == -1)
-            return this.FALTA_PUERTO_1;
-        if (puertoExtremo2 == -1)
-            return this.FALTA_PUERTO_2;
-        return this.CORRECTA;
+        if ((this.headEndNodeName.equals("")) || (this.headEndNodeName == null)) {
+            return TLinkConfig.MISSING_HEAD_END_NODE_NAME;
+        }
+        if ((this.tailEndNodeName.equals("")) || (this.tailEndNodeName == null)) {
+            return TLinkConfig.MISSING_TAIL_END_NODE_NAME;
+        }
+        // FIX: use class constants instead of harcoded values
+        if (this.headEndNodePortID == -1) {
+            return TLinkConfig.MISSING_HEAD_END_NODE_PORT_ID;
+        }
+        // FIX: use class constants instead of harcoded values
+        if (this.tailEndNodePortID == -1) {
+            return TLinkConfig.MISSING_TAIL_END_NODE_PORT_ID;
+        }
+        // FIX: It seems like a call to setWellConfigured(true) is missing here.
+        // Check
+        return TLinkConfig.OK;
     }
 
     /**
-     * Este m�todo transforma el c�digo de error de las constantes de la clase, en una
-     * explicaci�n textual inteligible.
+     * This method generates an human-readable error message from a given error
+     * code specified as an argument.
+     *
+     * @param errorCode the error code to witch the text message has to be
+     * generated. One of the public constants defined in this class.
+     * @return an String explaining the error.
      * @since 2.0
-     * @param error El codigo de error que se debe transformar
-     * @return La descripci�n textual del error
-     */    
-    public String obtenerMensajeError(int error) {
-        switch (error) {
-            case SIN_NOMBRE: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.FALTA_NOMBRE"));
-            case SOLO_ESPACIOS: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.NoSoloEspacios"));
-            case NOMBRE_YA_EXISTE: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.NombreYaUsado"));
-            case FALTA_PUERTO_1: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.SeleccionrPuertoIzquierdo"));
-            case FALTA_PUERTO_2: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.SeleccionarPuertoDerecho"));
-            case FALTA_EXTREMO_1: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.SeleccionarExtremoIzquierdo"));
-            case FALTA_EXTREMO_2: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.SeleccionarExtremoDerecho"));
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     */
+    public String getErrorMessage(int errorCode) {
+        switch (errorCode) {
+            case UNNAMED:
+                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.FALTA_NOMBRE"));
+            case ONLY_BLANK_SPACES:
+                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.NoSoloEspacios"));
+            case NAME_ALREADY_EXISTS:
+                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.NombreYaUsado"));
+            case MISSING_HEAD_END_NODE_PORT_ID:
+                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.SeleccionrPuertoIzquierdo"));
+            case MISSING_TAIL_END_NODE_PORT_ID:
+                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.SeleccionarPuertoDerecho"));
+            case MISSING_HEAD_END_NODE_NAME:
+                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.SeleccionarExtremoIzquierdo"));
+            case MISSING_TAIL_END_NODE_NAME:
+                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.SeleccionarExtremoDerecho"));
         }
         return ("");
     }
 
     /**
-     * Este m�todo calcula y configura el tipo del enlace bas�ndose en el tipo de nodos
-     * que interconecta.
+     * This method discovers automatically the type of the link depending on the
+     * type of nodes it connects.
+     *
      * @since 2.0
-     * @param topo Topolog�a donde se encuentra el enlace.
-     */    
-    public void discoverLinkType(TTopology topo) {
-        TNode e1, e2;
-        e1 = topo.getFirstNodeNamed(nombreExtremo1);
-        e2 = topo.getFirstNodeNamed(nombreExtremo2);
-        if ((e1 != null) && (e2 != null)) {
-            int tipo1 = e1.getNodeType();
-            int tipo2 = e2.getNodeType();
-            if ((tipo1 == TNode.SENDER) || (tipo1 == TNode.RECEIVER) ||
-                (tipo2 == TNode.SENDER) || (tipo2 == TNode.RECEIVER))
-                this.ponerTipo(TLink.EXTERNAL_LINK);
-            else
-                this.ponerTipo(TLink.INTERNAL_LINK);
+     * @param topology Topology the link belongs to.
+     */
+    public void discoverLinkType(TTopology topology) {
+        TNode headEndNode, tailEndNode;
+        headEndNode = topology.getFirstNodeNamed(this.headEndNodeName);
+        tailEndNode = topology.getFirstNodeNamed(this.tailEndNodeName);
+        if ((headEndNode != null) && (tailEndNode != null)) {
+            int headEndNodeType = headEndNode.getNodeType();
+            int tailEndNodeType = tailEndNode.getNodeType();
+            if ((headEndNodeType == TNode.SENDER) || (headEndNodeType == TNode.RECEIVER)
+                    || (tailEndNodeType == TNode.SENDER) || (tailEndNodeType == TNode.RECEIVER)) {
+                this.setLinkType(TLink.EXTERNAL_LINK);
+            } else {
+                this.setLinkType(TLink.INTERNAL_LINK);
+            }
         }
     }
 
-    /**
-     * Constante que indica que la configuraci�n del enlace es correcta.
-     * @since 2.0
-     */    
-    public static final int CORRECTA = 0;
-    /**
-     * Constante que indica falta el nombre en la configuraci�n del enlace.
-     * @since 2.0
-     */    
-    public static final int SIN_NOMBRE = 1;
-    /**
-     * Constante que indica que el nombre del enlace solo esta compuesta por espacios.
-     * @since 2.0
-     */    
-    public static final int SOLO_ESPACIOS = 2;
-    /**
-     * Constante que indica que ya hay otro enlace en la topolog�a con ese nombre.
-     * @since 2.0
-     */    
-    public static final int NOMBRE_YA_EXISTE = 3;
-    /**
-     * Constnte que indica que no se ha seleccionado el puerto para el extremo
-     * izquierdo del enlace.
-     * @since 2.0
-     */    
-    public static final int FALTA_PUERTO_1 = 4;
-    /**
-     * Constnte que indica que no se ha seleccionado el puerto para el extremo
-     * derecho del enlace.
-     * @since 2.0
-     */    
-    public static final int FALTA_PUERTO_2 = 5;
-    /**
-     * Constnte que indica que no se ha seleccionado el extremo
-     * izquierdo del enlace.
-     * @since 2.0
-     */    
-    public static final int FALTA_EXTREMO_1 = 6;
-    /**
-     * Constnte que indica que no se ha seleccionado el extremo
-     * derecho del enlace.
-     * @since 2.0
-     */    
-    public static final int FALTA_EXTREMO_2 = 7;
+    public static final int OK = 0;
+    public static final int UNNAMED = 1;
+    public static final int ONLY_BLANK_SPACES = 2;
+    public static final int NAME_ALREADY_EXISTS = 3;
+    public static final int MISSING_HEAD_END_NODE_PORT_ID = 4;
+    public static final int MISSING_TAIL_END_NODE_PORT_ID = 5;
+    public static final int MISSING_HEAD_END_NODE_NAME = 6;
+    public static final int MISSING_TAIL_END_NODE_NAME = 7;
 
-    private int tipoEnlace;
-    private String nombre;
-    private String nombreExtremo1;
-    private String nombreExtremo2;
-    private int puertoExtremo1;
-    private int puertoExtremo2;
-    /**
-     * Atributo de la clase que almacena el retardo del enlace.
-     * @since 2.0
-     */    
-    public int delay;
-    private boolean ponerNombre;
-    private boolean valida;
+    private int linkType;
+    private String name;
+    private String headEndNodeName;
+    private String tailEndNodeName;
+    private int headEndNodePortID;
+    private int tailEndNodePortID;
+    public int linkDelay;
+    private boolean showName;
+    private boolean wellConfigured;
 }

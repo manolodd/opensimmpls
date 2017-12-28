@@ -1916,7 +1916,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * code specified as ana argument.
      *
      * @param errorCode the error code to witch the text message has to be
-     * generated.
+     * generated. One of the public constants defined in this class.
      * @return an String explaining the error.
      * @since 2.0
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com

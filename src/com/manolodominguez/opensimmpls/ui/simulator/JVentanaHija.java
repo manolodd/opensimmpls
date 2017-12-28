@@ -1355,9 +1355,9 @@ private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
         venlace.ponerConfiguracion(config, false);
         venlace.cargarNodosPorDefecto();
         venlace.show();
-        if (config.obtenerValida()) {
+        if (config.isWellConfigured()) {
             try {
-                if (config.obtenerTipo() == TLink.INTERNAL_LINK) {
+                if (config.getLinkType() == TLink.INTERNAL_LINK) {
                     TInternalLink enlaceInterno = new TInternalLink(escenario.getTopology().getItemIdentifierGenerator().getNew(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
                     enlaceInterno.configure(config, escenario.getTopology(), false);
                     escenario.getTopology().addLink(enlaceInterno);

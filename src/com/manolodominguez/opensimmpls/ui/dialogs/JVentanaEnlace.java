@@ -441,21 +441,21 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
     if (this.reconfigurando) {
         configEnlace.setName(BCKUPNombre);
         configEnlace.setShowName(BCKUPMostrarNombre);
-        configEnlace.setDelay(BCKUPDelay);
+        configEnlace.setLinkDelay(BCKUPDelay);
         this.reconfigurando = false;
-        configEnlace.ponerValida(true);
+        configEnlace.setWellConfigured(true);
     } else {
-        configEnlace.ponerValida(false);
+        configEnlace.setWellConfigured(false);
     }
     this.setVisible(false);
     this.dispose();
 }//GEN-LAST:event_clicEnCancelar
 
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
-    configEnlace.ponerValida(true);
+    configEnlace.setWellConfigured(true);
     configEnlace.setName(nombreEnlace.getText());
     configEnlace.setShowName(verNombre.isSelected());
-    configEnlace.setDelay(this.delayAvanzado.getValue());
+    configEnlace.setLinkDelay(this.delayAvanzado.getValue());
     
     if (!this.reconfigurando) {
         configEnlace.setHeadEndNodeName((String) selectorExtremoIzquierdo.getSelectedItem());
@@ -476,10 +476,10 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
             configEnlace.setTailEndNodePortID(aux2);
         }
     }
-    int error = configEnlace.comprobar(topo, this.reconfigurando);
-    if (error != TLinkConfig.CORRECTA) {
+    int error = configEnlace.validateConfig(topo, this.reconfigurando);
+    if (error != TLinkConfig.OK) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
-        va.mostrarMensaje(configEnlace.obtenerMensajeError(error));
+        va.mostrarMensaje(configEnlace.getErrorMessage(error));
         va.show();
     } else {
         this.setVisible(false);
@@ -490,7 +490,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     /** Closes the dialog */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         setVisible(false);
-        configEnlace.ponerValida(false);
+        configEnlace.setWellConfigured(false);
         dispose();
     }//GEN-LAST:event_closeDialog
 
@@ -507,13 +507,13 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
         if (recfg) {
             this.reconfigurando = recfg;
             BCKUPNombre = tcenlace.getName();
-            BCKUPMostrarNombre = tcenlace.getShowName();
-            BCKUPDelay = tcenlace.getDelay();
+            BCKUPMostrarNombre = tcenlace.nameMustBeDisplayed();
+            BCKUPDelay = tcenlace.getLinkDelay();
 
             this.nombreEnlace.setText(tcenlace.getName());
-            this.verNombre.setSelected(tcenlace.getShowName());
+            this.verNombre.setSelected(tcenlace.nameMustBeDisplayed());
             this.delayFacil.setSelectedIndex(0);
-            this.delayAvanzado.setValue(tcenlace.getDelay());
+            this.delayAvanzado.setValue(tcenlace.getLinkDelay());
             
             this.selectorExtremoIzquierdo.setEnabled(false);
             this.selectorPuertoIzquierdo.setEnabled(false);
