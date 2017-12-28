@@ -631,7 +631,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
                 BKUPDestino = nt.getName();
             }
             BKUPLSPDeBackup = emisor.obtenerLSPDeBackup();
-            BKUPMostrarNombre = emisor.getShowName();
+            BKUPMostrarNombre = emisor.nameMustBeDisplayed();
             BKUPNivelDeGos = emisor.obtenerNivelDeGoS();
             BKUPNombre = emisor.getName();
             BKUPTasaTrafico = emisor.obtenerTasaTrafico();

@@ -303,7 +303,7 @@ public class TTopology {
                     nodoTrasCast.setName(nodo.getName());
                     nodoTrasCast.setScreenPosition(nodo.getScreenPosition());
                 }
-                else if (nodo.getNodeType() == TNode.LERA) {
+                else if (nodo.getNodeType() == TNode.ACTIVE_LER) {
                     TActiveLERNode nodoTrasCast = (TActiveLERNode) nodoBuscado;
                     nodoTrasCast.setName(nodo.getName());
                     nodoTrasCast.setScreenPosition(nodo.getScreenPosition());
@@ -313,7 +313,7 @@ public class TTopology {
                     nodoTrasCast.setName(nodo.getName());
                     nodoTrasCast.setScreenPosition(nodo.getScreenPosition());
                 }
-                else if (nodo.getNodeType() == TNode.LSRA) {
+                else if (nodo.getNodeType() == TNode.ACTIVE_LSR) {
                     TActiveLSRNode nodoTrasCast = (TActiveLSRNode) nodoBuscado;
                     nodoTrasCast.setName(nodo.getName());
                     nodoTrasCast.setScreenPosition(nodo.getScreenPosition());

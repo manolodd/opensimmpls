@@ -61,7 +61,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         super(identifier, ipAddress, longIDGenerator, topology);
         // FIX: This is an overridable method call in constructor that should be 
         // avoided.
-        this.setPorts(TNode.NUM_LSR_PORTS);
+        this.setPorts(TNode.DEFAULT_NUM_PORTS_LSR);
         this.switchingMatrix = new TSwitchingMatrix();
         this.gIdent = new TLongIDGenerator();
         this.gIdentLDP = new TIDGenerator();
@@ -193,7 +193,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         this.gIdentLDP.reset();
         this.stats.reset();
         this.stats.activateStats(this.isGeneratingStats());
-        this.handleGPSRPPacket();
+        this.resetTicksWithoutEmitting();
     }
 
     /**
@@ -225,7 +225,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         if (this.getPorts().isAnyPacketToSwitch()) {
             this.availableNs += timerEvent.getStepDuration();
         } else {
-            this.handleGPSRPPacket();
+            this.resetTicksWithoutEmitting();
             this.availableNs = timerEvent.getStepDuration();
         }
         this.startOperation();
@@ -344,9 +344,9 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
             }
         }
         if (atLeastOnePacketSwitched) {
-            this.handleGPSRPPacket();
+            this.resetTicksWithoutEmitting();
         } else {
-            this.increaseStepsWithoutEmitting();
+            this.increaseTicksWithoutEmitting();
         }
     }
 
@@ -1337,9 +1337,9 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         serializedElement += "#";
         serializedElement += this.getIPv4Address();
         serializedElement += "#";
-        serializedElement += this.getStatus();
+        serializedElement += this.isSelected();
         serializedElement += "#";
-        serializedElement += this.getShowName();
+        serializedElement += this.nameMustBeDisplayed();
         serializedElement += "#";
         serializedElement += this.isGeneratingStats();
         serializedElement += "#";
@@ -1376,7 +1376,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         this.setID(Integer.parseInt(elementFields[2]));
         this.setName(elementFields[3]);
         this.setIPAddress(elementFields[4]);
-        this.setStatus(Integer.parseInt(elementFields[5]));
+        this.setSelected(Integer.parseInt(elementFields[5]));
         this.setShowName(Boolean.parseBoolean(elementFields[6]));
         this.setGenerateStats(Boolean.parseBoolean(elementFields[7]));
         int posX = Integer.parseInt(elementFields[8]);

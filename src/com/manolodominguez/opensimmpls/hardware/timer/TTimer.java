@@ -245,7 +245,7 @@ public class TTimer implements Runnable {
                     nodeAux = (TLERNode) nodeAux;
                     break;
                 }
-                case TNode.LERA: {
+                case TNode.ACTIVE_LER: {
                     nodeAux = (TActiveLERNode) nodeAux;
                     break;
                 }
@@ -253,7 +253,7 @@ public class TTimer implements Runnable {
                     nodeAux = (TLSRNode) nodeAux;
                     break;
                 }
-                case TNode.LSRA: {
+                case TNode.ACTIVE_LSR: {
                     nodeAux = (TActiveLSRNode) nodeAux;
                     break;
                 }

@@ -29,6 +29,7 @@ public class TLinkConfig {
      * of TLinkConfig.
      */
     public TLinkConfig() {
+        // FIX: Do not use harcoded values. Use class constants in all cases.
         this.name = "";
         this.headEndNodeName = "";
         this.tailEndNodeName = "";

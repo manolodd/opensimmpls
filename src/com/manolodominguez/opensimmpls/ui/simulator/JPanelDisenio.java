@@ -120,7 +120,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
         while (itd.hasNext()) {
             nd = (TNode) itd.next();
             if ((nd.getNodeType() == TNode.LER) ||
-               (nd.getNodeType() == TNode.LERA)) {
+               (nd.getNodeType() == TNode.ACTIVE_LER)) {
                    pol.addPoint(nd.getScreenPosition().x+24, nd.getScreenPosition().y+24);
                    vertices ++;
                }
@@ -208,49 +208,49 @@ public class JPanelDisenio extends javax.swing.JPanel {
             int tipo = nodo.getNodeType();
             switch (tipo) {
                 case TNode.SENDER: {
-                    if (nodo.getStatus() == TNode.DESELECCIONADO)
+                    if (nodo.isSelected() == TNode.UNSELECTED)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.RECEIVER: {
-                    if (nodo.getStatus() == TNode.DESELECCIONADO)
+                    if (nodo.isSelected() == TNode.UNSELECTED)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.LER: {
-                    if (nodo.getStatus() == TNode.DESELECCIONADO)
+                    if (nodo.isSelected() == TNode.UNSELECTED)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LER), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LER_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
-                case TNode.LERA: {
-                    if (nodo.getStatus() == TNode.DESELECCIONADO)
+                case TNode.ACTIVE_LER: {
+                    if (nodo.isSelected() == TNode.UNSELECTED)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LERA), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LERA_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.LSR: {
-                    if (nodo.getStatus() == TNode.DESELECCIONADO)
+                    if (nodo.isSelected() == TNode.UNSELECTED)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSR), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
-                case TNode.LSRA: {
-                    if (nodo.getStatus() == TNode.DESELECCIONADO)
+                case TNode.ACTIVE_LSR: {
+                    if (nodo.isSelected() == TNode.UNSELECTED)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
             }
-            if (nodo.getShowName()) {
+            if (nodo.nameMustBeDisplayed()) {
                 FontMetrics fm = this.getFontMetrics(this.getFont());
                 int anchoTexto = fm.charsWidth(nodo.getName().toCharArray(), 0, nodo.getName().length());
                 int posX = (nodo.getScreenPosition().x + 24) - ((anchoTexto/2));

@@ -65,7 +65,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         super(identifier, ipAddress, longIDGenerator, topology);
         // FIX: This is an overridable method call in constructor that should be 
         // avoided.
-        this.setPorts(TNode.NUM_LSRA_PORTS);
+        this.setPorts(TNode.DEFAULT_NUM_PORTS_ACTIVE_LSR);
         this.switchingMatrix = new TSwitchingMatrix();
         this.gIdent = new TLongIDGenerator();
         this.gIdentLDP = new TIDGenerator();
@@ -225,7 +225,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         this.stats.activateStats(this.isGeneratingStats());
         this.dmgp.reset();
         this.gpsrpRequests.reset();
-        this.handleGPSRPPacket();
+        this.resetTicksWithoutEmitting();
     }
 
     /**
@@ -238,7 +238,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      */
     @Override
     public int getNodeType() {
-        return TNode.LSRA;
+        return TNode.ACTIVE_LSR;
     }
 
     /**
@@ -258,7 +258,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         if (this.getPorts().isAnyPacketToSwitch()) {
             this.availableNs += timerEvent.getStepDuration();
         } else {
-            this.handleGPSRPPacket();
+            this.resetTicksWithoutEmitting();
             this.availableNs = timerEvent.getStepDuration();
         }
         this.startOperation();
@@ -437,9 +437,9 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             }
         }
         if (atLeastOnePacketSwitched) {
-            this.handleGPSRPPacket();
+            this.resetTicksWithoutEmitting();
         } else {
-            this.increaseStepsWithoutEmitting();
+            this.increaseTicksWithoutEmitting();
         }
     }
 
@@ -1952,9 +1952,9 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         serializedElement += "#";
         serializedElement += this.getIPv4Address();
         serializedElement += "#";
-        serializedElement += this.getStatus();
+        serializedElement += this.isSelected();
         serializedElement += "#";
-        serializedElement += this.getShowName();
+        serializedElement += this.nameMustBeDisplayed();
         serializedElement += "#";
         serializedElement += this.isGeneratingStats();
         serializedElement += "#";
@@ -1993,7 +1993,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         this.setID(Integer.parseInt(elementFields[2]));
         this.setName(elementFields[3]);
         this.setIPAddress(elementFields[4]);
-        this.setStatus(Integer.parseInt(elementFields[5]));
+        this.setSelected(Integer.parseInt(elementFields[5]));
         this.setShowName(Boolean.parseBoolean(elementFields[6]));
         this.setGenerateStats(Boolean.parseBoolean(elementFields[7]));
         int coordX = Integer.parseInt(elementFields[8]);

@@ -48,7 +48,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      */
     public TSenderNode(int identificador, String d, TLongIDGenerator il, TTopology t) {
         super(identificador, d, il, t);
-        this.setPorts(super.NUM_PUERTOS_EMISOR);
+        this.setPorts(super.DEFAULT_NUM_PORTS_SENDER);
         gIdent = new TLongIDGenerator();
         gIdGoS = new TRotaryIDGenerator();
         String IPDestino = "";
@@ -269,9 +269,9 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         }
         paqueteTmp = null;
         if (emito) {
-            this.handleGPSRPPacket();
+            this.resetTicksWithoutEmitting();
         } else {
-            this.increaseStepsWithoutEmitting();
+            this.increaseTicksWithoutEmitting();
         }
         this.estadisticas.consolidateData(this.getAvailableTime());
     }
@@ -707,9 +707,9 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         cadena += "#";
         cadena += this.getIPv4Address();
         cadena += "#";
-        cadena += this.getStatus();
+        cadena += this.isSelected();
         cadena += "#";
-        cadena += this.getShowName();
+        cadena += this.nameMustBeDisplayed();
         cadena += "#";
         cadena += this.isGeneratingStats();
         cadena += "#";
@@ -749,7 +749,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         this.setID(Integer.valueOf(valores[2]).intValue());
         this.setName(valores[3]);
         this.setIPAddress(valores[4]);
-        this.setStatus(Integer.valueOf(valores[5]).intValue());
+        this.setSelected(Integer.valueOf(valores[5]).intValue());
         this.setShowName(Boolean.valueOf(valores[6]).booleanValue());
         this.setGenerateStats(Boolean.valueOf(valores[7]).booleanValue());
         int posX = Integer.valueOf(valores[8]).intValue();
@@ -776,7 +776,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         this.ports.reset();
         this.estadisticas.reset();
         estadisticas.activateStats(this.isGeneratingStats());
-        this.handleGPSRPPacket();
+        this.resetTicksWithoutEmitting();
     }
     
     /**

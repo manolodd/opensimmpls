@@ -1048,7 +1048,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
     private void ratonSoltadoEnPanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSoltadoEnPanelSimulacion
         if (evt.getButton() == MouseEvent.BUTTON1) {
             if (nodoSeleccionado != null) {
-                nodoSeleccionado.setStatus(TNode.DESELECCIONADO);
+                nodoSeleccionado.setSelected(TNode.UNSELECTED);
                 nodoSeleccionado = null;
                 this.escenario.setModified(true);
             }
@@ -1073,7 +1073,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                     TNode nt = (TNode) et;
                     nodoSeleccionado = nt;
                     if (nodoSeleccionado != null) {
-                        nodoSeleccionado.setStatus(TNode.SELECCIONADO);
+                        nodoSeleccionado.setSelected(TNode.SELECTED);
                         this.escenario.setModified(true);
                     }
                 }
@@ -1104,7 +1104,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                     JVentanaLER vler = new JVentanaLER(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     vler.ponerConfiguracion((TLERNode) nt, true);
                     vler.show();
-                } else if (nt.getNodeType() == TNode.LERA) {
+                } else if (nt.getNodeType() == TNode.ACTIVE_LER) {
                     JVentanaLERA vlera = new JVentanaLERA(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     vlera.ponerConfiguracion((TActiveLERNode) nt, true);
                     vlera.show();
@@ -1112,7 +1112,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                     JVentanaLSR vlsr = new JVentanaLSR(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     vlsr.ponerConfiguracion((TLSRNode) nt, true);
                     vlsr.show();
-                } else if (nt.getNodeType() == TNode.LSRA) {
+                } else if (nt.getNodeType() == TNode.ACTIVE_LSR) {
                     JVentanaLSRA vlsra = new JVentanaLSRA(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     vlsra.ponerConfiguracion((TActiveLSRNode) nt, true);
                     vlsra.show();
@@ -1461,7 +1461,7 @@ private void clicDerechoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
         else {
             if (et.getElementType() == TTopologyElement.NODO) {
                 TNode nt = (TNode) et;
-                dVerNombreMenuItem.setSelected(nt.getShowName());
+                dVerNombreMenuItem.setSelected(nt.nameMustBeDisplayed());
                 elementoDisenioClicDerecho = et;
                 diseElementoPopUp.show(this, evt.getX()+7, evt.getY()+15);
             } else if (et.getElementType() == TTopologyElement.LINK) {
@@ -1677,7 +1677,7 @@ private void arrastrandoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
 private void clicSoltadoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicSoltadoEnPanelDisenio
     if (evt.getButton() == MouseEvent.BUTTON1) {
         if (nodoSeleccionado != null) {
-            nodoSeleccionado.setStatus(TNode.DESELECCIONADO);
+            nodoSeleccionado.setSelected(TNode.UNSELECTED);
             nodoSeleccionado = null;
             this.escenario.setModified(true);
         }
@@ -1695,7 +1695,7 @@ private void clicEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:even
         TTopology topo = escenario.getTopology();
         nodoSeleccionado = topo.obtenerNodoEnPosicion(evt.getPoint());
         if (nodoSeleccionado != null) {
-            nodoSeleccionado.setStatus(TNode.SELECCIONADO);
+            nodoSeleccionado.setSelected(TNode.SELECTED);
             this.escenario.setModified(true);
         }
         panelDisenio.repaint();
@@ -2370,11 +2370,11 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
                     this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.RECEPTOR));
                 } else if (nt.getNodeType() == TNode.LER) {
                     this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.LER));
-                } else if (nt.getNodeType() == TNode.LERA) {
+                } else if (nt.getNodeType() == TNode.ACTIVE_LER) {
                     this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.LERA));
                 } else if (nt.getNodeType() == TNode.LSR) {
                     this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSR));
-                } else if (nt.getNodeType() == TNode.LSRA) {
+                } else if (nt.getNodeType() == TNode.ACTIVE_LSR) {
                     this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSRA));
                 }
 

@@ -45,7 +45,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      */
     public TReceiverNode(int identificador, String d, TLongIDGenerator il, TTopology t) {
         super(identificador, d, il, t);
-        this.setPorts(super.NUM_PUERTOS_RECEPTOR);
+        this.setPorts(super.DEFAULT_NUM_PORTS_RECEIVER);
         this.ports.setUnlimitedBuffer(true);
         this.estadisticas = new TReceiverStats();
     }
@@ -245,9 +245,9 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
         cadena += "#";
         cadena += this.getIPv4Address();
         cadena += "#";
-        cadena += this.getStatus();
+        cadena += this.isSelected();
         cadena += "#";
-        cadena += this.getShowName();
+        cadena += this.nameMustBeDisplayed();
         cadena += "#";
         cadena += this.isGeneratingStats();
         cadena += "#";
@@ -273,7 +273,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
         this.setID(Integer.valueOf(valores[2]).intValue());
         this.setName(valores[3]);
         this.setIPAddress(valores[4]);
-        this.setStatus(Integer.valueOf(valores[5]).intValue());
+        this.setSelected(Integer.valueOf(valores[5]).intValue());
         this.setShowName(Boolean.valueOf(valores[6]).booleanValue());
         this.setGenerateStats(Boolean.valueOf(valores[7]).booleanValue());
         int posX = Integer.valueOf(valores[8]).intValue();

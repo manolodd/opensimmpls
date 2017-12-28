@@ -473,7 +473,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             this.panelCoordenadas.setToolTipText(null);
 
             BKUPGenerarEstadisticas = tnlera.isGeneratingStats();
-            BKUPMostrarNombre = tnlera.getShowName();
+            BKUPMostrarNombre = tnlera.nameMustBeDisplayed();
             BKUPNombre = tnlera.getName();
             BKUPPotencia = tnlera.getRoutingPowerInMbps();
             BKUPTamBuffer = tnlera.getBufferSizeInMBytes();

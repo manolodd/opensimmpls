@@ -433,7 +433,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             this.panelCoordenadas.setToolTipText(null);
 
             BKUPGenerarEstadisticas = tnlsr.isGeneratingStats();
-            BKUPMostrarNombre = tnlsr.getShowName();
+            BKUPMostrarNombre = tnlsr.nameMustBeDisplayed();
             BKUPNombre = tnlsr.getName();
             BKUPPotencia = tnlsr.getSwitchingPowerInMbps();
             BKUPTamBuffer = tnlsr.getBufferSizeInMBytes();

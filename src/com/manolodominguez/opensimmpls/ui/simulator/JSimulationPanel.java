@@ -224,7 +224,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
         while (itd.hasNext()) {
             nd = (TNode) itd.next();
             if ((nd.getNodeType() == TNode.LER) ||
-               (nd.getNodeType() == TNode.LERA)) {
+               (nd.getNodeType() == TNode.ACTIVE_LER)) {
                    pol.addPoint(nd.getScreenPosition().x+24, nd.getScreenPosition().y+24);
                    vertices ++;
                }
@@ -370,49 +370,49 @@ public class JSimulationPanel extends javax.swing.JPanel {
             int tipo = nodo.getNodeType();
             switch (tipo) {
                 case TNode.SENDER: {
-                    if (nodo.getStatus() == TNode.DESELECCIONADO)
+                    if (nodo.isSelected() == TNode.UNSELECTED)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.RECEIVER: {
-                    if (nodo.getStatus() == TNode.DESELECCIONADO)
+                    if (nodo.isSelected() == TNode.UNSELECTED)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.LER: {
-                    if (nodo.getStatus() == TNode.DESELECCIONADO)
+                    if (nodo.isSelected() == TNode.UNSELECTED)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LER), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LER_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
-                case TNode.LERA: {
-                    if (nodo.getStatus() == TNode.DESELECCIONADO)
+                case TNode.ACTIVE_LER: {
+                    if (nodo.isSelected() == TNode.UNSELECTED)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LERA), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LERA_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
                 case TNode.LSR: {
-                    if (nodo.getStatus() == TNode.DESELECCIONADO)
+                    if (nodo.isSelected() == TNode.UNSELECTED)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSR), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
-                case TNode.LSRA: {
-                    if (nodo.getStatus() == TNode.DESELECCIONADO)
+                case TNode.ACTIVE_LSR: {
+                    if (nodo.isSelected() == TNode.UNSELECTED)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
             }
-            if (nodo.getShowName()) {
+            if (nodo.nameMustBeDisplayed()) {
                 FontMetrics fm = this.getFontMetrics(this.getFont());
                 int anchoTexto = fm.charsWidth(nodo.getName().toCharArray(), 0, nodo.getName().length());
                 int posX = (nodo.getScreenPosition().x + 24) - ((anchoTexto/2));
@@ -586,11 +586,11 @@ public class JSimulationPanel extends javax.swing.JPanel {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR_CONGESTIONADO_20), p.x, p.y, null);
                             } else if (tipo == TNode.LER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LER_CONGESTIONADO_20), p.x, p.y, null);
-                            } else if (tipo == TNode.LERA) {
+                            } else if (tipo == TNode.ACTIVE_LER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LERA_CONGESTIONADO_20), p.x, p.y, null);
                             } else if (tipo == TNode.LSR) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSR_CONGESTIONADO_20), p.x, p.y, null);
-                            } else if (tipo == TNode.LSRA) {
+                            } else if (tipo == TNode.ACTIVE_LSR) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA_CONGESTIONADO_20), p.x, p.y, null);
                             }
                         } else if ((cong >= 75) && (cong < 95)) {
@@ -600,11 +600,11 @@ public class JSimulationPanel extends javax.swing.JPanel {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR_CONGESTIONADO_60), p.x, p.y, null);
                             } else if (tipo == TNode.LER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LER_CONGESTIONADO_60), p.x, p.y, null);
-                            } else if (tipo == TNode.LERA) {
+                            } else if (tipo == TNode.ACTIVE_LER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LERA_CONGESTIONADO_60), p.x, p.y, null);
                             } else if (tipo == TNode.LSR) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSR_CONGESTIONADO_60), p.x, p.y, null);
-                            } else if (tipo == TNode.LSRA) {
+                            } else if (tipo == TNode.ACTIVE_LSR) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA_CONGESTIONADO_60), p.x, p.y, null);
                             }
                         } else if (cong >= 95) {
@@ -614,15 +614,15 @@ public class JSimulationPanel extends javax.swing.JPanel {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR_CONGESTIONADO), p.x, p.y, null);
                             } else if (tipo == TNode.LER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LER_CONGESTIONADO), p.x, p.y, null);
-                            } else if (tipo == TNode.LERA) {
+                            } else if (tipo == TNode.ACTIVE_LER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LERA_CONGESTIONADO), p.x, p.y, null);
                             } else if (tipo == TNode.LSR) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSR_CONGESTIONADO), p.x, p.y, null);
-                            } else if (tipo == TNode.LSRA) {
+                            } else if (tipo == TNode.ACTIVE_LSR) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA_CONGESTIONADO), p.x, p.y, null);
                             }
                         }
-                        if (nt.getStepsWithoutEmitting() > TNode.MAX_PASOS_SIN_EMITIR) {
+                        if (nt.getTicksWithoutEmitting() > TNode.MAX_STEP_WITHOUT_EMITTING_BEFORE_ALERT) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.TRABAJANDO), p.x, p.y, null);
                         }
                     }

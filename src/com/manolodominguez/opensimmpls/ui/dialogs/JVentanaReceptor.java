@@ -310,7 +310,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             this.panelCoordenadas.setToolTipText(null);
 
             BKUPGenerarEstadisticas = tnr.isGeneratingStats();
-            BKUPMostrarNombre = tnr.getShowName();
+            BKUPMostrarNombre = tnr.nameMustBeDisplayed();
             BKUPNombre = tnr.getName();
 
             this.nombreNodo.setText(BKUPNombre);
