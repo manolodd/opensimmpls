@@ -33,17 +33,18 @@ public class TLinkBufferEntry implements Comparable {
      * @param packet A packet that start its travel through the link towards the
      * corresponding end node.
      * @param totalTransitDelay The total delay the packet will require to reach
-     * the target end node. Usually it is the link delay.
-     * @param endNode TLink.TAIL_END_NODE or TLink.HEAD_END_NODE, depending on
+     * the target end node (in nanoseconds). Usually it is the link delay.
+     * @param packetEnd TLink.TAIL_END_NODE or TLink.HEAD_END_NODE, depending on
      * whether the target node is connected to the tail end of the link or to
      * the head end, respectively. Links are full duplex.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TLinkBufferEntry(TAbstractPDU packet, long totalTransitDelay, int endNode) {
+    public TLinkBufferEntry(TAbstractPDU packet, long totalTransitDelay, int packetEnd) {
         this.remainingTransitDelay = totalTransitDelay;
         this.initialTotalTransitDelay = totalTransitDelay;
         this.packet = packet;
-        this.endNode = endNode;
+        this.packetEnd = packetEnd;
     }
 
     /**
@@ -54,6 +55,7 @@ public class TLinkBufferEntry implements Comparable {
      * @param anotherLinkBufferEntry Another instance of TLinkBufferEntry.
      * @return -1, 0 or 1, depending on whether the anotherLinkBufferEntry is
      * lesser, equal or greater than the current entry.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
@@ -64,9 +66,10 @@ public class TLinkBufferEntry implements Comparable {
     }
 
     /**
-     * Este m�todo obtiene el paquete de la entrada del buffer.
+     * This method gets the packet included in this link buffer entry.
      *
-     * @return Paquete de la entrada del buffer.
+     * @return the packet included in this link buffer entry..
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TAbstractPDU getPacket() {
@@ -74,11 +77,12 @@ public class TLinkBufferEntry implements Comparable {
     }
 
     /**
-     * Este m�todo devuelve el total de tiempo que el paquete debe esperar en el
-     * enlace.
+     * This method gets the total transit delay the packet has to be in the link
+     * before being delivered to the target node (in nanoseconds).
      *
-     * @return El tiempo que el nodo debe esperar en el enlace desde que entra
-     * hasta que llega al destino.
+     * @return the total transit delay the packet has to be in the link before
+     * being delivered to the target node (in nanoseconds).
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public long getTotalTransitDelay() {
@@ -86,9 +90,12 @@ public class TLinkBufferEntry implements Comparable {
     }
 
     /**
-     * Este m�todo permte poner un paquete en la entrada el buffer.
+     * This method sets the packet that has to be included in this link buffer
+     * entry.
      *
-     * @param packet Paquete que deseamos insertar en la entrada del buffer.
+     * @param packet the packet that has to be included in this link buffer
+     * entry.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void setPacket(TAbstractPDU packet) {
@@ -96,10 +103,12 @@ public class TLinkBufferEntry implements Comparable {
     }
 
     /**
-     * Este m�todo permite establecer el tiempo que el paquete deber� esperar en
-     * el enlace desde que entra hasta que llega al destino.
+     * This method sets the total transit delay the packet has to be in the link
+     * before being delivered to the target node (in nanoseconds).
      *
-     * @param totalTransitDelay Tiempo de espera total para el paquete.
+     * @param totalTransitDelay the total transit delay the packet has to be in
+     * the link before being delivered to the target node (in nanoseconds).
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void setTotalTransitDelay(long totalTransitDelay) {
@@ -108,11 +117,12 @@ public class TLinkBufferEntry implements Comparable {
     }
 
     /**
-     * Este m�todo permite obtener el tiempo que a�n le queda al paquete para
-     * llegar al destino.
+     * This method gets the remaining transit delay the packet has to be in the
+     * link before being delivered to the target node (in nanoseconds).
      *
-     * @return Tiempo (en nanosegundos) que le falta al paquete para llegar al
-     * destino.
+     * @return the remaining transit delay the packet has to be in the link
+     * before being delivered to the target node (in nanoseconds).
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public long getRemainingTransitDelay() {
@@ -120,46 +130,57 @@ public class TLinkBufferEntry implements Comparable {
     }
 
     /**
-     * Este m�todo resta al tiempo de espera del paquete en la entrada del
-     * buffer, el tiempo que va transcurriendo. Al llegar a cero, el paquete
-     * habr� llegado al destino.
+     * This method decreases "step" nanoseconds from the remaining transis delay
+     * of this packet. Once the remaning transit delay is zero, the packet can
+     * be delivered to the target node.
      *
-     * @param step Tiempo que se le resta al tiempo de espera del paquete.
+     * @param step A given number of nanoseconds to be substracted from the
+     * remaining transit delay.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void substractStepDelay(long step) {
+    public void substractStepFromRemainingDelay(long step) {
         this.remainingTransitDelay -= step;
+        // FIX: use class constant instead of harcoded values
         if (this.remainingTransitDelay < 0) {
             this.remainingTransitDelay = 0;
         }
     }
 
     /**
-     * Este m�todo permite establecer, para esta entrada concreta del buffer,
-     * cu�l de los nodos extremos es el destino.
+     * This method sets the node connected to the end of the link to wich the
+     * packet inside this link buffer entry will be delivered. As links are
+     * full-duplex, it is necessary to know whether the packet should advance to
+     * the tail end or to the head end of the link.
      *
-     * @param endNode 1 � 2, dependiendo de si el paquete va dirigido al extremo
-     * 1 o al extremo2 el enlace.
+     * @param packetEnd TLink.TAIL_END_NODE or TLink.HEAD_END_NODE, depending on
+     * whether the target node is connected to the tail end of the link or to
+     * the head end, respectively. Links are full duplex.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void setEndNode(int endNode) {
-        this.endNode = endNode;
+    public void setPacketEnd(int packetEnd) {
+        this.packetEnd = packetEnd;
     }
 
     /**
-     * Este m�todo permite obtener el destino del tr�fico, esto es, qu� nodo es
-     * el que debe recibir el paquete.
+     * This method identifies the node connected to the end of the link to wich
+     * the packet inside this link buffer entry will be delivered. As links are
+     * full-duplex, it is necessary to know whether the packet should advance to
+     * the tail end or to the head end of the link.
      *
-     * @return 1 o 2, dependiendo de si el tr�fico debe salir por el extremo 1 o
-     * el extremo 2 del enlace.
+     * @return TLink.TAIL_END_NODE or TLink.HEAD_END_NODE, depending on whether
+     * the target node is connected to the tail end of the link or to the head
+     * end, respectively. Links are full duplex.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public int getEndNode() {
-        return this.endNode;
+    public int getPacketEnd() {
+        return this.packetEnd;
     }
 
     private TAbstractPDU packet;
-    private int endNode;
+    private int packetEnd;
     private long remainingTransitDelay;
     private long initialTotalTransitDelay;
 }

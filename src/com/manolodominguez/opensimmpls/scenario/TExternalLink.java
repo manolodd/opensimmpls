@@ -104,11 +104,11 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
                     if (packet != null) {
                         // FIX: do not use harcoded values. Use constants class
                         // instead
-                        if (bufferedPacketEntry.getEndNode() == 1) {
+                        if (bufferedPacketEntry.getPacketEnd() == 1) {
                             this.generateSimulationEvent(new TSEPacketDiscarded(this.getTailEndNode(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), packet.getSubtype()));
                             // FIX: do not use harcoded values. Use constants class
                             // instead
-                        } else if (bufferedPacketEntry.getEndNode() == 2) {
+                        } else if (bufferedPacketEntry.getPacketEnd() == 2) {
                             this.generateSimulationEvent(new TSEPacketDiscarded(this.getHeadEndNode(), this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), packet.getSubtype()));
                         }
                     }
@@ -156,10 +156,10 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
         Iterator bufferedPacketEntriesIterator = this.buffer.iterator();
         while (bufferedPacketEntriesIterator.hasNext()) {
             TLinkBufferEntry bufferedPacketEntry = (TLinkBufferEntry) bufferedPacketEntriesIterator.next();
-            bufferedPacketEntry.substractStepDelay(this.stepLength);
+            bufferedPacketEntry.substractStepFromRemainingDelay(this.stepLength);
             long transitPercentage = this.getCurrentTransitPercentage(bufferedPacketEntry.getTotalTransitDelay(), bufferedPacketEntry.getRemainingTransitDelay());
             // FIX: do not use harcoded values. Use constants class instead.
-            if (bufferedPacketEntry.getEndNode() == 1) {
+            if (bufferedPacketEntry.getPacketEnd() == 1) {
                 // FIX: do not use harcoded values. Use constants class instead.
                 transitPercentage = 100 - transitPercentage;
             }
@@ -216,7 +216,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
         Iterator deliveredPacketEntriesIterator = this.deliveredPacketsBuffer.iterator();
         while (deliveredPacketEntriesIterator.hasNext()) {
             TLinkBufferEntry deliveredBufferedPacketEntry = (TLinkBufferEntry) deliveredPacketEntriesIterator.next();
-            if (deliveredBufferedPacketEntry.getEndNode() == TLink.HEAD_END_NODE) {
+            if (deliveredBufferedPacketEntry.getPacketEnd() == TLink.HEAD_END_NODE) {
                 TNode nodeAux = this.getHeadEndNode();
                 nodeAux.putPacket(deliveredBufferedPacketEntry.getPacket(), this.getHeadEndNodePortID());
             } else {
