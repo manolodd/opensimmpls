@@ -134,7 +134,7 @@ public abstract class TStats {
      * @param instante Instante al que se asignar�n los �ltimos datos.
      * @since 2.0
      */    
-    public abstract void consolidateData(long instante);
+    public abstract void groupStatsByTimeInstant(long instante);
     /**
      * Devuelve el n�mero de gr�ficas que contiene la instancia.
      * @return N�mero de gr�ficas.

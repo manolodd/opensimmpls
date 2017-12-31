@@ -250,7 +250,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         this.checkConnectivityStatus();
         this.decreaseCounters();
         this.switchPackets();
-        this.stats.consolidateData(this.getCurrentInstant());
+        this.stats.groupStatsByTimeInstant(this.getCurrentInstant());
         // Acciones a llevar a cabo durante el tic.
     }
 

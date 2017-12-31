@@ -283,7 +283,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         this.checkConnectivityStatus();
         this.decreaseCounters();
         this.switchPackets();
-        this.stats.consolidateData(this.getCurrentInstant());
+        this.stats.groupStatsByTimeInstant(this.getCurrentInstant());
     }
 
     /**

@@ -125,7 +125,7 @@ public class TActiveLERStats extends TStats {
      * incoming packets.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return the dataset #1 of this TActiveLERStatsthat contains values
+     * @return the dataset #1 of this TActiveLERStats that contains values
      * related to incoming packets.
      * @since 2.0
      */
@@ -483,7 +483,7 @@ public class TActiveLERStats extends TStats {
      * @since 2.0
      */
     @Override
-    public void consolidateData(long timeInstant) {
+    public void groupStatsByTimeInstant(long timeInstant) {
         if (this.statsEnabled) {
             // FIX: do not use harcoded values. Use class constants instead.
             if (this.incomingIPv4PacketsOfThisTimeInstant > 0) {

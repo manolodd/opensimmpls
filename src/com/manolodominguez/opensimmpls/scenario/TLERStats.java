@@ -426,7 +426,7 @@ public class TLERStats extends TStats {
      * @since 2.0
      */
     @Override
-    public void consolidateData(long timeInstant) {
+    public void groupStatsByTimeInstant(long timeInstant) {
         if (this.statsEnabled) {
             // FIX: do not use harcoded values. Use class constants instead.
             if (this.incomingIPv4PacketsOfThisTimeInstant > 0) {

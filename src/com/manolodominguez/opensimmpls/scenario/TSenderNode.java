@@ -273,7 +273,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         } else {
             this.increaseTicksWithoutEmitting();
         }
-        this.estadisticas.consolidateData(this.getCurrentInstant());
+        this.estadisticas.groupStatsByTimeInstant(this.getCurrentInstant());
     }
     
     /**

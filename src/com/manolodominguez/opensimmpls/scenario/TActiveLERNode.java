@@ -292,7 +292,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         this.checkConnectivityStatus();
         this.decreaseCounters();
         this.routePackets();
-        this.stats.consolidateData(this.getCurrentInstant());
+        this.stats.groupStatsByTimeInstant(this.getCurrentInstant());
     }
 
     /**

@@ -256,7 +256,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         this.checkConnectivityStatus();
         this.decreaseCounters();
         this.routePackets();
-        this.stats.consolidateData(this.getCurrentInstant());
+        this.stats.groupStatsByTimeInstant(this.getCurrentInstant());
     }
 
     /**

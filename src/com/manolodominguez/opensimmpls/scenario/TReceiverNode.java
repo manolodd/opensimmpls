@@ -108,7 +108,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     public void run() {
         // Actions to during the duration of the tick.
         receivePackets();
-        this.stats.consolidateData(this.getCurrentInstant());
+        this.stats.groupStatsByTimeInstant(this.getCurrentInstant());
     }
 
     /**
