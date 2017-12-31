@@ -15,9 +15,10 @@
  */
 package com.manolodominguez.opensimmpls.scenario;
 
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEvent;
 import com.manolodominguez.opensimmpls.hardware.timer.TTimerEvent;
 import com.manolodominguez.opensimmpls.hardware.timer.ITimerEventListener;
-import com.manolodominguez.opensimmpls.hardware.simulationcollector.TSimulationCollector;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventCollector;
 import com.manolodominguez.opensimmpls.utils.TLongIDGenerator;
 import java.awt.*;
 import org.jfree.chart.*;
@@ -201,7 +202,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * hay otro establecido.
      * @since 2.0
      */    
-    public void addListenerSimulacion(TSimulationCollector rs) throws ESimulationSingleSubscriber {
+    public void addListenerSimulacion(TSimulationEventCollector rs) throws ESimulationSingleSubscriber {
         if ( this.simulationEventsListener == null) {
             this.simulationEventsListener = rs;
         } else {
@@ -318,7 +319,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * los eventos de simulaci�n que el elemento vaya generando.
      * @since 2.0
      */    
-    public TSimulationCollector simulationEventsListener;
+    public TSimulationEventCollector simulationEventsListener;
     /**
      * Este atributo es el generador de identificadores que debe usar el elemento para
      * asignar un identificador unico a cada evento que genere.

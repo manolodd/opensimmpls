@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.hardware.simulationcollector;
+package com.manolodominguez.opensimmpls.scenario.simulationevents;
 
 import java.util.Iterator;
 import java.util.TreeSet;
-import com.manolodominguez.opensimmpls.scenario.TSimulationEvent;
 import com.manolodominguez.opensimmpls.ui.simulator.JSimulationPanel;
 import com.manolodominguez.opensimmpls.utils.TMonitor;
 
@@ -28,7 +27,7 @@ import com.manolodominguez.opensimmpls.utils.TMonitor;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class TSimulationCollector implements ISimulationEventListener {
+public class TSimulationEventCollector implements ISimulationEventListener {
 
     /**
      * This method is the constructor of the class. It creates a new instance of
@@ -37,7 +36,7 @@ public class TSimulationCollector implements ISimulationEventListener {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TSimulationCollector() {
+    public TSimulationEventCollector() {
         this.simulationEventsBuffer = new TreeSet();
         this.monitor = new TMonitor();
         this.simulationPanel = null;

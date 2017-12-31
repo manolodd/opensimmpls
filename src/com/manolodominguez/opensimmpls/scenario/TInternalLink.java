@@ -15,6 +15,12 @@
  */
 package com.manolodominguez.opensimmpls.scenario;
 
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventLSPEstablished;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventLinkBroken;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventLSPRemoved;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventPacketDiscarded;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventLinkRecovered;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventPacketOnFly;
 import java.util.Iterator;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 import com.manolodominguez.opensimmpls.hardware.timer.ITimerEventListener;

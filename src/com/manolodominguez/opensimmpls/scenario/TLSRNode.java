@@ -15,6 +15,12 @@
  */
 package com.manolodominguez.opensimmpls.scenario;
 
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventPacketSent;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventPacketGenerated;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventPacketDiscarded;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventPacketSwitched;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventNodeCongested;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventPacketRouted;
 import com.manolodominguez.opensimmpls.protocols.TGPSRPPDU;
 import com.manolodominguez.opensimmpls.protocols.TTLDPPDU;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;

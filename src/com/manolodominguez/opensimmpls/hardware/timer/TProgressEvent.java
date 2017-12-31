@@ -15,7 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.hardware.timer;
 
-import com.manolodominguez.opensimmpls.scenario.TOpenSimMPLSEvent;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TOpenSimMPLSEvent;
 
 /**
  * This class implements a progress event that will allow knowing the state of

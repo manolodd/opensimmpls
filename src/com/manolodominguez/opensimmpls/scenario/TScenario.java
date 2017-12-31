@@ -18,6 +18,7 @@ package com.manolodominguez.opensimmpls.scenario;
 import com.manolodominguez.opensimmpls.ui.simulator.JSimulationPanel;
 import com.manolodominguez.opensimmpls.hardware.timer.TTimestamp;
 import java.io.File;
+import java.util.ResourceBundle;
 
 /**
  * Esta clase implementa un escenario completo de simulaci�n, con todos sus
@@ -128,7 +129,7 @@ public class TScenario {
     public String marshallTitle() {
         String cadena = "#Titulo#";
         if (this.obtenerTitulo().replace('#', ' ').equals("")) {
-            cadena += java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEscenario.SinDefinir");
+            cadena += ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEscenario.SinDefinir");
         } else {
             cadena += this.obtenerTitulo().replace('#', ' ');
         }
@@ -145,7 +146,7 @@ public class TScenario {
     public String marshallAuthor() {
         String cadena = "#Autor#";
         if (this.obtenerAutor().replace('#', ' ').equals("")) {
-            cadena += java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEscenario.SinDefinir");
+            cadena += ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEscenario.SinDefinir");
         } else {
             cadena += this.obtenerAutor().replace('#', ' ');
         }
@@ -162,7 +163,7 @@ public class TScenario {
     public String marshallDescription() {
         String cadena = "#Descripcion#";
         if (this.obtenerDescripcion().replace('#', ' ').equals("")) {
-            cadena += java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEscenario.SinDefinir");
+            cadena += ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEscenario.SinDefinir");
         } else {
             cadena += this.obtenerDescripcion().replace('#', ' ');
         }

@@ -13,36 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.scenario;
+package com.manolodominguez.opensimmpls.scenario.simulationevents;
+
+import com.manolodominguez.opensimmpls.scenario.TLink;
+import com.manolodominguez.opensimmpls.scenario.TNode;
+import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
 
 /**
- * Esta clase implementa un evento usado para notificar la recuperaci�n de un
- * enlace caido.
+ * Esta clase implementa un evento que es usado para notificar que una etiqueta ha
+ * sido eliminado (un LSP se ha disasociado).
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TSimulationEventLinkRecovered extends TSimulationEvent {
+public class TSimulationEventLabelRemoved extends TSimulationEvent {
 
     /**
-     * Crea una nueva instancia de TESEnlaceRecuperado
+     * Crea una nueva instancia de TESEtiquetaEliminada
      * @since 2.0
-     * @param inst Instante de tiempo en que se produjo el evento.
-     * @param emisor Enlace que gener� el evento.
-     * @param id Identificador unico del evento.
+     * @param inst Instante de tiempo en el que se produjo el evento
+     * @param emisor Nodo que gener� el evento
+     * @param id identificador �nico para del evento.
      */
-    public TSimulationEventLinkRecovered(Object emisor, long id, long inst) {
+    public TSimulationEventLabelRemoved(Object emisor, long id, long inst) {
         super(emisor, id, inst);
     }
 
- 
     /**
      * Este m�todo obtiene el subtipo del evento, si los hubiese.
      * @return El subtipo del evento.
      * @since 2.0
      */    
     public int getSubtype() {
-        return super.LINK_RECOVERED;
+        return super.LABEL_REMOVED;
     }
 
     /**
@@ -93,7 +96,7 @@ public class TSimulationEventLinkRecovered extends TSimulationEvent {
         cad += " ";
         cad += this.obtenerNombre();
         cad += "] ";
-        cad += "se ha recuperado.";
+        cad += "ha eliminado una etiqueta";
         return(cad);
     }
 }

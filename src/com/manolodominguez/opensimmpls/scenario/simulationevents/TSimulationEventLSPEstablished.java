@@ -13,46 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.scenario;
+package com.manolodominguez.opensimmpls.scenario.simulationevents;
+
+import com.manolodominguez.opensimmpls.scenario.TLink;
+import com.manolodominguez.opensimmpls.scenario.TNode;
+import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
 
 /**
- * Esta clase implemetna un evento que ser� usado para notificar el nivel de
- * congesti�n de un nodo.
+ * Esta clase implementa un evento que se usar� para notificar que se ha creado un
+ * LSP.
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TSimulationEventNodeCongested extends TSimulationEvent {
+public class TSimulationEventLSPEstablished extends TSimulationEvent {
 
     /**
-     * Crea una nueva instancia de TESNodoCongestionado
+     * Crea una nueva instancia de TESLSPEstablecido
      * @since 2.0
      * @param inst Instante de tiempo en el que se gener� el evento.
-     * @param pc Porcentaje de congesti�n del nodo (0%,..,100%)
-     * @param emisor Nodo que gener� el evento.
-     * @param id identificador unico del evento.
+     * @param emisor nodo que gener� el evento
+     * @param id Identificador unico del evento.
      */
-    public TSimulationEventNodeCongested(Object emisor, long id, long inst, long pc) {
+    public TSimulationEventLSPEstablished(Object emisor, long id, long inst) {
         super(emisor, id, inst);
-        porcentajeCongestion = pc;
     }
 
-    /**
-     * Este m�todo devuelve el porcentaje de congesti�n que indica el evento.
-     * @return Porcentaje de congesti�n del nodo que gener� el evento.
-     * @since 2.0
-     */    
-    public long obtenerPorcentajeCongestion() {
-        return this.porcentajeCongestion;
-    }
-    
     /**
      * Este m�todo obtiene el subtipo del evento, si los hubiese.
      * @return El subtipo del evento.
      * @since 2.0
      */    
     public int getSubtype() {
-        return super.NODE_CONGESTED;
+        return super.LSP_ESTABLISHED;
     }
 
     /**
@@ -102,11 +95,7 @@ public class TSimulationEventNodeCongested extends TSimulationEvent {
         cad += this.obtenerNombreTipo();
         cad += " ";
         cad += this.obtenerNombre();
-        cad += "] ";
-        cad += "est� congestionado al ";
-        cad += this.porcentajeCongestion + "%";
+        cad += "] ha establecido un tramo de LSP";
         return(cad);
     }
-
-    private long porcentajeCongestion;
 }

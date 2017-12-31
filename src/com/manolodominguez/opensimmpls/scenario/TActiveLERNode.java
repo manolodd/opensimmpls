@@ -15,6 +15,11 @@
  */
 package com.manolodominguez.opensimmpls.scenario;
 
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventPacketSent;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventPacketGenerated;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventPacketDiscarded;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventNodeCongested;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventPacketRouted;
 import java.awt.Point;
 import java.util.Iterator;
 import com.manolodominguez.opensimmpls.protocols.TGPSRPPDU;

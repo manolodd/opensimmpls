@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.scenario;
+package com.manolodominguez.opensimmpls.scenario.simulationevents;
+
+import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
 
 /**
  * Esta clase es la superclase de todos los eventos de simulaci�n del simulador.

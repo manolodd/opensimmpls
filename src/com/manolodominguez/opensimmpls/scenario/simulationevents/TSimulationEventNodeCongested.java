@@ -13,49 +13,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.scenario;
+package com.manolodominguez.opensimmpls.scenario.simulationevents;
 
-import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
+import com.manolodominguez.opensimmpls.scenario.TLink;
+import com.manolodominguez.opensimmpls.scenario.TNode;
+import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
 
 /**
- * Esta clase implementa un evento que ser� usado para notificar que un paquete has
- * sido descartado.
+ * Esta clase implemetna un evento que ser� usado para notificar el nivel de
+ * congesti�n de un nodo.
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TSimulationEventPacketDiscarded extends TSimulationEvent {
+public class TSimulationEventNodeCongested extends TSimulationEvent {
 
     /**
-     * Crea una nueva instancia de TESPqueteDescartado.
+     * Crea una nueva instancia de TESNodoCongestionado
      * @since 2.0
      * @param inst Instante de tiempo en el que se gener� el evento.
-     * @param emisor Nodo que gener� ele evento.
-     * @param id Identificador �nico del evento.
-     * @param tipoPaquete Tipo del paquete que se ha descartado (de qu� trafico es).
+     * @param pc Porcentaje de congesti�n del nodo (0%,..,100%)
+     * @param emisor Nodo que gener� el evento.
+     * @param id identificador unico del evento.
      */
-    public TSimulationEventPacketDiscarded(Object emisor, long id, long inst, int tipoPaquete) {
+    public TSimulationEventNodeCongested(Object emisor, long id, long inst, long pc) {
         super(emisor, id, inst);
-        tipoP = tipoPaquete;
+        porcentajeCongestion = pc;
     }
 
     /**
-     * Este m�todo devuelve el tipo del paquete que descart� el nodo que gener� el
-     * evento.
-     * @return Tipo del paquete que se descart�.
+     * Este m�todo devuelve el porcentaje de congesti�n que indica el evento.
+     * @return Porcentaje de congesti�n del nodo que gener� el evento.
      * @since 2.0
      */    
-    public int obtenerTipoPaquete() {
-        return tipoP;
+    public long obtenerPorcentajeCongestion() {
+        return this.porcentajeCongestion;
     }
-
+    
     /**
      * Este m�todo obtiene el subtipo del evento, si los hubiese.
      * @return El subtipo del evento.
      * @since 2.0
      */    
     public int getSubtype() {
-        return super.PACKET_DISCARDED;
+        return super.NODE_CONGESTED;
     }
 
     /**
@@ -95,43 +96,6 @@ public class TSimulationEventPacketDiscarded extends TSimulationEvent {
     }
 
     /**
-     * Este m�todo ofrece una representaci�n textual del tipo el paquete descartado.
-     * @return Representaci�n textual del paquete descartado.
-     * @since 2.0
-     */    
-    public String obtenerNombreTipoPaquete() {
-        String strTipo = "";
-        switch (tipoP) {
-            case TAbstractPDU.IPV4: {
-                strTipo = "IPv4";
-                break;
-            }
-            case TAbstractPDU.IPV4_GOS: {
-                strTipo = "IPv4 con GoS";
-                break;
-            }
-            case TAbstractPDU.MPLS: {
-                strTipo = "MPLS";
-                break;
-            }
-            case TAbstractPDU.MPLS_GOS: {
-                strTipo = "MPLS con GoS";
-                break;
-            }
-            case TAbstractPDU.TLDP: {
-                strTipo = "LDP";
-                break;
-            }
-            case TAbstractPDU.GPSRP: {
-                strTipo = "GPSRP";
-                break;
-            }
-        }
-        return(strTipo);
-    }
-    
-
-    /**
      * Este m�todo explcia el evento en una l�nea de texto.
      * @return El texto explicando el evento.
      * @since 2.0
@@ -143,10 +107,10 @@ public class TSimulationEventPacketDiscarded extends TSimulationEvent {
         cad += " ";
         cad += this.obtenerNombre();
         cad += "] ";
-        cad += "ha descartado un paquete ";
-        cad += this.obtenerNombreTipoPaquete();
+        cad += "est� congestionado al ";
+        cad += this.porcentajeCongestion + "%";
         return(cad);
     }
 
-    private int tipoP;
+    private long porcentajeCongestion;
 }

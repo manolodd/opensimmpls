@@ -17,7 +17,7 @@ package com.manolodominguez.opensimmpls.hardware.ports;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import com.manolodominguez.opensimmpls.scenario.TSimulationEventPacketReceived;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventPacketReceived;
 import com.manolodominguez.opensimmpls.scenario.TStats;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;

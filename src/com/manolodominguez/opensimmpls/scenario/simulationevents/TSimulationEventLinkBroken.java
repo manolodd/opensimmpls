@@ -13,7 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.scenario;
+package com.manolodominguez.opensimmpls.scenario.simulationevents;
+
+import com.manolodominguez.opensimmpls.scenario.TLink;
+import com.manolodominguez.opensimmpls.scenario.TNode;
+import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
 
 /**
  * Esta clase implementa un evento de simulaci�n para notificar la ca�da de un

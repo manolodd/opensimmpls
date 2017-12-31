@@ -13,35 +13,51 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.scenario;
+package com.manolodominguez.opensimmpls.scenario.simulationevents;
 
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
+import com.manolodominguez.opensimmpls.scenario.TLink;
+import com.manolodominguez.opensimmpls.scenario.TNode;
+import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
 
 /**
- * Esta clase implementa un evento que ser� usado para notificar que un paquete ha
- * salido de un nodo.
+ * Esta clase implementa un evento que ser� usado para indecar que un paquete est�
+ * circulando por un enlace.
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TSimulationEventPacketSent extends TSimulationEvent {
+public class TSimulationEventPacketOnFly extends TSimulationEvent {
 
     /**
-     * Crea una nueva instancia de TESPaqueteEnviado
+     * Crea una nueva instancia de TESPaqueteEnTransito
      * @since 2.0
      * @param inst Instante de tiempo en el que se produjo el evento.
-     * @param emisor Nodo que gener� el evento.
-     * @param id Identificador �nico del evento.
-     * @param tipoPaquete Tipo e paquete al que se refiere el evento.
+     * @param pt Porcentaje de reccorido del enlace que lleva recorrido el paquete por el cual se
+     * genero el evento.
+     * @param emisor Enlace que gener� el evento.
+     * @param id Identificador unico del evento.
+     * @param tipoPaquete Tipo del paquete (de qu� trafico es) al que se refiere el evento.
      */
-    public TSimulationEventPacketSent(Object emisor, long id, long inst, int tipoPaquete) {
+    public TSimulationEventPacketOnFly(Object emisor, long id, long inst, int tipoPaquete, long pt) {
         super(emisor, id, inst);
         tipoP = tipoPaquete;
+        porcentajeTransito = pt;
     }
 
     /**
-     * ste m�todo obtiene el tipo del paquete al que se refiere el evento.
-     * @return El tipo de paquete al que se refiere el evento.
+     * Este m�todo obtiene el porcentaje del enalce que ha recorrido ya el paquete al
+     * que se refiete el evento.
+     * @since 2.0
+     * @return El porcentaje de recorrido del paquete.
+     */    
+    public long obtenerPorcentajeTransito() {
+        return this.porcentajeTransito;
+    }
+    
+    /**
+     * Este m�todo obtiene el tipo de paquete al que se refiere el evento.
+     * @return El tipo el paquete.
      * @since 2.0
      */    
     public int obtenerTipoPaquete() {
@@ -54,7 +70,7 @@ public class TSimulationEventPacketSent extends TSimulationEvent {
      * @since 2.0
      */    
     public int getSubtype() {
-        return super.PACKET_SENT;
+        return super.PACKET_ON_FLY;
     }
 
     /**
@@ -94,9 +110,8 @@ public class TSimulationEventPacketSent extends TSimulationEvent {
     }
 
     /**
-     * Este m�todo obtiene una representaci�no textual del tipo del paquete al que se
-     * refiere el evento.
-     * @return El tipo el paquete al que se refiere el evento, expresado como texto.
+     * Este m�todo obtiene una representaci�n textual del tipo de paquete.
+     * @return El tipo de paquete, en texto.
      * @since 2.0
      */    
     public String obtenerNombreTipoPaquete() {
@@ -143,10 +158,11 @@ public class TSimulationEventPacketSent extends TSimulationEvent {
         cad += " ";
         cad += this.obtenerNombre();
         cad += "] ";
-        cad += "ha enviado un paquete ";
+        cad += "transporta un paquete ";
         cad += this.obtenerNombreTipoPaquete();
         return(cad);
     }
 
+    private long porcentajeTransito;
     private int tipoP;
 }

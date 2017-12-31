@@ -15,8 +15,9 @@
  */
 package com.manolodominguez.opensimmpls.ui.utils;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+
 
 /** Esta clase se encarga de cargar en memoria todas las im�genes que se usar�n en
  * la aplicaci�n y posteriormente devolver referencias a las mismas, con lo que la

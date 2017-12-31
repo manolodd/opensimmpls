@@ -16,7 +16,7 @@
 package com.manolodominguez.opensimmpls.scenario;
 
 import com.manolodominguez.opensimmpls.ui.simulator.JSimulationPanel;
-import com.manolodominguez.opensimmpls.hardware.simulationcollector.TSimulationCollector;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventCollector;
 
 /**
  * Esta clase implementa un objeto que almacena los datos globales de la
@@ -34,7 +34,7 @@ public class TSimulation {
      */
     public TSimulation(TScenario e) {
         escenarioPadre = e;
-        recolector = new TSimulationCollector();
+        recolector = new TSimulationEventCollector();
         duracion = 500;
         paso = 1;
     }
@@ -129,7 +129,7 @@ public class TSimulation {
      * @return Recolector de eventos de simulaci�n el escenario.
      * @since 2.0
      */    
-    public TSimulationCollector obtenerRecolector() {
+    public TSimulationEventCollector obtenerRecolector() {
         return recolector;
     }
 
@@ -137,5 +137,5 @@ public class TSimulation {
     private long paso;
     
     private TScenario escenarioPadre;
-    private TSimulationCollector recolector;
+    private TSimulationEventCollector recolector;
 }

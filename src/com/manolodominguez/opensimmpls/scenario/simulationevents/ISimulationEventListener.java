@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.hardware.simulationcollector;
+package com.manolodominguez.opensimmpls.scenario.simulationevents;
 
 import java.util.EventListener;
-import com.manolodominguez.opensimmpls.scenario.TSimulationEvent;
 
 /**
  * This interface has to be implemented by classess that wants to receive
