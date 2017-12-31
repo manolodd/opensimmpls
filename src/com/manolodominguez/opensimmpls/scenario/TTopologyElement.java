@@ -57,7 +57,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @return El instante de tiempo en que se encuentra el elemento.
      * @since 2.0
      */    
-    public long getAvailableTime() {
+    public long getCurrentInstant() {
         return this.instanteDeTiempo;
     }
     
@@ -66,7 +66,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @param i Instante de tiempo.
      * @since 2.0
      */    
-    public void setTimeInstant(long i) {
+    public void setCurrentInstant(long i) {
         this.instanteDeTiempo = i;
     }
 
@@ -84,7 +84,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @param dc Duraci�n del tic en nanosegundos.
      * @since 2.0
      */    
-    public void setStepDuration(int dc) {
+    public void setTickDuration(int dc) {
         this.duracionTic = dc;
     }
     

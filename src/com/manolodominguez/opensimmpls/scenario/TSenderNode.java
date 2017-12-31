@@ -244,8 +244,8 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @since 2.0
      */
     public void receiveTimerEvent(TTimerEvent evt) {
-        this.setStepDuration(evt.getStepDuration());
-        this.setTimeInstant(evt.getUpperLimit());
+        this.setTickDuration(evt.getStepDuration());
+        this.setCurrentInstant(evt.getUpperLimit());
         this.availableNs += evt.getStepDuration();
         this.startOperation();
     }
@@ -257,7 +257,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      */
     public void run() {
         try {
-            this.generateSimulationEvent(new TSENodeCongested(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), 0));
+            this.generateSimulationEvent(new TSENodeCongested(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), 0));
         } catch (Exception e) {
             e.printStackTrace(); 
         }
@@ -273,7 +273,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         } else {
             this.increaseTicksWithoutEmitting();
         }
-        this.estadisticas.consolidateData(this.getAvailableTime());
+        this.estadisticas.consolidateData(this.getCurrentInstant());
     }
     
     /**
@@ -350,8 +350,8 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                             TIPv4PDU paqueteIPv4 = (TIPv4PDU) paqueteConTamanio;
                             tipo = paqueteIPv4.getSubtype();
                         }
-                        this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), tipo, paqueteConTamanio.getSize()));
-                        this.generateSimulationEvent(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), tipo));
+                        this.generateSimulationEvent(new TSEPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), tipo, paqueteConTamanio.getSize()));
+                        this.generateSimulationEvent(new TSEPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), tipo));
                     } catch (Exception e) {
                         e.printStackTrace(); 
                     }
@@ -589,7 +589,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      */    
     public void discardPacket(TAbstractPDU paquete) {
         try {
-            this.generateSimulationEvent(new TSEPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getAvailableTime(), paquete.getSubtype()));
+            this.generateSimulationEvent(new TSEPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), paquete.getSubtype()));
             this.estadisticas.addStatEntry(paquete, TStats.DISCARD);
         } catch (Exception e) {
             e.printStackTrace(); 
