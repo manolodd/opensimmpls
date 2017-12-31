@@ -124,7 +124,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
         long eventID = 0;
         int eventType = 0;
         TAbstractPDU incomingPacket = null;
-        TSEPacketReceived packetReceivedEvent = null;
+        TSimulationEventPacketReceived packetReceivedEvent = null;
         if (incomingPort != null) {
             while (incomingPort.thereIsAPacketWaiting()) {
                 incomingPacket = incomingPort.getPacket();
@@ -138,7 +138,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
                 // does nothing. Check whether it is needed or not. If needed, 
                 // do not use harcoded values. Use class constants instead.
                 this.accountPacket(incomingPacket, true);
-                packetReceivedEvent = new TSEPacketReceived(this, eventID, this.getCurrentInstant(), eventType, incomingPacket.getSize());
+                packetReceivedEvent = new TSimulationEventPacketReceived(this, eventID, this.getCurrentInstant(), eventType, incomingPacket.getSize());
                 this.simulationEventsListener.captureSimulationEvents(packetReceivedEvent);
                 incomingPacket = null;
             }

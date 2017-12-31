@@ -22,7 +22,7 @@ package com.manolodominguez.opensimmpls.scenario;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TSENodeCongested extends TSimulationEvent {
+public class TSimulationEventNodeCongested extends TSimulationEvent {
 
     /**
      * Crea una nueva instancia de TESNodoCongestionado
@@ -32,7 +32,7 @@ public class TSENodeCongested extends TSimulationEvent {
      * @param emisor Nodo que gener� el evento.
      * @param id identificador unico del evento.
      */
-    public TSENodeCongested(Object emisor, long id, long inst, long pc) {
+    public TSimulationEventNodeCongested(Object emisor, long id, long inst, long pc) {
         super(emisor, id, inst);
         porcentajeCongestion = pc;
     }

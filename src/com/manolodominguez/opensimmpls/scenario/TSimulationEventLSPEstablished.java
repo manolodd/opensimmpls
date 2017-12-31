@@ -16,33 +16,32 @@
 package com.manolodominguez.opensimmpls.scenario;
 
 /**
- * Esta clase implementa un evento usado para notificar que se ha asignado una
- * etiqueta MPLS
+ * Esta clase implementa un evento que se usar� para notificar que se ha creado un
+ * LSP.
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TSELabelAssigned extends TSimulationEvent {
+public class TSimulationEventLSPEstablished extends TSimulationEvent {
 
     /**
-     * Crea una nueva instancia de TESEtiquetaAsignada
+     * Crea una nueva instancia de TESLSPEstablecido
      * @since 2.0
-     * @param inst Instante en el que se produjo el evento
-     * @param emisor Nodo que gener� el evento
+     * @param inst Instante de tiempo en el que se gener� el evento.
+     * @param emisor nodo que gener� el evento
      * @param id Identificador unico del evento.
      */
-    public TSELabelAssigned(Object emisor, long id, long inst) {
+    public TSimulationEventLSPEstablished(Object emisor, long id, long inst) {
         super(emisor, id, inst);
     }
 
- 
     /**
      * Este m�todo obtiene el subtipo del evento, si los hubiese.
      * @return El subtipo del evento.
      * @since 2.0
      */    
     public int getSubtype() {
-        return super.LABEL_ASSIGNED;
+        return super.LSP_ESTABLISHED;
     }
 
     /**
@@ -92,8 +91,7 @@ public class TSELabelAssigned extends TSimulationEvent {
         cad += this.obtenerNombreTipo();
         cad += " ";
         cad += this.obtenerNombre();
-        cad += "] ";
-        cad += "ha concedido una etiqueta";
+        cad += "] ha establecido un tramo de LSP";
         return(cad);
     }
 }

@@ -18,32 +18,30 @@ package com.manolodominguez.opensimmpls.scenario;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 
 /**
- * Esta clase implementa un evento que ser� usado para notificar que un nodo ha
- * recibido un paquete.
+ * Esta clase implementa un evento que ser� usado para notificar que un paquete ha
+ * sido conmutado.
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TSEPacketReceived extends TSimulationEvent {
+public class TSimulationEventPacketSwitched extends TSimulationEvent {
 
     /**
-     * Crea una nueva instancia de TESpaqueteRecibido
+     * Crea una nueva instancia de TESPaqueteConmutado
      * @since 2.0
-     * @param inst Instante de tiempo en el que se produce el evento.
-     * @param tam Tama�o del paquete  al que se refiere el evento.
-     * @param emisor Elemento de la topologia que gener� el evento.
-     * @param id id �nico del evento.
-     * @param tipoPaquete Tipo del paquete que se ha recibido.
+     * @param inst Instante de tiempo en el que se gener� el paquete.
+     * @param emisor Nodo que gener� el evento.
+     * @param id Identificador unico del evento.
+     * @param tipoPaquete Tipo de paquete que se ha conmutado (de qu� tr�fico es).
      */
-    public TSEPacketReceived(Object emisor, long id, long inst, int tipoPaquete, int tam) {
+    public TSimulationEventPacketSwitched(Object emisor, long id, long inst, int tipoPaquete) {
         super(emisor, id, inst);
         tipoP = tipoPaquete;
-        tamanio = tam;
     }
 
     /**
-     * Este m�todo obtiene el tipo del paquete al que se refiere el evento.
-     * @return El tipo del paquete al que se refiere el evento.
+     * Este m�todo obtiene el tipo el paquete que conmut� el nodo que gener� el evento.
+     * @return Tipo de paquete conmutado.
      * @since 2.0
      */    
     public int obtenerTipoPaquete() {
@@ -56,7 +54,7 @@ public class TSEPacketReceived extends TSimulationEvent {
      * @since 2.0
      */    
     public int getSubtype() {
-        return super.PACKET_RECEIVED;
+        return super.PACKET_SWITCHED;
     }
 
     /**
@@ -96,9 +94,8 @@ public class TSEPacketReceived extends TSimulationEvent {
     }
 
     /**
-     * Este m�todo obtiene una representaci�n textual del tipo del paquete al que se
-     * refiere el evento.
-     * @return El tipo del paquete al que se refiere el evento, expresado en  texto.
+     * Este m�todo devuelve una representaci�n textual del tipo de paquete conmutado.
+     * @return Nombre en texto claro, del tipo de paquete conmutado.
      * @since 2.0
      */    
     public String obtenerNombreTipoPaquete() {
@@ -145,14 +142,10 @@ public class TSEPacketReceived extends TSimulationEvent {
         cad += " ";
         cad += this.obtenerNombre();
         cad += "] ";
-        cad += "ha recibido un paquete ";
+        cad += "ha conmutado un paquete ";
         cad += this.obtenerNombreTipoPaquete();
-        cad += " de tamanio ";
-        cad += this.tamanio;
-        cad += " octetos.";
         return(cad);
     }
 
     private int tipoP;
-    private int tamanio;
 }

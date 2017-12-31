@@ -15,37 +15,24 @@
  */
 package com.manolodominguez.opensimmpls.scenario;
 
-import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
-
 /**
- * Esta clase implementa un evento que ser� usado para indicar que un paquete se ha
- * encaminado en un LER/LERA.
+ * Esta clase implementa un evento usado para notificar que se ha denegado una
+ * etiqueta
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TSEPacketRouted extends TSimulationEvent {
+public class TSimulationEventLabelDenied extends TSimulationEvent {
 
     /**
-     * Crea una nueva instancia de TESPaqueteEncaminado.
+     * Crea una nueva instancia de TESEtiquetaDenegada
      * @since 2.0
-     * @param inst Instante de tiempo en el que se produjo el evento.
-     * @param emisor Nodo LER/LERA que gener� el evento.
-     * @param id Identificador unico del evento.
-     * @param tipoPaquete Tipo de paquete al que se refiere el evento.
+     * @param inst Instante en el que se produjo el evento
+     * @param emisor Nodo que gener� el evento
+     * @param id identificador unico del evento.
      */
-    public TSEPacketRouted(Object emisor, long id, long inst, int tipoPaquete) {
+    public TSimulationEventLabelDenied(Object emisor, long id, long inst) {
         super(emisor, id, inst);
-        tipoP = tipoPaquete;
-    }
-
-    /**
-     * Este m�todo obtiene el tipo de paquete al que se refiere el evento.
-     * @return El tipo del paquete.
-     * @since 2.0
-     */    
-    public int obtenerTipoPaquete() {
-        return tipoP;
     }
 
     /**
@@ -54,7 +41,7 @@ public class TSEPacketRouted extends TSimulationEvent {
      * @since 2.0
      */    
     public int getSubtype() {
-        return super.PACKET_ROUTED;
+        return super.LABEL_DENIED;
     }
 
     /**
@@ -94,43 +81,6 @@ public class TSEPacketRouted extends TSimulationEvent {
     }
 
     /**
-     * Este m�todo obtiene una representaci�n textual del tipo de paquete.
-     * @return El tipo del paquete expresado como texto.
-     * @since 2.0
-     */    
-    public String obtenerNombreTipoPaquete() {
-        String strTipo = "";
-        switch (tipoP) {
-            case TAbstractPDU.IPV4: {
-                strTipo = "IPv4";
-                break;
-            }
-            case TAbstractPDU.IPV4_GOS: {
-                strTipo = "IPv4 con GoS";
-                break;
-            }
-            case TAbstractPDU.MPLS: {
-                strTipo = "MPLS";
-                break;
-            }
-            case TAbstractPDU.MPLS_GOS: {
-                strTipo = "MPLS con GoS";
-                break;
-            }
-            case TAbstractPDU.TLDP: {
-                strTipo = "LDP";
-                break;
-            }
-            case TAbstractPDU.GPSRP: {
-                strTipo = "GPSRP";
-                break;
-            }
-        }
-        return(strTipo);
-    }
-    
-
-    /**
      * Este m�todo explcia el evento en una l�nea de texto.
      * @return El texto explicando el evento.
      * @since 2.0
@@ -142,10 +92,7 @@ public class TSEPacketRouted extends TSimulationEvent {
         cad += " ";
         cad += this.obtenerNombre();
         cad += "] ";
-        cad += "ha encaminado un paquete ";
-        cad += this.obtenerNombreTipoPaquete();
+        cad += "ha denegado una etiqueta";
         return(cad);
     }
-
-    private int tipoP;
 }

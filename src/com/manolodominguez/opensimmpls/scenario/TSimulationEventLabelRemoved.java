@@ -16,22 +16,22 @@
 package com.manolodominguez.opensimmpls.scenario;
 
 /**
- * Esta clase implementa un evento que ser� usado para notificar que una etiqueta
- * se ha recibido.
+ * Esta clase implementa un evento que es usado para notificar que una etiqueta ha
+ * sido eliminado (un LSP se ha disasociado).
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TSELabelReceived extends TSimulationEvent {
+public class TSimulationEventLabelRemoved extends TSimulationEvent {
 
     /**
-     * Crea una nueva instancia de TESEtiquetaRecibida
+     * Crea una nueva instancia de TESEtiquetaEliminada
      * @since 2.0
-     * @param inst Instante de tiempo en el que se gener� el evento.
-     * @param emisor Nodo que gener� el evento.
-     * @param id Identificador unico para el evento.
+     * @param inst Instante de tiempo en el que se produjo el evento
+     * @param emisor Nodo que gener� el evento
+     * @param id identificador �nico para del evento.
      */
-    public TSELabelReceived(Object emisor, long id, long inst) {
+    public TSimulationEventLabelRemoved(Object emisor, long id, long inst) {
         super(emisor, id, inst);
     }
 
@@ -41,7 +41,7 @@ public class TSELabelReceived extends TSimulationEvent {
      * @since 2.0
      */    
     public int getSubtype() {
-        return super.LABEL_RECEIVED;
+        return super.LABEL_REMOVED;
     }
 
     /**
@@ -92,7 +92,7 @@ public class TSELabelReceived extends TSimulationEvent {
         cad += " ";
         cad += this.obtenerNombre();
         cad += "] ";
-        cad += "ha recibido una etiqueta";
+        cad += "ha eliminado una etiqueta";
         return(cad);
     }
 }

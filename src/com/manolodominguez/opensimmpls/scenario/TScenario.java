@@ -17,7 +17,7 @@ package com.manolodominguez.opensimmpls.scenario;
 
 import com.manolodominguez.opensimmpls.ui.simulator.JSimulationPanel;
 import com.manolodominguez.opensimmpls.hardware.timer.TTimestamp;
-import java.io.*;
+import java.io.File;
 
 /**
  * Esta clase implementa un escenario completo de simulaci�n, con todos sus
@@ -35,7 +35,7 @@ public class TScenario {
     public TScenario() {
         topologia = new TTopology(this);
         simulacion = new TSimulation(this);
-        File ficheroEscenario = null;
+        ficheroEscenario = null;
         guardado = false;
         modificado = false;
         titulo = "";

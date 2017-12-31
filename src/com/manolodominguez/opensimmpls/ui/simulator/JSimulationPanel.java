@@ -23,14 +23,14 @@ import java.io.*;
 import java.util.*;
 import javax.swing.*;
 import com.manolodominguez.opensimmpls.scenario.TInternalLink;
-import com.manolodominguez.opensimmpls.scenario.TSENodeCongested;
-import com.manolodominguez.opensimmpls.scenario.TSEPacketDiscarded;
-import com.manolodominguez.opensimmpls.scenario.TSEPacketGenerated;
-import com.manolodominguez.opensimmpls.scenario.TSEPacketOnFly;
-import com.manolodominguez.opensimmpls.scenario.TSEPacketReceived;
-import com.manolodominguez.opensimmpls.scenario.TSEPacketRouted;
-import com.manolodominguez.opensimmpls.scenario.TSEPacketSent;
-import com.manolodominguez.opensimmpls.scenario.TSEPacketSwitched;
+import com.manolodominguez.opensimmpls.scenario.TSimulationEventNodeCongested;
+import com.manolodominguez.opensimmpls.scenario.TSimulationEventPacketDiscarded;
+import com.manolodominguez.opensimmpls.scenario.TSimulationEventPacketGenerated;
+import com.manolodominguez.opensimmpls.scenario.TSimulationEventPacketOnFly;
+import com.manolodominguez.opensimmpls.scenario.TSimulationEventPacketReceived;
+import com.manolodominguez.opensimmpls.scenario.TSimulationEventPacketRouted;
+import com.manolodominguez.opensimmpls.scenario.TSimulationEventPacketSent;
+import com.manolodominguez.opensimmpls.scenario.TSimulationEventPacketSwitched;
 import com.manolodominguez.opensimmpls.scenario.TSimulationEvent;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
 import com.manolodominguez.opensimmpls.scenario.TLink;
@@ -490,7 +490,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
                 evento = (TSimulationEvent) it.next();
                 if (evento != null) {
                     if (evento.getSubtype() == TSimulationEvent.PACKET_ON_FLY) {
-                        TSEPacketOnFly ept = (TSEPacketOnFly) evento;
+                        TSimulationEventPacketOnFly ept = (TSimulationEventPacketOnFly) evento;
                         TLink et = (TLink) ept.obtenerFuente();
                         Point p = et.getScreenPacketPosition(ept.obtenerPorcentajeTransito());
                         if (ept.obtenerTipoPaquete() == TAbstractPDU.GPSRP) {
@@ -507,7 +507,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PDU_MPLS_GOS), p.x-8, p.y-8, null);
                         }
                     } else if (evento.getSubtype() == TSimulationEvent.PACKET_DISCARDED) {
-                        TSEPacketDiscarded epd = (TSEPacketDiscarded) evento;
+                        TSimulationEventPacketDiscarded epd = (TSimulationEventPacketDiscarded) evento;
                         TNode nt = (TNode) epd.obtenerFuente();
                         Point p = nt.getScreenPosition();
                         if (epd.obtenerTipoPaquete() == TAbstractPDU.GPSRP) {
@@ -526,27 +526,27 @@ public class JSimulationPanel extends javax.swing.JPanel {
                     } else if (evento.getSubtype() == TSimulationEvent.LSP_ESTABLISHED) {
                         // Algo se har�.
                     } else if (evento.getSubtype() == TSimulationEvent.PACKET_GENERATED) {
-                        TSEPacketGenerated epg = (TSEPacketGenerated) evento;
+                        TSimulationEventPacketGenerated epg = (TSimulationEventPacketGenerated) evento;
                         TNode nt = (TNode) epg.obtenerFuente();
                         Point p = nt.getScreenPosition();
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PAQUETE_GENERADO), p.x+8, p.y-16, null);
                     } else if (evento.getSubtype() == TSimulationEvent.PACKET_SENT) {
-                        TSEPacketSent epe = (TSEPacketSent) evento;
+                        TSimulationEventPacketSent epe = (TSimulationEventPacketSent) evento;
                         TNode nt = (TNode) epe.obtenerFuente();
                         Point p = nt.getScreenPosition();
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PAQUETE_EMITIDO), p.x+24, p.y-16, null);
                     } else if (evento.getSubtype() == TSimulationEvent.PACKET_RECEIVED) {
-                        TSEPacketReceived epr = (TSEPacketReceived) evento;
+                        TSimulationEventPacketReceived epr = (TSimulationEventPacketReceived) evento;
                         TNode nt = (TNode) epr.obtenerFuente();
                         Point p = nt.getScreenPosition();
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PAQUETE_RECIBIDO), p.x-8, p.y-16, null);
                     } else if (evento.getSubtype() == TSimulationEvent.PACKET_SWITCHED) {
-                        TSEPacketSwitched epr = (TSEPacketSwitched) evento;
+                        TSimulationEventPacketSwitched epr = (TSimulationEventPacketSwitched) evento;
                         TNode nt = (TNode) epr.obtenerFuente();
                         Point p = nt.getScreenPosition();
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PAQUETE_CONMUTADO), p.x+40, p.y-16, null);
                     } else if (evento.getSubtype() == TSimulationEvent.PACKET_ROUTED) {
-                        TSEPacketRouted epr = (TSEPacketRouted) evento;
+                        TSimulationEventPacketRouted epr = (TSimulationEventPacketRouted) evento;
                         TNode nt = (TNode) epr.obtenerFuente();
                         Point p = nt.getScreenPosition();
                         g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.PAQUETE_CONMUTADO), p.x+40, p.y-16, null);
@@ -574,7 +574,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
                 evento = (TSimulationEvent) it.next();
                 if (evento != null) {
                     if (evento.getSubtype() == TSimulationEvent.NODE_CONGESTED) {
-                        TSENodeCongested enc = (TSENodeCongested) evento;
+                        TSimulationEventNodeCongested enc = (TSimulationEventNodeCongested) evento;
                         TNode nt = (TNode) enc.obtenerFuente();
                         Point p = nt.getScreenPosition();
                         int tipo = nt.getNodeType();

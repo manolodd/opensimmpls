@@ -15,39 +15,24 @@
  */
 package com.manolodominguez.opensimmpls.scenario;
 
-import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
-
 /**
- * Esta clase implementa un evento que ser� usado para notificar que se ha generado
- * un paquete en un nodo.
+ * Esta clase implementa un evento que se usar� para notificar que un LSP se ha
+ * eliminado.
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TSEPacketGenerated extends TSimulationEvent {
+public class TSimulationEventLSPRemoved extends TSimulationEvent {
 
     /**
-     * Crea una nueva instancia de TESPaqueteGenerado
+     * Crea una nueva instancia de TESLSPEliminado
      * @since 2.0
-     * @param inst Instante de tiempo en el que se ha producido el evento.
-     * @param tam Tama�o del paquete al que se refiere el evento.
+     * @param inst Instante de tiempo en el que se gener� el evento.
      * @param emisor Nodo que gener� el evento.
-     * @param id Identificador �nico del evento.
-     * @param tipoPaquete Tipo del paquete al que se refiere el evento.
+     * @param id Identificador unico del evento.
      */
-    public TSEPacketGenerated(Object emisor, long id, long inst, int tipoPaquete, int tam) {
+    public TSimulationEventLSPRemoved(Object emisor, long id, long inst) {
         super(emisor, id, inst);
-        tipoP = tipoPaquete;
-        tamanio = tam;
-    }
-
-    /**
-     * Este m�todo obtiene el tipo del paquete al que se refiere el evento.
-     * @return Tipo del paquete al que se refiere el evento.
-     * @since 2.0
-     */    
-    public int obtenerTipoPaquete() {
-        return tipoP;
     }
 
     /**
@@ -56,7 +41,7 @@ public class TSEPacketGenerated extends TSimulationEvent {
      * @since 2.0
      */    
     public int getSubtype() {
-        return super.PACKET_GENERATED;
+        return super.LSP_REMOVED;
     }
 
     /**
@@ -96,44 +81,6 @@ public class TSEPacketGenerated extends TSimulationEvent {
     }
 
     /**
-     * Este m�todo obtiene una representaci�n textual del tipo del paquete al que se
-     * refiere el evento.
-     * @return El tipo del paquete al que se refiere el evento, expresado en texto.
-     * @since 2.0
-     */    
-    public String obtenerNombreTipoPaquete() {
-        String strTipo = "";
-        switch (tipoP) {
-            case TAbstractPDU.IPV4: {
-                strTipo = "IPv4";
-                break;
-            }
-            case TAbstractPDU.IPV4_GOS: {
-                strTipo = "IPv4 con GoS";
-                break;
-            }
-            case TAbstractPDU.MPLS: {
-                strTipo = "MPLS";
-                break;
-            }
-            case TAbstractPDU.MPLS_GOS: {
-                strTipo = "MPLS con GoS";
-                break;
-            }
-            case TAbstractPDU.TLDP: {
-                strTipo = "LDP";
-                break;
-            }
-            case TAbstractPDU.GPSRP: {
-                strTipo = "GPSRP";
-                break;
-            }
-        }
-        return(strTipo);
-    }
-    
-
-    /**
      * Este m�todo explcia el evento en una l�nea de texto.
      * @return El texto explicando el evento.
      * @since 2.0
@@ -144,15 +91,7 @@ public class TSEPacketGenerated extends TSimulationEvent {
         cad += this.obtenerNombreTipo();
         cad += " ";
         cad += this.obtenerNombre();
-        cad += "] ";
-        cad += "ha generado un paquete ";
-        cad += this.obtenerNombreTipoPaquete();
-        cad += " de tama�o ";
-        cad += this.tamanio;
-        cad += " octetos";
+        cad += "] ha desactivado un LSP";
         return(cad);
     }
-
-    private int tipoP;
-    private int tamanio;
 }

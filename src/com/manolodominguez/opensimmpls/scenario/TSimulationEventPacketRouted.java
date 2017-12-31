@@ -18,31 +18,30 @@ package com.manolodominguez.opensimmpls.scenario;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 
 /**
- * Esta clase implementa un evento que ser� usado para notificar que un paquete has
- * sido descartado.
+ * Esta clase implementa un evento que ser� usado para indicar que un paquete se ha
+ * encaminado en un LER/LERA.
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TSEPacketDiscarded extends TSimulationEvent {
+public class TSimulationEventPacketRouted extends TSimulationEvent {
 
     /**
-     * Crea una nueva instancia de TESPqueteDescartado.
+     * Crea una nueva instancia de TESPaqueteEncaminado.
      * @since 2.0
-     * @param inst Instante de tiempo en el que se gener� el evento.
-     * @param emisor Nodo que gener� ele evento.
-     * @param id Identificador �nico del evento.
-     * @param tipoPaquete Tipo del paquete que se ha descartado (de qu� trafico es).
+     * @param inst Instante de tiempo en el que se produjo el evento.
+     * @param emisor Nodo LER/LERA que gener� el evento.
+     * @param id Identificador unico del evento.
+     * @param tipoPaquete Tipo de paquete al que se refiere el evento.
      */
-    public TSEPacketDiscarded(Object emisor, long id, long inst, int tipoPaquete) {
+    public TSimulationEventPacketRouted(Object emisor, long id, long inst, int tipoPaquete) {
         super(emisor, id, inst);
         tipoP = tipoPaquete;
     }
 
     /**
-     * Este m�todo devuelve el tipo del paquete que descart� el nodo que gener� el
-     * evento.
-     * @return Tipo del paquete que se descart�.
+     * Este m�todo obtiene el tipo de paquete al que se refiere el evento.
+     * @return El tipo del paquete.
      * @since 2.0
      */    
     public int obtenerTipoPaquete() {
@@ -55,7 +54,7 @@ public class TSEPacketDiscarded extends TSimulationEvent {
      * @since 2.0
      */    
     public int getSubtype() {
-        return super.PACKET_DISCARDED;
+        return super.PACKET_ROUTED;
     }
 
     /**
@@ -95,8 +94,8 @@ public class TSEPacketDiscarded extends TSimulationEvent {
     }
 
     /**
-     * Este m�todo ofrece una representaci�n textual del tipo el paquete descartado.
-     * @return Representaci�n textual del paquete descartado.
+     * Este m�todo obtiene una representaci�n textual del tipo de paquete.
+     * @return El tipo del paquete expresado como texto.
      * @since 2.0
      */    
     public String obtenerNombreTipoPaquete() {
@@ -143,7 +142,7 @@ public class TSEPacketDiscarded extends TSimulationEvent {
         cad += " ";
         cad += this.obtenerNombre();
         cad += "] ";
-        cad += "ha descartado un paquete ";
+        cad += "ha encaminado un paquete ";
         cad += this.obtenerNombreTipoPaquete();
         return(cad);
     }

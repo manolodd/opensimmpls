@@ -16,32 +16,33 @@
 package com.manolodominguez.opensimmpls.scenario;
 
 /**
- * Esta clase implementa un evento usado para notificar que se ha denegado una
- * etiqueta
+ * Esta clase implementa un evento usado para notificar la recuperaci�n de un
+ * enlace caido.
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TSELabelDenied extends TSimulationEvent {
+public class TSimulationEventLinkRecovered extends TSimulationEvent {
 
     /**
-     * Crea una nueva instancia de TESEtiquetaDenegada
+     * Crea una nueva instancia de TESEnlaceRecuperado
      * @since 2.0
-     * @param inst Instante en el que se produjo el evento
-     * @param emisor Nodo que gener� el evento
-     * @param id identificador unico del evento.
+     * @param inst Instante de tiempo en que se produjo el evento.
+     * @param emisor Enlace que gener� el evento.
+     * @param id Identificador unico del evento.
      */
-    public TSELabelDenied(Object emisor, long id, long inst) {
+    public TSimulationEventLinkRecovered(Object emisor, long id, long inst) {
         super(emisor, id, inst);
     }
 
+ 
     /**
      * Este m�todo obtiene el subtipo del evento, si los hubiese.
      * @return El subtipo del evento.
      * @since 2.0
      */    
     public int getSubtype() {
-        return super.LABEL_DENIED;
+        return super.LINK_RECOVERED;
     }
 
     /**
@@ -92,7 +93,7 @@ public class TSELabelDenied extends TSimulationEvent {
         cad += " ";
         cad += this.obtenerNombre();
         cad += "] ";
-        cad += "ha denegado una etiqueta";
+        cad += "se ha recuperado.";
         return(cad);
     }
 }

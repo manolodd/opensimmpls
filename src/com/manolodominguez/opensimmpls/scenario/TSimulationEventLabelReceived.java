@@ -16,33 +16,32 @@
 package com.manolodominguez.opensimmpls.scenario;
 
 /**
- * Esta clase implementa un evento usado para notificar la recuperaci�n de un
- * enlace caido.
+ * Esta clase implementa un evento que ser� usado para notificar que una etiqueta
+ * se ha recibido.
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TSELinkRecovered extends TSimulationEvent {
+public class TSimulationEventLabelReceived extends TSimulationEvent {
 
     /**
-     * Crea una nueva instancia de TESEnlaceRecuperado
+     * Crea una nueva instancia de TESEtiquetaRecibida
      * @since 2.0
-     * @param inst Instante de tiempo en que se produjo el evento.
-     * @param emisor Enlace que gener� el evento.
-     * @param id Identificador unico del evento.
+     * @param inst Instante de tiempo en el que se gener� el evento.
+     * @param emisor Nodo que gener� el evento.
+     * @param id Identificador unico para el evento.
      */
-    public TSELinkRecovered(Object emisor, long id, long inst) {
+    public TSimulationEventLabelReceived(Object emisor, long id, long inst) {
         super(emisor, id, inst);
     }
 
- 
     /**
      * Este m�todo obtiene el subtipo del evento, si los hubiese.
      * @return El subtipo del evento.
      * @since 2.0
      */    
     public int getSubtype() {
-        return super.LINK_RECOVERED;
+        return super.LABEL_RECEIVED;
     }
 
     /**
@@ -93,7 +92,7 @@ public class TSELinkRecovered extends TSimulationEvent {
         cad += " ";
         cad += this.obtenerNombre();
         cad += "] ";
-        cad += "se ha recuperado.";
+        cad += "ha recibido una etiqueta";
         return(cad);
     }
 }

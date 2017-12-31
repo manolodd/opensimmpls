@@ -16,32 +16,34 @@
 package com.manolodominguez.opensimmpls.scenario;
 
 /**
- * Esta clase implementa un evento que ser� usado para notificar que se ha
- * solicitado una etiqueta MPLS
+ * Esta clase implementa un evento de simulaci�n para notificar la ca�da de un
+ * enlace.
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TSELabelRequested extends TSimulationEvent {
+public class TSimulationEventLinkBroken extends TSimulationEvent {
 
     /**
-     * Crea una nueva instancia de TESEtiquetaSolicitada
+     * Crea una nueva instancia de TESEnlaceCaido
      * @since 2.0
-     * @param inst instante de tiempo en el que se gener� el evento
-     * @param emisor Nodo que gener� el evento.
-     * @param id Identificador �nico del evento.
+     * @param timeInstant Instante de tiempo en que se produjo el evento.
+     * @param source Enlace que emite el evento.
+     * @param eventID Identificador �nico del evento.
      */
-    public TSELabelRequested(Object emisor, long id, long inst) {
-        super(emisor, id, inst);
+    public TSimulationEventLinkBroken(Object source, long eventID, long timeInstant) {
+        super(source, eventID, timeInstant);
     }
 
+ 
     /**
      * Este m�todo obtiene el subtipo del evento, si los hubiese.
      * @return El subtipo del evento.
      * @since 2.0
      */    
+    @Override
     public int getSubtype() {
-        return super.LABEL_REQUESTED;
+        return TSimulationEvent.LINK_BROKEN;
     }
 
     /**
@@ -85,6 +87,7 @@ public class TSELabelRequested extends TSimulationEvent {
      * @return El texto explicando el evento.
      * @since 2.0
      */    
+    @Override
     public String toString() {
         String cad = "";
         cad += "[";
@@ -92,7 +95,7 @@ public class TSELabelRequested extends TSimulationEvent {
         cad += " ";
         cad += this.obtenerNombre();
         cad += "] ";
-        cad += "ha solicitado una etiqueta";
+        cad += "Ha fallado.";
         return(cad);
     }
 }

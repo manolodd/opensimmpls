@@ -15,24 +15,50 @@
  */
 package com.manolodominguez.opensimmpls.scenario;
 
+import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
+
 /**
- * Esta clase implementa un evento que se usar� para notificar que se ha creado un
- * LSP.
+ * Esta clase implementa un evento que ser� usado para indecar que un paquete est�
+ * circulando por un enlace.
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class TSELSPEstablished extends TSimulationEvent {
+public class TSimulationEventPacketOnFly extends TSimulationEvent {
 
     /**
-     * Crea una nueva instancia de TESLSPEstablecido
+     * Crea una nueva instancia de TESPaqueteEnTransito
      * @since 2.0
-     * @param inst Instante de tiempo en el que se gener� el evento.
-     * @param emisor nodo que gener� el evento
+     * @param inst Instante de tiempo en el que se produjo el evento.
+     * @param pt Porcentaje de reccorido del enlace que lleva recorrido el paquete por el cual se
+     * genero el evento.
+     * @param emisor Enlace que gener� el evento.
      * @param id Identificador unico del evento.
+     * @param tipoPaquete Tipo del paquete (de qu� trafico es) al que se refiere el evento.
      */
-    public TSELSPEstablished(Object emisor, long id, long inst) {
+    public TSimulationEventPacketOnFly(Object emisor, long id, long inst, int tipoPaquete, long pt) {
         super(emisor, id, inst);
+        tipoP = tipoPaquete;
+        porcentajeTransito = pt;
+    }
+
+    /**
+     * Este m�todo obtiene el porcentaje del enalce que ha recorrido ya el paquete al
+     * que se refiete el evento.
+     * @since 2.0
+     * @return El porcentaje de recorrido del paquete.
+     */    
+    public long obtenerPorcentajeTransito() {
+        return this.porcentajeTransito;
+    }
+    
+    /**
+     * Este m�todo obtiene el tipo de paquete al que se refiere el evento.
+     * @return El tipo el paquete.
+     * @since 2.0
+     */    
+    public int obtenerTipoPaquete() {
+        return tipoP;
     }
 
     /**
@@ -41,7 +67,7 @@ public class TSELSPEstablished extends TSimulationEvent {
      * @since 2.0
      */    
     public int getSubtype() {
-        return super.LSP_ESTABLISHED;
+        return super.PACKET_ON_FLY;
     }
 
     /**
@@ -81,6 +107,43 @@ public class TSELSPEstablished extends TSimulationEvent {
     }
 
     /**
+     * Este m�todo obtiene una representaci�n textual del tipo de paquete.
+     * @return El tipo de paquete, en texto.
+     * @since 2.0
+     */    
+    public String obtenerNombreTipoPaquete() {
+        String strTipo = "";
+        switch (tipoP) {
+            case TAbstractPDU.IPV4: {
+                strTipo = "IPv4";
+                break;
+            }
+            case TAbstractPDU.IPV4_GOS: {
+                strTipo = "IPv4 con GoS";
+                break;
+            }
+            case TAbstractPDU.MPLS: {
+                strTipo = "MPLS";
+                break;
+            }
+            case TAbstractPDU.MPLS_GOS: {
+                strTipo = "MPLS con GoS";
+                break;
+            }
+            case TAbstractPDU.TLDP: {
+                strTipo = "LDP";
+                break;
+            }
+            case TAbstractPDU.GPSRP: {
+                strTipo = "GPSRP";
+                break;
+            }
+        }
+        return(strTipo);
+    }
+    
+
+    /**
      * Este m�todo explcia el evento en una l�nea de texto.
      * @return El texto explicando el evento.
      * @since 2.0
@@ -91,7 +154,12 @@ public class TSELSPEstablished extends TSimulationEvent {
         cad += this.obtenerNombreTipo();
         cad += " ";
         cad += this.obtenerNombre();
-        cad += "] ha establecido un tramo de LSP";
+        cad += "] ";
+        cad += "transporta un paquete ";
+        cad += this.obtenerNombreTipoPaquete();
         return(cad);
     }
+
+    private long porcentajeTransito;
+    private int tipoP;
 }

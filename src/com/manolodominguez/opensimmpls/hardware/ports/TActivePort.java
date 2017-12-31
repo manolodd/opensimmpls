@@ -17,7 +17,7 @@ package com.manolodominguez.opensimmpls.hardware.ports;
 
 import java.util.Iterator;
 import java.util.TreeSet;
-import com.manolodominguez.opensimmpls.scenario.TSEPacketReceived;
+import com.manolodominguez.opensimmpls.scenario.TSimulationEventPacketReceived;
 import com.manolodominguez.opensimmpls.scenario.TStats;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
@@ -448,7 +448,7 @@ public class TActivePort extends TPort {
             TActivePortBufferEntry activePortBufferEntry = new TActivePortBufferEntry(priority, packetOrder, packet);
             this.addPrioritizedBufferEntry(activePortBufferEntry);
             parentPortSetAux.increasePortSetOccupancy(packet.getSize());
-            TSEPacketReceived packetReceivedEvent = new TSEPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getCurrentInstant(), packetSubtype, packet.getSize());
+            TSimulationEventPacketReceived packetReceivedEvent = new TSimulationEventPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getCurrentInstant(), packetSubtype, packet.getSize());
             parentNode.simulationEventsListener.captureSimulationEvents(packetReceivedEvent);
             if (this.getPortSet().getParentNode().getStats() != null) {
                 this.getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.INCOMING);
@@ -502,7 +502,7 @@ public class TActivePort extends TPort {
             TActivePortBufferEntry activePortBufferEntry = new TActivePortBufferEntry(packetPriority, packetOrder, packet);
             this.addPrioritizedBufferEntry(activePortBufferEntry);
             parentPortSetAux.increasePortSetOccupancy(packet.getSize());
-            TSEPacketReceived packetReceivedEvent = new TSEPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getCurrentInstant(), packetSubtype, packet.getSize());
+            TSimulationEventPacketReceived packetReceivedEvent = new TSimulationEventPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getCurrentInstant(), packetSubtype, packet.getSize());
             parentNode.simulationEventsListener.captureSimulationEvents(packetReceivedEvent);
             if (this.getPortSet().getParentNode().getStats() != null) {
                 this.getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.INCOMING);
