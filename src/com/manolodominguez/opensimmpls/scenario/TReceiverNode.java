@@ -106,68 +106,73 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      */
     @Override
     public void run() {
-        // Acciones a llevar a cabo durante el tic.
-        recibirDatos();
+        // Actions to during the duration of the tick.
+        receivePackets();
         this.stats.consolidateData(this.getCurrentInstant());
-        // Acciones a llevar a cabo durante el tic.
     }
 
     /**
-     * Este m�todo lee mientras puede los paquetes que hay en el buffer de
-     * recepci�n.
+     * This method receives, while possible, packets from the receiving buffer.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void recibirDatos() {
-        TPort p = this.ports.getPort(0);
-        long idEvt = 0;
-        int tipo = 0;
-        TAbstractPDU paquete = null;
-        TSEPacketReceived evt = null;
-        if (p != null) {
-            while (p.thereIsAPacketWaiting()) {
-                paquete = p.getPacket();
+    public void receivePackets() {
+        // FIX: do not use harcoded values. Use class constants instead in all
+        // cases.
+        TPort incomingPort = this.ports.getPort(0);
+        long eventID = 0;
+        int eventType = 0;
+        TAbstractPDU incomingPacket = null;
+        TSEPacketReceived packetReceivedEvent = null;
+        if (incomingPort != null) {
+            while (incomingPort.thereIsAPacketWaiting()) {
+                incomingPacket = incomingPort.getPacket();
                 try {
-                    idEvt = this.longIdentifierGenerator.getNextID();
+                    eventID = this.longIdentifierGenerator.getNextID();
                 } catch (Exception e) {
+                    // FIX: This is ugly
                     e.printStackTrace();
                 }
-                this.contabilizarPaquete(paquete, true);
-                evt = new TSEPacketReceived(this, idEvt, this.getCurrentInstant(), tipo, paquete.getSize());
-                this.simulationEventsListener.captureSimulationEvents(evt);
-                paquete = null;
+                // FIX: The following line has no effects as the method called
+                // does nothing. Check whether it is needed or not. If needed, 
+                // do not use harcoded values. Use class constants instead.
+                this.accountPacket(incomingPacket, true);
+                packetReceivedEvent = new TSEPacketReceived(this, eventID, this.getCurrentInstant(), eventType, incomingPacket.getSize());
+                this.simulationEventsListener.captureSimulationEvents(packetReceivedEvent);
+                incomingPacket = null;
             }
         }
     }
 
     /**
-     * Este m�todo contabiliza en las estad�sticas del nodo un paquete le�do.
+     * This method register in the stats of this the node a new received packet.
      *
-     * @param paquete Paquete que se quiere contabilizar.
-     * @param deEntrada TRUE, si el paquete entra en el nodo. FALSE si el
-     * paquete sale del nodo.
+     * @param packet Packet to be registered.
+     * @param isIncomingPacket TRUE, if the packet is an incoming packet.
+     * Oterwise, FALSE.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void contabilizarPaquete(TAbstractPDU paquete, boolean deEntrada) {
-        if (deEntrada) {
-            if (paquete.getSubtype() == TAbstractPDU.MPLS) {
-            } else if (paquete.getSubtype() == TAbstractPDU.MPLS_GOS) {
-            } else if (paquete.getSubtype() == TAbstractPDU.IPV4) {
-            } else if (paquete.getSubtype() == TAbstractPDU.IPV4_GOS) {
+    // FIX: This method does nothing. Check whether it is needed or not.
+    public void accountPacket(TAbstractPDU packet, boolean isIncomingPacket) {
+        if (isIncomingPacket) {
+            if (packet.getSubtype() == TAbstractPDU.MPLS) {
+            } else if (packet.getSubtype() == TAbstractPDU.MPLS_GOS) {
+            } else if (packet.getSubtype() == TAbstractPDU.IPV4) {
+            } else if (packet.getSubtype() == TAbstractPDU.IPV4_GOS) {
             }
-        } else if (paquete.getSubtype() == TAbstractPDU.MPLS) {
-        } else if (paquete.getSubtype() == TAbstractPDU.MPLS_GOS) {
-        } else if (paquete.getSubtype() == TAbstractPDU.IPV4) {
-        } else if (paquete.getSubtype() == TAbstractPDU.IPV4_GOS) {
+        } else if (packet.getSubtype() == TAbstractPDU.MPLS) {
+        } else if (packet.getSubtype() == TAbstractPDU.MPLS_GOS) {
+        } else if (packet.getSubtype() == TAbstractPDU.IPV4) {
+        } else if (packet.getSubtype() == TAbstractPDU.IPV4_GOS) {
         }
     }
 
     /**
-     * Este m�too permite acceder directamente a los ports del nodo.
+     * This method gets the ports set of this node.
      *
-     * @return El conjunto de ports del nodo.
+     * @return the ports set of this node.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -177,9 +182,9 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     }
 
     /**
-     * Este m�todo devuelve si el nodo tiene ports libres o no.
+     * This method checks whether the node has still free ports.
      *
-     * @return TRUE, si el nodo tiene ports libres. FALSE en caso contrario.
+     * @return TRUE, if the node has still free ports. Otherwise, FALSE.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -189,22 +194,23 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     }
 
     /**
-     * Este m�todo devuelve el peso del nodo que debe ser tenido en cuenta por
-     * los algoritmos de encaminamiento para el c�lculo de rutas.
+     * This method gets the weight to be used in routing algorithm. By design,
+     * ha receiver node has a weight of 0.
      *
-     * @return En el caso de un nodo receptor, siempre es cero.
+     * @return for this type of node, alsways 0.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
     public long getRoutingWeight() {
+        // FIX: use class constants instead of harcoded values.
         return 0;
     }
 
     /**
-     * Devuelve si el nodo est� bien configurado o no.
+     * This method gets whether the node is well configured or not.
      *
-     * @return TRUE, si el nodo esta bien configurado. FALSE en caso contrario.
+     * @return TRUE, if the node is well configured. Otherwise, FALSE.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -214,136 +220,145 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     }
 
     /**
-     * Este m�todo comprueba la configuraci�n del nodo y devuelve un c�digo
-     * expresando dicho estado.
+     * This method checks whether this node is configured correctly or not.
      *
-     * @param t Topolog�a donde est� el nodo.
-     * @param recfg TRUE, si se est� reconfigurando el nodo. FALSE si el nodo se
-     * est� configurando por primera vez.
-     * @return CORRECTA, si el nodo est� bien configurado. Un codigo de error en
-     * caso contrario.
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param topology Topology to wich this node belongs to.
+     * @param reconfiguration true, if the node is being re-configured.
+     * Otherwise, false.
+     * @return TReceiverNode.OK if the configuration is correct. Otherwise, an
+     * error code is returned. See public constants of error codes in this
+     * class.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public int validateConfig(TTopology t, boolean recfg) {
+    public int validateConfig(TTopology topology, boolean reconfiguration) {
+        // FIX: use class constants instead of harcoded values.
         this.setWellConfigured(false);
         if (this.getName().equals("")) {
-            return this.SIN_NOMBRE;
+            return TReceiverNode.UNNAMED;
         }
-        boolean soloEspacios = true;
+        boolean onlyBlankSpaces = true;
         for (int i = 0; i < this.getName().length(); i++) {
             if (this.getName().charAt(i) != ' ') {
-                soloEspacios = false;
+                onlyBlankSpaces = false;
             }
         }
-        if (soloEspacios) {
-            return this.SOLO_ESPACIOS;
+        if (onlyBlankSpaces) {
+            return TReceiverNode.ONLY_BLANK_SPACES;
         }
-        if (!recfg) {
-            TNode tp = t.getFirstNodeNamed(this.getName());
-            if (tp != null) {
-                return this.NOMBRE_YA_EXISTE;
+        if (!reconfiguration) {
+            TNode nodeAux1 = topology.getFirstNodeNamed(this.getName());
+            if (nodeAux1 != null) {
+                return TReceiverNode.NAME_ALREADY_EXISTS;
             }
         } else {
-            TNode tp = t.getFirstNodeNamed(this.getName());
-            if (tp != null) {
+            TNode nodeAux2 = topology.getFirstNodeNamed(this.getName());
+            if (nodeAux2 != null) {
                 if (this.topology.thereIsMoreThanANodeNamed(this.getName())) {
-                    return this.NOMBRE_YA_EXISTE;
+                    return TReceiverNode.NAME_ALREADY_EXISTS;
                 }
             }
         }
+        // FIX: use class constants instead of harcoded values.
         this.setWellConfigured(true);
         this.stats.activateStats(this.isGeneratingStats());
-        return this.CORRECTA;
+        return TReceiverNode.OK;
     }
 
     /**
-     * Este m�todo transforma el codigo de error de configuraci�n del nodo en un
-     * texto entendible y explicativo.
+     * This method generates an human-readable error message from a given error
+     * code specified as an argument.
      *
-     * @param e Codigo de error.
-     * @return Texto explicativo del codigo de error.
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param errorCode the error code to witch the text message has to be
+     * generated. One of the public constants defined in this class.
+     * @return an String explaining the error.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public String getErrorMessage(int e) {
-        switch (e) {
-            case SIN_NOMBRE:
+    public String getErrorMessage(int errorCode) {
+        switch (errorCode) {
+            case UNNAMED:
                 return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigReceptor.FALTA_NOMBRE"));
-            case NOMBRE_YA_EXISTE:
+            case NAME_ALREADY_EXISTS:
                 return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigReceptor.NOMBRE_REPETIDO"));
-            case SOLO_ESPACIOS:
+            case ONLY_BLANK_SPACES:
                 return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TNodoReceptor.NombreNoSoloEspacios"));
         }
         return ("");
     }
 
     /**
-     * Este m�todo transforma el nodo en una representaci�n textual volcable a
-     * disco.
+     * This method serializes the configuration parameters of this node into an
+     * string that can be saved into disk.
      *
-     * @return La representaci�n textual del nodo.
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return an String containing all the configuration parameters of this
+     * node.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public String marshall() {
-        String cadena = "#Receptor#";
-        cadena += this.getNodeID();
-        cadena += "#";
-        cadena += this.getName().replace('#', ' ');
-        cadena += "#";
-        cadena += this.getIPv4Address();
-        cadena += "#";
-        cadena += this.isSelected();
-        cadena += "#";
-        cadena += this.nameMustBeDisplayed();
-        cadena += "#";
-        cadena += this.isGeneratingStats();
-        cadena += "#";
-        cadena += this.getScreenPosition().x;
-        cadena += "#";
-        cadena += this.getScreenPosition().y;
-        cadena += "#";
-        return cadena;
+        // FIX: all harcoded values should be coded as class constants.
+        String serializedElement = "#Receptor#";
+        serializedElement += this.getNodeID();
+        serializedElement += "#";
+        serializedElement += this.getName().replace('#', ' ');
+        serializedElement += "#";
+        serializedElement += this.getIPv4Address();
+        serializedElement += "#";
+        serializedElement += this.isSelected();
+        serializedElement += "#";
+        serializedElement += this.nameMustBeDisplayed();
+        serializedElement += "#";
+        serializedElement += this.isGeneratingStats();
+        serializedElement += "#";
+        serializedElement += this.getScreenPosition().x;
+        serializedElement += "#";
+        serializedElement += this.getScreenPosition().y;
+        serializedElement += "#";
+        return serializedElement;
     }
 
     /**
-     * Este m�todo deserializa un nodo serializado pasado por par�metro,
-     * reconstruyendolo en memoria en la instancia actual.
+     * This method gets as an argument a serialized string that contains the
+     * needed parameters to configure an TReceiverNode and configure this node
+     * using them.
      *
-     * @param elemento Nodo receptor serializado.
-     * @return TRUE, si se ha podido deserializar correctamente. FALSE en caso
-     * contrario.
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param serializedReceiverNode A serialized representation of a
+     * TReceiverNode.
+     * @return true, whether the serialized string is correct and this node has
+     * been initialized correctly using the serialized values. Otherwise, false.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public boolean unMarshall(String elemento) {
-        String valores[] = elemento.split("#");
-        if (valores.length != 10) {
+    public boolean unMarshall(String serializedReceiverNode) {
+        // FIX: All fixed values in this method should be implemented as class
+        // constants instead of harcoded values.
+        String[] elementFields = serializedReceiverNode.split("#");
+        if (elementFields.length != 10) {
             return false;
         }
-        this.setNodeID(Integer.parseInt(valores[2]));
-        this.setName(valores[3]);
-        this.setIPv4Address(valores[4]);
-        this.setSelected(Integer.parseInt(valores[5]));
-        this.setShowName(Boolean.valueOf(valores[6]));
-        this.setGenerateStats(Boolean.valueOf(valores[7]));
-        int posX = Integer.parseInt(valores[8]);
-        int posY = Integer.parseInt(valores[9]);
+        this.setNodeID(Integer.parseInt(elementFields[2]));
+        this.setName(elementFields[3]);
+        this.setIPv4Address(elementFields[4]);
+        this.setSelected(Integer.parseInt(elementFields[5]));
+        this.setShowName(Boolean.valueOf(elementFields[6]));
+        this.setGenerateStats(Boolean.valueOf(elementFields[7]));
+        int posX = Integer.parseInt(elementFields[8]);
+        int posY = Integer.parseInt(elementFields[9]);
         this.setScreenPosition(new Point(posX + 24, posY + 24));
         return true;
     }
 
     /**
-     * Este m�todo permite acceder directamente a las estad�sticas del nodo.
+     * This node gets the stat of this node.
      *
-     * @return Las estad�sticas del nodo.
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The stats of this node.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public TStats getStats() {
@@ -351,50 +366,51 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     }
 
     /**
-     * Este m�todo permite establecer el n�mero de ports que deseamos para el
-     * nodo.
+     * This method sets the number of ports of this node.
      *
-     * @param num El n�mero de ports del nodo. Como mucho 8.
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param numPorts Number of ports of this node.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public synchronized void setPorts(int num) {
-        ports = new TFIFOPortSet(num, this);
+    public synchronized void setPorts(int numPorts) {
+        this.ports = new TFIFOPortSet(numPorts, this);
     }
 
     /**
-     * Este m�todo permite descartar nu paquete en el nodo y reflejar este
-     * descarte en las estadisticas.
+     * This method discard a packet from this node.
      *
-     * @param paquete paquete que deseamos descartar.
+     * @param packet packet to be discarded.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
-    public void discardPacket(TAbstractPDU paquete) {
-        // Un receptor no descarta paquetes, porque tiene un buffer 
-        // ilimitado y no analiza el tr�fico. Lo recibe y ya est�.
-        paquete = null;
+    public void discardPacket(TAbstractPDU packet) {
+        // In OpenSimMPLS a receiver node does not discard packets because has 
+        // an unlimited buffer and traffic is not analized, only received.
+        packet = null;
     }
 
     /**
-     * Este m�todo no hace nada en un Receptor. En un nodo activo permitir�
-     * solicitar a un nodo activo la retransmisi�n de un paquete.
+     * This method start the GPSRP protocol to request the retransmission of a
+     * lost packet part of wich has been recovered before discarding it. It does
+     * nothing in a receiver node.
      *
-     * @param paquete Paquete cuya retransmisi�n se est� solicitando.
-     * @param pSalida Puerto por el que se enviar� la solicitud.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param mplsPacket incomplete MPLS packet that want to be recovered
+     * locally.
+     * @param outgoingPortID Port of this node through wich the GPSRP
+     * retransmission request is going to be sent.
      * @since 2.0
      */
     @Override
-    public void runGPSRP(TMPLSPDU paquete, int pSalida) {
+    public void runGPSRP(TMPLSPDU mplsPacket, int outgoingPortID) {
     }
 
-    public static final int CORRECTA = 0;
-    public static final int SIN_NOMBRE = 1;
-    public static final int NOMBRE_YA_EXISTE = 2;
-    public static final int SOLO_ESPACIOS = 3;
+    public static final int OK = 0;
+    public static final int UNNAMED = 1;
+    public static final int NAME_ALREADY_EXISTS = 2;
+    public static final int ONLY_BLANK_SPACES = 3;
 
     private TReceiverStats stats;
 }

@@ -260,7 +260,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     configReceptor.setShowName(verNombre.isSelected());
     configReceptor.setGenerateStats(this.selectorGenerarEstadisticaAvanzada.isSelected());
     int error = configReceptor.validateConfig(topo, this.reconfigurando);
-    if (error != TReceiverNode.CORRECTA) {
+    if (error != TReceiverNode.OK) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
         va.mostrarMensaje(configReceptor.getErrorMessage(error));
         va.show();

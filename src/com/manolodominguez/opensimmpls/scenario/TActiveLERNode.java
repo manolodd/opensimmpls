@@ -2400,6 +2400,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      */
     @Override
     public int validateConfig(TTopology topology, boolean reconfiguration) {
+        // FIX: use class constants instead of harcoded values.
         this.setWellConfigured(false);
         if (this.getName().equals("")) {
             return TActiveLERNode.UNNAMED;
@@ -2426,6 +2427,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 }
             }
         }
+        // FIX: use class constants instead of harcoded values.
         this.setWellConfigured(true);
         return TActiveLERNode.OK;
     }
