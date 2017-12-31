@@ -46,7 +46,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @param topology Topology the node belongs to.
      */
     public TNode(int nodeID, String ipv4Address, TLongIDGenerator identifierGenerator, TTopology topology) {
-        super(TTopologyElement.NODO, identifierGenerator);
+        super(TTopologyElement.NODE, identifierGenerator);
         // FIX: Do not use harcoded values. Use class constants in all cases.
         this.screenPosition = new Point(0, 0);
         this.nodeID = nodeID;

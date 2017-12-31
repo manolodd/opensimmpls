@@ -27,12 +27,12 @@ public class TSEBrokenLink extends TSimulationEvent {
     /**
      * Crea una nueva instancia de TESEnlaceCaido
      * @since 2.0
-     * @param inst Instante de tiempo en que se produjo el evento.
-     * @param emisor Enlace que emite el evento.
-     * @param id Identificador �nico del evento.
+     * @param timeInstant Instante de tiempo en que se produjo el evento.
+     * @param source Enlace que emite el evento.
+     * @param eventID Identificador �nico del evento.
      */
-    public TSEBrokenLink(Object emisor, long id, long inst) {
-        super(emisor, id, inst);
+    public TSEBrokenLink(Object source, long eventID, long timeInstant) {
+        super(source, eventID, timeInstant);
     }
 
  
@@ -41,8 +41,9 @@ public class TSEBrokenLink extends TSimulationEvent {
      * @return El subtipo del evento.
      * @since 2.0
      */    
+    @Override
     public int getSubtype() {
-        return super.LINK_BROKEN;
+        return TSimulationEvent.LINK_BROKEN;
     }
 
     /**
@@ -58,7 +59,7 @@ public class TSEBrokenLink extends TSimulationEvent {
         if (et.getElementType() == TTopologyElement.LINK) {
             ent = (TLink) et;
             return ent.getName();
-        } else if (et.getElementType() == TTopologyElement.NODO) {
+        } else if (et.getElementType() == TTopologyElement.NODE) {
             nt = (TNode) et;
             return nt.getName();
         }
@@ -75,7 +76,7 @@ public class TSEBrokenLink extends TSimulationEvent {
         et = super.obtenerFuente();
         if (et.getElementType() == TTopologyElement.LINK) {
             return ("Enlace ");
-        } else if (et.getElementType() == TTopologyElement.NODO) {
+        } else if (et.getElementType() == TTopologyElement.NODE) {
             return ("Nodo ");
         }
         return ("");
@@ -86,6 +87,7 @@ public class TSEBrokenLink extends TSimulationEvent {
      * @return El texto explicando el evento.
      * @since 2.0
      */    
+    @Override
     public String toString() {
         String cad = "";
         cad += "[";

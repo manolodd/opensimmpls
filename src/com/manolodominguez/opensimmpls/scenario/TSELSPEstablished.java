@@ -57,7 +57,7 @@ public class TSELSPEstablished extends TSimulationEvent {
         if (et.getElementType() == TTopologyElement.LINK) {
             ent = (TLink) et;
             return ent.getName();
-        } else if (et.getElementType() == TTopologyElement.NODO) {
+        } else if (et.getElementType() == TTopologyElement.NODE) {
             nt = (TNode) et;
             return nt.getName();
         }
@@ -74,7 +74,7 @@ public class TSELSPEstablished extends TSimulationEvent {
         et = super.obtenerFuente();
         if (et.getElementType() == TTopologyElement.LINK) {
             return ("Enlace ");
-        } else if (et.getElementType() == TTopologyElement.NODO) {
+        } else if (et.getElementType() == TTopologyElement.NODE) {
             return ("Nodo ");
         }
         return ("");

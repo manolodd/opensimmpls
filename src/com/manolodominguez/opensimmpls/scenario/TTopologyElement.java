@@ -308,7 +308,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * Esta constante indica que el elemento es un nodo.
      * @since 2.0
      */    
-    public static final int NODO = 1;
+    public static final int NODE = 1;
 
     private int tipoElemento;
     private boolean eliminarDelReloj;

@@ -920,7 +920,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         if (evt.getButton() == MouseEvent.BUTTON1) {
             TTopologyElement et = escenario.getTopology().obtenerElementoEnPosicion(evt.getPoint());
             if (et != null) {
-                if (et.getElementType() == TTopologyElement.NODO) {
+                if (et.getElementType() == TTopologyElement.NODE) {
                     TNode nt = (TNode) et;
                     if (nt.getPorts().isArtificiallyCongested()) {
                         nt.getPorts().setArtificiallyCongested(false);
@@ -1069,7 +1069,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             TTopologyElement et = topo.obtenerElementoEnPosicion(evt.getPoint());
             if (et != null) {
                 this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                if (et.getElementType() == TTopologyElement.NODO) {
+                if (et.getElementType() == TTopologyElement.NODE) {
                     TNode nt = (TNode) et;
                     nodoSeleccionado = nt;
                     if (nodoSeleccionado != null) {
@@ -1094,7 +1094,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
      */    
     private void clicEnPropiedadesPopUpDisenioElemento(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPropiedadesPopUpDisenioElemento
         if (elementoDisenioClicDerecho != null) {
-            if (elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODO) {
+            if (elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
                 TNode nt = (TNode) elementoDisenioClicDerecho;
                 if (nt.getNodeType() == TNode.SENDER) {
                     JVentanaEmisor ve = new JVentanaEmisor(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
@@ -1393,7 +1393,7 @@ private void clicEnPopUpDisenioEliminar(java.awt.event.ActionEvent evt) {//GEN-F
     boolean respuesta = vb.obtenerRespuesta();
     if (respuesta) {
         if (elementoDisenioClicDerecho != null) {
-            if (elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODO) {
+            if (elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
                 TNode nt = (TNode) elementoDisenioClicDerecho;
                 if (nt.getNodeType() == TNode.RECEIVER) {
                     if (this.escenario.getTopology().hayTraficoDirigidoAMi((TReceiverNode) nt)) {
@@ -1432,7 +1432,7 @@ private void clicEnPopUpDisenioEliminar(java.awt.event.ActionEvent evt) {//GEN-F
  */
 private void clicEnPopUpDisenioVerNombre(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioVerNombre
     if (elementoDisenioClicDerecho != null) {
-        if (elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODO) {
+        if (elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
             TNode nt = (TNode) elementoDisenioClicDerecho;
             nt.setShowName(dVerNombreMenuItem.isSelected());
             elementoDisenioClicDerecho = null;
@@ -1459,7 +1459,7 @@ private void clicDerechoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
             diseFondoPopUp.show(this, evt.getX()+7, evt.getY()-27);
         }
         else {
-            if (et.getElementType() == TTopologyElement.NODO) {
+            if (et.getElementType() == TTopologyElement.NODE) {
                 TNode nt = (TNode) et;
                 dVerNombreMenuItem.setSelected(nt.nameMustBeDisplayed());
                 elementoDisenioClicDerecho = et;
@@ -1591,7 +1591,7 @@ private void ratonSobrePanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIR
     TTopologyElement et = topo.obtenerElementoEnPosicion(evt.getPoint());
     if (et != null) {
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        if (et.getElementType() == TTopologyElement.NODO) {
+        if (et.getElementType() == TTopologyElement.NODE) {
             TNode nt = (TNode) et;
             if (nt.getPorts().isArtificiallyCongested()) {
                 panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.Congestion") +nt.getPorts().getCongestionLevel()+ java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.POrcentaje")+java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija.paraDejarDeCongestionar"));
@@ -1629,7 +1629,7 @@ private void ratonSobrePanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:
     TTopologyElement et = topo.obtenerElementoEnPosicion(evt.getPoint());
     if (et != null) {
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        if (et.getElementType() == TTopologyElement.NODO) {
+        if (et.getElementType() == TTopologyElement.NODE) {
             TNode nt = (TNode) et;
             panelDisenio.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.PanelDisenio.IP") + nt.getIPv4Address());
         } else if (et.getElementType() == TTopologyElement.LINK) {
