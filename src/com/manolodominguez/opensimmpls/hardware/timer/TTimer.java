@@ -29,7 +29,7 @@ import com.manolodominguez.opensimmpls.scenario.TReceiverNode;
 import com.manolodominguez.opensimmpls.scenario.TSenderNode;
 import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
 import com.manolodominguez.opensimmpls.utils.EIDGeneratorOverflow;
-import com.manolodominguez.opensimmpls.utils.TProgressEventListener;
+import com.manolodominguez.opensimmpls.ui.utils.TProgressEventListener;
 import com.manolodominguez.opensimmpls.utils.TLongIDGenerator;
 
 /**

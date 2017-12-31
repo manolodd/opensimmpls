@@ -22,12 +22,12 @@ package com.manolodominguez.opensimmpls.utils;
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  */
-public class EIPOverflow extends Exception {
+public class EIPv4Overflow extends Exception {
     
     /** Este es el constructor de la clase. Crea una nueva instancia de EDesbordeDeIP.
      * @since 2.0
      */
-    public EIPOverflow() {
+    public EIPv4Overflow() {
     }
     
     /** Devuelve una cadena de texto explicando el motivo de la excepci�n.

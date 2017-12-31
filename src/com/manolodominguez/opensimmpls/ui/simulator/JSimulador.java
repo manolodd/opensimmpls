@@ -28,7 +28,7 @@ import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaBooleana;
 import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaComentario;
 import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaError;
 import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
-import com.manolodominguez.opensimmpls.utils.JOSMFilter;
+import com.manolodominguez.opensimmpls.ui.utils.JOSMFilter;
 import com.manolodominguez.opensimmpls.utils.TIDGenerator;
 
 /**

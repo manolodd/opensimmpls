@@ -123,14 +123,14 @@ public class TIPv4AddressGenerator {
     /** Este m�todo obtiene una direcci�n IP que ser� distinta a todas las ya generadas
      * por el mismo y distinta a todas las que les queda por generar. La IP pertenecer�
      * al rango 10.0.0.1 - 10.255.255.254.
-     * @throws EIPOverflow Cuando el generador sobrepasa el rango de direcciones IP para el que est�
+     * @throws EIPv4Overflow Cuando el generador sobrepasa el rango de direcciones IP para el que est�
  preparado, se genera un excepci�n EIPOverflow cada vez que se llama a este
  m�todo, indicando que el generador no puede cumplir sus funci�n.
      * @return Devuelve una representaci�n textual de la direcci�n IP generada, por ejemplo
      * "10.32.125.254".
      * @since 2.0
      */
-    public String obtenerIP() throws EIPOverflow {
+    public String obtenerIP() throws EIPv4Overflow {
         if (octeto4 < 255) {
             octeto4++;
         } else {
@@ -143,7 +143,7 @@ public class TIPv4AddressGenerator {
                     octeto3 = 0;
                     octeto2++;
                 } else {
-                    throw new EIPOverflow();
+                    throw new EIPv4Overflow();
                 }
             }
         }

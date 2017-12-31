@@ -54,8 +54,8 @@ import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaLSR;
 import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaLSRA;
 import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaReceptor;
 import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
-import com.manolodominguez.opensimmpls.utils.JOSMFilter;
-import com.manolodominguez.opensimmpls.utils.TProgressEventListener;
+import com.manolodominguez.opensimmpls.ui.utils.JOSMFilter;
+import com.manolodominguez.opensimmpls.ui.utils.TProgressEventListener;
 
 /**
  * Esta clase implementa una ventana que save� un escenario completo y dar�
