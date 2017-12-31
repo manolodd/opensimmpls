@@ -15,7 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.hardware.timer;
 
-import com.manolodominguez.opensimmpls.utils.TOpenSimMPLSEvent;
+import com.manolodominguez.opensimmpls.scenario.TOpenSimMPLSEvent;
 
 /**
  * This class implements a timer event that will be used to govern and

@@ -16,7 +16,7 @@
 package com.manolodominguez.opensimmpls.scenario;
 
 import com.manolodominguez.opensimmpls.hardware.timer.TTimer;
-import com.manolodominguez.opensimmpls.utils.TIPGenerator;
+import com.manolodominguez.opensimmpls.utils.TIPv4AddressGenerator;
 import com.manolodominguez.opensimmpls.utils.TMonitor;
 import com.manolodominguez.opensimmpls.utils.TIDGenerator;
 import com.manolodominguez.opensimmpls.utils.TLongIDGenerator;
@@ -43,7 +43,7 @@ public class TTopology {
         escenarioPadre = e;
         IDEvento = new TLongIDGenerator();
         generaIdentificador = new TIDGenerator();
-        generadorIP = new TIPGenerator();
+        generadorIP = new TIPv4AddressGenerator();
         cerrojoFloyd = new TMonitor();
         cerrojoRABAN = new TMonitor();
     }
@@ -685,7 +685,7 @@ public class TTopology {
      * @param gip Generador de direcciones IP de la topolog�a.
      * @since 2.0
      */    
-    public void ponerGeneradorIP(TIPGenerator gip) {
+    public void ponerGeneradorIP(TIPv4AddressGenerator gip) {
         generadorIP = gip;
     }
 
@@ -694,7 +694,7 @@ public class TTopology {
      * @return El generador de direcciones IP de la topolog�a.
      * @since 2.0
      */    
-    public TIPGenerator getIPv4AddressGenerator() {
+    public TIPv4AddressGenerator getIPv4AddressGenerator() {
         return generadorIP;
     }
 
@@ -1072,7 +1072,7 @@ public class TTopology {
     private TScenario escenarioPadre;
     private TLongIDGenerator IDEvento;
     private TIDGenerator generaIdentificador;
-    private TIPGenerator generadorIP;
+    private TIPv4AddressGenerator generadorIP;
     private TMonitor cerrojoFloyd;
     private TMonitor cerrojoRABAN;
 }

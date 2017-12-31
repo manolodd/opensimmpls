@@ -36,7 +36,7 @@ import com.manolodominguez.opensimmpls.scenario.TTopology;
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
-import com.manolodominguez.opensimmpls.utils.TOpenSimMPLSEvent;
+import com.manolodominguez.opensimmpls.scenario.TOpenSimMPLSEvent;
 import com.manolodominguez.opensimmpls.utils.TMonitor;
 
 /**
@@ -129,7 +129,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
         String texto = "";
         texto += this.ticActual + ": ";
         if (this.streamTraza != null) {
-            if (es.getType() == TOpenSimMPLSEvent.SIMULACION) {
+            if (es.getType() == TOpenSimMPLSEvent.SIMULATION) {
                 texto += es.toString();
                 this.streamTraza.println(texto);
             }
@@ -446,11 +446,11 @@ public class JSimulationPanel extends javax.swing.JPanel {
     public void addEvent(TSimulationEvent evt) {
         cerrojo.lock();
         this.enviarATraza(evt);
-        if (evt.obtenerInstante() <= ticActual) {
+        if (evt.getInstant() <= ticActual) {
             bufferEventos.add(evt);
             cerrojo.unLock();
         } else {
-            ticActual = evt.obtenerInstante();
+            ticActual = evt.getInstant();
             Iterator it = this.bufferParaSimular.iterator();
             TSimulationEvent evento = null;
             while (it.hasNext()) {

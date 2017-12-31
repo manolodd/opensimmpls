@@ -21,13 +21,13 @@ package com.manolodominguez.opensimmpls.utils;
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  */
-public class TIPGenerator {
+public class TIPv4AddressGenerator {
     
     /** Este m�todo es el constructor de la clase. Permite generar instancias de
      * TGeneradorDeIP.
      * @since 2.0
      */
-    public TIPGenerator() {
+    public TIPv4AddressGenerator() {
         octeto2 = 0;
         octeto3 = 0;
         octeto4 = 0;

@@ -15,8 +15,6 @@
  */
 package com.manolodominguez.opensimmpls.scenario;
 
-import com.manolodominguez.opensimmpls.utils.TOpenSimMPLSEvent;
-
 /**
  * Esta clase es la superclase de todos los eventos de simulaci�n del simulador.
  * Todos los eventos e simulaci�n deben heredar e implementar los m�todos
@@ -44,7 +42,7 @@ public abstract class TSimulationEvent extends TOpenSimMPLSEvent {
      * @since 2.0
      */    
     public int getType() {
-        return super.SIMULACION;
+        return super.SIMULATION;
     }
 
     /**
