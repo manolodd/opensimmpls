@@ -66,7 +66,7 @@ public class TOSMLoader {
     public boolean cargar(File inputFile) {
         if (this.fileIsValid(inputFile)) {
             String stringAux = "";
-            this.scenario.setFile(inputFile);
+            this.scenario.setScenarioFile(inputFile);
             this.scenario.setSaved(true);
             this.scenario.setModified(false);
             try {

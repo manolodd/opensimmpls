@@ -15,6 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.scenario;
 
+import com.manolodominguez.opensimmpls.scenario.simulationevents.ESimulationSingleSubscriber;
 import com.manolodominguez.opensimmpls.hardware.timer.TTimer;
 import com.manolodominguez.opensimmpls.utils.TIPv4AddressGenerator;
 import com.manolodominguez.opensimmpls.utils.TMonitor;
@@ -570,7 +571,7 @@ public class TTopology {
      * @return El reloj principal de la topolog�a.
      * @since 2.0
      */    
-    public TTimer obtenerReloj() {
+    public TTimer getTimer() {
         return relojTopologia;
     }
 

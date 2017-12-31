@@ -15,6 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.scenario;
 
+import com.manolodominguez.opensimmpls.scenario.simulationevents.ESimulationSingleSubscriber;
 import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEvent;
 import com.manolodominguez.opensimmpls.hardware.timer.TTimerEvent;
 import com.manolodominguez.opensimmpls.hardware.timer.ITimerEventListener;

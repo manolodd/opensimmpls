@@ -59,19 +59,23 @@ import com.manolodominguez.opensimmpls.ui.utils.TProgressEventListener;
 
 /**
  * Esta clase implementa una ventana que save� un escenario completo y dar�
- soporte a la simulaci�n, an�lisis y dise�o de la topology.
+ * soporte a la simulaci�n, an�lisis y dise�o de la topology.
+ *
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
 public class JVentanaHija extends javax.swing.JInternalFrame {
-    
-    /** Este m�todo es el constructor de la clase. Crea una nueva instancia de
+
+    /**
+     * Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * JVentanaHija.
+     *
      * @since 2.0
-     * @param padre Ventana padre dentro de la cual se va a ubicar este ventana hija.
-     * @param di Dispensador de im�genes de donde se obtendr�n todas las im�genes que se
-     * necesiten.
+     * @param padre Ventana padre dentro de la cual se va a ubicar este ventana
+     * hija.
+     * @param di Dispensador de im�genes de donde se obtendr�n todas las
+     * im�genes que se necesiten.
      */
     public JVentanaHija(JSimulador padre, TImagesBroker di) {
         dispensadorDeImagenes = di;
@@ -79,16 +83,18 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         initComponents();
         initComponents2();
     }
-    
+
     /**
      * Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * JVentanaHija.
+     *
      * @since 2.0
-     * @param titulo T�tulo que deseamos que tenga la ventana hija. Se usar� tambi�n para save el
- escenario en disco.
-     * @param padre Ventana padre dentro de la cual se va a ubicar este ventana hija.
-     * @param di Dispensador de im�genes de donde se obtendr�n todas las im�genes que se
-     * necesiten.
+     * @param titulo T�tulo que deseamos que tenga la ventana hija. Se usar�
+     * tambi�n para save el escenario en disco.
+     * @param padre Ventana padre dentro de la cual se va a ubicar este ventana
+     * hija.
+     * @param di Dispensador de im�genes de donde se obtendr�n todas las
+     * im�genes que se necesiten.
      */
     public JVentanaHija(JSimulador padre, TImagesBroker di, java.lang.String titulo) {
         dispensadorDeImagenes = di;
@@ -97,17 +103,19 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         initComponents2();
         this.setTitle(titulo);
     }
-    
+
     /**
      * Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * JVentanaHija y la inicializa con los valores de un nodo existente.
-     * @param padre Ventana padre dentro de la cual se va a ubicar este ventana hija.
-     * @param di Dispensador de im�genes de donde se obtendr�n todas las im�genes que se
-     * necesiten.
-     * @param esc Escenario ya creado al que se va a asociar esta ventana hija y que contendr� un
-     * escenario y todos sus datos.
+     *
+     * @param padre Ventana padre dentro de la cual se va a ubicar este ventana
+     * hija.
+     * @param di Dispensador de im�genes de donde se obtendr�n todas las
+     * im�genes que se necesiten.
+     * @param esc Escenario ya creado al que se va a asociar esta ventana hija y
+     * que contendr� un escenario y todos sus datos.
      * @since 2.0
-     */    
+     */
     public JVentanaHija(JSimulador padre, TImagesBroker di, TScenario esc) {
         dispensadorDeImagenes = di;
         VentanaPadre = padre;
@@ -115,18 +123,20 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         initComponents2();
         escenario = esc;
     }
-    
-    /** Este m�todo se encarga de start los atributos de la clase que no hayan sido
- aun iniciados por NetBeans.
+
+    /**
+     * Este m�todo se encarga de start los atributos de la clase que no hayan
+     * sido aun iniciados por NetBeans.
+     *
      * @since 2.0
      */
     public void initComponents2() {
         panelDisenio.ponerDispensadorDeImagenes(dispensadorDeImagenes);
         panelSimulacion.ponerDispensadorDeImagenes(dispensadorDeImagenes);
-        Dimension tamPantalla= VentanaPadre.getSize();
-        this.setSize((tamPantalla.width/2), (tamPantalla.height/2));
-        Dimension tamFrame=this.getSize();
-        this.setLocation((tamPantalla.width-tamFrame.width)/2, (tamPantalla.height-tamFrame.height)/2);
+        Dimension tamPantalla = VentanaPadre.getSize();
+        this.setSize((tamPantalla.width / 2), (tamPantalla.height / 2));
+        Dimension tamFrame = this.getSize();
+        this.setLocation((tamPantalla.width - tamFrame.width) / 2, (tamPantalla.height - tamFrame.height) / 2);
         escenario = new TScenario();
         panelDisenio.ponerTopologia(escenario.getTopology());
         panelSimulacion.ponerTopologia(escenario.getTopology());
@@ -134,18 +144,18 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         elementoDisenioClicDerecho = null;
         aProgresoGeneracion = new TProgressEventListener(barraDeProgreso);
         try {
-            escenario.getTopology().obtenerReloj().addProgressEventListener(aProgresoGeneracion);
+            escenario.getTopology().getTimer().addProgressEventListener(aProgresoGeneracion);
         } catch (EProgressEventGeneratorOnlyAllowASingleListener e) {
             e.printStackTrace();
         }
         this.mlsPorTic.setValue(1);
-        this.pasoNs.setMaximum(duracionMs.getValue()*1000000 + this.duracionNs.getValue());
+        this.pasoNs.setMaximum(duracionMs.getValue() * 1000000 + this.duracionNs.getValue());
         this.etiquetaMlsPorTic.setText(this.mlsPorTic.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija.Simulacion.EtiquetaMsTic"));
         this.etiquetaDuracionMs.setText(this.duracionMs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija._ms."));
         this.etiquetaDuracionNs.setText(this.duracionNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija._ns."));
         this.etiquetaPasoNs.setText(this.pasoNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija_ns."));
         controlTemporizacionDesactivado = false;
-        escenario.ponerPanelSimulacion(this.panelSimulacion);
+        escenario.getSimulation().setSimulationPanel(this.panelSimulacion);
         panelGrafico1 = null;
         panelGrafico2 = null;
         panelGrafico3 = null;
@@ -159,10 +169,12 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         grafico5 = null;
         grafico6 = null;
     }
-    
-    /** Este m�todo es llamado desde el constructor para actualizar la mayor parte de
-     * los atributos de la clase que tienen que ver con la interfaz de usuario. Es un
-     * m�todo creado por NetBeans automaticamente.
+
+    /**
+     * Este m�todo es llamado desde el constructor para actualizar la mayor
+     * parte de los atributos de la clase que tienen que ver con la interfaz de
+     * usuario. Es un m�todo creado por NetBeans automaticamente.
+     *
      * @since 2.0
      */
     private void initComponents() {//GEN-BEGIN:initComponents
@@ -935,12 +947,10 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                         ent.setAsBrokenLink(true);
                     }
                 }
+            } else if (this.panelSimulacion.obtenerMostrarLeyenda()) {
+                this.panelSimulacion.ponerMostrarLeyenda(false);
             } else {
-                    if (this.panelSimulacion.obtenerMostrarLeyenda()) {
-                        this.panelSimulacion.ponerMostrarLeyenda(false);
-                    } else {
-                        this.panelSimulacion.ponerMostrarLeyenda(true);
-                    }
+                this.panelSimulacion.ponerMostrarLeyenda(true);
             }
         } else {
             elementoDisenioClicDerecho = null;
@@ -989,7 +999,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             gbc.insets = new Insets(10, 5, 10, 5);
             gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
             gbc.anchor = java.awt.GridBagConstraints.NORTH;
-            this.panelFijo.add(this.areaEstadisticasDescripcion,gbc);
+            this.panelFijo.add(this.areaEstadisticasDescripcion, gbc);
             gbc = new java.awt.GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 3;
@@ -1012,25 +1022,30 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_clicEnSeleccionalElementoEstadistica
 
     /**
-     * Este m�todo se llama cuando se arrastra el rat�n sobre el panel de dise�o. Si se
-     * hace sobre un elemento que estaba seleccionado, el resultado es que ese elemento
-     * se mueve donde vaya el cursor del rat�n.
+     * Este m�todo se llama cuando se arrastra el rat�n sobre el panel de
+     * dise�o. Si se hace sobre un elemento que estaba seleccionado, el
+     * resultado es que ese elemento se mueve donde vaya el cursor del rat�n.
+     *
      * @param evt El evento que provoca la llamada.
      * @since 2.0
-     */    
+     */
     private void ratonArrastradoEnPanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonArrastradoEnPanelSimulacion
-    if (evt.getModifiersEx() == java.awt.event.InputEvent.BUTTON1_DOWN_MASK) {
+        if (evt.getModifiersEx() == java.awt.event.InputEvent.BUTTON1_DOWN_MASK) {
             if (nodoSeleccionado != null) {
                 TTopology topo = escenario.getTopology();
                 Point p2 = evt.getPoint();
-                if (p2.x < 0)
+                if (p2.x < 0) {
                     p2.x = 0;
-                if (p2.x > panelDisenio.getSize().width)
+                }
+                if (p2.x > panelDisenio.getSize().width) {
                     p2.x = panelDisenio.getSize().width;
-                if (p2.y < 0)
+                }
+                if (p2.y < 0) {
                     p2.y = 0;
-                if (p2.y > panelDisenio.getSize().height)
+                }
+                if (p2.y > panelDisenio.getSize().height) {
                     p2.y = panelDisenio.getSize().height;
+                }
                 nodoSeleccionado.setScreenPosition(new Point(p2.x, p2.y));
                 panelSimulacion.repaint();
                 this.escenario.setModified(true);
@@ -1039,12 +1054,13 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_ratonArrastradoEnPanelSimulacion
 
     /**
-     * Este m�todo se llama cuando se libera un bot�n del rat�n estando en el panel de
-     * simulaci�n. Si se hace sobre un elemento que estaba seleccionado, deja de
-     * estarlo.
+     * Este m�todo se llama cuando se libera un bot�n del rat�n estando en el
+     * panel de simulaci�n. Si se hace sobre un elemento que estaba
+     * seleccionado, deja de estarlo.
+     *
      * @param evt El evento que genera la llamada.
      * @since 2.0
-     */    
+     */
     private void ratonSoltadoEnPanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSoltadoEnPanelSimulacion
         if (evt.getButton() == MouseEvent.BUTTON1) {
             if (nodoSeleccionado != null) {
@@ -1060,9 +1076,10 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
      * Este m�todo se llama cuando se presiona un bot�n del rat�n en el panel de
      * simulaci�n. Si se hace sobre un elemento de la topolog�a, lo marca como
      * seleccionado.
+     *
      * @since 2.0
      * @param evt El evento que provoca la llamada.
-     */    
+     */
     private void clicEnPanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnPanelSimulacion
         if (evt.getButton() == MouseEvent.BUTTON1) {
             TTopology topo = escenario.getTopology();
@@ -1082,16 +1099,18 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                 this.setToolTipText(null);
             }
             panelSimulacion.repaint();
-        }       
+        }
     }//GEN-LAST:event_clicEnPanelSimulacion
-    
+
     /**
-     * Este m�todo se llama cuando se hace clic derecho sobre un elemento en la ventana
-     * de dise�o y se selecciona la opci�n "Propiedades" del men� emergente. Se encarga
-     * de mostrar en pantalla la ventana de configuraci�n del elemento en cuesti�n.
+     * Este m�todo se llama cuando se hace clic derecho sobre un elemento en la
+     * ventana de dise�o y se selecciona la opci�n "Propiedades" del men�
+     * emergente. Se encarga de mostrar en pantalla la ventana de configuraci�n
+     * del elemento en cuesti�n.
+     *
      * @since 2.0
      * @param evt El evento que provoca la llamada.
-     */    
+     */
     private void clicEnPropiedadesPopUpDisenioElemento(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPropiedadesPopUpDisenioElemento
         if (elementoDisenioClicDerecho != null) {
             if (elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
@@ -1147,10 +1166,12 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             this.escenario.setModified(true);
         }
     }//GEN-LAST:event_clicEnPropiedadesPopUpDisenioElemento
-    
-    /** Este m�todo se encarga de controlar que la duraci�n de la simulaci�on y del paso
-     * de la misma sea acorde con los delays de los enlaces. Adem�s se encarga de la
-     * actualizaci�n de la interfaz en esos lugares.
+
+    /**
+     * Este m�todo se encarga de controlar que la duraci�n de la simulaci�on y
+     * del paso de la misma sea acorde con los delays de los enlaces. Adem�s se
+     * encarga de la actualizaci�n de la interfaz en esos lugares.
+     *
      * @since 2.0
      */
     public void controlarParametrosTemporales() {
@@ -1160,7 +1181,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             } else {
                 duracionNs.setMinimum(0);
             }
-            int duracionTotal = duracionMs.getValue()*1000000 + this.duracionNs.getValue();
+            int duracionTotal = duracionMs.getValue() * 1000000 + this.duracionNs.getValue();
             int minDelay = escenario.getTopology().obtenerMinimoDelay();
             if (minDelay < duracionTotal) {
                 pasoNs.setMaximum(minDelay);
@@ -1174,9 +1195,11 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             escenario.getSimulation().setStep(pasoNs.getValue());
         }
     }
-    
-    /** Este m�todo se llama autom�ticamente cuando se cambia la duraci�n en
+
+    /**
+     * Este m�todo se llama autom�ticamente cuando se cambia la duraci�n en
      * nanosegundos del paso de simulaci�n.
+     *
      * @since 2.0
      * @param evt Evento que hace que el m�todo salte.
      */
@@ -1185,41 +1208,50 @@ private void clicEnPasoNs(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_
     this.escenario.setModified(true);
 }//GEN-LAST:event_clicEnPasoNs
 
-/** Este m�todo se llama autom�ticamente cuando se cambia la duraci�n de la
- * simulaci�n en nanosegundos.
- * @since 2.0
- * @param evt Evento que hace que se ejecute este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando se cambia la duraci�n de la
+     * simulaci�n en nanosegundos.
+     *
+     * @since 2.0
+     * @param evt Evento que hace que se ejecute este m�todo.
+     */
 private void clicEnDuracionNs(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_clicEnDuracionNs
     controlarParametrosTemporales();
     this.escenario.setModified(true);
 }//GEN-LAST:event_clicEnDuracionNs
 
-/** Este m�todo se llama autom�ticamente cuando se cambia la duraci�n de la
- * simulaci�n en milisegundos.
- * @since 2.0
- * @param evt Evento que produce que se ejecute este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando se cambia la duraci�n de la
+     * simulaci�n en milisegundos.
+     *
+     * @since 2.0
+     * @param evt Evento que produce que se ejecute este m�todo.
+     */
 private void clicEnDuracionMs(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_clicEnDuracionMs
     controlarParametrosTemporales();
     this.escenario.setModified(true);
 }//GEN-LAST:event_clicEnDuracionMs
 
-/** Este m�todo se llama autom�ticamente cuando se cambia el tiempo que se detendr�
- * la simulaci�n entre un paso de simulaci�n y otro.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando se cambia el tiempo que se
+     * detendr� la simulaci�n entre un paso de simulaci�n y otro.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void mlsPorTicCambiado(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mlsPorTicCambiado
     this.etiquetaMlsPorTic.setText(this.mlsPorTic.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija.Simulacion.etiquetaMsTic"));
     panelSimulacion.ponerMlsPorTic(this.mlsPorTic.getValue());
 }//GEN-LAST:event_mlsPorTicCambiado
 
-/** Este m�todo se ejecuta cuando se hace clic en la opci�n de ocultar el nombre de
- * todos los enlaces, en el men� emergente de la pantalla de Disenio.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se ejecuta cuando se hace clic en la opci�n de ocultar el
+     * nombre de todos los enlaces, en el men� emergente de la pantalla de
+     * Disenio.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void clicEnPopUpDisenioFondoOcultarNombreEnlaces(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoOcultarNombreEnlaces
     Iterator it = escenario.getTopology().getLinksIterator();
     TLink enlaceAux;
@@ -1231,11 +1263,13 @@ private void clicEnPopUpDisenioFondoOcultarNombreEnlaces(java.awt.event.ActionEv
     this.escenario.setModified(true);
 }//GEN-LAST:event_clicEnPopUpDisenioFondoOcultarNombreEnlaces
 
-/** Este m�todo se ejecuta cuando se hace clic en la opci�n de ver el nombre de
- * todos los enlaces, en el men� emergente de la pantalla de Disenio.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se ejecuta cuando se hace clic en la opci�n de ver el nombre
+     * de todos los enlaces, en el men� emergente de la pantalla de Disenio.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void clicEnPopUpDisenioFondoVerNombreEnlaces(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoVerNombreEnlaces
     Iterator it = escenario.getTopology().getLinksIterator();
     TLink enlaceAux;
@@ -1247,11 +1281,14 @@ private void clicEnPopUpDisenioFondoVerNombreEnlaces(java.awt.event.ActionEvent 
     this.escenario.setModified(true);
 }//GEN-LAST:event_clicEnPopUpDisenioFondoVerNombreEnlaces
 
-/** Este m�todo se ejecuta cuando se hace clic en la opci�n de ocultar el nombre de
- * todos los nodos, en el men� emergente de la pantalla de Disenio.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se ejecuta cuando se hace clic en la opci�n de ocultar el
+     * nombre de todos los nodos, en el men� emergente de la pantalla de
+     * Disenio.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void clicEnPopUpDisenioFondoOcultarNombreNodos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoOcultarNombreNodos
     Iterator it = escenario.getTopology().getNodesIterator();
     TNode nodoAux;
@@ -1263,11 +1300,13 @@ private void clicEnPopUpDisenioFondoOcultarNombreNodos(java.awt.event.ActionEven
     this.escenario.setModified(true);
 }//GEN-LAST:event_clicEnPopUpDisenioFondoOcultarNombreNodos
 
-/** Este m�todo se ejecuta cuando se hace clic en la opci�n de ver el nombre de
- * todos los nodos, en el men� emergente de la pantalla de Disenio.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se ejecuta cuando se hace clic en la opci�n de ver el nombre
+     * de todos los nodos, en el men� emergente de la pantalla de Disenio.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void clicEnPopUpDisenioFondoVerNombreNodos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoVerNombreNodos
     Iterator it = escenario.getTopology().getNodesIterator();
     TNode nodoAux;
@@ -1279,11 +1318,13 @@ private void clicEnPopUpDisenioFondoVerNombreNodos(java.awt.event.ActionEvent ev
     this.escenario.setModified(true);
 }//GEN-LAST:event_clicEnPopUpDisenioFondoVerNombreNodos
 
-/** Este m�todo se ejecuta cuando se hace clic en la opci�n de eliminar todo el
- * escenario completo, en el men� emergente de la pantalla de Disenio.
- * @since 2.0
- * @param evt Evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se ejecuta cuando se hace clic en la opci�n de eliminar todo
+     * el escenario completo, en el men� emergente de la pantalla de Disenio.
+     *
+     * @since 2.0
+     * @param evt Evento que hace que se dispare este m�todo.
+     */
 private void clicEnPopUpDisenioFondoEliminar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoEliminar
     JVentanaBooleana vb = new JVentanaBooleana(this.VentanaPadre, true, this.dispensadorDeImagenes);
     vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.PreguntaBorrarTodo"));
@@ -1296,54 +1337,58 @@ private void clicEnPopUpDisenioFondoEliminar(java.awt.event.ActionEvent evt) {//
     this.escenario.setModified(true);
 }//GEN-LAST:event_clicEnPopUpDisenioFondoEliminar
 
-/**
- * Este m�todo asigna un escenario ya creado a la ventana hija. A partir de ese
- * momento todo lo que se haga en la ventana tendr� su repercusi�n en el escenario.
- * @param esc Escenario ya creado al que se va a asociar esta ventana hija y que contendr� un
- * escenario y todos sus datos.
- * @since 2.0
- */
-public void ponerEscenario(TScenario esc) {
-    this.controlTemporizacionDesactivado = true;
-    long durac = esc.getSimulation().obtenerDuracion();
-    long pas = esc.getSimulation().obtenerPaso();
-    escenario = esc;
-    panelDisenio.ponerTopologia(esc.getTopology());
-    panelSimulacion.ponerTopologia(esc.getTopology());
-    nodoSeleccionado = null;
-    elementoDisenioClicDerecho = null;
-    aProgresoGeneracion = new TProgressEventListener(barraDeProgreso);
-    try {
-        esc.getTopology().obtenerReloj().addProgressEventListener(aProgresoGeneracion);
-    } catch (EProgressEventGeneratorOnlyAllowASingleListener e) {
-        e.printStackTrace();
+    /**
+     * Este m�todo asigna un escenario ya creado a la ventana hija. A partir de
+     * ese momento todo lo que se haga en la ventana tendr� su repercusi�n en el
+     * escenario.
+     *
+     * @param esc Escenario ya creado al que se va a asociar esta ventana hija y
+     * que contendr� un escenario y todos sus datos.
+     * @since 2.0
+     */
+    public void ponerEscenario(TScenario esc) {
+        this.controlTemporizacionDesactivado = true;
+        long durac = esc.getSimulation().obtenerDuracion();
+        long pas = esc.getSimulation().obtenerPaso();
+        escenario = esc;
+        panelDisenio.ponerTopologia(esc.getTopology());
+        panelSimulacion.ponerTopologia(esc.getTopology());
+        nodoSeleccionado = null;
+        elementoDisenioClicDerecho = null;
+        aProgresoGeneracion = new TProgressEventListener(barraDeProgreso);
+        try {
+            esc.getTopology().getTimer().addProgressEventListener(aProgresoGeneracion);
+        } catch (EProgressEventGeneratorOnlyAllowASingleListener e) {
+            e.printStackTrace();
+        }
+        this.duracionMs.setValue((int) (durac / 1000000));
+        this.duracionNs.setValue((int) (durac - (this.duracionMs.getValue() * 1000000)));
+        this.pasoNs.setMaximum((int) esc.getSimulation().obtenerDuracion());
+        this.pasoNs.setValue((int) pas);
+        esc.getSimulation().setDuration(durac);
+        esc.getSimulation().setStep(pas);
+        this.etiquetaMlsPorTic.setText(this.mlsPorTic.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija.Simulacion.EtiquetaMsTic"));
+        this.etiquetaDuracionMs.setText(this.duracionMs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija._ms."));
+        this.etiquetaDuracionNs.setText(this.duracionNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija._ns."));
+        this.etiquetaPasoNs.setText(this.pasoNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija_ns."));
+        this.nombreAutor.setText(esc.getAuthor());
+        this.nombreAutor.setCaretPosition(1);
+        this.nombreEscenario.setText(esc.getTitle());
+        this.nombreEscenario.setCaretPosition(1);
+        this.descripcionEscenario.setText(esc.getDescription());
+        this.descripcionEscenario.setCaretPosition(1);
+        this.controlTemporizacionDesactivado = false;
+        escenario.getSimulation().setSimulationPanel(this.panelSimulacion);
+        this.controlarParametrosTemporales();
     }
-    this.duracionMs.setValue((int)(durac/1000000));
-    this.duracionNs.setValue((int) (durac-(this.duracionMs.getValue()*1000000)));
-    this.pasoNs.setMaximum((int) esc.getSimulation().obtenerDuracion());
-    this.pasoNs.setValue((int) pas);
-    esc.getSimulation().setDuration(durac);
-    esc.getSimulation().setStep(pas);
-    this.etiquetaMlsPorTic.setText(this.mlsPorTic.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija.Simulacion.EtiquetaMsTic"));
-    this.etiquetaDuracionMs.setText(this.duracionMs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija._ms."));
-    this.etiquetaDuracionNs.setText(this.duracionNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija._ns."));
-    this.etiquetaPasoNs.setText(this.pasoNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija_ns."));
-    this.nombreAutor.setText(esc.obtenerAutor());
-    this.nombreAutor.setCaretPosition(1);
-    this.nombreEscenario.setText(esc.obtenerTitulo());
-    this.nombreEscenario.setCaretPosition(1);
-    this.descripcionEscenario.setText(esc.obtenerDescripcion());
-    this.descripcionEscenario.setCaretPosition(1);
-    this.controlTemporizacionDesactivado = false;
-    escenario.ponerPanelSimulacion(this.panelSimulacion);
-    this.controlarParametrosTemporales();
-}
 
-/** Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un enlace
- * nuevo en la barra de herramientas de la pantalla de dise�o.
- * @since 2.0
- * @param evt Evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un
+     * enlace nuevo en la barra de herramientas de la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt Evento que hace que se dispare este m�todo.
+     */
 private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirEnlace
     if (escenario.getTopology().obtenerNumeroDeNodos() < 2) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(VentanaPadre, true, dispensadorDeImagenes);
@@ -1380,12 +1425,14 @@ private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
     }
 }//GEN-LAST:event_clicEnAniadirEnlace
 
-/** Este m�todo se ejecuta cuando se hace clic en la opci�n eliminar que aparece en
- * el men� emergente al pulsar con el bot�n derecho sobre un elemento de la
- * topolog�a. En la pantalla de dise�o.
- * @since 2.0
- * @param evt Evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se ejecuta cuando se hace clic en la opci�n eliminar que
+     * aparece en el men� emergente al pulsar con el bot�n derecho sobre un
+     * elemento de la topolog�a. En la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt Evento que hace que se dispare este m�todo.
+     */
 private void clicEnPopUpDisenioEliminar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioEliminar
     JVentanaBooleana vb = new JVentanaBooleana(this.VentanaPadre, true, this.dispensadorDeImagenes);
     vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.preguntaAlEliminar"));
@@ -1421,15 +1468,17 @@ private void clicEnPopUpDisenioEliminar(java.awt.event.ActionEvent evt) {//GEN-F
             this.escenario.setModified(true);
         }
     }
-    
+
 }//GEN-LAST:event_clicEnPopUpDisenioEliminar
 
-/** Este m�todo se ejecuta cuando se hace clic en la opci�n de ver/ocultar nombre
- * que aparece en el men� emergente al pulsar con el bot�n derecho sobre un elemento
- * de la topolog�a. En la pantalla de dise�o.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se ejecuta cuando se hace clic en la opci�n de ver/ocultar
+     * nombre que aparece en el men� emergente al pulsar con el bot�n derecho
+     * sobre un elemento de la topolog�a. En la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void clicEnPopUpDisenioVerNombre(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioVerNombre
     if (elementoDisenioClicDerecho != null) {
         if (elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
@@ -1447,29 +1496,28 @@ private void clicEnPopUpDisenioVerNombre(java.awt.event.ActionEvent evt) {//GEN-
     }
 }//GEN-LAST:event_clicEnPopUpDisenioVerNombre
 
-/** Este m�todo se ejecuta cuando se hace clic con el bot�n derecho en la pantalla
- * de dise�o.
- * @since 2.0
- * @param evt Evento que hace que este m�todo se dispare.
- */
+    /**
+     * Este m�todo se ejecuta cuando se hace clic con el bot�n derecho en la
+     * pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt Evento que hace que este m�todo se dispare.
+     */
 private void clicDerechoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicDerechoEnPanelDisenio
     if (evt.getButton() == MouseEvent.BUTTON3) {
         TTopologyElement et = escenario.getTopology().obtenerElementoEnPosicion(evt.getPoint());
         if (et == null) {
-            diseFondoPopUp.show(this, evt.getX()+7, evt.getY()-27);
-        }
-        else {
-            if (et.getElementType() == TTopologyElement.NODE) {
-                TNode nt = (TNode) et;
-                dVerNombreMenuItem.setSelected(nt.nameMustBeDisplayed());
-                elementoDisenioClicDerecho = et;
-                diseElementoPopUp.show(this, evt.getX()+7, evt.getY()+15);
-            } else if (et.getElementType() == TTopologyElement.LINK) {
-                TLink ent = (TLink) et;
-                dVerNombreMenuItem.setSelected(ent.getShowName());
-                elementoDisenioClicDerecho = et;
-                diseElementoPopUp.show(this, evt.getX()+7, evt.getY()+15);
-            }
+            diseFondoPopUp.show(this, evt.getX() + 7, evt.getY() - 27);
+        } else if (et.getElementType() == TTopologyElement.NODE) {
+            TNode nt = (TNode) et;
+            dVerNombreMenuItem.setSelected(nt.nameMustBeDisplayed());
+            elementoDisenioClicDerecho = et;
+            diseElementoPopUp.show(this, evt.getX() + 7, evt.getY() + 15);
+        } else if (et.getElementType() == TTopologyElement.LINK) {
+            TLink ent = (TLink) et;
+            dVerNombreMenuItem.setSelected(ent.getShowName());
+            elementoDisenioClicDerecho = et;
+            diseElementoPopUp.show(this, evt.getX() + 7, evt.getY() + 15);
         }
     } else {
         elementoDisenioClicDerecho = null;
@@ -1477,11 +1525,13 @@ private void clicDerechoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
     }
 }//GEN-LAST:event_clicDerechoEnPanelDisenio
 
-/** Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LSRA
- * nuevo en la barra de herramientas de la pantalla de dise�o.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LSRA
+     * nuevo en la barra de herramientas de la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void clicEnAniadirLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLSRA
     TActiveLSRNode lsra = null;
     try {
@@ -1511,11 +1561,13 @@ private void clicEnAniadirLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
     }
 }//GEN-LAST:event_clicEnAniadirLSRA
 
-/** Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LSR
- * nuevo en la barra de herramientas de la pantalla de dise�o.
- * @since 2.0
- * @param evt Evento que hace que este m�todo se dispare.
- */
+    /**
+     * Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LSR
+     * nuevo en la barra de herramientas de la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt Evento que hace que este m�todo se dispare.
+     */
 private void clicEnAniadirLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLSR
     TLSRNode lsr = null;
     try {
@@ -1545,11 +1597,13 @@ private void clicEnAniadirLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
     }
 }//GEN-LAST:event_clicEnAniadirLSR
 
-/** Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LSRA
- * nuevo en la barra de herramientas de la pantalla de dise�o.
- * @since 2.0
- * @param evt Evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LSRA
+     * nuevo en la barra de herramientas de la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt Evento que hace que se dispare este m�todo.
+     */
 private void clicEnAniadirLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLERA
     TActiveLERNode lera = null;
     try {
@@ -1579,13 +1633,16 @@ private void clicEnAniadirLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
     }
 }//GEN-LAST:event_clicEnAniadirLERA
 
-/** Este m�todo se ejecuta cuando se mueve el rat�n dentro del �rea de simulaci�n ,
- * en la pantalla de simulaci�n. Entre otras cosas, cambia el cursor del rat�n al pasar
- * sobre un elemento, permite mostrar men�s emergentes coherentes con el contexto
- * de donde se encuentra el rat�n, etc�tera.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se ejecuta cuando se mueve el rat�n dentro del �rea de
+     * simulaci�n , en la pantalla de simulaci�n. Entre otras cosas, cambia el
+     * cursor del rat�n al pasar sobre un elemento, permite mostrar men�s
+     * emergentes coherentes con el contexto de donde se encuentra el rat�n,
+     * etc�tera.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void ratonSobrePanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSobrePanelSimulacion
     TTopology topo = escenario.getTopology();
     TTopologyElement et = topo.obtenerElementoEnPosicion(evt.getPoint());
@@ -1594,9 +1651,9 @@ private void ratonSobrePanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIR
         if (et.getElementType() == TTopologyElement.NODE) {
             TNode nt = (TNode) et;
             if (nt.getPorts().isArtificiallyCongested()) {
-                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.Congestion") +nt.getPorts().getCongestionLevel()+ java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.POrcentaje")+java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija.paraDejarDeCongestionar"));
+                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.Congestion") + nt.getPorts().getCongestionLevel() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.POrcentaje") + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija.paraDejarDeCongestionar"));
             } else {
-                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.Congestion") +nt.getPorts().getCongestionLevel()+ java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.POrcentaje")+java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija.paraCongestionar"));
+                panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.Congestion") + nt.getPorts().getCongestionLevel() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.POrcentaje") + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija.paraCongestionar"));
             }
         } else if (et.getElementType() == TTopologyElement.LINK) {
             TLink ent = (TLink) et;
@@ -1608,22 +1665,24 @@ private void ratonSobrePanelSimulacion(java.awt.event.MouseEvent evt) {//GEN-FIR
         }
     } else {
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        this.panelSimulacion.setToolTipText(null); 
+        this.panelSimulacion.setToolTipText(null);
         if (!this.panelSimulacion.obtenerMostrarLeyenda()) {
-            this.panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.VerLeyenda")); 
-        } else{
-            this.panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.OcultarLeyenda")); 
+            this.panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.VerLeyenda"));
+        } else {
+            this.panelSimulacion.setToolTipText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.OcultarLeyenda"));
         }
     }
 }//GEN-LAST:event_ratonSobrePanelSimulacion
 
-/** Este m�todo se ejecuta cuando se mueve el rat�n dentro del �rea de dise�o,
- * en la pantalla de Dise�o. Entre otras cosas, cambia el cursor del rat�n al pasar
- * sobre un elemento, permite mostrar men�s emergentes coherentes con el contexto
- * de donde se encuentra el rat�n, etc�tera.
- * @since 2.0
- * @param evt Evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se ejecuta cuando se mueve el rat�n dentro del �rea de
+     * dise�o, en la pantalla de Dise�o. Entre otras cosas, cambia el cursor del
+     * rat�n al pasar sobre un elemento, permite mostrar men�s emergentes
+     * coherentes con el contexto de donde se encuentra el rat�n, etc�tera.
+     *
+     * @since 2.0
+     * @param evt Evento que hace que se dispare este m�todo.
+     */
 private void ratonSobrePanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSobrePanelDisenio
     TTopology topo = escenario.getTopology();
     TTopologyElement et = topo.obtenerElementoEnPosicion(evt.getPoint());
@@ -1642,25 +1701,31 @@ private void ratonSobrePanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:
     }
 }//GEN-LAST:event_ratonSobrePanelDisenio
 
-/** Este m�todo se llama autom�ticamente cuando se est� arrastrando el rat�n en la
- * pantalla de dise�o. Se encarga de mover los elementos de un lugar a otro para
- * dise�ar la topolog�a.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando se est� arrastrando el rat�n
+     * en la pantalla de dise�o. Se encarga de mover los elementos de un lugar a
+     * otro para dise�ar la topolog�a.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void arrastrandoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_arrastrandoEnPanelDisenio
     if (evt.getModifiersEx() == java.awt.event.InputEvent.BUTTON1_DOWN_MASK) {
         if (nodoSeleccionado != null) {
             TTopology topo = escenario.getTopology();
             Point p2 = evt.getPoint();
-            if (p2.x < 0)
+            if (p2.x < 0) {
                 p2.x = 0;
-            if (p2.x > panelDisenio.getSize().width)
+            }
+            if (p2.x > panelDisenio.getSize().width) {
                 p2.x = panelDisenio.getSize().width;
-            if (p2.y < 0)
+            }
+            if (p2.y < 0) {
                 p2.y = 0;
-            if (p2.y > panelDisenio.getSize().height)
+            }
+            if (p2.y > panelDisenio.getSize().height) {
                 p2.y = panelDisenio.getSize().height;
+            }
             nodoSeleccionado.setScreenPosition(new Point(p2.x, p2.y));
             panelDisenio.repaint();
             this.escenario.setModified(true);
@@ -1668,12 +1733,14 @@ private void arrastrandoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
     }
 }//GEN-LAST:event_arrastrandoEnPanelDisenio
 
-/** Este m�todo se llama autom�ticamente cuando soltamos el bot�n del raton a la
- * rrastrar o al hacer clic. Si el rat�n estaba sobre  un elemento de la topology,
- se marca �ste como no seleccionado.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando soltamos el bot�n del raton a
+     * la rrastrar o al hacer clic. Si el rat�n estaba sobre un elemento de la
+     * topology, se marca �ste como no seleccionado.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void clicSoltadoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicSoltadoEnPanelDisenio
     if (evt.getButton() == MouseEvent.BUTTON1) {
         if (nodoSeleccionado != null) {
@@ -1685,11 +1752,13 @@ private void clicSoltadoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
     }
 }//GEN-LAST:event_clicSoltadoEnPanelDisenio
 
-/** Este m�todo se llama autom�ticamente cuando se hace un clic con el bot�n
- * izquierdo sobre la pantalla de dise�o.
- * @since 2.0
- * @param evt Evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando se hace un clic con el bot�n
+     * izquierdo sobre la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt Evento que hace que se dispare este m�todo.
+     */
 private void clicEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnPanelDisenio
     if (evt.getButton() == MouseEvent.BUTTON1) {
         TTopology topo = escenario.getTopology();
@@ -1702,91 +1771,109 @@ private void clicEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIRST:even
     }
 }//GEN-LAST:event_clicEnPanelDisenio
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono de
- * detener en la pantalla de simulaci�n.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono de
+     * detener en la pantalla de simulaci�n.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void ratonSaleDelIconoPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoPausar
     iconoPausar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_PAUSA));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDelIconoPausar
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono de
- * detener en la pantalla de simulaci�n.
- * @since 2.0
- * @param evt Evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono de
+     * detener en la pantalla de simulaci�n.
+     *
+     * @since 2.0
+     * @param evt Evento que hace que se dispare este m�todo.
+     */
 private void ratonEntraEnIconoPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoPausar
     iconoPausar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_PAUSA_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoPausar
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono de finalizar
- * en la pantalla de simulaci�n.
- * @since 2.0
- * @param evt Evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono de
+     * finalizar en la pantalla de simulaci�n.
+     *
+     * @since 2.0
+     * @param evt Evento que hace que se dispare este m�todo.
+     */
 private void ratonSaleDelIconoFinalizar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoFinalizar
     iconoFinalizar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_PARAR));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDelIconoFinalizar
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono de finalizar
- * en la pantalla de simulaci�n.
- * @since 2.0
- * @param evt Evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono de
+     * finalizar en la pantalla de simulaci�n.
+     *
+     * @since 2.0
+     * @param evt Evento que hace que se dispare este m�todo.
+     */
 private void ratonEntraEnIconoFinalizar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoFinalizar
     iconoFinalizar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_PARAR_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoFinalizar
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono de comenzar
- * en la pantalla de simulaci�n.
- * @since 2.0
- * @param evt Evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono de
+     * comenzar en la pantalla de simulaci�n.
+     *
+     * @since 2.0
+     * @param evt Evento que hace que se dispare este m�todo.
+     */
 private void ratonSaleDelIconoReanudar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoReanudar
     iconoReanudar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_COMENZAR));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDelIconoReanudar
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono de
- * comenzar en la pantalla de simulaci�n.
- * @since 2.0
- * @param evt Evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono de
+     * comenzar en la pantalla de simulaci�n.
+     *
+     * @since 2.0
+     * @param evt Evento que hace que se dispare este m�todo.
+     */
 private void ratonEntraEnIconoReanudar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoReanudar
     iconoReanudar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_COMENZAR_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoReanudar
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono generar en la
- * pantalla de simulaci�n.
- * @since 2.0
- * @param evt Evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono
+     * generar en la pantalla de simulaci�n.
+     *
+     * @since 2.0
+     * @param evt Evento que hace que se dispare este m�todo.
+     */
 private void ratonSaleDelIconoComenzar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoComenzar
     iconoComenzar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_GENERAR));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDelIconoComenzar
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono generar en
- * la pantalla de simulaci�n.
- * @since 2.0
- * @param evt Evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
+     * generar en la pantalla de simulaci�n.
+     *
+     * @since 2.0
+     * @param evt Evento que hace que se dispare este m�todo.
+     */
 private void ratonEntraEnIconoComenzar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoComenzar
     iconoComenzar.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.BOTON_GENERAR_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoComenzar
 
-/** Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LER
- * nuevo en la barra de herramientas de la pantalla de dise�o.
- * @since 2.0
- * @param evt Evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LER
+     * nuevo en la barra de herramientas de la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt Evento que hace que se dispare este m�todo.
+     */
 private void clicEnAniadirLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLER
     TLERNode ler = null;
     try {
@@ -1816,151 +1903,181 @@ private void clicEnAniadirLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
     }
 }//GEN-LAST:event_clicEnAniadirLER
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono enlace en
- * la pantalla de dise�o.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono
+     * enlace en la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo
+     */
 private void ratonSaleDeIconoEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoEnlace
     iconoEnlace.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ENLACE_MENU));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDeIconoEnlace
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono enlace en
- * la pantalla de dise�o.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
+     * enlace en la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void ratonEntraEnIconoEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoEnlace
     iconoEnlace.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ENLACE_MENU_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoEnlace
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LSRA en
- * la pantalla de dise�o.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LSRA
+     * en la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void ratonSaleDeIconoLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLSRA
     iconoLSRA.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSRA_MENU));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDeIconoLSRA
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono LSRA en
- * la pantalla de dise�o.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
+     * LSRA en la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void ratonEntraEnIconoLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLSRA
     iconoLSRA.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSRA_MENU_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoLSRA
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LSR en
- * la pantalla de dise�o.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LSR
+     * en la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void ratonSaleDeIconoLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLSR
     iconoLSR.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSR_MENU));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDeIconoLSR
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono LSR en
- * la pantalla de dise�o.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
+     * LSR en la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void ratonEntraEnIconoLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLSR
     iconoLSR.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSR_MENU_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoLSR
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LERA en
- * la pantalla de dise�o.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LERA
+     * en la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void ratonSaleDeIconoLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLERA
     iconoLERA.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LERA_MENU));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDeIconoLERA
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono LERA en
- * la pantalla de dise�o.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
+     * LERA en la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void ratonEntraEnIconoLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLERA
     iconoLERA.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LERA_MENU_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoLERA
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LER en
- * la pantalla de dise�o.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LER
+     * en la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void ratonSaleDeIconoLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLER
     iconoLER.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LER_MENU));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDeIconoLER
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono LER en
- * la pantalla de dise�o.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
+     * LER en la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void ratonEntraEnIconoLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLER
     iconoLER.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LER_MENU_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoLER
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono receptor en
- * la pantalla de dise�o.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono
+     * receptor en la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void ratonSaleDeIconoReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoReceptor
     iconoReceptor.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.RECEPTOR_MENU));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDeIconoReceptor
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono receptor
- * en la pantalla de dise�o.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
+     * receptor en la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void ratonEntraEnIconoReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoReceptor
     iconoReceptor.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.RECEPTOR_MENU_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoReceptor
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n sale del icono emisor en
- * la pantalla de dise�o.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono
+     * emisor en la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void ratonSaleDeIconoEmisor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoEmisor
     iconoEmisor.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.EMISOR_MENU));
     this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 }//GEN-LAST:event_ratonSaleDeIconoEmisor
 
-/** Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono emisor en
- * la pantalla de dise�o.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
+     * emisor en la pantalla de dise�o.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void ratonEntraEnIconoEmisor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoEmisor
     iconoEmisor.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.EMISOR_MENU_BRILLO));
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 }//GEN-LAST:event_ratonEntraEnIconoEmisor
 
-/** Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono receptor
- * en la ventana de dise�o. A�ade un receptor nuevo en la topology.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
+     * receptor en la ventana de dise�o. A�ade un receptor nuevo en la topology.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void clicEnAniadirReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirReceptor
     TReceiverNode receptor = null;
     try {
@@ -1990,11 +2107,13 @@ private void clicEnAniadirReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
     }
 }//GEN-LAST:event_clicEnAniadirReceptor
 
-/** Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono emisor
- * en la ventana de dise�o. A�ade un emisor nuevo en la topology.
- * @since 2.0
- * @param evt El evento que hace que se dispare este m�todo.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
+     * emisor en la ventana de dise�o. A�ade un emisor nuevo en la topology.
+     *
+     * @since 2.0
+     * @param evt El evento que hace que se dispare este m�todo.
+     */
 private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirEmisorDeTrafico
     TTopology t = escenario.getTopology();
     Iterator it = t.getNodesIterator();
@@ -2002,8 +2121,9 @@ private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-
     boolean hayDestino = false;
     while (it.hasNext()) {
         nt = (TNode) it.next();
-        if (nt.getNodeType() == TNode.RECEIVER)
+        if (nt.getNodeType() == TNode.RECEIVER) {
             hayDestino = true;
+        }
     }
     if (!hayDestino) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(VentanaPadre, true, dispensadorDeImagenes);
@@ -2039,61 +2159,73 @@ private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-
     }
 }//GEN-LAST:event_clicEnAniadirEmisorDeTrafico
 
-/** Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono detener
- * en la ventana de simulaci�n. Detiene la simulaci�n o su generaci�n.
- * @since 2.0
- * @param evt Evento que hace que este m�todo se dispare.
- */
+    /**
+     * Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
+     * detener en la ventana de simulaci�n. Detiene la simulaci�n o su
+     * generaci�n.
+     *
+     * @since 2.0
+     * @param evt Evento que hace que este m�todo se dispare.
+     */
 private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicAlPausar
-        if (iconoPausar.isEnabled()) {
-            this.escenario.getTopology().obtenerReloj().setPaused(true);
-            activarOpcionesAlDetener();
-        }
+    if (iconoPausar.isEnabled()) {
+        this.escenario.getTopology().getTimer().setPaused(true);
+        activarOpcionesAlDetener();
+    }
 }//GEN-LAST:event_clicAlPausar
-    
-    /** Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
-     * finalizar en la ventana de simulaci�n. Detiene la simulaci�n por completo.
+
+    /**
+     * Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
+     * finalizar en la ventana de simulaci�n. Detiene la simulaci�n por
+     * completo.
+     *
      * @since 2.0
      * @param evt El evento que hace que este m�todo se dispare.
      */
     private void clicEnFinalizar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnFinalizar
         if (iconoFinalizar.isEnabled()) {
-            this.escenario.getTopology().obtenerReloj().reset();
+            this.escenario.getTopology().getTimer().reset();
             this.crearTraza.setEnabled(true);
             this.panelSimulacion.ponerFicheroTraza(null);
             activarOpcionesAlFinalizar();
         }
     }//GEN-LAST:event_clicEnFinalizar
-    
-    /** Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono comenzar
-     * en la ventana de simulaci�n. Inicia la simulaci�n.
+
+    /**
+     * Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
+     * comenzar en la ventana de simulaci�n. Inicia la simulaci�n.
+     *
      * @since 2.0
      * @param evt El evento que hace que este m�todo se dispare.
      */
     private void clicEnReanudar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnReanudar
         if (iconoReanudar.isEnabled()) {
             activarOpcionesAlComenzar();
-            this.escenario.getTopology().obtenerReloj().setPaused(false);
-            this.escenario.getTopology().obtenerReloj().restart();
+            this.escenario.getTopology().getTimer().setPaused(false);
+            this.escenario.getTopology().getTimer().restart();
         }
     }//GEN-LAST:event_clicEnReanudar
-    
-    /** Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono generar
-     * en la ventana de simulaci�n. Crea la simulaci�n.
+
+    /**
+     * Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
+     * generar en la ventana de simulaci�n. Crea la simulaci�n.
+     *
      * @since 2.0
      * @param evt El evento que hace que este m�todo se dispare.
      */
     private void clicEnComenzar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnComenzar
         if (iconoComenzar.isEnabled()) {
             escenario.reset();
-            escenario.ponerDuracionSimulacion(new TTimestamp(duracionMs.getValue(), duracionNs.getValue()));
-            escenario.ponerPasoSimulacion(pasoNs.getValue());
+            if (!escenario.getTopology().getTimer().isRunning()) {
+                escenario.getTopology().getTimer().setFinishTimestamp(new TTimestamp(duracionMs.getValue(), duracionNs.getValue()));
+            }
+            escenario.getTopology().getTimer().setTick(pasoNs.getValue());
             crearListaElementosEstadistica();
             this.escenario.setModified(true);
-            this.escenario.getTopology().obtenerReloj().reset();
+            this.escenario.getTopology().getTimer().reset();
             panelSimulacion.reset();
             panelSimulacion.repaint();
-            escenario.generarSimulacion();
+            escenario.simulate();
             int minimoDelay = this.escenario.getTopology().obtenerMinimoDelay();
             int pasoActual = this.pasoNs.getValue();
             if (pasoActual > minimoDelay) {
@@ -2102,11 +2234,11 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             this.crearTraza.setEnabled(false);
             this.panelSimulacion.ponerFicheroTraza(null);
             if (this.crearTraza.isSelected()) {
-                if (this.escenario.obtenerFichero() != null) {
-                    File fAux = new File(this.escenario.obtenerFichero().getPath()+".txt");
+                if (this.escenario.getScenarioFile() != null) {
+                    File fAux = new File(this.escenario.getScenarioFile().getPath() + ".txt");
                     this.panelSimulacion.ponerFicheroTraza(fAux);
                 } else {
-                    this.panelSimulacion.ponerFicheroTraza(new File(this.getTitle()+".txt"));
+                    this.panelSimulacion.ponerFicheroTraza(new File(this.getTitle() + ".txt"));
                 }
             } else {
                 this.panelSimulacion.ponerFicheroTraza(null);
@@ -2114,13 +2246,15 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             activarOpcionesTrasGenerar();
         }
     }//GEN-LAST:event_clicEnComenzar
-    
+
     /**
-     * Este m�todo se llama cuando comienza la simulaci�n del escenario. Crea una lista
-     * de todos los nodos que tienen activa la generaci�n de estad�sticas para
-     * posteriormente poder elegir uno de ellos y ver sus gr�ficas.
+     * Este m�todo se llama cuando comienza la simulaci�n del escenario. Crea
+     * una lista de todos los nodos que tienen activa la generaci�n de
+     * estad�sticas para posteriormente poder elegir uno de ellos y ver sus
+     * gr�ficas.
+     *
      * @since 2.0
-     */    
+     */
     public void crearListaElementosEstadistica() {
         Iterator it = null;
         TNode nt = null;
@@ -2136,9 +2270,11 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
         }
         this.selectorElementoEstadisticas.setSelectedIndex(0);
     }
-    
-    /** Este m�todo modifica la interfaz para que las opciones que se muestran sean
-     * acordes al momento en que la simulaci�n est� detenida.
+
+    /**
+     * Este m�todo modifica la interfaz para que las opciones que se muestran
+     * sean acordes al momento en que la simulaci�n est� detenida.
+     *
      * @since 2.0
      */
     private void activarOpcionesAlDetener() {
@@ -2147,9 +2283,11 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
         iconoFinalizar.setEnabled(true);
         iconoPausar.setEnabled(false);
     }
-    
-    /** Este m�todo modifica la interfaz para que las opciones que se muestran sean
-     * acordes al momento en que la simulaci�n ha finalizado.
+
+    /**
+     * Este m�todo modifica la interfaz para que las opciones que se muestran
+     * sean acordes al momento en que la simulaci�n ha finalizado.
+     *
      * @since 2.0
      */
     private void activarOpcionesAlFinalizar() {
@@ -2158,9 +2296,11 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
         iconoFinalizar.setEnabled(false);
         iconoPausar.setEnabled(false);
     }
-    
-    /** Este m�todo modifica la interfaz para que las opciones que se muestran sean
-     * acordes al momento en que la simulaci�n se acaba de generar.
+
+    /**
+     * Este m�todo modifica la interfaz para que las opciones que se muestran
+     * sean acordes al momento en que la simulaci�n se acaba de generar.
+     *
      * @since 2.0
      */
     private void activarOpcionesTrasGenerar() {
@@ -2169,9 +2309,11 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
         iconoFinalizar.setEnabled(true);
         iconoPausar.setEnabled(true);
     }
-    
-    /** Este m�todo modifica la interfaz para que las opciones que se muestran sean
-     * acordes al momento en que la simulaci�n comienza.
+
+    /**
+     * Este m�todo modifica la interfaz para que las opciones que se muestran
+     * sean acordes al momento en que la simulaci�n comienza.
+     *
      * @since 2.0
      */
     private void activarOpcionesAlComenzar() {
@@ -2180,22 +2322,25 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
         iconoFinalizar.setEnabled(true);
         iconoPausar.setEnabled(true);
     }
-    
-    /** Cierra la ventana hija y pierde o almacena su contenido en funci�n de la
+
+    /**
+     * Cierra la ventana hija y pierde o almacena su contenido en funci�n de la
      * elecci�n del usuario.
+     *
      * @since 2.0
      */
     public void cerrar() {
         this.setVisible(false);
         this.dispose();
     }
-    
-    
+
     /**
-     * Este m�todo se encarga de controlar que todo ocurre como debe con respecto al
-     * escenario, cuando se pulsa en el men� principal la opci�n de "Guardar como..."
+     * Este m�todo se encarga de controlar que todo ocurre como debe con
+     * respecto al escenario, cuando se pulsa en el men� principal la opci�n de
+     * "Guardar como..."
+     *
      * @since 2.0
-     */    
+     */
     public void gestionarGuardarComo() {
         anotarDatosDeEscenario();
         JFileChooser dialogoGuardar = new JFileChooser();
@@ -2203,7 +2348,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
         dialogoGuardar.setDialogType(JFileChooser.CUSTOM_DIALOG);
         dialogoGuardar.setApproveButtonMnemonic('A');
         dialogoGuardar.setApproveButtonText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.DialogoGuardar.OK"));
-        dialogoGuardar.setDialogTitle(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.DialogoGuardar.Almacenar")+ this.getTitle() +java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("-"));
+        dialogoGuardar.setDialogTitle(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.DialogoGuardar.Almacenar") + this.getTitle() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("-"));
         dialogoGuardar.setAcceptAllFileFilterUsed(false);
         dialogoGuardar.setSelectedFile(new File(this.getTitle()));
         dialogoGuardar.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -2212,55 +2357,57 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             String ext = null;
             String nombreFich = dialogoGuardar.getSelectedFile().getPath();
             int i = nombreFich.lastIndexOf('.');
-            if (i > 0 &&  i < nombreFich.length() - 1) {
-                ext = nombreFich.substring(i+1).toLowerCase();
+            if (i > 0 && i < nombreFich.length() - 1) {
+                ext = nombreFich.substring(i + 1).toLowerCase();
             }
             if (ext == null) {
                 nombreFich += java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString(".osm");
-            } else {
-                if (!ext.equals(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("osm"))) {
-                    nombreFich += java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString(".osm");
-                }
+            } else if (!ext.equals(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("osm"))) {
+                nombreFich += java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString(".osm");
             }
             dialogoGuardar.setSelectedFile(new File(nombreFich));
-            escenario.setFile(dialogoGuardar.getSelectedFile());
+            escenario.setScenarioFile(dialogoGuardar.getSelectedFile());
             this.escenario.setSaved(true);
-            this.setTitle(this.escenario.obtenerFichero().getName());
+            this.setTitle(this.escenario.getScenarioFile().getName());
             TOSMSaver almacenador = new TOSMSaver(escenario);
             JVentanaBooleana vb = new JVentanaBooleana(this.VentanaPadre, true, this.dispensadorDeImagenes);
             vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.PreguntaEmpotrarCRC"));
             vb.show();
             boolean conCRC = vb.obtenerRespuesta();
-            boolean correcto = almacenador.save(escenario.obtenerFichero(), conCRC);
+            boolean correcto = almacenador.save(escenario.getScenarioFile(), conCRC);
             if (correcto) {
                 this.escenario.setModified(false);
                 this.escenario.setSaved(true);
             }
         }
     }
-    
+
     /**
-     * Este m�todo se encarga de controlar que todo ocurre como debe con respecto al
-     * escenario, cuando se pulsa en el men� principal la opci�n de "Cerrar" o "Salir"
-     * y el escenario actual no est� a�n guardado o est� modificado.
+     * Este m�todo se encarga de controlar que todo ocurre como debe con
+     * respecto al escenario, cuando se pulsa en el men� principal la opci�n de
+     * "Cerrar" o "Salir" y el escenario actual no est� a�n guardado o est�
+     * modificado.
+     *
      * @since 2.0
-     */    
+     */
     public void gestionarGuardarParaCerrar() {
-        boolean guardado = this.escenario.obtenerGuardado();
-        boolean modificado = this.escenario.obtenerModificado();
+        boolean guardado = this.escenario.isSaved();
+        boolean modificado = this.escenario.isModified();
         anotarDatosDeEscenario();
-        
+
         // Detengo la simulaci�n antes de cerrar, si es necesario.
-        if (this.escenario.getTopology().obtenerReloj().isRunning()) {
+        if (this.escenario.getTopology().getTimer().isRunning()) {
             panelSimulacion.reset();
             panelSimulacion.repaint();
             escenario.reset();
-            escenario.ponerDuracionSimulacion(new TTimestamp(duracionMs.getValue(), duracionNs.getValue()));
-            escenario.ponerPasoSimulacion(pasoNs.getValue());
-            this.escenario.getTopology().obtenerReloj().setPaused(false);
+            if (!escenario.getTopology().getTimer().isRunning()) {
+                escenario.getTopology().getTimer().setFinishTimestamp(new TTimestamp(duracionMs.getValue(), duracionNs.getValue()));
+            }
+            escenario.getTopology().getTimer().setTick(pasoNs.getValue());
+            this.escenario.getTopology().getTimer().setPaused(false);
             activarOpcionesAlFinalizar();
         }
-        
+
         if (!guardado) {
             JVentanaBooleana vb = new JVentanaBooleana(VentanaPadre, true, dispensadorDeImagenes);
             vb.mostrarPregunta(this.getTitle() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.DialogoGuardar.GuardarPrimeraVez"));
@@ -2274,7 +2421,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             // No se hace nada, ya est� todo guardado correctamente.
         } else if ((guardado) && (modificado)) {
             JVentanaBooleana vb = new JVentanaBooleana(VentanaPadre, true, dispensadorDeImagenes);
-            vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.DialogoGuardar.CambiosSinguardar1")+ " " + this.getTitle()+ " " + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.DialogoGuardar.CambiosSinguardar2"));
+            vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.DialogoGuardar.CambiosSinguardar1") + " " + this.getTitle() + " " + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.DialogoGuardar.CambiosSinguardar2"));
             vb.show();
             boolean respuesta = vb.obtenerRespuesta();
             vb.dispose();
@@ -2284,7 +2431,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
                 vb2.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.PreguntaEmpotrarCRC"));
                 vb2.show();
                 boolean conCRC = vb2.obtenerRespuesta();
-                boolean correcto = almacenador.save(escenario.obtenerFichero(), conCRC);
+                boolean correcto = almacenador.save(escenario.getScenarioFile(), conCRC);
                 if (correcto) {
                     this.escenario.setModified(false);
                     this.escenario.setSaved(true);
@@ -2292,15 +2439,17 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             }
         }
     }
-    
+
     /**
-     * Este m�todo se encarga de controlar que todo ocurre como debe con respecto al
-     * escenario, cuando se pulsa en el men� principal la opci�n de "Guardar".
+     * Este m�todo se encarga de controlar que todo ocurre como debe con
+     * respecto al escenario, cuando se pulsa en el men� principal la opci�n de
+     * "Guardar".
+     *
      * @since 2.0
-     */    
+     */
     public void gestionarGuardar() {
-        boolean guardado = this.escenario.obtenerGuardado();
-        boolean modificado = this.escenario.obtenerModificado();
+        boolean guardado = this.escenario.isSaved();
+        boolean modificado = this.escenario.isModified();
         anotarDatosDeEscenario();
         if (!guardado) {
             this.gestionarGuardarComo();
@@ -2310,7 +2459,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.PreguntaEmpotrarCRC"));
             vb.show();
             boolean conCRC = vb.obtenerRespuesta();
-            boolean correcto = almacenador.save(escenario.obtenerFichero(), conCRC);
+            boolean correcto = almacenador.save(escenario.getScenarioFile(), conCRC);
             if (correcto) {
                 this.escenario.setModified(false);
                 this.escenario.setSaved(true);
@@ -2319,269 +2468,281 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             this.escenario.setSaved(true);
         }
     }
-    
+
     private void crearEInsertarGraficas(String nombre) {
-            GridBagConstraints gbc = null;
-            this.panelAnalisis.removeAll();
-            this.etiquetaEstadisticasTituloEscenario.setText(this.nombreEscenario.getText());
-            this.etiquetaEstadisticasNombreAutor.setText(this.nombreAutor.getText());
-            this.areaEstadisticasDescripcion.setText(this.descripcionEscenario.getText());
-            this.etiquetaNombreElementoEstadistica.setText(nombre);
-            TNode nt = this.escenario.getTopology().getFirstNodeNamed(nombre);
-            gbc = new java.awt.GridBagConstraints();
-            gbc.gridx = 0;
-            gbc.gridy = 0;
-            gbc.insets = new Insets(10, 10, 10, 5);
-            gbc.anchor = java.awt.GridBagConstraints.NORTH;
-            gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
-            this.panelFijo.add(this.etiquetaEstadisticasTituloEscenario, gbc);
-            gbc = new java.awt.GridBagConstraints();
-            gbc.gridx = 0;
-            gbc.gridy = 1;
-            gbc.insets = new Insets(10, 5, 10, 5);
-            gbc.anchor = java.awt.GridBagConstraints.NORTH;
-            gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
-            this.panelFijo.add(this.etiquetaEstadisticasNombreAutor, gbc);
-            gbc = new java.awt.GridBagConstraints();
-            gbc.gridx = 0;
-            gbc.gridy = 2;
-            gbc.insets = new Insets(10, 5, 10, 5);
-            gbc.anchor = java.awt.GridBagConstraints.NORTH;
-            gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
-            this.panelFijo.add(this.areaEstadisticasDescripcion, gbc);
-            gbc = new java.awt.GridBagConstraints();
-            gbc.gridx = 0;
-            gbc.gridy = 3;
-            gbc.insets = new Insets(10, 5, 10, 5);
-            gbc.anchor = java.awt.GridBagConstraints.NORTH;
-            gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
-            this.panelFijo.add(this.etiquetaNombreElementoEstadistica, gbc);
-            gbc = new java.awt.GridBagConstraints();
-            gbc.gridx = 0;
-            gbc.gridy = 0;
-            gbc.insets = new Insets(10, 10, 10, 5);
-            gbc.anchor = java.awt.GridBagConstraints.NORTH;
-            gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
-            this.panelAnalisis.add(this.panelFijo, gbc);
-            if (nt != null) {
-                if (nt.getNodeType() == TNode.SENDER) {
-                    this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.EMISOR));
-                } else if (nt.getNodeType() == TNode.RECEIVER) {
-                    this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.RECEPTOR));
-                } else if (nt.getNodeType() == TNode.LER) {
-                    this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.LER));
-                } else if (nt.getNodeType() == TNode.ACTIVE_LER) {
-                    this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.LERA));
-                } else if (nt.getNodeType() == TNode.LSR) {
-                    this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSR));
-                } else if (nt.getNodeType() == TNode.ACTIVE_LSR) {
-                    this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSRA));
-                }
-
-                int numeroGraficos = nt.getStats().numberOfAvailableDatasets();
-                
-                if (numeroGraficos > 0) {
-                    grafico1 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset1(), 
-                                                             TStats.TIEMPO,
-                                                             TStats.NUMERO_DE_PAQUETES,
-                                                             (XYSeriesCollection) nt.getStats().getDataset1(),
-                                                             PlotOrientation.VERTICAL, 
-                                                             true, true, true);
-
-                    grafico1.getPlot().setBackgroundPaint(Color.WHITE);
-                    grafico1.getPlot().setForegroundAlpha((float)0.5);
-                    grafico1.getPlot().setOutlinePaint(new Color(14, 69, 125));
-                    grafico1.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
-                    grafico1.setBackgroundPaint(new Color(210, 226, 242));
-                    grafico1.setBorderPaint(Color.BLACK);
-                    grafico1.getTitle().setPaint(new Color(79, 138, 198));
-                    this.panelGrafico1 = new ChartPanel(grafico1);
-                    panelGrafico1.setBorder(new LineBorder(Color.BLACK));
-                    panelGrafico1.setPreferredSize(new Dimension(600, 300));
-                    gbc = new java.awt.GridBagConstraints();
-                    gbc.gridx = 0;
-                    gbc.gridy = 1;
-                    gbc.insets = new Insets(10, 5, 10, 5);
-                    gbc.anchor = java.awt.GridBagConstraints.NORTH;
-                    gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
-                    this.panelAnalisis.add(panelGrafico1, gbc);
-                }
-                if (numeroGraficos > 1) {
-                    grafico2 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset2(), 
-                                                             TStats.TIEMPO,
-                                                             TStats.NUMERO_DE_PAQUETES,
-                                                             (XYSeriesCollection) nt.getStats().getDataset2(),
-                                                             PlotOrientation.VERTICAL, 
-                                                             true, true, true);
-                    grafico2.getPlot().setBackgroundPaint(Color.WHITE);
-                    grafico2.getPlot().setForegroundAlpha((float)0.5);
-                    grafico2.getPlot().setOutlinePaint(new Color(14, 69, 125));
-                    grafico2.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
-                    grafico2.setBackgroundPaint(new Color(210, 226, 242));
-                    grafico2.setBorderPaint(Color.BLACK);
-                    grafico2.getTitle().setPaint(new Color(79, 138, 198));
-                    this.panelGrafico2 = new ChartPanel(grafico2);
-                    panelGrafico2.setPreferredSize(new Dimension(600, 300));
-                    panelGrafico2.setBorder(new LineBorder(Color.BLACK));
-                    gbc = new java.awt.GridBagConstraints();
-                    gbc.gridx = 0;
-                    gbc.gridy = 2;
-                    gbc.insets = new Insets(10, 5, 10, 5);
-                    gbc.anchor = java.awt.GridBagConstraints.NORTH;
-                    gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
-                    this.panelAnalisis.add(panelGrafico2, gbc);
-                }
-                if (numeroGraficos > 2) {
-                    grafico3 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset3(), 
-                                                             TStats.TIEMPO,
-                                                             TStats.NUMERO_DE_PAQUETES,
-                                                             (XYSeriesCollection) nt.getStats().getDataset3(),
-                                                             PlotOrientation.VERTICAL, 
-                                                             true, true, true);
-                    grafico3.getPlot().setBackgroundPaint(Color.WHITE);
-                    grafico3.getPlot().setForegroundAlpha((float)0.5);
-                    grafico3.getPlot().setOutlinePaint(new Color(14, 69, 125));
-                    grafico3.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
-                    grafico3.setBackgroundPaint(new Color(210, 226, 242));
-                    grafico3.setBorderPaint(Color.BLACK);
-                    grafico3.getTitle().setPaint(new Color(79, 138, 198));
-                    this.panelGrafico3 = new ChartPanel(grafico3);
-                    panelGrafico3.setBorder(new LineBorder(Color.BLACK));
-                    panelGrafico3.setPreferredSize(new Dimension(600, 300));
-                    gbc = new java.awt.GridBagConstraints();
-                    gbc.gridx = 0;
-                    gbc.gridy = 3;
-                    gbc.insets = new Insets(10, 5, 10, 5);
-                    gbc.anchor = java.awt.GridBagConstraints.NORTH;
-                    gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
-                    this.panelAnalisis.add(panelGrafico3, gbc);
-                }
-                if (numeroGraficos > 3) {
-                    grafico4 = ChartFactory.createBarChart(nt.getStats().getTitleOfDataset4(), 
-                                                             TStats.DESCRIPTION,
-                                                             TStats.NUMERO,
-                                                             (DefaultCategoryDataset) nt.getStats().getDataset4(),
-                                                             PlotOrientation.VERTICAL, 
-                                                             true, true, true);
-                    grafico4.getPlot().setBackgroundPaint(Color.WHITE);
-                    grafico4.getPlot().setForegroundAlpha((float)0.5);
-                    grafico4.getPlot().setOutlinePaint(new Color(14, 69, 125));
-                    grafico4.setBackgroundPaint(new Color(210, 226, 242));
-                    grafico4.setBorderPaint(Color.BLACK);
-                    grafico4.getTitle().setPaint(new Color(79, 138, 198));
-                    this.panelGrafico4 = new ChartPanel(grafico4);
-                    panelGrafico4.setBorder(new LineBorder(Color.BLACK));
-                    panelGrafico4.setPreferredSize(new Dimension(600, 300));
-                    gbc = new java.awt.GridBagConstraints();
-                    gbc.gridx = 0;
-                    gbc.gridy = 4;
-                    gbc.insets = new Insets(10, 5, 10, 5);
-                    gbc.anchor = java.awt.GridBagConstraints.NORTH;
-                    gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
-                    this.panelAnalisis.add(panelGrafico4, gbc);
-                }
-                if (numeroGraficos > 4) {
-                    grafico5 = ChartFactory.createBarChart(nt.getStats().getTitleOfDataset5(), 
-                                                             TStats.DESCRIPTION,
-                                                             TStats.NUMERO,
-                                                             (DefaultCategoryDataset) nt.getStats().getDataset5(),
-                                                             PlotOrientation.VERTICAL, 
-                                                             true, true, true);
-                    grafico5.getPlot().setBackgroundPaint(Color.WHITE);
-                    grafico5.getPlot().setForegroundAlpha((float)0.5);
-                    grafico5.getPlot().setOutlinePaint(new Color(14, 69, 125));
-                    grafico5.setBackgroundPaint(new Color(210, 226, 242));
-                    grafico5.setBorderPaint(Color.BLACK);
-                    grafico5.getTitle().setPaint(new Color(79, 138, 198));
-                    this.panelGrafico5 = new ChartPanel(grafico5);
-                    panelGrafico5.setBorder(new LineBorder(Color.BLACK));
-                    panelGrafico5.setPreferredSize(new Dimension(600, 300));
-                    gbc = new java.awt.GridBagConstraints();
-                    gbc.gridx = 0;
-                    gbc.gridy = 5;
-                    gbc.insets = new Insets(10, 5, 10, 5);
-                    gbc.anchor = java.awt.GridBagConstraints.NORTH;
-                    gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
-                    this.panelAnalisis.add(panelGrafico5, gbc);
-                }
-                if (numeroGraficos > 5) {
-                    grafico6 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset6(), 
-                                                             TStats.TIEMPO,
-                                                             TStats.NUMERO_DE_PAQUETES,
-                                                             (XYSeriesCollection) nt.getStats().getDataset6(),
-                                                             PlotOrientation.VERTICAL, 
-                                                             true, true, true);
-                    grafico6.getPlot().setBackgroundPaint(Color.WHITE);
-                    grafico6.getPlot().setForegroundAlpha((float)0.5);
-                    grafico6.getPlot().setOutlinePaint(new Color(14, 69, 125));
-                    grafico6.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
-                    grafico6.setBackgroundPaint(new Color(210, 226, 242));
-                    grafico6.setBorderPaint(Color.BLACK);
-                    grafico6.getTitle().setPaint(new Color(79, 138, 198));
-                    this.panelGrafico6 = new ChartPanel(grafico6);
-                    panelGrafico6.setBorder(new LineBorder(Color.BLACK));
-                    panelGrafico6.setPreferredSize(new Dimension(600, 300));
-                    gbc = new java.awt.GridBagConstraints();
-                    gbc.gridx = 0;
-                    gbc.gridy = 6;
-                    gbc.insets = new Insets(10, 5, 10, 10);
-                    gbc.anchor = java.awt.GridBagConstraints.NORTH;
-                    gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
-                    this.panelAnalisis.add(panelGrafico6, gbc);
-                }
+        GridBagConstraints gbc = null;
+        this.panelAnalisis.removeAll();
+        this.etiquetaEstadisticasTituloEscenario.setText(this.nombreEscenario.getText());
+        this.etiquetaEstadisticasNombreAutor.setText(this.nombreAutor.getText());
+        this.areaEstadisticasDescripcion.setText(this.descripcionEscenario.getText());
+        this.etiquetaNombreElementoEstadistica.setText(nombre);
+        TNode nt = this.escenario.getTopology().getFirstNodeNamed(nombre);
+        gbc = new java.awt.GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(10, 10, 10, 5);
+        gbc.anchor = java.awt.GridBagConstraints.NORTH;
+        gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        this.panelFijo.add(this.etiquetaEstadisticasTituloEscenario, gbc);
+        gbc = new java.awt.GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.insets = new Insets(10, 5, 10, 5);
+        gbc.anchor = java.awt.GridBagConstraints.NORTH;
+        gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        this.panelFijo.add(this.etiquetaEstadisticasNombreAutor, gbc);
+        gbc = new java.awt.GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.insets = new Insets(10, 5, 10, 5);
+        gbc.anchor = java.awt.GridBagConstraints.NORTH;
+        gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        this.panelFijo.add(this.areaEstadisticasDescripcion, gbc);
+        gbc = new java.awt.GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.insets = new Insets(10, 5, 10, 5);
+        gbc.anchor = java.awt.GridBagConstraints.NORTH;
+        gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        this.panelFijo.add(this.etiquetaNombreElementoEstadistica, gbc);
+        gbc = new java.awt.GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(10, 10, 10, 5);
+        gbc.anchor = java.awt.GridBagConstraints.NORTH;
+        gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        this.panelAnalisis.add(this.panelFijo, gbc);
+        if (nt != null) {
+            if (nt.getNodeType() == TNode.SENDER) {
+                this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.EMISOR));
+            } else if (nt.getNodeType() == TNode.RECEIVER) {
+                this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.RECEPTOR));
+            } else if (nt.getNodeType() == TNode.LER) {
+                this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.LER));
+            } else if (nt.getNodeType() == TNode.ACTIVE_LER) {
+                this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.LERA));
+            } else if (nt.getNodeType() == TNode.LSR) {
+                this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSR));
+            } else if (nt.getNodeType() == TNode.ACTIVE_LSR) {
+                this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSRA));
             }
-            this.panelAnalisis.repaint();
+
+            int numeroGraficos = nt.getStats().numberOfAvailableDatasets();
+
+            if (numeroGraficos > 0) {
+                grafico1 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset1(),
+                        TStats.TIEMPO,
+                        TStats.NUMERO_DE_PAQUETES,
+                        (XYSeriesCollection) nt.getStats().getDataset1(),
+                        PlotOrientation.VERTICAL,
+                        true, true, true);
+
+                grafico1.getPlot().setBackgroundPaint(Color.WHITE);
+                grafico1.getPlot().setForegroundAlpha((float) 0.5);
+                grafico1.getPlot().setOutlinePaint(new Color(14, 69, 125));
+                grafico1.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
+                grafico1.setBackgroundPaint(new Color(210, 226, 242));
+                grafico1.setBorderPaint(Color.BLACK);
+                grafico1.getTitle().setPaint(new Color(79, 138, 198));
+                this.panelGrafico1 = new ChartPanel(grafico1);
+                panelGrafico1.setBorder(new LineBorder(Color.BLACK));
+                panelGrafico1.setPreferredSize(new Dimension(600, 300));
+                gbc = new java.awt.GridBagConstraints();
+                gbc.gridx = 0;
+                gbc.gridy = 1;
+                gbc.insets = new Insets(10, 5, 10, 5);
+                gbc.anchor = java.awt.GridBagConstraints.NORTH;
+                gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+                this.panelAnalisis.add(panelGrafico1, gbc);
+            }
+            if (numeroGraficos > 1) {
+                grafico2 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset2(),
+                        TStats.TIEMPO,
+                        TStats.NUMERO_DE_PAQUETES,
+                        (XYSeriesCollection) nt.getStats().getDataset2(),
+                        PlotOrientation.VERTICAL,
+                        true, true, true);
+                grafico2.getPlot().setBackgroundPaint(Color.WHITE);
+                grafico2.getPlot().setForegroundAlpha((float) 0.5);
+                grafico2.getPlot().setOutlinePaint(new Color(14, 69, 125));
+                grafico2.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
+                grafico2.setBackgroundPaint(new Color(210, 226, 242));
+                grafico2.setBorderPaint(Color.BLACK);
+                grafico2.getTitle().setPaint(new Color(79, 138, 198));
+                this.panelGrafico2 = new ChartPanel(grafico2);
+                panelGrafico2.setPreferredSize(new Dimension(600, 300));
+                panelGrafico2.setBorder(new LineBorder(Color.BLACK));
+                gbc = new java.awt.GridBagConstraints();
+                gbc.gridx = 0;
+                gbc.gridy = 2;
+                gbc.insets = new Insets(10, 5, 10, 5);
+                gbc.anchor = java.awt.GridBagConstraints.NORTH;
+                gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+                this.panelAnalisis.add(panelGrafico2, gbc);
+            }
+            if (numeroGraficos > 2) {
+                grafico3 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset3(),
+                        TStats.TIEMPO,
+                        TStats.NUMERO_DE_PAQUETES,
+                        (XYSeriesCollection) nt.getStats().getDataset3(),
+                        PlotOrientation.VERTICAL,
+                        true, true, true);
+                grafico3.getPlot().setBackgroundPaint(Color.WHITE);
+                grafico3.getPlot().setForegroundAlpha((float) 0.5);
+                grafico3.getPlot().setOutlinePaint(new Color(14, 69, 125));
+                grafico3.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
+                grafico3.setBackgroundPaint(new Color(210, 226, 242));
+                grafico3.setBorderPaint(Color.BLACK);
+                grafico3.getTitle().setPaint(new Color(79, 138, 198));
+                this.panelGrafico3 = new ChartPanel(grafico3);
+                panelGrafico3.setBorder(new LineBorder(Color.BLACK));
+                panelGrafico3.setPreferredSize(new Dimension(600, 300));
+                gbc = new java.awt.GridBagConstraints();
+                gbc.gridx = 0;
+                gbc.gridy = 3;
+                gbc.insets = new Insets(10, 5, 10, 5);
+                gbc.anchor = java.awt.GridBagConstraints.NORTH;
+                gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+                this.panelAnalisis.add(panelGrafico3, gbc);
+            }
+            if (numeroGraficos > 3) {
+                grafico4 = ChartFactory.createBarChart(nt.getStats().getTitleOfDataset4(),
+                        TStats.DESCRIPTION,
+                        TStats.NUMERO,
+                        (DefaultCategoryDataset) nt.getStats().getDataset4(),
+                        PlotOrientation.VERTICAL,
+                        true, true, true);
+                grafico4.getPlot().setBackgroundPaint(Color.WHITE);
+                grafico4.getPlot().setForegroundAlpha((float) 0.5);
+                grafico4.getPlot().setOutlinePaint(new Color(14, 69, 125));
+                grafico4.setBackgroundPaint(new Color(210, 226, 242));
+                grafico4.setBorderPaint(Color.BLACK);
+                grafico4.getTitle().setPaint(new Color(79, 138, 198));
+                this.panelGrafico4 = new ChartPanel(grafico4);
+                panelGrafico4.setBorder(new LineBorder(Color.BLACK));
+                panelGrafico4.setPreferredSize(new Dimension(600, 300));
+                gbc = new java.awt.GridBagConstraints();
+                gbc.gridx = 0;
+                gbc.gridy = 4;
+                gbc.insets = new Insets(10, 5, 10, 5);
+                gbc.anchor = java.awt.GridBagConstraints.NORTH;
+                gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+                this.panelAnalisis.add(panelGrafico4, gbc);
+            }
+            if (numeroGraficos > 4) {
+                grafico5 = ChartFactory.createBarChart(nt.getStats().getTitleOfDataset5(),
+                        TStats.DESCRIPTION,
+                        TStats.NUMERO,
+                        (DefaultCategoryDataset) nt.getStats().getDataset5(),
+                        PlotOrientation.VERTICAL,
+                        true, true, true);
+                grafico5.getPlot().setBackgroundPaint(Color.WHITE);
+                grafico5.getPlot().setForegroundAlpha((float) 0.5);
+                grafico5.getPlot().setOutlinePaint(new Color(14, 69, 125));
+                grafico5.setBackgroundPaint(new Color(210, 226, 242));
+                grafico5.setBorderPaint(Color.BLACK);
+                grafico5.getTitle().setPaint(new Color(79, 138, 198));
+                this.panelGrafico5 = new ChartPanel(grafico5);
+                panelGrafico5.setBorder(new LineBorder(Color.BLACK));
+                panelGrafico5.setPreferredSize(new Dimension(600, 300));
+                gbc = new java.awt.GridBagConstraints();
+                gbc.gridx = 0;
+                gbc.gridy = 5;
+                gbc.insets = new Insets(10, 5, 10, 5);
+                gbc.anchor = java.awt.GridBagConstraints.NORTH;
+                gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+                this.panelAnalisis.add(panelGrafico5, gbc);
+            }
+            if (numeroGraficos > 5) {
+                grafico6 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset6(),
+                        TStats.TIEMPO,
+                        TStats.NUMERO_DE_PAQUETES,
+                        (XYSeriesCollection) nt.getStats().getDataset6(),
+                        PlotOrientation.VERTICAL,
+                        true, true, true);
+                grafico6.getPlot().setBackgroundPaint(Color.WHITE);
+                grafico6.getPlot().setForegroundAlpha((float) 0.5);
+                grafico6.getPlot().setOutlinePaint(new Color(14, 69, 125));
+                grafico6.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
+                grafico6.setBackgroundPaint(new Color(210, 226, 242));
+                grafico6.setBorderPaint(Color.BLACK);
+                grafico6.getTitle().setPaint(new Color(79, 138, 198));
+                this.panelGrafico6 = new ChartPanel(grafico6);
+                panelGrafico6.setBorder(new LineBorder(Color.BLACK));
+                panelGrafico6.setPreferredSize(new Dimension(600, 300));
+                gbc = new java.awt.GridBagConstraints();
+                gbc.gridx = 0;
+                gbc.gridy = 6;
+                gbc.insets = new Insets(10, 5, 10, 10);
+                gbc.anchor = java.awt.GridBagConstraints.NORTH;
+                gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+                this.panelAnalisis.add(panelGrafico6, gbc);
+            }
+        }
+        this.panelAnalisis.repaint();
     }
-    
+
     /**
-     * Este m�todo se encarga de anotar los datos del escenario desde la interfaz de
-     * usuario hasta los correspondientes atributos del objeto que almacena el
-     * escenario.
+     * Este m�todo se encarga de anotar los datos del escenario desde la
+     * interfaz de usuario hasta los correspondientes atributos del objeto que
+     * almacena el escenario.
+     *
      * @since 2.0
-     */    
+     */
     private void anotarDatosDeEscenario() {
         this.escenario.setTitle(this.nombreEscenario.getText());
         this.escenario.setAuthor(this.nombreAutor.getText());
         this.escenario.setDescription(this.descripcionEscenario.getText());
     }
-    
-    /** Este atributo es el objeto encargado de actualizar la barra de progreso del
-     * escenario que se usa a la hora de generar la simulaci�n y a la hora de
-     * ejecutarla.
+
+    /**
+     * Este atributo es el objeto encargado de actualizar la barra de progreso
+     * del escenario que se usa a la hora de generar la simulaci�n y a la hora
+     * de ejecutarla.
+     *
      * @since 2.0
      */
     private TProgressEventListener aProgresoGeneracion;
-    /** Este atributo contendr� todo el escenario completo de la simulaci�n: topology,
- an�lisis y simulaci�n.
+    /**
+     * Este atributo contendr� todo el escenario completo de la simulaci�n:
+     * topology, an�lisis y simulaci�n.
+     *
      * @since 2.0
      */
     private TScenario escenario;
-    /** Este atributo contendr� en todo momento una referencia al nodo del escenario que
-     * se est� arrastrando.
+    /**
+     * Este atributo contendr� en todo momento una referencia al nodo del
+     * escenario que se est� arrastrando.
+     *
      * @since 2.0
      */
     private TNode nodoSeleccionado;
-    /** Este atributo contendr� todas las im�genes de Open SimMPLS para poder acceder a
-     * ellas de forma m�s r�pida y para no tener que cargar la misma imagen en
-     * distintas instancias.
+    /**
+     * Este atributo contendr� todas las im�genes de Open SimMPLS para poder
+     * acceder a ellas de forma m�s r�pida y para no tener que cargar la misma
+     * imagen en distintas instancias.
+     *
      * @since 2.0
      */
     private TImagesBroker dispensadorDeImagenes;
-    /** Este atributo es una referencia a la ventana padre que recoge dentro de si a
-     * esta ventana hija.
+    /**
+     * Este atributo es una referencia a la ventana padre que recoge dentro de
+     * si a esta ventana hija.
+     *
      * @since 2.0
      */
     private JSimulador VentanaPadre;
-    /** Este atributo contiene en todo momento un referencia al elemento de la topolog�a
-     * (nodo o enlace) sobre el que se est� intentando abrir un men� contextual (clic
-     * con el bot�n derecho).
+    /**
+     * Este atributo contiene en todo momento un referencia al elemento de la
+     * topolog�a (nodo o enlace) sobre el que se est� intentando abrir un men�
+     * contextual (clic con el bot�n derecho).
+     *
      * @since 2.0
      */
     private TTopologyElement elementoDisenioClicDerecho;
-    
-    
+
     private boolean controlTemporizacionDesactivado;
-    
+
     private ChartPanel panelGrafico1;
     private ChartPanel panelGrafico2;
     private ChartPanel panelGrafico3;
@@ -2594,7 +2755,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
     private JFreeChart grafico4;
     private JFreeChart grafico5;
     private JFreeChart grafico6;
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areaEstadisticasDescripcion;
     private javax.swing.JProgressBar barraDeProgreso;

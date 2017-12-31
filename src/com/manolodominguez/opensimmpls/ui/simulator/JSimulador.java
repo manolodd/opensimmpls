@@ -342,7 +342,7 @@ public class JSimulador extends javax.swing.JFrame {
                         try {
                             TScenario esc = new TScenario();
                             esc = cargador.getScenario();
-                            String tit = esc.obtenerFichero().getName();
+                            String tit = esc.getScenarioFile().getName();
                             numVentanasAbiertas++;
                             activarOpciones();
                             JVentanaHija nuevoEscenario = new JVentanaHija(this, dispensadorDeImagenes, tit);

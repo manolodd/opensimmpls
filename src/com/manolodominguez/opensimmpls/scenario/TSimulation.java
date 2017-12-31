@@ -45,7 +45,7 @@ public class TSimulation {
      * @since 2.0
      * @param ps El panel de simulaci�n.
      */    
-    public void ponerPanelSimulacion(JSimulationPanel ps) {
+    public void setSimulationPanel(JSimulationPanel ps) {
         recolector.setSimulationPanel(ps);
     }
     

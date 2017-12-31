@@ -15,371 +15,366 @@
  */
 package com.manolodominguez.opensimmpls.scenario;
 
-import com.manolodominguez.opensimmpls.ui.simulator.JSimulationPanel;
-import com.manolodominguez.opensimmpls.hardware.timer.TTimestamp;
 import java.io.File;
 import java.util.ResourceBundle;
 
 /**
- * Esta clase implementa un escenario completo de simulaci�n, con todos sus
- * componentes.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements a complete simulation scenario, with all its
+ * components.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class TScenario {
 
     /**
-     * Crea una nueva instancia de TEscenario
+     * This is the constructor of the class. It creates a new instance of
+     * TScenario.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TScenario() {
-        topologia = new TTopology(this);
-        simulacion = new TSimulation(this);
-        ficheroEscenario = null;
-        guardado = false;
-        modificado = false;
-        titulo = "";
-        autor = "";
-        descripcion = "";
+        // FIX: Use class constants instead of harcoded values.
+        this.topology = new TTopology(this);
+        this.simulation = new TSimulation(this);
+        this.scenarioFile = null;
+        this.saved = false;
+        this.modified = false;
+        this.title = "";
+        this.author = "";
+        this.description = "";
     }
-    
+
     /**
-     * Este m�todo establece el panel de simulaci�n que se usar� para mostrar la
-     * simulaci�n visual.
-     * @param ps Un panel de simulaci�n existente.
+     * This method restart all attributes of the class a when it was
+     * instantiated.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
-    public void ponerPanelSimulacion(JSimulationPanel ps) {
-        simulacion.ponerPanelSimulacion(ps);
-    }
-    
-    /**
-     * Este m�todo reinicia todos los atributos de la clase, dejando a la instancia
-     * como si la acabase de crear el constructor.
-     * @since 2.0
-     */    
+     */
     public void reset() {
-        topologia.reset();
-        simulacion.reset();
-        modificado = true;
-    }
-    
-    /**
-     * Este m�todo permite establecer el t�tulo del escenario, que aparecer� en la
-     * ventana correspondiente cuando sea necesario.
-     * @param t T�tulo del escenario
-     * @since 2.0
-     */    
-    public void setTitle(String t) {
-        this.titulo = t;
+        this.topology.reset();
+        this.simulation.reset();
+        this.modified = true;
     }
 
     /**
-     * Este m�todo permite obtener el t�tulo del escenario.
-     * @return T�tulo del escenario.
+     * This method sets the title of the scenario.
+     *
+     * @param title the title of the scenario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
-    public String obtenerTitulo() {
-        return this.titulo;
+     */
+    public void setTitle(String title) {
+        this.title = title;
     }
-    
+
     /**
-     * Este m�todo permite establecer el autor del escenario.
-     * @param a Autor del escenario.
+     * This method gets the title of the scenario.
+     *
+     * @return the title of the scenario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
-    public void setAuthor(String a) {
-        this.autor = a;
+     */
+    public String getTitle() {
+        return this.title;
     }
-    
+
     /**
-     * Este m�todo permite obtener el autor del escenario.
-     * @return Autor del escenario.
+     * This method sets the author of this scenario.
+     *
+     * @param author the author of this scenario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
-    public String obtenerAutor() {
-        return this.autor;
+     */
+    public void setAuthor(String author) {
+        this.author = author;
     }
-    
+
     /**
-     * Este m�todo permite establecer la descripci�n del escenario.
-     * @param d Descripci�n del escenario.
+     * This method gets the author of this scenario.
+     *
+     * @return the author of this scenario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
-    public void setDescription(String d) {
-        this.descripcion = d;
+     */
+    public String getAuthor() {
+        return this.author;
     }
-    
+
     /**
-     * Este m�todo permite obtener la descripci�n del escenario.
-     * @return La descripci�n del escenario.
+     * This mthod sets the description of this scenario.
+     *
+     * @param description the description of this scenario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
-    public String obtenerDescripcion() {
-        return this.descripcion;
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
-    
+
     /**
-     * Este m�todo permite obtener una caden a que es la serializaci�n del t�tulo para
-     * almacenarla en disco.
-     * @return La representaci�n serializada del t�tulo.
+     * This mthod gets the description of this scenario.
+     *
+     * @return the description of this scenario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
+     */
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * This method serializes the title of this scenario.
+     *
+     * @return the serialized version of the title of this scenario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
     public String marshallTitle() {
-        String cadena = "#Titulo#";
-        if (this.obtenerTitulo().replace('#', ' ').equals("")) {
-            cadena += ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEscenario.SinDefinir");
+        String serializedTitle = "#Titulo#";
+        if (this.getTitle().replace('#', ' ').equals("")) {
+            serializedTitle += ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEscenario.SinDefinir");
         } else {
-            cadena += this.obtenerTitulo().replace('#', ' ');
+            serializedTitle += this.getTitle().replace('#', ' ');
         }
-        cadena += "#";
-        return cadena;
+        serializedTitle += "#";
+        return serializedTitle;
     }
 
     /**
-     * Este m�todo permite obtener una caden a que es la serializaci�n del autor para
-     * almacenarla en disco.
+     * This method serializes the author of this scenario.
+     *
      * @since 2.0
-     * @return La representaci�n serializada del autor
-     */    
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the serialized version of the author of this scenario.
+     */
     public String marshallAuthor() {
-        String cadena = "#Autor#";
-        if (this.obtenerAutor().replace('#', ' ').equals("")) {
-            cadena += ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEscenario.SinDefinir");
+        String serializedAuthor = "#Autor#";
+        if (this.getAuthor().replace('#', ' ').equals("")) {
+            serializedAuthor += ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEscenario.SinDefinir");
         } else {
-            cadena += this.obtenerAutor().replace('#', ' ');
+            serializedAuthor += this.getAuthor().replace('#', ' ');
         }
-        cadena += "#";
-        return cadena;
+        serializedAuthor += "#";
+        return serializedAuthor;
     }
 
     /**
-     * Este m�todo permite obtener una cadena que es la serializaci�n de la descripci�n
-     * del escenario para  almacenarla en disco.
+     * This method serializes the description of this scenario.
+     *
      * @since 2.0
-     * @return Representaci�n serializada de la descripci�n.
-     */    
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the serialized version of the description of this scenario.
+     */
     public String marshallDescription() {
-        String cadena = "#Descripcion#";
-        if (this.obtenerDescripcion().replace('#', ' ').equals("")) {
-            cadena += ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEscenario.SinDefinir");
+        String serializedDescription = "#Descripcion#";
+        if (this.getDescription().replace('#', ' ').equals("")) {
+            serializedDescription += ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEscenario.SinDefinir");
         } else {
-            cadena += this.obtenerDescripcion().replace('#', ' ');
+            serializedDescription += this.getDescription().replace('#', ' ');
         }
-        cadena += "#";
-        return cadena;
+        serializedDescription += "#";
+        return serializedDescription;
     }
 
     /**
-     * Este m�todo permite, apartir de un t�tulo serializado, poner el mismo titulo a
-     * la instancia actual del escenario.
+     * This method deserializes the title of this scenario.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     * @param titulo Titulo serializado.
-     * @return TRUE, si se ha deserializado sin problemas. FALSE, en caso contrario.
-     */    
+     * @param titulo the serialized version of the title of this scenario.
+     * @return TRUE, if the title can be deserialized correctly. Otherwise,
+     * FALSE.
+     */
     public boolean unmarshallTitle(String titulo) {
-        String valores[] = titulo.split("#");
-        if (valores.length != 3) {
+        String[] titleFields = titulo.split("#");
+        if (titleFields.length != 3) {
             return false;
         }
-        if (valores[2] != null) {
-            this.setTitle(valores[2]);
+        if (titleFields[2] != null) {
+            this.setTitle(titleFields[2]);
         }
         return true;
     }
 
     /**
-     * Este m�todo permite, apartir de un autor serializado, poner el mismo autor a
-     * la instancia actual del escenario.
+     * This method deserializes the autor of this scenario.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     * @param autor Autor serializado.
-     * @return TRUE, si se ha deserializado correctamente. FALSE en caso contrario.
-     */    
+     * @param autor the serialized version of the autor of this scenario.
+     * @return TRUE, if the autor can be deserialized correctly. Otherwise,
+     * FALSE.
+     */
     public boolean unmarshallAuthor(String autor) {
-        String valores[] = autor.split("#");
-        if (valores.length != 3) {
+        String[] authorFields = autor.split("#");
+        if (authorFields.length != 3) {
             return false;
         }
-        if (valores[2] != null) {
-            this.setAuthor(valores[2]);
+        if (authorFields[2] != null) {
+            this.setAuthor(authorFields[2]);
         }
         return true;
     }
 
     /**
-     * Este m�todo permite, apartir de una descripci�n serializada, poner la misma
-     * descripci�n a la instancia actual del escenario.
+     * This method deserializes the descripcion of this scenario.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     * @param descripcion Descripci�n serializada.
-     * @return TRUE, si se ha deserializado correctamente. FALSE en caso contrario.
-     */    
+     * @param descripcion the serialized version of the descripcion of this
+     * scenario.
+     * @return TRUE, if the descripcion can be deserialized correctly.
+     * Otherwise, FALSE.
+     */
     public boolean unmarshallDescription(String descripcion) {
-        String valores[] = descripcion.split("#");
-        if (valores.length != 3) {
+        String[] descriptionFields = descripcion.split("#");
+        if (descriptionFields.length != 3) {
             return false;
         }
-        if (valores[2] != null) {
-            this.setDescription(valores[2]);
-        } 
+        if (descriptionFields[2] != null) {
+            this.setDescription(descriptionFields[2]);
+        }
         return true;
     }
-    
+
     /**
-     * Este m�todo permite establecer la topolog�a del escenario a partir de una
-     * topolog�a existente.
-     * @param t Topolog�a asociada al escenario.
+     * This method sets the topology of this scenario.
+     *
+     * @param topology the topology of this scenario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
-    public void ponerTopologia(TTopology t) {
-        topologia = t;
+     */
+    public void setTopology(TTopology topology) {
+        this.topology = topology;
     }
 
     /**
-     * Este m�todo permite obtener la topolog�a del escenario.
-     * @return Topolog�a del escenario.
+     * This method gets the topology of this scenario.
+     *
+     * @return the topology of this scenario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
+     */
     public TTopology getTopology() {
-        return topologia;
+        return topology;
     }
 
     /**
-     * Este m�todo permite establecer la simulaci�n del escenario.
+     * This method sets the simulation of this scenario.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     * @param s Simulaci�n asociada al escenario.
-     */    
-    public void ponerSimulacion(TSimulation s) {
-        simulacion = s;
+     * @param simulation the simulation of this scenario.
+     */
+    public void setSimulation(TSimulation simulation) {
+        this.simulation = simulation;
     }
 
     /**
-     * Este m�todo permite obtener la simulaci�n del escenario.
-     * @return Simulaci�n del escenario.
+     * This method gets the simulation of this scenario.
+     *
+     * @return the simulation of this scenario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
+     */
     public TSimulation getSimulation() {
-        return simulacion;
+        return this.simulation;
     }
 
     /**
-     * Este m�todo permite saber si en un momento dado la simulaci�n est� funcionando o
-     * no.
-     * @return TRUE, si la simulaci�n est� en curso. FALSE en caso contrario.
+     * This method start the simulation process of this scenario.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
-    public boolean simulacionEnFuncionamiento() {
-        if (topologia.obtenerReloj().isRunning()) 
-            return true;
-        return false;
-    }
-
-    /**
-     * Este m�todo permite comenzar el proceso de simulaci�n.
-     * @since 2.0
-     */    
-    public void generarSimulacion() {
-        if (!this.simulacionEnFuncionamiento()) {
-            topologia.obtenerReloj().reset();
-            topologia.obtenerReloj().start();
+     */
+    public void simulate() {
+        if (!this.topology.getTimer().isRunning()) {
+            topology.getTimer().reset();
+            topology.getTimer().start();
         }
     }
 
     /**
-     * Este m�todo permite establecer el tiempo que debe durar la simulaci�n.
-     * @param d Marca de tiempo que expresa la duraci�n en tiempo de simulaci�n, de la
-     * simulaci�n.
+     * This method sets the file disk associated to this scenario.
+     *
+     * @param scenarioFile the file disk associated to this scenario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
-    public void ponerDuracionSimulacion(TTimestamp d) {
-        if (!this.simulacionEnFuncionamiento()) {
-            this.topologia.obtenerReloj().setFinishTimestamp(d);
-        }
+     */
+    public void setScenarioFile(File scenarioFile) {
+        this.scenarioFile = scenarioFile;
     }
 
     /**
-     * Este m�todo permite establecer la duraci�n de cada paso de simulaci�n. La
-     * simulaci�n cont�nua usa unos recursos muy elevados as� que la simulaci�n se
-     * discretiza, haci�ndose por tics.
-     * @param p Duraci�n en nanosegundos del tic de relo o, lo que es lo mismo, la duraci�n del
-     * paso de simulaci�n.
+     * This method gets the file disk associated to this scenario.
+     *
+     * @return the file disk associated to this scenario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
-    public void ponerPasoSimulacion(int p) {
-        if (!this.simulacionEnFuncionamiento()) {
-            this.topologia.obtenerReloj().setTick(p);
-        }
+     */
+    public File getScenarioFile() {
+        return this.scenarioFile;
     }
 
     /**
-     * Este m�todo permite establecer el nombre y la ruta del fichero que almacena en
-     * disco el escenario.
-     * @param f Fichero de disco que almacena el escenario.
+     * This method sets whether the in-memory scenario is saved to disk or not.
+     *
+     * @param saved TRUE, if the scenario has been saved to disk. Otherwise,
+     * FALSE.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
-    public void setFile(File f) {
-        ficheroEscenario = f;
+     */
+    public void setSaved(boolean saved) {
+        this.saved = saved;
     }
-    
+
     /**
-     * Este m�todo permite obtener el nombre y ruta del fichero que almacena el
-     * escenario en disco.
-     * @return Fichero y ruta que almacena el escenario en disco.
+     * This method ckecks whether the in-memory scenario has been saved to disk
+     * or not.
+     *
+     * @return TRUE, if the scenario has been saved to disk. Otherwise, FALSE.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
-    public File obtenerFichero() {
-        return ficheroEscenario;
+     */
+    public boolean isSaved() {
+        return this.saved;
     }
-    
+
     /**
-     * Este m�todo establece si el escenario est� guardado en disco o no.
-     * @param g TRUE, si el escenario queremos que aparezca como guardado. FALSE en caso
-     * contrario.
+     * This method sets whether the in-memory scenario has changed with respect
+     * to its version saved on disk or not.
+     *
+     * @param modified TRUE, if the in-memory scenario has changed with respect
+     * to its version saved on disk. Otherwise, FALSE.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
-    public void setSaved(boolean g) {
-        guardado = g;
+     */
+    public void setModified(boolean modified) {
+        this.modified = modified;
     }
-     
+
     /**
-     * Este m�todo permite obtener si el escenario se encuentra guardado en disco o
-     * solo est� en memoria.
-     * @return TRUE, si el fichero est� almacenado en disco. FALSE en caso contrario.
+     * This method checks whether the in-memory scenario has changed with
+     * respect to its version saved on disk or not.
+     *
+     * @return TRUE, if the in-memory scenario has changed with respect to its
+     * version saved on disk. Otherwise, FALSE.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
-    public boolean obtenerGuardado() {
-        return guardado;
+     */
+    public boolean isModified() {
+        return this.modified;
     }
-     
-    /**
-     * Este m�todo permite establecer si el escenario se ha modificado desde la ultima
-     * vez que se guard� en disco o no.
-     * @param m TRUE, si queremos que el escenario aparezca como modificado. FALSE en caso
-     * contrario.
-     * @since 2.0
-     */    
-    public void setModified(boolean m) {
-        modificado = m;
-    }
-    
-    /**
-     * Este m�todo permite obtener si el escenario se ha modificado despu�s de haberse
-     * guardado en disco o no.
-     * @return TRUE, si el escenario est� modificado con respecto al disco. FALSE en caso
-     * contrario.
-     * @since 2.0
-     */    
-    public boolean obtenerModificado() {
-        return modificado;
-    }
-    
-    
-    private String titulo;
-    private String autor;
-    private String descripcion;
-    private TTopology topologia;
-    private TSimulation simulacion;
-    private File ficheroEscenario;
-    private boolean guardado;
-    private boolean modificado;
+
+    private String title;
+    private String author;
+    private String description;
+    private TTopology topology;
+    private TSimulation simulation;
+    private File scenarioFile;
+    private boolean saved;
+    private boolean modified;
 }
