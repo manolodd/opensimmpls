@@ -219,7 +219,7 @@ public class TTopology {
             nodo = (TNode) iterador.next();
             if (nodo.getNodeType() == TNode.SENDER) {
                 emisor = (TSenderNode) nodo;
-                if (emisor.obtenerDestino().equals(nr.getIPv4Address()))
+                if (emisor.getTargetIPv4Address().equals(nr.getIPv4Address()))
                     return true;
             }
         }

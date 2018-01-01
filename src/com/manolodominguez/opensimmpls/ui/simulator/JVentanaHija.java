@@ -67,7 +67,7 @@ import com.manolodominguez.opensimmpls.ui.utils.TProgressEventListener;
  */
 public class JVentanaHija extends javax.swing.JInternalFrame {
 
-    /**
+     /**
      * Este m�todo es el constructor de la clase. Crea una nueva instancia de
      * JVentanaHija.
      *

@@ -31,245 +31,283 @@ import com.manolodominguez.opensimmpls.hardware.ports.TPortSet;
 import com.manolodominguez.opensimmpls.utils.EIDGeneratorOverflow;
 import com.manolodominguez.opensimmpls.utils.TLongIDGenerator;
 import com.manolodominguez.opensimmpls.utils.TRotaryIDGenerator;
-import java.awt.*;
-import java.util.*;
+import java.awt.Point;
+import java.util.Random;
 
 /**
- * Esta clase implementa un nodo emisor de tr�fico.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements a sender node; a node that only generates traffic.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class TSenderNode extends TNode implements ITimerEventListener, Runnable {
-    
+
     /**
-     * Crea una nueva instanci de TNodoEmisor
-     * @param identificador Identificar �nico del nodo en la topolog�a.
-     * @param d Direcci�n IP del nodo.
-     * @param il Generador de identigficadores para los eventos generados por el nodo.
-     * @param t Topolog�a dentro de la cual se encuentra el nodo.
+     * This is the constructor of the class and creates a new instance of
+     * TSenderNode.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
+     * @param nodeID The node identifier that is unique in the topology.
+     * @param ipv4Address IPv4 address of the node.
+     * @param identifierGenerator An identifier generator that will be used to
+     * generate unique identifiers for events.
+     * @param topology Topology the node belongs to.
      */
-    public TSenderNode(int identificador, String d, TLongIDGenerator il, TTopology t) {
-        super(identificador, d, il, t);
+    public TSenderNode(int nodeID, String ipv4Address, TLongIDGenerator identifierGenerator, TTopology topology) {
+        super(nodeID, ipv4Address, identifierGenerator, topology);
+        // FIX: This method is overridable. Avoid using this method to update
+        // the number of ports or make it final.
         this.setPorts(super.DEFAULT_NUM_PORTS_SENDER);
-        gIdent = new TLongIDGenerator();
-        gIdGoS = new TRotaryIDGenerator();
-        String IPDestino = "";
-        tasaTransferencia = 10;
-        tipoTrafico = TSenderNode.CONSTANTE;
-        encapsularSobreMPLS = false;
-        nivelDeGoS = 0;
-        LSPDeBackup = false;
-        generadorDeAleatorios = new Random();
-        etiquetaDeEmision = (16 + generadorDeAleatorios.nextInt(1000000));
-        tamDatosConstante = 0;
-        tamDatosVariable = 0;
-        estadisticas = new TSenderStats();
-        estadisticas.activateStats(this.isGeneratingStats());
+        this.packetIdentifierGenerator = new TLongIDGenerator();
+        this.packetGoSdentifierGenerator = new TRotaryIDGenerator();
+        this.targetIPv4Address = "";
+        // FIX: Use class constants instead of harcoded values for all cases.
+        this.trafficRate = 10;
+        this.trafficType = TSenderNode.CONSTANT;
+        this.encapsulateOverMPLS = false;
+        this.gosLevel = 0;
+        this.requestBackupLSP = false;
+        this.randomNumberGenerator = new Random();
+        this.sendingLabel = (16 + randomNumberGenerator.nextInt(1000000));
+        this.constantTrafficSize = 0;
+        this.variableTrafficSize = 0;
+        this.stats = new TSenderStats();
+        // FIX: This method is overridable. Avoid using this method to update
+        // the number of ports or make it final.
+        this.stats.activateStats(this.isGeneratingStats());
     }
-    
+
     /**
-     * Este m�todo obtiene el tamanio de la carga �til los paquetes de datos constantes
-     * que debe generar el nodo si est� configurado para tr�fico constante.
+     * Este m�todo obtiene el tamanio de la carga �til los paquetes de datos
+     * constantes que debe generar el nodo si est� configurado para tr�fico
+     * constante (octects).
+     *
      * @return El tama�o de la carga �til de los paquetes constantes.
      * @since 2.0
-     */    
-    public int obtenerTamDatosConstante() {
-        return this.tamDatosConstante;
+     */
+    public int getConstantTrafficSize() {
+        return this.constantTrafficSize;
     }
-    
+
     /**
-     * Este m�todo permite establecer el tama�o de la carga util de los paquetes constantes que debe
-     * generar el nodo.
-     * @param tdc Tamanio de la carga util de los paquetes para tr�fico constante.
-     * @since 2.0
-     */    
-    public void ponerTamDatosConstante(int tdc) {
-        this.tamDatosConstante = tdc;
-    }
-    
-    /**
-     * Este m�todo permite establecer el nodo destino del tr�fico generado.
-     * @param d IP del nodo destino del tr�fico.
+     * Este m�todo permite establecer el tama�o de la carga util de los paquetes
+     * constantes que debe generar el nodo.
+     *
+     * @param constantTrafficSize Tamanio de la carga util de los paquetes para tr�fico
+     * constante (octects).
      * @since 2.0
      */
-    public void ponerDestino(String d) {
-        if (!d.equals("")) {
-            TNode nt = this.topology.getFirstNodeNamed(d);
+    public void setConstantTrafficSize(int constantTrafficSize) {
+        this.constantTrafficSize = constantTrafficSize;
+    }
+
+    /**
+     * Este m�todo permite establecer el nodo destino del tr�fico generado.
+     *
+     * @param nodeName IP del nodo destino del tr�fico.
+     * @since 2.0
+     */
+    public void setTargetNode(String nodeName) {
+        if (!nodeName.equals("")) {
+            TNode nt = this.topology.getFirstNodeNamed(nodeName);
             if (nt != null) {
-                IPDestino = nt.getIPv4Address();
+                this.targetIPv4Address = nt.getIPv4Address();
             }
         }
     }
-    
+
     /**
      * Este m�todo permite obtener la IP del nodo destino del tr�fico generado.
+     *
      * @return La IP del nodo destino del tr�fico generado.
      * @since 2.0
      */
-    public String obtenerDestino() {
-        return IPDestino;
+    public String getTargetIPv4Address() {
+        return this.targetIPv4Address;
     }
-    
+
     /**
      * Este m�todo permite establecer la tasa de generaci�n de tr�fico del nodo.
-     * @param t Tasa de generaci�n de tr�fico elegida para el nodo. En Mbps.
+     *
+     * @param trafficRateInMbps Tasa de generaci�n de tr�fico elegida para el nodo. En Mbps.
      * @since 2.0
      */
-    public void ponerTasaTrafico(int t) {
-        tasaTransferencia = t;
+    public void setTrafficRate(int trafficRateInMbps) {
+        this.trafficRate = trafficRateInMbps;
     }
-    
+
     /**
      * Este m�todo permite obtener la tasa de generaci�n de tr�fico del nodo.
+     *
      * @return Tasa de generaci�n de tr�fico el nodo. En Mbps.
      * @since 2.0
      */
-    public int obtenerTasaTrafico() {
-        return tasaTransferencia;
+    public int getTrafficRate() {
+        return this.trafficRate;
     }
-    
-    private int obtenerCodificacionEXP() {
-        if ((this.nivelDeGoS == 0) && (this.LSPDeBackup)) {
+
+    private int getNeededEXPValue() {
+        if ((this.gosLevel == 0) && (this.requestBackupLSP)) {
             return TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP;
-        } else if ((this.nivelDeGoS == 1) && (this.LSPDeBackup)) {
+        } else if ((this.gosLevel == 1) && (this.requestBackupLSP)) {
             return TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP;
-        } else if ((this.nivelDeGoS == 2) && (this.LSPDeBackup)) {
+        } else if ((this.gosLevel == 2) && (this.requestBackupLSP)) {
             return TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP;
-        } else if ((this.nivelDeGoS == 3) && (this.LSPDeBackup)) {
+        } else if ((this.gosLevel == 3) && (this.requestBackupLSP)) {
             return TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP;
-        } else if ((this.nivelDeGoS == 0) && (!this.LSPDeBackup)) {
+        } else if ((this.gosLevel == 0) && (!this.requestBackupLSP)) {
             return TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP;
-        } else if ((this.nivelDeGoS == 1) && (!this.LSPDeBackup)) {
+        } else if ((this.gosLevel == 1) && (!this.requestBackupLSP)) {
             return TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP;
-        } else if ((this.nivelDeGoS == 2) && (!this.LSPDeBackup)) {
+        } else if ((this.gosLevel == 2) && (!this.requestBackupLSP)) {
             return TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP;
-        } else if ((this.nivelDeGoS == 3) && (!this.LSPDeBackup)) {
+        } else if ((this.gosLevel == 3) && (!this.requestBackupLSP)) {
             return TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP;
         }
         return TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP;
     }
-    
+
     /**
      * Este m�todo permite establecer qu� tipo de tr�fico generar� el nodo.
-     * @param t Tipo de tr�fico generado por el nodo. Una de las constantes definidas en esta
-     * clase.
+     *
+     * @param trafficType Tipo de tr�fico generado por el nodo. Una de las constantes
+     * definidas en esta clase.
      * @since v
      */
-    public void ponerTipoTrafico(int t) {
-        tipoTrafico = t;
+    public void setTrafficType(int trafficType) {
+        this.trafficType = trafficType;
     }
-    
+
     /**
-     * Este m�todo permite obtener el tipo de tr�fico que est� generando el nodo.
-     * @return Tipo de tr�fico generado por el nodo. Una de las constantes de esta clase.
+     * Este m�todo permite obtener el tipo de tr�fico que est� generando el
+     * nodo.
+     *
+     * @return Tipo de tr�fico generado por el nodo. Una de las constantes de
+     * esta clase.
      * @since 2.0
      */
-    public int obtenerTipoTrafico() {
-        return tipoTrafico;
+    public int getTrafficType() {
+        return this.trafficType;
     }
-    
+
     /**
-     * Este m�todo permite establecer si el tr�fico generado est� ya estiquetado en
-     * MPLS o no. Lo que es lo mismo, si el tr�fico proviene de otro dominio MPLS o no.
-     * @param mpls TRUE, si el nodo debe generar tr�fico MPLS. FALSE en caso contrario.
+     * Este m�todo permite establecer si el tr�fico generado est� ya estiquetado
+     * en MPLS o no. Lo que es lo mismo, si el tr�fico proviene de otro dominio
+     * MPLS o no.
+     *
+     * @param encapsulateOverMPLS TRUE, si el nodo debe generar tr�fico MPLS. FALSE en caso
+     * contrario.
      * @since 2.0
      */
-    public void ponerSobreMPLS(boolean mpls) {
-        encapsularSobreMPLS = mpls;
+    public void encapsulateOverMPLS(boolean encapsulateOverMPLS) {
+        this.encapsulateOverMPLS = encapsulateOverMPLS;
     }
-    
+
     /**
-     * Este m�todo permite obtener si el tr�fico que est� generando el nodo es ya
-     * tr�fico MPLS o no.
-     * @return TRUE, si el tr�fico que est� generando el nodo es MPLS. FALSE en caso contrario.
+     * Este m�todo permite obtener si el tr�fico que est� generando el nodo es
+     * ya tr�fico MPLS o no.
+     *
+     * @return TRUE, si el tr�fico que est� generando el nodo es MPLS. FALSE en
+     * caso contrario.
      * @since 2.0
      */
-    public boolean obtenerSobreMPLS() {
-        return encapsularSobreMPLS;
+    public boolean isEncapsulatingOverMPLS() {
+        return this.encapsulateOverMPLS;
     }
-    
+
     /**
-     * Este m�todo permite establecer el nivel de garant�a de servicio con el que el
-     * nodo debe marcar los paquetes generados.
-     * @param gos Nivel de garant�a de servicio.
+     * Este m�todo permite establecer el nivel de garant�a de servicio con el
+     * que el nodo debe marcar los paquetes generados.
+     *
+     * @param gosLevel Nivel de garant�a de servicio.
      * @since 2.0
      */
-    public void ponerNivelDeGoS(int gos) {
-        nivelDeGoS = gos;
+    public void setGoSLevel(int gosLevel) {
+        this.gosLevel = gosLevel;
     }
-    
+
     /**
-     * Este m�todo permite obtener el nivel de garant�a de servicio con el que el nodo
-     * est� marcando los paquetes generados.
-     * @return El nivel de garant�a de servicio con el que el nodo est� marcando los paquetes
-     * generados.
+     * Este m�todo permite obtener el nivel de garant�a de servicio con el que
+     * el nodo est� marcando los paquetes generados.
+     *
+     * @return El nivel de garant�a de servicio con el que el nodo est� marcando
+     * los paquetes generados.
      * @since 2.0
      */
-    public int obtenerNivelDeGoS() {
-        return nivelDeGoS;
+    public int getGoSLevel() {
+        return this.gosLevel;
     }
-    
+
     /**
-     * Este m�todo permite establecer si los paquetes generados ser�n marcdos para
-     * requerir un LSP de respaldo en el dominio MPLS o no.
-     * @param l TRUE si los paqutes requerir�n LSP de respaldo. FALSE en caso contrario.
+     * Este m�todo permite establecer si los paquetes generados ser�n marcdos
+     * para requerir un LSP de respaldo en el dominio MPLS o no.
+     *
+     * @param requestBackupLSP TRUE si los paqutes requerir�n LSP de respaldo. FALSE en caso
+     * contrario.
      * @since 2.0
      */
-    public void ponerLSPDeBackup(boolean l) {
-        LSPDeBackup = l;
+    public void setRequestBackupLSP(boolean requestBackupLSP) {
+        this.requestBackupLSP = requestBackupLSP;
     }
-    
+
     /**
-     * Este m�todo permite saber si los paquetes generados est�n siendo marcados para
-     * requerir un LSP de respaldo o no.
-     * @return TRUE, si los paquetes es�n siendo marcados para requerir un LSP de respaldo.
-     * FALSE en caso contrario.
+     * Este m�todo permite saber si los paquetes generados est�n siendo marcados
+     * para requerir un LSP de respaldo o no.
+     *
+     * @return TRUE, si los paquetes es�n siendo marcados para requerir un LSP
+     * de respaldo. FALSE en caso contrario.
      * @since 2.0
      */
-    public boolean obtenerLSPDeBackup() {
-        return LSPDeBackup;
+    public boolean isRequestingBackupLSP() {
+        return this.requestBackupLSP;
     }
-    
+
     /**
-     * Este m�todo permite obtener el tipo de nodo del que se trata esta instancia.
+     * Este m�todo permite obtener el tipo de nodo del que se trata esta
+     * instancia.
+     *
      * @return TNode.SENDER, indicando que es un generador y emisor de tr�fico.
      * @since 2.0
      */
+    @Override
     public int getNodeType() {
-        return super.SENDER;
+        return TNode.SENDER;
     }
-    
+
     /**
-     * Este m�todo permite recibir eventos de sincronizaci�n del reloj principal del
-     * simulador, que es quien sincroniza todo.
+     * Este m�todo permite recibir eventos de sincronizaci�n del reloj principal
+     * del simulador, que es quien sincroniza todo.
+     *
      * @param evt Evento de sincronizaci�n enviado por el reloj principal.
      * @since 2.0
      */
+    @Override
     public void receiveTimerEvent(TTimerEvent evt) {
         this.setTickDuration(evt.getStepDuration());
         this.setCurrentInstant(evt.getUpperLimit());
         this.availableNs += evt.getStepDuration();
         this.startOperation();
     }
-    
+
     /**
      * Este m�todo se llama cuando el hilo independiente del nodo se pone en
      * funcionamiento. Es el n�cleo del nodo.
+     *
      * @since 2.0
      */
+    @Override
     public void run() {
         try {
             this.generateSimulationEvent(new TSimulationEventNodeCongested(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), 0));
         } catch (Exception e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
-        TAbstractPDU paqueteTmp = crearPaquete();
+        TAbstractPDU paqueteTmp = generatePacket();
         boolean emito = false;
-        while (obtenerOctetosTransmitibles() > obtenerTamanioSiguientePaquete(paqueteTmp)) {
+        while (getMaxTransmittableOctets() > getNextPacketTotalSize(paqueteTmp)) {
             emito = true;
-            generarTrafico();
+            generateTraffic();
         }
         paqueteTmp = null;
         if (emito) {
@@ -277,73 +315,79 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         } else {
             this.increaseTicksWithoutEmitting();
         }
-        this.estadisticas.groupStatsByTimeInstant(this.getCurrentInstant());
+        this.stats.groupStatsByTimeInstant(this.getCurrentInstant());
     }
-    
+
     /**
-     * Este m�todo obtiene el tama�o que tendr� la carga util del siguiente paquete
-     * generado, independientemente de que se est� tratando con tr�fico constante o
-     * variable.
-     * @return El tama�o de la carga �til del siguiente paquete que generar� el emisor.
+     * Este m�todo obtiene el tama�o que tendr� la carga util del siguiente
+     * paquete generado, independientemente de que se est� tratando con tr�fico
+     * constante o variable.
+     *
+     * @return El tama�o de la carga �til del siguiente paquete que generar� el
+     * emisor.
      * @since 2.0
-     */    
-    public int obtenerTamanioDatosSiguientePaquete() {
-        if (this.tipoTrafico == TSenderNode.CONSTANTE) {
-            return this.tamDatosConstante;
+     */
+    public int getNextPacketPayloadSize() {
+        if (this.trafficType == TSenderNode.CONSTANT) {
+            return this.constantTrafficSize;
         }
-        return this.tamDatosVariable;
+        return this.variableTrafficSize;
     }
-    
+
     /**
      * Este m�todo obtiene el tama�o de la header del sigueinte paquete que se
- generar�, independientemente del tipo de tr�fico del que se trate y de los
- valores de garant�a de Servicio con los que peuda estar marcado.
-     * @param paquete Paquete de cuya header queremos conocer el tama�o.
+     * generar�, independientemente del tipo de tr�fico del que se trate y de
+     * los valores de garant�a de Servicio con los que peuda estar marcado.
+     *
+     * @param packet Paquete de cuya header queremos conocer el tama�o.
      * @return El tama�o de la header.
      * @since 2.0
-     */    
-    public int obtenerTamanioCabeceraSiguientePaquete(TAbstractPDU paquete) {
+     */
+    public int getNextPacketHeaderSize(TAbstractPDU packet) {
         TMPLSPDU paqueteMPLS = null;
         TIPv4PDU paqueteIPv4 = null;
-        if (paquete.getType() == TAbstractPDU.MPLS) {
-            paqueteMPLS = (TMPLSPDU) paquete;
+        if (packet.getType() == TAbstractPDU.MPLS) {
+            paqueteMPLS = (TMPLSPDU) packet;
             return paqueteMPLS.getSize();
-        } 
-        paqueteIPv4 = (TIPv4PDU) paquete;
+        }
+        paqueteIPv4 = (TIPv4PDU) packet;
         return paqueteIPv4.getSize();
     }
-    
+
     /**
      * Este m�todo calcula, el tama�o del siguiente paquete a generar,
      * independientemente de que se de tipo constante o variable, o de cualquier
-     * protocolo de los soportados, e incluso de que nivel de GoS tenga asignado.
-     * @param paquete paquete cuyo tamanio se desea calcular.
+     * protocolo de los soportados, e incluso de que nivel de GoS tenga
+     * asignado.
+     *
+     * @param packet paquete cuyo tamanio se desea calcular.
      * @return El tama�o total del paquete especificado por par�metros.
      * @since 2.0
-     */    
-    public int obtenerTamanioSiguientePaquete(TAbstractPDU paquete) {
+     */
+    public int getNextPacketTotalSize(TAbstractPDU packet) {
         int tamanioDatos = 0;
         int tamanioCabecera = 0;
         int tamanioFinal = 0;
-        tamanioDatos = obtenerTamanioDatosSiguientePaquete();
-        tamanioCabecera = obtenerTamanioCabeceraSiguientePaquete(paquete);
+        tamanioDatos = getNextPacketPayloadSize();
+        tamanioCabecera = getNextPacketHeaderSize(packet);
         tamanioFinal = tamanioDatos + tamanioCabecera;
         return tamanioFinal;
     }
-    
+
     /**
-     * Este m�todo crea paquetes de tr�fico acorde a la configuraci�n el emisor de
-     * tr�fico y los env�a al receptor destino del tr�fico.
+     * Este m�todo crea paquetes de tr�fico acorde a la configuraci�n el emisor
+     * de tr�fico y los env�a al receptor destino del tr�fico.
+     *
      * @since 2.0
-     */    
-    public void generarTrafico() {
-        TAbstractPDU paquete=null;
-        TAbstractPDU paqueteConTamanio=null;
-        TPort pt = ports.getPort(0);
+     */
+    public void generateTraffic() {
+        TAbstractPDU paquete = null;
+        TAbstractPDU paqueteConTamanio = null;
+        TPort pt = this.ports.getPort(0);
         if (pt != null) {
             if (!pt.isAvailable()) {
-                paquete = crearPaquete();
-                paqueteConTamanio = this.ponerTamanio(paquete);
+                paquete = generatePacket();
+                paqueteConTamanio = this.addDataToPacket(paquete);
                 if (paqueteConTamanio != null) {
                     try {
                         int tipo = 0;
@@ -357,206 +401,216 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                         this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), tipo, paqueteConTamanio.getSize()));
                         this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), tipo));
                     } catch (Exception e) {
-                        e.printStackTrace(); 
+                        e.printStackTrace();
                     }
-                    if (this.topology.getNextHopIPv4Address(this.getIPv4Address(), this.obtenerDestino()) != null) {
+                    if (this.topology.getNextHopIPv4Address(this.getIPv4Address(), this.getTargetIPv4Address()) != null) {
                         pt.putPacketOnLink(paqueteConTamanio, pt.getLink().getDestinationOfTrafficSentBy(this));
                     } else {
                         discardPacket(paqueteConTamanio);
                     }
-                } 
+                }
             }
         }
     }
 
     /**
-     * Este m�todo contabiliza un paquete y su tama�o asociado, en las estad�sticas del
-     * nodo emisor, y sus gr�ficas.
-     * @param paquete Paquete que se desea contabilizar.
-     * @param deEntrada TRUE indica que se trata de un paquete que ha entrado en el nodo. FALSE indica
-     * que se trata de un paquete que ha salido del nodo.
+     * Este m�todo contabiliza un paquete y su tama�o asociado, en las
+     * estad�sticas del nodo emisor, y sus gr�ficas.
+     *
+     * @param packet Paquete que se desea contabilizar.
+     * @param isIncomingPacket TRUE indica que se trata de un paquete que ha entrado en
+     * el nodo. FALSE indica que se trata de un paquete que ha salido del nodo.
      * @since 2.0
-     */    
-    public void contabilizarPaquete(TAbstractPDU paquete, boolean deEntrada) {
-        if (deEntrada) {
-            if (paquete.getSubtype() == TAbstractPDU.MPLS) {
-            } else if (paquete.getSubtype() == TAbstractPDU.MPLS_GOS) {
-            } else if (paquete.getSubtype() == TAbstractPDU.IPV4) {
-            } else if (paquete.getSubtype() == TAbstractPDU.IPV4_GOS) {
+     */
+    public void accountPacket(TAbstractPDU packet, boolean isIncomingPacket) {
+        if (isIncomingPacket) {
+            if (packet.getSubtype() == TAbstractPDU.MPLS) {
+            } else if (packet.getSubtype() == TAbstractPDU.MPLS_GOS) {
+            } else if (packet.getSubtype() == TAbstractPDU.IPV4) {
+            } else if (packet.getSubtype() == TAbstractPDU.IPV4_GOS) {
             }
-        } else {
-            if (paquete.getSubtype() == TAbstractPDU.MPLS) {
-            } else if (paquete.getSubtype() == TAbstractPDU.MPLS_GOS) {
-            } else if (paquete.getSubtype() == TAbstractPDU.IPV4) {
-            } else if (paquete.getSubtype() == TAbstractPDU.IPV4_GOS) {
-            }
+        } else if (packet.getSubtype() == TAbstractPDU.MPLS) {
+        } else if (packet.getSubtype() == TAbstractPDU.MPLS_GOS) {
+        } else if (packet.getSubtype() == TAbstractPDU.IPV4) {
+        } else if (packet.getSubtype() == TAbstractPDU.IPV4_GOS) {
         }
     }
-    
+
     /**
-     * Este m�todo calcula cu�ntos nanosegundos necesita el nodo emisor para generar y
-     * transmitir un bit. Se basa para ello en la tasa de generaci�n de tr�fico del
-     * nodo.
+     * Este m�todo calcula cu�ntos nanosegundos necesita el nodo emisor para
+     * generar y transmitir un bit. Se basa para ello en la tasa de generaci�n
+     * de tr�fico del nodo.
+     *
      * @return El n�mero de nanosegundos necesarios generar y transmitir un bit.
      * @since 2.0
-     */    
-    public double obtenerNsPorBit() {
-        long tasaEnBitsPorSegundo = (long) (this.tasaTransferencia*1048576L);
-        double nsPorCadaBit = (double) ((double)1000000000.0/(long)tasaEnBitsPorSegundo);
+     */
+    public double getNsPerBit() {
+        long tasaEnBitsPorSegundo = (long) (this.trafficRate * 1048576L);
+        double nsPorCadaBit = (double) ((double) 1000000000.0 / (long) tasaEnBitsPorSegundo);
         return nsPorCadaBit;
     }
-    
+
     /**
-     * Este m�todo calcula el n�mero de nanosegundos necesarios para poder generar y
-     * enviar un determinado n�mero de octetos.
-     * @param octetos N�mero de octetos que deseamos generar y transmitir.
-     * @return N�mero de nanosegundos que necesitamos para los octetos especificados.
+     * Este m�todo calcula el n�mero de nanosegundos necesarios para poder
+     * generar y enviar un determinado n�mero de octetos.
+     *
+     * @param octects N�mero de octetos que deseamos generar y transmitir.
+     * @return N�mero de nanosegundos que necesitamos para los octetos
+     * especificados.
      * @since 2.0
-     */    
-    public double obtenerNsUsadosTotalOctetos(int octetos) {
-        double nsPorCadaBit = obtenerNsPorBit();
-        long bitsOctetos = (long) ((long)octetos*(long)8);
-        return (double)((double)nsPorCadaBit*(long)bitsOctetos);
+     */
+    public double getNsUsedByOctects(int octects) {
+        double nsPorCadaBit = getNsPerBit();
+        long bitsOctetos = (long) ((long) octects * (long) 8);
+        return (double) ((double) nsPorCadaBit * (long) bitsOctetos);
     }
-    
+
     /**
-     * Este m�todo calcula el n�mero de bits que puede generar y transmitir con el
-     * n�mero de nanosegundos con los que cuenta.
+     * Este m�todo calcula el n�mero de bits que puede generar y transmitir con
+     * el n�mero de nanosegundos con los que cuenta.
+     *
      * @return N�mero de bits que puede generar y transmitir.
      * @since 2.0
-     */    
-    public int obtenerLimiteBitsTransmitibles() {
-        double nsPorCadaBit = obtenerNsPorBit();
-        double maximoBits = (double) ((double)availableNs/(double)nsPorCadaBit);
+     */
+    public int getMaxTransmittableBits() {
+        double nsPorCadaBit = getNsPerBit();
+        double maximoBits = (double) ((double) this.availableNs / (double) nsPorCadaBit);
         return (int) maximoBits;
     }
-    
+
     /**
      * Este metodo calcula el n�mero de octetos completos que puede generar y
-     * transmitir el emisor teniendo en cuenta el n�mero de nanosegundos con los que
-     * cuenta.
-     * @return El n�mero de octetos completos que se pueden generar y transmitir.
+     * transmitir el emisor teniendo en cuenta el n�mero de nanosegundos con los
+     * que cuenta.
+     *
+     * @return El n�mero de octetos completos que se pueden generar y
+     * transmitir.
      * @since 2.0
-     */    
-    public int obtenerOctetosTransmitibles() {
-        double maximoBytes = ((double)obtenerLimiteBitsTransmitibles()/(double)8.0);
+     */
+    public int getMaxTransmittableOctets() {
+        double maximoBytes = ((double) getMaxTransmittableBits() / (double) 8.0);
         return (int) maximoBytes;
     }
-    
+
     /**
-     * Este m�todo calcula autom�ticamente el tama�o de la carga util del siguiente
-     * paquete a generar. Si el tr�fico es constante, devolver� el tama�o de paquete
-     * con el que se configur� el emisor. Si el tama�o es variable, generar� tr�fico
-     * siguiendo una funci�n de probabilidad en la cual se sigue la siguiente
-     * distribuci�n de tama�os:
+     * Este m�todo calcula autom�ticamente el tama�o de la carga util del
+     * siguiente paquete a generar. Si el tr�fico es constante, devolver� el
+     * tama�o de paquete con el que se configur� el emisor. Si el tama�o es
+     * variable, generar� tr�fico siguiendo una funci�n de probabilidad en la
+     * cual se sigue la siguiente distribuci�n de tama�os:
      *
-     * Tama�oPaquete < 100 octetos ---------------------> 47%
-     * Tama�oPaquete >= 100 octetos y < 1400 octetos ---> 24%
-     * Tama�oPaquete >= 1400 octetos y < 1500 octetos --> 18%
-     * Tama�oPaquete >= 1500 octetos -------------------> 1%
+     * Tama�oPaquete < 100 octetos ---------------------> 47% Tama�oPaquete >=
+     * 100 octetos y < 1400 octetos ---> 24% Tama�oPaquete >= 1400 octetos y
+     * < 1500 octetos --> 18% Tama�oPaquete >= 1500 octetos ------------------->
+     * 1%
      *
-     * Esta distribuci�n est� extra�da de las estad�sticas de la red Abilene, que son
-     * p�blicas y se pueden observar en http://netflow.internet2.edu/weekly.
+     * Esta distribuci�n est� extra�da de las estad�sticas de la red Abilene,
+     * que son p�blicas y se pueden observar en
+     * http://netflow.internet2.edu/weekly.
+     *
      * @return El tama�o que debe tener el siguiente paquete.
      * @since 2.0
-     */    
-    public int generarTamanioSiguientePaquete() {
-        int probabilidad = this.generadorDeAleatorios.nextInt(100);
+     */
+    public int computeNextPacketPayloadSize() {
+        int probabilidad = this.randomNumberGenerator.nextInt(100);
         int tamanioGenerado = 0;
         if (probabilidad < 47) {
-            tamanioGenerado = this.generadorDeAleatorios.nextInt(100);
+            tamanioGenerado = this.randomNumberGenerator.nextInt(100);
             tamanioGenerado -= 40;
         } else if ((probabilidad >= 47) && (probabilidad < 71)) {
-            tamanioGenerado = (this.generadorDeAleatorios.nextInt(1300) + 100);
+            tamanioGenerado = (this.randomNumberGenerator.nextInt(1300) + 100);
             tamanioGenerado -= 40;
         } else if ((probabilidad >= 71) && (probabilidad < 99)) {
-            tamanioGenerado = (this.generadorDeAleatorios.nextInt(100) + 1400);
+            tamanioGenerado = (this.randomNumberGenerator.nextInt(100) + 1400);
             tamanioGenerado -= 40;
         } else if (probabilidad >= 99) {
-            tamanioGenerado = (this.generadorDeAleatorios.nextInt(64035) + 1500);
+            tamanioGenerado = (this.randomNumberGenerator.nextInt(64035) + 1500);
             tamanioGenerado -= 40;
         }
         return tamanioGenerado;
     }
-    
+
     /**
-     * Este m�todo toma como par�metro un paquete vacio y devuelve un paquete con datos
-     * insertados. Los datos ser�n del tama�o que se haya estimado en los distintos
-     * m�todos de la clase,pero ser� el correcto.
+     * Este m�todo toma como par�metro un paquete vacio y devuelve un paquete
+     * con datos insertados. Los datos ser�n del tama�o que se haya estimado en
+     * los distintos m�todos de la clase,pero ser� el correcto.
+     *
      * @param paquete Paquete al que se quiere a�adir datos.
-     * @return Paquete con datos insertados del tama�o correcto seg�n el tipo de gr�fico.
+     * @return Paquete con datos insertados del tama�o correcto seg�n el tipo de
+     * gr�fico.
      * @since 2.0
-     */    
-    public TAbstractPDU ponerTamanio(TAbstractPDU paquete) {
+     */
+    public TAbstractPDU addDataToPacket(TAbstractPDU paquete) {
         TMPLSPDU paqueteMPLS = null;
         TIPv4PDU paqueteIPv4 = null;
-        int bitsMaximos = obtenerLimiteBitsTransmitibles();
+        int bitsMaximos = getMaxTransmittableBits();
         int tamanioCabecera = 0;
         int tamanioDatos = 0;
         int tamanioTotal = 0;
         double nsUsados = 0;
-        tamanioTotal = obtenerTamanioSiguientePaquete(paquete);
-        tamanioCabecera = obtenerTamanioCabeceraSiguientePaquete(paquete);
-        tamanioDatos = obtenerTamanioDatosSiguientePaquete();
-        if (tamanioTotal > obtenerOctetosTransmitibles()) {
+        tamanioTotal = getNextPacketTotalSize(paquete);
+        tamanioCabecera = getNextPacketHeaderSize(paquete);
+        tamanioDatos = getNextPacketPayloadSize();
+        if (tamanioTotal > getMaxTransmittableOctets()) {
             paquete = null;
             return null;
-        } else {
-            if (paquete.getType() == TAbstractPDU.MPLS) {
-                paqueteMPLS = (TMPLSPDU) paquete;
-                paqueteMPLS.getTCPPayload().setSize((int) tamanioDatos);
-                nsUsados = this.obtenerNsUsadosTotalOctetos(tamanioTotal);
-                this.availableNs -= nsUsados;
-                if (this.availableNs < 0)
-                    this.availableNs = 0;
-                if (this.tipoTrafico == this.VARIABLE) {
-                    this.tamDatosVariable = this.generarTamanioSiguientePaquete();
-                }
-                return paqueteMPLS;
-            } else if (paquete.getType() == TAbstractPDU.IPV4) {
-                paqueteIPv4 = (TIPv4PDU) paquete;
-                paqueteIPv4.getTCPPayload().setSize(tamanioDatos);
-                nsUsados = this.obtenerNsUsadosTotalOctetos(tamanioTotal);
-                this.availableNs -= nsUsados;
-                if (this.availableNs < 0)
-                    this.availableNs = 0;
-                if (this.tipoTrafico == this.VARIABLE) {
-                    this.tamDatosVariable = this.generarTamanioSiguientePaquete();
-                }
-                return paqueteIPv4;
+        } else if (paquete.getType() == TAbstractPDU.MPLS) {
+            paqueteMPLS = (TMPLSPDU) paquete;
+            paqueteMPLS.getTCPPayload().setSize((int) tamanioDatos);
+            nsUsados = this.getNsUsedByOctects(tamanioTotal);
+            this.availableNs -= nsUsados;
+            if (this.availableNs < 0) {
+                this.availableNs = 0;
             }
+            if (this.trafficType == TSenderNode.VARIABLE) {
+                this.variableTrafficSize = this.computeNextPacketPayloadSize();
+            }
+            return paqueteMPLS;
+        } else if (paquete.getType() == TAbstractPDU.IPV4) {
+            paqueteIPv4 = (TIPv4PDU) paquete;
+            paqueteIPv4.getTCPPayload().setSize(tamanioDatos);
+            nsUsados = this.getNsUsedByOctects(tamanioTotal);
+            this.availableNs -= nsUsados;
+            if (this.availableNs < 0) {
+                this.availableNs = 0;
+            }
+            if (this.trafficType == TSenderNode.VARIABLE) {
+                this.variableTrafficSize = this.computeNextPacketPayloadSize();
+            }
+            return paqueteIPv4;
         }
         return null;
     }
-    
+
     /**
-     * Este m�todo devuelve un paquete vac�o (sin datos) del tipo correcto para el que
-     * esta configurado el nodo emisor.
+     * Este m�todo devuelve un paquete vac�o (sin datos) del tipo correcto para
+     * el que esta configurado el nodo emisor.
+     *
      * @return El paquete creado.
      * @since 2.0
-     */    
-    public TAbstractPDU crearPaquete() {
-        int valorGoS = this.obtenerCodificacionEXP();
+     */
+    public TAbstractPDU generatePacket() {
+        int valorGoS = this.getNeededEXPValue();
         try {
-            if (this.encapsularSobreMPLS) {
+            if (this.encapsulateOverMPLS) {
                 if (valorGoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
-                    TMPLSPDU paquete = new TMPLSPDU(gIdent.getNextID(), getIPv4Address(), this.IPDestino, 0);
+                    TMPLSPDU paquete = new TMPLSPDU(packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
                     TMPLSLabel etiquetaMPLSDeEmision = new TMPLSLabel();
                     etiquetaMPLSDeEmision.setBoS(true);
                     etiquetaMPLSDeEmision.setEXP(0);
-                    etiquetaMPLSDeEmision.setLabel(etiquetaDeEmision);
+                    etiquetaMPLSDeEmision.setLabel(sendingLabel);
                     etiquetaMPLSDeEmision.setTTL(paquete.getIPv4Header().getTTL());
                     paquete.getLabelStack().pushTop(etiquetaMPLSDeEmision);
                     return paquete;
                 } else {
-                    TMPLSPDU paquete = new TMPLSPDU(gIdent.getNextID(), getIPv4Address(), this.IPDestino, 0);
+                    TMPLSPDU paquete = new TMPLSPDU(packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
                     paquete.setSubtype(TAbstractPDU.MPLS_GOS);
                     paquete.getIPv4Header().getOptionsField().setRequestedGoSLevel(valorGoS);
-                    paquete.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(this.gIdGoS.getNextID());
+                    paquete.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(this.packetGoSdentifierGenerator.getNextID());
                     TMPLSLabel etiquetaMPLSDeEmision = new TMPLSLabel();
                     etiquetaMPLSDeEmision.setBoS(true);
                     etiquetaMPLSDeEmision.setEXP(0);
-                    etiquetaMPLSDeEmision.setLabel(etiquetaDeEmision);
+                    etiquetaMPLSDeEmision.setLabel(sendingLabel);
                     etiquetaMPLSDeEmision.setTTL(paquete.getIPv4Header().getTTL());
                     TMPLSLabel etiquetaMPLS1 = new TMPLSLabel();
                     etiquetaMPLS1.setBoS(false);
@@ -567,142 +621,167 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                     paquete.getLabelStack().pushTop(etiquetaMPLS1);
                     return paquete;
                 }
+            } else if (valorGoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
+                TIPv4PDU paquete = new TIPv4PDU(packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
+                return paquete;
             } else {
-                if (valorGoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
-                    TIPv4PDU paquete = new TIPv4PDU(gIdent.getNextID(), getIPv4Address(), this.IPDestino, 0);
-                    return paquete;
-                } else {
-                    TIPv4PDU paquete = new TIPv4PDU(gIdent.getNextID(), getIPv4Address(), this.IPDestino, 0);
-                    paquete.setSubtype(TAbstractPDU.IPV4_GOS);
-                    paquete.getIPv4Header().getOptionsField().setRequestedGoSLevel(valorGoS);
-                    paquete.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(this.gIdGoS.getNextID());
-                    return paquete;
-                }
+                TIPv4PDU paquete = new TIPv4PDU(packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
+                paquete.setSubtype(TAbstractPDU.IPV4_GOS);
+                paquete.getIPv4Header().getOptionsField().setRequestedGoSLevel(valorGoS);
+                paquete.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(this.packetGoSdentifierGenerator.getNextID());
+                return paquete;
             }
         } catch (EIDGeneratorOverflow e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
         return null;
     }
-    
+
     /**
      * Este m�todo descarta un paquete de cualquier tipo. Adem�s anota los datos
      * relativos en ese descarte en las estad�sticas del nodo.
+     *
      * @param paquete Paquete que se quiere descartar.
      * @since 2.0
-     */    
+     */
+    @Override
     public void discardPacket(TAbstractPDU paquete) {
         try {
             this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), paquete.getSubtype()));
-            this.estadisticas.addStatEntry(paquete, TStats.DISCARD);
+            this.stats.addStatEntry(paquete, TStats.DISCARD);
         } catch (Exception e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
         paquete = null;
     }
-    
+
     /**
      * Este m�todo investiga si al nodo le quedan ports libres.
+     *
      * @return TRUE, si al nodo le quedan ports libres. FALSE en caso contrario.
      * @since 2.0
      */
+    @Override
     public boolean hasAvailablePorts() {
         return this.ports.hasAvailablePorts();
     }
-    
+
     /**
      * Este m�todo permite acceder a los ports del nodo directamente.
+     *
      * @return El conjunto de ports del nodo.
      * @since 2.0
      */
+    @Override
     public TPortSet getPorts() {
         return this.ports;
     }
-    
+
     /**
-     * Este m�todo devuelve el peso del nodo, que debe ser tenido en cuenta por el
-     * algoritmo e encaminamiento para el c�lculo de rutas.
+     * Este m�todo devuelve el peso del nodo, que debe ser tenido en cuenta por
+     * el algoritmo e encaminamiento para el c�lculo de rutas.
+     *
      * @return En el nodo emisor, siempre es cero.
      * @since 2.0
      */
+    @Override
     public long getRoutingWeight() {
         return 0;
     }
-    
+
     /**
      * Este m�todo devuelve si el nodo est� bien configurado o no.
+     *
      * @return TRUE, si el nodo est� bien configurado. FALSE en caso contrario.
      * @since 2.0
-     */    
+     */
+    @Override
     public boolean isWellConfigured() {
         return this.wellConfigured;
     }
-    
+
     /**
-     * Este m�todo calcula si el nodo est� bien configurado o no, actualizando el
-     * atributo que indicar� posteriormente este hecho.
-     * @param t Topolog�a dentro de la cual est� incluido el nodo emisor.
-     * @param recfg TRUE si se est� reconfigurando el nodo emisor. FALSE si est� configurando por
-     * primera vez.
-     * @return CORRECTA, si el nodo est� bien configurado. Un codigo de error en caso contrario.
+     * Este m�todo calcula si el nodo est� bien configurado o no, actualizando
+     * el atributo que indicar� posteriormente este hecho.
+     *
+     * @param topology Topolog�a dentro de la cual est� incluido el nodo emisor.
+     * @param reconfiguration TRUE si se est� reconfigurando el nodo emisor. FALSE si est�
+     * configurando por primera vez.
+     * @return CORRECTA, si el nodo est� bien configurado. Un codigo de error en
+     * caso contrario.
      * @since 2.0
-     */    
-    public int validateConfig(TTopology t, boolean recfg) {
+     */
+    @Override
+    public int validateConfig(TTopology topology, boolean reconfiguration) {
         this.setWellConfigured(false);
-        if (this.getName().equals(""))
-            return this.SIN_NOMBRE;
-        boolean soloEspacios = true;
-        for (int i=0; i < this.getName().length(); i++){
-            if (this.getName().charAt(i) != ' ')
-                soloEspacios = false;
+        if (this.getName().equals("")) {
+            return TSenderNode.UNNAMED;
         }
-        if (soloEspacios)
-            return this.SOLO_ESPACIOS;
-        if (!recfg) {
-            TNode tp = t.getFirstNodeNamed(this.getName());
-            if (tp != null)
-                return this.NOMBRE_YA_EXISTE;
+        boolean soloEspacios = true;
+        for (int i = 0; i < this.getName().length(); i++) {
+            if (this.getName().charAt(i) != ' ') {
+                soloEspacios = false;
+            }
+        }
+        if (soloEspacios) {
+            return TSenderNode.ONLY_BLANK_SPACES;
+        }
+        if (!reconfiguration) {
+            TNode tp = topology.getFirstNodeNamed(this.getName());
+            if (tp != null) {
+                return TSenderNode.NAME_ALREADY_EXISTS;
+            }
         } else {
-            TNode tp = t.getFirstNodeNamed(this.getName());
+            TNode tp = topology.getFirstNodeNamed(this.getName());
             if (tp != null) {
                 if (this.topology.thereIsMoreThanANodeNamed(this.getName())) {
-                    return this.NOMBRE_YA_EXISTE;
+                    return TSenderNode.NAME_ALREADY_EXISTS;
                 }
             }
         }
-        
-        if (this.obtenerDestino() == null)
-            return this.SIN_DESTINO;
-        if (this.obtenerDestino().equals(""))
-            return this.SIN_DESTINO;
+
+        if (this.getTargetIPv4Address() == null) {
+            return TSenderNode.TARGET_UNREACHABLE;
+        }
+        if (this.getTargetIPv4Address().equals("")) {
+            return TSenderNode.TARGET_UNREACHABLE;
+        }
         this.setWellConfigured(true);
-        return this.CORRECTA;
+        return TSenderNode.OK;
     }
-    
+
     /**
-     * Este m�todo transforma un codigo de error en un mensaje con similar significado,
-     * pero legible por el usuario.
-     * @param e C�digo de error cuyo mensaje se desea obtener.
+     * Este m�todo transforma un codigo de error en un mensaje con similar
+     * significado, pero legible por el usuario.
+     *
+     * @param errorCode C�digo de error cuyo mensaje se desea obtener.
      * @return El mensaje equivalente al codigo de error, pero legible.
      * @since 2.0
-     */    
-    public String getErrorMessage(int e) {
-        switch (e) {
-            case SIN_NOMBRE: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEmisor.FALTA_NOMBRE"));
-            case NOMBRE_YA_EXISTE: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEmisor.NOMBRE_REPETIDO"));
-            case SOLO_ESPACIOS: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TNodoEmisor.NoSoloEspacios"));
-            case SIN_DESTINO: return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TNodoEmisor.DestinoParaElTrafico"));
+     */
+    @Override
+    public String getErrorMessage(int errorCode) {
+        switch (errorCode) {
+            case UNNAMED:
+                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEmisor.FALTA_NOMBRE"));
+            case NAME_ALREADY_EXISTS:
+                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEmisor.NOMBRE_REPETIDO"));
+            case ONLY_BLANK_SPACES:
+                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TNodoEmisor.NoSoloEspacios"));
+            case TARGET_UNREACHABLE:
+                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TNodoEmisor.DestinoParaElTrafico"));
         }
         return ("");
     }
-    
+
     /**
-     * Este m�todo transforma el nodo emisor en una cadena de caracterres que se puede
-     * volcar a disco.
-     * @return TRUE, si se ha realizado la resializaci�n correctamente. FALSE en caso
-     * contrario.
+     * Este m�todo transforma el nodo emisor en una cadena de caracterres que se
+     * puede volcar a disco.
+     *
+     * @return TRUE, si se ha realizado la resializaci�n correctamente. FALSE en
+     * caso contrario.
      * @since 2.0
-     */    
+     */
+    @Override
     public String marshall() {
         String cadena = "#Emisor#";
         cadena += this.getNodeID();
@@ -721,154 +800,131 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         cadena += "#";
         cadena += this.getScreenPosition().y;
         cadena += "#";
-        cadena += this.obtenerDestino();
+        cadena += this.getTargetIPv4Address();
         cadena += "#";
-        cadena += this.obtenerLSPDeBackup();
+        cadena += this.isRequestingBackupLSP();
         cadena += "#";
-        cadena += this.obtenerNivelDeGoS();
+        cadena += this.getGoSLevel();
         cadena += "#";
-        cadena += this.obtenerSobreMPLS();
+        cadena += this.isEncapsulatingOverMPLS();
         cadena += "#";
-        cadena += this.obtenerTasaTrafico();
+        cadena += this.getTrafficRate();
         cadena += "#";
-        cadena += this.obtenerTipoTrafico();
+        cadena += this.getTrafficType();
         cadena += "#";
-        cadena += this.obtenerTamDatosConstante();
+        cadena += this.getConstantTrafficSize();
         cadena += "#";
         return cadena;
     }
-    
+
     /**
-     * Este m�todo toma una cadena de texto que representa a un emisor serializado y
-     * construye, en base a ella, el emisor en memoria sobre la instancia actual.
-     * @param elemento El nodo emisor serializado.
-     * @return TRUE, si se consigue deserializar correctamente. FALSE en caso contrario.
+     * Este m�todo toma una cadena de texto que representa a un emisor
+     * serializado y construye, en base a ella, el emisor en memoria sobre la
+     * instancia actual.
+     *
+     * @param serializedSender El nodo emisor serializado.
+     * @return TRUE, si se consigue deserializar correctamente. FALSE en caso
+     * contrario.
      * @since 2.0
-     */    
-    public boolean unMarshall(String elemento) {
-        String valores[] = elemento.split("#");
+     */
+    @Override
+    public boolean unMarshall(String serializedSender) {
+        String valores[] = serializedSender.split("#");
         if (valores.length != 17) {
             return false;
         }
-        this.setNodeID(Integer.valueOf(valores[2]).intValue());
+        this.setNodeID(Integer.parseInt(valores[2]));
         this.setName(valores[3]);
         this.setIPv4Address(valores[4]);
-        this.setSelected(Integer.valueOf(valores[5]).intValue());
-        this.setShowName(Boolean.valueOf(valores[6]).booleanValue());
-        this.setGenerateStats(Boolean.valueOf(valores[7]).booleanValue());
-        int posX = Integer.valueOf(valores[8]).intValue();
-        int posY = Integer.valueOf(valores[9]).intValue();
-        this.setScreenPosition(new Point(posX+24, posY+24));
-        this.IPDestino = valores[10];
-        this.ponerLSPDeBackup(Boolean.valueOf(valores[11]).booleanValue());
-        this.ponerNivelDeGoS(Integer.valueOf(valores[12]).intValue());
-        this.ponerSobreMPLS(Boolean.valueOf(valores[13]).booleanValue());
-        this.ponerTasaTrafico(Integer.valueOf(valores[14]).intValue());
-        this.ponerTipoTrafico(Integer.valueOf(valores[15]).intValue());
-        this.ponerTamDatosConstante(Integer.valueOf(valores[16]).intValue());
+        this.setSelected(Integer.parseInt(valores[5]));
+        this.setShowName(Boolean.parseBoolean(valores[6]));
+        this.setGenerateStats(Boolean.parseBoolean(valores[7]));
+        int posX = Integer.parseInt(valores[8]);
+        int posY = Integer.parseInt(valores[9]);
+        this.setScreenPosition(new Point(posX + 24, posY + 24));
+        this.targetIPv4Address = valores[10];
+        this.setRequestBackupLSP(Boolean.parseBoolean(valores[11]));
+        this.setGoSLevel(Integer.parseInt(valores[12]));
+        this.encapsulateOverMPLS(Boolean.parseBoolean(valores[13]));
+        this.setTrafficRate(Integer.parseInt(valores[14]));
+        this.setTrafficType(Integer.parseInt(valores[15]));
+        this.setConstantTrafficSize(Integer.parseInt(valores[16]));
         return true;
     }
-    
+
     /**
-     * Este m�todo reinicia los atributos de la clase como si acabasen de ser creador
-     * por el constructor.
+     * Este m�todo reinicia los atributos de la clase como si acabasen de ser
+     * creador por el constructor.
+     *
      * @since 2.0
-     */    
+     */
+    @Override
     public void reset() {
-        gIdent.reset();
-        gIdGoS.reset();
+        this.packetIdentifierGenerator.reset();
+        this.packetGoSdentifierGenerator.reset();
         this.ports.reset();
-        this.estadisticas.reset();
-        estadisticas.activateStats(this.isGeneratingStats());
+        this.stats.reset();
+        this.stats.activateStats(this.isGeneratingStats());
         this.resetTicksWithoutEmitting();
     }
-    
+
     /**
      * Este m�todo permite acceder directamente a las estad�sticas del nodo.
+     *
      * @return Las estad�sticas del nodo.
      * @since 2.0
-     */    
+     */
+    @Override
     public TStats getStats() {
-        return estadisticas;
-    }    
-    
+        return this.stats;
+    }
+
     /**
      * Este m�todo inicia el conjunto de ports del nodo, con el n�mero de ports
- especificado.
-     * @param num N�mero de ports que tendr� el nodo. Como m�ximo est� configurado para 8.
+     * especificado.
+     *
+     * @param numPorts N�mero de ports que tendr� el nodo. Como m�ximo est�
+     * configurado para 8.
      * @since 2.0
-     */    
-    public synchronized void setPorts(int num) {
-        ports = new TFIFOPortSet(num, this);
+     */
+    @Override
+    public synchronized void setPorts(int numPorts) {
+        this.ports = new TFIFOPortSet(numPorts, this);
     }
-    
-	/**    
-    * Este m�todo no hace nada en un Emisor. En un nodo activo permitir�
-    * solicitar a un nodo activo la retransmisi�n de un paquete.
-    * @param paquete Paquete cuya retransmisi�n se est� solicitando.
-    * @param pSalida Puerto por el que se enviar� la solicitud.
-    * @since 2.0
-    */    
-    public void runGPSRP(TMPLSPDU paquete, int pSalida) {
-    }
-    
-    private String IPDestino;
-    private int tasaTransferencia;
-    private int tipoTrafico;
-    private boolean encapsularSobreMPLS;
-    private int nivelDeGoS;
-    private boolean LSPDeBackup;
-    
-    private Random generadorDeAleatorios;
-    private int etiquetaDeEmision;
-    private TRotaryIDGenerator gIdGoS;
-    private int tamDatosConstante;
-    private int tamDatosVariable;
 
-    private TLongIDGenerator gIdent;
-    
     /**
-     * Este atributo almacenar� las estad�sticas del nodo.
-     * @since 2.0
-     */    
-    public TSenderStats estadisticas;
-    
-    /**
-     * Esta constante identifica que el tr�fico generado ser� constante.
+     * Este m�todo no hace nada en un Emisor. En un nodo activo permitir�
+     * solicitar a un nodo activo la retransmisi�n de un paquete.
+     *
+     * @param mplsPacket Paquete cuya retransmisi�n se est� solicitando.
+     * @param outgoingPortID Puerto por el que se enviar� la solicitud.
      * @since 2.0
      */
-    public static final int CONSTANTE = 0;
-    /**
-     * Esta constante identifica que el tr�fico generado ser� variable.
-     * @since 2.0
-     */
+    @Override
+    public void runGPSRP(TMPLSPDU mplsPacket, int outgoingPortID) {
+    }
+
+    private String targetIPv4Address;
+    private int trafficRate;
+    private int trafficType;
+    private boolean encapsulateOverMPLS;
+    private int gosLevel;
+    private boolean requestBackupLSP;
+    private Random randomNumberGenerator;
+    private int sendingLabel;
+    private TRotaryIDGenerator packetGoSdentifierGenerator;
+    private int constantTrafficSize;
+    private int variableTrafficSize;
+    private TLongIDGenerator packetIdentifierGenerator;
+
+    public TSenderStats stats;
+
+    public static final int CONSTANT = 0;
     public static final int VARIABLE = 1;
-    
-    /**
-     * Esta constante indica que la configuraci�n del nodo es correcta.
-     * @since 2.0
-     */    
-    public static final int CORRECTA = 0;
-    /**
-     * Esta constante indica que falta el nombre del nodo.
-     * @since v
-     */    
-    public static final int SIN_NOMBRE = 1;
-    /**
-     * Esta constante indica que el nombre del nodo ya existe.
-     * @since 2.0
-     */    
-    public static final int NOMBRE_YA_EXISTE = 2;
-    /**
-     * Esta constante indica que el nombre del nodo est� formado s�lo por espacios.
-     * @since 2.0
-     */    
-    public static final int SOLO_ESPACIOS = 3;
-    /**
-     * Esta constante indica que no ha seleccionado un destino para el tr�fico generado
-     * por el nodo.
-     * @since 2.0
-     */    
-    public static final int SIN_DESTINO = 4;
-    
+
+    public static final int OK = 0;
+    public static final int UNNAMED = 1;
+    public static final int NAME_ALREADY_EXISTS = 2;
+    public static final int ONLY_BLANK_SPACES = 3;
+    public static final int TARGET_UNREACHABLE = 4;
 }

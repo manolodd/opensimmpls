@@ -99,7 +99,7 @@ public class JVentanaEmisor extends javax.swing.JDialog {
         BKUPNivelDeGos = 0;
         BKUPNombre = "";
         BKUPTasaTrafico = 1000;
-        BKUPTipoTrafico = TSenderNode.CONSTANTE;
+        BKUPTipoTrafico = TSenderNode.CONSTANT;
         BKUPGenerarEstadisticas = false;
         BKUPTamDatosConstante = 1024;
         BKUPEncapsularEnMPLS = false;
@@ -538,17 +538,17 @@ private void cambioEnSelectorDeTasa(javax.swing.event.ChangeEvent evt) {//GEN-FI
 
 private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnCancelar
     if (reconfigurando) {
-        emisor.ponerDestino(BKUPDestino);
-        emisor.ponerLSPDeBackup(BKUPLSPDeBackup);
+        emisor.setTargetNode(BKUPDestino);
+        emisor.setRequestBackupLSP(BKUPLSPDeBackup);
         emisor.setShowName(BKUPMostrarNombre);
-        emisor.ponerNivelDeGoS(BKUPNivelDeGos);
+        emisor.setGoSLevel(BKUPNivelDeGos);
         emisor.setName(BKUPNombre);
-        emisor.ponerTasaTrafico(BKUPTasaTrafico);
-        emisor.ponerTipoTrafico(BKUPTipoTrafico);
+        emisor.setTrafficRate(BKUPTasaTrafico);
+        emisor.setTrafficType(BKUPTipoTrafico);
         emisor.setGenerateStats(BKUPGenerarEstadisticas);
-        emisor.ponerTamDatosConstante(BKUPTamDatosConstante);
+        emisor.setConstantTrafficSize(BKUPTamDatosConstante);
         emisor.setWellConfigured(true);
-        emisor.ponerSobreMPLS(BKUPEncapsularEnMPLS);
+        emisor.encapsulateOverMPLS(BKUPEncapsularEnMPLS);
         reconfigurando = false;
     } else {
         emisor.setWellConfigured(false);
@@ -565,19 +565,19 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     emisor.setName(nombreNodo.getText());
     emisor.setShowName(verNombre.isSelected());
     emisor.setGenerateStats(this.selectorDeGenerarEstadisticas.isSelected());
-    emisor.ponerTasaTrafico(this.selectorDeTasa.getValue());
-    emisor.ponerLSPDeBackup(this.selectorLSPDeRespaldo.isSelected());
-    emisor.ponerSobreMPLS(this.encapsularSobreMPLS.isSelected());
-    emisor.ponerNivelDeGoS(this.selectorDeGoS.getSelectedIndex());
-    emisor.ponerDestino((String) this.selectorDelReceptor.getSelectedItem());
-    emisor.ponerTamDatosConstante(this.selectorDeTamPaquete.getValue());
+    emisor.setTrafficRate(this.selectorDeTasa.getValue());
+    emisor.setRequestBackupLSP(this.selectorLSPDeRespaldo.isSelected());
+    emisor.encapsulateOverMPLS(this.encapsularSobreMPLS.isSelected());
+    emisor.setGoSLevel(this.selectorDeGoS.getSelectedIndex());
+    emisor.setTargetNode((String) this.selectorDelReceptor.getSelectedItem());
+    emisor.setConstantTrafficSize(this.selectorDeTamPaquete.getValue());
     if (this.traficoConstante.isSelected()) {
-        emisor.ponerTipoTrafico(TSenderNode.CONSTANTE);
+        emisor.setTrafficType(TSenderNode.CONSTANT);
     } else if (this.traficoVariable.isSelected()) {
-        emisor.ponerTipoTrafico(TSenderNode.VARIABLE);
+        emisor.setTrafficType(TSenderNode.VARIABLE);
     }
     int error = emisor.validateConfig(topo, this.reconfigurando);
-    if (error != TSenderNode.CORRECTA) {
+    if (error != TSenderNode.OK) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
         va.mostrarMensaje(emisor.getErrorMessage(error));
         va.show();
@@ -626,24 +626,24 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
         if (reconfigurando) {
             this.panelCoordenadas.setEnabled(false);
             this.panelCoordenadas.setToolTipText(null);
-            TNode nt = this.topo.getNode(emisor.obtenerDestino());
+            TNode nt = this.topo.getNode(emisor.getTargetIPv4Address());
             if (nt != null) {
                 BKUPDestino = nt.getName();
             }
-            BKUPLSPDeBackup = emisor.obtenerLSPDeBackup();
+            BKUPLSPDeBackup = emisor.isRequestingBackupLSP();
             BKUPMostrarNombre = emisor.nameMustBeDisplayed();
-            BKUPNivelDeGos = emisor.obtenerNivelDeGoS();
+            BKUPNivelDeGos = emisor.getGoSLevel();
             BKUPNombre = emisor.getName();
-            BKUPTasaTrafico = emisor.obtenerTasaTrafico();
-            BKUPTipoTrafico = emisor.obtenerTipoTrafico();
+            BKUPTasaTrafico = emisor.getTrafficRate();
+            BKUPTipoTrafico = emisor.getTrafficType();
             BKUPGenerarEstadisticas = emisor.isGeneratingStats();
-            BKUPTamDatosConstante = emisor.obtenerTamDatosConstante();
-            this.BKUPEncapsularEnMPLS = emisor.obtenerSobreMPLS();
+            BKUPTamDatosConstante = emisor.getConstantTrafficSize();
+            this.BKUPEncapsularEnMPLS = emisor.isEncapsulatingOverMPLS();
             
             
             this.encapsularSobreMPLS.setSelected(BKUPEncapsularEnMPLS);
             this.nombreNodo.setText(BKUPNombre);
-            if (BKUPTipoTrafico == TSenderNode.CONSTANTE) {
+            if (BKUPTipoTrafico == TSenderNode.CONSTANT) {
                 this.traficoConstante.setSelected(true);
                 this.traficoVariable.setSelected(false);
             } else {
@@ -669,7 +669,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             this.selectorSencilloTrafico.setSelectedIndex(0);
             this.selectorDeTasa.setValue(BKUPTasaTrafico);
 
-            if (BKUPTipoTrafico == TSenderNode.CONSTANTE) {
+            if (BKUPTipoTrafico == TSenderNode.CONSTANT) {
                 this.selectorDeTamPaquete.setEnabled(true);
                 this.etiquetaOctetos.setEnabled(true);
                 this.etiquetaTamPaquete.setEnabled(true);
