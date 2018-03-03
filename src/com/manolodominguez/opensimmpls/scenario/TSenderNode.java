@@ -64,14 +64,14 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         this.targetIPv4Address = "";
         // FIX: Use class constants instead of harcoded values for all cases.
         this.trafficGenerationRate = 10;
-        this.trafficType = TSenderNode.CONSTANT_TAFFIC_RATE;
+        this.trafficGenerationMode = TSenderNode.CONSTANT_TRAFFIC_RATE;
         this.encapsulateOverMPLS = false;
         this.gosLevel = 0;
         this.requestBackupLSP = false;
         this.randomNumberGenerator = new Random();
         this.sendingLabel = (16 + randomNumberGenerator.nextInt(1000000));
         this.constantPayloadSizeInBytes = 0;
-        this.variableTrafficSize = 0;
+        this.variablePayloadSizeInBytes = 0;
         this.stats = new TSenderStats();
         // FIX: This method is overridable. Avoid using this method to update
         // the number of ports or make it final.
@@ -171,7 +171,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    private int getNeededEXPValue() {
+    private int getRequiredEXPValue() {
         //FIX: replace harcoded values for class constants in all cases.
         if ((this.gosLevel == 0) && (this.requestBackupLSP)) {
             return TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP;
@@ -194,36 +194,35 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo permite establecer qu� tipo de tr�fico generar� el nodo.
+     * This method sets the traffic generation mode of this node.
      *
-     * @param trafficType Tipo de tr�fico generado por el nodo. Una de las
-     * constantes definidas en esta clase.
+     * @param trafficGenerationMode the traffic generation mode of this node.
+     * One of the *_TRAFFIC_RATE constants in this class.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void setTrafficType(int trafficType) {
-        this.trafficType = trafficType;
+    public void setTrafficGenerationMode(int trafficGenerationMode) {
+        this.trafficGenerationMode = trafficGenerationMode;
     }
 
     /**
-     * Este m�todo permite obtener el tipo de tr�fico que est� generando el
-     * nodo.
+     * This method gets the traffic generation mode of this node.
      *
-     * @return Tipo de tr�fico generado por el nodo. Una de las constantes de
-     * esta clase.
+     * @return the traffic generation mode of this node. One of the
+     * *_TRAFFIC_RATE constants in this class.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public int getTrafficType() {
-        return this.trafficType;
+    public int getTrafficGenerationMode() {
+        return this.trafficGenerationMode;
     }
 
     /**
-     * Este m�todo permite establecer si el tr�fico generado est� ya estiquetado
-     * en MPLS o no. Lo que es lo mismo, si el tr�fico proviene de otro dominio
-     * MPLS o no.
+     * This method sets wheter the traffic generated is native TCP or it is TCP
+     * encapsulated over MPLS.
      *
-     * @param encapsulateOverMPLS TRUE, si el nodo debe generar tr�fico MPLS.
-     * FALSE en caso contrario.
+     * @param encapsulateOverMPLS TRUE, if the traffic will be encapsulated over
+     * MPLS. Otherwise, FALSE.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -232,11 +231,11 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo permite obtener si el tr�fico que est� generando el nodo es
-     * ya tr�fico MPLS o no.
+     * This method gets wheter the traffic generated is native TCP or it is TCP
+     * encapsulated over MPLS.
      *
-     * @return TRUE, si el tr�fico que est� generando el nodo es MPLS. FALSE en
-     * caso contrario.
+     * @return TRUE, if the node is generating traffic encapsulated over MPLS.
+     * Otherwise, FALSE.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -245,10 +244,12 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo permite establecer el nivel de garant�a de servicio con el
-     * que el nodo debe marcar los paquetes generados.
+     * This sets the GoS level that will be embedded in each packet generated.
+     * This comes from the "Guarantee of Service (GoS) support over MPLS using
+     * active techniques" proposal. Read the proposal so know more.
      *
-     * @param gosLevel Nivel de garant�a de servicio.
+     * @param gosLevel GoS level. One of the EXP_* constants defined in
+     * TAbstractPDU class.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -257,11 +258,12 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo permite obtener el nivel de garant�a de servicio con el que
-     * el nodo est� marcando los paquetes generados.
+     * This gets the GoS level that is being embedded in each packet generated.
+     * This comes from the "Guarantee of Service (GoS) support over MPLS using
+     * active techniques" proposal. Read the proposal so know more.
      *
-     * @return El nivel de garant�a de servicio con el que el nodo est� marcando
-     * los paquetes generados.
+     * @return GoS level. One of the EXP_* constants defined in TAbstractPDU
+     * class.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -270,11 +272,11 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo permite establecer si los paquetes generados ser�n marcdos
-     * para requerir un LSP de respaldo en el dominio MPLS o no.
+     * This method sets whether packets generated will request a backup LSP from
+     * active nodes or not.
      *
-     * @param requestBackupLSP TRUE si los paqutes requerir�n LSP de respaldo.
-     * FALSE en caso contrario.
+     * @param requestBackupLSP TRUE if packets generated have to request a
+     * backup LSP from active nodes. Otherwise, FALSE.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -283,11 +285,11 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo permite saber si los paquetes generados est�n siendo marcados
-     * para requerir un LSP de respaldo o no.
+     * This method gets whether packets generated are requesting a backup LSP
+     * from active nodes or not.
      *
-     * @return TRUE, si los paquetes es�n siendo marcados para requerir un LSP
-     * de respaldo. FALSE en caso contrario.
+     * @return TRUE if packets generated are requesting a backup LSP from active
+     * nodes. Otherwise, FALSE.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -296,10 +298,9 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo permite obtener el tipo de nodo del que se trata esta
-     * instancia.
+     * This method gets the type of this node.
      *
-     * @return TNode.SENDER, indicando que es un generador y emisor de tr�fico.
+     * @return TNode.SENDER, as this is a TSenderNode.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -309,43 +310,48 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo permite recibir eventos de sincronizaci�n del reloj principal
-     * del simulador, que es quien sincroniza todo.
+     * This method receive a timer event from the simulation's global timer. It
+     * does some initial tasks and then wake up this sender node to start doing
+     * its work.
      *
-     * @param evt Evento de sincronizaci�n enviado por el reloj principal.
+     * @param timerEvent a timer event that is used to synchronize all nodes and
+     * that inclues a number of nanoseconds to be used by this sender node.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
-    public void receiveTimerEvent(TTimerEvent evt) {
-        this.setTickDuration(evt.getStepDuration());
-        this.setCurrentInstant(evt.getUpperLimit());
-        this.availableNs += evt.getStepDuration();
+    public void receiveTimerEvent(TTimerEvent timerEvent) {
+        this.setTickDuration(timerEvent.getStepDuration());
+        this.setCurrentInstant(timerEvent.getUpperLimit());
+        this.availableNs += timerEvent.getStepDuration();
         this.startOperation();
     }
 
     /**
-     * Este m�todo se llama cuando el hilo independiente del nodo se pone en
-     * funcionamiento. Es el n�cleo del nodo.
+     * This method starts all tasks that has to be executed during a timer tick.
+     * The number of nanoseconds of this tick is the time this sender node will
+     * work.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
     public void run() {
+        // Actions to be done during the timer tick.
         try {
             this.generateSimulationEvent(new TSimulationEventNodeCongested(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), 0));
         } catch (Exception e) {
+            // FIX: this is not a good practice. Avoid.
             e.printStackTrace();
         }
-        TAbstractPDU paqueteTmp = generatePacket();
-        boolean emito = false;
-        while (getMaxTransmittableOctets() > getNextPacketTotalSize(paqueteTmp)) {
-            emito = true;
+        TAbstractPDU packetAux = generatePacket();
+        boolean aPacketWasGenerated = false;
+        while (getMaxTransmittableOctets() > getNextPacketTotalSizeInBytes(packetAux)) {
+            aPacketWasGenerated = true;
             generateTraffic();
         }
-        paqueteTmp = null;
-        if (emito) {
+        packetAux = null;
+        if (aPacketWasGenerated) {
             this.resetTicksWithoutEmitting();
         } else {
             this.increaseTicksWithoutEmitting();
@@ -363,11 +369,11 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public int getNextPacketPayloadSize() {
-        if (this.trafficType == TSenderNode.CONSTANT_TAFFIC_RATE) {
+    public int getNextPacketPayloadSizeInBytes() {
+        if (this.trafficGenerationMode == TSenderNode.CONSTANT_TRAFFIC_RATE) {
             return this.constantPayloadSizeInBytes;
         }
-        return this.variableTrafficSize;
+        return this.variablePayloadSizeInBytes;
     }
 
     /**
@@ -380,15 +386,15 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public int getNextPacketHeaderSize(TAbstractPDU packet) {
-        TMPLSPDU paqueteMPLS = null;
-        TIPv4PDU paqueteIPv4 = null;
+    public int getNextPacketHeaderSizeInBytes(TAbstractPDU packet) {
+        TMPLSPDU mplsPacket = null;
+        TIPv4PDU ipv4Packet = null;
         if (packet.getType() == TAbstractPDU.MPLS) {
-            paqueteMPLS = (TMPLSPDU) packet;
-            return paqueteMPLS.getSize();
+            mplsPacket = (TMPLSPDU) packet;
+            return mplsPacket.getSize();
         }
-        paqueteIPv4 = (TIPv4PDU) packet;
-        return paqueteIPv4.getSize();
+        ipv4Packet = (TIPv4PDU) packet;
+        return ipv4Packet.getSize();
     }
 
     /**
@@ -402,14 +408,14 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public int getNextPacketTotalSize(TAbstractPDU packet) {
-        int tamanioDatos = 0;
-        int tamanioCabecera = 0;
-        int tamanioFinal = 0;
-        tamanioDatos = getNextPacketPayloadSize();
-        tamanioCabecera = getNextPacketHeaderSize(packet);
-        tamanioFinal = tamanioDatos + tamanioCabecera;
-        return tamanioFinal;
+    public int getNextPacketTotalSizeInBytes(TAbstractPDU packet) {
+        int payloadSizeInBytes = 0;
+        int headerSizeInBytes = 0;
+        int packetSizeInBytes = 0;
+        payloadSizeInBytes = getNextPacketPayloadSizeInBytes();
+        headerSizeInBytes = getNextPacketHeaderSizeInBytes(packet);
+        packetSizeInBytes = payloadSizeInBytes + headerSizeInBytes;
+        return packetSizeInBytes;
     }
 
     /**
@@ -420,32 +426,35 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @since 2.0
      */
     public void generateTraffic() {
-        TAbstractPDU paquete = null;
-        TAbstractPDU paqueteConTamanio = null;
-        TPort pt = this.ports.getPort(0);
-        if (pt != null) {
-            if (!pt.isAvailable()) {
-                paquete = generatePacket();
-                paqueteConTamanio = this.addDataToPacket(paquete);
-                if (paqueteConTamanio != null) {
+        TAbstractPDU emptyPacket = null;
+        TAbstractPDU packetWithPayload = null;
+        // FIX: avoid using harcoded values. Use class constants instead.
+        TPort port = this.ports.getPort(0);
+        if (port != null) {
+            if (!port.isAvailable()) {
+                emptyPacket = generatePacket();
+                packetWithPayload = this.addDataToPacket(emptyPacket);
+                if (packetWithPayload != null) {
                     try {
-                        int tipo = 0;
-                        if (paqueteConTamanio.getType() == TAbstractPDU.MPLS) {
-                            TMPLSPDU paqueteMPLS = (TMPLSPDU) paqueteConTamanio;
-                            tipo = paqueteMPLS.getSubtype();
-                        } else if (paqueteConTamanio.getType() == TAbstractPDU.IPV4) {
-                            TIPv4PDU paqueteIPv4 = (TIPv4PDU) paqueteConTamanio;
-                            tipo = paqueteIPv4.getSubtype();
+                        // FIX: avoid using harcoded values. Use class constants instead.
+                        int packetType = 0;
+                        if (packetWithPayload.getType() == TAbstractPDU.MPLS) {
+                            TMPLSPDU mplsPacket = (TMPLSPDU) packetWithPayload;
+                            packetType = mplsPacket.getSubtype();
+                        } else if (packetWithPayload.getType() == TAbstractPDU.IPV4) {
+                            TIPv4PDU ipv4Packet = (TIPv4PDU) packetWithPayload;
+                            packetType = ipv4Packet.getSubtype();
                         }
-                        this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), tipo, paqueteConTamanio.getSize()));
-                        this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), tipo));
+                        this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), packetType, packetWithPayload.getSize()));
+                        this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), packetType));
                     } catch (Exception e) {
+                        // FIX: this is not a good practice. Avoid.
                         e.printStackTrace();
                     }
                     if (this.topology.getNextHopIPv4Address(this.getIPv4Address(), this.getTargetIPv4Address()) != null) {
-                        pt.putPacketOnLink(paqueteConTamanio, pt.getLink().getDestinationOfTrafficSentBy(this));
+                        port.putPacketOnLink(packetWithPayload, port.getLink().getDestinationOfTrafficSentBy(this));
                     } else {
-                        discardPacket(paqueteConTamanio);
+                        discardPacket(packetWithPayload);
                     }
                 }
             }
@@ -595,9 +604,9 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         int tamanioDatos = 0;
         int tamanioTotal = 0;
         double nsUsados = 0;
-        tamanioTotal = getNextPacketTotalSize(paquete);
-        tamanioCabecera = getNextPacketHeaderSize(paquete);
-        tamanioDatos = getNextPacketPayloadSize();
+        tamanioTotal = getNextPacketTotalSizeInBytes(paquete);
+        tamanioCabecera = getNextPacketHeaderSizeInBytes(paquete);
+        tamanioDatos = getNextPacketPayloadSizeInBytes();
         if (tamanioTotal > getMaxTransmittableOctets()) {
             paquete = null;
             return null;
@@ -609,8 +618,8 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
             if (this.availableNs < 0) {
                 this.availableNs = 0;
             }
-            if (this.trafficType == TSenderNode.VARIABLE_TRAFFIC_RATE) {
-                this.variableTrafficSize = this.computeNextPacketPayloadSize();
+            if (this.trafficGenerationMode == TSenderNode.VARIABLE_TRAFFIC_RATE) {
+                this.variablePayloadSizeInBytes = this.computeNextPacketPayloadSize();
             }
             return paqueteMPLS;
         } else if (paquete.getType() == TAbstractPDU.IPV4) {
@@ -621,8 +630,8 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
             if (this.availableNs < 0) {
                 this.availableNs = 0;
             }
-            if (this.trafficType == TSenderNode.VARIABLE_TRAFFIC_RATE) {
-                this.variableTrafficSize = this.computeNextPacketPayloadSize();
+            if (this.trafficGenerationMode == TSenderNode.VARIABLE_TRAFFIC_RATE) {
+                this.variablePayloadSizeInBytes = this.computeNextPacketPayloadSize();
             }
             return paqueteIPv4;
         }
@@ -638,7 +647,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @since 2.0
      */
     public TAbstractPDU generatePacket() {
-        int valorGoS = this.getNeededEXPValue();
+        int valorGoS = this.getRequiredEXPValue();
         try {
             if (this.encapsulateOverMPLS) {
                 if (valorGoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
@@ -866,7 +875,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         cadena += "#";
         cadena += this.getTrafficGenerationRate();
         cadena += "#";
-        cadena += this.getTrafficType();
+        cadena += this.getTrafficGenerationMode();
         cadena += "#";
         cadena += this.getConstantPayloadSizeInBytes();
         cadena += "#";
@@ -904,7 +913,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         this.setGoSLevel(Integer.parseInt(valores[12]));
         this.encapsulateOverMPLS(Boolean.parseBoolean(valores[13]));
         this.setTrafficGenerationRate(Integer.parseInt(valores[14]));
-        this.setTrafficType(Integer.parseInt(valores[15]));
+        this.setTrafficGenerationMode(Integer.parseInt(valores[15]));
         this.setConstantPayloadSizeInBytes(Integer.parseInt(valores[16]));
         return true;
     }
@@ -967,7 +976,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
 
     private String targetIPv4Address;
     private int trafficGenerationRate;
-    private int trafficType;
+    private int trafficGenerationMode;
     private boolean encapsulateOverMPLS;
     private int gosLevel;
     private boolean requestBackupLSP;
@@ -975,12 +984,12 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     private int sendingLabel;
     private TRotaryIDGenerator packetGoSdentifierGenerator;
     private int constantPayloadSizeInBytes;
-    private int variableTrafficSize;
+    private int variablePayloadSizeInBytes;
     private TLongIDGenerator packetIdentifierGenerator;
 
     public TSenderStats stats;
 
-    public static final int CONSTANT_TAFFIC_RATE = 0;
+    public static final int CONSTANT_TRAFFIC_RATE = 0;
     public static final int VARIABLE_TRAFFIC_RATE = 1;
 
     public static final int OK = 0;

@@ -99,7 +99,7 @@ public class JVentanaEmisor extends javax.swing.JDialog {
         BKUPNivelDeGos = 0;
         BKUPNombre = "";
         BKUPTasaTrafico = 1000;
-        BKUPTipoTrafico = TSenderNode.CONSTANT_TAFFIC_RATE;
+        BKUPTipoTrafico = TSenderNode.CONSTANT_TRAFFIC_RATE;
         BKUPGenerarEstadisticas = false;
         BKUPTamDatosConstante = 1024;
         BKUPEncapsularEnMPLS = false;
@@ -544,7 +544,7 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
         emisor.setGoSLevel(BKUPNivelDeGos);
         emisor.setName(BKUPNombre);
         emisor.setTrafficGenerationRate(BKUPTasaTrafico);
-        emisor.setTrafficType(BKUPTipoTrafico);
+        emisor.setTrafficGenerationMode(BKUPTipoTrafico);
         emisor.setGenerateStats(BKUPGenerarEstadisticas);
         emisor.setConstantPayloadSizeInBytes(BKUPTamDatosConstante);
         emisor.setWellConfigured(true);
@@ -572,9 +572,9 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     emisor.setTargetNode((String) this.selectorDelReceptor.getSelectedItem());
     emisor.setConstantPayloadSizeInBytes(this.selectorDeTamPaquete.getValue());
     if (this.traficoConstante.isSelected()) {
-        emisor.setTrafficType(TSenderNode.CONSTANT_TAFFIC_RATE);
+        emisor.setTrafficGenerationMode(TSenderNode.CONSTANT_TRAFFIC_RATE);
     } else if (this.traficoVariable.isSelected()) {
-        emisor.setTrafficType(TSenderNode.VARIABLE_TRAFFIC_RATE);
+        emisor.setTrafficGenerationMode(TSenderNode.VARIABLE_TRAFFIC_RATE);
     }
     int error = emisor.validateConfig(topo, this.reconfigurando);
     if (error != TSenderNode.OK) {
@@ -635,7 +635,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             BKUPNivelDeGos = emisor.getGoSLevel();
             BKUPNombre = emisor.getName();
             BKUPTasaTrafico = emisor.getTrafficGenerationRate();
-            BKUPTipoTrafico = emisor.getTrafficType();
+            BKUPTipoTrafico = emisor.getTrafficGenerationMode();
             BKUPGenerarEstadisticas = emisor.isGeneratingStats();
             BKUPTamDatosConstante = emisor.getConstantPayloadSizeInBytes();
             this.BKUPEncapsularEnMPLS = emisor.isEncapsulatingOverMPLS();
@@ -643,7 +643,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             
             this.encapsularSobreMPLS.setSelected(BKUPEncapsularEnMPLS);
             this.nombreNodo.setText(BKUPNombre);
-            if (BKUPTipoTrafico == TSenderNode.CONSTANT_TAFFIC_RATE) {
+            if (BKUPTipoTrafico == TSenderNode.CONSTANT_TRAFFIC_RATE) {
                 this.traficoConstante.setSelected(true);
                 this.traficoVariable.setSelected(false);
             } else {
@@ -669,7 +669,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             this.selectorSencilloTrafico.setSelectedIndex(0);
             this.selectorDeTasa.setValue(BKUPTasaTrafico);
 
-            if (BKUPTipoTrafico == TSenderNode.CONSTANT_TAFFIC_RATE) {
+            if (BKUPTipoTrafico == TSenderNode.CONSTANT_TRAFFIC_RATE) {
                 this.selectorDeTamPaquete.setEnabled(true);
                 this.etiquetaOctetos.setEnabled(true);
                 this.etiquetaTamPaquete.setEnabled(true);
