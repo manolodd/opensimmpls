@@ -610,7 +610,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         int nextPacketHeaderSizeInBytes = 0;
         int NextPacketPayloadSizeInBytes = 0;
         int nextPacketTotalSizeInBytes = 0;
-        double nsUsados = 0;
+        double requiredNs = 0;
         nextPacketTotalSizeInBytes = getNextPacketTotalSizeInBytes(packet);
         nextPacketHeaderSizeInBytes = getNextPacketHeaderSizeInBytes(packet);
         NextPacketPayloadSizeInBytes = getNextPacketPayloadSizeInBytes();
@@ -620,9 +620,11 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         } else if (packet.getType() == TAbstractPDU.MPLS) {
             mplsPacket = (TMPLSPDU) packet;
             mplsPacket.getTCPPayload().setSize((int) NextPacketPayloadSizeInBytes);
-            nsUsados = this.getRequiredNsForOctects(nextPacketTotalSizeInBytes);
-            this.availableNs -= nsUsados;
+            requiredNs = this.getRequiredNsForOctects(nextPacketTotalSizeInBytes);
+            this.availableNs -= requiredNs;
+            // FIX: Do not use harcoded values. Use class constants instead.
             if (this.availableNs < 0) {
+                // FIX: Do not use harcoded values. Use class constants instead.
                 this.availableNs = 0;
             }
             if (this.trafficGenerationMode == TSenderNode.VARIABLE_TRAFFIC_RATE) {
@@ -632,9 +634,11 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         } else if (packet.getType() == TAbstractPDU.IPV4) {
             ipv4Packet = (TIPv4PDU) packet;
             ipv4Packet.getTCPPayload().setSize(NextPacketPayloadSizeInBytes);
-            nsUsados = this.getRequiredNsForOctects(nextPacketTotalSizeInBytes);
-            this.availableNs -= nsUsados;
+            requiredNs = this.getRequiredNsForOctects(nextPacketTotalSizeInBytes);
+            this.availableNs -= requiredNs;
+            // FIX: Do not use harcoded values. Use class constants instead.
             if (this.availableNs < 0) {
+                // FIX: Do not use harcoded values. Use class constants instead.
                 this.availableNs = 0;
             }
             if (this.trafficGenerationMode == TSenderNode.VARIABLE_TRAFFIC_RATE) {
@@ -654,10 +658,10 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @since 2.0
      */
     public TAbstractPDU generatePacket() {
-        int valorGoS = this.getRequiredEXPValue();
+        int requiredEXPValue = this.getRequiredEXPValue();
         try {
             if (this.encapsulateOverMPLS) {
-                if (valorGoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
+                if (requiredEXPValue == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
                     TMPLSPDU paquete = new TMPLSPDU(packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
                     TMPLSLabel etiquetaMPLSDeEmision = new TMPLSLabel();
                     etiquetaMPLSDeEmision.setBoS(true);
@@ -669,7 +673,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                 } else {
                     TMPLSPDU paquete = new TMPLSPDU(packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
                     paquete.setSubtype(TAbstractPDU.MPLS_GOS);
-                    paquete.getIPv4Header().getOptionsField().setRequestedGoSLevel(valorGoS);
+                    paquete.getIPv4Header().getOptionsField().setRequestedGoSLevel(requiredEXPValue);
                     paquete.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(this.packetGoSdentifierGenerator.getNextID());
                     TMPLSLabel etiquetaMPLSDeEmision = new TMPLSLabel();
                     etiquetaMPLSDeEmision.setBoS(true);
@@ -678,20 +682,20 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                     etiquetaMPLSDeEmision.setTTL(paquete.getIPv4Header().getTTL());
                     TMPLSLabel etiquetaMPLS1 = new TMPLSLabel();
                     etiquetaMPLS1.setBoS(false);
-                    etiquetaMPLS1.setEXP(valorGoS);
+                    etiquetaMPLS1.setEXP(requiredEXPValue);
                     etiquetaMPLS1.setLabel(1);
                     etiquetaMPLS1.setTTL(paquete.getIPv4Header().getTTL());
                     paquete.getLabelStack().pushTop(etiquetaMPLSDeEmision);
                     paquete.getLabelStack().pushTop(etiquetaMPLS1);
                     return paquete;
                 }
-            } else if (valorGoS == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
+            } else if (requiredEXPValue == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
                 TIPv4PDU paquete = new TIPv4PDU(packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
                 return paquete;
             } else {
                 TIPv4PDU paquete = new TIPv4PDU(packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
                 paquete.setSubtype(TAbstractPDU.IPV4_GOS);
-                paquete.getIPv4Header().getOptionsField().setRequestedGoSLevel(valorGoS);
+                paquete.getIPv4Header().getOptionsField().setRequestedGoSLevel(requiredEXPValue);
                 paquete.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(this.packetGoSdentifierGenerator.getNextID());
                 return paquete;
             }
