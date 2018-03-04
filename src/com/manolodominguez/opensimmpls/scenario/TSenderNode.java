@@ -346,7 +346,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         }
         TAbstractPDU packetAux = generatePacket();
         boolean aPacketWasGenerated = false;
-        while (getMaxTransmittableOctets() > getNextPacketTotalSizeInBytes(packetAux)) {
+        while (getMaxTransmittableOctetsWithCurrentAvailableNs() > getNextPacketTotalSizeInBytes(packetAux)) {
             aPacketWasGenerated = true;
             generateTraffic();
         }
@@ -495,10 +495,12 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public double getNsPerBit() {
-        long tasaEnBitsPorSegundo = (long) (this.trafficGenerationRate * 1048576L);
-        double nsPorCadaBit = (double) ((double) 1000000000.0 / (long) tasaEnBitsPorSegundo);
-        return nsPorCadaBit;
+    public double getRequiredNsPerBit() {
+        // FIX: Do not use harcoded values. Use class constants instead.
+        long traficcRateInBps = (long) (this.trafficGenerationRate * 1048576L);
+        // FIX: Do not use harcoded values. Use class constants instead.
+        double requiredNsPerBit = (double) ((double) 1000000000.0 / (long) traficcRateInBps);
+        return requiredNsPerBit;
     }
 
     /**
@@ -511,10 +513,11 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public double getNsUsedByOctects(int octects) {
-        double nsPorCadaBit = getNsPerBit();
-        long bitsOctetos = (long) ((long) octects * (long) 8);
-        return (double) ((double) nsPorCadaBit * (long) bitsOctetos);
+    public double getRequiredNsForOctects(int octects) {
+        double requiredNsPerBit = getRequiredNsPerBit();
+        // FIX: Do not use harcoded values. Use class constants instead.
+        long numberOfBitsToBeSent = (long) ((long) octects * (long) 8);
+        return (double) ((double) requiredNsPerBit * (long) numberOfBitsToBeSent);
     }
 
     /**
@@ -525,10 +528,10 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public int getMaxTransmittableBits() {
-        double nsPorCadaBit = getNsPerBit();
-        double maximoBits = (double) ((double) this.availableNs / (double) nsPorCadaBit);
-        return (int) maximoBits;
+    public int getMaxTransmittableBitsWithCurrentAvailableNs() {
+        double requiredNsPerBit = getRequiredNsPerBit();
+        double maxTransmittableBitsWithCurrentAvailableNs = (double) ((double) this.availableNs / (double) requiredNsPerBit);
+        return (int) maxTransmittableBitsWithCurrentAvailableNs;
     }
 
     /**
@@ -541,9 +544,10 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public int getMaxTransmittableOctets() {
-        double maximoBytes = ((double) getMaxTransmittableBits() / (double) 8.0);
-        return (int) maximoBytes;
+    public int getMaxTransmittableOctetsWithCurrentAvailableNs() {
+        // FIX: Do not use harcoded values. Use class constants instead.
+        double maxTransmittableOctetsWithCurrentAvailableNs = ((double) getMaxTransmittableBitsWithCurrentAvailableNs() / (double) 8.0);
+        return (int) maxTransmittableOctetsWithCurrentAvailableNs;
     }
 
     /**
@@ -567,22 +571,24 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @since 2.0
      */
     public int computeNextPacketPayloadSize() {
-        int probabilidad = this.randomNumberGenerator.nextInt(100);
-        int tamanioGenerado = 0;
-        if (probabilidad < 47) {
-            tamanioGenerado = this.randomNumberGenerator.nextInt(100);
-            tamanioGenerado -= 40;
-        } else if ((probabilidad >= 47) && (probabilidad < 71)) {
-            tamanioGenerado = (this.randomNumberGenerator.nextInt(1300) + 100);
-            tamanioGenerado -= 40;
-        } else if ((probabilidad >= 71) && (probabilidad < 99)) {
-            tamanioGenerado = (this.randomNumberGenerator.nextInt(100) + 1400);
-            tamanioGenerado -= 40;
-        } else if (probabilidad >= 99) {
-            tamanioGenerado = (this.randomNumberGenerator.nextInt(64035) + 1500);
-            tamanioGenerado -= 40;
+        // FIX: Do not use harcoded values. Use class constants instead. Do it 
+        // for all cases in this method.
+        int probability = this.randomNumberGenerator.nextInt(100);
+        int payloadSize = 0;
+        if (probability < 47) {
+            payloadSize = this.randomNumberGenerator.nextInt(100);
+            payloadSize -= 40;
+        } else if ((probability >= 47) && (probability < 71)) {
+            payloadSize = (this.randomNumberGenerator.nextInt(1300) + 100);
+            payloadSize -= 40;
+        } else if ((probability >= 71) && (probability < 99)) {
+            payloadSize = (this.randomNumberGenerator.nextInt(100) + 1400);
+            payloadSize -= 40;
+        } else if (probability >= 99) {
+            payloadSize = (this.randomNumberGenerator.nextInt(64035) + 1500);
+            payloadSize -= 40;
         }
-        return tamanioGenerado;
+        return payloadSize;
     }
 
     /**
@@ -590,30 +596,31 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * con datos insertados. Los datos ser�n del tama�o que se haya estimado en
      * los distintos m�todos de la clase,pero ser� el correcto.
      *
-     * @param paquete Paquete al que se quiere a�adir datos.
+     * @param packet Paquete al que se quiere a�adir datos.
      * @return Paquete con datos insertados del tama�o correcto seg�n el tipo de
      * gr�fico.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TAbstractPDU addDataToPacket(TAbstractPDU paquete) {
-        TMPLSPDU paqueteMPLS = null;
-        TIPv4PDU paqueteIPv4 = null;
-        int bitsMaximos = getMaxTransmittableBits();
-        int tamanioCabecera = 0;
-        int tamanioDatos = 0;
-        int tamanioTotal = 0;
+    public TAbstractPDU addDataToPacket(TAbstractPDU packet) {
+        TMPLSPDU mplsPacket = null;
+        TIPv4PDU ipv4Packet = null;
+        // FIX: The two following variables seem not to be used. Check and remove if it is safe.
+        int maxTransmittableBits = getMaxTransmittableBitsWithCurrentAvailableNs();
+        int nextPacketHeaderSizeInBytes = 0;
+        int NextPacketPayloadSizeInBytes = 0;
+        int nextPacketTotalSizeInBytes = 0;
         double nsUsados = 0;
-        tamanioTotal = getNextPacketTotalSizeInBytes(paquete);
-        tamanioCabecera = getNextPacketHeaderSizeInBytes(paquete);
-        tamanioDatos = getNextPacketPayloadSizeInBytes();
-        if (tamanioTotal > getMaxTransmittableOctets()) {
-            paquete = null;
+        nextPacketTotalSizeInBytes = getNextPacketTotalSizeInBytes(packet);
+        nextPacketHeaderSizeInBytes = getNextPacketHeaderSizeInBytes(packet);
+        NextPacketPayloadSizeInBytes = getNextPacketPayloadSizeInBytes();
+        if (nextPacketTotalSizeInBytes > getMaxTransmittableOctetsWithCurrentAvailableNs()) {
+            packet = null;
             return null;
-        } else if (paquete.getType() == TAbstractPDU.MPLS) {
-            paqueteMPLS = (TMPLSPDU) paquete;
-            paqueteMPLS.getTCPPayload().setSize((int) tamanioDatos);
-            nsUsados = this.getNsUsedByOctects(tamanioTotal);
+        } else if (packet.getType() == TAbstractPDU.MPLS) {
+            mplsPacket = (TMPLSPDU) packet;
+            mplsPacket.getTCPPayload().setSize((int) NextPacketPayloadSizeInBytes);
+            nsUsados = this.getRequiredNsForOctects(nextPacketTotalSizeInBytes);
             this.availableNs -= nsUsados;
             if (this.availableNs < 0) {
                 this.availableNs = 0;
@@ -621,11 +628,11 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
             if (this.trafficGenerationMode == TSenderNode.VARIABLE_TRAFFIC_RATE) {
                 this.variablePayloadSizeInBytes = this.computeNextPacketPayloadSize();
             }
-            return paqueteMPLS;
-        } else if (paquete.getType() == TAbstractPDU.IPV4) {
-            paqueteIPv4 = (TIPv4PDU) paquete;
-            paqueteIPv4.getTCPPayload().setSize(tamanioDatos);
-            nsUsados = this.getNsUsedByOctects(tamanioTotal);
+            return mplsPacket;
+        } else if (packet.getType() == TAbstractPDU.IPV4) {
+            ipv4Packet = (TIPv4PDU) packet;
+            ipv4Packet.getTCPPayload().setSize(NextPacketPayloadSizeInBytes);
+            nsUsados = this.getRequiredNsForOctects(nextPacketTotalSizeInBytes);
             this.availableNs -= nsUsados;
             if (this.availableNs < 0) {
                 this.availableNs = 0;
@@ -633,7 +640,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
             if (this.trafficGenerationMode == TSenderNode.VARIABLE_TRAFFIC_RATE) {
                 this.variablePayloadSizeInBytes = this.computeNextPacketPayloadSize();
             }
-            return paqueteIPv4;
+            return ipv4Packet;
         }
         return null;
     }
