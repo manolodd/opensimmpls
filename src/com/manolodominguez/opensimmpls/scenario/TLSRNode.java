@@ -1272,6 +1272,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      */
     @Override
     public int validateConfig(TTopology topology, boolean reconfiguration) {
+        // FIX: Do not use harcoded values. Use class constants instead.
         this.setWellConfigured(false);
         if (this.getName().equals("")) {
             return TLSRNode.UNNAMED;
@@ -1394,7 +1395,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     }
 
     /**
-     * This node gets the stat of this node.
+     * This node gets the stats of this node.
      *
      * @return The stats of this node.
      * @since 2.0
@@ -1420,12 +1421,13 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     /**
      * This method does nothing in an LSR node.
      *
-     * @param packet Paquete cuya retransmisi�n se est� solicitando.
-     * @param outgoingPortID Puerto por el que se enviar� la solicitud.
+     * @param mplsPacket Packet whose retransmission is being requested.
+     * @param outgoingPortID outgoing port ID to wich the packet will be
+     * delivered.
      * @since 2.0
      */
     @Override
-    public void runGPSRP(TMPLSPDU packet, int outgoingPortID) {
+    public void runGPSRP(TMPLSPDU mplsPacket, int outgoingPortID) {
         // FIX: This does nothing in a non-active node.
     }
 

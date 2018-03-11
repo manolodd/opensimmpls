@@ -344,11 +344,11 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
             // FIX: this is not a good practice. Avoid.
             e.printStackTrace();
         }
-        TAbstractPDU packetAux = generatePacket();
+        TAbstractPDU packetAux = createEmptyPacket();
         boolean aPacketWasGenerated = false;
         while (getMaxTransmittableOctetsWithCurrentAvailableNs() > getNextPacketTotalSizeInBytes(packetAux)) {
             aPacketWasGenerated = true;
-            generateTraffic();
+            generateAndSendPacket();
         }
         packetAux = null;
         if (aPacketWasGenerated) {
@@ -360,12 +360,10 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo obtiene el tama�o que tendr� la carga util del siguiente
-     * paquete generado, independientemente de que se est� tratando con tr�fico
-     * constante o variable.
+     * This method gets the payload size of the next packet, according to the
+     * generation mode selected for this sender.
      *
-     * @return El tama�o de la carga �til del siguiente paquete que generar� el
-     * emisor.
+     * @return Payload size size in octects.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -377,12 +375,11 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo obtiene el tama�o de la header del sigueinte paquete que se
-     * generar�, independientemente del tipo de tr�fico del que se trate y de
-     * los valores de garant�a de Servicio con los que peuda estar marcado.
+     * This method gets the header size of the next packet. The packet is
+     * specified as an argument.
      *
-     * @param packet Paquete de cuya header queremos conocer el tama�o.
-     * @return El tama�o de la header.
+     * @param packet Packet whose header size has to be computed.
+     * @return Header size in octects.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -398,13 +395,14 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo calcula, el tama�o del siguiente paquete a generar,
-     * independientemente de que se de tipo constante o variable, o de cualquier
-     * protocolo de los soportados, e incluso de que nivel de GoS tenga
-     * asignado.
+     * This method computes the total size of the next packet. It takes into
+     * account the headers of the packets that is passed out as an argument and
+     * also the payload size of the next packet that the sender has already
+     * computed.
      *
-     * @param packet paquete cuyo tamanio se desea calcular.
-     * @return El tama�o total del paquete especificado por par�metros.
+     * @param packet Packet whose total size wants to be computed to be the next
+     * packet.
+     * @return The total size of the next packet, in octets..
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -419,21 +417,22 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo crea paquetes de tr�fico acorde a la configuraci�n el emisor
-     * de tr�fico y los env�a al receptor destino del tr�fico.
+     * This method generate and send a packet taking int account the
+     * configuration of this sender: mode of traffic generation, packet size,
+     * etc.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void generateTraffic() {
+    public void generateAndSendPacket() {
         TAbstractPDU emptyPacket = null;
         TAbstractPDU packetWithPayload = null;
         // FIX: avoid using harcoded values. Use class constants instead.
         TPort port = this.ports.getPort(0);
         if (port != null) {
             if (!port.isAvailable()) {
-                emptyPacket = generatePacket();
-                packetWithPayload = this.addDataToPacket(emptyPacket);
+                emptyPacket = createEmptyPacket();
+                packetWithPayload = this.addDataToEmptyPacket(emptyPacket);
                 if (packetWithPayload != null) {
                     try {
                         // FIX: avoid using harcoded values. Use class constants instead.
@@ -462,37 +461,13 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo contabiliza un paquete y su tama�o asociado, en las
-     * estad�sticas del nodo emisor, y sus gr�ficas.
+     * This method computes and returns the number of nanoseconds that are
+     * needed to generate a single bit. This is something that depends on the
+     * generation rate the sender is configured for.
      *
-     * @param packet Paquete que se desea contabilizar.
-     * @param isIncomingPacket TRUE indica que se trata de un paquete que ha
-     * entrado en el nodo. FALSE indica que se trata de un paquete que ha salido
-     * del nodo.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 2.0
-     */
-    public void accountPacket(TAbstractPDU packet, boolean isIncomingPacket) {
-        if (isIncomingPacket) {
-            if (packet.getSubtype() == TAbstractPDU.MPLS) {
-            } else if (packet.getSubtype() == TAbstractPDU.MPLS_GOS) {
-            } else if (packet.getSubtype() == TAbstractPDU.IPV4) {
-            } else if (packet.getSubtype() == TAbstractPDU.IPV4_GOS) {
-            }
-        } else if (packet.getSubtype() == TAbstractPDU.MPLS) {
-        } else if (packet.getSubtype() == TAbstractPDU.MPLS_GOS) {
-        } else if (packet.getSubtype() == TAbstractPDU.IPV4) {
-        } else if (packet.getSubtype() == TAbstractPDU.IPV4_GOS) {
-        }
-    }
-
-    /**
-     * Este m�todo calcula cu�ntos nanosegundos necesita el nodo emisor para
-     * generar y transmitir un bit. Se basa para ello en la tasa de generaci�n
-     * de tr�fico del nodo.
-     *
-     * @return El n�mero de nanosegundos necesarios generar y transmitir un bit.
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the number of nanoseconds that are needed to generate a single
+     * bit.
      * @since 2.0
      */
     public double getRequiredNsPerBit() {
@@ -504,16 +479,17 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo calcula el n�mero de nanosegundos necesarios para poder
-     * generar y enviar un determinado n�mero de octetos.
+     * This method computes and returns the number of nanoseconds that are
+     * needed to generate the specified number of octects. This is something
+     * that depends on the generation rate the sender is configured for.
      *
-     * @param octects N�mero de octetos que deseamos generar y transmitir.
-     * @return N�mero de nanosegundos que necesitamos para los octetos
-     * especificados.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param octects the number of octects that wants to be generated.
+     * @return the number of nanoseconds that are needed to generate the
+     * specified number of octects.
      * @since 2.0
      */
-    public double getRequiredNsForOctects(int octects) {
+    public double getNsRequiredForAllOctets(int octects) {
         double requiredNsPerBit = getRequiredNsPerBit();
         // FIX: Do not use harcoded values. Use class constants instead.
         long numberOfBitsToBeSent = (long) ((long) octects * (long) 8);
@@ -521,11 +497,13 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo calcula el n�mero de bits que puede generar y transmitir con
-     * el n�mero de nanosegundos con los que cuenta.
+     * This method gets the number of bits that this sender can switch with the
+     * available number of nanoseconds it has. The higher the generation
+     * ratepower the sender has, the more bits it can generate with the same
+     * number of nanoseconds.
      *
-     * @return N�mero de bits que puede generar y transmitir.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The number of bits that can be generated.
      * @since 2.0
      */
     public int getMaxTransmittableBitsWithCurrentAvailableNs() {
@@ -535,13 +513,13 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este metodo calcula el n�mero de octetos completos que puede generar y
-     * transmitir el emisor teniendo en cuenta el n�mero de nanosegundos con los
-     * que cuenta.
+     * This method gets the number of octects that this sender can generate with
+     * the available number of nanoseconds it has. The higher the generation
+     * ratepower the sender has, the more octects it can generate with the same
+     * number of nanoseconds.
      *
-     * @return El n�mero de octetos completos que se pueden generar y
-     * transmitir.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The number of octects that can be switched.
      * @since 2.0
      */
     public int getMaxTransmittableOctetsWithCurrentAvailableNs() {
@@ -551,22 +529,28 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo calcula autom�ticamente el tama�o de la carga util del
-     * siguiente paquete a generar. Si el tr�fico es constante, devolver� el
-     * tama�o de paquete con el que se configur� el emisor. Si el tama�o es
-     * variable, generar� tr�fico siguiendo una funci�n de probabilidad en la
-     * cual se sigue la siguiente distribuci�n de tama�os:
+     * This method computes the payload size of the next packet to be generated.
+     * If the sender node is configure to generate constant traffic, then the
+     * computed payload will be the one for wich the sender was configured. I
+     * the sender is configured to generate variable traffic, then the payload
+     * size of the next packet to be generated is computed through a probability
+     * distribution function as follows:
      *
-     * Tama�oPaquete < 100 octetos ---------------------> 47% Tama�oPaquete >=
-     * 100 octetos y < 1400 octetos ---> 24% Tama�oPaquete >= 1400 octetos y
-     * < 1500 octetos --> 18% Tama�oPaquete >= 1500 octetos ------------------->
-     * 1%
+     * Payload lesser than 100 octects = probability 47%. Payload between 100
+     * octects and 1400 octects = probability 24%. Payload between 1400 octects
+     * and 1500 octects = probability 18%. Payload greater or equal to 1500
+     * octects = probability 1%.
      *
-     * Esta distribuci�n est� extra�da de las estad�sticas de la red Abilene,
-     * que son p�blicas y se pueden observar en
+     * This distribution has been extracted from ststistics of Abilene Network,
+     * publicly available at
+     *
      * http://netflow.internet2.edu/weekly.
      *
-     * @return El tama�o que debe tener el siguiente paquete.
+     * To know more, read the "Guarentee of Service (GoS) Support over MPLS
+     * using active techiques".
+     *
+     * @return The correct payload size (in octecs) of the next packet to be
+     * generated, according to the configuration of this sender node.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -592,17 +576,17 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo toma como par�metro un paquete vacio y devuelve un paquete
-     * con datos insertados. Los datos ser�n del tama�o que se haya estimado en
-     * los distintos m�todos de la clase,pero ser� el correcto.
+     * This method gets an empty packet and insert a payload in it. It is used
+     * to generate packets that match the size the sender node is configured
+     * for.
      *
-     * @param packet Paquete al que se quiere a�adir datos.
-     * @return Paquete con datos insertados del tama�o correcto seg�n el tipo de
-     * gr�fico.
+     * @param packet An empty packet to embed a payload in it.
+     * @return A new packet including the corresponding headers and the correct
+     * payload size.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TAbstractPDU addDataToPacket(TAbstractPDU packet) {
+    public TAbstractPDU addDataToEmptyPacket(TAbstractPDU packet) {
         TMPLSPDU mplsPacket = null;
         TIPv4PDU ipv4Packet = null;
         // FIX: The two following variables seem not to be used. Check and remove if it is safe.
@@ -620,7 +604,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         } else if (packet.getType() == TAbstractPDU.MPLS) {
             mplsPacket = (TMPLSPDU) packet;
             mplsPacket.getTCPPayload().setSize((int) NextPacketPayloadSizeInBytes);
-            requiredNs = this.getRequiredNsForOctects(nextPacketTotalSizeInBytes);
+            requiredNs = this.getNsRequiredForAllOctets(nextPacketTotalSizeInBytes);
             this.availableNs -= requiredNs;
             // FIX: Do not use harcoded values. Use class constants instead.
             if (this.availableNs < 0) {
@@ -634,7 +618,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         } else if (packet.getType() == TAbstractPDU.IPV4) {
             ipv4Packet = (TIPv4PDU) packet;
             ipv4Packet.getTCPPayload().setSize(NextPacketPayloadSizeInBytes);
-            requiredNs = this.getRequiredNsForOctects(nextPacketTotalSizeInBytes);
+            requiredNs = this.getNsRequiredForAllOctets(nextPacketTotalSizeInBytes);
             this.availableNs -= requiredNs;
             // FIX: Do not use harcoded values. Use class constants instead.
             if (this.availableNs < 0) {
@@ -650,84 +634,92 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo devuelve un paquete vac�o (sin datos) del tipo correcto para
-     * el que esta configurado el nodo emisor.
+     * This method generates and returns an empty packet that match exactly the
+     * type of packets expected due to the configuration of this sender node.
+     * The payload of this packet is 0.
      *
-     * @return El paquete creado.
+     * @return A new empty packet, ready to be asigned a given payload.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TAbstractPDU generatePacket() {
+    public TAbstractPDU createEmptyPacket() {
         int requiredEXPValue = this.getRequiredEXPValue();
         try {
             if (this.encapsulateOverMPLS) {
                 if (requiredEXPValue == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
-                    TMPLSPDU paquete = new TMPLSPDU(packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
-                    TMPLSLabel etiquetaMPLSDeEmision = new TMPLSLabel();
-                    etiquetaMPLSDeEmision.setBoS(true);
-                    etiquetaMPLSDeEmision.setEXP(0);
-                    etiquetaMPLSDeEmision.setLabel(sendingLabel);
-                    etiquetaMPLSDeEmision.setTTL(paquete.getIPv4Header().getTTL());
-                    paquete.getLabelStack().pushTop(etiquetaMPLSDeEmision);
-                    return paquete;
+                    TMPLSPDU mplsPacket = new TMPLSPDU(this.packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
+                    TMPLSLabel outgoingMPLSLabel = new TMPLSLabel();
+                    // FIX: Use class constants instead of harcoded values
+                    outgoingMPLSLabel.setBoS(true);
+                    // FIX: Use class constants instead of harcoded values
+                    outgoingMPLSLabel.setEXP(0);
+                    outgoingMPLSLabel.setLabel(this.sendingLabel);
+                    outgoingMPLSLabel.setTTL(mplsPacket.getIPv4Header().getTTL());
+                    mplsPacket.getLabelStack().pushTop(outgoingMPLSLabel);
+                    return mplsPacket;
                 } else {
-                    TMPLSPDU paquete = new TMPLSPDU(packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
-                    paquete.setSubtype(TAbstractPDU.MPLS_GOS);
-                    paquete.getIPv4Header().getOptionsField().setRequestedGoSLevel(requiredEXPValue);
-                    paquete.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(this.packetGoSdentifierGenerator.getNextID());
-                    TMPLSLabel etiquetaMPLSDeEmision = new TMPLSLabel();
-                    etiquetaMPLSDeEmision.setBoS(true);
-                    etiquetaMPLSDeEmision.setEXP(0);
-                    etiquetaMPLSDeEmision.setLabel(sendingLabel);
-                    etiquetaMPLSDeEmision.setTTL(paquete.getIPv4Header().getTTL());
-                    TMPLSLabel etiquetaMPLS1 = new TMPLSLabel();
-                    etiquetaMPLS1.setBoS(false);
-                    etiquetaMPLS1.setEXP(requiredEXPValue);
-                    etiquetaMPLS1.setLabel(1);
-                    etiquetaMPLS1.setTTL(paquete.getIPv4Header().getTTL());
-                    paquete.getLabelStack().pushTop(etiquetaMPLSDeEmision);
-                    paquete.getLabelStack().pushTop(etiquetaMPLS1);
-                    return paquete;
+                    TMPLSPDU mplsPacket = new TMPLSPDU(packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
+                    mplsPacket.setSubtype(TAbstractPDU.MPLS_GOS);
+                    mplsPacket.getIPv4Header().getOptionsField().setRequestedGoSLevel(requiredEXPValue);
+                    mplsPacket.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(this.packetGoSdentifierGenerator.getNextID());
+                    TMPLSLabel bottomOutgoingMPLSLabel = new TMPLSLabel();
+                    // FIX: Use class constants instead of harcoded values
+                    bottomOutgoingMPLSLabel.setBoS(true);
+                    // FIX: Use class constants instead of harcoded values
+                    bottomOutgoingMPLSLabel.setEXP(0);
+                    bottomOutgoingMPLSLabel.setLabel(this.sendingLabel);
+                    bottomOutgoingMPLSLabel.setTTL(mplsPacket.getIPv4Header().getTTL());
+                    TMPLSLabel upperOutgoingMPLSLabel = new TMPLSLabel();
+                    // FIX: Use class constants instead of harcoded values
+                    upperOutgoingMPLSLabel.setBoS(false);
+                    upperOutgoingMPLSLabel.setEXP(requiredEXPValue);
+                    // FIX: Use class constants instead of harcoded values
+                    upperOutgoingMPLSLabel.setLabel(1);
+                    upperOutgoingMPLSLabel.setTTL(mplsPacket.getIPv4Header().getTTL());
+                    mplsPacket.getLabelStack().pushTop(bottomOutgoingMPLSLabel);
+                    mplsPacket.getLabelStack().pushTop(upperOutgoingMPLSLabel);
+                    return mplsPacket;
                 }
             } else if (requiredEXPValue == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
-                TIPv4PDU paquete = new TIPv4PDU(packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
-                return paquete;
+                TIPv4PDU ipv4Packet = new TIPv4PDU(packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
+                return ipv4Packet;
             } else {
-                TIPv4PDU paquete = new TIPv4PDU(packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
-                paquete.setSubtype(TAbstractPDU.IPV4_GOS);
-                paquete.getIPv4Header().getOptionsField().setRequestedGoSLevel(requiredEXPValue);
-                paquete.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(this.packetGoSdentifierGenerator.getNextID());
-                return paquete;
+                TIPv4PDU ipv4Packet = new TIPv4PDU(packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
+                ipv4Packet.setSubtype(TAbstractPDU.IPV4_GOS);
+                ipv4Packet.getIPv4Header().getOptionsField().setRequestedGoSLevel(requiredEXPValue);
+                ipv4Packet.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(this.packetGoSdentifierGenerator.getNextID());
+                return ipv4Packet;
             }
         } catch (EIDGeneratorOverflow e) {
+            // FIX: This is ugly. Avoid.
             e.printStackTrace();
         }
         return null;
     }
 
     /**
-     * Este m�todo descarta un paquete de cualquier tipo. Adem�s anota los datos
-     * relativos en ese descarte en las estad�sticas del nodo.
+     * This method discards a packet and update the corresponding stats.
      *
-     * @param paquete Paquete que se quiere descartar.
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param packet packet to be discarded.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public void discardPacket(TAbstractPDU paquete) {
+    public void discardPacket(TAbstractPDU packet) {
         try {
-            this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), paquete.getSubtype()));
-            this.stats.addStatEntry(paquete, TStats.DISCARD);
+            this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), packet.getSubtype()));
+            this.stats.addStatEntry(packet, TStats.DISCARD);
         } catch (Exception e) {
+            // FIX: This is ugly. Avoid.
             e.printStackTrace();
         }
-        paquete = null;
+        packet = null;
     }
 
     /**
-     * Este m�todo investiga si al nodo le quedan ports libres.
+     * This method checks whether the node has still free ports.
      *
-     * @return TRUE, si al nodo le quedan ports libres. FALSE en caso contrario.
+     * @return TRUE, if the node has still free ports. Otherwise, FALSE.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -737,11 +729,11 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo permite acceder a los ports del nodo directamente.
+     * This gets the ports set of this node.
      *
-     * @return El conjunto de ports del nodo.
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the ports set of this node.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public TPortSet getPorts() {
@@ -749,24 +741,25 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo devuelve el peso del nodo, que debe ser tenido en cuenta por
-     * el algoritmo e encaminamiento para el c�lculo de rutas.
+     * This method gets the weight to be used in routing algorithm. By design,
+     * ha sender node has a weight of 0.
      *
-     * @return En el nodo emisor, siempre es cero.
+     * @return for this type of node, alsways 0.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
     public long getRoutingWeight() {
+        // FIX: Use class constants instead of harcoded values
         return 0;
     }
 
     /**
-     * Este m�todo devuelve si el nodo est� bien configurado o no.
+     * This method returns the configuration status of this node.
      *
-     * @return TRUE, si el nodo est� bien configurado. FALSE en caso contrario.
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return true, if the node is configured correctly. Otherwise, false.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public boolean isWellConfigured() {
@@ -774,40 +767,41 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo calcula si el nodo est� bien configurado o no, actualizando
-     * el atributo que indicar� posteriormente este hecho.
+     * This method checks whether this node is configured correctly or not.
      *
-     * @param topology Topolog�a dentro de la cual est� incluido el nodo emisor.
-     * @param reconfiguration TRUE si se est� reconfigurando el nodo emisor.
-     * FALSE si est� configurando por primera vez.
-     * @return CORRECTA, si el nodo est� bien configurado. Un codigo de error en
-     * caso contrario.
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param topology Topology to wich this node belongs to.
+     * @param reconfiguration true, if the node is being re-configured.
+     * Otherwise, false.
+     * @return TSenderNode.OK if the configuration is correct. Otherwise, an
+     * error code is returned. See public constants of error codes in this
+     * class.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public int validateConfig(TTopology topology, boolean reconfiguration) {
+        // FIX: Do not use harcoded values. Use class constants instead.
         this.setWellConfigured(false);
         if (this.getName().equals("")) {
             return TSenderNode.UNNAMED;
         }
-        boolean soloEspacios = true;
+        boolean onlyBlankSpaces = true;
         for (int i = 0; i < this.getName().length(); i++) {
             if (this.getName().charAt(i) != ' ') {
-                soloEspacios = false;
+                onlyBlankSpaces = false;
             }
         }
-        if (soloEspacios) {
+        if (onlyBlankSpaces) {
             return TSenderNode.ONLY_BLANK_SPACES;
         }
         if (!reconfiguration) {
-            TNode tp = topology.getFirstNodeNamed(this.getName());
-            if (tp != null) {
+            TNode nodeAux = topology.getFirstNodeNamed(this.getName());
+            if (nodeAux != null) {
                 return TSenderNode.NAME_ALREADY_EXISTS;
             }
         } else {
-            TNode tp = topology.getFirstNodeNamed(this.getName());
-            if (tp != null) {
+            TNode nodeAux = topology.getFirstNodeNamed(this.getName());
+            if (nodeAux != null) {
                 if (this.topology.thereIsMoreThanANodeNamed(this.getName())) {
                     return TSenderNode.NAME_ALREADY_EXISTS;
                 }
@@ -825,13 +819,14 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo transforma un codigo de error en un mensaje con similar
-     * significado, pero legible por el usuario.
+     * This method generates an human-readable error message from a given error
+     * code specified as ana argument.
      *
-     * @param errorCode C�digo de error cuyo mensaje se desea obtener.
-     * @return El mensaje equivalente al codigo de error, pero legible.
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param errorCode the error code to witch the text message has to be
+     * generated. One of the public constants defined in this class.
+     * @return an String explaining the error.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public String getErrorMessage(int errorCode) {
@@ -849,83 +844,85 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo transforma el nodo emisor en una cadena de caracterres que se
-     * puede volcar a disco.
+     * This method serializes the configuration parameters of this node into an
+     * string that can be saved into disk.
      *
-     * @return TRUE, si se ha realizado la resializaci�n correctamente. FALSE en
-     * caso contrario.
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return an String containing all the configuration parameters of this
+     * node.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public String marshall() {
-        String cadena = "#Emisor#";
-        cadena += this.getNodeID();
-        cadena += "#";
-        cadena += this.getName().replace('#', ' ');
-        cadena += "#";
-        cadena += this.getIPv4Address();
-        cadena += "#";
-        cadena += this.isSelected();
-        cadena += "#";
-        cadena += this.nameMustBeDisplayed();
-        cadena += "#";
-        cadena += this.isGeneratingStats();
-        cadena += "#";
-        cadena += this.getScreenPosition().x;
-        cadena += "#";
-        cadena += this.getScreenPosition().y;
-        cadena += "#";
-        cadena += this.getTargetIPv4Address();
-        cadena += "#";
-        cadena += this.isRequestingBackupLSP();
-        cadena += "#";
-        cadena += this.getGoSLevel();
-        cadena += "#";
-        cadena += this.isEncapsulatingOverMPLS();
-        cadena += "#";
-        cadena += this.getTrafficGenerationRate();
-        cadena += "#";
-        cadena += this.getTrafficGenerationMode();
-        cadena += "#";
-        cadena += this.getConstantPayloadSizeInBytes();
-        cadena += "#";
-        return cadena;
+        String serializedElement = "#Emisor#";
+        serializedElement += this.getNodeID();
+        serializedElement += "#";
+        serializedElement += this.getName().replace('#', ' ');
+        serializedElement += "#";
+        serializedElement += this.getIPv4Address();
+        serializedElement += "#";
+        serializedElement += this.isSelected();
+        serializedElement += "#";
+        serializedElement += this.nameMustBeDisplayed();
+        serializedElement += "#";
+        serializedElement += this.isGeneratingStats();
+        serializedElement += "#";
+        serializedElement += this.getScreenPosition().x;
+        serializedElement += "#";
+        serializedElement += this.getScreenPosition().y;
+        serializedElement += "#";
+        serializedElement += this.getTargetIPv4Address();
+        serializedElement += "#";
+        serializedElement += this.isRequestingBackupLSP();
+        serializedElement += "#";
+        serializedElement += this.getGoSLevel();
+        serializedElement += "#";
+        serializedElement += this.isEncapsulatingOverMPLS();
+        serializedElement += "#";
+        serializedElement += this.getTrafficGenerationRate();
+        serializedElement += "#";
+        serializedElement += this.getTrafficGenerationMode();
+        serializedElement += "#";
+        serializedElement += this.getConstantPayloadSizeInBytes();
+        serializedElement += "#";
+        return serializedElement;
     }
 
     /**
-     * Este m�todo toma una cadena de texto que representa a un emisor
-     * serializado y construye, en base a ella, el emisor en memoria sobre la
-     * instancia actual.
+     * This method gets as an argument a serialized string that contains the
+     * needed parameters to configure an TSenderNode and configure this node
+     * using them.
      *
-     * @param serializedSender El nodo emisor serializado.
-     * @return TRUE, si se consigue deserializar correctamente. FALSE en caso
-     * contrario.
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param serializedSender A serialized representation of a TSenderNode.
+     * @return true, whether the serialized string is correct and this node has
+     * been initialized correctly using the serialized values. Otherwise, false.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public boolean unMarshall(String serializedSender) {
-        String valores[] = serializedSender.split("#");
-        if (valores.length != 17) {
+        // FIX: All fixed values in this method should be implemented as class
+        // constants instead of harcoded values.
+        String[] elementFields = serializedSender.split("#");
+        if (elementFields.length != 17) {
             return false;
         }
-        this.setNodeID(Integer.parseInt(valores[2]));
-        this.setName(valores[3]);
-        this.setIPv4Address(valores[4]);
-        this.setSelected(Integer.parseInt(valores[5]));
-        this.setShowName(Boolean.parseBoolean(valores[6]));
-        this.setGenerateStats(Boolean.parseBoolean(valores[7]));
-        int posX = Integer.parseInt(valores[8]);
-        int posY = Integer.parseInt(valores[9]);
+        this.setNodeID(Integer.parseInt(elementFields[2]));
+        this.setName(elementFields[3]);
+        this.setIPv4Address(elementFields[4]);
+        this.setSelected(Integer.parseInt(elementFields[5]));
+        this.setShowName(Boolean.parseBoolean(elementFields[6]));
+        this.setGenerateStats(Boolean.parseBoolean(elementFields[7]));
+        int posX = Integer.parseInt(elementFields[8]);
+        int posY = Integer.parseInt(elementFields[9]);
         this.setScreenPosition(new Point(posX + 24, posY + 24));
-        this.targetIPv4Address = valores[10];
-        this.setRequestBackupLSP(Boolean.parseBoolean(valores[11]));
-        this.setGoSLevel(Integer.parseInt(valores[12]));
-        this.encapsulateOverMPLS(Boolean.parseBoolean(valores[13]));
-        this.setTrafficGenerationRate(Integer.parseInt(valores[14]));
-        this.setTrafficGenerationMode(Integer.parseInt(valores[15]));
-        this.setConstantPayloadSizeInBytes(Integer.parseInt(valores[16]));
+        this.targetIPv4Address = elementFields[10];
+        this.setRequestBackupLSP(Boolean.parseBoolean(elementFields[11]));
+        this.setGoSLevel(Integer.parseInt(elementFields[12]));
+        this.encapsulateOverMPLS(Boolean.parseBoolean(elementFields[13]));
+        this.setTrafficGenerationRate(Integer.parseInt(elementFields[14]));
+        this.setTrafficGenerationMode(Integer.parseInt(elementFields[15]));
+        this.setConstantPayloadSizeInBytes(Integer.parseInt(elementFields[16]));
         return true;
     }
 
@@ -947,11 +944,11 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo permite acceder directamente a las estad�sticas del nodo.
+     * This node gets the stats of this node.
      *
-     * @return Las estad�sticas del nodo.
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The stats of this node.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public TStats getStats() {
@@ -959,13 +956,12 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo inicia el conjunto de ports del nodo, con el n�mero de ports
-     * especificado.
+     * This method sets the number of ports of this node.
      *
-     * @param numPorts N�mero de ports que tendr� el nodo. Como m�ximo est�
-     * configurado para 8.
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param numPorts Number of ports of this node. The maximum allowed for a
+     * sender node is 1.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
     public synchronized void setPorts(int numPorts) {
@@ -973,12 +969,11 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo no hace nada en un Emisor. En un nodo activo permitir�
-     * solicitar a un nodo activo la retransmisi�n de un paquete.
+     * This method does nothing in an sender node.
      *
-     * @param mplsPacket Paquete cuya retransmisi�n se est� solicitando.
-     * @param outgoingPortID Puerto por el que se enviar� la solicitud.
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param mplsPacket Packet whose retransmission is being requested.
+     * @param outgoingPortID outgoing port ID to wich the packet will be
+     * delivered.
      * @since 2.0
      */
     @Override
