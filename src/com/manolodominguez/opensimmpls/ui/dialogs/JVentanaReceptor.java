@@ -18,7 +18,7 @@ package com.manolodominguez.opensimmpls.ui.dialogs;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import com.manolodominguez.opensimmpls.scenario.TReceiverNode;
+import com.manolodominguez.opensimmpls.scenario.TTrafficSinkNode;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
 import com.manolodominguez.opensimmpls.ui.simulator.JPanelDisenio;
 import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
@@ -260,7 +260,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     configReceptor.setShowName(verNombre.isSelected());
     configReceptor.setGenerateStats(this.selectorGenerarEstadisticaAvanzada.isSelected());
     int error = configReceptor.validateConfig(topo, this.reconfigurando);
-    if (error != TReceiverNode.OK) {
+    if (error != TTrafficSinkNode.OK) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
         va.mostrarMensaje(configReceptor.getErrorMessage(error));
         va.show();
@@ -302,7 +302,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
      * @param recfg TRUE indica que es una reconfiguraci�n del nodo receptor. FALSE indica que el
      * nodo est� siendo insertado por primera vez.
      */    
-    public void ponerConfiguracion(TReceiverNode tnr, boolean recfg) {
+    public void ponerConfiguracion(TTrafficSinkNode tnr, boolean recfg) {
         configReceptor = tnr;
         reconfigurando = recfg;
         if (reconfigurando) {
@@ -323,7 +323,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
     private TImagesBroker dispensadorDeImagenes;
     private Frame ventanaPadre;
     private JPanelDisenio pd;
-    private TReceiverNode configReceptor;
+    private TTrafficSinkNode configReceptor;
     private TTopology topo;
     
     private boolean BKUPMostrarNombre;

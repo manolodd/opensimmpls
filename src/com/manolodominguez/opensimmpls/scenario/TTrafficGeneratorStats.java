@@ -16,58 +16,58 @@
 package com.manolodominguez.opensimmpls.scenario;
 
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
-import org.jfree.chart.*;
-import org.jfree.chart.labels.*;
-import org.jfree.chart.plot.*;
-import org.jfree.data.*;
+import org.jfree.data.AbstractDataset;
+import org.jfree.data.XYSeries;
+import org.jfree.data.XYSeriesCollection;
+
 
 /**
- * Esta clase implementa las estad�sticas de un nodo emisor.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements a statistics collector for a traffic generator node.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
-public class TSenderStats extends TStats {
+public class TTrafficGeneratorStats extends TStats {
     
     /**
      * Creates a new instance of TEstadisticasEmisor
      * @since 2.0
      */
-    public TSenderStats() {
-    	paquetesSalientes = new XYSeriesCollection();
-    	paquetesDescartados = new XYSeriesCollection();
-    	salientesIPv4 = new XYSeries(TStats.IPV4);
-    	salientesIPv4_GOS1 = new XYSeries(TStats.IPV4_GOS1);
-    	salientesIPv4_GOS2 = new XYSeries(TStats.IPV4_GOS2);
-    	salientesIPv4_GOS3 = new XYSeries(TStats.IPV4_GOS3);
-    	salientesMPLS = new XYSeries(TStats.MPLS);
-    	salientesMPLS_GOS1 = new XYSeries(TStats.MPLS_GOS1);
-    	salientesMPLS_GOS2 = new XYSeries(TStats.MPLS_GOS2);
-    	salientesMPLS_GOS3 = new XYSeries(TStats.MPLS_GOS3);
-    	descartadosIPv4 = new XYSeries(TStats.IPV4);
-    	descartadosIPv4_GOS1 = new XYSeries(TStats.IPV4_GOS1);
-    	descartadosIPv4_GOS2 = new XYSeries(TStats.IPV4_GOS2);
-    	descartadosIPv4_GOS3 = new XYSeries(TStats.IPV4_GOS3);
-	descartadosMPLS = new XYSeries(TStats.MPLS);
-	descartadosMPLS_GOS1 = new XYSeries(TStats.MPLS_GOS1);
-	descartadosMPLS_GOS2 = new XYSeries(TStats.MPLS_GOS2);
-	descartadosMPLS_GOS3 = new XYSeries(TStats.MPLS_GOS3);
-        tSIPV4 = 0;
-        tSIPV4_GOS1 = 0;
-        tSIPV4_GOS2 = 0;
-        tSIPV4_GOS3 = 0;
-        tSMPLS = 0;
-        tSMPLS_GOS1 = 0;
-        tSMPLS_GOS2 = 0;
-        tSMPLS_GOS3 = 0;
-        tDIPV4 = 0;
-        tDIPV4_GOS1 = 0;
-        tDIPV4_GOS2 = 0;
-        tDIPV4_GOS3 = 0;
-        tDMPLS = 0;
-        tDMPLS_GOS1 = 0;
-        tDMPLS_GOS2 = 0;
-        tDMPLS_GOS3 = 0;
+    public TTrafficGeneratorStats() {
+    	this.paquetesSalientes = new XYSeriesCollection();
+    	this.paquetesDescartados = new XYSeriesCollection();
+    	this.salientesIPv4 = new XYSeries(TStats.IPV4);
+    	this.salientesIPv4_GOS1 = new XYSeries(TStats.IPV4_GOS1);
+    	this.salientesIPv4_GOS2 = new XYSeries(TStats.IPV4_GOS2);
+    	this.salientesIPv4_GOS3 = new XYSeries(TStats.IPV4_GOS3);
+    	this.salientesMPLS = new XYSeries(TStats.MPLS);
+    	this.salientesMPLS_GOS1 = new XYSeries(TStats.MPLS_GOS1);
+    	this.salientesMPLS_GOS2 = new XYSeries(TStats.MPLS_GOS2);
+    	this.salientesMPLS_GOS3 = new XYSeries(TStats.MPLS_GOS3);
+    	this.descartadosIPv4 = new XYSeries(TStats.IPV4);
+    	this.descartadosIPv4_GOS1 = new XYSeries(TStats.IPV4_GOS1);
+    	this.descartadosIPv4_GOS2 = new XYSeries(TStats.IPV4_GOS2);
+    	this.descartadosIPv4_GOS3 = new XYSeries(TStats.IPV4_GOS3);
+	this.descartadosMPLS = new XYSeries(TStats.MPLS);
+	this.descartadosMPLS_GOS1 = new XYSeries(TStats.MPLS_GOS1);
+	this.descartadosMPLS_GOS2 = new XYSeries(TStats.MPLS_GOS2);
+	this.descartadosMPLS_GOS3 = new XYSeries(TStats.MPLS_GOS3);
+        this.tSIPV4 = 0;
+        this.tSIPV4_GOS1 = 0;
+        this.tSIPV4_GOS2 = 0;
+        this.tSIPV4_GOS3 = 0;
+        this.tSMPLS = 0;
+        this.tSMPLS_GOS1 = 0;
+        this.tSMPLS_GOS2 = 0;
+        this.tSMPLS_GOS3 = 0;
+        this.tDIPV4 = 0;
+        this.tDIPV4_GOS1 = 0;
+        this.tDIPV4_GOS2 = 0;
+        this.tDIPV4_GOS3 = 0;
+        this.tDMPLS = 0;
+        this.tDMPLS_GOS1 = 0;
+        this.tDMPLS_GOS2 = 0;
+        this.tDMPLS_GOS3 = 0;
     }
     
     /**
@@ -75,7 +75,8 @@ public class TSenderStats extends TStats {
      * @return Datos dela gr�fica 1.
      * @since 2.0
      */
-    public org.jfree.data.AbstractDataset getDataset1() {
+    @Override
+    public AbstractDataset getDataset1() {
         return this.paquetesSalientes;
     }
     
@@ -83,7 +84,8 @@ public class TSenderStats extends TStats {
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 2.
      * @return Datos dela gr�fica 2.
      * @since 2.0
-     */    public org.jfree.data.AbstractDataset getDataset2() {
+     */@Override
+    public AbstractDataset getDataset2() {
         return this.paquetesDescartados;
     }
     
@@ -91,7 +93,8 @@ public class TSenderStats extends TStats {
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 3.
      * @return Datos dela gr�fica 3.
      * @since 2.0
-     */    public org.jfree.data.AbstractDataset getDataset3() {
+     */@Override
+    public AbstractDataset getDataset3() {
         return null;
     }
     
@@ -99,7 +102,8 @@ public class TSenderStats extends TStats {
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 4.
      * @return Datos dela gr�fica 4.
      * @since 2.0
-     */    public org.jfree.data.AbstractDataset getDataset4() {
+     */@Override
+    public AbstractDataset getDataset4() {
         return null;
     }
     
@@ -107,7 +111,8 @@ public class TSenderStats extends TStats {
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 5.
      * @return Datos dela gr�fica 5.
      * @since 2.0
-     */    public org.jfree.data.AbstractDataset getDataset5() {
+     */@Override
+    public AbstractDataset getDataset5() {
         return null;
     }
     
@@ -115,7 +120,8 @@ public class TSenderStats extends TStats {
      * Este m�todo obtiene los datos que permitiran generar la gr�fica 6.
      * @return Datos dela gr�fica 6.
      * @since 2.0
-     */    public org.jfree.data.AbstractDataset getDataset6() {
+     */@Override
+    public AbstractDataset getDataset6() {
         return null;
     }
 
@@ -127,6 +133,7 @@ public class TSenderStats extends TStats {
  de �l o es descartado.
      * @since 2.0
      */    
+    @Override
     public void addStatEntry(TAbstractPDU paquete, int entrada) {
         if (this.statsEnabled) {
             int tipoPaquete = paquete.getSubtype();
@@ -198,6 +205,7 @@ public class TSenderStats extends TStats {
      * @return N�mero de gr�ficas del emisor.
      * @since 2.0
      */    
+    @Override
     public int numberOfAvailableDatasets() {
         return 2;
     }
@@ -207,41 +215,42 @@ public class TSenderStats extends TStats {
      * acabasen de se creadas por el cosntructor.
      * @since 2.0
      */    
+    @Override
     public void reset() {
-    	paquetesSalientes = new XYSeriesCollection();
-    	paquetesDescartados = new XYSeriesCollection();
-    	salientesIPv4 = new XYSeries(TStats.IPV4);
-    	salientesIPv4_GOS1 = new XYSeries(TStats.IPV4_GOS1);
-    	salientesIPv4_GOS2 = new XYSeries(TStats.IPV4_GOS2);
-    	salientesIPv4_GOS3 = new XYSeries(TStats.IPV4_GOS3);
-    	salientesMPLS = new XYSeries(TStats.MPLS);
-    	salientesMPLS_GOS1 = new XYSeries(TStats.MPLS_GOS1);
-    	salientesMPLS_GOS2 = new XYSeries(TStats.MPLS_GOS2);
-    	salientesMPLS_GOS3 = new XYSeries(TStats.MPLS_GOS3);
-    	descartadosIPv4 = new XYSeries(TStats.IPV4);
-    	descartadosIPv4_GOS1 = new XYSeries(TStats.IPV4_GOS1);
-    	descartadosIPv4_GOS2 = new XYSeries(TStats.IPV4_GOS2);
-    	descartadosIPv4_GOS3 = new XYSeries(TStats.IPV4_GOS3);
-	descartadosMPLS = new XYSeries(TStats.MPLS);
-	descartadosMPLS_GOS1 = new XYSeries(TStats.MPLS_GOS1);
-	descartadosMPLS_GOS2 = new XYSeries(TStats.MPLS_GOS2);
-	descartadosMPLS_GOS3 = new XYSeries(TStats.MPLS_GOS3);
-        tSIPV4 = 0;
-        tSIPV4_GOS1 = 0;
-        tSIPV4_GOS2 = 0;
-        tSIPV4_GOS3 = 0;
-        tSMPLS = 0;
-        tSMPLS_GOS1 = 0;
-        tSMPLS_GOS2 = 0;
-        tSMPLS_GOS3 = 0;
-        tDIPV4 = 0;
-        tDIPV4_GOS1 = 0;
-        tDIPV4_GOS2 = 0;
-        tDIPV4_GOS3 = 0;
-        tDMPLS = 0;
-        tDMPLS_GOS1 = 0;
-        tDMPLS_GOS2 = 0;
-        tDMPLS_GOS3 = 0;
+    	this.paquetesSalientes = new XYSeriesCollection();
+    	this.paquetesDescartados = new XYSeriesCollection();
+    	this.salientesIPv4 = new XYSeries(TStats.IPV4);
+    	this.salientesIPv4_GOS1 = new XYSeries(TStats.IPV4_GOS1);
+    	this.salientesIPv4_GOS2 = new XYSeries(TStats.IPV4_GOS2);
+    	this.salientesIPv4_GOS3 = new XYSeries(TStats.IPV4_GOS3);
+    	this.salientesMPLS = new XYSeries(TStats.MPLS);
+    	this.salientesMPLS_GOS1 = new XYSeries(TStats.MPLS_GOS1);
+    	this.salientesMPLS_GOS2 = new XYSeries(TStats.MPLS_GOS2);
+    	this.salientesMPLS_GOS3 = new XYSeries(TStats.MPLS_GOS3);
+    	this.descartadosIPv4 = new XYSeries(TStats.IPV4);
+    	this.descartadosIPv4_GOS1 = new XYSeries(TStats.IPV4_GOS1);
+    	this.descartadosIPv4_GOS2 = new XYSeries(TStats.IPV4_GOS2);
+    	this.descartadosIPv4_GOS3 = new XYSeries(TStats.IPV4_GOS3);
+	this.descartadosMPLS = new XYSeries(TStats.MPLS);
+	this.descartadosMPLS_GOS1 = new XYSeries(TStats.MPLS_GOS1);
+	this.descartadosMPLS_GOS2 = new XYSeries(TStats.MPLS_GOS2);
+	this.descartadosMPLS_GOS3 = new XYSeries(TStats.MPLS_GOS3);
+        this.tSIPV4 = 0;
+        this.tSIPV4_GOS1 = 0;
+        this.tSIPV4_GOS2 = 0;
+        this.tSIPV4_GOS3 = 0;
+        this.tSMPLS = 0;
+        this.tSMPLS_GOS1 = 0;
+        this.tSMPLS_GOS2 = 0;
+        this.tSMPLS_GOS3 = 0;
+        this.tDIPV4 = 0;
+        this.tDIPV4_GOS1 = 0;
+        this.tDIPV4_GOS2 = 0;
+        this.tDIPV4_GOS3 = 0;
+        this.tDMPLS = 0;
+        this.tDMPLS_GOS1 = 0;
+        this.tDMPLS_GOS2 = 0;
+        this.tDMPLS_GOS3 = 0;
     }
     
     /**
@@ -250,165 +259,166 @@ public class TSenderStats extends TStats {
      * @param instante Tic de reloj al que se a�adir�n los �ltimos datos.
      * @since 2.0
      */    
+    @Override
     public void groupStatsByTimeInstant(long instante) {
         if (this.statsEnabled) {
-            if (tSIPV4 > 0) {
+            if (this.tSIPV4 > 0) {
 		if (salientesIPv4.getItemCount() == 0) {
                     this.salientesIPv4.add(instante-1, 0);
-                    this.salientesIPv4.add(instante, tSIPV4);
-                    this.paquetesSalientes.addSeries(salientesIPv4);
+                    this.salientesIPv4.add(instante, this.tSIPV4);
+                    this.paquetesSalientes.addSeries(this.salientesIPv4);
                 } else {
-                    this.salientesIPv4.add(instante, tSIPV4);
+                    this.salientesIPv4.add(instante, this.tSIPV4);
                 }
             } 
             
-            if (tSIPV4_GOS1 > 0) {
-                if (salientesIPv4_GOS1.getItemCount() == 0) {
+            if (this.tSIPV4_GOS1 > 0) {
+                if (this.salientesIPv4_GOS1.getItemCount() == 0) {
                     this.salientesIPv4_GOS1.add(instante-1, 0);
-                    this.salientesIPv4_GOS1.add(instante, tSIPV4_GOS1);
-                    this.paquetesSalientes.addSeries(salientesIPv4_GOS1);
+                    this.salientesIPv4_GOS1.add(instante, this.tSIPV4_GOS1);
+                    this.paquetesSalientes.addSeries(this.salientesIPv4_GOS1);
                 } else {
-                    this.salientesIPv4_GOS1.add(instante, tSIPV4_GOS1);
+                    this.salientesIPv4_GOS1.add(instante, this.tSIPV4_GOS1);
                 }
             }
             
-            if (tSIPV4_GOS2 > 0) {
-                if (salientesIPv4_GOS2.getItemCount() == 0) {
+            if (this.tSIPV4_GOS2 > 0) {
+                if (this.salientesIPv4_GOS2.getItemCount() == 0) {
                     this.salientesIPv4_GOS2.add(instante-1, 0);
-                    this.salientesIPv4_GOS2.add(instante, tSIPV4_GOS2);
-                    this.paquetesSalientes.addSeries(salientesIPv4_GOS2);
+                    this.salientesIPv4_GOS2.add(instante, this.tSIPV4_GOS2);
+                    this.paquetesSalientes.addSeries(this.salientesIPv4_GOS2);
                 } else {
-                    this.salientesIPv4_GOS2.add(instante, tSIPV4_GOS2);
+                    this.salientesIPv4_GOS2.add(instante, this.tSIPV4_GOS2);
                 }
             }
             
-            if (tSIPV4_GOS3 > 0) {
-                if (salientesIPv4_GOS3.getItemCount() == 0) {
+            if (this.tSIPV4_GOS3 > 0) {
+                if (this.salientesIPv4_GOS3.getItemCount() == 0) {
                     this.salientesIPv4_GOS3.add(instante-1, 0);
-                    this.salientesIPv4_GOS3.add(instante, tSIPV4_GOS3);
-                    this.paquetesSalientes.addSeries(salientesIPv4_GOS3);
+                    this.salientesIPv4_GOS3.add(instante, this.tSIPV4_GOS3);
+                    this.paquetesSalientes.addSeries(this.salientesIPv4_GOS3);
                 } else {
-                    this.salientesIPv4_GOS3.add(instante, tSIPV4_GOS3);
+                    this.salientesIPv4_GOS3.add(instante, this.tSIPV4_GOS3);
                 }
             }
             
-            if (tSMPLS > 0) {
-                if (salientesMPLS.getItemCount() == 0) {
+            if (this.tSMPLS > 0) {
+                if (this.salientesMPLS.getItemCount() == 0) {
                     this.salientesMPLS.add(instante-1, 0);
-                    this.salientesMPLS.add(instante, tSMPLS);
-                    this.paquetesSalientes.addSeries(salientesMPLS);
+                    this.salientesMPLS.add(instante, this.tSMPLS);
+                    this.paquetesSalientes.addSeries(this.salientesMPLS);
                 } else {
-                    this.salientesMPLS.add(instante, tSMPLS);
+                    this.salientesMPLS.add(instante, this.tSMPLS);
                 }
             }
             
-            if (tSMPLS_GOS1 > 0) {
-                if (salientesMPLS_GOS1.getItemCount() == 0) {
+            if (this.tSMPLS_GOS1 > 0) {
+                if (this.salientesMPLS_GOS1.getItemCount() == 0) {
                     this.salientesMPLS_GOS1.add(instante-1, 0);
-                    this.salientesMPLS_GOS1.add(instante, tSMPLS_GOS1);
-                    this.paquetesSalientes.addSeries(salientesMPLS_GOS1);
+                    this.salientesMPLS_GOS1.add(instante, this.tSMPLS_GOS1);
+                    this.paquetesSalientes.addSeries(this.salientesMPLS_GOS1);
                 } else {
-                    this.salientesMPLS_GOS1.add(instante, tSMPLS_GOS1);
+                    this.salientesMPLS_GOS1.add(instante, this.tSMPLS_GOS1);
                 }
             }
             
-            if (tSMPLS_GOS2 > 0) {
-                if (salientesMPLS_GOS2.getItemCount() == 0) {
+            if (this.tSMPLS_GOS2 > 0) {
+                if (this.salientesMPLS_GOS2.getItemCount() == 0) {
                     this.salientesMPLS_GOS2.add(instante-1, 0);
-                    this.salientesMPLS_GOS2.add(instante, tSMPLS_GOS2);
-                    this.paquetesSalientes.addSeries(salientesMPLS_GOS2);
+                    this.salientesMPLS_GOS2.add(instante, this.tSMPLS_GOS2);
+                    this.paquetesSalientes.addSeries(this.salientesMPLS_GOS2);
                 } else {
-                    this.salientesMPLS_GOS2.add(instante, tSMPLS_GOS2);
+                    this.salientesMPLS_GOS2.add(instante, this.tSMPLS_GOS2);
                 }
             }
             
-            if (tSMPLS_GOS3 > 0) {
-                if (salientesMPLS_GOS3.getItemCount() == 0) {
+            if (this.tSMPLS_GOS3 > 0) {
+                if (this.salientesMPLS_GOS3.getItemCount() == 0) {
                     this.salientesMPLS_GOS3.add(instante-1, 0);
-                    this.salientesMPLS_GOS3.add(instante, tSMPLS_GOS3);
-                    this.paquetesSalientes.addSeries(salientesMPLS_GOS3);
+                    this.salientesMPLS_GOS3.add(instante, this.tSMPLS_GOS3);
+                    this.paquetesSalientes.addSeries(this.salientesMPLS_GOS3);
                 } else {
-                    this.salientesMPLS_GOS3.add(instante, tSMPLS_GOS3);
+                    this.salientesMPLS_GOS3.add(instante, this.tSMPLS_GOS3);
                 }
             }
             
-            if (tDIPV4 > 0) {
-                if (descartadosIPv4.getItemCount() == 0) {
+            if (this.tDIPV4 > 0) {
+                if (this.descartadosIPv4.getItemCount() == 0) {
                     this.descartadosIPv4.add(instante-1, 0);
-                    this.descartadosIPv4.add(instante, tDIPV4);
-                    this.paquetesDescartados.addSeries(descartadosIPv4);
+                    this.descartadosIPv4.add(instante, this.tDIPV4);
+                    this.paquetesDescartados.addSeries(this.descartadosIPv4);
                 } else {
-                    this.descartadosIPv4.add(instante, tDIPV4);
+                    this.descartadosIPv4.add(instante, this.tDIPV4);
                 }
             }
             
-            if (tDIPV4_GOS1 > 0) {
-                if (descartadosIPv4_GOS1.getItemCount() == 0) {
+            if (this.tDIPV4_GOS1 > 0) {
+                if (this.descartadosIPv4_GOS1.getItemCount() == 0) {
                     this.descartadosIPv4_GOS1.add(instante-1, 0);
-                    this.descartadosIPv4_GOS1.add(instante, tDIPV4_GOS1);
-                    this.paquetesDescartados.addSeries(descartadosIPv4_GOS1);
+                    this.descartadosIPv4_GOS1.add(instante, this.tDIPV4_GOS1);
+                    this.paquetesDescartados.addSeries(this.descartadosIPv4_GOS1);
                 } else {
-                    this.descartadosIPv4_GOS1.add(instante, tDIPV4_GOS1);
+                    this.descartadosIPv4_GOS1.add(instante, this.tDIPV4_GOS1);
                 }
             }
 
-            if (tDIPV4_GOS2 > 0) {
-                if (descartadosIPv4_GOS2.getItemCount() == 0) {
+            if (this.tDIPV4_GOS2 > 0) {
+                if (this.descartadosIPv4_GOS2.getItemCount() == 0) {
                     this.descartadosIPv4_GOS2.add(instante-1, 0);
-                    this.descartadosIPv4_GOS2.add(instante, tDIPV4_GOS2);
-                    this.paquetesDescartados.addSeries(descartadosIPv4_GOS2);
+                    this.descartadosIPv4_GOS2.add(instante, this.tDIPV4_GOS2);
+                    this.paquetesDescartados.addSeries(this.descartadosIPv4_GOS2);
                 } else {
-                    this.descartadosIPv4_GOS2.add(instante, tDIPV4_GOS2);
+                    this.descartadosIPv4_GOS2.add(instante, this.tDIPV4_GOS2);
                 }
             }
 
-            if (tDIPV4_GOS3 > 0) {
-                if (descartadosIPv4_GOS3.getItemCount() == 0) {
+            if (this.tDIPV4_GOS3 > 0) {
+                if (this.descartadosIPv4_GOS3.getItemCount() == 0) {
                     this.descartadosIPv4_GOS3.add(instante-1, 0);
-                    this.descartadosIPv4_GOS3.add(instante, tDIPV4_GOS3);
-                    this.paquetesDescartados.addSeries(descartadosIPv4_GOS3);
+                    this.descartadosIPv4_GOS3.add(instante, this.tDIPV4_GOS3);
+                    this.paquetesDescartados.addSeries(this.descartadosIPv4_GOS3);
                 } else {
-                    this.descartadosIPv4_GOS3.add(instante, tDIPV4_GOS3);
+                    this.descartadosIPv4_GOS3.add(instante, this.tDIPV4_GOS3);
                 }
             }
             
-            if (tDMPLS > 0) {
-                if (descartadosMPLS.getItemCount() == 0) {
+            if (this.tDMPLS > 0) {
+                if (this.descartadosMPLS.getItemCount() == 0) {
                     this.descartadosMPLS.add(instante-1, 0);
-                    this.descartadosMPLS.add(instante, tDMPLS);
-                    this.paquetesDescartados.addSeries(descartadosMPLS);
+                    this.descartadosMPLS.add(instante, this.tDMPLS);
+                    this.paquetesDescartados.addSeries(this.descartadosMPLS);
                 } else {
-                    this.descartadosMPLS.add(instante, tDMPLS);
+                    this.descartadosMPLS.add(instante, this.tDMPLS);
                 }
             }
             
-            if (tDMPLS_GOS1 > 0) {
-                if (descartadosMPLS_GOS1.getItemCount() == 0) {
+            if (this.tDMPLS_GOS1 > 0) {
+                if (this.descartadosMPLS_GOS1.getItemCount() == 0) {
                     this.descartadosMPLS_GOS1.add(instante-1, 0);
-                    this.descartadosMPLS_GOS1.add(instante, tDMPLS_GOS1);
-                    this.paquetesDescartados.addSeries(descartadosMPLS_GOS1);
+                    this.descartadosMPLS_GOS1.add(instante, this.tDMPLS_GOS1);
+                    this.paquetesDescartados.addSeries(this.descartadosMPLS_GOS1);
                 } else {
-                    this.descartadosMPLS_GOS1.add(instante, tDMPLS_GOS1);
+                    this.descartadosMPLS_GOS1.add(instante, this.tDMPLS_GOS1);
                 }
             }
             
-            if (tDMPLS_GOS2 > 0) {
-                if (descartadosMPLS_GOS2.getItemCount() == 0) {
+            if (this.tDMPLS_GOS2 > 0) {
+                if (this.descartadosMPLS_GOS2.getItemCount() == 0) {
                     this.descartadosMPLS_GOS2.add(instante-1, 0);
-                    this.descartadosMPLS_GOS2.add(instante, tDMPLS_GOS2);
-                    this.paquetesDescartados.addSeries(descartadosMPLS_GOS2);
+                    this.descartadosMPLS_GOS2.add(instante, this.tDMPLS_GOS2);
+                    this.paquetesDescartados.addSeries(this.descartadosMPLS_GOS2);
                 } else {
-                    this.descartadosMPLS_GOS2.add(instante, tDMPLS_GOS2);
+                    this.descartadosMPLS_GOS2.add(instante, this.tDMPLS_GOS2);
                 }
             }
             
-            if (tDMPLS_GOS3 > 0) {
-                if (descartadosMPLS_GOS3.getItemCount() == 0) {
+            if (this.tDMPLS_GOS3 > 0) {
+                if (this.descartadosMPLS_GOS3.getItemCount() == 0) {
                     this.descartadosMPLS_GOS3.add(instante-1, 0);
-                    this.descartadosMPLS_GOS3.add(instante, tDMPLS_GOS3);
-                    this.paquetesDescartados.addSeries(descartadosMPLS_GOS3);
+                    this.descartadosMPLS_GOS3.add(instante, this.tDMPLS_GOS3);
+                    this.paquetesDescartados.addSeries(this.descartadosMPLS_GOS3);
                 } else {
-                    this.descartadosMPLS_GOS3.add(instante, tDMPLS_GOS3);
+                    this.descartadosMPLS_GOS3.add(instante, this.tDMPLS_GOS3);
                 }
             }
         }
@@ -419,6 +429,7 @@ public class TSenderStats extends TStats {
      * @return T�tulo de la gr�fica 1.
      * @since 2.0
      */    
+    @Override
     public String getTitleOfDataset1() {
         return TStats.OUTGOING_PACKETS;
     }
@@ -428,6 +439,7 @@ public class TSenderStats extends TStats {
      * @return T�tulo de la gr�fica 2.
      * @since 2.0
      */    
+    @Override
     public String getTitleOfDataset2() {
         return TStats.DISCARDED_PACKETS;
     }
@@ -437,6 +449,7 @@ public class TSenderStats extends TStats {
      * @return T�tulo de la gr�fica 3.
      * @since 2.0
      */    
+    @Override
     public String getTitleOfDataset3() {
         return null;
     }
@@ -446,6 +459,7 @@ public class TSenderStats extends TStats {
      * @return T�tulo de la gr�fica 4.
      * @since 2.0
      */    
+    @Override
     public String getTitleOfDataset4() {
         return null;
     }
@@ -455,6 +469,7 @@ public class TSenderStats extends TStats {
      * @return T�tulo de la gr�fica 5.
      * @since 2.0
      */    
+    @Override
     public String getTitleOfDataset5() {
         return null;
     }
@@ -464,6 +479,7 @@ public class TSenderStats extends TStats {
      * @return T�tulo de la gr�fica 6.
      * @since 2.0
      */    
+    @Override
     public String getTitleOfDataset6() {
         return null;
     }

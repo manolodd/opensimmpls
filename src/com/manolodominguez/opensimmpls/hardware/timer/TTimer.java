@@ -25,8 +25,8 @@ import com.manolodominguez.opensimmpls.scenario.TActiveLSRNode;
 import com.manolodominguez.opensimmpls.scenario.TLSRNode;
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TNode;
-import com.manolodominguez.opensimmpls.scenario.TReceiverNode;
-import com.manolodominguez.opensimmpls.scenario.TSenderNode;
+import com.manolodominguez.opensimmpls.scenario.TTrafficSinkNode;
+import com.manolodominguez.opensimmpls.scenario.TTrafficGeneratorNode;
 import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
 import com.manolodominguez.opensimmpls.utils.EIDGeneratorOverflow;
 import com.manolodominguez.opensimmpls.ui.utils.TProgressEventListener;
@@ -238,7 +238,7 @@ public class TTimer implements Runnable {
             nodeAux = (TNode) nodesIterator.next();
             switch (nodeAux.getNodeType()) {
                 case TNode.SENDER: {
-                    nodeAux = (TSenderNode) nodeAux;
+                    nodeAux = (TTrafficGeneratorNode) nodeAux;
                     break;
                 }
                 case TNode.LER: {
@@ -258,7 +258,7 @@ public class TTimer implements Runnable {
                     break;
                 }
                 case TNode.RECEIVER: {
-                    nodeAux = (TReceiverNode) nodeAux;
+                    nodeAux = (TTrafficSinkNode) nodeAux;
                     break;
                 }
             }

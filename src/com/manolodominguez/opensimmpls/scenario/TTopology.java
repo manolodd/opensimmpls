@@ -211,14 +211,14 @@ public class TTopology {
      * @return TRUE, si algun exmisor env�a tr�fico al receptor. FALSE en caso contrario.
      * @since 2.0
      */    
-    public boolean hayTraficoDirigidoAMi(TReceiverNode nr) {
+    public boolean hayTraficoDirigidoAMi(TTrafficSinkNode nr) {
         TNode nodo = null;
-        TSenderNode emisor = null;
+        TTrafficGeneratorNode emisor = null;
         Iterator iterador = conjuntoNodos.iterator();
         while (iterador.hasNext()) {
             nodo = (TNode) iterador.next();
             if (nodo.getNodeType() == TNode.SENDER) {
-                emisor = (TSenderNode) nodo;
+                emisor = (TTrafficGeneratorNode) nodo;
                 if (emisor.getTargetIPv4Address().equals(nr.getIPv4Address()))
                     return true;
             }
@@ -285,17 +285,17 @@ public class TTopology {
             nodoBuscado = (TNode) iterador.next();
             if (nodoBuscado.getNodeID() == nodo.getNodeID()) {
                 if (nodo.getNodeType() == TNode.SENDER) {
-                    TSenderNode nodoTrasCast = (TSenderNode) nodoBuscado;
+                    TTrafficGeneratorNode nodoTrasCast = (TTrafficGeneratorNode) nodoBuscado;
                     nodoTrasCast.setName(nodo.getName());
                     nodoTrasCast.setScreenPosition(nodo.getScreenPosition());
                 }
                 else if (nodo.getNodeType() == TNode.RECEIVER) {
-                    TSenderNode nodoTrasCast = (TSenderNode) nodoBuscado;
+                    TTrafficGeneratorNode nodoTrasCast = (TTrafficGeneratorNode) nodoBuscado;
                     nodoTrasCast.setName(nodo.getName());
                     nodoTrasCast.setScreenPosition(nodo.getScreenPosition());
                 }
                 else if (nodo.getNodeType() == TNode.RECEIVER) {
-                    TReceiverNode nodoTrasCast = (TReceiverNode) nodoBuscado;
+                    TTrafficSinkNode nodoTrasCast = (TTrafficSinkNode) nodoBuscado;
                     nodoTrasCast.setName(nodo.getName());
                     nodoTrasCast.setScreenPosition(nodo.getScreenPosition());
                 }

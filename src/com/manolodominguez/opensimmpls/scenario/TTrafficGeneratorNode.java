@@ -40,7 +40,7 @@ import java.util.Random;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class TSenderNode extends TNode implements ITimerEventListener, Runnable {
+public class TTrafficGeneratorNode extends TNode implements ITimerEventListener, Runnable {
 
     /**
      * This is the constructor of the class and creates a new instance of
@@ -54,7 +54,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * generate unique identifiers for events.
      * @param topology Topology the node belongs to.
      */
-    public TSenderNode(int nodeID, String ipv4Address, TLongIDGenerator identifierGenerator, TTopology topology) {
+    public TTrafficGeneratorNode(int nodeID, String ipv4Address, TLongIDGenerator identifierGenerator, TTopology topology) {
         super(nodeID, ipv4Address, identifierGenerator, topology);
         // FIX: This method is overridable. Avoid using this method to update
         // the number of ports or make it final.
@@ -64,7 +64,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         this.targetIPv4Address = "";
         // FIX: Use class constants instead of harcoded values for all cases.
         this.trafficGenerationRate = 10;
-        this.trafficGenerationMode = TSenderNode.CONSTANT_TRAFFIC_RATE;
+        this.trafficGenerationMode = TTrafficGeneratorNode.CONSTANT_TRAFFIC_RATE;
         this.encapsulateOverMPLS = false;
         this.gosLevel = 0;
         this.requestBackupLSP = false;
@@ -72,7 +72,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         this.sendingLabel = (16 + randomNumberGenerator.nextInt(1000000));
         this.constantPayloadSizeInBytes = 0;
         this.variablePayloadSizeInBytes = 0;
-        this.stats = new TSenderStats();
+        this.stats = new TTrafficGeneratorStats();
         // FIX: This method is overridable. Avoid using this method to update
         // the number of ports or make it final.
         this.stats.activateStats(this.isGeneratingStats());
@@ -368,7 +368,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
      * @since 2.0
      */
     public int getNextPacketPayloadSizeInBytes() {
-        if (this.trafficGenerationMode == TSenderNode.CONSTANT_TRAFFIC_RATE) {
+        if (this.trafficGenerationMode == TTrafficGeneratorNode.CONSTANT_TRAFFIC_RATE) {
             return this.constantPayloadSizeInBytes;
         }
         return this.variablePayloadSizeInBytes;
@@ -611,7 +611,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                 // FIX: Do not use harcoded values. Use class constants instead.
                 this.availableNs = 0;
             }
-            if (this.trafficGenerationMode == TSenderNode.VARIABLE_TRAFFIC_RATE) {
+            if (this.trafficGenerationMode == TTrafficGeneratorNode.VARIABLE_TRAFFIC_RATE) {
                 this.variablePayloadSizeInBytes = this.computeNextPacketPayloadSize();
             }
             return mplsPacket;
@@ -625,7 +625,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
                 // FIX: Do not use harcoded values. Use class constants instead.
                 this.availableNs = 0;
             }
-            if (this.trafficGenerationMode == TSenderNode.VARIABLE_TRAFFIC_RATE) {
+            if (this.trafficGenerationMode == TTrafficGeneratorNode.VARIABLE_TRAFFIC_RATE) {
                 this.variablePayloadSizeInBytes = this.computeNextPacketPayloadSize();
             }
             return ipv4Packet;
@@ -783,7 +783,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
         // FIX: Do not use harcoded values. Use class constants instead.
         this.setWellConfigured(false);
         if (this.getName().equals("")) {
-            return TSenderNode.UNNAMED;
+            return TTrafficGeneratorNode.UNNAMED;
         }
         boolean onlyBlankSpaces = true;
         for (int i = 0; i < this.getName().length(); i++) {
@@ -792,30 +792,30 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
             }
         }
         if (onlyBlankSpaces) {
-            return TSenderNode.ONLY_BLANK_SPACES;
+            return TTrafficGeneratorNode.ONLY_BLANK_SPACES;
         }
         if (!reconfiguration) {
             TNode nodeAux = topology.getFirstNodeNamed(this.getName());
             if (nodeAux != null) {
-                return TSenderNode.NAME_ALREADY_EXISTS;
+                return TTrafficGeneratorNode.NAME_ALREADY_EXISTS;
             }
         } else {
             TNode nodeAux = topology.getFirstNodeNamed(this.getName());
             if (nodeAux != null) {
                 if (this.topology.thereIsMoreThanANodeNamed(this.getName())) {
-                    return TSenderNode.NAME_ALREADY_EXISTS;
+                    return TTrafficGeneratorNode.NAME_ALREADY_EXISTS;
                 }
             }
         }
 
         if (this.getTargetIPv4Address() == null) {
-            return TSenderNode.TARGET_UNREACHABLE;
+            return TTrafficGeneratorNode.TARGET_UNREACHABLE;
         }
         if (this.getTargetIPv4Address().equals("")) {
-            return TSenderNode.TARGET_UNREACHABLE;
+            return TTrafficGeneratorNode.TARGET_UNREACHABLE;
         }
         this.setWellConfigured(true);
-        return TSenderNode.OK;
+        return TTrafficGeneratorNode.OK;
     }
 
     /**
@@ -993,7 +993,7 @@ public class TSenderNode extends TNode implements ITimerEventListener, Runnable 
     private int variablePayloadSizeInBytes;
     private TLongIDGenerator packetIdentifierGenerator;
 
-    public TSenderStats stats;
+    public TTrafficGeneratorStats stats;
 
     public static final int CONSTANT_TRAFFIC_RATE = 0;
     public static final int VARIABLE_TRAFFIC_RATE = 1;

@@ -25,8 +25,8 @@ import com.manolodominguez.opensimmpls.scenario.TInternalLink;
 import com.manolodominguez.opensimmpls.scenario.TExternalLink;
 import com.manolodominguez.opensimmpls.scenario.TScenario;
 import com.manolodominguez.opensimmpls.scenario.TLERNode;
-import com.manolodominguez.opensimmpls.scenario.TSenderNode;
-import com.manolodominguez.opensimmpls.scenario.TReceiverNode;
+import com.manolodominguez.opensimmpls.scenario.TTrafficGeneratorNode;
+import com.manolodominguez.opensimmpls.scenario.TTrafficSinkNode;
 import com.manolodominguez.opensimmpls.scenario.TActiveLSRNode;
 import com.manolodominguez.opensimmpls.scenario.TLSRNode;
 import com.manolodominguez.opensimmpls.scenario.TActiveLERNode;
@@ -115,7 +115,7 @@ public class TOSMLoader {
         if (topologyString.startsWith("@!Topologia")) {
             this.position = TOSMLoader.NONE;
         } else if (topologyString.startsWith("#Receptor#")) {
-            TReceiverNode receiver = new TReceiverNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            TTrafficSinkNode receiver = new TTrafficSinkNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (receiver.unMarshall(topologyString)) {
                 this.scenario.getTopology().addNode(receiver);
                 this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(receiver.getNodeID());
@@ -123,7 +123,7 @@ public class TOSMLoader {
             }
             receiver = null;
         } else if (topologyString.startsWith("#Emisor#")) {
-            TSenderNode sender = new TSenderNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            TTrafficGeneratorNode sender = new TTrafficGeneratorNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (sender.unMarshall(topologyString)) {
                 this.scenario.getTopology().addNode(sender);
                 this.scenario.getTopology().getItemIdentifierGenerator().setIDIfGreater(sender.getNodeID());

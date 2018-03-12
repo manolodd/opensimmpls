@@ -19,7 +19,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
-import com.manolodominguez.opensimmpls.scenario.TSenderNode;
+import com.manolodominguez.opensimmpls.scenario.TTrafficGeneratorNode;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.ui.simulator.JPanelDisenio;
@@ -99,7 +99,7 @@ public class JVentanaEmisor extends javax.swing.JDialog {
         BKUPNivelDeGos = 0;
         BKUPNombre = "";
         BKUPTasaTrafico = 1000;
-        BKUPTipoTrafico = TSenderNode.CONSTANT_TRAFFIC_RATE;
+        BKUPTipoTrafico = TTrafficGeneratorNode.CONSTANT_TRAFFIC_RATE;
         BKUPGenerarEstadisticas = false;
         BKUPTamDatosConstante = 1024;
         BKUPEncapsularEnMPLS = false;
@@ -572,12 +572,12 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     emisor.setTargetNode((String) this.selectorDelReceptor.getSelectedItem());
     emisor.setConstantPayloadSizeInBytes(this.selectorDeTamPaquete.getValue());
     if (this.traficoConstante.isSelected()) {
-        emisor.setTrafficGenerationMode(TSenderNode.CONSTANT_TRAFFIC_RATE);
+        emisor.setTrafficGenerationMode(TTrafficGeneratorNode.CONSTANT_TRAFFIC_RATE);
     } else if (this.traficoVariable.isSelected()) {
-        emisor.setTrafficGenerationMode(TSenderNode.VARIABLE_TRAFFIC_RATE);
+        emisor.setTrafficGenerationMode(TTrafficGeneratorNode.VARIABLE_TRAFFIC_RATE);
     }
     int error = emisor.validateConfig(topo, this.reconfigurando);
-    if (error != TSenderNode.OK) {
+    if (error != TTrafficGeneratorNode.OK) {
         JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
         va.mostrarMensaje(emisor.getErrorMessage(error));
         va.show();
@@ -620,7 +620,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
      * siendo insertado desde cero.
      * @param tce Nodo emisor que estamos configurando.
      */    
-    public void ponerConfiguracion(TSenderNode tce, boolean recfg) {
+    public void ponerConfiguracion(TTrafficGeneratorNode tce, boolean recfg) {
         emisor = tce;
         reconfigurando = recfg;
         if (reconfigurando) {
@@ -643,7 +643,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             
             this.encapsularSobreMPLS.setSelected(BKUPEncapsularEnMPLS);
             this.nombreNodo.setText(BKUPNombre);
-            if (BKUPTipoTrafico == TSenderNode.CONSTANT_TRAFFIC_RATE) {
+            if (BKUPTipoTrafico == TTrafficGeneratorNode.CONSTANT_TRAFFIC_RATE) {
                 this.traficoConstante.setSelected(true);
                 this.traficoVariable.setSelected(false);
             } else {
@@ -669,7 +669,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
             this.selectorSencilloTrafico.setSelectedIndex(0);
             this.selectorDeTasa.setValue(BKUPTasaTrafico);
 
-            if (BKUPTipoTrafico == TSenderNode.CONSTANT_TRAFFIC_RATE) {
+            if (BKUPTipoTrafico == TTrafficGeneratorNode.CONSTANT_TRAFFIC_RATE) {
                 this.selectorDeTamPaquete.setEnabled(true);
                 this.etiquetaOctetos.setEnabled(true);
                 this.etiquetaTamPaquete.setEnabled(true);
@@ -682,7 +682,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
     private TImagesBroker dispensadorDeImagenes;
     private Frame ventanaPadre;
     private JPanelDisenio pd;
-    private TSenderNode emisor;
+    private TTrafficGeneratorNode emisor;
     private TTopology topo;
     
     private String BKUPDestino;

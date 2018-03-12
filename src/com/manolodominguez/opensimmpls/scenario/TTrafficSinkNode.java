@@ -32,7 +32,7 @@ import java.awt.Point;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class TReceiverNode extends TNode implements ITimerEventListener, Runnable {
+public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runnable {
 
     /**
      * This is the constructor of the class and creates a new instance of
@@ -46,14 +46,14 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
      * generate unique identifiers for events.
      * @param topology Topology the node belongs to.
      */
-    public TReceiverNode(int nodeID, String ipv4Address, TLongIDGenerator identifierGenerator, TTopology topology) {
+    public TTrafficSinkNode(int nodeID, String ipv4Address, TLongIDGenerator identifierGenerator, TTopology topology) {
         super(nodeID, ipv4Address, identifierGenerator, topology);
         // FIX: This method is overridable. Avoid using this method to update
         // the number of ports or make it final.
         this.setPorts(TNode.DEFAULT_NUM_PORTS_RECEIVER);
         // FIX: Use class constants instead of harcoded values.
         this.ports.setUnlimitedBuffer(true);
-        this.stats = new TReceiverStats();
+        this.stats = new TTrafficSinkStats();
     }
 
     /**
@@ -237,7 +237,7 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
         // FIX: use class constants instead of harcoded values.
         this.setWellConfigured(false);
         if (this.getName().equals("")) {
-            return TReceiverNode.UNNAMED;
+            return TTrafficSinkNode.UNNAMED;
         }
         boolean onlyBlankSpaces = true;
         for (int i = 0; i < this.getName().length(); i++) {
@@ -246,25 +246,25 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
             }
         }
         if (onlyBlankSpaces) {
-            return TReceiverNode.ONLY_BLANK_SPACES;
+            return TTrafficSinkNode.ONLY_BLANK_SPACES;
         }
         if (!reconfiguration) {
             TNode nodeAux1 = topology.getFirstNodeNamed(this.getName());
             if (nodeAux1 != null) {
-                return TReceiverNode.NAME_ALREADY_EXISTS;
+                return TTrafficSinkNode.NAME_ALREADY_EXISTS;
             }
         } else {
             TNode nodeAux2 = topology.getFirstNodeNamed(this.getName());
             if (nodeAux2 != null) {
                 if (this.topology.thereIsMoreThanANodeNamed(this.getName())) {
-                    return TReceiverNode.NAME_ALREADY_EXISTS;
+                    return TTrafficSinkNode.NAME_ALREADY_EXISTS;
                 }
             }
         }
         // FIX: use class constants instead of harcoded values.
         this.setWellConfigured(true);
         this.stats.activateStats(this.isGeneratingStats());
-        return TReceiverNode.OK;
+        return TTrafficSinkNode.OK;
     }
 
     /**
@@ -413,5 +413,5 @@ public class TReceiverNode extends TNode implements ITimerEventListener, Runnabl
     public static final int NAME_ALREADY_EXISTS = 2;
     public static final int ONLY_BLANK_SPACES = 3;
 
-    private TReceiverStats stats;
+    private TTrafficSinkStats stats;
 }

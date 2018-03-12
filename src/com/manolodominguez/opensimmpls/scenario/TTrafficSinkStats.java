@@ -26,7 +26,7 @@ import org.jfree.data.XYSeriesCollection;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class TReceiverStats extends TStats {
+public class TTrafficSinkStats extends TStats {
 
     /**
      * This method is the constructor of the class. It creates a new instance of
@@ -35,7 +35,7 @@ public class TReceiverStats extends TStats {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TReceiverStats() {
+    public TTrafficSinkStats() {
         this.incomingPackets = new XYSeriesCollection();
         this.incomingIPv4Packets = new XYSeries(TStats.IPV4);
         this.incomingIPv4GOS1Packets = new XYSeries(TStats.IPV4_GOS1);

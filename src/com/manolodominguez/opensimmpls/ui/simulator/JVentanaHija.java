@@ -35,9 +35,9 @@ import com.manolodominguez.opensimmpls.scenario.TLERNode;
 import com.manolodominguez.opensimmpls.scenario.TActiveLSRNode;
 import com.manolodominguez.opensimmpls.scenario.TLSRNode;
 import com.manolodominguez.opensimmpls.scenario.TLinkConfig;
-import com.manolodominguez.opensimmpls.scenario.TReceiverNode;
+import com.manolodominguez.opensimmpls.scenario.TTrafficSinkNode;
 import com.manolodominguez.opensimmpls.scenario.TScenario;
-import com.manolodominguez.opensimmpls.scenario.TSenderNode;
+import com.manolodominguez.opensimmpls.scenario.TTrafficGeneratorNode;
 import com.manolodominguez.opensimmpls.scenario.TStats;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
 import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
@@ -1117,7 +1117,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                 TNode nt = (TNode) elementoDisenioClicDerecho;
                 if (nt.getNodeType() == TNode.SENDER) {
                     JVentanaEmisor ve = new JVentanaEmisor(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
-                    ve.ponerConfiguracion((TSenderNode) nt, true);
+                    ve.ponerConfiguracion((TTrafficGeneratorNode) nt, true);
                     ve.show();
                 } else if (nt.getNodeType() == TNode.LER) {
                     JVentanaLER vler = new JVentanaLER(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
@@ -1137,7 +1137,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                     vlsra.show();
                 } else if (nt.getNodeType() == TNode.RECEIVER) {
                     JVentanaReceptor vr = new JVentanaReceptor(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
-                    vr.ponerConfiguracion((TReceiverNode) nt, true);
+                    vr.ponerConfiguracion((TTrafficSinkNode) nt, true);
                     vr.show();
                 }
                 elementoDisenioClicDerecho = null;
@@ -1443,7 +1443,7 @@ private void clicEnPopUpDisenioEliminar(java.awt.event.ActionEvent evt) {//GEN-F
             if (elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
                 TNode nt = (TNode) elementoDisenioClicDerecho;
                 if (nt.getNodeType() == TNode.RECEIVER) {
-                    if (this.escenario.getTopology().hayTraficoDirigidoAMi((TReceiverNode) nt)) {
+                    if (this.escenario.getTopology().hayTraficoDirigidoAMi((TTrafficSinkNode) nt)) {
                         JVentanaAdvertencia va;
                         va = new JVentanaAdvertencia(VentanaPadre, true, dispensadorDeImagenes);
                         va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.NoPuedoBorrarReceptor"));
@@ -2079,9 +2079,9 @@ private void ratonEntraEnIconoEmisor(java.awt.event.MouseEvent evt) {//GEN-FIRST
      * @param evt El evento que hace que se dispare este m�todo.
      */
 private void clicEnAniadirReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirReceptor
-    TReceiverNode receptor = null;
+    TTrafficSinkNode receptor = null;
     try {
-        receptor = new TReceiverNode(escenario.getTopology().getItemIdentifierGenerator().getNew(), escenario.getTopology().getIPv4AddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
+        receptor = new TTrafficSinkNode(escenario.getTopology().getItemIdentifierGenerator().getNew(), escenario.getTopology().getIPv4AddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
     } catch (Exception e) {
         JVentanaError err;
         err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
@@ -2130,9 +2130,9 @@ private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-
         va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.NecesitaHaberUnReceptor"));
         va.show();
     } else {
-        TSenderNode emisor = null;
+        TTrafficGeneratorNode emisor = null;
         try {
-            emisor = new TSenderNode(escenario.getTopology().getItemIdentifierGenerator().getNew(), escenario.getTopology().getIPv4AddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
+            emisor = new TTrafficGeneratorNode(escenario.getTopology().getItemIdentifierGenerator().getNew(), escenario.getTopology().getIPv4AddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
         } catch (Exception e) {
             JVentanaError err;
             err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
