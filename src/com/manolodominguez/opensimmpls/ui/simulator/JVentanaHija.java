@@ -1191,8 +1191,8 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             this.etiquetaDuracionMs.setText(this.duracionMs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija._ms."));
             this.etiquetaDuracionNs.setText(this.duracionNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija._ns."));
             this.etiquetaPasoNs.setText(this.pasoNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija._ns."));
-            escenario.getSimulation().setDuration(new TTimestamp(duracionMs.getValue(), duracionNs.getValue()).getTotalAsNanoseconds());
-            escenario.getSimulation().setStep(pasoNs.getValue());
+            escenario.getSimulation().setSimulationLength(new TTimestamp(duracionMs.getValue(), duracionNs.getValue()).getTotalAsNanoseconds());
+            escenario.getSimulation().setSimulationStepLength(pasoNs.getValue());
         }
     }
 
@@ -1348,8 +1348,8 @@ private void clicEnPopUpDisenioFondoEliminar(java.awt.event.ActionEvent evt) {//
      */
     public void ponerEscenario(TScenario esc) {
         this.controlTemporizacionDesactivado = true;
-        long durac = esc.getSimulation().obtenerDuracion();
-        long pas = esc.getSimulation().obtenerPaso();
+        long durac = esc.getSimulation().getSimulationLength();
+        long pas = esc.getSimulation().getSimulationStepLength();
         escenario = esc;
         panelDisenio.ponerTopologia(esc.getTopology());
         panelSimulacion.ponerTopologia(esc.getTopology());
@@ -1363,10 +1363,10 @@ private void clicEnPopUpDisenioFondoEliminar(java.awt.event.ActionEvent evt) {//
         }
         this.duracionMs.setValue((int) (durac / 1000000));
         this.duracionNs.setValue((int) (durac - (this.duracionMs.getValue() * 1000000)));
-        this.pasoNs.setMaximum((int) esc.getSimulation().obtenerDuracion());
+        this.pasoNs.setMaximum((int) esc.getSimulation().getSimulationLength());
         this.pasoNs.setValue((int) pas);
-        esc.getSimulation().setDuration(durac);
-        esc.getSimulation().setStep(pas);
+        esc.getSimulation().setSimulationLength(durac);
+        esc.getSimulation().setSimulationStepLength(pas);
         this.etiquetaMlsPorTic.setText(this.mlsPorTic.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija.Simulacion.EtiquetaMsTic"));
         this.etiquetaDuracionMs.setText(this.duracionMs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija._ms."));
         this.etiquetaDuracionNs.setText(this.duracionNs.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija._ns."));

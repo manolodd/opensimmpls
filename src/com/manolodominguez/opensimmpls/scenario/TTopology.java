@@ -83,7 +83,7 @@ public class TTopology {
         conjuntoNodos.add(nodo);
         relojTopologia.addTimerEventListener(nodo);
         try {
-            nodo.addListenerSimulacion(escenarioPadre.getSimulation().obtenerRecolector());
+            nodo.addListenerSimulacion(escenarioPadre.getSimulation().simulationEventCollector());
         } catch (ESimulationSingleSubscriber e) {System.out.println(e.toString());}
     }
     
@@ -333,7 +333,7 @@ public class TTopology {
         conjuntoEnlaces.add(enlace);
         relojTopologia.addTimerEventListener(enlace);
         try {
-            enlace.addListenerSimulacion(escenarioPadre.getSimulation().obtenerRecolector());
+            enlace.addListenerSimulacion(escenarioPadre.getSimulation().simulationEventCollector());
         } catch (ESimulationSingleSubscriber e) {System.out.println(e.toString());}
     }
 
