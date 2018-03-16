@@ -193,7 +193,7 @@ public class TTrafficGeneratorStats extends TStats {
             if (packetType == TAbstractPDU.MPLS) {
                 if (entryType == TStats.OUTGOING) {
                     this.outgoingMPLSPacketsOfThisTimeInstant++;
-                } else if (entryType == TStats.DISCARD) {
+                } else if (entryType == TStats.BEING_DISCARDED) {
                     this.discardedMPLSPacketsOfThisTimeInstant++;
                 }
             } else if (packetType == TAbstractPDU.MPLS_GOS) {
@@ -208,7 +208,7 @@ public class TTrafficGeneratorStats extends TStats {
                     } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.outgoingMPLSGOS3PacketsOfThisTimeInstant++;
                     }
-                } else if (entryType == TStats.DISCARD) {
+                } else if (entryType == TStats.BEING_DISCARDED) {
                     if ((GOSLevel == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.discardedMPLSPacketsOfThisTimeInstant++;
                     } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
@@ -222,7 +222,7 @@ public class TTrafficGeneratorStats extends TStats {
             } else if (packetType == TAbstractPDU.IPV4) {
                 if (entryType == TStats.OUTGOING) {
                     this.outgoingIPv4PacketsOfThisTimeInstant++;
-                } else if (entryType == TStats.DISCARD) {
+                } else if (entryType == TStats.BEING_DISCARDED) {
                     this.discardedIPv4PacketsOfThisTimeInstant++;
                 }
             } else if (packetType == TAbstractPDU.IPV4_GOS) {
@@ -237,7 +237,7 @@ public class TTrafficGeneratorStats extends TStats {
                     } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.outgoingIPv4GOS3PacketsOfThisTimeInstant++;
                     }
-                } else if (entryType == TStats.DISCARD) {
+                } else if (entryType == TStats.BEING_DISCARDED) {
                     if ((GOSLevel == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.discardedIPv4PacketsOfThisTimeInstant++;
                     } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
@@ -261,7 +261,7 @@ public class TTrafficGeneratorStats extends TStats {
      * @since 2.0
      */
     @Override
-    public int numberOfAvailableDatasets() {
+    public int getNumberOfAvailableDatasets() {
         // FIX: do not use harcoded values. Use class constants instead.
         return 2;
     }

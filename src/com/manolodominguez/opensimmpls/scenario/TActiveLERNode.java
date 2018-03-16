@@ -235,7 +235,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         this.gIdent.reset();
         this.gIdentLDP.reset();
         this.stats.reset();
-        this.stats.activateStats(this.isGeneratingStats());
+        this.stats.setStatsEnabled(this.isGeneratingStats());
         this.dmgp.reset();
         this.gpsrpRequests.reset();
         this.resetTicksWithoutEmitting();
@@ -2270,7 +2270,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     public void discardPacket(TAbstractPDU packet) {
         try {
             this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), packet.getSubtype()));
-            this.stats.addStatEntry(packet, TStats.DISCARD);
+            this.stats.addStatEntry(packet, TStats.BEING_DISCARDED);
         } catch (Exception e) {
             // FIX: this is ugly. Avoid.
             e.printStackTrace();

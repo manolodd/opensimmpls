@@ -196,7 +196,7 @@ public class TLSRStats extends TStats {
                 // FIX: Use switch statement instead of such amount of nested ifs.
                 if (entryType == TStats.OUTGOING) {
                     this.outgoingTLDPPacketsOfThisTimeInstant++;
-                } else if (entryType == TStats.DISCARD) {
+                } else if (entryType == TStats.BEING_DISCARDED) {
                     this.discardedTLDPPacketsOfThisTimeInstant++;
                 } else if (entryType == TStats.INCOMING) {
                     this.incomingTLDPPacketsOfThisTimeInstant++;
@@ -205,7 +205,7 @@ public class TLSRStats extends TStats {
                 // FIX: Use switch statement instead of such amount of nested ifs.
                 if (entryType == TStats.OUTGOING) {
                     this.outgoingGPSRPPacketsOfThisTimeInstant++;
-                } else if (entryType == TStats.DISCARD) {
+                } else if (entryType == TStats.BEING_DISCARDED) {
                     this.discardedGPSRPPacketsOfThisTimeInstant++;
                 } else if (entryType == TStats.INCOMING) {
                     this.incomingGPSRPPacketsOfThisTimeInstant++;
@@ -214,7 +214,7 @@ public class TLSRStats extends TStats {
                 // FIX: Use switch statement instead of such amount of nested ifs.
                 if (entryType == TStats.OUTGOING) {
                     this.outgoingMPLSPacketsOfThisTimeInstant++;
-                } else if (entryType == TStats.DISCARD) {
+                } else if (entryType == TStats.BEING_DISCARDED) {
                     this.discardedMPLSPacketsOfThisTimeInstant++;
                 } else if (entryType == TStats.INCOMING) {
                     this.incomingMPLSPacketsOfThisTimeInstant++;
@@ -232,7 +232,7 @@ public class TLSRStats extends TStats {
                     } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.outgoingMPLSGOS3PacketsOfThisTimeInstant++;
                     }
-                } else if (entryType == TStats.DISCARD) {
+                } else if (entryType == TStats.BEING_DISCARDED) {
                     if ((GOSLevel == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.discardedMPLSPacketsOfThisTimeInstant++;
                     } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
@@ -265,7 +265,7 @@ public class TLSRStats extends TStats {
      * @since 2.0
      */
     @Override
-    public int numberOfAvailableDatasets() {
+    public int getNumberOfAvailableDatasets() {
         // FIX: do not use harcoded values. Use class constants instead.
         return 3;
     }

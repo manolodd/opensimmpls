@@ -198,7 +198,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         this.gIdent.reset();
         this.gIdentLDP.reset();
         this.stats.reset();
-        this.stats.activateStats(this.isGeneratingStats());
+        this.stats.setStatsEnabled(this.isGeneratingStats());
         this.resetTicksWithoutEmitting();
     }
 
@@ -1192,7 +1192,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     public void discardPacket(TAbstractPDU packet) {
         try {
             this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), packet.getSubtype()));
-            this.stats.addStatEntry(packet, TStats.DISCARD);
+            this.stats.addStatEntry(packet, TStats.BEING_DISCARDED);
         } catch (Exception e) {
             // FIX: this is ugly. Avoid.
             e.printStackTrace();

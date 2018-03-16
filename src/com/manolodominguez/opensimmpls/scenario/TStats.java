@@ -16,315 +16,247 @@
 package com.manolodominguez.opensimmpls.scenario;
 
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
-import org.jfree.chart.*;
-import org.jfree.chart.labels.*;
-import org.jfree.chart.plot.*;
-import org.jfree.data.*;
+import org.jfree.data.AbstractDataset;
 
 /**
- * Esta clase es superclase abstracta. Todas las estad�sticas de los nodos de la
- * topolog�a deben heredar e implementar los m�todos abstractos.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class is abstract. It will be implemented by subclasses to allow
+ * collecting stats about the simulation
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public abstract class TStats {
-    
+
     /**
-     * Crea una nueva instancia de TEstadisticas
+     * This is the constructor of the class. As this class is abstract it will
+     * be called only from the constructor of subclasses.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TStats() {
-        statsEnabled = false;
+        this.statsEnabled = false;
     }
 
     /**
-     * Este m�todo activa o desactiva las estad�sticas.
+     * This method sets whether the stats are enabled or not..
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param statsEnabled TRUE, if the class are enabled. Otherwise, FALSE.
      * @since 2.0
-     * @param a TRUE, activa las estad�sticas. FALSE las desactiva.
-     */    
-    public void activateStats(boolean a) {
-        this.statsEnabled = a;
+     */
+    public void setStatsEnabled(boolean statsEnabled) {
+        this.statsEnabled = statsEnabled;
     }
 
     /**
-     * Este m�todo obtiene los datos de la gr�fica 1.
+     * This method is abstract; once implemented will return the dataset #1 of
+     * the TStats that can be represented in a GUI or used by any other
+     * statistics processor. Each subclass can use dataset #1 as required.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the dataset #1 of this TStats.
      * @since 2.0
-     * @return Datos de la gr�fica 1.
-     */    
+     */
     public abstract AbstractDataset getDataset1();
+
     /**
-     * Este m�todo obtiene los datos de la gr�fica 2.
+     * This method is abstract; once implemented will return the dataset #2 of
+     * the TStats that can be represented in a GUI or used by any other
+     * statistics processor. Each subclass can use dataset #2 as required.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the dataset #2 of this TStats.
      * @since 2.0
-     * @return Datos de la gr�fica 2.
-     */    
+     */
     public abstract AbstractDataset getDataset2();
+
     /**
-     * Este m�todo obtiene los datos de la gr�fica 3.
+     * This method is abstract; once implemented will return the dataset #3 of
+     * the TStats that can be represented in a GUI or used by any other
+     * statistics processor. Each subclass can use dataset #3 as required.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the dataset #3 of this TStats.
      * @since 2.0
-     * @return Datos de la gr�fica 3.
-     */    
+     */
     public abstract AbstractDataset getDataset3();
+
     /**
-     * Este m�todo obtiene los datos de la gr�fica 4.
+     * This method is abstract; once implemented will return the dataset #4 of
+     * the TStats that can be represented in a GUI or used by any other
+     * statistics processor. Each subclass can use dataset #4 as required.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the dataset #4 of this TStats.
      * @since 2.0
-     * @return Datos de la gr�fica 4.
-     */    
+     */
     public abstract AbstractDataset getDataset4();
+
     /**
-     * Este m�todo obtiene los datos de la gr�fica 5.
+     * This method is abstract; once implemented will return the dataset #5 of
+     * the TStats that can be represented in a GUI or used by any other
+     * statistics processor. Each subclass can use dataset #5 as required.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the dataset #5 of this TStats.
      * @since 2.0
-     * @return Datos de la gr�fica 5.
-     */    
+     */
     public abstract AbstractDataset getDataset5();
+
     /**
-     * Este m�todo obtiene los datos de la gr�fica 6.
+     * This method is abstract; once implemented will return the dataset #6 of
+     * the TStats that can be represented in a GUI or used by any other
+     * statistics processor. Each subclass can use dataset #6 as required.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the dataset #6 of this TStats.
      * @since 2.0
-     * @return Datos de la gr�fica 6.
-     */    
+     */
     public abstract AbstractDataset getDataset6();
+
     /**
-     * Este m�todo obtiene el t�tulo de la gr�fica 1.
-     * @return El t�tulo de la gr�fica 1
+     * This abstract method once implemented will return the title of dataset #1
+     * of this TSstat. Each subclass can set Dataset #1 name as desired.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a descriptive text about Dataset #1.
      * @since 2.0
      */
     public abstract String getTitleOfDataset1();
+
     /**
-     * Este m�todo obtiene el t�tulo de la gr�fica 2.
-     * @return El t�tulo de la gr�fica 2
+     * This abstract method once implemented will return the title of dataset #2
+     * of this TSstat. Each subclass can set Dataset #2 name as desired.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a descriptive text about Dataset #2.
      * @since 2.0
      */
     public abstract String getTitleOfDataset2();
+
     /**
-     * Este m�todo obtiene el t�tulo de la gr�fica 3.
-     * @return El t�tulo de la gr�fica 3
+     * This abstract method once implemented will return the title of dataset #3
+     * of this TSstat. Each subclass can set Dataset #3 name as desired.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a descriptive text about Dataset #3.
      * @since 2.0
      */
     public abstract String getTitleOfDataset3();
+
     /**
-     * Este m�todo obtiene el t�tulo de la gr�fica 4.
-     * @return El t�tulo de la gr�fica 4
+     * This abstract method once implemented will return the title of dataset #4
+     * of this TSstat. Each subclass can set Dataset #4 name as desired.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a descriptive text about Dataset #4.
      * @since 2.0
      */
     public abstract String getTitleOfDataset4();
+
     /**
-     * Este m�todo obtiene el t�tulo de la gr�fica 5.
-     * @return El t�tulo de la gr�fica 5
+     * This abstract method once implemented will return the title of dataset #5
+     * of this TSstat. Each subclass can set Dataset #5 name as desired.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a descriptive text about Dataset #5.
      * @since 2.0
      */
     public abstract String getTitleOfDataset5();
+
     /**
-     * Este m�todo obtiene el t�tulo de la gr�fica 6.
-     * @return El t�tulo de la gr�fica 6
+     * This abstract method once implemented will return the title of dataset #6
+     * of this TSstat. Each subclass can set Dataset #6 name as desired.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a descriptive text about Dataset #6.
      * @since 2.0
      */
     public abstract String getTitleOfDataset6();
+
     /**
-     * Este m�todo modifica las estad�sticas, a�adiendo las necesarias para el paquete
-     * especificado.
-     * @param paquete Paquete que se desea anotar en las estad�sticas.
-     * @param entrada INCOMING, OUTGOING, DISCARD dependiendo si el paquete ha entrado del nodo, sallido
- o ha sido descartado.
+     * This abstract method once implemented will take into account the packet
+     * and type of entry passed as a parameter, updating the stats information
+     * to include this new information.
+     *
+     * @param packet new packet as a source of information to update stats.
+     * @param entryType INCOMING, OUTGOING or BEING_DISCARDED, dependiendo on
+     * whether the packet is incoming, outgoing or being discarded, as defined
+     * on TStat class.
      * @since 2.0
-     */    
-    public abstract void addStatEntry(TAbstractPDU paquete, int entrada);
+     */
+    public abstract void addStatEntry(TAbstractPDU packet, int entryType);
+
     /**
-     * Este m�todo a�ade los datos modificados desde la �ltima vez que se llam� a este
-     * m�todo, en las estad�sticas.
-     * @param instante Instante al que se asignar�n los �ltimos datos.
+     * This abstract method once implemented will group the latests data added
+     * by the time instant passed as an argument. In this way aggregated
+     * statistics are generated and the dataset contains only information that
+     * is relevant for the units used in OpenSimMPLS (the tick or time instant).
+     * This reduces the dataset size and the time of processing.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param timeInstant the time instant (in simulation terms) by wich the
+     * latest data contained in the datases will be grouped/aggregated.
      * @since 2.0
-     */    
-    public abstract void groupStatsByTimeInstant(long instante);
+     */
+    public abstract void groupStatsByTimeInstant(long timeInstant);
+
     /**
-     * Devuelve el n�mero de gr�ficas que contiene la instancia.
-     * @return N�mero de gr�ficas.
+     * This abstract method, once implemented will get the number of datasets
+     * that are available.
+     *
+     * @return the number of available datasets.
      * @since 2.0
-     */    
-    public abstract int numberOfAvailableDatasets();
+     */
+    public abstract int getNumberOfAvailableDatasets();
+
     /**
-     * Reinicia las estad�sticas y las deja como si acabasen de ser creadas por el
-     * constructor.
+     * This abstract method once implemented will reset all the values and
+     * attribues as in the moment of its instantiation.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
+     */
     public abstract void reset();
-    
-    /**
-     * Este atributo almacenar� si las estad�sticas est�n activada o no.
-     * @since 2.0
-     */    
+
     protected boolean statsEnabled;
-    
-    /**
-     * Esta constante es un texto que representa a paquetes de tipo IPv4
-     * @since 2.0
-     */    
+
+    // Strings related to stats.
     public static final String IPV4 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.IPv4");
-    /**
-     * Esta constante es un texto que representa a paquetes IPv4 con GoS 1
-     * @since 2.0
-     */    
     public static final String IPV4_GOS1 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.IPv4_GoS1");
-    /**
-     * Esta constante es un texto que representa a paquetes IPv4 con GoS 2
-     * @since 2.0
-     */    
     public static final String IPV4_GOS2 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.IPv4_GoS2");
-    /**
-     * Esta constante es un texto que representa a paquetes IPv4 con GoS 3
-     * @since 2.0
-     */    
     public static final String IPV4_GOS3 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.IPv4_Gos3");
-    /**
-     * Esta constante es un texto que representa a paquetes MPLS
-     * @since 2.0
-     */    
     public static final String MPLS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.MPLS");
-    /**
-     * Esta constante es un texto que representa a paquetes MPLS con GoS 1
-     * @since 2.0
-     */    
     public static final String MPLS_GOS1 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.MPLS_GoS1");
-    /**
-     * Esta constante es un texto que representa a paquetes MPLS con GoS 2
-     * @since 2.0
-     */    
     public static final String MPLS_GOS2 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.MPLS_GoS2");
-    /**
-     * Esta constante es un texto que representa a paquetes MPLS con GoS 3
-     * @since 2.0
-     */    
     public static final String MPLS_GOS3 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.MPLS_GoS3");
-    /**
-     * Esta constante es un texto que representa a paquetes TLDP
-     * @since 2.0
-     */    
     public static final String TLDP = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.TLDP");
-    /**
-     * Esta constante es un texto que representa a paquetes GPSRP
-     * @since 2.0
-     */    
     public static final String GPSRP = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.GPSRP");
-    
-    /**
-     * Esta constante es un texto que representa al tiempo
-     * @since 2.0
-     */    
-    public static final String TIEMPO = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Tiempo_ns");
-    /**
-     * Esta constante es un texto que representa al n�mero de paquetes
-     * @since 2.0
-     */    
-    public static final String NUMERO_DE_PAQUETES = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Numero_de_paquetes");
-    /**
-     * Esta constante es un texto que representa al n�mero
-     * @since 2.0
-     */    
-    public static final String NUMERO = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Numero");
-    /**
-     * Esta constante es un texto que representa al tama�o de la DMGP
-     * @since 2.0
-     */    
-    public static final String TAMANIO_DMGP = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Tamanio_DMGP_Kilobytes");
-    
-    /**
-     * Esta constante es un texto que representa a los paquetes salientes
-     * @since 2.0
-     */    
+    public static final String TIME = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Tiempo_ns");
+    public static final String NUMBER_OF_PACKETS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Numero_de_paquetes");
+    public static final String NUMBER = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Numero");
+    public static final String DMGP_SIZE = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Tamanio_DMGP_Kilobytes");
     public static final String OUTGOING_PACKETS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Paquetes_salientes");
-    /**
-     * Esta constante es un texto que representa a los paquetes entrantes.
-     * @since 2.0
-     */    
     public static final String INCOMING_PACKETS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Paquetes_entrantes");
-    /**
-     * Esta constante es un texto que representa a los paquetes descartados.
-     * @since 2.0
-     */    
     public static final String DISCARDED_PACKETS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Paquetes_descartados");
-    /**
-     * Esta constante es un texto que representa a los paquetes recuperados.
-     * @since 2.0
-     */    
-    public static final String PAQUETES_RECUPERADOS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Paquetes_recuperados");
-    /**
-     * Esta constante es un texto que representa a los paquetes no recuperados.
-     * @since 2.0
-     */    
-    public static final String PAQUETES_NO_RECUPERADOS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Paquetes_no_recuperados");
-    /**
-     * Esta constante es un texto que representa a las recuperaciones locales
-     * @since 2.0
-     */    
+    public static final String RECOVERED_PACKETS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Paquetes_recuperados");
+    public static final String UNRECOVERED_PACKETS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Paquetes_no_recuperados");
     public static final String LOCAL_RECOVERIES_MANAGED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Recuperaciones_locales_de_paquetes_con_GoS");
-    /**
-     * Esta constante es un texto que representa a las retransmisiones atendidas
-     * @since 2.0
-     */    
     public static final String RETRANSMISSIONS_MANAGED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Retransmisiones_de_paquetes_con_GoS_atendidas");
-    /**
-     * Esta constante es un texto que representa a las solicitudes atendidas.
-     * @since 2.0
-     */    
-    public static final String SOLICITUDES_ATENDIDAS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Solicitudes_atendidas");
-    /**
-     * Esta constante es un texto que representa a las retransmisiones realizadas
-     * @since 2.0
-     */    
+    public static final String REQUESTS_ANSWERED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Solicitudes_atendidas");
     public static final String RETRANSMISSIONS_REALIZED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Retransmisiones_realizadas");
-    /**
-     * Esta constante es un texto que representa a las retransmisiones no realizadas.
-     * @since 2.0
-     */    
     public static final String RETRANSMISSIONS_UNREALIZED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Retransmisiones_no_realizadas");
-    /**
-     * Esta constante es un texto que representa a las solicitudes recibidas
-     * @since 2.0
-     */    
     public static final String RETRANSMISSION_REQUESTS_RECEIVED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Solicitudes_recibidas");
-    /**
-     * Esta constante es un texto que representa a los paquetes con GoS perdidos
-     * @since 2.0
-     */    
     public static final String GOS_PACKETS_LOST = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Paquetes_GoS_perdidos");
-    /**
-     * Esta constante es un texto que representa a las solicitudes emitidas.
-     * @since 2.0
-     */    
     public static final String RETRANSMISSION_REQUESTS_SENT = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Solicitudes_emitidas");
-    /**
-     * Esta constante es un texto que representa a las solicitudes sin respuestas.
-     * @since 2.0
-     */    
     public static final String RETRANSMISSION_REQUESTS_STILL_UNANSWERED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Solicitudes_sin_respuesta_aun");
-    /**
-     * Esta constante es un texto que representa a los paquetes con GoS recuperados
-     * @since 2.0
-     */    
     public static final String GOS_PACKETS_RECOVERED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Paquetes_GoS_recuperados");
-    /**
-     * Esta constante es un texto que representa a los paquetes con GoS no recuperados.
-     * @since 2.0
-     */    
     public static final String GOS_PACKETS_UNRECOVERED = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Paquetes_GoS_no_recuperados");
-    /**
-     * Esta constante es un texto que representa a la descripci�n de categor�as.
-     * @since 2.0
-     */    
     public static final String DESCRIPTION = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEstadisticas.Descripcion");
-    
-    /**
-     * Esta constante indica un paquete entrante en el nodo.
-     * @since 2.0
-     */    
+
+    // Constants related to packet status
     public static final int INCOMING = -1;
-    /**
-     * Esta constante indica un paquete saliente del nodo.
-     * @since 2.0
-     */    
     public static final int OUTGOING = -2;
-    /**
-     * Esta constante indica un paquete descartado en el nodo.
-     * @since 2.0
-     */    
-    public static final int DISCARD = -3;
+    public static final int BEING_DISCARDED = -3;
 }

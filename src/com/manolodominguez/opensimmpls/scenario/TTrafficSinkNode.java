@@ -67,7 +67,7 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
     public void reset() {
         this.ports.reset();
         this.stats.reset();
-        this.stats.activateStats(this.isGeneratingStats());
+        this.stats.setStatsEnabled(this.isGeneratingStats());
     }
 
     /**
@@ -263,7 +263,7 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
         }
         // FIX: use class constants instead of harcoded values.
         this.setWellConfigured(true);
-        this.stats.activateStats(this.isGeneratingStats());
+        this.stats.setStatsEnabled(this.isGeneratingStats());
         return TTrafficSinkNode.OK;
     }
 

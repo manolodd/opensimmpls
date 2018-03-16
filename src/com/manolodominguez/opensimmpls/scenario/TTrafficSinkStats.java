@@ -216,7 +216,7 @@ public class TTrafficSinkStats extends TStats {
      * @since 2.0
      */
     @Override
-    public int numberOfAvailableDatasets() {
+    public int getNumberOfAvailableDatasets() {
         // FIX: do not use harcoded values. Use class constants instead.
         return 1;
     }

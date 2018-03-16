@@ -75,7 +75,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
         this.stats = new TTrafficGeneratorStats();
         // FIX: This method is overridable. Avoid using this method to update
         // the number of ports or make it final.
-        this.stats.activateStats(this.isGeneratingStats());
+        this.stats.setStatsEnabled(this.isGeneratingStats());
     }
 
     /**
@@ -708,7 +708,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
     public void discardPacket(TAbstractPDU packet) {
         try {
             this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), packet.getSubtype()));
-            this.stats.addStatEntry(packet, TStats.DISCARD);
+            this.stats.addStatEntry(packet, TStats.BEING_DISCARDED);
         } catch (Exception e) {
             // FIX: This is ugly. Avoid.
             e.printStackTrace();
@@ -939,7 +939,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
         this.packetGoSdentifierGenerator.reset();
         this.ports.reset();
         this.stats.reset();
-        this.stats.activateStats(this.isGeneratingStats());
+        this.stats.setStatsEnabled(this.isGeneratingStats());
         this.resetTicksWithoutEmitting();
     }
 

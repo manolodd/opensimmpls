@@ -236,7 +236,7 @@ public class TActiveLERStats extends TStats {
             if (packetType == TAbstractPDU.TLDP) {
                 if (entryType == TStats.OUTGOING) {
                     this.outgoingTLDPPacketsOfThisTimeInstant++;
-                } else if (entryType == TStats.DISCARD) {
+                } else if (entryType == TStats.BEING_DISCARDED) {
                     this.discardedTLDPPacketsOfThisTimeInstant++;
                 } else if (entryType == TStats.INCOMING) {
                     this.incomingTLDPPacketsOfThisTimeInstant++;
@@ -250,7 +250,7 @@ public class TActiveLERStats extends TStats {
                     if (entryType == TStats.OUTGOING) {
                         this.outgoingGPSRPPacketsOfThisTimeInstant++;
                         this.retransmissionRequestsSent++;
-                    } else if (entryType == TStats.DISCARD) {
+                    } else if (entryType == TStats.BEING_DISCARDED) {
                         this.discardedGPSRPPacketsOfThisTimeInstant++;
                     } else if (entryType == TStats.INCOMING) {
                         this.incomingGPSRPPacketsOfThisTimeInstant++;
@@ -261,7 +261,7 @@ public class TActiveLERStats extends TStats {
                     if (entryType == TStats.OUTGOING) {
                         this.outgoingGPSRPPacketsOfThisTimeInstant++;
                         this.retransmisionsUnrealized++;
-                    } else if (entryType == TStats.DISCARD) {
+                    } else if (entryType == TStats.BEING_DISCARDED) {
                         this.discardedGPSRPPacketsOfThisTimeInstant++;
                     } else if (entryType == TStats.INCOMING) {
                         this.incomingGPSRPPacketsOfThisTimeInstant++;
@@ -272,7 +272,7 @@ public class TActiveLERStats extends TStats {
                     if (entryType == TStats.OUTGOING) {
                         this.outgoingGPSRPPacketsOfThisTimeInstant++;
                         this.retransmissionsRealized++;
-                    } else if (entryType == TStats.DISCARD) {
+                    } else if (entryType == TStats.BEING_DISCARDED) {
                         this.discardedGPSRPPacketsOfThisTimeInstant++;
                     } else if (entryType == TStats.INCOMING) {
                         this.incomingGPSRPPacketsOfThisTimeInstant++;
@@ -283,7 +283,7 @@ public class TActiveLERStats extends TStats {
                 // FIX: Use switch statement instead of such amount of nested ifs.
                 if (entryType == TStats.OUTGOING) {
                     this.outgoingMPLSPacketsOfThisTimeInstant++;
-                } else if (entryType == TStats.DISCARD) {
+                } else if (entryType == TStats.BEING_DISCARDED) {
                     this.discardedMPLSPacketsOfThisTimeInstant++;
                 } else if (entryType == TStats.INCOMING) {
                     this.incomingMPLSPacketsOfThisTimeInstant++;
@@ -301,7 +301,7 @@ public class TActiveLERStats extends TStats {
                     } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.outgoingMPLSGOS3PacketsOfThisTimeInstant++;
                     }
-                } else if (entryType == TStats.DISCARD) {
+                } else if (entryType == TStats.BEING_DISCARDED) {
                     this.GOSPacketsLost++;
                     if ((GOSLevel == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.discardedMPLSPacketsOfThisTimeInstant++;
@@ -327,7 +327,7 @@ public class TActiveLERStats extends TStats {
                 // FIX: Use switch statement instead of such amount of nested ifs.
                 if (entryType == TStats.OUTGOING) {
                     this.outgoingIPv4PacketsOfThisTimeInstant++;
-                } else if (entryType == TStats.DISCARD) {
+                } else if (entryType == TStats.BEING_DISCARDED) {
                     this.discardedIPv4PacketsOfThisTimeInstant++;
                 } else if (entryType == TStats.INCOMING) {
                     this.incomingIPv4PacketsOfThisTimeInstant++;
@@ -345,7 +345,7 @@ public class TActiveLERStats extends TStats {
                     } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP)) {
                         this.outgoingIPv4GOS3PacketsOfThisTimeInstant++;
                     }
-                } else if (entryType == TStats.DISCARD) {
+                } else if (entryType == TStats.BEING_DISCARDED) {
                     if ((GOSLevel == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP)) {
                         this.discardedIPv4PacketsOfThisTimeInstant++;
                     } else if ((GOSLevel == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) || (GOSLevel == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP)) {
@@ -379,7 +379,7 @@ public class TActiveLERStats extends TStats {
      * @since 2.0
      */
     @Override
-    public int numberOfAvailableDatasets() {
+    public int getNumberOfAvailableDatasets() {
         // FIX: do not use harcoded values. Use class constants instead.
         return 5;
     }
