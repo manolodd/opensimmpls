@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.TreeSet;
 import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
 import com.manolodominguez.opensimmpls.utils.TRotaryIDGenerator;
-import com.manolodominguez.opensimmpls.utils.TMonitor;
+import com.manolodominguez.opensimmpls.utils.TLock;
 
 /**
  * This class implements a flow entry for the DMGP memory.
@@ -44,7 +44,7 @@ public class TDMGPFlowEntry implements Comparable {
         this.assignedOctects = 0;
         this.usedOctects = 0;
         this.entries = new TreeSet();
-        this.monitor = new TMonitor();
+        this.monitor = new TLock();
         this.idGenerator = new TRotaryIDGenerator();
     }
 
@@ -166,7 +166,7 @@ public class TDMGPFlowEntry implements Comparable {
      * @since 2.0
      * @return The monitor of this flow.
      */
-    public TMonitor getMonitor() {
+    public TLock getMonitor() {
         return this.monitor;
     }
 
@@ -246,6 +246,6 @@ public class TDMGPFlowEntry implements Comparable {
     private int assignedOctects;
     private int usedOctects;
     private TreeSet entries;
-    private TMonitor monitor;
+    private TLock monitor;
     private TRotaryIDGenerator idGenerator;
 }

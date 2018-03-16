@@ -19,7 +19,7 @@ import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 import com.manolodominguez.opensimmpls.hardware.timer.TTimerEvent;
 import com.manolodominguez.opensimmpls.hardware.timer.ITimerEventListener;
 import com.manolodominguez.opensimmpls.hardware.ports.TPortSet;
-import com.manolodominguez.opensimmpls.utils.TMonitor;
+import com.manolodominguez.opensimmpls.utils.TLock;
 import com.manolodominguez.opensimmpls.utils.TLongIDGenerator;
 import java.awt.Point;
 import java.util.Collections;
@@ -58,8 +58,8 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
         this.tailEndNodePortID = -1;
         this.buffer = Collections.synchronizedSortedSet(new TreeSet());
         this.deliveredPacketsBuffer = new TreeSet();
-        this.packetsInTransitEntriesLock = new TMonitor();
-        this.deliveredPacketEntriesLock = new TMonitor();
+        this.packetsInTransitEntriesLock = new TLock();
+        this.deliveredPacketEntriesLock = new TLock();
         this.topology = topology;
         this.linkIsBroken = false;
     }
@@ -576,7 +576,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return the monitor used to the packets in transit of this link.
      * @since 2.0
      */
-    public TMonitor getLock() {
+    public TLock getLock() {
         return this.packetsInTransitEntriesLock;
     }
 
@@ -752,8 +752,8 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
 
     protected SortedSet buffer;
     protected TreeSet deliveredPacketsBuffer;
-    protected TMonitor packetsInTransitEntriesLock;
-    protected TMonitor deliveredPacketEntriesLock;
+    protected TLock packetsInTransitEntriesLock;
+    protected TLock deliveredPacketEntriesLock;
     protected TTopology topology;
     protected boolean linkIsBroken;
 

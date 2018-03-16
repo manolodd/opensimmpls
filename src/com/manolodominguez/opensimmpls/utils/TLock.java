@@ -23,12 +23,12 @@ package com.manolodominguez.opensimmpls.utils;
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  */
-public class TMonitor {
+public class TLock {
     
     /** Crea una nueva instancia de TMonitor para sincronizar hilos.
      * @since 2.0
      */
-    public TMonitor() {
+    public TLock() {
         bloqueado = false;
     }
     

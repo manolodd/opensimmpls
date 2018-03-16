@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.TreeSet;
 import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
 import com.manolodominguez.opensimmpls.utils.TRotaryIDGenerator;
-import com.manolodominguez.opensimmpls.utils.TMonitor;
+import com.manolodominguez.opensimmpls.utils.TLock;
 
 /**
  * This class implements a table where received requests for retrnasmission will
@@ -40,7 +40,7 @@ public class TGPSRPRequestsMatrix {
     public TGPSRPRequestsMatrix() {
         this.entries = new TreeSet();
         this.idGenerator = new TRotaryIDGenerator();
-        this.monitor = new TMonitor();
+        this.monitor = new TLock();
     }
 
     /**
@@ -56,7 +56,7 @@ public class TGPSRPRequestsMatrix {
         this.monitor = null;
         this.entries = new TreeSet();
         this.idGenerator = new TRotaryIDGenerator();
-        this.monitor = new TMonitor();
+        this.monitor = new TLock();
     }
 
     /**
@@ -295,7 +295,7 @@ public class TGPSRPRequestsMatrix {
      * @return Sync monitor of the table.
      * @since 2.0
      */
-    public TMonitor getMonitor() {
+    public TLock getMonitor() {
         return this.monitor;
     }
 
@@ -314,5 +314,5 @@ public class TGPSRPRequestsMatrix {
 
     private TreeSet entries;
     private TRotaryIDGenerator idGenerator;
-    private TMonitor monitor;
+    private TLock monitor;
 }

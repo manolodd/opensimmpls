@@ -23,7 +23,7 @@ import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
 import com.manolodominguez.opensimmpls.utils.TRotaryIDGenerator;
-import com.manolodominguez.opensimmpls.utils.TMonitor;
+import com.manolodominguez.opensimmpls.utils.TLock;
 
 /**
  * This class implements an active port. Active ports will be available in
@@ -50,17 +50,17 @@ public class TActivePort extends TPort {
         this.packetRead = null;
         this.isUnlimitedBuffer = false;
         this.rotaryIdentifierGenerator = new TRotaryIDGenerator();
-        this.priority0Monitor = new TMonitor();
-        this.priority1Monitor = new TMonitor();
-        this.priority2Monitor = new TMonitor();
-        this.priority3Monitor = new TMonitor();
-        this.priority4Monitor = new TMonitor();
-        this.priority5Monitor = new TMonitor();
-        this.priority6Monitor = new TMonitor();
-        this.priority7Monitor = new TMonitor();
-        this.priority8Monitor = new TMonitor();
-        this.priority9Monitor = new TMonitor();
-        this.priority10Monitor = new TMonitor();
+        this.priority0Monitor = new TLock();
+        this.priority1Monitor = new TLock();
+        this.priority2Monitor = new TLock();
+        this.priority3Monitor = new TLock();
+        this.priority4Monitor = new TLock();
+        this.priority5Monitor = new TLock();
+        this.priority6Monitor = new TLock();
+        this.priority7Monitor = new TLock();
+        this.priority8Monitor = new TLock();
+        this.priority9Monitor = new TLock();
+        this.priority10Monitor = new TLock();
 
         this.priority0Buffer = new TreeSet();
         this.priority1Buffer = new TreeSet();
@@ -1082,17 +1082,17 @@ public class TActivePort extends TPort {
 
     private static final int EPCD_THRESHOLD = 100;
 
-    private TMonitor priority0Monitor;
-    private TMonitor priority1Monitor;
-    private TMonitor priority2Monitor;
-    private TMonitor priority3Monitor;
-    private TMonitor priority4Monitor;
-    private TMonitor priority5Monitor;
-    private TMonitor priority6Monitor;
-    private TMonitor priority7Monitor;
-    private TMonitor priority8Monitor;
-    private TMonitor priority9Monitor;
-    private TMonitor priority10Monitor;
+    private TLock priority0Monitor;
+    private TLock priority1Monitor;
+    private TLock priority2Monitor;
+    private TLock priority3Monitor;
+    private TLock priority4Monitor;
+    private TLock priority5Monitor;
+    private TLock priority6Monitor;
+    private TLock priority7Monitor;
+    private TLock priority8Monitor;
+    private TLock priority9Monitor;
+    private TLock priority10Monitor;
     private TreeSet priority0Buffer;
     private TreeSet priority1Buffer;
     private TreeSet priority2Buffer;

@@ -37,7 +37,7 @@ import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
 import com.manolodominguez.opensimmpls.scenario.simulationevents.TOpenSimMPLSEvent;
-import com.manolodominguez.opensimmpls.utils.TMonitor;
+import com.manolodominguez.opensimmpls.utils.TLock;
 
 /**
  * Esta clase implementa un panel que recibir� eventos de simulaci�n y los
@@ -89,7 +89,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
         COLOR_BORDE_DOMINIO = new Color(232, 212, 197);
         COLOR_FONDO_DOMINIO = new Color(239, 222, 209);
         COLOR_LSP = new Color(0, 0, 200);
-        cerrojo = new TMonitor();
+        cerrojo = new TLock();
         ficheroTraza = null;;
         streamFicheroTraza = null;
         streamTraza = null;
@@ -892,7 +892,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
     private TreeSet bufferEventos;
     private TreeSet bufferParaSimular;
     private long ticActual;
-    private TMonitor cerrojo;
+    private TLock cerrojo;
     private int mlsPorTic;
     private boolean mostrarLeyenda;
     

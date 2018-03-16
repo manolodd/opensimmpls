@@ -17,7 +17,7 @@ package com.manolodominguez.opensimmpls.hardware.tldp;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import com.manolodominguez.opensimmpls.utils.TMonitor;
+import com.manolodominguez.opensimmpls.utils.TLock;
 
 /**
  * This class implements a switching matrix to be used within each node of the
@@ -37,7 +37,7 @@ public class TSwitchingMatrix {
      */
     public TSwitchingMatrix() {
         this.switchingMatrix = new LinkedList();
-        this.monitor = new TMonitor();
+        this.monitor = new TLock();
     }
 
     /**
@@ -48,7 +48,7 @@ public class TSwitchingMatrix {
      * @return The monitor of the class.
      * @since 2.0
      */
-    public TMonitor getMonitor() {
+    public TLock getMonitor() {
         return this.monitor;
     }
 
@@ -447,5 +447,5 @@ public class TSwitchingMatrix {
     }
 
     private LinkedList switchingMatrix;
-    private TMonitor monitor;
+    private TLock monitor;
 }

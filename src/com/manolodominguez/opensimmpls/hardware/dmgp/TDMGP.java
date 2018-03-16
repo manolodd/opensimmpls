@@ -20,7 +20,7 @@ import java.util.TreeSet;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
 import com.manolodominguez.opensimmpls.utils.TRotaryIDGenerator;
-import com.manolodominguez.opensimmpls.utils.TMonitor;
+import com.manolodominguez.opensimmpls.utils.TLock;
 
 /**
  * This class implements a DMGP memory to save GoS-aware PDUs temporarily.
@@ -38,7 +38,7 @@ public class TDMGP {
      * @since 2.0
      */
     public TDMGP() {
-        this.monitor = new TMonitor();
+        this.monitor = new TLock();
         this.idGenerator = new TRotaryIDGenerator();
         this.flows = new TreeSet();
         this.totalAvailablePercentage = 100;
@@ -128,7 +128,7 @@ public class TDMGP {
         this.monitor = null;
         this.idGenerator = null;
         this.flows = null;
-        this.monitor = new TMonitor();
+        this.monitor = new TLock();
         this.idGenerator = new TRotaryIDGenerator();
         this.flows = new TreeSet();
         this.totalAvailablePercentage = 100;
@@ -247,7 +247,7 @@ public class TDMGP {
         return 1;
     }
 
-    private TMonitor monitor;
+    private TLock monitor;
     private TRotaryIDGenerator idGenerator;
     private TreeSet flows;
     private int totalAvailablePercentage;
