@@ -169,12 +169,12 @@ public class TTimer implements Runnable {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void purgeTimerEventListeners() {
+    public void purgeTimerEventListenersMarkedForDeletion() {
         Iterator linksIterator = this.timerEventListenerLInks.iterator();
         TLink linkAux;
         while (linksIterator.hasNext()) {
             linkAux = (TLink) linksIterator.next();
-            if (linkAux.hasToBePurged()) {
+            if (linkAux.isMarkedForDeletionAsTimerEventListener()) {
                 linksIterator.remove();
             }
         }
@@ -182,7 +182,7 @@ public class TTimer implements Runnable {
         TNode nodeAux;
         while (nodesIterator.hasNext()) {
             nodeAux = (TNode) nodesIterator.next();
-            if (nodeAux.hasToBePurged()) {
+            if (nodeAux.isMarkedForDeletionAsTimerEventListener()) {
                 nodesIterator.remove();
             }
         }

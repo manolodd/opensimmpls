@@ -334,7 +334,7 @@ private void clicEnCambioNodoIzquierdo(java.awt.event.ActionEvent evt) {//GEN-FI
                 nt = (TNode) it.next();
                 if (!nt.getName().equals(seleccionado.getName())) {
                     if (nt.hasAvailablePorts()) {
-                        if (!topo.isThereAnyLinkThatJoin(nt.getNodeID(), seleccionado.getNodeID())) {
+                        if (!topo.isThereAnyLinkThatJoins(nt.getNodeID(), seleccionado.getNodeID())) {
                             switch (seleccionado.getNodeType()) {
                                 case TNode.SENDER: {
                                     if ((nt.getNodeType() == TNode.LER) || (nt.getNodeType() == TNode.ACTIVE_LER)) {

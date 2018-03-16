@@ -276,7 +276,7 @@ public class TLinkConfig {
         } else {
             TLink linkAux2 = topology.getFirstLinkNamed(this.name);
             if (linkAux2 != null) {
-                if (topology.thereIsMoreThanALinkNamed(this.name)) {
+                if (topology.isThereMoreThanALinkNamed(this.name)) {
                     return TLinkConfig.NAME_ALREADY_EXISTS;
                 } else if (linkAux2.getHeadEndNode().getName().equals(this.getHeadEndNodeName())) {
                     if (!linkAux2.getTailEndNode().getName().equals(this.getTailEndNodeName())) {

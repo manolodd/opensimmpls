@@ -26,18 +26,22 @@ import java.util.Iterator;
 import java.util.TreeSet;
 
 /**
- * Esta clase implementa una topolog�a de rede completa.
+ * This class implements a network topology: nodes, links and the required
+ * algorithms to compute routes using Floyd algorithm and RABAN algorithm. For
+ * RABAN algorithm see "Guarantee of Service Support (GoS) over MPLS using
+ * Active Techniques" proposal.
  *
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class TTopology {
 
     /**
-     * Crea una nueva instancia de TTopologia
+     * This is the constructor of the class. It creates a new instance of
+     * TTopology.
      *
-     * @param parentScenario Escenario padre al que pertence la topology.
+     * @param parentScenario Scenario to wich the topology belongs to.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TTopology(TScenario parentScenario) {
@@ -53,24 +57,25 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo reinicia los atributos de la clase y los deja como si
-     * acabasen de ser iniciador por el constructor.
+     * This method restart all attributes of the class as when it was
+     * instantiated.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void reset() {
         this.floydAlgorithmLock.lock();
-        Iterator it;
-        it = this.nodes.iterator();
-        TTopologyElement et;
-        while (it.hasNext()) {
-            et = (TTopologyElement) it.next();
-            et.reset();
+        Iterator nodesIterator;
+        nodesIterator = this.nodes.iterator();
+        TTopologyElement topologyElement;
+        while (nodesIterator.hasNext()) {
+            topologyElement = (TTopologyElement) nodesIterator.next();
+            topologyElement.reset();
         }
-        it = this.links.iterator();
-        while (it.hasNext()) {
-            et = (TTopologyElement) it.next();
-            et.reset();
+        nodesIterator = this.links.iterator();
+        while (nodesIterator.hasNext()) {
+            topologyElement = (TTopologyElement) nodesIterator.next();
+            topologyElement.reset();
         }
         this.timer.reset();
         this.eventIDGenerator.reset();
@@ -79,37 +84,42 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo inserta un nuevo nodo en la topology.
+     * This method adds a new node to the topology.
      *
-     * @param node Nodo que queremos insertar.
+     * @param node Node to be added to the topology.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void addNode(TNode node) {
         this.nodes.add(node);
         this.timer.addTimerEventListener(node);
         try {
-            node.addListenerSimulacion(this.parentScenario.getSimulation().getSimulationEventCollector());
+            node.addSimulationListener(this.parentScenario.getSimulation().getSimulationEventListener());
         } catch (ESimulationSingleSubscriber e) {
             System.out.println(e.toString());
         }
     }
 
     /**
-     * @param nodeID
+     * This method adds a new node to the topology.
+     *
+     * @param nodeID Node to be added to the topology.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
      */
-    private void eliminarSoloNodo(int nodeID) {
-        boolean fin = false;
-        TNode nodo = null;
-        Iterator iterador = this.nodes.iterator();
-        while ((iterador.hasNext()) && (!fin)) {
-            nodo = (TNode) iterador.next();
-            if (nodo.getNodeID() == nodeID) {
-                nodo.ponerPurgar(true);
-                iterador.remove();
-                fin = true;
+    private void removeNode(int nodeID) {
+        boolean done = false;
+        TNode node = null;
+        Iterator nodesIterator = this.nodes.iterator();
+        while ((nodesIterator.hasNext()) && (!done)) {
+            node = (TNode) nodesIterator.next();
+            if (node.getNodeID() == nodeID) {
+                node.markForDeletionAsTimerEventListener(true);
+                nodesIterator.remove();
+                done = true;
             }
         }
-        this.timer.purgeTimerEventListeners();
+        this.timer.purgeTimerEventListenersMarkedForDeletion();
     }
 
     /**
@@ -117,9 +127,10 @@ public class TTopology {
      *
      * @param nodeID Identificador del nodo que deseamos obtener.
      * @return Nodo que busc�bamos.NULL si no existe.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TNode obtenerNodo(int nodeID) {
+    public TNode getNode(int nodeID) {
         TNode nodo = null;
         Iterator iterador = this.nodes.iterator();
         while (iterador.hasNext()) {
@@ -136,6 +147,7 @@ public class TTopology {
      *
      * @param ipv4Address IP del nodo que deseamos obtener.
      * @return Nodo que busc�bamos.NULL si no existe.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TNode getNode(String ipv4Address) {
@@ -156,6 +168,7 @@ public class TTopology {
      *
      * @param nodeName Nombre del nodo que deseamos obtener.
      * @return Nodo que busc�bamos. NULL si no existe.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TNode getFirstNodeNamed(String nodeName) {
@@ -176,9 +189,10 @@ public class TTopology {
      * @param nodeName Nombre del nodo.
      * @return TRUE, si existe m�s de un nodo con el mismo nombre. FALSE en caso
      * contrario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public boolean thereIsMoreThanANodeNamed(String nodeName) {
+    public boolean isThereMoreThanANodeNamed(String nodeName) {
         int cuantos = 0;
         TNode nodo = null;
         Iterator iterador = this.nodes.iterator();
@@ -200,9 +214,10 @@ public class TTopology {
      * @param linkName Nombre del enlace.
      * @return TRUE si existe m�s de un enlace con el mismo nombre. FALSE en
      * caso contrario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public boolean thereIsMoreThanALinkNamed(String linkName) {
+    public boolean isThereMoreThanALinkNamed(String linkName) {
         int cuantos = 0;
         TLink enlace = null;
         Iterator iterador = this.links.iterator();
@@ -222,12 +237,13 @@ public class TTopology {
      * Este m�todo comprueba si en la topoliog�a hay algun emisor de tr�fico que
      * dirija su tr�fico al receptor especificado por parametros.
      *
-     * @param trafficSinkNodeThatAsk Nodo receptor.
+     * @param trafficSinkNode Nodo receptor.
      * @return TRUE, si algun exmisor env�a tr�fico al receptor. FALSE en caso
      * contrario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public boolean hayTraficoDirigidoAMi(TTrafficSinkNode trafficSinkNodeThatAsk) {
+    public boolean isThereAnyNodeGeneratingTrafficFor(TTrafficSinkNode trafficSinkNode) {
         TNode nodo = null;
         TTrafficGeneratorNode emisor = null;
         Iterator iterador = this.nodes.iterator();
@@ -235,7 +251,7 @@ public class TTopology {
             nodo = (TNode) iterador.next();
             if (nodo.getNodeType() == TNode.SENDER) {
                 emisor = (TTrafficGeneratorNode) nodo;
-                if (emisor.getTargetIPv4Address().equals(trafficSinkNodeThatAsk.getIPv4Address())) {
+                if (emisor.getTargetIPv4Address().equals(trafficSinkNode.getIPv4Address())) {
                     return true;
                 }
             }
@@ -249,6 +265,7 @@ public class TTopology {
      *
      * @param linkName Nombre del enlace buscado.
      * @return El enlace buscado. NULL si no existe.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TLink getFirstLinkNamed(String linkName) {
@@ -269,9 +286,10 @@ public class TTopology {
      *
      * @param screenPosition Coordenadas del nodo que deseamos buscar.
      * @return El nodo buscado. NULL si no existe.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TNode obtenerNodoEnPosicion(Point screenPosition) {
+    public TNode getNodeInScreenPosition(Point screenPosition) {
         TNode nodo = null;
         Iterator iterador = this.nodes.iterator();
         while (iterador.hasNext()) {
@@ -287,9 +305,10 @@ public class TTopology {
      * Este m�todo devuelve un vector con todos los nodos de la topology.
      *
      * @return Un vector con todos los nodos de la topology.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TNode[] obtenerNodos() {
+    public TNode[] getNodesAsArray() {
         return (TNode[]) this.nodes.toArray();
     }
 
@@ -298,9 +317,10 @@ public class TTopology {
      * topology, con los valores pasados.
      *
      * @param modifiedNode Nodo que queremos actualizar, con los nuevos valores.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void modificarNodo(TNode modifiedNode) {
+    public void modifyNode(TNode modifiedNode) {
         boolean fin = false;
         TNode nodoBuscado = null;
         Iterator iterador = this.nodes.iterator();
@@ -345,13 +365,14 @@ public class TTopology {
      * Este m�todo inserta un nuevo enlace en la topology.
      *
      * @param link Enlace que deseamos insertar.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void addLink(TLink link) {
         this.links.add(link);
         this.timer.addTimerEventListener(link);
         try {
-            link.addListenerSimulacion(this.parentScenario.getSimulation().getSimulationEventCollector());
+            link.addSimulationListener(this.parentScenario.getSimulation().getSimulationEventListener());
         } catch (ESimulationSingleSubscriber e) {
             System.out.println(e.toString());
         }
@@ -362,32 +383,34 @@ public class TTopology {
      * especificado por par�metros.
      *
      * @param linkID Identificador del enlace que deseamos eliminar.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void eliminarEnlace(int linkID) {
+    public void removeLink(int linkID) {
         boolean fin = false;
         TLink enlace = null;
         Iterator iterador = this.links.iterator();
         while ((iterador.hasNext()) && (!fin)) {
             enlace = (TLink) iterador.next();
             if (enlace.getID() == linkID) {
-                enlace.disconnectFromPorts();
-                enlace.ponerPurgar(true);
+                enlace.disconnectFromBothNodes();
+                enlace.markForDeletionAsTimerEventListener(true);
                 iterador.remove();
                 fin = true;
             }
         }
-        this.timer.purgeTimerEventListeners();
+        this.timer.purgeTimerEventListenersMarkedForDeletion();
     }
 
     /**
      * Este m�todo elimina de la topolog�a el enlace pasado por par�metro.
      *
      * @param link El enlace que deseamos eliminar.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void eliminarEnlace(TLink link) {
-        eliminarEnlace(link.getID());
+    public void removeLink(TLink link) {
+        TTopology.this.removeLink(link.getID());
     }
 
     /**
@@ -396,9 +419,10 @@ public class TTopology {
      *
      * @param linkID Identificador del enlace que deseamos obtener.
      * @return El enlace que dese�bamos obtener. NULL si no existe.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TLink obtenerEnlace(int linkID) {
+    public TLink getLink(int linkID) {
         TLink enlace = null;
         Iterator iterador = this.links.iterator();
         while (iterador.hasNext()) {
@@ -416,9 +440,10 @@ public class TTopology {
      *
      * @param screenPosition Coordenadas del enlace buscado.
      * @return El enlace buscado. NULL si no existe.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TLink obtenerEnlaceEnPosicion(Point screenPosition) {
+    public TLink getLinkInScreenPosition(Point screenPosition) {
         TLink enlace = null;
         Iterator iterador = this.links.iterator();
         while (iterador.hasNext()) {
@@ -434,9 +459,10 @@ public class TTopology {
      * Este m�todo devuelve un vector con todos los enlaces de la topology.
      *
      * @return Un vector con todos los enlaces de la topolog�a.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TLink[] obtenerEnlaces() {
+    public TLink[] getLinksAsArray() {
         return (TLink[]) this.links.toArray();
     }
 
@@ -444,10 +470,12 @@ public class TTopology {
      * Este m�todo actualiza un enlace de la topolog�a con otro pasado por
      * par�metro.
      *
-     * @param modifiedLink Enlace que queremos actualizar, con los valores nuevos.
+     * @param modifiedLink Enlace que queremos actualizar, con los valores
+     * nuevos.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void modificarEnlace(TLink modifiedLink) {
+    public void modifyLink(TLink modifiedLink) {
         boolean fin = false;
         TLink enlaceBuscado = null;
         Iterator iterador = this.links.iterator();
@@ -470,13 +498,15 @@ public class TTopology {
 
     /**
      * @param screenPosition
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
      * @return
      */
-    private boolean hayElementoEnPosicion(Point screenPosition) {
-        if (obtenerNodoEnPosicion(screenPosition) != null) {
+    private boolean isThereAnElementInScreenPosition(Point screenPosition) {
+        if (getNodeInScreenPosition(screenPosition) != null) {
             return true;
         }
-        if (obtenerEnlaceEnPosicion(screenPosition) != null) {
+        if (getLinkInScreenPosition(screenPosition) != null) {
             return true;
         }
         return false;
@@ -489,17 +519,18 @@ public class TTopology {
      * @param screenPosition Coordenadas del elemento buscado.
      * @return El elemento buscado. NULL si no existe.
      * @since 2.0
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
-    public TTopologyElement obtenerElementoEnPosicion(Point screenPosition) {
-        if (hayElementoEnPosicion(screenPosition)) {
+    public TTopologyElement getElementInScreenPosition(Point screenPosition) {
+        if (isThereAnElementInScreenPosition(screenPosition)) {
             TNode n;
-            n = obtenerNodoEnPosicion(screenPosition);
+            n = getNodeInScreenPosition(screenPosition);
             if (n != null) {
                 return n;
             }
 
             TLink e;
-            e = obtenerEnlaceEnPosicion(screenPosition);
+            e = getLinkInScreenPosition(screenPosition);
             if (e != null) {
                 return e;
             }
@@ -512,31 +543,33 @@ public class TTopology {
      * con el especificado por par�metros.
      *
      * @param nodeID identificador del nodo a borrar.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void eliminarNodo(int nodeID) {
+    public void removeNodeAndPropagate(int nodeID) {
         TLink enlace = null;
         Iterator iterador = this.links.iterator();
         while (iterador.hasNext()) {
             enlace = (TLink) iterador.next();
             if (enlace.isConnectedTo(nodeID)) {
-                enlace.disconnectFromPorts();
-                enlace.ponerPurgar(true);
+                enlace.disconnectFromBothNodes();
+                enlace.markForDeletionAsTimerEventListener(true);
                 iterador.remove();
             }
         }
-        eliminarSoloNodo(nodeID);
-        this.timer.purgeTimerEventListeners();
+        TTopology.this.removeNode(nodeID);
+        this.timer.purgeTimerEventListenersMarkedForDeletion();
     }
 
     /**
      * Este m�todo elimina de la topolog�a el nodo especificado por parametros.
      *
      * @param node Nodo que deseamos eliminar.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void eliminarNodo(TNode node) {
-        eliminarNodo(node.getNodeID());
+    public void removeNode(TNode node) {
+        removeNodeAndPropagate(node.getNodeID());
     }
 
     /**
@@ -544,6 +577,7 @@ public class TTopology {
      * forma sencilla.
      *
      * @return El iterador de los nodos de la topology.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public Iterator getNodesIterator() {
@@ -555,6 +589,7 @@ public class TTopology {
      * forma sencilla.
      *
      * @return El iterador de los enlaces de la topolog�a.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public Iterator getLinksIterator() {
@@ -565,6 +600,7 @@ public class TTopology {
      * Este m�todo limpia la topology, eliminando todos los enlaces y nodos
      * existentes.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void removeAllElements() {
@@ -573,23 +609,24 @@ public class TTopology {
         TLink e;
         while (it.hasNext()) {
             e = (TLink) it.next();
-            e.disconnectFromPorts();
-            e.ponerPurgar(true);
+            e.disconnectFromBothNodes();
+            e.markForDeletionAsTimerEventListener(true);
             it.remove();
         }
         it = this.getNodesIterator();
         while (it.hasNext()) {
             n = (TNode) it.next();
-            n.ponerPurgar(true);
+            n.markForDeletionAsTimerEventListener(true);
             it.remove();
         }
-        this.timer.purgeTimerEventListeners();
+        this.timer.purgeTimerEventListenersMarkedForDeletion();
     }
 
     /**
      * Este m�todo devuelve el n�mero de nodos que hay en la topolog�a.
      *
      * @return N�mero de nodos de la topolog�a.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public int getNumberOfNodes() {
@@ -601,6 +638,7 @@ public class TTopology {
      * topology.
      *
      * @param timer El reloj principal de la topolog�a.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void setTimer(TTimer timer) {
@@ -611,6 +649,7 @@ public class TTopology {
      * Este m�todo permite obtener el reloj principal de la topology.
      *
      * @return El reloj principal de la topolog�a.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TTimer getTimer() {
@@ -622,6 +661,7 @@ public class TTopology {
      * topology.
      *
      * @return El retardo menor de todos los enlaces de la topolog�a.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public int getMinimumDelay() {
@@ -654,9 +694,10 @@ public class TTopology {
      * @param node2ID Identificador del nodo extremo 2.
      * @return TRUE, si existe un enlace entre extremo1 y extremo 2. FALSE en
      * caso contrario.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public boolean isThereAnyLinkThatJoin(int node1ID, int node2ID) {
+    public boolean isThereAnyLinkThatJoins(int node1ID, int node2ID) {
         TLink enlace = null;
         Iterator iterador = links.iterator();
         TNode izquierdo;
@@ -682,9 +723,10 @@ public class TTopology {
      * @param node1ID Identificador del nodo extremo 1.
      * @param node2ID Identificador del nodo extremo 2.
      * @return El enlace entre extremo 1 y extremo 2. NULL si no existe.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TLink getLinkThatJoin(int node1ID, int node2ID) {
+    public TLink getLinkThatJoins(int node1ID, int node2ID) {
         TLink enlace = null;
         Iterator iterador = this.links.iterator();
         TNode izquierdo;
@@ -708,6 +750,7 @@ public class TTopology {
      * para eventos de la topology.
      *
      * @return El generador de identificadores para eventos de la topology.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TLongIDGenerator getEventIDGenerator() {
@@ -719,6 +762,7 @@ public class TTopology {
      * elementos de la topolog�a.
      *
      * @param elementsIDGenerator El generador de identificadores de elementos.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void setElementsIDGenerator(TIDGenerator elementsIDGenerator) {
@@ -730,6 +774,7 @@ public class TTopology {
      * elementos de la topolog�a.
      *
      * @return El generador de identificadores de elementos.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TIDGenerator getElementsIDGenerator() {
@@ -741,6 +786,7 @@ public class TTopology {
      * topolog�a.
      *
      * @param ipv4AddressGenerator Generador de direcciones IP de la topolog�a.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void setIPv4AddressGenerator(TIPv4AddressGenerator ipv4AddressGenerator) {
@@ -752,6 +798,7 @@ public class TTopology {
      * topolog�a.
      *
      * @return El generador de direcciones IP de la topolog�a.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TIPv4AddressGenerator getIPv4AddressGenerator() {
@@ -767,9 +814,10 @@ public class TTopology {
      * @param targetNodeID Identificador del nodo destino.
      * @return Identificador del nod que es siguiente salto para llegar del
      * origen al destino.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public synchronized int getHop(int originNodeID, int targetNodeID) {
+    public synchronized int getNextHopID(int originNodeID, int targetNodeID) {
         this.floydAlgorithmLock.lock();
         int numNodosActual = this.nodes.size();
         int origen2 = 0;
@@ -795,7 +843,7 @@ public class TTopology {
         int j = 0;
         for (i = 0; i < numNodosActual; i++) {
             for (j = 0; j < numNodosActual; j++) {
-                en = getLinkThatJoin(equivalencia[i], equivalencia[j]);
+                en = getLinkThatJoins(equivalencia[i], equivalencia[j]);
                 if ((en == null) || ((en != null) && (en.isBroken()))) {
                     if (i == j) {
                         matrizAdyacencia[i][j] = 0;
@@ -842,7 +890,7 @@ public class TTopology {
         }
         // Comprobamos si no hay camino o es que son adyacentes
         if (nodoSiguiente == TTopology.TARGET_UNREACHABLE) {
-            TLink enlt = this.getLinkThatJoin(originNodeID, targetNodeID);
+            TLink enlt = this.getLinkThatJoins(originNodeID, targetNodeID);
             if (enlt != null) {
                 nodoSiguiente = targetNodeID;
             }
@@ -862,13 +910,14 @@ public class TTopology {
      * @param targetNodeIPv4Address IP del nodo destino.
      * @return IP del nodo que es siguiente salto para llegar del origen al
      * destino.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public synchronized String getNextHopIPv4Address(String originNodeIPv4Address, String targetNodeIPv4Address) {
         int origen = this.getNode(originNodeIPv4Address).getNodeID();
         int destino = this.getNode(targetNodeIPv4Address).getNodeID();
-        int siguienteSalto = getHop(origen, destino);
-        TNode nt = this.obtenerNodo(siguienteSalto);
+        int siguienteSalto = getNextHopID(origen, destino);
+        TNode nt = this.getNode(siguienteSalto);
         if (nt != null) {
             return nt.getIPv4Address();
         }
@@ -879,17 +928,20 @@ public class TTopology {
      * Este m�todo calcula la IP del nodo al que hay que dirigirse, cuyo camino
      * es el para avanzar hacia el destino seg� el protocolo RABAN.
      *
-     * @param originNodeIPv4Address Direcci�n IP del nodo desde el que se calcula el salto.
-     * @param targetNodeIPv4Address Direcci�n IP del nodo al que se quiere llegar.
+     * @param originNodeIPv4Address Direcci�n IP del nodo desde el que se
+     * calcula el salto.
+     * @param targetNodeIPv4Address Direcci�n IP del nodo al que se quiere
+     * llegar.
      * @return La direcci�n IP del nodo adyacente al origen al que hay que
      * dirigirse. NULL, si no hay camino entre el origen y el destino.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public synchronized String getNextHopRABANIPv4Address(String originNodeIPv4Address, String targetNodeIPv4Address) {
+    public synchronized String getNextHopIPv4AddressUsingRABAN(String originNodeIPv4Address, String targetNodeIPv4Address) {
         int origen = this.getNode(originNodeIPv4Address).getNodeID();
         int destino = this.getNode(targetNodeIPv4Address).getNodeID();
-        int siguienteSalto = getNextNodeIDUsingRABAN(origen, destino);
-        TNode nt = this.obtenerNodo(siguienteSalto);
+        int siguienteSalto = TTopology.this.getNextHopIDUsingRABAN(origen, destino);
+        TNode nt = this.getNode(siguienteSalto);
         if (nt != null) {
             return nt.getIPv4Address();
         }
@@ -904,18 +956,21 @@ public class TTopology {
      *
      * @return La direcci�n IP del nodo adyacente al origen al que hay que
      * dirigirse. NULL, si no hay camino entre el origen y el destino.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     * @param nodeToAvoidIPv4Address IP del nodo adyacente al nodo origen. Por el enlace
-     * que une a ambos, no se desea pasar.
-     * @param originNodeIPv4Address Direcci�n IP del nodo desde el que se calcula el salto.
-     * @param targetNodeIPv4Address Direcci�n IP del nodo al que se quiere llegar.
+     * @param nodeToAvoidIPv4Address IP del nodo adyacente al nodo origen. Por
+     * el enlace que une a ambos, no se desea pasar.
+     * @param originNodeIPv4Address Direcci�n IP del nodo desde el que se
+     * calcula el salto.
+     * @param targetNodeIPv4Address Direcci�n IP del nodo al que se quiere
+     * llegar.
      */
-    public synchronized String getNextHopRABANIPv4Address(String originNodeIPv4Address, String targetNodeIPv4Address, String nodeToAvoidIPv4Address) {
+    public synchronized String getNextHopIPv4AddressUsingRABAN(String originNodeIPv4Address, String targetNodeIPv4Address, String nodeToAvoidIPv4Address) {
         int origen = this.getNode(originNodeIPv4Address).getNodeID();
         int destino = this.getNode(targetNodeIPv4Address).getNodeID();
         int nodoAEvitar = this.getNode(nodeToAvoidIPv4Address).getNodeID();
-        int siguienteSalto = getNextNodeIDUsingRABANWithNodeAvoidance(origen, destino, nodoAEvitar);
-        TNode nt = this.obtenerNodo(siguienteSalto);
+        int siguienteSalto = getNextHopIDUsingRABAN(origen, destino, nodoAEvitar);
+        TNode nt = this.getNode(siguienteSalto);
         if (nt != null) {
             return nt.getIPv4Address();
         }
@@ -932,9 +987,10 @@ public class TTopology {
      * @param targetNodeID Identificador del nodo destino.
      * @return Identificador del nod que es siguiente salto para llegar del
      * origen al destino.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public synchronized int getNextNodeIDUsingRABAN(int originNodeID, int targetNodeID) {
+    public synchronized int getNextHopIDUsingRABAN(int originNodeID, int targetNodeID) {
         this.rabanAlgorithmLock.lock();
         int numNodosActual = this.nodes.size();
         int origen2 = 0;
@@ -960,7 +1016,7 @@ public class TTopology {
         int j = 0;
         for (i = 0; i < numNodosActual; i++) {
             for (j = 0; j < numNodosActual; j++) {
-                en = getLinkThatJoin(equivalencia[i], equivalencia[j]);
+                en = getLinkThatJoins(equivalencia[i], equivalencia[j]);
                 if ((en == null) || ((en != null) && (en.isBroken()))) {
                     if (i == j) {
                         matrizAdyacencia[i][j] = 0;
@@ -1007,7 +1063,7 @@ public class TTopology {
         }
         // Comprobamos si no hay camino o es que son adyacentes
         if (nodoSiguiente == this.TARGET_UNREACHABLE) {
-            TLink enlt = this.getLinkThatJoin(originNodeID, targetNodeID);
+            TLink enlt = this.getLinkThatJoins(originNodeID, targetNodeID);
             if (enlt != null) {
                 nodoSiguiente = targetNodeID;
             }
@@ -1026,6 +1082,7 @@ public class TTopology {
      *
      * @return El identificador del nodo adyacente al origen al que hay que
      * dirigirse. NULL, si no hay camino entre el origen y el destino.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      * @param originNodeID El identyificador del nodo que realiza la petici�n de
      * c�lculo.
@@ -1033,7 +1090,7 @@ public class TTopology {
      * @param nodeToAvoidID Identificador del nodo adyacente a origen. El enlace
      * que une a ambos se desea evitar.
      */
-    public synchronized int getNextNodeIDUsingRABANWithNodeAvoidance(int originNodeID, int targetNodeID, int nodeToAvoidID) {
+    public synchronized int getNextHopIDUsingRABAN(int originNodeID, int targetNodeID, int nodeToAvoidID) {
         this.rabanAlgorithmLock.lock();
         int numNodosActual = this.nodes.size();
         int origen2 = 0;
@@ -1062,7 +1119,7 @@ public class TTopology {
         int j = 0;
         for (i = 0; i < numNodosActual; i++) {
             for (j = 0; j < numNodosActual; j++) {
-                en = getLinkThatJoin(equivalencia[i], equivalencia[j]);
+                en = getLinkThatJoins(equivalencia[i], equivalencia[j]);
                 if ((en == null) || ((en != null) && (en.isBroken()))) {
                     if (i == j) {
                         matrizAdyacencia[i][j] = 0;
@@ -1117,7 +1174,7 @@ public class TTopology {
         }
         // Comprobamos si no hay camino o es que son adyacentes
         if (nodoSiguiente == TTopology.TARGET_UNREACHABLE) {
-            TLink enlt = this.getLinkThatJoin(originNodeID, targetNodeID);
+            TLink enlt = this.getLinkThatJoins(originNodeID, targetNodeID);
             if (enlt != null) {
                 nodoSiguiente = targetNodeID;
             }

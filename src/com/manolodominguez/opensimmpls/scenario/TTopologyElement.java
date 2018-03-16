@@ -19,7 +19,7 @@ import com.manolodominguez.opensimmpls.scenario.simulationevents.ESimulationSing
 import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEvent;
 import com.manolodominguez.opensimmpls.hardware.timer.TTimerEvent;
 import com.manolodominguez.opensimmpls.hardware.timer.ITimerEventListener;
-import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventCollector;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventListener;
 import com.manolodominguez.opensimmpls.utils.TLongIDGenerator;
 import java.awt.*;
 import org.jfree.chart.*;
@@ -97,7 +97,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * lo contrario.
      * @since 2.0
      */    
-    public void ponerPurgar(boolean p) {
+    public void markForDeletionAsTimerEventListener(boolean p) {
         eliminarDelReloj = p;
     }
 
@@ -107,7 +107,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * lo contrario.
      * @since 2.0
      */    
-    public boolean hasToBePurged() {
+    public boolean isMarkedForDeletionAsTimerEventListener() {
         return eliminarDelReloj;
     }
 
@@ -203,7 +203,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * hay otro establecido.
      * @since 2.0
      */    
-    public void addListenerSimulacion(TSimulationEventCollector rs) throws ESimulationSingleSubscriber {
+    public void addSimulationListener(TSimulationEventListener rs) throws ESimulationSingleSubscriber {
         if ( this.simulationEventsListener == null) {
             this.simulationEventsListener = rs;
         } else {
@@ -320,7 +320,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * los eventos de simulaci�n que el elemento vaya generando.
      * @since 2.0
      */    
-    public TSimulationEventCollector simulationEventsListener;
+    public TSimulationEventListener simulationEventsListener;
     /**
      * Este atributo es el generador de identificadores que debe usar el elemento para
      * asignar un identificador unico a cada evento que genere.

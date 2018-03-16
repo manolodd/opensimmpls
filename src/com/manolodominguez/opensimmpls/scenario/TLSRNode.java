@@ -1294,7 +1294,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         } else {
             TNode nodeAux2 = topology.getFirstNodeNamed(this.getName());
             if (nodeAux2 != null) {
-                if (this.topology.thereIsMoreThanANodeNamed(this.getName())) {
+                if (this.topology.isThereMoreThanANodeNamed(this.getName())) {
                     return TLSRNode.NAME_ALREADY_EXISTS;
                 }
             }

@@ -27,16 +27,16 @@ import com.manolodominguez.opensimmpls.utils.TLock;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class TSimulationEventCollector implements ISimulationEventListener {
+public class TSimulationEventListener implements ISimulationEventListener {
 
     /**
      * This method is the constructor of the class. It creates a new instance of
-     * TSimulationCollector.
+     * TSimulationEventListener.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TSimulationEventCollector() {
+    public TSimulationEventListener() {
         this.simulationEventsBuffer = new TreeSet();
         this.monitor = new TLock();
         this.simulationPanel = null;

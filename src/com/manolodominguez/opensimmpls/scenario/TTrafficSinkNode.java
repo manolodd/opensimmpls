@@ -256,7 +256,7 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
         } else {
             TNode nodeAux2 = topology.getFirstNodeNamed(this.getName());
             if (nodeAux2 != null) {
-                if (this.topology.thereIsMoreThanANodeNamed(this.getName())) {
+                if (this.topology.isThereMoreThanANodeNamed(this.getName())) {
                     return TTrafficSinkNode.NAME_ALREADY_EXISTS;
                 }
             }

@@ -802,7 +802,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
         } else {
             TNode nodeAux = topology.getFirstNodeNamed(this.getName());
             if (nodeAux != null) {
-                if (this.topology.thereIsMoreThanANodeNamed(this.getName())) {
+                if (this.topology.isThereMoreThanANodeNamed(this.getName())) {
                     return TTrafficGeneratorNode.NAME_ALREADY_EXISTS;
                 }
             }

@@ -16,7 +16,7 @@
 package com.manolodominguez.opensimmpls.scenario;
 
 import com.manolodominguez.opensimmpls.ui.simulator.JSimulationPanel;
-import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventCollector;
+import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventListener;
 
 /**
  * This class implements a container of simulation events that also link the
@@ -39,7 +39,7 @@ public class TSimulation {
      */
     public TSimulation(TScenario scenario) {
         this.parentScenario = scenario;
-        this.simulationEventCollector = new TSimulationEventCollector();
+        this.simulationEventListener = new TSimulationEventListener();
         // FIX: Use class constants instead of harcoded values.
         this.simulationLengthInNs = 500;
         this.simulationStepLengthInNs = 1;
@@ -55,7 +55,7 @@ public class TSimulation {
      * @since 2.0
      */
     public void setSimulationPanel(JSimulationPanel simulationPanel) {
-        this.simulationEventCollector.setSimulationPanel(simulationPanel);
+        this.simulationEventListener.setSimulationPanel(simulationPanel);
     }
 
     /**
@@ -66,7 +66,7 @@ public class TSimulation {
      * @since 2.0
      */
     public void reset() {
-        this.simulationEventCollector.reset();
+        this.simulationEventListener.reset();
     }
 
     /**
@@ -160,13 +160,13 @@ public class TSimulation {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TSimulationEventCollector getSimulationEventCollector() {
-        return this.simulationEventCollector;
+    public TSimulationEventListener getSimulationEventListener() {
+        return this.simulationEventListener;
     }
 
     private long simulationLengthInNs;
     private long simulationStepLengthInNs;
 
     private TScenario parentScenario;
-    private TSimulationEventCollector simulationEventCollector;
+    private TSimulationEventListener simulationEventListener;
 }
