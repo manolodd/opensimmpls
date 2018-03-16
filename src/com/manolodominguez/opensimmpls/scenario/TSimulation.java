@@ -41,8 +41,8 @@ public class TSimulation {
         this.parentScenario = scenario;
         this.simulationEventCollector = new TSimulationEventCollector();
         // FIX: Use class constants instead of harcoded values.
-        this.simulationLength = 500;
-        this.simulationStepLength = 1;
+        this.simulationLengthInNs = 500;
+        this.simulationStepLengthInNs = 1;
     }
 
     /**
@@ -70,93 +70,102 @@ public class TSimulation {
     }
 
     /**
-     * Este m�todo permite establecer la duraci�n total de la simulaci�n.
+     * This method sets the total simulation length in nanoseconds.
      *
-     * @param simulationLength Duraci�n total de la simulaci�n en nanosegundos.
+     * @param simulationLengthInNs the total simulation length in nanoseconds.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void setSimulationLength(long simulationLength) {
-        this.simulationLength = simulationLength;
+    public void setSimulationLengthInNs(long simulationLengthInNs) {
+        this.simulationLengthInNs = simulationLengthInNs;
     }
 
     /**
-     * Este m�todo permite establecer la duraci�n del paso de simulaci�n.
+     * This method sets the simulation step length in nanoseconds.
      *
-     * @param simulationStepLength Duraci�n del paso de simulaci�n en
-     * nanosegundos.
+     * @param simulationStepLengthInNs the simulation step length in
+     * nanoseconds.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void setSimulationStepLength(long simulationStepLength) {
-        this.simulationStepLength = simulationStepLength;
+    public void setSimulationStepLengthInNs(long simulationStepLengthInNs) {
+        this.simulationStepLengthInNs = simulationStepLengthInNs;
     }
 
     /**
-     * Este m�todo permite obtener la duraci�n total de la simulaci�n-
+     * This method gets the simulation total length in nanoseconds.
      *
-     * @return Duraci�n total de la simulaci�n, en nanosegundos.
+     * @return the simulation total length in nanoseconds.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public long getSimulationLength() {
-        return this.simulationLength;
+    public long getSimulationLengthInNs() {
+        return this.simulationLengthInNs;
     }
 
     /**
-     * Este m�todo permite obtener la duraci�n del paso de simulaci�n.
+     * This method gets the simulation step total length in nanoseconds.
      *
-     * @return Duraci�n del paso de simulaci�n en nanosegundos.
+     * @return the simulation step total length in nanoseconds.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public long getSimulationStepLength() {
-        return this.simulationStepLength;
+    public long getSimulationStepLengthInNs() {
+        return this.simulationStepLengthInNs;
     }
 
     /**
-     * Este m�todo serializa la instancia, convirti�ndola en un texto que se
-     * puede almacenar en disco.
+     * This method creates a serialized string containing the configuration
+     * values of every attributes of the instance.
      *
-     * @return Un texto que representa a la instancia actual.
+     * @return a serialized string containing the configuration values of every
+     * attributes of the instance.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public String marshallTimeParameters() {
         String serializedTimeParameters = "#Temporizacion#";
-        serializedTimeParameters += this.simulationLength + "#";
-        serializedTimeParameters += this.simulationStepLength + "#";
+        serializedTimeParameters += this.simulationLengthInNs + "#";
+        serializedTimeParameters += this.simulationStepLengthInNs + "#";
         return serializedTimeParameters;
     }
 
     /**
-     * Este m�todo deserializa un objeto TSimulation previamente serializado,
-     * reconstruy�ndolo en memoria.
+     * This method configure this instance from the configuration values
+     * contained in a serialized string.
      *
-     * @param serializedTimeParameters El objeto de tipo TSimulaci�n
-     * serializado.
-     * @return TRUE, si se ha conseguido serializar correctamente. FALSE en caso
-     * contrario.
+     * @param serializedTimeParameters The string containing the configuration
+     * values for this instance.
+     * @return TRUE, if the serialized string is correct. Otherwise, FALSE.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public boolean unmarshallTimeParameters(String serializedTimeParameters) {
         String[] timeParametersFields = serializedTimeParameters.split("#");
+        // FIX: Do not use harcoded values. Use class constants instead.
         if (timeParametersFields.length != 4) {
             return false;
         }
-        this.simulationLength = Integer.valueOf(timeParametersFields[2]).longValue();
-        this.simulationStepLength = Integer.valueOf(timeParametersFields[3]).longValue();
+        this.simulationLengthInNs = Integer.valueOf(timeParametersFields[2]).longValue();
+        this.simulationStepLengthInNs = Integer.valueOf(timeParametersFields[3]).longValue();
         return true;
     }
 
     /**
-     * Este m�todo permite acceder directamente al recolector de eventos de
-     * simulaci�n.
+     * This methods gets the simulation event collector that contains the
+     * simulation events tha have happened.
      *
-     * @return Recolector de eventos de simulaci�n el escenario.
+     * @return the simulation event collector that contains the simulation
+     * events tha have happened.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TSimulationEventCollector simulationEventCollector() {
+    public TSimulationEventCollector getSimulationEventCollector() {
         return this.simulationEventCollector;
     }
 
-    private long simulationLength;
-    private long simulationStepLength;
+    private long simulationLengthInNs;
+    private long simulationStepLengthInNs;
 
     private TScenario parentScenario;
     private TSimulationEventCollector simulationEventCollector;
