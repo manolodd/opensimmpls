@@ -1115,7 +1115,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         if (elementoDisenioClicDerecho != null) {
             if (elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
                 TNode nt = (TNode) elementoDisenioClicDerecho;
-                if (nt.getNodeType() == TNode.SENDER) {
+                if (nt.getNodeType() == TNode.TRAFFIC_GENERATOR) {
                     JVentanaEmisor ve = new JVentanaEmisor(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     ve.ponerConfiguracion((TTrafficGeneratorNode) nt, true);
                     ve.show();
@@ -1135,7 +1135,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                     JVentanaLSRA vlsra = new JVentanaLSRA(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     vlsra.ponerConfiguracion((TActiveLSRNode) nt, true);
                     vlsra.show();
-                } else if (nt.getNodeType() == TNode.RECEIVER) {
+                } else if (nt.getNodeType() == TNode.TRAFFIC_SINK) {
                     JVentanaReceptor vr = new JVentanaReceptor(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     vr.ponerConfiguracion((TTrafficSinkNode) nt, true);
                     vr.show();
@@ -1442,7 +1442,7 @@ private void clicEnPopUpDisenioEliminar(java.awt.event.ActionEvent evt) {//GEN-F
         if (elementoDisenioClicDerecho != null) {
             if (elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
                 TNode nt = (TNode) elementoDisenioClicDerecho;
-                if (nt.getNodeType() == TNode.RECEIVER) {
+                if (nt.getNodeType() == TNode.TRAFFIC_SINK) {
                     if (this.escenario.getTopology().isThereAnyNodeGeneratingTrafficFor((TTrafficSinkNode) nt)) {
                         JVentanaAdvertencia va;
                         va = new JVentanaAdvertencia(VentanaPadre, true, dispensadorDeImagenes);
@@ -2121,7 +2121,7 @@ private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-
     boolean hayDestino = false;
     while (it.hasNext()) {
         nt = (TNode) it.next();
-        if (nt.getNodeType() == TNode.RECEIVER) {
+        if (nt.getNodeType() == TNode.TRAFFIC_SINK) {
             hayDestino = true;
         }
     }
@@ -2513,9 +2513,9 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
         gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
         this.panelAnalisis.add(this.panelFijo, gbc);
         if (nt != null) {
-            if (nt.getNodeType() == TNode.SENDER) {
+            if (nt.getNodeType() == TNode.TRAFFIC_GENERATOR) {
                 this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.EMISOR));
-            } else if (nt.getNodeType() == TNode.RECEIVER) {
+            } else if (nt.getNodeType() == TNode.TRAFFIC_SINK) {
                 this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.RECEPTOR));
             } else if (nt.getNodeType() == TNode.LER) {
                 this.etiquetaNombreElementoEstadistica.setIcon(this.dispensadorDeImagenes.obtenerIcono(TImagesBroker.LER));

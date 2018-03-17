@@ -350,8 +350,8 @@ public class TLinkConfig {
         if ((headEndNode != null) && (tailEndNode != null)) {
             int headEndNodeType = headEndNode.getNodeType();
             int tailEndNodeType = tailEndNode.getNodeType();
-            if ((headEndNodeType == TNode.SENDER) || (headEndNodeType == TNode.RECEIVER)
-                    || (tailEndNodeType == TNode.SENDER) || (tailEndNodeType == TNode.RECEIVER)) {
+            if ((headEndNodeType == TNode.TRAFFIC_GENERATOR) || (headEndNodeType == TNode.TRAFFIC_SINK)
+                    || (tailEndNodeType == TNode.TRAFFIC_GENERATOR) || (tailEndNodeType == TNode.TRAFFIC_SINK)) {
                 this.setLinkType(TLink.EXTERNAL_LINK);
             } else {
                 this.setLinkType(TLink.INTERNAL_LINK);

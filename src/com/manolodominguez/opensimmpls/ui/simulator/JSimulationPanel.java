@@ -369,14 +369,14 @@ public class JSimulationPanel extends javax.swing.JPanel {
             
             int tipo = nodo.getNodeType();
             switch (tipo) {
-                case TNode.SENDER: {
+                case TNode.TRAFFIC_GENERATOR: {
                     if (nodo.isSelected() == TNode.UNSELECTED)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
-                case TNode.RECEIVER: {
+                case TNode.TRAFFIC_SINK: {
                     if (nodo.isSelected() == TNode.UNSELECTED)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR), posicion.x, posicion.y, null);
                     else
@@ -580,9 +580,9 @@ public class JSimulationPanel extends javax.swing.JPanel {
                         int tipo = nt.getNodeType();
                         long cong = enc.obtenerPorcentajeCongestion();
                         if ((cong >= 50) && (cong < 75)) {
-                            if (tipo == TNode.SENDER) {
+                            if (tipo == TNode.TRAFFIC_GENERATOR) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR_CONGESTIONADO_20), p.x, p.y, null);
-                            } else if (tipo == TNode.RECEIVER) {
+                            } else if (tipo == TNode.TRAFFIC_SINK) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR_CONGESTIONADO_20), p.x, p.y, null);
                             } else if (tipo == TNode.LER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LER_CONGESTIONADO_20), p.x, p.y, null);
@@ -594,9 +594,9 @@ public class JSimulationPanel extends javax.swing.JPanel {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA_CONGESTIONADO_20), p.x, p.y, null);
                             }
                         } else if ((cong >= 75) && (cong < 95)) {
-                            if (tipo == TNode.SENDER) {
+                            if (tipo == TNode.TRAFFIC_GENERATOR) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR_CONGESTIONADO_60), p.x, p.y, null);
-                            } else if (tipo == TNode.RECEIVER) {
+                            } else if (tipo == TNode.TRAFFIC_SINK) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR_CONGESTIONADO_60), p.x, p.y, null);
                             } else if (tipo == TNode.LER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LER_CONGESTIONADO_60), p.x, p.y, null);
@@ -608,9 +608,9 @@ public class JSimulationPanel extends javax.swing.JPanel {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA_CONGESTIONADO_60), p.x, p.y, null);
                             }
                         } else if (cong >= 95) {
-                            if (tipo == TNode.SENDER) {
+                            if (tipo == TNode.TRAFFIC_GENERATOR) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR_CONGESTIONADO), p.x, p.y, null);
-                            } else if (tipo == TNode.RECEIVER) {
+                            } else if (tipo == TNode.TRAFFIC_SINK) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR_CONGESTIONADO), p.x, p.y, null);
                             } else if (tipo == TNode.LER) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LER_CONGESTIONADO), p.x, p.y, null);
@@ -622,7 +622,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.LSRA_CONGESTIONADO), p.x, p.y, null);
                             }
                         }
-                        if (nt.getTicksWithoutEmitting() > TNode.MAX_STEP_WITHOUT_EMITTING_BEFORE_ALERT) {
+                        if (nt.getTicksWithoutEmitting() > TNode.MAX_STEP_WITHOUT_EMITTING_BEFORE_ALERTING) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImagesBroker.TRABAJANDO), p.x, p.y, null);
                         }
                     }

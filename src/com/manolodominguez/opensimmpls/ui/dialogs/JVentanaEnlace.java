@@ -336,13 +336,13 @@ private void clicEnCambioNodoIzquierdo(java.awt.event.ActionEvent evt) {//GEN-FI
                     if (nt.hasAvailablePorts()) {
                         if (!topo.isThereAnyLinkThatJoins(nt.getNodeID(), seleccionado.getNodeID())) {
                             switch (seleccionado.getNodeType()) {
-                                case TNode.SENDER: {
+                                case TNode.TRAFFIC_GENERATOR: {
                                     if ((nt.getNodeType() == TNode.LER) || (nt.getNodeType() == TNode.ACTIVE_LER)) {
                                         selectorExtremoDerecho.addItem(nt.getName());
                                     }
                                     break;
                                 }
-                                case TNode.RECEIVER: {
+                                case TNode.TRAFFIC_SINK: {
                                     if ((nt.getNodeType() == TNode.LER) || (nt.getNodeType() == TNode.ACTIVE_LER)) {
                                         selectorExtremoDerecho.addItem(nt.getName());
                                     }

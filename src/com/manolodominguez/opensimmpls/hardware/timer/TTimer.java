@@ -237,7 +237,7 @@ public class TTimer implements Runnable {
         while (nodesIterator.hasNext()) {
             nodeAux = (TNode) nodesIterator.next();
             switch (nodeAux.getNodeType()) {
-                case TNode.SENDER: {
+                case TNode.TRAFFIC_GENERATOR: {
                     nodeAux = (TTrafficGeneratorNode) nodeAux;
                     break;
                 }
@@ -257,7 +257,7 @@ public class TTimer implements Runnable {
                     nodeAux = (TActiveLSRNode) nodeAux;
                     break;
                 }
-                case TNode.RECEIVER: {
+                case TNode.TRAFFIC_SINK: {
                     nodeAux = (TTrafficSinkNode) nodeAux;
                     break;
                 }

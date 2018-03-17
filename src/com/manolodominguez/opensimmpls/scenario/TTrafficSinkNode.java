@@ -50,7 +50,7 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
         super(nodeID, ipv4Address, identifierGenerator, topology);
         // FIX: This method is overridable. Avoid using this method to update
         // the number of ports or make it final.
-        this.setPorts(TNode.DEFAULT_NUM_PORTS_RECEIVER);
+        this.setPorts(TNode.DEFAULT_NUM_PORTS_TRAFFIC_SINK);
         // FIX: Use class constants instead of harcoded values.
         this.ports.setUnlimitedBuffer(true);
         this.stats = new TTrafficSinkStats();
@@ -79,7 +79,7 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
      */
     @Override
     public int getNodeType() {
-        return TNode.RECEIVER;
+        return TNode.TRAFFIC_SINK;
     }
 
     /**

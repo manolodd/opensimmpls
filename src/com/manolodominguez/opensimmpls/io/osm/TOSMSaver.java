@@ -108,7 +108,7 @@ public class TOSMSaver {
             while (auxIterator.hasNext()) {
                 auxNode = (TNode) auxIterator.next();
                 if (auxNode != null) {
-                    if (auxNode.getNodeType() == TNode.RECEIVER) {
+                    if (auxNode.getNodeType() == TNode.TRAFFIC_SINK) {
                         this.output.println(auxNode.marshall());
                         this.scenarioCRC.update(auxNode.marshall().getBytes());
                     }
@@ -119,7 +119,7 @@ public class TOSMSaver {
             while (auxIterator.hasNext()) {
                 auxNode = (TNode) auxIterator.next();
                 if (auxNode != null) {
-                    if (auxNode.getNodeType() != TNode.RECEIVER) {
+                    if (auxNode.getNodeType() != TNode.TRAFFIC_SINK) {
                         this.output.println(auxNode.marshall());
                         this.scenarioCRC.update(auxNode.marshall().getBytes());
                     }

@@ -525,8 +525,8 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     private static final int ICONS_WIDTH = 48;
     private static final int ICONS_HEIGHT = 48;
 
-    public static final int SENDER = 0;
-    public static final int RECEIVER = 1;
+    public static final int TRAFFIC_GENERATOR = 0;
+    public static final int TRAFFIC_SINK = 1;
     public static final int LER = 2;
     public static final int ACTIVE_LER = 3;
     public static final int LSR = 4;
@@ -535,14 +535,14 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     public static final int UNSELECTED = 0;
     public static final int SELECTED = 1;
 
-    public static final int DEFAULT_NUM_PORTS_SENDER = 1;
-    public static final int DEFAULT_NUM_PORTS_RECEIVER = 1;
+    public static final int DEFAULT_NUM_PORTS_TRAFFIC_GENERATOR = 1;
+    public static final int DEFAULT_NUM_PORTS_TRAFFIC_SINK = 1;
     public static final int DEFAULT_NUM_PORTS_LER = 8;
     public static final int DEFAULT_NUM_PORTS_ACTIVE_LER = 8;
     public static final int DEFAULT_NUM_PORTS_LSR = 8;
     public static final int DEFAULT_NUM_PORTS_ACTIVE_LSR = 8;
 
-    public static final int MAX_STEP_WITHOUT_EMITTING_BEFORE_ALERT = 25;
+    public static final int MAX_STEP_WITHOUT_EMITTING_BEFORE_ALERTING = 25;
 
     private int nodeID;
     private int selected;

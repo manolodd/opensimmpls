@@ -207,14 +207,14 @@ public class JPanelDisenio extends javax.swing.JPanel {
 
             int tipo = nodo.getNodeType();
             switch (tipo) {
-                case TNode.SENDER: {
+                case TNode.TRAFFIC_GENERATOR: {
                     if (nodo.isSelected() == TNode.UNSELECTED)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR), posicion.x, posicion.y, null);
                     else
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.EMISOR_MOVIENDOSE), posicion.x, posicion.y, null);
                     break;
                 }
-                case TNode.RECEIVER: {
+                case TNode.TRAFFIC_SINK: {
                     if (nodo.isSelected() == TNode.UNSELECTED)
                         g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImagesBroker.RECEPTOR), posicion.x, posicion.y, null);
                     else

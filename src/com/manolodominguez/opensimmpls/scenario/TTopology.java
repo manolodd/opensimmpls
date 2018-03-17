@@ -131,12 +131,12 @@ public class TTopology {
      * @since 2.0
      */
     public TNode getNode(int nodeID) {
-        TNode nodo = null;
-        Iterator iterador = this.nodes.iterator();
-        while (iterador.hasNext()) {
-            nodo = (TNode) iterador.next();
-            if (nodo.getNodeID() == nodeID) {
-                return nodo;
+        TNode node = null;
+        Iterator nodesIterator = this.nodes.iterator();
+        while (nodesIterator.hasNext()) {
+            node = (TNode) nodesIterator.next();
+            if (node.getNodeID() == nodeID) {
+                return node;
             }
         }
         return null;
@@ -151,12 +151,12 @@ public class TTopology {
      * @since 2.0
      */
     public TNode getNode(String ipv4Address) {
-        TNode nodo = null;
-        Iterator iterador = this.nodes.iterator();
-        while (iterador.hasNext()) {
-            nodo = (TNode) iterador.next();
-            if (nodo.getIPv4Address().equals(ipv4Address)) {
-                return nodo;
+        TNode node = null;
+        Iterator nodesIterator = this.nodes.iterator();
+        while (nodesIterator.hasNext()) {
+            node = (TNode) nodesIterator.next();
+            if (node.getIPv4Address().equals(ipv4Address)) {
+                return node;
             }
         }
         return null;
@@ -172,12 +172,12 @@ public class TTopology {
      * @since 2.0
      */
     public TNode getFirstNodeNamed(String nodeName) {
-        TNode nodo = null;
-        Iterator iterador = this.nodes.iterator();
-        while (iterador.hasNext()) {
-            nodo = (TNode) iterador.next();
-            if (nodo.getName().equals(nodeName)) {
-                return nodo;
+        TNode node = null;
+        Iterator nodesIterator = this.nodes.iterator();
+        while (nodesIterator.hasNext()) {
+            node = (TNode) nodesIterator.next();
+            if (node.getName().equals(nodeName)) {
+                return node;
             }
         }
         return null;
@@ -193,15 +193,15 @@ public class TTopology {
      * @since 2.0
      */
     public boolean isThereMoreThanANodeNamed(String nodeName) {
-        int cuantos = 0;
-        TNode nodo = null;
-        Iterator iterador = this.nodes.iterator();
-        while (iterador.hasNext()) {
-            nodo = (TNode) iterador.next();
-            if (nodo.getName().equals(nodeName)) {
-                cuantos++;
+        int nodesWithSameName = 0;
+        TNode node = null;
+        Iterator nodesIterator = this.nodes.iterator();
+        while (nodesIterator.hasNext()) {
+            node = (TNode) nodesIterator.next();
+            if (node.getName().equals(nodeName)) {
+                nodesWithSameName++;
             }
-            if (cuantos > 1) {
+            if (nodesWithSameName > 1) {
                 return true;
             }
         }
@@ -218,15 +218,15 @@ public class TTopology {
      * @since 2.0
      */
     public boolean isThereMoreThanALinkNamed(String linkName) {
-        int cuantos = 0;
-        TLink enlace = null;
-        Iterator iterador = this.links.iterator();
-        while (iterador.hasNext()) {
-            enlace = (TLink) iterador.next();
-            if (enlace.getName().equals(linkName)) {
-                cuantos++;
+        int linksWithSameName = 0;
+        TLink link = null;
+        Iterator linksIterator = this.links.iterator();
+        while (linksIterator.hasNext()) {
+            link = (TLink) linksIterator.next();
+            if (link.getName().equals(linkName)) {
+                linksWithSameName++;
             }
-            if (cuantos > 1) {
+            if (linksWithSameName > 1) {
                 return true;
             }
         }
@@ -244,14 +244,14 @@ public class TTopology {
      * @since 2.0
      */
     public boolean isThereAnyNodeGeneratingTrafficFor(TTrafficSinkNode trafficSinkNode) {
-        TNode nodo = null;
-        TTrafficGeneratorNode emisor = null;
-        Iterator iterador = this.nodes.iterator();
-        while (iterador.hasNext()) {
-            nodo = (TNode) iterador.next();
-            if (nodo.getNodeType() == TNode.SENDER) {
-                emisor = (TTrafficGeneratorNode) nodo;
-                if (emisor.getTargetIPv4Address().equals(trafficSinkNode.getIPv4Address())) {
+        TNode node = null;
+        TTrafficGeneratorNode trafficeGeneratorNode = null;
+        Iterator nodesIterator = this.nodes.iterator();
+        while (nodesIterator.hasNext()) {
+            node = (TNode) nodesIterator.next();
+            if (node.getNodeType() == TNode.TRAFFIC_GENERATOR) {
+                trafficeGeneratorNode = (TTrafficGeneratorNode) node;
+                if (trafficeGeneratorNode.getTargetIPv4Address().equals(trafficSinkNode.getIPv4Address())) {
                     return true;
                 }
             }
@@ -269,12 +269,12 @@ public class TTopology {
      * @since 2.0
      */
     public TLink getFirstLinkNamed(String linkName) {
-        TLink enlace = null;
-        Iterator iterador = this.links.iterator();
-        while (iterador.hasNext()) {
-            enlace = (TLink) iterador.next();
-            if (enlace.getName().equals(linkName)) {
-                return enlace;
+        TLink link = null;
+        Iterator linksIterator = this.links.iterator();
+        while (linksIterator.hasNext()) {
+            link = (TLink) linksIterator.next();
+            if (link.getName().equals(linkName)) {
+                return link;
             }
         }
         return null;
@@ -290,12 +290,12 @@ public class TTopology {
      * @since 2.0
      */
     public TNode getNodeInScreenPosition(Point screenPosition) {
-        TNode nodo = null;
-        Iterator iterador = this.nodes.iterator();
-        while (iterador.hasNext()) {
-            nodo = (TNode) iterador.next();
-            if (nodo.isInScreenPosition(screenPosition)) {
-                return nodo;
+        TNode node = null;
+        Iterator nodesIterator = this.nodes.iterator();
+        while (nodesIterator.hasNext()) {
+            node = (TNode) nodesIterator.next();
+            if (node.isInScreenPosition(screenPosition)) {
+                return node;
             }
         }
         return null;
@@ -321,42 +321,38 @@ public class TTopology {
      * @since 2.0
      */
     public void modifyNode(TNode modifiedNode) {
-        boolean fin = false;
-        TNode nodoBuscado = null;
-        Iterator iterador = this.nodes.iterator();
-        while ((iterador.hasNext()) && (!fin)) {
-            nodoBuscado = (TNode) iterador.next();
-            if (nodoBuscado.getNodeID() == modifiedNode.getNodeID()) {
-                if (modifiedNode.getNodeType() == TNode.SENDER) {
-                    TTrafficGeneratorNode nodoTrasCast = (TTrafficGeneratorNode) nodoBuscado;
-                    nodoTrasCast.setName(modifiedNode.getName());
-                    nodoTrasCast.setScreenPosition(modifiedNode.getScreenPosition());
-                } else if (modifiedNode.getNodeType() == TNode.RECEIVER) {
-                    TTrafficGeneratorNode nodoTrasCast = (TTrafficGeneratorNode) nodoBuscado;
-                    nodoTrasCast.setName(modifiedNode.getName());
-                    nodoTrasCast.setScreenPosition(modifiedNode.getScreenPosition());
-                } else if (modifiedNode.getNodeType() == TNode.RECEIVER) {
-                    TTrafficSinkNode nodoTrasCast = (TTrafficSinkNode) nodoBuscado;
-                    nodoTrasCast.setName(modifiedNode.getName());
-                    nodoTrasCast.setScreenPosition(modifiedNode.getScreenPosition());
+        boolean done = false;
+        TNode node = null;
+        Iterator nodesIterator = this.nodes.iterator();
+        while ((nodesIterator.hasNext()) && (!done)) {
+            node = (TNode) nodesIterator.next();
+            if (node.getNodeID() == modifiedNode.getNodeID()) {
+                if (modifiedNode.getNodeType() == TNode.TRAFFIC_GENERATOR) {
+                    TTrafficGeneratorNode trafficGeneratorNode = (TTrafficGeneratorNode) node;
+                    trafficGeneratorNode.setName(modifiedNode.getName());
+                    trafficGeneratorNode.setScreenPosition(modifiedNode.getScreenPosition());
+                } else if (modifiedNode.getNodeType() == TNode.TRAFFIC_SINK) {
+                    TTrafficSinkNode trafficSinkNode = (TTrafficSinkNode) node;
+                    trafficSinkNode.setName(modifiedNode.getName());
+                    trafficSinkNode.setScreenPosition(modifiedNode.getScreenPosition());
                 } else if (modifiedNode.getNodeType() == TNode.LER) {
-                    TLERNode nodoTrasCast = (TLERNode) nodoBuscado;
-                    nodoTrasCast.setName(modifiedNode.getName());
-                    nodoTrasCast.setScreenPosition(modifiedNode.getScreenPosition());
+                    TLERNode lerNode = (TLERNode) node;
+                    lerNode.setName(modifiedNode.getName());
+                    lerNode.setScreenPosition(modifiedNode.getScreenPosition());
                 } else if (modifiedNode.getNodeType() == TNode.ACTIVE_LER) {
-                    TActiveLERNode nodoTrasCast = (TActiveLERNode) nodoBuscado;
-                    nodoTrasCast.setName(modifiedNode.getName());
-                    nodoTrasCast.setScreenPosition(modifiedNode.getScreenPosition());
+                    TActiveLERNode activeLERNode = (TActiveLERNode) node;
+                    activeLERNode.setName(modifiedNode.getName());
+                    activeLERNode.setScreenPosition(modifiedNode.getScreenPosition());
                 } else if (modifiedNode.getNodeType() == TNode.LSR) {
-                    TLSRNode nodoTrasCast = (TLSRNode) nodoBuscado;
-                    nodoTrasCast.setName(modifiedNode.getName());
-                    nodoTrasCast.setScreenPosition(modifiedNode.getScreenPosition());
+                    TLSRNode lsrNode = (TLSRNode) node;
+                    lsrNode.setName(modifiedNode.getName());
+                    lsrNode.setScreenPosition(modifiedNode.getScreenPosition());
                 } else if (modifiedNode.getNodeType() == TNode.ACTIVE_LSR) {
-                    TActiveLSRNode nodoTrasCast = (TActiveLSRNode) nodoBuscado;
-                    nodoTrasCast.setName(modifiedNode.getName());
-                    nodoTrasCast.setScreenPosition(modifiedNode.getScreenPosition());
+                    TActiveLSRNode activeLSRNode = (TActiveLSRNode) node;
+                    activeLSRNode.setName(modifiedNode.getName());
+                    activeLSRNode.setScreenPosition(modifiedNode.getScreenPosition());
                 }
-                fin = true;
+                done = true;
             }
         }
     }
@@ -387,16 +383,16 @@ public class TTopology {
      * @since 2.0
      */
     public void removeLink(int linkID) {
-        boolean fin = false;
-        TLink enlace = null;
-        Iterator iterador = this.links.iterator();
-        while ((iterador.hasNext()) && (!fin)) {
-            enlace = (TLink) iterador.next();
-            if (enlace.getID() == linkID) {
-                enlace.disconnectFromBothNodes();
-                enlace.markForDeletionAsTimerEventListener(true);
-                iterador.remove();
-                fin = true;
+        boolean done = false;
+        TLink link = null;
+        Iterator linksIterator = this.links.iterator();
+        while ((linksIterator.hasNext()) && (!done)) {
+            link = (TLink) linksIterator.next();
+            if (link.getID() == linkID) {
+                link.disconnectFromBothNodes();
+                link.markForDeletionAsTimerEventListener(true);
+                linksIterator.remove();
+                done = true;
             }
         }
         this.timer.purgeTimerEventListenersMarkedForDeletion();
@@ -410,7 +406,7 @@ public class TTopology {
      * @since 2.0
      */
     public void removeLink(TLink link) {
-        TTopology.this.removeLink(link.getID());
+        this.removeLink(link.getID());
     }
 
     /**
@@ -423,12 +419,12 @@ public class TTopology {
      * @since 2.0
      */
     public TLink getLink(int linkID) {
-        TLink enlace = null;
-        Iterator iterador = this.links.iterator();
-        while (iterador.hasNext()) {
-            enlace = (TLink) iterador.next();
-            if (enlace.getID() == linkID) {
-                return enlace;
+        TLink link = null;
+        Iterator linksIterator = this.links.iterator();
+        while (linksIterator.hasNext()) {
+            link = (TLink) linksIterator.next();
+            if (link.getID() == linkID) {
+                return link;
             }
         }
         return null;
@@ -444,12 +440,12 @@ public class TTopology {
      * @since 2.0
      */
     public TLink getLinkInScreenPosition(Point screenPosition) {
-        TLink enlace = null;
-        Iterator iterador = this.links.iterator();
-        while (iterador.hasNext()) {
-            enlace = (TLink) iterador.next();
-            if (enlace.crossesScreenPosition(screenPosition)) {
-                return enlace;
+        TLink links = null;
+        Iterator linksIterator = this.links.iterator();
+        while (linksIterator.hasNext()) {
+            links = (TLink) linksIterator.next();
+            if (links.crossesScreenPosition(screenPosition)) {
+                return links;
             }
         }
         return null;
@@ -476,22 +472,22 @@ public class TTopology {
      * @since 2.0
      */
     public void modifyLink(TLink modifiedLink) {
-        boolean fin = false;
-        TLink enlaceBuscado = null;
-        Iterator iterador = this.links.iterator();
-        while ((iterador.hasNext()) && (!fin)) {
-            enlaceBuscado = (TLink) iterador.next();
-            if (enlaceBuscado.getID() == modifiedLink.getID()) {
-                if (enlaceBuscado.getLinkType() == TLink.EXTERNAL_LINK) {
-                    TExternalLink enlaceTrasCast = (TExternalLink) enlaceBuscado;
-                    enlaceTrasCast.setHeadEndNode(modifiedLink.getHeadEndNode());
-                    enlaceTrasCast.setTailEndNode(modifiedLink.getTailEndNode());
+        boolean done = false;
+        TLink link = null;
+        Iterator linksIterator = this.links.iterator();
+        while ((linksIterator.hasNext()) && (!done)) {
+            link = (TLink) linksIterator.next();
+            if (link.getID() == modifiedLink.getID()) {
+                if (link.getLinkType() == TLink.EXTERNAL_LINK) {
+                    TExternalLink externalLink = (TExternalLink) link;
+                    externalLink.setHeadEndNode(modifiedLink.getHeadEndNode());
+                    externalLink.setTailEndNode(modifiedLink.getTailEndNode());
                 } else if (modifiedLink.getLinkType() == TLink.INTERNAL_LINK) {
-                    TInternalLink enlaceTrasCast = (TInternalLink) enlaceBuscado;
-                    enlaceTrasCast.setHeadEndNode(modifiedLink.getHeadEndNode());
-                    enlaceTrasCast.setTailEndNode(modifiedLink.getTailEndNode());
+                    TInternalLink internalLink = (TInternalLink) link;
+                    internalLink.setHeadEndNode(modifiedLink.getHeadEndNode());
+                    internalLink.setTailEndNode(modifiedLink.getTailEndNode());
                 }
-                fin = true;
+                done = true;
             }
         }
     }
@@ -523,16 +519,16 @@ public class TTopology {
      */
     public TTopologyElement getElementInScreenPosition(Point screenPosition) {
         if (isThereAnElementInScreenPosition(screenPosition)) {
-            TNode n;
-            n = getNodeInScreenPosition(screenPosition);
-            if (n != null) {
-                return n;
+            TNode node;
+            node = getNodeInScreenPosition(screenPosition);
+            if (node != null) {
+                return node;
             }
 
-            TLink e;
-            e = getLinkInScreenPosition(screenPosition);
-            if (e != null) {
-                return e;
+            TLink link;
+            link = getLinkInScreenPosition(screenPosition);
+            if (link != null) {
+                return link;
             }
         }
         return null;
@@ -547,14 +543,14 @@ public class TTopology {
      * @since 2.0
      */
     public void removeNodeAndPropagate(int nodeID) {
-        TLink enlace = null;
-        Iterator iterador = this.links.iterator();
-        while (iterador.hasNext()) {
-            enlace = (TLink) iterador.next();
-            if (enlace.isConnectedTo(nodeID)) {
-                enlace.disconnectFromBothNodes();
-                enlace.markForDeletionAsTimerEventListener(true);
-                iterador.remove();
+        TLink link = null;
+        Iterator linksIterator = this.links.iterator();
+        while (linksIterator.hasNext()) {
+            link = (TLink) linksIterator.next();
+            if (link.isConnectedTo(nodeID)) {
+                link.disconnectFromBothNodes();
+                link.markForDeletionAsTimerEventListener(true);
+                linksIterator.remove();
             }
         }
         TTopology.this.removeNode(nodeID);
@@ -604,20 +600,20 @@ public class TTopology {
      * @since 2.0
      */
     public void removeAllElements() {
-        Iterator it = this.getLinksIterator();
-        TNode n;
-        TLink e;
-        while (it.hasNext()) {
-            e = (TLink) it.next();
-            e.disconnectFromBothNodes();
-            e.markForDeletionAsTimerEventListener(true);
-            it.remove();
+        Iterator elementsIterator = this.getLinksIterator();
+        TNode node;
+        TLink link;
+        while (elementsIterator.hasNext()) {
+            link = (TLink) elementsIterator.next();
+            link.disconnectFromBothNodes();
+            link.markForDeletionAsTimerEventListener(true);
+            elementsIterator.remove();
         }
-        it = this.getNodesIterator();
-        while (it.hasNext()) {
-            n = (TNode) it.next();
-            n.markForDeletionAsTimerEventListener(true);
-            it.remove();
+        elementsIterator = this.getNodesIterator();
+        while (elementsIterator.hasNext()) {
+            node = (TNode) elementsIterator.next();
+            node.markForDeletionAsTimerEventListener(true);
+            elementsIterator.remove();
         }
         this.timer.purgeTimerEventListenersMarkedForDeletion();
     }
@@ -665,25 +661,28 @@ public class TTopology {
      * @since 2.0
      */
     public int getMinimumDelay() {
-        Iterator it = this.getLinksIterator();
-        TLink e;
-        int minimoDelay = 0;
-        int delayAux = 0;
-        while (it.hasNext()) {
-            e = (TLink) it.next();
-            if (minimoDelay == 0) {
-                minimoDelay = e.getDelay();
+        Iterator linksIterator = this.getLinksIterator();
+        TLink link;
+        int minimumDelay = 0;
+        int tmpDelay = 0;
+        while (linksIterator.hasNext()) {
+            link = (TLink) linksIterator.next();
+            // FIX: Do not use harcoded values. Use class constants instead.
+            if (minimumDelay == 0) {
+                minimumDelay = link.getDelay();
             } else {
-                delayAux = e.getDelay();
-                if (delayAux < minimoDelay) {
-                    minimoDelay = delayAux;
+                tmpDelay = link.getDelay();
+                if (tmpDelay < minimumDelay) {
+                    minimumDelay = tmpDelay;
                 }
             }
         }
-        if (minimoDelay == 0) {
-            minimoDelay = 1;
+        // FIX: Do not use harcoded values. Use class constants instead.
+        if (minimumDelay == 0) {
+            // FIX: Do not use harcoded values. Use class constants instead.
+            minimumDelay = 1;
         }
-        return minimoDelay;
+        return minimumDelay;
     }
 
     /**
@@ -698,18 +697,18 @@ public class TTopology {
      * @since 2.0
      */
     public boolean isThereAnyLinkThatJoins(int node1ID, int node2ID) {
-        TLink enlace = null;
-        Iterator iterador = links.iterator();
-        TNode izquierdo;
-        TNode derecho;
-        while (iterador.hasNext()) {
-            enlace = (TLink) iterador.next();
-            izquierdo = enlace.getHeadEndNode();
-            derecho = enlace.getTailEndNode();
-            if ((derecho.getNodeID() == node1ID) && (izquierdo.getNodeID() == node2ID)) {
+        TLink link = null;
+        Iterator linksIterator = this.links.iterator();
+        TNode node1;
+        TNode node2;
+        while (linksIterator.hasNext()) {
+            link = (TLink) linksIterator.next();
+            node1 = link.getHeadEndNode();
+            node2 = link.getTailEndNode();
+            if ((node2.getNodeID() == node1ID) && (node1.getNodeID() == node2ID)) {
                 return true;
             }
-            if ((derecho.getNodeID() == node2ID) && (izquierdo.getNodeID() == node1ID)) {
+            if ((node2.getNodeID() == node2ID) && (node1.getNodeID() == node1ID)) {
                 return true;
             }
         }
@@ -727,19 +726,19 @@ public class TTopology {
      * @since 2.0
      */
     public TLink getLinkThatJoins(int node1ID, int node2ID) {
-        TLink enlace = null;
-        Iterator iterador = this.links.iterator();
-        TNode izquierdo;
-        TNode derecho;
-        while (iterador.hasNext()) {
-            enlace = (TLink) iterador.next();
-            izquierdo = enlace.getHeadEndNode();
-            derecho = enlace.getTailEndNode();
-            if ((derecho.getNodeID() == node1ID) && (izquierdo.getNodeID() == node2ID)) {
-                return enlace;
+        TLink link = null;
+        Iterator linksIterator = this.links.iterator();
+        TNode node1;
+        TNode node2;
+        while (linksIterator.hasNext()) {
+            link = (TLink) linksIterator.next();
+            node1 = link.getHeadEndNode();
+            node2 = link.getTailEndNode();
+            if ((node2.getNodeID() == node1ID) && (node1.getNodeID() == node2ID)) {
+                return link;
             }
-            if ((derecho.getNodeID() == node2ID) && (izquierdo.getNodeID() == node1ID)) {
-                return enlace;
+            if ((node2.getNodeID() == node2ID) && (node1.getNodeID() == node1ID)) {
+                return link;
             }
         }
         return null;
@@ -819,86 +818,94 @@ public class TTopology {
      */
     public synchronized int getNextHopID(int originNodeID, int targetNodeID) {
         this.floydAlgorithmLock.lock();
-        int numNodosActual = this.nodes.size();
-        int origen2 = 0;
-        int destino2 = 0;
-        // Hayamos equivalencias entre �ndices e identificadores de nodo
-        int equivalencia[] = new int[numNodosActual];
+        int currentNumberOfNodes = this.nodes.size();
+        int tmpOrigin = 0;
+        int tmpDestination = 0;
+        // We compute equivalences betweeen indexes and node IDs to be used 
+        // when computing the adjacency matrix.
+        int[] equivalenceMatrix = new int[currentNumberOfNodes];
         int i = 0;
-        TNode nt = null;
-        Iterator it = this.getNodesIterator();
-        while (it.hasNext()) {
-            nt = (TNode) it.next();
-            equivalencia[i] = nt.getNodeID();
-            if (equivalencia[i] == originNodeID) {
-                origen2 = i;
-            } else if (equivalencia[i] == targetNodeID) {
-                destino2 = i;
+        TNode node = null;
+        Iterator nodesIterator = this.getNodesIterator();
+        while (nodesIterator.hasNext()) {
+            node = (TNode) nodesIterator.next();
+            equivalenceMatrix[i] = node.getNodeID();
+            if (equivalenceMatrix[i] == originNodeID) {
+                tmpOrigin = i;
+            } else if (equivalenceMatrix[i] == targetNodeID) {
+                tmpDestination = i;
             }
             i++;
         }
-        // Averiguamos la matriz de adyacencia
-        TLink en = null;
-        long matrizAdyacencia[][] = new long[numNodosActual][numNodosActual];
+        // We compute adjacency matrix
+        TLink link = null;
+        long[][] adjacencyMatrix = new long[currentNumberOfNodes][currentNumberOfNodes];
         int j = 0;
-        for (i = 0; i < numNodosActual; i++) {
-            for (j = 0; j < numNodosActual; j++) {
-                en = getLinkThatJoins(equivalencia[i], equivalencia[j]);
-                if ((en == null) || ((en != null) && (en.isBroken()))) {
+        for (i = 0; i < currentNumberOfNodes; i++) {
+            for (j = 0; j < currentNumberOfNodes; j++) {
+                link = getLinkThatJoins(equivalenceMatrix[i], equivalenceMatrix[j]);
+                if ((link == null) || ((link != null) && (link.isBroken()))) {
+                    // If there is not a link joining node i and j. Or if this
+                    // link exists but is down at this moment:
                     if (i == j) {
-                        matrizAdyacencia[i][j] = 0;
+                        // It's the same node.
+                        adjacencyMatrix[i][j] = 0;
                     } else {
-                        matrizAdyacencia[i][j] = TTopology.INFINITE_WEIGHT;
+                        // It's impossible to reach i from j or viceversa.
+                        adjacencyMatrix[i][j] = TTopology.INFINITE_WEIGHT;
                     }
-                } else if (en.getLinkType() == TLink.EXTERNAL_LINK) {
-                    TExternalLink ee = (TExternalLink) en;
-                    matrizAdyacencia[i][j] = ee.getWeight();
+                } else if (link.getLinkType() == TLink.EXTERNAL_LINK) {
+                    // We put the link weight in the adjacency matrix
+                    TExternalLink externalLink = (TExternalLink) link;
+                    adjacencyMatrix[i][j] = externalLink.getWeight();
                 } else {
-                    TInternalLink ei = (TInternalLink) en;
-                    matrizAdyacencia[i][j] = ei.getWeight();
+                    // We put the link weight in the adjacency matrix
+                    TInternalLink ei = (TInternalLink) link;
+                    adjacencyMatrix[i][j] = ei.getWeight();
                 }
             }
         }
-        // Calculamos la matriz de costes y de caminos
-        long matrizCostes[][] = new long[numNodosActual][numNodosActual];
-        int matrizCaminos[][] = new int[numNodosActual][numNodosActual];
+        // We compute costs matrix and paths matrix
+        long[][] costsMatrix = new long[currentNumberOfNodes][currentNumberOfNodes];
+        int[][] pathsMatrix = new int[currentNumberOfNodes][currentNumberOfNodes];
         int k = 0;
-        for (i = 0; i < numNodosActual; i++) {
-            for (j = 0; j < numNodosActual; j++) {
-                matrizCostes[i][j] = matrizAdyacencia[i][j];
-                matrizCaminos[i][j] = numNodosActual;
+        for (i = 0; i < currentNumberOfNodes; i++) {
+            for (j = 0; j < currentNumberOfNodes; j++) {
+                costsMatrix[i][j] = adjacencyMatrix[i][j];
+                pathsMatrix[i][j] = currentNumberOfNodes;
             }
         }
-        for (k = 0; k < numNodosActual; k++) {
-            for (i = 0; i < numNodosActual; i++) {
-                for (j = 0; j < numNodosActual; j++) {
-                    if (!((matrizCostes[i][k] == TTopology.INFINITE_WEIGHT) || (matrizCostes[k][j] == TTopology.INFINITE_WEIGHT))) {
-                        if ((matrizCostes[i][k] + matrizCostes[k][j]) < matrizCostes[i][j]) {
-                            matrizCostes[i][j] = matrizCostes[i][k] + matrizCostes[k][j];
-                            matrizCaminos[i][j] = k;
+        for (k = 0; k < currentNumberOfNodes; k++) {
+            for (i = 0; i < currentNumberOfNodes; i++) {
+                for (j = 0; j < currentNumberOfNodes; j++) {
+                    if (!((costsMatrix[i][k] == TTopology.INFINITE_WEIGHT) || (costsMatrix[k][j] == TTopology.INFINITE_WEIGHT))) {
+                        if ((costsMatrix[i][k] + costsMatrix[k][j]) < costsMatrix[i][j]) {
+                            costsMatrix[i][j] = costsMatrix[i][k] + costsMatrix[k][j];
+                            pathsMatrix[i][j] = k;
                         }
                     }
                 }
             }
         }
-        // Obtiene el primer nodo del camino, si hay camino.
-        int nodoSiguiente = TTopology.TARGET_UNREACHABLE;
-        k = matrizCaminos[origen2][destino2];
-        while (k != numNodosActual) {
-            nodoSiguiente = k;
-            k = matrizCaminos[origen2][k];
+        // If there is a route to destination host, this step get the first hop
+        // of this route.
+        int nextHop = TTopology.TARGET_UNREACHABLE;
+        k = pathsMatrix[tmpOrigin][tmpDestination];
+        while (k != currentNumberOfNodes) {
+            nextHop = k;
+            k = pathsMatrix[tmpOrigin][k];
         }
-        // Comprobamos si no hay camino o es que son adyacentes
-        if (nodoSiguiente == TTopology.TARGET_UNREACHABLE) {
-            TLink enlt = this.getLinkThatJoins(originNodeID, targetNodeID);
-            if (enlt != null) {
-                nodoSiguiente = targetNodeID;
+        // We check wether there is not route to host or they are adjacents
+        if (nextHop == TTopology.TARGET_UNREACHABLE) {
+            TLink linkAux = this.getLinkThatJoins(originNodeID, targetNodeID);
+            if (linkAux != null) {
+                nextHop = targetNodeID;
             }
         } else {
-            nodoSiguiente = equivalencia[nodoSiguiente];
+            nextHop = equivalenceMatrix[nextHop];
         }
         this.floydAlgorithmLock.unLock();
-        return nodoSiguiente;
+        return nextHop;
     }
 
     /**
@@ -914,12 +921,12 @@ public class TTopology {
      * @since 2.0
      */
     public synchronized String getNextHopIPv4Address(String originNodeIPv4Address, String targetNodeIPv4Address) {
-        int origen = this.getNode(originNodeIPv4Address).getNodeID();
-        int destino = this.getNode(targetNodeIPv4Address).getNodeID();
-        int siguienteSalto = getNextHopID(origen, destino);
-        TNode nt = this.getNode(siguienteSalto);
-        if (nt != null) {
-            return nt.getIPv4Address();
+        int originNodeID = this.getNode(originNodeIPv4Address).getNodeID();
+        int destinationID = this.getNode(targetNodeIPv4Address).getNodeID();
+        int nextHopID = getNextHopID(originNodeID, destinationID);
+        TNode node = this.getNode(nextHopID);
+        if (node != null) {
+            return node.getIPv4Address();
         }
         return null;
     }
@@ -938,12 +945,12 @@ public class TTopology {
      * @since 2.0
      */
     public synchronized String getNextHopIPv4AddressUsingRABAN(String originNodeIPv4Address, String targetNodeIPv4Address) {
-        int origen = this.getNode(originNodeIPv4Address).getNodeID();
-        int destino = this.getNode(targetNodeIPv4Address).getNodeID();
-        int siguienteSalto = TTopology.this.getNextHopIDUsingRABAN(origen, destino);
-        TNode nt = this.getNode(siguienteSalto);
-        if (nt != null) {
-            return nt.getIPv4Address();
+        int originNodeID = this.getNode(originNodeIPv4Address).getNodeID();
+        int destinationNodeID = this.getNode(targetNodeIPv4Address).getNodeID();
+        int nextHopID = TTopology.this.getNextHopIDUsingRABAN(originNodeID, destinationNodeID);
+        TNode node = this.getNode(nextHopID);
+        if (node != null) {
+            return node.getIPv4Address();
         }
         return null;
     }
@@ -966,13 +973,13 @@ public class TTopology {
      * llegar.
      */
     public synchronized String getNextHopIPv4AddressUsingRABAN(String originNodeIPv4Address, String targetNodeIPv4Address, String nodeToAvoidIPv4Address) {
-        int origen = this.getNode(originNodeIPv4Address).getNodeID();
-        int destino = this.getNode(targetNodeIPv4Address).getNodeID();
-        int nodoAEvitar = this.getNode(nodeToAvoidIPv4Address).getNodeID();
-        int siguienteSalto = getNextHopIDUsingRABAN(origen, destino, nodoAEvitar);
-        TNode nt = this.getNode(siguienteSalto);
-        if (nt != null) {
-            return nt.getIPv4Address();
+        int originNodeID = this.getNode(originNodeIPv4Address).getNodeID();
+        int destinationNodeID = this.getNode(targetNodeIPv4Address).getNodeID();
+        int nodeToAvoidID = this.getNode(nodeToAvoidIPv4Address).getNodeID();
+        int nextHopID = getNextHopIDUsingRABAN(originNodeID, destinationNodeID, nodeToAvoidID);
+        TNode node = this.getNode(nextHopID);
+        if (node != null) {
+            return node.getIPv4Address();
         }
         return null;
     }

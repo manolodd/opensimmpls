@@ -58,7 +58,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
         super(nodeID, ipv4Address, identifierGenerator, topology);
         // FIX: This method is overridable. Avoid using this method to update
         // the number of ports or make it final.
-        this.setPorts(super.DEFAULT_NUM_PORTS_SENDER);
+        this.setPorts(super.DEFAULT_NUM_PORTS_TRAFFIC_GENERATOR);
         this.packetIdentifierGenerator = new TLongIDGenerator();
         this.packetGoSdentifierGenerator = new TRotaryIDGenerator();
         this.targetIPv4Address = "";
@@ -306,7 +306,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
      */
     @Override
     public int getNodeType() {
-        return TNode.SENDER;
+        return TNode.TRAFFIC_GENERATOR;
     }
 
     /**

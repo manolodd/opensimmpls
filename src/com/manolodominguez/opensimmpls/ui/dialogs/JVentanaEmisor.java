@@ -73,7 +73,7 @@ public class JVentanaEmisor extends javax.swing.JDialog {
         TNode nt;
         while (it.hasNext()) {
             nt = (TNode) it.next();
-            if (nt.getNodeType() == TNode.RECEIVER) {
+            if (nt.getNodeType() == TNode.TRAFFIC_SINK) {
                 selectorDelReceptor.addItem(nt.getName());
             }
         }
