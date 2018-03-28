@@ -860,8 +860,8 @@ public class TTopology {
                     adjacencyMatrix[i][j] = externalLink.getWeight();
                 } else {
                     // We put the link weight in the adjacency matrix
-                    TInternalLink ei = (TInternalLink) link;
-                    adjacencyMatrix[i][j] = ei.getWeight();
+                    TInternalLink internalLink = (TInternalLink) link;
+                    adjacencyMatrix[i][j] = internalLink.getWeight();
                 }
             }
         }
@@ -999,86 +999,88 @@ public class TTopology {
      */
     public synchronized int getNextHopIDUsingRABAN(int originNodeID, int targetNodeID) {
         this.rabanAlgorithmLock.lock();
-        int numNodosActual = this.nodes.size();
-        int origen2 = 0;
-        int destino2 = 0;
-        // Hayamos equivalencias entre �ndices e identificadores de nodo
-        int equivalencia[] = new int[numNodosActual];
+        int currentNumberOfNodes = this.nodes.size();
+        int tmpOrigin = 0;
+        int tmpDestination = 0;
+        // We compute equivalences betweeen indexes and node IDs to be used 
+        // when computing the adjacency matrix.
+        int[] equivalenceMatrix = new int[currentNumberOfNodes];
         int i = 0;
-        TNode nt = null;
-        Iterator it = this.getNodesIterator();
-        while (it.hasNext()) {
-            nt = (TNode) it.next();
-            equivalencia[i] = nt.getNodeID();
-            if (equivalencia[i] == originNodeID) {
-                origen2 = i;
-            } else if (equivalencia[i] == targetNodeID) {
-                destino2 = i;
+        TNode node = null;
+        Iterator nodesIterator = this.getNodesIterator();
+        while (nodesIterator.hasNext()) {
+            node = (TNode) nodesIterator.next();
+            equivalenceMatrix[i] = node.getNodeID();
+            if (equivalenceMatrix[i] == originNodeID) {
+                tmpOrigin = i;
+            } else if (equivalenceMatrix[i] == targetNodeID) {
+                tmpDestination = i;
             }
             i++;
         }
-        // Averiguamos la matriz de adyacencia
-        TLink en = null;
-        long matrizAdyacencia[][] = new long[numNodosActual][numNodosActual];
+        // We compute adjacency matrix
+        TLink link = null;
+        long[][] adjacencyMatrix = new long[currentNumberOfNodes][currentNumberOfNodes];
         int j = 0;
-        for (i = 0; i < numNodosActual; i++) {
-            for (j = 0; j < numNodosActual; j++) {
-                en = getLinkThatJoins(equivalencia[i], equivalencia[j]);
-                if ((en == null) || ((en != null) && (en.isBroken()))) {
+        for (i = 0; i < currentNumberOfNodes; i++) {
+            for (j = 0; j < currentNumberOfNodes; j++) {
+                link = getLinkThatJoins(equivalenceMatrix[i], equivalenceMatrix[j]);
+                if ((link == null) || ((link != null) && (link.isBroken()))) {
                     if (i == j) {
-                        matrizAdyacencia[i][j] = 0;
+                        adjacencyMatrix[i][j] = 0;
                     } else {
-                        matrizAdyacencia[i][j] = this.INFINITE_WEIGHT;
+                        adjacencyMatrix[i][j] = TTopology.INFINITE_WEIGHT;
                     }
-                } else if (en.getLinkType() == TLink.EXTERNAL_LINK) {
-                    TExternalLink ee = (TExternalLink) en;
-                    matrizAdyacencia[i][j] = ee.getRABANWeight();
+                } else if (link.getLinkType() == TLink.EXTERNAL_LINK) {
+                    TExternalLink externalLink = (TExternalLink) link;
+                    adjacencyMatrix[i][j] = externalLink.getRABANWeight();
                 } else {
-                    TInternalLink ei = (TInternalLink) en;
-                    matrizAdyacencia[i][j] = ei.getRABANWeight();
+                    TInternalLink internalLink = (TInternalLink) link;
+                    adjacencyMatrix[i][j] = internalLink.getRABANWeight();
                 }
             }
         }
-        // Calculamos la matriz de costes y de caminos
-        long matrizCostes[][] = new long[numNodosActual][numNodosActual];
-        int matrizCaminos[][] = new int[numNodosActual][numNodosActual];
+        // We compute costs matrix and paths matrix
+        long[][] costsMatrix = new long[currentNumberOfNodes][currentNumberOfNodes];
+        int[][] pathsMatrix = new int[currentNumberOfNodes][currentNumberOfNodes];
         int k = 0;
-        for (i = 0; i < numNodosActual; i++) {
-            for (j = 0; j < numNodosActual; j++) {
-                matrizCostes[i][j] = matrizAdyacencia[i][j];
-                matrizCaminos[i][j] = numNodosActual;
+        for (i = 0; i < currentNumberOfNodes; i++) {
+            for (j = 0; j < currentNumberOfNodes; j++) {
+                costsMatrix[i][j] = adjacencyMatrix[i][j];
+                pathsMatrix[i][j] = currentNumberOfNodes;
             }
         }
-        for (k = 0; k < numNodosActual; k++) {
-            for (i = 0; i < numNodosActual; i++) {
-                for (j = 0; j < numNodosActual; j++) {
-                    if (!((matrizCostes[i][k] == this.INFINITE_WEIGHT) || (matrizCostes[k][j] == this.INFINITE_WEIGHT))) {
-                        if ((matrizCostes[i][k] + matrizCostes[k][j]) < matrizCostes[i][j]) {
-                            matrizCostes[i][j] = matrizCostes[i][k] + matrizCostes[k][j];
-                            matrizCaminos[i][j] = k;
+        for (k = 0; k < currentNumberOfNodes; k++) {
+            for (i = 0; i < currentNumberOfNodes; i++) {
+                for (j = 0; j < currentNumberOfNodes; j++) {
+                    if (!((costsMatrix[i][k] == TTopology.INFINITE_WEIGHT) || (costsMatrix[k][j] == TTopology.INFINITE_WEIGHT))) {
+                        if ((costsMatrix[i][k] + costsMatrix[k][j]) < costsMatrix[i][j]) {
+                            costsMatrix[i][j] = costsMatrix[i][k] + costsMatrix[k][j];
+                            pathsMatrix[i][j] = k;
                         }
                     }
                 }
             }
         }
-        // Obtiene el primer nodo del camino, si hay camino.
-        int nodoSiguiente = this.TARGET_UNREACHABLE;
-        k = matrizCaminos[origen2][destino2];
-        while (k != numNodosActual) {
-            nodoSiguiente = k;
-            k = matrizCaminos[origen2][k];
+        // If there is a route to destination host, this step get the first hop
+        // of this route.
+        int nextHop = TTopology.TARGET_UNREACHABLE;
+        k = pathsMatrix[tmpOrigin][tmpDestination];
+        while (k != currentNumberOfNodes) {
+            nextHop = k;
+            k = pathsMatrix[tmpOrigin][k];
         }
-        // Comprobamos si no hay camino o es que son adyacentes
-        if (nodoSiguiente == this.TARGET_UNREACHABLE) {
-            TLink enlt = this.getLinkThatJoins(originNodeID, targetNodeID);
-            if (enlt != null) {
-                nodoSiguiente = targetNodeID;
+        // We check wether there is not route to host or they are adjacents
+        if (nextHop == TTopology.TARGET_UNREACHABLE) {
+            TLink linkAux = this.getLinkThatJoins(originNodeID, targetNodeID);
+            if (linkAux != null) {
+                nextHop = targetNodeID;
             }
         } else {
-            nodoSiguiente = equivalencia[nodoSiguiente];
+            nextHop = equivalenceMatrix[nextHop];
         }
         this.rabanAlgorithmLock.unLock();
-        return nodoSiguiente;
+        return nextHop;
     }
 
     /**
@@ -1099,97 +1101,100 @@ public class TTopology {
      */
     public synchronized int getNextHopIDUsingRABAN(int originNodeID, int targetNodeID, int nodeToAvoidID) {
         this.rabanAlgorithmLock.lock();
-        int numNodosActual = this.nodes.size();
-        int origen2 = 0;
-        int destino2 = 0;
-        int nodoAEvitar2 = 0;
-        // Hayamos equivalencias entre �ndices e identificadores de nodo
-        int equivalencia[] = new int[numNodosActual];
+        int currentNumberOfNodes = this.nodes.size();
+        int tmpOrigin = 0;
+        int tmpDestination = 0;
+        int tmpNodeToAvoidID = 0;
+        // We compute equivalences betweeen indexes and node IDs to be used 
+        // when computing the adjacency matrix.
+        int[] equivalenceMatrix = new int[currentNumberOfNodes];
         int i = 0;
-        TNode nt = null;
-        Iterator it = this.getNodesIterator();
-        while (it.hasNext()) {
-            nt = (TNode) it.next();
-            equivalencia[i] = nt.getNodeID();
-            if (equivalencia[i] == originNodeID) {
-                origen2 = i;
-            } else if (equivalencia[i] == targetNodeID) {
-                destino2 = i;
-            } else if (equivalencia[i] == nodeToAvoidID) {
-                nodoAEvitar2 = i;
+        TNode node = null;
+        Iterator nodesIterator = this.getNodesIterator();
+        while (nodesIterator.hasNext()) {
+            node = (TNode) nodesIterator.next();
+            equivalenceMatrix[i] = node.getNodeID();
+            if (equivalenceMatrix[i] == originNodeID) {
+                tmpOrigin = i;
+            } else if (equivalenceMatrix[i] == targetNodeID) {
+                tmpDestination = i;
+            } else if (equivalenceMatrix[i] == nodeToAvoidID) {
+                tmpNodeToAvoidID = i;
             }
             i++;
         }
-        // Averiguamos la matriz de adyacencia
-        TLink en = null;
-        long matrizAdyacencia[][] = new long[numNodosActual][numNodosActual];
+        // We compute adjacency matrix
+        TLink link = null;
+        long[][] adjacencyMatrix = new long[currentNumberOfNodes][currentNumberOfNodes];
         int j = 0;
-        for (i = 0; i < numNodosActual; i++) {
-            for (j = 0; j < numNodosActual; j++) {
-                en = getLinkThatJoins(equivalencia[i], equivalencia[j]);
-                if ((en == null) || ((en != null) && (en.isBroken()))) {
+        for (i = 0; i < currentNumberOfNodes; i++) {
+            for (j = 0; j < currentNumberOfNodes; j++) {
+                link = getLinkThatJoins(equivalenceMatrix[i], equivalenceMatrix[j]);
+                if ((link == null) || ((link != null) && (link.isBroken()))) {
                     if (i == j) {
-                        matrizAdyacencia[i][j] = 0;
+                        adjacencyMatrix[i][j] = 0;
                     } else {
-                        matrizAdyacencia[i][j] = TTopology.INFINITE_WEIGHT;
+                        adjacencyMatrix[i][j] = TTopology.INFINITE_WEIGHT;
                     }
-                } else if (en.getLinkType() == TLink.EXTERNAL_LINK) {
-                    TExternalLink ee = (TExternalLink) en;
-                    matrizAdyacencia[i][j] = ee.getRABANWeight();
+                } else if (link.getLinkType() == TLink.EXTERNAL_LINK) {
+                    TExternalLink externalLink = (TExternalLink) link;
+                    adjacencyMatrix[i][j] = externalLink.getRABANWeight();
                 } else {
-                    TInternalLink ei = (TInternalLink) en;
-                    matrizAdyacencia[i][j] = ei.getRABANWeight();
+                    TInternalLink internalLink = (TInternalLink) link;
+                    adjacencyMatrix[i][j] = internalLink.getRABANWeight();
                 }
-                // Aqu� se evita calcular un camino que pase por el enlace que
-                // deseamos evitar, el que une origen con nodoAEvitar.
-                if ((i == origen2) && (j == nodoAEvitar2)) {
-                    matrizAdyacencia[i][j] = TTopology.INFINITE_WEIGHT;
+                // He we avoid to choose the specified undesired node as next
+                // hop. Let's say, we avoid to include the undesired node in
+                // the computed route to destination.
+                if ((i == tmpOrigin) && (j == tmpNodeToAvoidID)) {
+                    adjacencyMatrix[i][j] = TTopology.INFINITE_WEIGHT;
                 }
-                if ((i == nodoAEvitar2) && (j == origen2)) {
-                    matrizAdyacencia[i][j] = TTopology.INFINITE_WEIGHT;
+                if ((i == tmpNodeToAvoidID) && (j == tmpOrigin)) {
+                    adjacencyMatrix[i][j] = TTopology.INFINITE_WEIGHT;
                 }
             }
         }
-        // Calculamos la matriz de costes y de caminos
-        long matrizCostes[][] = new long[numNodosActual][numNodosActual];
-        int matrizCaminos[][] = new int[numNodosActual][numNodosActual];
+        // We compute costs matrix and paths matrix
+        long[][] costsMatrix = new long[currentNumberOfNodes][currentNumberOfNodes];
+        int[][] pathsMatrix = new int[currentNumberOfNodes][currentNumberOfNodes];
         int k = 0;
-        for (i = 0; i < numNodosActual; i++) {
-            for (j = 0; j < numNodosActual; j++) {
-                matrizCostes[i][j] = matrizAdyacencia[i][j];
-                matrizCaminos[i][j] = numNodosActual;
+        for (i = 0; i < currentNumberOfNodes; i++) {
+            for (j = 0; j < currentNumberOfNodes; j++) {
+                costsMatrix[i][j] = adjacencyMatrix[i][j];
+                pathsMatrix[i][j] = currentNumberOfNodes;
             }
         }
-        for (k = 0; k < numNodosActual; k++) {
-            for (i = 0; i < numNodosActual; i++) {
-                for (j = 0; j < numNodosActual; j++) {
-                    if (!((matrizCostes[i][k] == TTopology.INFINITE_WEIGHT) || (matrizCostes[k][j] == TTopology.INFINITE_WEIGHT))) {
-                        if ((matrizCostes[i][k] + matrizCostes[k][j]) < matrizCostes[i][j]) {
-                            matrizCostes[i][j] = matrizCostes[i][k] + matrizCostes[k][j];
-                            matrizCaminos[i][j] = k;
+        for (k = 0; k < currentNumberOfNodes; k++) {
+            for (i = 0; i < currentNumberOfNodes; i++) {
+                for (j = 0; j < currentNumberOfNodes; j++) {
+                    if (!((costsMatrix[i][k] == TTopology.INFINITE_WEIGHT) || (costsMatrix[k][j] == TTopology.INFINITE_WEIGHT))) {
+                        if ((costsMatrix[i][k] + costsMatrix[k][j]) < costsMatrix[i][j]) {
+                            costsMatrix[i][j] = costsMatrix[i][k] + costsMatrix[k][j];
+                            pathsMatrix[i][j] = k;
                         }
                     }
                 }
             }
         }
-        // Obtiene el primer nodo del camino, si hay camino.
-        int nodoSiguiente = TTopology.TARGET_UNREACHABLE;
-        k = matrizCaminos[origen2][destino2];
-        while (k != numNodosActual) {
-            nodoSiguiente = k;
-            k = matrizCaminos[origen2][k];
+        // If there is a route to destination host, this step get the first hop
+        // of this route.
+        int nextHop = TTopology.TARGET_UNREACHABLE;
+        k = pathsMatrix[tmpOrigin][tmpDestination];
+        while (k != currentNumberOfNodes) {
+            nextHop = k;
+            k = pathsMatrix[tmpOrigin][k];
         }
-        // Comprobamos si no hay camino o es que son adyacentes
-        if (nodoSiguiente == TTopology.TARGET_UNREACHABLE) {
-            TLink enlt = this.getLinkThatJoins(originNodeID, targetNodeID);
-            if (enlt != null) {
-                nodoSiguiente = targetNodeID;
+        // We check wether there is not route to host or they are adjacents
+        if (nextHop == TTopology.TARGET_UNREACHABLE) {
+            TLink linkAux = this.getLinkThatJoins(originNodeID, targetNodeID);
+            if (linkAux != null) {
+                nextHop = targetNodeID;
             }
         } else {
-            nodoSiguiente = equivalencia[nodoSiguiente];
+            nextHop = equivalenceMatrix[nextHop];
         }
         this.rabanAlgorithmLock.unLock();
-        return nodoSiguiente;
+        return nextHop;
     }
 
     public static final long INFINITE_WEIGHT = 9223372036854775806L;
