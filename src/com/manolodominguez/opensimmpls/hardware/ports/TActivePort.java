@@ -438,7 +438,7 @@ public class TActivePort extends TPort {
         int packetOrder = 0;
         int priority = this.loadPacketPriority(packet);
         try {
-            eventID = parentNode.longIdentifierGenerator.getNextID();
+            eventID = parentNode.eventIdentifierGenerator.getNextID();
             packetOrder = this.rotaryIdentifierGenerator.getNextID();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -448,7 +448,7 @@ public class TActivePort extends TPort {
             TActivePortBufferEntry activePortBufferEntry = new TActivePortBufferEntry(priority, packetOrder, packet);
             this.addPrioritizedBufferEntry(activePortBufferEntry);
             parentPortSetAux.increasePortSetOccupancy(packet.getSize());
-            TSimulationEventPacketReceived packetReceivedEvent = new TSimulationEventPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getCurrentInstant(), packetSubtype, packet.getSize());
+            TSimulationEventPacketReceived packetReceivedEvent = new TSimulationEventPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getCurrentTimeInstant(), packetSubtype, packet.getSize());
             parentNode.simulationEventsListener.captureSimulationEvents(packetReceivedEvent);
             if (this.getPortSet().getParentNode().getStats() != null) {
                 this.getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.INCOMING);
@@ -492,7 +492,7 @@ public class TActivePort extends TPort {
         int packetPriority = this.loadPacketPriority(packet);
         TNode parentNode = this.parentPortSet.getParentNode();
         try {
-            eventID = parentNode.longIdentifierGenerator.getNextID();
+            eventID = parentNode.eventIdentifierGenerator.getNextID();
             packetOrder = this.rotaryIdentifierGenerator.getNextID();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -502,7 +502,7 @@ public class TActivePort extends TPort {
             TActivePortBufferEntry activePortBufferEntry = new TActivePortBufferEntry(packetPriority, packetOrder, packet);
             this.addPrioritizedBufferEntry(activePortBufferEntry);
             parentPortSetAux.increasePortSetOccupancy(packet.getSize());
-            TSimulationEventPacketReceived packetReceivedEvent = new TSimulationEventPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getCurrentInstant(), packetSubtype, packet.getSize());
+            TSimulationEventPacketReceived packetReceivedEvent = new TSimulationEventPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getCurrentTimeInstant(), packetSubtype, packet.getSize());
             parentNode.simulationEventsListener.captureSimulationEvents(packetReceivedEvent);
             if (this.getPortSet().getParentNode().getStats() != null) {
                 this.getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.INCOMING);
@@ -660,7 +660,7 @@ public class TActivePort extends TPort {
         int packetOrder = 0;
         int packetPriority = this.loadPacketPriority(packet);
         try {
-            eventID = parentNode.longIdentifierGenerator.getNextID();
+            eventID = parentNode.eventIdentifierGenerator.getNextID();
             packetOrder = this.rotaryIdentifierGenerator.getNextID();
         } catch (Exception e) {
             e.printStackTrace();

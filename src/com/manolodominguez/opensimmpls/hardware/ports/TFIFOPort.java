@@ -89,7 +89,7 @@ public class TFIFOPort extends TPort {
         TNode parentNode = this.parentPortSet.getParentNode();
         long eventID = 0;
         try {
-            eventID = parentNode.longIdentifierGenerator.getNextID();
+            eventID = parentNode.eventIdentifierGenerator.getNextID();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -97,7 +97,7 @@ public class TFIFOPort extends TPort {
         if (this.isUnlimitedBuffer) {
             this.buffer.addLast(packet);
             parentPortSetAux.increasePortSetOccupancy(packet.getSize());
-            TSimulationEventPacketReceived packetReceivedEvent = new TSimulationEventPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getCurrentInstant(), packetSubtype, packet.getSize());
+            TSimulationEventPacketReceived packetReceivedEvent = new TSimulationEventPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getCurrentTimeInstant(), packetSubtype, packet.getSize());
             parentNode.simulationEventsListener.captureSimulationEvents(packetReceivedEvent);
             if (this.getPortSet().getParentNode().getStats() != null) {
                 this.getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.INCOMING);
@@ -106,7 +106,7 @@ public class TFIFOPort extends TPort {
             if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= (parentPortSetAux.getBufferSizeInMBytes() * 1024 * 1024)) {
                 this.buffer.addLast(packet);
                 parentPortSetAux.increasePortSetOccupancy(packet.getSize());
-                TSimulationEventPacketReceived packetReceivedEvent = new TSimulationEventPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getCurrentInstant(), packetSubtype, packet.getSize());
+                TSimulationEventPacketReceived packetReceivedEvent = new TSimulationEventPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getCurrentTimeInstant(), packetSubtype, packet.getSize());
                 parentNode.simulationEventsListener.captureSimulationEvents(packetReceivedEvent);
                 if (this.getPortSet().getParentNode().getStats() != null) {
                     this.getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.INCOMING);
@@ -136,7 +136,7 @@ public class TFIFOPort extends TPort {
         TNode parentNode = this.parentPortSet.getParentNode();
         long eventID = 0;
         try {
-            eventID = parentNode.longIdentifierGenerator.getNextID();
+            eventID = parentNode.eventIdentifierGenerator.getNextID();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -155,7 +155,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      */
     public int getMaxRouteableBitsWithCurrentNs() {
         double nsPerBit = getNsPerBit();
-        double maxNumberOfBits = (double) ((double) this.availableNs / (double) nsPerBit);
+        double maxNumberOfBits = (double) ((double) this.availableNanoseconds / (double) nsPerBit);
         return (int) maxNumberOfBits;
     }
 
@@ -266,13 +266,13 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      */
     @Override
     public void receiveTimerEvent(TTimerEvent timerEvent) {
-        this.setTickDuration(timerEvent.getStepDuration());
-        this.setCurrentInstant(timerEvent.getUpperLimit());
+        this.setTickDurationInNs(timerEvent.getStepDuration());
+        this.setCurrentTimeInstant(timerEvent.getUpperLimit());
         if (this.getPorts().isThereAnyPacketToRoute()) {
-            this.availableNs += timerEvent.getStepDuration();
+            this.availableNanoseconds += timerEvent.getStepDuration();
         } else {
             this.resetTicksWithoutEmitting();
-            this.availableNs = timerEvent.getStepDuration();
+            this.availableNanoseconds = timerEvent.getStepDuration();
         }
         this.startOperation();
     }
@@ -289,7 +289,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     public void run() {
         // Actions to be done during the timer tick.
         try {
-            this.generateSimulationEvent(new TSimulationEventNodeCongested(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), this.getPorts().getCongestionLevel()));
+            this.generateSimulationEvent(new TSimulationEventNodeCongested(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), this.getPorts().getCongestionLevel()));
         } catch (Exception e) {
             // FIX: this is not a good practice. Avoid.
             e.printStackTrace();
@@ -297,7 +297,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         this.checkConnectivityStatus();
         this.decreaseCounters();
         this.routePackets();
-        this.stats.groupStatsByTimeInstant(this.getCurrentInstant());
+        this.stats.groupStatsByTimeInstant(this.getCurrentTimeInstant());
     }
 
     /**
@@ -401,7 +401,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             }
         }
         this.switchingMatrix.getMonitor().unLock();
-        this.gpsrpRequests.decreaseTimeout(this.getTickDuration());
+        this.gpsrpRequests.decreaseTimeout(this.getTickDurationInNs());
         this.gpsrpRequests.updateEntries();
         int numberOfPorts = this.ports.getNumberOfPorts();
         int i = 0;
@@ -469,10 +469,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 } else if (packet.getType() == TAbstractPDU.GPSRP) {
                     handleGPSRPPacket((TGPSRPPDU) packet, readPort);
                 } else {
-                    this.availableNs += getNsRequiredForAllOctets(packet.getSize());
+                    this.availableNanoseconds += getNsRequiredForAllOctets(packet.getSize());
                     this.discardPacket(packet);
                 }
-                this.availableNs -= getNsRequiredForAllOctets(packet.getSize());
+                this.availableNanoseconds -= getNsRequiredForAllOctets(packet.getSize());
                 routeableOctectsWithCurrentNs = this.getMaxRouteableOctectsWithCurrentNs();
             }
         }
@@ -515,7 +515,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 if (outgoingPort != null) {
                     outgoingPort.putPacketOnLink(packet, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                     try {
-                        this.generateSimulationEvent(new TSimulationEventPacketRouted(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.GPSRP));
+                        this.generateSimulationEvent(new TSimulationEventPacketRouted(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.GPSRP));
                     } catch (Exception e) {
                         // FIX: This is not a good practice. Avoid.
                         e.printStackTrace();
@@ -545,7 +545,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             if (outgoingPort != null) {
                 outgoingPort.putPacketOnLink(wantedPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                 try {
-                    this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), wantedPacket.getSubtype()));
+                    this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), wantedPacket.getSubtype()));
                 } catch (Exception e) {
                     // FIX: this is not a good practice. Avoid.
                     e.printStackTrace();
@@ -631,8 +631,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 gpsrpPacket.getGPSRPPayload().setGPSRPMessageType(TGPSRPPayload.RETRANSMISSION_REQUEST);
                 outgoingPort.putPacketOnLink(gpsrpPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                 try {
-                    this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.GPSRP, gpsrpPacket.getSize()));
-                    this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.GPSRP));
+                    this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.GPSRP, gpsrpPacket.getSize()));
+                    this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.GPSRP));
                 } catch (Exception e) {
                     //FIX: This is not a good practice. Avoid.
                     e.printStackTrace();
@@ -673,8 +673,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             gpsrpPacket.getGPSRPPayload().setGPSRPMessageType(TGPSRPPayload.RETRANSMISSION_REQUEST);
             outgoingPort.putPacketOnLink(gpsrpPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
             try {
-                this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.GPSRP, gpsrpPacket.getSize()));
-                this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.GPSRP));
+                this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.GPSRP, gpsrpPacket.getSize()));
+                this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.GPSRP));
             } catch (Exception e) {
                 //FIX: This is not a good practice. Avoid.
                 e.printStackTrace();
@@ -707,8 +707,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             gpsrpPacket.getGPSRPPayload().setGPSRPMessageType(TGPSRPPayload.RETRANSMISION_NOT_POSSIBLE);
             outgoingPort.putPacketOnLink(gpsrpPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
             try {
-                this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.GPSRP, gpsrpPacket.getSize()));
-                this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.GPSRP));
+                this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.GPSRP, gpsrpPacket.getSize()));
+                this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.GPSRP));
             } catch (Exception e) {
                 //FIX: This is not a good practice. Avoid.
                 e.printStackTrace();
@@ -743,8 +743,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             gpsrpPacket.getGPSRPPayload().setGPSRPMessageType(TGPSRPPayload.RETRANSMISION_OK);
             outgoingPort.putPacketOnLink(gpsrpPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
             try {
-                this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.GPSRP, gpsrpPacket.getSize()));
-                this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.GPSRP));
+                this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.GPSRP, gpsrpPacket.getSize()));
+                this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.GPSRP));
             } catch (Exception e) {
                 //FIX: This is not a good practice. Avoid.
                 e.printStackTrace();
@@ -829,7 +829,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     }
                     outgoingPort.putPacketOnLink(mplsPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                     try {
-                        this.generateSimulationEvent(new TSimulationEventPacketRouted(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), packet.getSubtype()));
+                        this.generateSimulationEvent(new TSimulationEventPacketRouted(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), packet.getSubtype()));
                     } catch (Exception e) {
                         // FIX: Avoid this. This is not a good practice.
                         e.printStackTrace();
@@ -842,7 +842,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     TPort outgoingPort = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID());
                     outgoingPort.putPacketOnLink(packet, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                     try {
-                        this.generateSimulationEvent(new TSimulationEventPacketRouted(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), packet.getSubtype()));
+                        this.generateSimulationEvent(new TSimulationEventPacketRouted(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), packet.getSubtype()));
                     } catch (Exception e) {
                         // FIX: Avoid this. This is not a good practice.
                         e.printStackTrace();
@@ -979,7 +979,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     }
                     outgoingPort.putPacketOnLink(packet, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                     try {
-                        this.generateSimulationEvent(new TSimulationEventPacketRouted(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), packet.getSubtype()));
+                        this.generateSimulationEvent(new TSimulationEventPacketRouted(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), packet.getSubtype()));
                     } catch (Exception e) {
                         // FIX: This is not a good practice. Avoid.
                         e.printStackTrace();
@@ -998,7 +998,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                         outgoingPort.putPacketOnLink(packet, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                     }
                     try {
-                        this.generateSimulationEvent(new TSimulationEventPacketRouted(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), packet.getSubtype()));
+                        this.generateSimulationEvent(new TSimulationEventPacketRouted(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), packet.getSubtype()));
                     } catch (Exception e) {
                         // FIX: This is not a good practice. Avoid.
                         e.printStackTrace();
@@ -1018,7 +1018,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     }
                     outgoingPort.putPacketOnLink(packet, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                     try {
-                        this.generateSimulationEvent(new TSimulationEventPacketRouted(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), packet.getSubtype()));
+                        this.generateSimulationEvent(new TSimulationEventPacketRouted(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), packet.getSubtype()));
                     } catch (Exception e) {
                         // FIX: This is not a good practice. Avoid.
                         e.printStackTrace();
@@ -1027,7 +1027,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     TPort outgoingPort = this.ports.getPort(switchingMatrixEntry.getOutgoingPortID());
                     outgoingPort.putPacketOnLink(packet, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                     try {
-                        this.generateSimulationEvent(new TSimulationEventPacketRouted(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), packet.getSubtype()));
+                        this.generateSimulationEvent(new TSimulationEventPacketRouted(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), packet.getSubtype()));
                     } catch (Exception e) {
                         // FIX: This is not a good practice. Avoid.
                         e.printStackTrace();
@@ -1554,8 +1554,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                         TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPAddress(targetIPv4Address);
                         outgoingPort.putPacketOnLink(tldpPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                         try {
-                            this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.TLDP, tldpPacket.getSize()));
-                            this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.TLDP));
+                            this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.TLDP, tldpPacket.getSize()));
+                            this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.TLDP));
                         } catch (Exception e) {
                             //FIX: this is not a good practice. Avoid.
                             e.printStackTrace();
@@ -1600,8 +1600,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                         TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPAddress(targetIPv4Address);
                         outgoingPort.putPacketOnLink(tldpPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                         try {
-                            this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.TLDP, tldpPacket.getSize()));
-                            this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.TLDP));
+                            this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.TLDP, tldpPacket.getSize()));
+                            this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.TLDP));
                         } catch (Exception e) {
                             // FIX: this is not a good practice. Avoid.
                             e.printStackTrace();
@@ -1655,8 +1655,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     TPort outgoingPort = this.ports.getPort(portID);
                     outgoingPort.putPacketOnLink(tldpPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                     try {
-                        this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.TLDP, tldpPacket.getSize()));
-                        this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.TLDP));
+                        this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.TLDP, tldpPacket.getSize()));
+                        this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.TLDP));
                     } catch (Exception e) {
                         // FIX: this is not a good practice. Avoid.
                         e.printStackTrace();
@@ -1705,8 +1705,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     if (outgoingPort != null) {
                         outgoingPort.putPacketOnLink(tldpPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                         try {
-                            this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.TLDP, tldpPacket.getSize()));
-                            this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.TLDP));
+                            this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.TLDP, tldpPacket.getSize()));
+                            this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.TLDP));
                         } catch (Exception e) {
                             // FIX: this is not a good practice. Avoid.
                             e.printStackTrace();
@@ -1760,8 +1760,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                                     if (outgoingPort != null) {
                                         outgoingPort.putPacketOnLink(tldpPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                                         try {
-                                            this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.TLDP, tldpPacket.getSize()));
-                                            this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.TLDP));
+                                            this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.TLDP, tldpPacket.getSize()));
+                                            this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.TLDP));
                                         } catch (Exception e) {
                                             // FIX: this is ugly. Avoid.
                                             e.printStackTrace();
@@ -1821,8 +1821,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     if (outgoingPort != null) {
                         outgoingPort.putPacketOnLink(tldpPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                         try {
-                            this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.TLDP, tldpPacket.getSize()));
-                            this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.TLDP));
+                            this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.TLDP, tldpPacket.getSize()));
+                            this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.TLDP));
                         } catch (Exception e) {
                             // FIX: this is ugly. Avoid.
                             e.printStackTrace();
@@ -1873,8 +1873,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     if (outgoingPort != null) {
                         outgoingPort.putPacketOnLink(tldpPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                         try {
-                            this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.TLDP, tldpPacket.getSize()));
-                            this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), TAbstractPDU.TLDP));
+                            this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.TLDP, tldpPacket.getSize()));
+                            this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.TLDP));
                         } catch (Exception e) {
                             // FIX: this is ugly. Avoid.
                             e.printStackTrace();
@@ -1928,7 +1928,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         while (entriesIterator.hasNext()) {
             switchingMatrixEntry = (TSwitchingMatrixEntry) entriesIterator.next();
             if (switchingMatrixEntry != null) {
-                switchingMatrixEntry.decreaseTimeOut(this.getTickDuration());
+                switchingMatrixEntry.decreaseTimeOut(this.getTickDurationInNs());
                 // FIX: It is more efficient to use a switch clause instead of
                 // nested ifs.
                 if (switchingMatrixEntry.getOutgoingLabel() == TSwitchingMatrixEntry.LABEL_REQUESTED) {
@@ -2191,7 +2191,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         mplsPacket.getLabelStack().pushTop(mplsLabel);
         ipv4Packet = null;
         try {
-            this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), mplsPacket.getSubtype(), mplsPacket.getSize()));
+            this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), mplsPacket.getSubtype(), mplsPacket.getSize()));
         } catch (Exception e) {
             // FIX: this is ugly. Avoid.
             e.printStackTrace();
@@ -2231,7 +2231,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             ipv4Packet.setSubtype(TAbstractPDU.IPV4_GOS);
         }
         try {
-            this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), ipv4Packet.getSubtype(), ipv4Packet.getSize()));
+            this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), ipv4Packet.getSubtype(), ipv4Packet.getSize()));
         } catch (Exception e) {
             // FIX: this is ugly. Avoid.
             e.printStackTrace();
@@ -2269,7 +2269,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     @Override
     public void discardPacket(TAbstractPDU packet) {
         try {
-            this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), packet.getSubtype()));
+            this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), packet.getSubtype()));
             this.stats.addStatEntry(packet, TStats.BEING_DISCARDED);
         } catch (Exception e) {
             // FIX: this is ugly. Avoid.

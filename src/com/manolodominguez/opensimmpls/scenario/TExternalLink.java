@@ -77,8 +77,8 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      */
     @Override
     public void receiveTimerEvent(TTimerEvent timerEvent) {
-        this.setTickDuration(timerEvent.getStepDuration());
-        this.setCurrentInstant(timerEvent.getUpperLimit());
+        this.setTickDurationInNs(timerEvent.getStepDuration());
+        this.setCurrentTimeInstant(timerEvent.getUpperLimit());
         this.stepLength = timerEvent.getStepDuration();
         this.startOperation();
     }
@@ -97,7 +97,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
         this.linkIsBroken = linkIsBroken;
         if (this.linkIsBroken) {
             try {
-                this.generateSimulationEvent(new TSimulationEventLinkBroken(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant()));
+                this.generateSimulationEvent(new TSimulationEventLinkBroken(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant()));
                 this.packetsInTransitEntriesLock.lock();
                 TAbstractPDU packet = null;
                 TLinkBufferEntry bufferedPacketEntry = null;
@@ -109,11 +109,11 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
                         // FIX: do not use harcoded values. Use constants class
                         // instead
                         if (bufferedPacketEntry.getPacketEnd() == 1) {
-                            this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this.getTailEndNode(), this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), packet.getSubtype()));
+                            this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this.getTailEndNode(), this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), packet.getSubtype()));
                             // FIX: do not use harcoded values. Use constants class
                             // instead
                         } else if (bufferedPacketEntry.getPacketEnd() == 2) {
-                            this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this.getHeadEndNode(), this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), packet.getSubtype()));
+                            this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this.getHeadEndNode(), this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), packet.getSubtype()));
                         }
                     }
                     bufferedPacketEntriesIterator.remove();
@@ -125,7 +125,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
             }
         } else {
             try {
-                this.generateSimulationEvent(new TSimulationEventLinkRecovered(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant()));
+                this.generateSimulationEvent(new TSimulationEventLinkRecovered(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant()));
             } catch (EIDGeneratorOverflow e) {
                 // FIX: this is not a good practice
                 e.printStackTrace();
@@ -168,7 +168,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
                 transitPercentage = 100 - transitPercentage;
             }
             try {
-                this.generateSimulationEvent(new TSimulationEventPacketOnFly(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), bufferedPacketEntry.getPacket().getSubtype(), transitPercentage));
+                this.generateSimulationEvent(new TSimulationEventPacketOnFly(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), bufferedPacketEntry.getPacket().getSubtype(), transitPercentage));
             } catch (EIDGeneratorOverflow e) {
                 // FIX: This is not a good practice.
                 e.printStackTrace();

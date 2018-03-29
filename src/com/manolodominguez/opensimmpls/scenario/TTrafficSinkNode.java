@@ -92,8 +92,8 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
      */
     @Override
     public void receiveTimerEvent(TTimerEvent evt) {
-        this.setTickDuration(evt.getStepDuration());
-        this.setCurrentInstant(evt.getUpperLimit());
+        this.setTickDurationInNs(evt.getStepDuration());
+        this.setCurrentTimeInstant(evt.getUpperLimit());
         this.startOperation();
     }
 
@@ -109,7 +109,7 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
     public void run() {
         // Actions to during the duration of the tick.
         receivePackets();
-        this.stats.groupStatsByTimeInstant(this.getCurrentInstant());
+        this.stats.groupStatsByTimeInstant(this.getCurrentTimeInstant());
     }
 
     /**
@@ -130,7 +130,7 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
             while (incomingPort.thereIsAPacketWaiting()) {
                 incomingPacket = incomingPort.getPacket();
                 try {
-                    eventID = this.longIdentifierGenerator.getNextID();
+                    eventID = this.eventIdentifierGenerator.getNextID();
                 } catch (Exception e) {
                     // FIX: This is ugly
                     e.printStackTrace();
@@ -139,7 +139,7 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
                 // does nothing. Check whether it is needed or not. If needed, 
                 // do not use harcoded values. Use class constants instead.
                 this.accountPacket(incomingPacket, true);
-                packetReceivedEvent = new TSimulationEventPacketReceived(this, eventID, this.getCurrentInstant(), eventType, incomingPacket.getSize());
+                packetReceivedEvent = new TSimulationEventPacketReceived(this, eventID, this.getCurrentTimeInstant(), eventType, incomingPacket.getSize());
                 this.simulationEventsListener.captureSimulationEvents(packetReceivedEvent);
                 incomingPacket = null;
             }

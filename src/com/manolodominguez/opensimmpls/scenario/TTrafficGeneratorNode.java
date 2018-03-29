@@ -321,9 +321,9 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
      */
     @Override
     public void receiveTimerEvent(TTimerEvent timerEvent) {
-        this.setTickDuration(timerEvent.getStepDuration());
-        this.setCurrentInstant(timerEvent.getUpperLimit());
-        this.availableNs += timerEvent.getStepDuration();
+        this.setTickDurationInNs(timerEvent.getStepDuration());
+        this.setCurrentTimeInstant(timerEvent.getUpperLimit());
+        this.availableNanoseconds += timerEvent.getStepDuration();
         this.startOperation();
     }
 
@@ -339,7 +339,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
     public void run() {
         // Actions to be done during the timer tick.
         try {
-            this.generateSimulationEvent(new TSimulationEventNodeCongested(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), 0));
+            this.generateSimulationEvent(new TSimulationEventNodeCongested(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), 0));
         } catch (Exception e) {
             // FIX: this is not a good practice. Avoid.
             e.printStackTrace();
@@ -356,7 +356,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
         } else {
             this.increaseTicksWithoutEmitting();
         }
-        this.stats.groupStatsByTimeInstant(this.getCurrentInstant());
+        this.stats.groupStatsByTimeInstant(this.getCurrentTimeInstant());
     }
 
     /**
@@ -444,8 +444,8 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
                             TIPv4PDU ipv4Packet = (TIPv4PDU) packetWithPayload;
                             packetType = ipv4Packet.getSubtype();
                         }
-                        this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), packetType, packetWithPayload.getSize()));
-                        this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), packetType));
+                        this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), packetType, packetWithPayload.getSize()));
+                        this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), packetType));
                     } catch (Exception e) {
                         // FIX: this is not a good practice. Avoid.
                         e.printStackTrace();
@@ -508,7 +508,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
      */
     public int getMaxTransmittableBitsWithCurrentAvailableNs() {
         double requiredNsPerBit = getRequiredNsPerBit();
-        double maxTransmittableBitsWithCurrentAvailableNs = (double) ((double) this.availableNs / (double) requiredNsPerBit);
+        double maxTransmittableBitsWithCurrentAvailableNs = (double) ((double) this.availableNanoseconds / (double) requiredNsPerBit);
         return (int) maxTransmittableBitsWithCurrentAvailableNs;
     }
 
@@ -605,11 +605,11 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
             mplsPacket = (TMPLSPDU) packet;
             mplsPacket.getTCPPayload().setSize((int) NextPacketPayloadSizeInBytes);
             requiredNs = this.getNsRequiredForAllOctets(nextPacketTotalSizeInBytes);
-            this.availableNs -= requiredNs;
+            this.availableNanoseconds -= requiredNs;
             // FIX: Do not use harcoded values. Use class constants instead.
-            if (this.availableNs < 0) {
+            if (this.availableNanoseconds < 0) {
                 // FIX: Do not use harcoded values. Use class constants instead.
-                this.availableNs = 0;
+                this.availableNanoseconds = 0;
             }
             if (this.trafficGenerationMode == TTrafficGeneratorNode.VARIABLE_TRAFFIC_RATE) {
                 this.variablePayloadSizeInBytes = this.computeNextPacketPayloadSize();
@@ -619,11 +619,11 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
             ipv4Packet = (TIPv4PDU) packet;
             ipv4Packet.getTCPPayload().setSize(NextPacketPayloadSizeInBytes);
             requiredNs = this.getNsRequiredForAllOctets(nextPacketTotalSizeInBytes);
-            this.availableNs -= requiredNs;
+            this.availableNanoseconds -= requiredNs;
             // FIX: Do not use harcoded values. Use class constants instead.
-            if (this.availableNs < 0) {
+            if (this.availableNanoseconds < 0) {
                 // FIX: Do not use harcoded values. Use class constants instead.
-                this.availableNs = 0;
+                this.availableNanoseconds = 0;
             }
             if (this.trafficGenerationMode == TTrafficGeneratorNode.VARIABLE_TRAFFIC_RATE) {
                 this.variablePayloadSizeInBytes = this.computeNextPacketPayloadSize();
@@ -707,7 +707,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
     @Override
     public void discardPacket(TAbstractPDU packet) {
         try {
-            this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this, this.longIdentifierGenerator.getNextID(), this.getCurrentInstant(), packet.getSubtype()));
+            this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), packet.getSubtype()));
             this.stats.addStatEntry(packet, TStats.BEING_DISCARDED);
         } catch (Exception e) {
             // FIX: This is ugly. Avoid.

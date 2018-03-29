@@ -58,7 +58,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
         this.lock = new TLock();
         this.topology = topology;
         this.generateStatistics = false;
-        this.availableNs = 0;
+        this.availableNanoseconds = 0;
         this.tickNanoseconds = 0;
         this.ticksWithoutEmittingBeforeAlert = 0;
     }
