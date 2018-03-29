@@ -229,8 +229,8 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo establece cu�l ser� el recolector de eventos de simulaci�n al
-     * que se le deben enviar los eventos que genere este elemento.
+     * This methods sets the simulation events listener of this element. This
+     * listener will collect the simulation of thi topology element.
      *
      * @param rs Recolector de simulaci�n elegido.
      * @throws ESimulationSingleSubscriber Esta excepci�n salta si se intenta
