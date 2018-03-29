@@ -1450,12 +1450,12 @@ private void clicEnPopUpDisenioEliminar(java.awt.event.ActionEvent evt) {//GEN-F
                         va.show();
                         elementoDisenioClicDerecho = null;
                     } else {
-                        escenario.getTopology().removeNode(nt);
+                        escenario.getTopology().disconnectNodeAndRemove(nt);
                         elementoDisenioClicDerecho = null;
                         panelDisenio.repaint();
                     }
                 } else {
-                    escenario.getTopology().removeNode(nt);
+                    escenario.getTopology().disconnectNodeAndRemove(nt);
                     elementoDisenioClicDerecho = null;
                     panelDisenio.repaint();
                 }

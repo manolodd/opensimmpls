@@ -476,7 +476,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                     this.handleGPSRPRetransmissionOk(packet, incomingPortID);
                 }
             } else {
-                String nextHopIPv4Address = this.topology.getNextHopIPv4AddressUsingRABAN(this.getIPv4Address(), targetIPv4Address);
+                String nextHopIPv4Address = this.topology.getRABANNextHopIPv4Address(this.getIPv4Address(), targetIPv4Address);
                 outgoingPort = (TActivePort) this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPv4Address);
                 if (outgoingPort != null) {
                     outgoingPort.putPacketOnLink(packet, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
@@ -1477,7 +1477,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     public void requestTLDP(TSwitchingMatrixEntry switchingMatrixEntry) {
         String localIPv4Address = this.getIPv4Address();
         String targetIPV4Address = switchingMatrixEntry.getTailEndIPv4Address();
-        String nextHopIPAddress = this.topology.getNextHopIPv4AddressUsingRABAN(localIPv4Address, targetIPV4Address);
+        String nextHopIPAddress = this.topology.getRABANNextHopIPv4Address(localIPv4Address, targetIPV4Address);
         if (nextHopIPAddress != null) {
             TTLDPPDU newTLDPPacket = null;
             try {
@@ -1525,7 +1525,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         String localIPv4Address = this.getIPv4Address();
         String targetIPv4Address = switchingMatrixEntry.getTailEndIPv4Address();
         String currentNextHopIPv4Address = this.ports.getIPv4OfNodeLinkedTo(switchingMatrixEntry.getOutgoingPortID());
-        String backupNextHopIPv4Address = this.topology.getNextHopIPv4AddressUsingRABAN(localIPv4Address, targetIPv4Address, currentNextHopIPv4Address);
+        String backupNextHopIPv4Address = this.topology.getRABANNextHopIPv4Address(localIPv4Address, targetIPv4Address, currentNextHopIPv4Address);
         if (backupNextHopIPv4Address != null) {
             if (switchingMatrixEntry.getBackupOutgoingPortID() == TSwitchingMatrixEntry.UNDEFINED) {
                 if (switchingMatrixEntry.getBackupOutgoingLabel() == TSwitchingMatrixEntry.UNDEFINED) {
@@ -1767,7 +1767,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         // FIX: review the reason why this variable is nor used.
         TPort incomingPort = this.ports.getPort(incomingPortID);
         String targetIPv4Address = tldpPacket.getTLDPPayload().getTailEndIPAddress();
-        String nextHopIPv4Address = this.topology.getNextHopIPv4AddressUsingRABAN(this.getIPv4Address(), targetIPv4Address);
+        String nextHopIPv4Address = this.topology.getRABANNextHopIPv4Address(this.getIPv4Address(), targetIPv4Address);
         if (nextHopIPv4Address != null) {
             TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPv4Address);
             switchingMatrixEntry = new TSwitchingMatrixEntry();

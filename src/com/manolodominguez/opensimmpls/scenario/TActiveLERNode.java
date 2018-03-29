@@ -510,7 +510,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                     this.handleGPSRPRetransmissionOk(packet, incomingPortID);
                 }
             } else {
-                String nextHopIPv4Address = this.topology.getNextHopIPv4AddressUsingRABAN(this.getIPv4Address(), targetIPv4Address);
+                String nextHopIPv4Address = this.topology.getRABANNextHopIPv4Address(this.getIPv4Address(), targetIPv4Address);
                 outgoingPort = (TFIFOPort) this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPv4Address);
                 if (outgoingPort != null) {
                     outgoingPort.putPacketOnLink(packet, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
@@ -1678,7 +1678,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         String localIPv4Address = this.getIPv4Address();
         String tailEndIPv4Address = switchingMatrixEntry.getTailEndIPv4Address();
         if (switchingMatrixEntry.getOutgoingLabel() != TSwitchingMatrixEntry.LABEL_ASSIGNED) {
-            String nextHopIPv4Address = this.topology.getNextHopIPv4AddressUsingRABAN(localIPv4Address, tailEndIPv4Address);
+            String nextHopIPv4Address = this.topology.getRABANNextHopIPv4Address(localIPv4Address, tailEndIPv4Address);
             if (nextHopIPv4Address != null) {
                 TTLDPPDU tldpPacket = null;
                 try {
@@ -1731,7 +1731,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         String tailEndIPAddress = switchingMatrixEntry.getTailEndIPv4Address();
         String nextHopToAvoidIPAddress = this.ports.getIPv4OfNodeLinkedTo(switchingMatrixEntry.getOutgoingPortID());
         if (nextHopToAvoidIPAddress != null) {
-            String nextHopIPAddress = this.topology.getNextHopIPv4AddressUsingRABAN(localIPAddress, tailEndIPAddress, nextHopToAvoidIPAddress);
+            String nextHopIPAddress = this.topology.getRABANNextHopIPv4Address(localIPAddress, tailEndIPAddress, nextHopToAvoidIPAddress);
             if (nextHopIPAddress != null) {
                 if (switchingMatrixEntry.getBackupOutgoingPortID() == TSwitchingMatrixEntry.UNDEFINED) {
                     if (switchingMatrixEntry.getBackupOutgoingLabel() == TSwitchingMatrixEntry.UNDEFINED) {
@@ -1970,7 +1970,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         int predecessorTLDPID = tldpPacket.getTLDPPayload().getTLDPIdentifier();
         TPort incomingPort = this.ports.getPort(incomingPortID);
         String tailEndIPv4Address = tldpPacket.getTLDPPayload().getTailEndIPAddress();
-        String nextHopIPv4Address = this.topology.getNextHopIPv4AddressUsingRABAN(this.getIPv4Address(), tailEndIPv4Address);
+        String nextHopIPv4Address = this.topology.getRABANNextHopIPv4Address(this.getIPv4Address(), tailEndIPv4Address);
         if (nextHopIPv4Address != null) {
             TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPv4Address);
             int incomingLink = TLink.EXTERNAL_LINK;
@@ -2037,7 +2037,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         TSwitchingMatrixEntry switchingMatrixEntry = null;
         String localIPv4Address = this.getIPv4Address();
         String tailEndIPv4Address = ipv4Packet.getIPv4Header().getTailEndIPAddress();
-        String outgoingPortID = this.topology.getNextHopIPv4AddressUsingRABAN(localIPv4Address, tailEndIPv4Address);
+        String outgoingPortID = this.topology.getRABANNextHopIPv4Address(localIPv4Address, tailEndIPv4Address);
         if (outgoingPortID != null) {
             TPort incomingPort = this.ports.getPort(incomingPortID);
             TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPAddress(outgoingPortID);
@@ -2101,7 +2101,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         TSwitchingMatrixEntry switchingMatrixEntry = null;
         String localIPv4Address = this.getIPv4Address();
         String tailEndIPv4Address = mplsPacket.getIPv4Header().getTailEndIPAddress();
-        String nextHopIPv4Address = this.topology.getNextHopIPv4AddressUsingRABAN(localIPv4Address, tailEndIPv4Address);
+        String nextHopIPv4Address = this.topology.getRABANNextHopIPv4Address(localIPv4Address, tailEndIPv4Address);
         if (nextHopIPv4Address != null) {
             TPort incomingPort = this.ports.getPort(incomingPortID);
             TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPv4Address);

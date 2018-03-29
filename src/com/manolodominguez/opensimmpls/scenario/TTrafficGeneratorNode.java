@@ -450,7 +450,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
                         // FIX: this is not a good practice. Avoid.
                         e.printStackTrace();
                     }
-                    if (this.topology.getNextHopIPv4Address(this.getIPv4Address(), this.getTargetIPv4Address()) != null) {
+                    if (this.topology.getFloydWarsallNextHopIPv4Address(this.getIPv4Address(), this.getTargetIPv4Address()) != null) {
                         port.putPacketOnLink(packetWithPayload, port.getLink().getDestinationOfTrafficSentBy(this));
                     } else {
                         discardPacket(packetWithPayload);

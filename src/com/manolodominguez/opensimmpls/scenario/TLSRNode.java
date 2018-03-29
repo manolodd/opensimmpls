@@ -378,7 +378,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                 // received, it has to be discarded.
                 this.discardPacket(packet);
             } else {
-                String nextHopIPv4Address = this.topology.getNextHopIPv4Address(this.getIPv4Address(), targetIPv4Address);
+                String nextHopIPv4Address = this.topology.getFloydWarsallNextHopIPv4Address(this.getIPv4Address(), targetIPv4Address);
                 outgoingPort = (TFIFOPort) this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPv4Address);
                 if (outgoingPort != null) {
                     outgoingPort.putPacketOnLink(packet, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
@@ -925,7 +925,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     public void requestTLDP(TSwitchingMatrixEntry switchingMatrixEntry) {
         String localIPv4Address = this.getIPv4Address();
         String targetIPV4Address = switchingMatrixEntry.getTailEndIPv4Address();
-        String nextHopIPAddress = this.topology.getNextHopIPv4Address(localIPv4Address, targetIPV4Address);
+        String nextHopIPAddress = this.topology.getFloydWarsallNextHopIPv4Address(localIPv4Address, targetIPV4Address);
         if (nextHopIPAddress != null) {
             TTLDPPDU newTLDPPacket = null;
             try {
@@ -1153,7 +1153,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         // FIX: review the reason why this variable is nor used.
         TPort incomingPort = this.ports.getPort(incomingPortID);
         String targetIPv4Address = tldpPacket.getTLDPPayload().getTailEndIPAddress();
-        String nextHopIPv4Address = this.topology.getNextHopIPv4Address(this.getIPv4Address(), targetIPv4Address);
+        String nextHopIPv4Address = this.topology.getFloydWarsallNextHopIPv4Address(this.getIPv4Address(), targetIPv4Address);
         if (nextHopIPv4Address != null) {
             TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPv4Address);
             switchingMatrixEntry = new TSwitchingMatrixEntry();

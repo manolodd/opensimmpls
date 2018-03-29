@@ -417,7 +417,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                 // be sent to this node.
                 this.discardPacket(packet);
             } else {
-                String nextHopIPv4Address = this.topology.getNextHopIPv4Address(this.getIPv4Address(), targetIPv4Address);
+                String nextHopIPv4Address = this.topology.getFloydWarsallNextHopIPv4Address(this.getIPv4Address(), targetIPv4Address);
                 outgoingPort = (TFIFOPort) this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPv4Address);
                 if (outgoingPort != null) {
                     outgoingPort.putPacketOnLink(packet, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
@@ -1074,7 +1074,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         String localIPv4Address = this.getIPv4Address();
         String tailEndIPv4Address = switchingMatrixEntry.getTailEndIPv4Address();
         if (switchingMatrixEntry.getOutgoingLabel() != TSwitchingMatrixEntry.LABEL_ASSIGNED) {
-            String nextHopIPv4Address = this.topology.getNextHopIPv4Address(localIPv4Address, tailEndIPv4Address);
+            String nextHopIPv4Address = this.topology.getFloydWarsallNextHopIPv4Address(localIPv4Address, tailEndIPv4Address);
             if (nextHopIPv4Address != null) {
                 TTLDPPDU tldpPacket = null;
                 try {
@@ -1303,7 +1303,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         int predecessorTLDPID = tldpPacket.getTLDPPayload().getTLDPIdentifier();
         TPort incomingPort = this.ports.getPort(incomingPortID);
         String tailEndIPv4Address = tldpPacket.getTLDPPayload().getTailEndIPAddress();
-        String nextHopIPv4Address = this.topology.getNextHopIPv4Address(this.getIPv4Address(), tailEndIPv4Address);
+        String nextHopIPv4Address = this.topology.getFloydWarsallNextHopIPv4Address(this.getIPv4Address(), tailEndIPv4Address);
         if (nextHopIPv4Address != null) {
             TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPv4Address);
             int incomingLink = TLink.EXTERNAL_LINK;
@@ -1369,7 +1369,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
         String localIPv4Address = this.getIPv4Address();
         String tailEndIPv4Address = ipv4Packet.getIPv4Header().getTailEndIPAddress();
-        String outgoingPortID = this.topology.getNextHopIPv4Address(localIPv4Address, tailEndIPv4Address);
+        String outgoingPortID = this.topology.getFloydWarsallNextHopIPv4Address(localIPv4Address, tailEndIPv4Address);
         if (outgoingPortID != null) {
             TPort incomingPort = this.ports.getPort(incomingPortID);
             TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPAddress(outgoingPortID);
@@ -1432,7 +1432,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
         String localIPv4Address = this.getIPv4Address();
         String tailEndIPv4Address = mplsPacket.getIPv4Header().getTailEndIPAddress();
-        String nextHopIPv4Address = this.topology.getNextHopIPv4Address(localIPv4Address, tailEndIPv4Address);
+        String nextHopIPv4Address = this.topology.getFloydWarsallNextHopIPv4Address(localIPv4Address, tailEndIPv4Address);
         if (nextHopIPv4Address != null) {
             TPort incomingPort = this.ports.getPort(incomingPortID);
             TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPv4Address);

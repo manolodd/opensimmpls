@@ -52,7 +52,7 @@ public class TTopology {
         this.eventIDGenerator = new TLongIDGenerator();
         this.elementsIDGenerator = new TIDGenerator();
         this.ipv4AddressGenerator = new TIPv4AddressGenerator();
-        this.floydAlgorithmLock = new TLock();
+        this.floydWarshallAlgorithmLock = new TLock();
         this.rabanAlgorithmLock = new TLock();
     }
 
@@ -64,7 +64,7 @@ public class TTopology {
      * @since 2.0
      */
     public void reset() {
-        this.floydAlgorithmLock.lock();
+        this.floydWarshallAlgorithmLock.lock();
         Iterator nodesIterator;
         nodesIterator = this.nodes.iterator();
         TTopologyElement topologyElement;
@@ -79,7 +79,7 @@ public class TTopology {
         }
         this.timer.reset();
         this.eventIDGenerator.reset();
-        this.floydAlgorithmLock.unLock();
+        this.floydWarshallAlgorithmLock.unLock();
         this.rabanAlgorithmLock.unLock();
     }
 
@@ -101,7 +101,9 @@ public class TTopology {
     }
 
     /**
-     * This method adds a new node to the topology.
+     * This method removes a node from the topology, but does not disconnect the
+     * links connected to it. It's a dirty removal that should only be used to
+     * remove nodes that are not connected to others.
      *
      * @param nodeID Node to be added to the topology.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
@@ -123,10 +125,12 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo obtiene un nodo de la topology seg�n si identificador.
+     * This method gets a node from the topology corresponding to the identifier
+     * specified as an argument.
      *
-     * @param nodeID Identificador del nodo que deseamos obtener.
-     * @return Nodo que busc�bamos.NULL si no existe.
+     * @param nodeID the identifier of the node to be returned.
+     * @return a node from the topology corresponding to the identifier
+     * specified as an argument.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -143,10 +147,12 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo obtiene un nodo de la topology por su direcci�n IP.
+     * This method gets a node from the topology corresponding to the IPv4
+     * address specified as an argument.
      *
-     * @param ipv4Address IP del nodo que deseamos obtener.
-     * @return Nodo que busc�bamos.NULL si no existe.
+     * @param ipv4Address the IPv4 address of the node to be returned.
+     * @return a node from the topology corresponding to the IPv4 address
+     * specified as an argument.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -163,11 +169,12 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo obtiene el primer nodo de la topolog�a que encuentre, cuyo
-     * nombre sea el mismo que el especificado como par�metro.
+     * This method gets the first node from the topology that match the node
+     * name specified as an argument.
      *
-     * @param nodeName Nombre del nodo que deseamos obtener.
-     * @return Nodo que busc�bamos. NULL si no existe.
+     * @param nodeName node name of the node to be returned.
+     * @return the first node from the topology that match the node name
+     * specified as an argument, if it exists. Otherwise, returns FALSE.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -184,11 +191,12 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo comprueba si existe m�s de un nodo con el mismo nombre.
+     * This methods checks whether there are more than a node using the node
+     * name specified as an argument.
      *
-     * @param nodeName Nombre del nodo.
-     * @return TRUE, si existe m�s de un nodo con el mismo nombre. FALSE en caso
-     * contrario.
+     * @param nodeName node name to check.
+     * @return TRUE, if there are more than a node using the node name specified
+     * as an argument. Otherwise, FALSE.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -201,6 +209,7 @@ public class TTopology {
             if (node.getName().equals(nodeName)) {
                 nodesWithSameName++;
             }
+            // FIX: Do not use harcoded values. Use class constants instead.
             if (nodesWithSameName > 1) {
                 return true;
             }
@@ -209,11 +218,12 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo comprueba si existe m�s de un enlace con el mismo nombre.
+     * This methods checks whether there are more than a link using the link
+     * name specified as an argument.
      *
-     * @param linkName Nombre del enlace.
-     * @return TRUE si existe m�s de un enlace con el mismo nombre. FALSE en
-     * caso contrario.
+     * @param linkName link name to check.
+     * @return TRUE, if there are more than a link using the link name specified
+     * as an argument. Otherwise, FALSE.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -226,6 +236,7 @@ public class TTopology {
             if (link.getName().equals(linkName)) {
                 linksWithSameName++;
             }
+            // FIX: Do not use harcoded values. Use class constants instead.
             if (linksWithSameName > 1) {
                 return true;
             }
@@ -234,12 +245,15 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo comprueba si en la topoliog�a hay algun emisor de tr�fico que
-     * dirija su tr�fico al receptor especificado por parametros.
+     * This method checks whether there is a traffic generator node that is
+     * configured to send traffic to the traffic sink node specifies as an
+     * argument.
      *
-     * @param trafficSinkNode Nodo receptor.
-     * @return TRUE, si algun exmisor env�a tr�fico al receptor. FALSE en caso
-     * contrario.
+     * @param trafficSinkNode traffic sink node we want to ckeck if is receiving
+     * traffic.
+     * @return TRUE, there is a traffic generator node that is configured to
+     * send traffic to the traffic sink node specifies as an argument.
+     * Otherwise, FALSE.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -260,11 +274,12 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo obtiene el primer enlace de la topolog�a con el nombre igual
-     * al especificado como par�metro.
+     * This method gets the first link from the topology that match the link
+     * name specified as an argument.
      *
-     * @param linkName Nombre del enlace buscado.
-     * @return El enlace buscado. NULL si no existe.
+     * @param linkName link name of the link to be returned.
+     * @return the first link from the topology that match the link name
+     * specified as an argument, if it exists. Otherwise, returns FALSE.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -281,11 +296,12 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo obtiene el nodo cuya posici�n en el panel de dise�o coincida
-     * con la especificada como par�metro.
+     * This method gets the node from the topology corresponding to the screen
+     * position specified as an argument.
      *
-     * @param screenPosition Coordenadas del nodo que deseamos buscar.
-     * @return El nodo buscado. NULL si no existe.
+     * @param screenPosition the screen position of the node to be returned.
+     * @return a node from the topology corresponding to the screen prosition
+     * specified as an argument.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -302,9 +318,9 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo devuelve un vector con todos los nodos de la topology.
+     * This method gets all nodes from the topology as an Array of nodes.
      *
-     * @return Un vector con todos los nodos de la topology.
+     * @return all nodes from the topology as an Array of nodes.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -313,10 +329,11 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo toma un nodo por parametro y actualiza el mismo en la
-     * topology, con los valores pasados.
+     * This method gets a node as an argument, look for the same node (the one
+     * having the same node ID) and update its values using the values of the
+     * node specified as an argument.
      *
-     * @param modifiedNode Nodo que queremos actualizar, con los nuevos valores.
+     * @param modifiedNode Node containing updated values.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -358,9 +375,9 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo inserta un nuevo enlace en la topology.
+     * This method adds a new link to the topology.
      *
-     * @param link Enlace que deseamos insertar.
+     * @param link link to be added to the topology.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -375,10 +392,10 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo elimina de la topology el enlace cuyo identificador es el
-     * especificado por par�metros.
+     * This method removes from the topology the link that match the link ID
+     * specified as an argument.
      *
-     * @param linkID Identificador del enlace que deseamos eliminar.
+     * @param linkID link ID of the linlk to be removed from the topology.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -390,6 +407,7 @@ public class TTopology {
             link = (TLink) linksIterator.next();
             if (link.getID() == linkID) {
                 link.disconnectFromBothNodes();
+                // FIX: Do not use harcoded values; use class constants instead.
                 link.markForDeletionAsTimerEventListener(true);
                 linksIterator.remove();
                 done = true;
@@ -399,9 +417,9 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo elimina de la topolog�a el enlace pasado por par�metro.
+     * This method removes from the topology the link specified as an argument.
      *
-     * @param link El enlace que deseamos eliminar.
+     * @param link link to be removed from the topology.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -410,11 +428,10 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo obtiene un enlace de la topology, cuyo identificador coincide
-     * con el especificado por parametros.
+     * This method gets from the topology the link that match the link ID
+     * specified as an argument.
      *
-     * @param linkID Identificador del enlace que deseamos obtener.
-     * @return El enlace que dese�bamos obtener. NULL si no existe.
+     * @param linkID link ID of the linlk to be returned.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -431,11 +448,12 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo permite obtener un enlace cuyas coordenadas en la ventana de
-     * simulaci�n coincidan con las pasadas por parametro.
+     * This method gets the link from the topology corresponding to the screen
+     * position specified as an argument.
      *
-     * @param screenPosition Coordenadas del enlace buscado.
-     * @return El enlace buscado. NULL si no existe.
+     * @param screenPosition the screen position of the link to be returned.
+     * @return a link from the topology corresponding to the screen prosition
+     * specified as an argument.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -452,9 +470,9 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo devuelve un vector con todos los enlaces de la topology.
+     * This method gets all links from the topology as an Array of links.
      *
-     * @return Un vector con todos los enlaces de la topolog�a.
+     * @return all links from the topology as an Array of links.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -463,11 +481,11 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo actualiza un enlace de la topolog�a con otro pasado por
-     * par�metro.
+     * This method gets a link as an argument, look for the same link (the one
+     * having the same link ID) and update its values using the values of the
+     * link specified as an argument.
      *
-     * @param modifiedLink Enlace que queremos actualizar, con los valores
-     * nuevos.
+     * @param modifiedLink Link containing updated values.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -493,10 +511,15 @@ public class TTopology {
     }
 
     /**
-     * @param screenPosition
+     * This method checks wheteher there is a topology element (node or link) in
+     * the screen position specified as an argument.
+     *
+     * @param screenPosition screen position to check if there is a topology
+     * element there.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     * @return
+     * @return TRUE, if there is a topology element in the screen position
+     * specified as an argument. Otherwise, FALSE.
      */
     private boolean isThereAnElementInScreenPosition(Point screenPosition) {
         if (getNodeInScreenPosition(screenPosition) != null) {
@@ -509,13 +532,16 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo permite obtener un elemento de la topolog�a cuyas coordenadas
-     * en la ventana de simulaci�n coincidan con las pasadas por parametro.
+     * This method returns the topology element that is in the screen position
+     * specified as an argument.
      *
-     * @param screenPosition Coordenadas del elemento buscado.
-     * @return El elemento buscado. NULL si no existe.
-     * @since 2.0
+     * @param screenPosition screen position to get the topology element that is
+     * there.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     * @return The topology element that is in the specified screen position or
+     * NULL if there is not a topology element there. If a link and a node are
+     * overlapped in the same screen position, the node is returned.
      */
     public TTopologyElement getElementInScreenPosition(Point screenPosition) {
         if (isThereAnElementInScreenPosition(screenPosition)) {
@@ -535,14 +561,15 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo elimina de la topology un nodo cuyo identificador coincida
-     * con el especificado por par�metros.
+     * This method disconnect a node that match the node ID specified as an
+     * argument from others and once done this job, removes the node itself.
      *
-     * @param nodeID identificador del nodo a borrar.
+     * @param nodeID Node ID of the node to be disconnected and removed from the
+     * topology.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void removeNodeAndPropagate(int nodeID) {
+    public void disconnectNodeAndRemove(int nodeID) {
         TLink link = null;
         Iterator linksIterator = this.links.iterator();
         while (linksIterator.hasNext()) {
@@ -558,21 +585,21 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo elimina de la topolog�a el nodo especificado por parametros.
+     * This method disconnect the node specified as an argument from others and
+     * once done this job, removes the node itself.
      *
-     * @param node Nodo que deseamos eliminar.
+     * @param node Node to be disconnected and removed from the topology.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void removeNode(TNode node) {
-        removeNodeAndPropagate(node.getNodeID());
+    public void disconnectNodeAndRemove(TNode node) {
+        this.disconnectNodeAndRemove(node.getNodeID());
     }
 
     /**
-     * Este m�todo devuelve un iterador que permite navegar por los nodos de
-     * forma sencilla.
+     * This method gets the iterator of all nodes of the topology.
      *
-     * @return El iterador de los nodos de la topology.
+     * @return the iterator of all nodes of the topology.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -581,10 +608,9 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo devuelve un iterador que permite navegar por los enlaces de
-     * forma sencilla.
+     * This method gets the iterator of all links of the topology.
      *
-     * @return El iterador de los enlaces de la topolog�a.
+     * @return the iterator of all links of the topology.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -593,8 +619,7 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo limpia la topology, eliminando todos los enlaces y nodos
-     * existentes.
+     * This method removes all elements from the topology.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
@@ -619,9 +644,9 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo devuelve el n�mero de nodos que hay en la topolog�a.
+     * This method gets the number of nodes in the topology.
      *
-     * @return N�mero de nodos de la topolog�a.
+     * @return the number of nodes in the topology.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -630,10 +655,11 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo permite establecer el reloj principal que controlar� la
-     * topology.
+     * This method sets the timer, that will synchronize the overall operation
+     * between elements.
      *
-     * @param timer El reloj principal de la topolog�a.
+     * @param timer the timer, that will synchronize the overall operation
+     * between elements.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -642,9 +668,11 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo permite obtener el reloj principal de la topology.
+     * This method gets the timer, that synchronizes the overall operation
+     * between elements.
      *
-     * @return El reloj principal de la topolog�a.
+     * @return the timer, that synchronizes the overall operation between
+     * elements.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -653,10 +681,10 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo permite obtener el retardo menor de todos los enlaces de la
+     * This method computes the minimum delay of all point-to-point links in the
      * topology.
      *
-     * @return El retardo menor de todos los enlaces de la topolog�a.
+     * @return the minimum delay of all point-to-point links in the topology.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -686,13 +714,13 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo permite averiguar si existe un enlace entre dos nodos con
-     * identificadores los pasados por parametros.
+     * This method checks whether there is a link that joins two nodes of the
+     * topology that correponds to the two node IDs specified as arguments.
      *
-     * @param node1ID Identificador del nodo extremo 1.
-     * @param node2ID Identificador del nodo extremo 2.
-     * @return TRUE, si existe un enlace entre extremo1 y extremo 2. FALSE en
-     * caso contrario.
+     * @param node1ID node ID of the link end 1.
+     * @param node2ID node ID of the link end 2.
+     * @return TRUE, if there is a link that joins the nodes whose node IDs are
+     * specified as arguments. Otherwise, FALSE.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -716,12 +744,14 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo permite obtener el enlace entre dos nodos con identificadores
-     * los pasados por parametros.
+     * This method returns the link that joins two nodes of the topology that
+     * correponds to the two node IDs specified as arguments.
      *
-     * @param node1ID Identificador del nodo extremo 1.
-     * @param node2ID Identificador del nodo extremo 2.
-     * @return El enlace entre extremo 1 y extremo 2. NULL si no existe.
+     * @param node1ID node ID of the link end 1.
+     * @param node2ID node ID of the link end 2.
+     * @return the link that joins two nodes of the topology that correponds to
+     * the two node IDs specified as arguments, if it exists. if it does not
+     * exist, returns NULL.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -745,10 +775,9 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo permite acceder directamente al generador de identificadores
-     * para eventos de la topology.
+     * This method gets the event ID generator of this topology.
      *
-     * @return El generador de identificadores para eventos de la topology.
+     * @return the event ID generator of this topology.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -757,10 +786,9 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo permite establecer el generador de identificadores para
-     * elementos de la topolog�a.
+     * This method sets the event ID generator of this topology.
      *
-     * @param elementsIDGenerator El generador de identificadores de elementos.
+     * @param elementsIDGenerator the event ID generator of this topology
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -769,10 +797,9 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo permite obtener el generador de identificadores para
-     * elementos de la topolog�a.
+     * This method gets the element ID generator of this topology.
      *
-     * @return El generador de identificadores de elementos.
+     * @return the element ID generator of this topology.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -781,10 +808,9 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo permite establecer el generador de direcciones IP de la
-     * topolog�a.
+     * This method sets the IPv4 adddress generator of this topology.
      *
-     * @param ipv4AddressGenerator Generador de direcciones IP de la topolog�a.
+     * @param ipv4AddressGenerator the IPv4 adddress generator of this topology.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -793,11 +819,10 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo permite obtener el generador de direcciones IP de la
-     * topolog�a.
+     * This method gets the IPv4 adddress generator of this topology.
      *
-     * @return El generador de direcciones IP de la topolog�a.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the IPv4 adddress generator of this topology.
      * @since 2.0
      */
     public TIPv4AddressGenerator getIPv4AddressGenerator() {
@@ -805,24 +830,30 @@ public class TTopology {
     }
 
     /**
-     * Dados dos nodos como par�metros, uno de origen y otro de destino, este
-     * m�todo obtiene el identificador de un nodo adyacente al origen, por el
-     * que hay que ir para llegar al destino.
+     * This method runs Floyd-Warshall algorithm to compute the next hop node ID
+     * to reach the target node (whose node ID is specified as an argument) from
+     * a given origin node (whose node ID is specified as an argument, too).
+     * This algorithm is the "traditional" one where link delay are used to
+     * route packets through a network.
      *
-     * @param originNodeID Identificador del nodo origen.
-     * @param targetNodeID Identificador del nodo destino.
-     * @return Identificador del nod que es siguiente salto para llegar del
-     * origen al destino.
+     * @param originNodeID node ID of the origin node.
+     * @param targetNodeID node ID of the target/destination node.
+     * @return node ID of the next hop node, that is an adjacent node of the
+     * origin node, to reach the target node with a minimum delay, according to
+     * Floyd-Warsall algorithm. If there is not a route to reach the target
+     * node, TTopology.TARGET_UNREACHABLE is returned.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public synchronized int getNextHopID(int originNodeID, int targetNodeID) {
-        this.floydAlgorithmLock.lock();
+    public synchronized int getFloydWarshallNextHopID(int originNodeID, int targetNodeID) {
+        this.floydWarshallAlgorithmLock.lock();
         int currentNumberOfNodes = this.nodes.size();
         int tmpOrigin = 0;
         int tmpDestination = 0;
         // We compute equivalences betweeen indexes and node IDs to be used 
-        // when computing the adjacency matrix.
+        // when computing the adjacency matrix. This is needed because node IDs 
+        // cannot be used as indexes of the adjacency matrix. It's an index 
+        // translation.
         int[] equivalenceMatrix = new int[currentNumberOfNodes];
         int i = 0;
         TNode node = null;
@@ -904,26 +935,30 @@ public class TTopology {
         } else {
             nextHop = equivalenceMatrix[nextHop];
         }
-        this.floydAlgorithmLock.unLock();
+        this.floydWarshallAlgorithmLock.unLock();
         return nextHop;
     }
 
     /**
-     * Dados dos nodos como par�metros, uno de origen y otro de destino, este
-     * m�todo obtiene la IP de un nodo adyacente al origen, por el que hay que
-     * ir para llegar al destino.
+     * This method runs Floyd-Warshall algorithm to compute the next hop IPv4
+     * address to reach the target node (whose IPv4 address is specified as an
+     * argument) from a given origin node (whose IPv4 address is specified as an
+     * argument, too). This algorithm is the "traditional" one where link delay
+     * are used to route packets through a network.
      *
-     * @param originNodeIPv4Address IP del nodo origen
-     * @param targetNodeIPv4Address IP del nodo destino.
-     * @return IP del nodo que es siguiente salto para llegar del origen al
-     * destino.
+     * @param originNodeIPv4Address IPv4 address of the origin node.
+     * @param targetNodeIPv4Address IPv4 address of the target/destination node.
+     * @return IPv4 address of the next hop node, that is an adjacent node of
+     * the origin node, to reach the target node with a minimum delay, according
+     * to Floyd-Warsall algorithm. If there is not a route to reach the target
+     * node, NULL is returned.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public synchronized String getNextHopIPv4Address(String originNodeIPv4Address, String targetNodeIPv4Address) {
+    public synchronized String getFloydWarsallNextHopIPv4Address(String originNodeIPv4Address, String targetNodeIPv4Address) {
         int originNodeID = this.getNode(originNodeIPv4Address).getNodeID();
         int destinationID = this.getNode(targetNodeIPv4Address).getNodeID();
-        int nextHopID = getNextHopID(originNodeID, destinationID);
+        int nextHopID = getFloydWarshallNextHopID(originNodeID, destinationID);
         TNode node = this.getNode(nextHopID);
         if (node != null) {
             return node.getIPv4Address();
@@ -932,22 +967,27 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo calcula la IP del nodo al que hay que dirigirse, cuyo camino
-     * es el para avanzar hacia el destino seg� el protocolo RABAN.
+     * This method runs RABAN algorithm (a variant of Floyd-Warsall algorithm)
+     * to compute the next hop IPv4 address to reach the target node (whose IPv4
+     * address is specified as an argument) from a given origin node (whose IPv4
+     * address is specified as an argument, too). This algorithm takes into
+     * account lots of data instead of only "delay", to balance the traffic
+     * through a network. See "Guarentee of Service (GoS) support over MPLS
+     * using Active Techniques" proposal so know more of RABAN.
      *
-     * @param originNodeIPv4Address Direcci�n IP del nodo desde el que se
-     * calcula el salto.
-     * @param targetNodeIPv4Address Direcci�n IP del nodo al que se quiere
-     * llegar.
-     * @return La direcci�n IP del nodo adyacente al origen al que hay que
-     * dirigirse. NULL, si no hay camino entre el origen y el destino.
+     * @param originNodeIPv4Address IPv4 address of the origin node.
+     * @param targetNodeIPv4Address IPv4 address of the target/destination node.
+     * @return IPv4 address of the next hop node, that is an adjacent node of
+     * the origin node, to reach the target node with a minimum RABAN weight,
+     * according to RABAN algorithm. If there is not a route to reach the target
+     * node, NULL is returned.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public synchronized String getNextHopIPv4AddressUsingRABAN(String originNodeIPv4Address, String targetNodeIPv4Address) {
+    public synchronized String getRABANNextHopIPv4Address(String originNodeIPv4Address, String targetNodeIPv4Address) {
         int originNodeID = this.getNode(originNodeIPv4Address).getNodeID();
         int destinationNodeID = this.getNode(targetNodeIPv4Address).getNodeID();
-        int nextHopID = TTopology.this.getNextHopIDUsingRABAN(originNodeID, destinationNodeID);
+        int nextHopID = TTopology.this.getRABANNextHopID(originNodeID, destinationNodeID);
         TNode node = this.getNode(nextHopID);
         if (node != null) {
             return node.getIPv4Address();
@@ -956,23 +996,28 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo calcula la IP del nodo al que hay que dirigirse, cuyo camino
-     * es el para avanzar hacia el destino seg� el protocolo RABAN. Adem�s lo
-     * calcula evitando pasar por el enlace que se especifica mediante el par
-     * IPOrigen-IPNodoAEvitar.
+     * This method runs RABAN algorithm (a variant of Floyd-Warsall algorithm)
+     * to compute the next hop IPv4 address to reach the target node (whose IPv4
+     * address is specified as an argument) from a given origin node (whose IPv4
+     * address is specified as an argument, too); also, it avoid choosing the
+     * node specified by nodeToAvoidIPv4Address as next hop. This algorithm
+     * takes into account lots of data instead of only "delay", to balance the
+     * traffic through a network. See "Guarentee of Service (GoS) support over
+     * MPLS using Active Techniques" proposal so know more of RABAN.
      *
-     * @return La direcci�n IP del nodo adyacente al origen al que hay que
-     * dirigirse. NULL, si no hay camino entre el origen y el destino.
+     * @param originNodeIPv4Address IPv4 address of the origin node.
+     * @param targetNodeIPv4Address IPv4 address of the target/destination node.
+     * @param nodeToAvoidIPv4Address IPv4 address of the node that has not to be
+     * taken into account to compute the next hop. The corresponding node is
+     * avoided.
+     * @return IPv4 address of the next hop node, that is an adjacent node of
+     * the origin node, to reach the target node with a minimum RABAN weight,
+     * according to RABAN algorithm. If there is not a route to reach the target
+     * node, NULL is returned.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     * @param nodeToAvoidIPv4Address IP del nodo adyacente al nodo origen. Por
-     * el enlace que une a ambos, no se desea pasar.
-     * @param originNodeIPv4Address Direcci�n IP del nodo desde el que se
-     * calcula el salto.
-     * @param targetNodeIPv4Address Direcci�n IP del nodo al que se quiere
-     * llegar.
      */
-    public synchronized String getNextHopIPv4AddressUsingRABAN(String originNodeIPv4Address, String targetNodeIPv4Address, String nodeToAvoidIPv4Address) {
+    public synchronized String getRABANNextHopIPv4Address(String originNodeIPv4Address, String targetNodeIPv4Address, String nodeToAvoidIPv4Address) {
         int originNodeID = this.getNode(originNodeIPv4Address).getNodeID();
         int destinationNodeID = this.getNode(targetNodeIPv4Address).getNodeID();
         int nodeToAvoidID = this.getNode(nodeToAvoidIPv4Address).getNodeID();
@@ -985,25 +1030,32 @@ public class TTopology {
     }
 
     /**
-     * Dados dos nodos como par�metros, uno de origen y otro de destino, este
-     * m�todo obtiene el identificador de un nodo adyacente al origen, por el
-     * que hay que ir para llegar al destino, siguiendo el protocolo de
-     * encaminamiento RABAN.
+     * This method runs RABAN algorithm (a variant of Floyd-Warsall algorithm)
+     * to compute the next hop node ID to reach the target node (whose node ID
+     * is specified as an argument) from a given origin node (whose node ID is
+     * specified as an argument, too). This algorithm takes into account lots of
+     * data instead of only "delay", to balance the traffic through a network.
+     * See "Guarentee of Service (GoS) support over MPLS using Active
+     * Techniques" proposal so know more of RABAN.
      *
-     * @param originNodeID Identificador del nodo origen.
-     * @param targetNodeID Identificador del nodo destino.
-     * @return Identificador del nod que es siguiente salto para llegar del
-     * origen al destino.
+     * @param originNodeID node ID of the origin node.
+     * @param targetNodeID node ID of the target/destination node.
+     * @return node ID of the next hop node, that is an adjacent node of the
+     * origin node, to reach the target node with a minimum RABAN weight,
+     * according to RABAN algorithm. If there is not a route to reach the target
+     * node, TTopology.TARGET_UNREACHABLE is returned.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public synchronized int getNextHopIDUsingRABAN(int originNodeID, int targetNodeID) {
+    public synchronized int getRABANNextHopID(int originNodeID, int targetNodeID) {
         this.rabanAlgorithmLock.lock();
         int currentNumberOfNodes = this.nodes.size();
         int tmpOrigin = 0;
         int tmpDestination = 0;
         // We compute equivalences betweeen indexes and node IDs to be used 
-        // when computing the adjacency matrix.
+        // when computing the adjacency matrix. This is needed because node IDs 
+        // cannot be used as indexes of the adjacency matrix. It's an index 
+        // translation.
         int[] equivalenceMatrix = new int[currentNumberOfNodes];
         int i = 0;
         TNode node = null;
@@ -1084,20 +1136,25 @@ public class TTopology {
     }
 
     /**
-     * Este m�todo calcula el iodentificador del nodo al que hay que dirigirse,
-     * cuyo camino es el mejor para avanzar hacia el destino seg�n el protocolo
-     * RABAN. Adem�s lo calcula evitando pasar por el enlace que se especifica
-     * mediante el par origen-nodoAEvitar.
+     * This method runs RABAN algorithm (a variant of Floyd-Warsall algorithm)
+     * to compute the next hop node ID to reach the target node (whose node ID
+     * is specified as an argument) from a given origin node (whose node ID is
+     * specified as an argument, too); also, it avoid choosing the node
+     * specified by nodeToAvoidID node ID as next hop. This algorithm takes into
+     * account lots of data instead of only "delay", to balance the traffic
+     * through a network. See "Guarentee of Service (GoS) support over MPLS
+     * using Active Techniques" proposal so know more of RABAN.
      *
-     * @return El identificador del nodo adyacente al origen al que hay que
-     * dirigirse. NULL, si no hay camino entre el origen y el destino.
+     * @param originNodeID node ID of the origin node.
+     * @param targetNodeID node ID of the target/destination node.
+     * @param nodeToAvoidID node ID that has not to be taken into account to
+     * compute the next hop. The corresponding node is avoided.
+     * @return node ID of the next hop node, that is an adjacent node of the
+     * origin node, to reach the target node with a minimum RABAN weight,
+     * according to RABAN algorithm. If there is not a route to reach the target
+     * node, TTopology.TARGET_UNREACHABLE is returned.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     * @param originNodeID El identyificador del nodo que realiza la petici�n de
-     * c�lculo.
-     * @param targetNodeID El identificador del nodo al que se desea llegar.
-     * @param nodeToAvoidID Identificador del nodo adyacente a origen. El enlace
-     * que une a ambos se desea evitar.
      */
     public synchronized int getNextHopIDUsingRABAN(int originNodeID, int targetNodeID, int nodeToAvoidID) {
         this.rabanAlgorithmLock.lock();
@@ -1106,7 +1163,9 @@ public class TTopology {
         int tmpDestination = 0;
         int tmpNodeToAvoidID = 0;
         // We compute equivalences betweeen indexes and node IDs to be used 
-        // when computing the adjacency matrix.
+        // when computing the adjacency matrix. This is needed because node IDs 
+        // cannot be used as indexes of the adjacency matrix. It's an index 
+        // translation.
         int[] equivalenceMatrix = new int[currentNumberOfNodes];
         int i = 0;
         TNode node = null;
@@ -1208,6 +1267,6 @@ public class TTopology {
     private TLongIDGenerator eventIDGenerator;
     private TIDGenerator elementsIDGenerator;
     private TIPv4AddressGenerator ipv4AddressGenerator;
-    private TLock floydAlgorithmLock;
+    private TLock floydWarshallAlgorithmLock;
     private TLock rabanAlgorithmLock;
 }
