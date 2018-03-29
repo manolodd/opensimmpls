@@ -321,9 +321,9 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
      */
     @Override
     public void receiveTimerEvent(TTimerEvent timerEvent) {
-        this.setTickDurationInNs(timerEvent.getStepDuration());
+        this.setTickDurationInNs(timerEvent.getTickDurationInNs());
         this.setCurrentTimeInstant(timerEvent.getUpperLimit());
-        this.availableNanoseconds += timerEvent.getStepDuration();
+        this.availableNanoseconds += timerEvent.getTickDurationInNs();
         this.startOperation();
     }
 

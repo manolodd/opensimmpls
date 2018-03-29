@@ -92,7 +92,7 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
      */
     @Override
     public void receiveTimerEvent(TTimerEvent evt) {
-        this.setTickDurationInNs(evt.getStepDuration());
+        this.setTickDurationInNs(evt.getTickDurationInNs());
         this.setCurrentTimeInstant(evt.getUpperLimit());
         this.startOperation();
     }

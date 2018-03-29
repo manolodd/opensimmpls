@@ -53,7 +53,7 @@ public class TTimerEvent extends TOpenSimMPLSEvent {
      * the values included in this event.
      * @since 2.0
      */
-    public int getStepDuration() {
+    public int getTickDurationInNs() {
         return (int) ((this.upperEndOfInterval.getTotalAsNanoseconds()) - (this.lowerEndOfInterval.getTotalAsNanoseconds()));
     }
 

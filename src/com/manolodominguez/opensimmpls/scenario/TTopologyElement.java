@@ -23,21 +23,21 @@ import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEven
 import com.manolodominguez.opensimmpls.utils.TLongIDGenerator;
 
 /**
- * Esta clase abstracta es la superclase de la que derivan todos los elementos
- * que se pueden insertar en una topolog�a.
+ * This is an abstract class that is the super class of all elements of a
+ * topology.
  *
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public abstract class TTopologyElement implements ITimerEventListener, Runnable {
 
     /**
-     * Crea una nueva instancia de TElementoTopologia
+     * This is the constructor of the class. It will be called by subclasses
+     * when creating a new instance.
      *
-     * @param elementType Indica el tipo de elemento de que se trata. Una de las
-     * constantes de la clase.
-     * @param eventIdentifierGenerator generador de identificadores de eventos.
+     * @param elementType The type of the element. One of the contants defined
+     * in this class.
+     * @param eventIdentifierGenerator The event identifier generator.
      * @since 2.0
      */
     public TTopologyElement(int elementType, TLongIDGenerator eventIdentifierGenerator) {
@@ -54,10 +54,11 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo devuelve el instante de tiempo en que se encuentra el
-     * elemento. Se usa para asignar dicho instante a los eventos generados.
+     * This method gets the current time instant. It is a representation of a
+     * specific moment in the simulation. Mostly used to be included in each
+     * event generated.
      *
-     * @return El instante de tiempo en que se encuentra el elemento.
+     * @return the current time instant.
      * @since 2.0
      */
     public long getCurrentTimeInstant() {
@@ -65,10 +66,11 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo establece el instante de tiempo en que se encuentra el
-     * elemento.
+     * This method sets the current time instant. It is a representation of a
+     * specific moment in the simulation. Mostly used to be included in each
+     * event generated.
      *
-     * @param currentInstant Instante de tiempo.
+     * @param currentInstant the current time instant
      * @since 2.0
      */
     public void setCurrentTimeInstant(long currentInstant) {
@@ -76,32 +78,35 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo obtiene la duraci�n del tic del que dispone el elemento para
-     * operar.
+     * This method gets the tick duration in nanoseconds.
      *
-     * @return La duraci�n del tic, en nanosegundos.
+     * @return the tick duration in nanoseconds.
      * @since 2.0
      */
+    // FIX: Clarify the difference between tickDurationInNs and the available 
+    // number of nanoseconds. 
     public int getTickDurationInNs() {
         return this.tickDurationInNs;
     }
 
     /**
-     * Este m�todo establece la duraci�n del tic del que dispone el elemento.
+     * This method sets the tick duration in nanoseconds.
      *
-     * @param tickDurationInNs Duraci�n del tic en nanosegundos.
+     * @param tickDurationInNs the tick duration in nanoseconds.
      * @since 2.0
      */
+    // FIX: Clarify the difference between tickDurationInNs and the available 
+    // number of nanoseconds. 
     public void setTickDurationInNs(int tickDurationInNs) {
         this.tickDurationInNs = tickDurationInNs;
     }
 
     /**
-     * Este m�todo permite establecer si se quiere dejar de recibir eventos de
-     * reloj o no.
+     * This method marks the topology element to stop receiving timer event or
+     * not.
      *
-     * @param markForDeletionAsTimerEventListener TRUE, indica que se dejen de recibir eventos de reloj cuanto
-     * antes. FALSE indica lo contrario.
+     * @param markForDeletionAsTimerEventListener TRUE, if the topology node has
+     * to stop receiving timer events. On the contrary, FALSE.
      * @since 2.0
      */
     public void markForDeletionAsTimerEventListener(boolean markForDeletionAsTimerEventListener) {
@@ -109,10 +114,11 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo devuelve si se ha decidido no recibir eventos del reloj o no.
+     * This method checks whether the topology element has been marked to stop
+     * receiving timer events or not.
      *
-     * @return TRUE, indica que se ha decidido dejar de recibir eventos del
-     * reloj. FALSE indica lo contrario.
+     * @return TRUE, if the topology element has been marked to stop receiving
+     * timer events. Otherwise, FALSE.
      * @since 2.0
      */
     public boolean isMarkedForDeletionAsTimerEventListener() {
@@ -120,9 +126,9 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo devuelve el tipo de elemento de que se trata.
+     * This method gets the element type of the topology element.
      *
-     * @return El tipo del elemento. Una de las constantes de la clase.
+     * @return the element type of the topology element.
      * @since 2.0
      */
     public int getElementType() {
@@ -130,58 +136,67 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo permite establecer el n�mero de nanosegundos de que dispone
-     * el elemento para operar.
+     * This method sets the available number of nanoseconds of the topology
+     * element (those nanoseconds that the topology element uses to work).
      *
-     * @param availableNanoseconds Nanosegundos de que dispone el elemento.
+     * @param availableNanoseconds the available number of nanoseconds of the
+     * topology element
      * @since 2.0
      */
+    // FIX: this is not being used. Subclassess are accesing directly to the 
+    // attribute.
     public void setAvailableNanoseconds(long availableNanoseconds) {
         this.availableNanoseconds = availableNanoseconds;
     }
 
     /**
-     * Este m�todo permite obtener el n�mero de nanosegundos de que dispone el
-     * elemento para operar.
+     * This method gets the available number of nanoseconds of the topology
+     * element (those nanoseconds that the topology element uses to work).
      *
-     * @return El n�mero de nanosegundos de que dispone el elemento.
+     * @return the available number of nanoseconds of the topology element.
      * @since 2.0
      */
+    // FIX: this is not being used. Subclassess are accesing directly to the 
+    // attribute.
     public double getAvailableNanoseconds() {
         return this.availableNanoseconds;
     }
 
     /**
-     * Este m�todo a�ade nanosegundos al n�mero de nanosegundos disponibles para
-     * el elemento.
+     * This method adds the specified number of nanoseconds to the avaliable
+     * number of nanoseconds of the topology element.
      *
-     * @param ns Nanosegundos que queremos a�adir al disponible para el
-     * elemento.
+     * @param nanosecondsToAdd number of nanoseconds to add to the avaliable
+     * number of nanoseconds of the topology element.
      * @since 2.0
      */
-    public void addToAvailableNanoseconds(long ns) {
-        this.availableNanoseconds += ns;
+    // FIX: this is not being used. Subclassess are accesing directly to the 
+    // attribute.
+    public void addToAvailableNanoseconds(long nanosecondsToAdd) {
+        this.availableNanoseconds += nanosecondsToAdd;
     }
 
     /**
-     * Este m�todo resta nanosegundos al n�mero de nanosegundos disponibles para
-     * el elemento.
+     * This method subtracts the specified number of nanoseconds from the
+     * avaliable number of nanoseconds of the topology element.
      *
-     * @param ns nanosegundos que queremos descontar del disponible para el
-     * elemento.
+     * @param nanosecondsToSubtract number of nanoseconds to subtract from the
+     * avaliable number of nanoseconds of the topology element.
      * @since 2.0
      */
-    public void subtractFromAvailableNanoseconds(long ns) {
-        if (this.availableNanoseconds < ns) {
+    // FIX: this is not being used. Subclassess are accesing directly to the 
+    // attribute.
+    public void subtractFromAvailableNanoseconds(long nanosecondsToSubtract) {
+        if (this.availableNanoseconds < nanosecondsToSubtract) {
             this.availableNanoseconds = 0;
         } else {
-            this.availableNanoseconds -= ns;
+            this.availableNanoseconds -= nanosecondsToSubtract;
         }
     }
 
     /**
-     * Este m�todo pone en funcionamiento el hilo independiente que maneja al
-     * elemento.
+     * This method starts the independent thread that governs the topology
+     * element.
      *
      * @since 2.0
      */
@@ -196,9 +211,10 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo se usa para sincronizar el hilo de este elemento con el de
-     * todos los dem�s y con el hilo principal. Este m�todo es llamado por el
-     * reloj del simulador, que sincroniza toda la simulaci�n.
+     * This method is used to syncronize the thread of the topology element with
+     * those of the rest of elements and with the main thread so that the
+     * simulation can flow synchronously. It is called by the simulator's timer
+     * that synchronizes the simulation.
      *
      * @since 2.0
      */
@@ -346,6 +362,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
     private Thread elementThread;
     public TSimulationEventListener simulationEventsListener;
     public TLongIDGenerator eventIdentifierGenerator;
+    // FIX: put this attribute as private, not protected.
     protected double availableNanoseconds;
     private boolean alive;
     protected boolean wellConfigured;

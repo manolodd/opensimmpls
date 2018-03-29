@@ -226,13 +226,13 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      */
     @Override
     public void receiveTimerEvent(TTimerEvent timerEvent) {
-        this.setTickDurationInNs(timerEvent.getStepDuration());
+        this.setTickDurationInNs(timerEvent.getTickDurationInNs());
         this.setCurrentTimeInstant(timerEvent.getUpperLimit());
         if (this.getPorts().isAnyPacketToSwitch()) {
-            this.availableNanoseconds += timerEvent.getStepDuration();
+            this.availableNanoseconds += timerEvent.getTickDurationInNs();
         } else {
             this.resetTicksWithoutEmitting();
-            this.availableNanoseconds = timerEvent.getStepDuration();
+            this.availableNanoseconds = timerEvent.getTickDurationInNs();
         }
         this.startOperation();
     }

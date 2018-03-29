@@ -80,9 +80,9 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      */
     @Override
     public void receiveTimerEvent(com.manolodominguez.opensimmpls.hardware.timer.TTimerEvent timerEvent) {
-        this.setTickDurationInNs(timerEvent.getStepDuration());
+        this.setTickDurationInNs(timerEvent.getTickDurationInNs());
         this.setCurrentTimeInstant(timerEvent.getUpperLimit());
-        this.stepLength = timerEvent.getStepDuration();
+        this.stepLength = timerEvent.getTickDurationInNs();
         this.startOperation();
     }
 
