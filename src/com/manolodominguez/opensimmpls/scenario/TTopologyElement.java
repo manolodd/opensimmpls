@@ -38,6 +38,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @param elementType The type of the element. One of the contants defined
      * in this class.
      * @param eventIdentifierGenerator The event identifier generator.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TTopologyElement(int elementType, TLongIDGenerator eventIdentifierGenerator) {
@@ -59,6 +60,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * event generated.
      *
      * @return the current time instant.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public long getCurrentTimeInstant() {
@@ -71,6 +73,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * event generated.
      *
      * @param currentInstant the current time instant
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void setCurrentTimeInstant(long currentInstant) {
@@ -81,6 +84,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * This method gets the tick duration in nanoseconds.
      *
      * @return the tick duration in nanoseconds.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     // FIX: Clarify the difference between tickDurationInNs and the available 
@@ -93,6 +97,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * This method sets the tick duration in nanoseconds.
      *
      * @param tickDurationInNs the tick duration in nanoseconds.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     // FIX: Clarify the difference between tickDurationInNs and the available 
@@ -107,6 +112,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      *
      * @param markForDeletionAsTimerEventListener TRUE, if the topology node has
      * to stop receiving timer events. On the contrary, FALSE.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void markForDeletionAsTimerEventListener(boolean markForDeletionAsTimerEventListener) {
@@ -119,6 +125,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      *
      * @return TRUE, if the topology element has been marked to stop receiving
      * timer events. Otherwise, FALSE.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public boolean isMarkedForDeletionAsTimerEventListener() {
@@ -129,6 +136,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * This method gets the element type of the topology element.
      *
      * @return the element type of the topology element.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public int getElementType() {
@@ -140,7 +148,8 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * element (those nanoseconds that the topology element uses to work).
      *
      * @param availableNanoseconds the available number of nanoseconds of the
-     * topology element
+     * topology element.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     // FIX: this is not being used. Subclassess are accesing directly to the 
@@ -154,6 +163,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * element (those nanoseconds that the topology element uses to work).
      *
      * @return the available number of nanoseconds of the topology element.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     // FIX: this is not being used. Subclassess are accesing directly to the 
@@ -168,6 +178,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      *
      * @param nanosecondsToAdd number of nanoseconds to add to the avaliable
      * number of nanoseconds of the topology element.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     // FIX: this is not being used. Subclassess are accesing directly to the 
@@ -182,6 +193,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      *
      * @param nanosecondsToSubtract number of nanoseconds to subtract from the
      * avaliable number of nanoseconds of the topology element.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     // FIX: this is not being used. Subclassess are accesing directly to the 
@@ -198,6 +210,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * This method starts the independent thread that governs the topology
      * element.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public synchronized void startOperation() {
@@ -216,6 +229,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * simulation can flow synchronously. It is called by the simulator's timer
      * that synchronizes the simulation.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public synchronized void waitForCompletion() {
@@ -237,6 +251,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @throws ESimulationSingleSubscriber this exception is thrown when a
      * listener is being defined but there is already a listener for this
      * element.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void addSimulationListener(TSimulationEventListener simulationEventsListener) throws ESimulationSingleSubscriber {
@@ -248,9 +263,10 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo elimina el v�nculo con el recolector de eventos de simulaci�n
-     * al que se le deben enviar los eventos que genere este elemento.
+     * This method removes, if exists, the simulation event listener of this
+     * topology element.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void removeSimulationEventListener() {
@@ -258,22 +274,26 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo env�a un evento de simulaci�n al recolector de simulaci�n al
-     * que est� vinculado el elemento.
+     * This method send a simulation event to the simulation event listener of
+     * this topology element.
      *
-     * @param evt Evento que se quiere enviar al recolector.
+     * @param simulationEvent simulation event to be sent to the simulation
+     * event listener of this topology element.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void generateSimulationEvent(TSimulationEvent evt) {
+    public void generateSimulationEvent(TSimulationEvent simulationEvent) {
         if (this.simulationEventsListener != null) {
-            this.simulationEventsListener.captureSimulationEvents(evt);
+            this.simulationEventsListener.captureSimulationEvents(simulationEvent);
         }
     }
 
     /**
-     * Este m�todo comprueba si el nodo est� "vivo" o no.
+     * This is an abstract method that once implemented will check whether the
+     * topology element is alive or not.
      *
-     * @return TRUE, si el nodo est� "vivo". FALSE en caso contrario.
+     * @return TRUE, if the topology element is alive. Otherwise, FALSE.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public boolean isAlive() {
@@ -281,77 +301,94 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
     }
 
     /**
-     * Este m�todo establece si el elemento est� bien configurado o no.
+     * This is an abstract method that once implemented will set whether the
+     * topology element is well configured or not.
      *
-     * @param bc TRUE, si el elemento est� bien configurado. FALSE en caso
-     * contrario.
+     * @param wellConfigured TRUE, if the element is well configured. Otherwise,
+     * FALSE.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void setWellConfigured(boolean bc) {
-        this.wellConfigured = bc;
+    public void setWellConfigured(boolean wellConfigured) {
+        this.wellConfigured = wellConfigured;
     }
 
     /**
-     * Este m�todo recibe eventos de sincronizaci�n del reloj principal del
-     * simulador, que sincroniza todo.
+     * This is an abstract method that once implemented will receive a timer
+     * event from the global timer.
      *
-     * @param evt Evento que el reloj principal env�a al elemento.
+     * @param timerEvent a timer event from the global timer.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
-    public abstract void receiveTimerEvent(TTimerEvent evt);
+    public abstract void receiveTimerEvent(TTimerEvent timerEvent);
 
     /**
-     * Este m�todo es el que se ejecuta cuando se pone el hilo independiente del
-     * elemento en funcionamiento.
+     * This is an abstract method that once implemented will start the thread of
+     * the topology element.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
     public abstract void run();
 
     /**
-     * Este m�todo calcula si el elemento est� bien configurado o no.
+     * This is an abstract method that once implemented will check whether the
+     * topology element is well configured or not.
      *
-     * @return TRUE, si el elemento est� bien configurado. FALSE en otro caso.
+     * @return TRUE, if the topology element is well configured. Otherwise,
+     * FALSE.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public abstract boolean isWellConfigured();
 
     /**
-     * Este m�todo genera un mensaje legible correspondiente al c�digo de error
-     * especificado.
+     * This is an abstract method that once implemented will generate a error
+     * string message corresponding to the error code specified as an argument.
      *
-     * @param e C�digo de error que debe transformar el m�todo.
-     * @return Mensaje de texto explicativo del c�digo de error.
+     * @param errorCode error code that will be used to generate the error
+     * string.
+     * @return Human readable error string corresponding to the error code
+     * specified.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public abstract String getErrorMessage(int e);
+    public abstract String getErrorMessage(int errorCode);
 
     /**
-     * Este m�todo convierte el elemento completo en una cadena de texto
-     * almacenable en disco.
+     * This is an abstract method that once implemented will generate a
+     * serialized string that represent all configuration values of this
+     * topology element.
      *
-     * @return La euivalencia en texto del elemento.
+     * @return a serialized string that represent all configuration values of
+     * this topology element.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public abstract String marshall();
 
     /**
-     * Este m�todo toma una cadena de texto que representa un elemento
-     * serializado, y con ella configura correctamente el elemento.
+     * This is an abstract method that once implemented will configure the
+     * topology decoding the serialized string specified as an argument that
+     * will contain the required values.
      *
-     * @param elemento Representaci�n serializada (texto) de un elemento.
-     * @return TRUE, si se ha podido deserializar correctamente el elemento
-     * textual. FALSE en caso contrario.
+     * @param serializedElement serialized string that will contain the required
+     * values to configure the topology element.
+     * @return TRUE, if the serialized string is correct and has the needed
+     * values to configure the topology element.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public abstract boolean unMarshall(String elemento);
+    public abstract boolean unMarshall(String serializedElement);
 
     /**
-     * Este m�todo reinicia los atributos del elemento como si acabase de ser
-     * creado en el constructor.
+     * This is an abstract method that once implemented will reset all the
+     * values of class attributes as if the instance was recently created.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public abstract void reset();
