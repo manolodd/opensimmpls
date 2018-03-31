@@ -57,8 +57,8 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
     }
 
     /**
-     * Este m�todo reinicia los atributos de la clase y los deja como recien
-     * creadops por el constructor.
+     * This method reset the value of all class attributes as in the moment of
+     * the instantiation.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
@@ -71,9 +71,9 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
     }
 
     /**
-     * Este m�todo devuelve el tipo del nodo.
+     * This method gets the type of the node.
      *
-     * @return TNode.RECEIVER, indicando que se trata de un nodo receptor.
+     * @return TNode.TRAFFIC_SINK, meaning that this is a traffic sink node.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
@@ -83,24 +83,23 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
     }
 
     /**
-     * Este m�todo permite obtener eventos enviados desde el reloj del
-     * simulador.
+     * This method receives timer events from the global timer.
      *
-     * @param evt Evento enviado desde el reloj principal del simulador.
+     * @param timerEvent A timer event sent from the global timer.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     @Override
-    public void receiveTimerEvent(TTimerEvent evt) {
-        this.setTickDurationInNs(evt.getTickDurationInNs());
-        this.setCurrentTimeInstant(evt.getUpperLimit());
+    public void receiveTimerEvent(TTimerEvent timerEvent) {
+        this.setTickDurationInNs(timerEvent.getTickDurationInNs());
+        this.setCurrentTimeInstant(timerEvent.getUpperLimit());
         this.startOperation();
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el hilo independiente del
-     * nodo se pone en funcionamiento. En �l se codifica toda la funcionalidad
-     * del nodo.
+     * This method is called automatically when the thread of this traffics sink
+     * node start. In this method, all operation that the node performs is
+     * defined.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
