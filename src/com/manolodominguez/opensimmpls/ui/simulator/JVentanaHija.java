@@ -45,14 +45,14 @@ import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.ui.dialogs.JWarningWindow;
 import com.manolodominguez.opensimmpls.ui.dialogs.JDecisionWindow;
-import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaEmisor;
+import com.manolodominguez.opensimmpls.ui.dialogs.JTrafficGeneratorWindow;
 import com.manolodominguez.opensimmpls.ui.dialogs.JLinkWindow;
 import com.manolodominguez.opensimmpls.ui.dialogs.JErrorWindow;
-import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaLER;
-import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaLERA;
-import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaLSR;
-import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaLSRA;
-import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaReceptor;
+import com.manolodominguez.opensimmpls.ui.dialogs.JLERWindow;
+import com.manolodominguez.opensimmpls.ui.dialogs.JActiveLERWindow;
+import com.manolodominguez.opensimmpls.ui.dialogs.JLSRWindow;
+import com.manolodominguez.opensimmpls.ui.dialogs.JActiveLSRWindow;
+import com.manolodominguez.opensimmpls.ui.dialogs.JTrafficSinkWindow;
 import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
 import com.manolodominguez.opensimmpls.ui.utils.JOSMFilter;
 import com.manolodominguez.opensimmpls.ui.utils.TProgressEventListener;
@@ -1116,27 +1116,27 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             if (elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
                 TNode nt = (TNode) elementoDisenioClicDerecho;
                 if (nt.getNodeType() == TNode.TRAFFIC_GENERATOR) {
-                    JVentanaEmisor ve = new JVentanaEmisor(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+                    JTrafficGeneratorWindow ve = new JTrafficGeneratorWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     ve.ponerConfiguracion((TTrafficGeneratorNode) nt, true);
                     ve.show();
                 } else if (nt.getNodeType() == TNode.LER) {
-                    JVentanaLER vler = new JVentanaLER(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+                    JLERWindow vler = new JLERWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     vler.ponerConfiguracion((TLERNode) nt, true);
                     vler.show();
                 } else if (nt.getNodeType() == TNode.ACTIVE_LER) {
-                    JVentanaLERA vlera = new JVentanaLERA(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+                    JActiveLERWindow vlera = new JActiveLERWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     vlera.ponerConfiguracion((TActiveLERNode) nt, true);
                     vlera.show();
                 } else if (nt.getNodeType() == TNode.LSR) {
-                    JVentanaLSR vlsr = new JVentanaLSR(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+                    JLSRWindow vlsr = new JLSRWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     vlsr.ponerConfiguracion((TLSRNode) nt, true);
                     vlsr.show();
                 } else if (nt.getNodeType() == TNode.ACTIVE_LSR) {
-                    JVentanaLSRA vlsra = new JVentanaLSRA(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+                    JActiveLSRWindow vlsra = new JActiveLSRWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     vlsra.ponerConfiguracion((TActiveLSRNode) nt, true);
                     vlsra.show();
                 } else if (nt.getNodeType() == TNode.TRAFFIC_SINK) {
-                    JVentanaReceptor vr = new JVentanaReceptor(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+                    JTrafficSinkWindow vr = new JTrafficSinkWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
                     vr.ponerConfiguracion((TTrafficSinkNode) nt, true);
                     vr.show();
                 }
@@ -1542,7 +1542,7 @@ private void clicEnAniadirLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
         err.mostrarMensaje(e.toString());
         err.show();
     }
-    JVentanaLSRA vlsra = new JVentanaLSRA(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+    JActiveLSRWindow vlsra = new JActiveLSRWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
     vlsra.ponerConfiguracion(lsra, false);
     vlsra.show();
     if (lsra.isWellConfigured()) {
@@ -1578,7 +1578,7 @@ private void clicEnAniadirLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
         err.mostrarMensaje(e.toString());
         err.show();
     }
-    JVentanaLSR vlsr = new JVentanaLSR(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+    JLSRWindow vlsr = new JLSRWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
     vlsr.ponerConfiguracion(lsr, false);
     vlsr.show();
     if (lsr.isWellConfigured()) {
@@ -1614,7 +1614,7 @@ private void clicEnAniadirLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
         err.mostrarMensaje(e.toString());
         err.show();
     }
-    JVentanaLERA vlera = new JVentanaLERA(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+    JActiveLERWindow vlera = new JActiveLERWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
     vlera.ponerConfiguracion(lera, false);
     vlera.show();
     if (lera.isWellConfigured()) {
@@ -1884,7 +1884,7 @@ private void clicEnAniadirLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
         err.mostrarMensaje(e.toString());
         err.show();
     }
-    JVentanaLER vler = new JVentanaLER(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+    JLERWindow vler = new JLERWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
     vler.ponerConfiguracion(ler, false);
     vler.show();
     if (ler.isWellConfigured()) {
@@ -2088,7 +2088,7 @@ private void clicEnAniadirReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
         err.mostrarMensaje(e.toString());
         err.show();
     }
-    JVentanaReceptor vr = new JVentanaReceptor(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+    JTrafficSinkWindow vr = new JTrafficSinkWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
     vr.ponerConfiguracion(receptor, false);
     vr.show();
     if (receptor.isWellConfigured()) {
@@ -2139,7 +2139,7 @@ private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-
             err.mostrarMensaje(e.toString());
             err.show();
         }
-        JVentanaEmisor ve = new JVentanaEmisor(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
+        JTrafficGeneratorWindow ve = new JTrafficGeneratorWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
         ve.ponerConfiguracion(emisor, false);
         ve.show();
         if (emisor.isWellConfigured()) {

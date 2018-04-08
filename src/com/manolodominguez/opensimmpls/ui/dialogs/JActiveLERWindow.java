@@ -18,7 +18,7 @@ package com.manolodominguez.opensimmpls.ui.dialogs;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import com.manolodominguez.opensimmpls.scenario.TLERNode;
+import com.manolodominguez.opensimmpls.scenario.TActiveLERNode;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
 import com.manolodominguez.opensimmpls.ui.simulator.JDesignPanel;
 import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
@@ -29,10 +29,10 @@ import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class JVentanaLER extends javax.swing.JDialog {
+public class JActiveLERWindow extends javax.swing.JDialog {
     
     /**
-     * Este m�todo crea una nueva instancia de JVentanaconfigLER
+     * Este m�todo crea una nueva instancia de JVentanaconfigLERA
      * @param t Topolog�a dentro del a cual se encuentra insertado el LER que queremos
      * configurar.
      * @param pad Panel de dise�o dentro del cual estamos dise�ando el LER que queremos
@@ -43,7 +43,7 @@ public class JVentanaLER extends javax.swing.JDialog {
      * de usuario hasta que se cierre. FALSE indica que esto no es asi.
      * @since 2.0
      */
-    public JVentanaLER(TTopology t, JDesignPanel pad, TImagesBroker di, java.awt.Frame parent, boolean modal) {
+    public JActiveLERWindow(TTopology t, JDesignPanel pad, TImagesBroker di, java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         ventanaPadre = parent;
         dispensadorDeImagenes = di;
@@ -63,7 +63,7 @@ public class JVentanaLER extends javax.swing.JDialog {
         java.awt.Dimension tamFrame=this.getSize();
         java.awt.Dimension tamPadre=ventanaPadre.getSize();
         setLocation((tamPadre.width-tamFrame.width)/2, (tamPadre.height-tamFrame.height)/2);
-        configLER=null;
+        configLERA=null;
         coordenadaX.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLER.X=") + panelCoordenadas.getRealX());
         coordenadaY.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLER.Y=") + panelCoordenadas.getRealY());
         BKUPMostrarNombre = true;
@@ -73,12 +73,12 @@ public class JVentanaLER extends javax.swing.JDialog {
         reconfigurando = false;
         BKUPGenerarEstadisticas = false;
         this.selectorSencilloCaracteristicas.removeAllItems();
-        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLER.Personalized_LER"));
-        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLER.Very_low_range_LER"));
-        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLER.Low_range_LER"));
-        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLER.Medium_range_LER"));
-        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("High_range_LER"));
-        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLER.Very_high_range_LER"));
+        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Personalized_LERA"));
+        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Very_low_range_LERA"));
+        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Low_range_LERA"));
+        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Medium_range_LERA"));
+        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.High_range_LERA"));
+        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Very_high_range_LERA"));
         this.selectorSencilloCaracteristicas.setSelectedIndex(0);
     }
     
@@ -87,7 +87,9 @@ public class JVentanaLER extends javax.swing.JDialog {
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
      */
-    private void initComponents() {//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
         panelPrincipal = new javax.swing.JPanel();
         panelPestanias = new javax.swing.JTabbedPane();
         panelGeneral = new javax.swing.JPanel();
@@ -113,13 +115,15 @@ public class JVentanaLER extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         selectorDeTamanioBuffer = new javax.swing.JSlider();
         etiquetaMemoriaBuffer = new javax.swing.JLabel();
+        selectorDeTamanioDMGP = new javax.swing.JSlider();
+        etiquetaMemoriaDMGP = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         panelBotones = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        setTitle(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.titulo"));
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations"); // NOI18N
+        setTitle(bundle.getString("VentanaLERA.titulo")); // NOI18N
         setModal(true);
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -127,31 +131,32 @@ public class JVentanaLER extends javax.swing.JDialog {
                 closeDialog(evt);
             }
         });
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         panelPrincipal.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        panelPestanias.setFont(new java.awt.Font("Dialog", 0, 12));
+        panelPestanias.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+
         panelGeneral.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        iconoLER.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LER));
-        iconoLER.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.descripcion"));
+        iconoLER.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LERA));
+        iconoLER.setText(bundle.getString("LERA.Descripcion")); // NOI18N
         panelGeneral.add(iconoLER, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
-        etiquetaNombre.setFont(new java.awt.Font("Dialog", 0, 12));
-        etiquetaNombre.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.etiquetaNombre"));
+        etiquetaNombre.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        etiquetaNombre.setText(bundle.getString("VentanaLERA.etiquetaNombre")); // NOI18N
         panelGeneral.add(etiquetaNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 80, 120, -1));
-
         panelGeneral.add(nombreNodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 105, 125, -1));
 
+        panelPosicion.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("VentanaLER.etiquetaGrupo"))); // NOI18N
         panelPosicion.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        panelPosicion.setBorder(new javax.swing.border.TitledBorder(null, java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.etiquetaGrupo"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12)));
-        coordenadaX.setFont(new java.awt.Font("Dialog", 0, 12));
-        coordenadaX.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.X="));
+        coordenadaX.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        coordenadaX.setText(bundle.getString("VentanaLER.X=")); // NOI18N
         panelPosicion.add(coordenadaX, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, -1, -1));
 
-        coordenadaY.setFont(new java.awt.Font("Dialog", 0, 12));
-        coordenadaY.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.Y="));
+        coordenadaY.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        coordenadaY.setText(bundle.getString("VentanaLER.Y=")); // NOI18N
         panelPosicion.add(coordenadaY, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
 
         panelCoordenadas.setBackground(new java.awt.Color(255, 255, 255));
@@ -166,70 +171,66 @@ public class JVentanaLER extends javax.swing.JDialog {
                 ratonSaleDePanelCoordenadas(evt);
             }
         });
-
         panelPosicion.add(panelCoordenadas, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 25, 130, 70));
 
         panelGeneral.add(panelPosicion, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 75, 180, 125));
 
-        verNombre.setFont(new java.awt.Font("Dialog", 0, 12));
+        verNombre.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         verNombre.setSelected(true);
-        verNombre.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.verNombre"));
+        verNombre.setText(bundle.getString("VentanaLER.verNombre")); // NOI18N
         panelGeneral.add(verNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 135, -1, -1));
 
-        panelPestanias.addTab(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.tabs.General"), panelGeneral);
+        panelPestanias.addTab(bundle.getString("VentanaLER.tabs.General"), panelGeneral); // NOI18N
 
         panelRapido.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        selectorDeGenerarEstadisticasSencillo.setFont(new java.awt.Font("Dialog", 0, 12));
-        selectorDeGenerarEstadisticasSencillo.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.GenerarEstadisticas"));
+        selectorDeGenerarEstadisticasSencillo.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        selectorDeGenerarEstadisticasSencillo.setText(bundle.getString("VentanaLERA.GenerarEstadisticas")); // NOI18N
         selectorDeGenerarEstadisticasSencillo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clicEnGenerarEstadisticasSencillo(evt);
             }
         });
-
         panelRapido.add(selectorDeGenerarEstadisticasSencillo, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, -1, -1));
 
         iconoEnlace1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ASISTENTE));
-        iconoEnlace1.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.ConfiguracionRapida"));
+        iconoEnlace1.setText(bundle.getString("VentanaLERA.ConfiguracionRapida")); // NOI18N
         panelRapido.add(iconoEnlace1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 0, 12));
+        jLabel1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.CaracteristicasDelLER"));
+        jLabel1.setText(bundle.getString("VentanaLERA.CaracteristicasDelLER")); // NOI18N
         panelRapido.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 160, -1));
 
-        selectorSencilloCaracteristicas.setFont(new java.awt.Font("Dialog", 0, 12));
+        selectorSencilloCaracteristicas.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         selectorSencilloCaracteristicas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Personalized", "Very low cost LER", "Low cost LER", "Medium cost LER", "Expensive LER", "Very expensive LER" }));
         selectorSencilloCaracteristicas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cliEnSelectorSencilloCaracteristicas(evt);
             }
         });
-
         panelRapido.add(selectorSencilloCaracteristicas, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 110, -1, -1));
 
-        panelPestanias.addTab(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.tabs.Fast"), panelRapido);
+        panelPestanias.addTab(bundle.getString("VentanaLER.tabs.Fast"), panelRapido); // NOI18N
 
         panelAvanzado.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        selectorDeGenerarEstadisticasAvanzado.setFont(new java.awt.Font("Dialog", 0, 12));
-        selectorDeGenerarEstadisticasAvanzado.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.GenerarEstadisticas"));
+        selectorDeGenerarEstadisticasAvanzado.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        selectorDeGenerarEstadisticasAvanzado.setText(bundle.getString("VentanaLERA.GenerarEstadisticas")); // NOI18N
         selectorDeGenerarEstadisticasAvanzado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clicEnGenerarEstadisticasAvanzada(evt);
             }
         });
-
-        panelAvanzado.add(selectorDeGenerarEstadisticasAvanzado, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, -1, -1));
+        panelAvanzado.add(selectorDeGenerarEstadisticasAvanzado, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, -1, -1));
 
         iconoEnlace2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.AVANZADA));
-        iconoEnlace2.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.ConfiguracionAvanzada"));
+        iconoEnlace2.setText(bundle.getString("VentanaLERA.ConfiguracionAvanzada")); // NOI18N
         panelAvanzado.add(iconoEnlace2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
-        jLabel2.setFont(new java.awt.Font("Dialog", 0, 12));
+        jLabel2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.PotenciaDeConmutacion"));
+        jLabel2.setText(bundle.getString("VentanaLER.PotenciaDeConmutacion")); // NOI18N
         panelAvanzado.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 140, -1));
 
         selectorDePotenciaDeConmutacion.setMajorTickSpacing(1000);
@@ -242,18 +243,17 @@ public class JVentanaLER extends javax.swing.JDialog {
                 selectorDePotenciadeConmutacionCambiado(evt);
             }
         });
-
         panelAvanzado.add(selectorDePotenciaDeConmutacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(155, 90, 130, 20));
 
-        etiquetaPotencia.setFont(new java.awt.Font("Dialog", 0, 10));
+        etiquetaPotencia.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
         etiquetaPotencia.setForeground(new java.awt.Color(102, 102, 102));
         etiquetaPotencia.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        etiquetaPotencia.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.1_Mbps"));
+        etiquetaPotencia.setText(bundle.getString("VentanaLER.1_Mbps")); // NOI18N
         panelAvanzado.add(etiquetaPotencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 90, 70, 20));
 
-        jLabel3.setFont(new java.awt.Font("Dialog", 0, 12));
+        jLabel3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.TamanioDelBufferDeEntrada"));
+        jLabel3.setText(bundle.getString("VentanaLER.TamanioDelBufferDeEntrada")); // NOI18N
         panelAvanzado.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 180, -1));
 
         selectorDeTamanioBuffer.setMajorTickSpacing(50);
@@ -266,51 +266,75 @@ public class JVentanaLER extends javax.swing.JDialog {
                 selectorDeTamanioBufferCambiado(evt);
             }
         });
-
         panelAvanzado.add(selectorDeTamanioBuffer, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 120, 100, 20));
 
-        etiquetaMemoriaBuffer.setFont(new java.awt.Font("Dialog", 0, 10));
+        etiquetaMemoriaBuffer.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
         etiquetaMemoriaBuffer.setForeground(new java.awt.Color(102, 102, 102));
         etiquetaMemoriaBuffer.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        etiquetaMemoriaBuffer.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.1_MB"));
+        etiquetaMemoriaBuffer.setText(bundle.getString("VentanaLER.1_MB")); // NOI18N
         panelAvanzado.add(etiquetaMemoriaBuffer, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 120, 60, 20));
 
-        panelPestanias.addTab(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.tabs.Advanced"), panelAvanzado);
+        selectorDeTamanioDMGP.setMajorTickSpacing(50);
+        selectorDeTamanioDMGP.setMaximum(102400);
+        selectorDeTamanioDMGP.setMinimum(1);
+        selectorDeTamanioDMGP.setMinorTickSpacing(100);
+        selectorDeTamanioDMGP.setValue(1);
+        selectorDeTamanioDMGP.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                selectorDeTamanioDMGPCambiado(evt);
+            }
+        });
+        panelAvanzado.add(selectorDeTamanioDMGP, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 150, 120, 20));
+
+        etiquetaMemoriaDMGP.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
+        etiquetaMemoriaDMGP.setForeground(new java.awt.Color(102, 102, 102));
+        etiquetaMemoriaDMGP.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        etiquetaMemoriaDMGP.setText(bundle.getString("JVentanaLERA.1KB")); // NOI18N
+        panelAvanzado.add(etiquetaMemoriaDMGP, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 150, 70, 20));
+
+        jLabel4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel4.setText(bundle.getString("JVentanaLERA.DMGP_size")); // NOI18N
+        panelAvanzado.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 150, -1));
+
+        panelPestanias.addTab(bundle.getString("VentanaLER.tabs.Advanced"), panelAvanzado); // NOI18N
 
         panelPrincipal.add(panelPestanias, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 370, 240));
 
         panelBotones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton2.setFont(new java.awt.Font("Dialog", 0, 12));
+        jButton2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jButton2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR));
         jButton2.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.botones.mne.Aceptar").charAt(0));
-        jButton2.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.boton.Ok"));
+        jButton2.setText(bundle.getString("VentanaLER.boton.Ok")); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clicEnAceptar(evt);
             }
         });
-
         panelBotones.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 115, -1));
 
-        jButton3.setFont(new java.awt.Font("Dialog", 0, 12));
+        jButton3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jButton3.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.CANCELAR));
         jButton3.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.botones.mne.Cancelar").charAt(0));
-        jButton3.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.boton.Cancel"));
+        jButton3.setText(bundle.getString("VentanaLER.boton.Cancel")); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clicEnCancelar(evt);
             }
         });
-
         panelBotones.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 15, 115, -1));
 
-        panelPrincipal.add(panelBotones, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 255, 400, 55));
+        panelPrincipal.add(panelBotones, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 400, 50));
 
         getContentPane().add(panelPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 310));
 
         pack();
-    }//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void selectorDeTamanioDMGPCambiado(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_selectorDeTamanioDMGPCambiado
+        this.etiquetaMemoriaDMGP.setText(""+this.selectorDeTamanioDMGP.getValue()+" "+java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA._MB."));
+    }//GEN-LAST:event_selectorDeTamanioDMGPCambiado
 
     private void cliEnSelectorSencilloCaracteristicas(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cliEnSelectorSencilloCaracteristicas
         int opcionSeleccionada = this.selectorSencilloCaracteristicas.getSelectedIndex();
@@ -320,22 +344,27 @@ public class JVentanaLER extends javax.swing.JDialog {
         } else if (opcionSeleccionada == 1) {
             this.selectorDePotenciaDeConmutacion.setValue(1);
             this.selectorDeTamanioBuffer.setValue(1);
+            this.selectorDeTamanioDMGP.setValue(1);
             this.selectorSencilloCaracteristicas.setSelectedIndex(1);
         } else if (opcionSeleccionada == 2) {
             this.selectorDePotenciaDeConmutacion.setValue(2560);
             this.selectorDeTamanioBuffer.setValue(256);
+            this.selectorDeTamanioDMGP.setValue(2);
             this.selectorSencilloCaracteristicas.setSelectedIndex(2);
         } else if (opcionSeleccionada == 3) {
             this.selectorDePotenciaDeConmutacion.setValue(5120);
             this.selectorDeTamanioBuffer.setValue(512);
+            this.selectorDeTamanioDMGP.setValue(3);
             this.selectorSencilloCaracteristicas.setSelectedIndex(3);
         } else if (opcionSeleccionada == 4) {
             this.selectorDePotenciaDeConmutacion.setValue(7680);
             this.selectorDeTamanioBuffer.setValue(768);
+            this.selectorDeTamanioDMGP.setValue(4);
             this.selectorSencilloCaracteristicas.setSelectedIndex(4);
         } else if (opcionSeleccionada == 5) {
             this.selectorDePotenciaDeConmutacion.setValue(10240);
             this.selectorDeTamanioBuffer.setValue(1024);
+            this.selectorDeTamanioDMGP.setValue(5);
             this.selectorSencilloCaracteristicas.setSelectedIndex(5);
         }
     }//GEN-LAST:event_cliEnSelectorSencilloCaracteristicas
@@ -360,35 +389,37 @@ public class JVentanaLER extends javax.swing.JDialog {
     
 private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnCancelar
     if (reconfigurando) {
-        configLER.setShowName(BKUPMostrarNombre);
-        configLER.setName(BKUPNombre);
-        configLER.setWellConfigured(true);
-        configLER.setBufferSizeInMBytes(BKUPTamBuffer);
-        configLER.setRoutingPowerInMbps(BKUPPotencia);
-        configLER.setGenerateStats(BKUPGenerarEstadisticas);
+        configLERA.setShowName(BKUPMostrarNombre);
+        configLERA.setName(BKUPNombre);
+        configLERA.setWellConfigured(true);
+        configLERA.setBufferSizeInMBytes(BKUPTamBuffer);
+        configLERA.setRoutingPowerInMbps(BKUPPotencia);
+        configLERA.setGenerateStats(BKUPGenerarEstadisticas);
+        configLERA.setDMGPSizeInKB(BKUPTamanioDMGP);
         reconfigurando = false;
     } else {
-        configLER.setWellConfigured(false);
+        configLERA.setWellConfigured(false);
     }
     this.setVisible(false);
     this.dispose();
 }//GEN-LAST:event_clicEnCancelar
 
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
-    configLER.setWellConfigured(true);
+    configLERA.setWellConfigured(true);
     if (!this.reconfigurando){
-        configLER.setScreenPosition(new Point(panelCoordenadas.getRealX(),panelCoordenadas.getRealY()));
+        configLERA.setScreenPosition(new Point(panelCoordenadas.getRealX(),panelCoordenadas.getRealY()));
     }
-    configLER.setBufferSizeInMBytes(this.selectorDeTamanioBuffer.getValue());
-    configLER.setRoutingPowerInMbps(this.selectorDePotenciaDeConmutacion.getValue());
-    configLER.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
-    configLER.setName(nombreNodo.getText());
-    configLER.setShowName(verNombre.isSelected());
-    configLER.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
-    int error = configLER.validateConfig(topo, this.reconfigurando);
-    if (error != TLERNode.OK) {
+    configLERA.setDMGPSizeInKB(this.selectorDeTamanioDMGP.getValue());
+    configLERA.setBufferSizeInMBytes(this.selectorDeTamanioBuffer.getValue());
+    configLERA.setRoutingPowerInMbps(this.selectorDePotenciaDeConmutacion.getValue());
+    configLERA.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
+    configLERA.setName(nombreNodo.getText());
+    configLERA.setShowName(verNombre.isSelected());
+    configLERA.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
+    int error = configLERA.validateConfig(topo, this.reconfigurando);
+    if (error != TActiveLERNode.OK) {
         JWarningWindow va = new JWarningWindow(ventanaPadre, true, dispensadorDeImagenes);
-        va.mostrarMensaje(configLER.getErrorMessage(error));
+        va.mostrarMensaje(configLERA.getErrorMessage(error));
         va.show();
     } else {
         this.setVisible(false);
@@ -399,8 +430,8 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
 private void clicEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnPanelCoordenadas
     if (evt.getButton() == MouseEvent.BUTTON1) {
         panelCoordenadas.setCoordinates(evt.getPoint());
-        coordenadaX.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaconfigLER.X=_") + panelCoordenadas.getRealX());
-        coordenadaY.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaconfigLER.Y=_") + panelCoordenadas.getRealY());
+        coordenadaX.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaconfigLERA.X=_") + panelCoordenadas.getRealX());
+        coordenadaY.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaconfigLERA.Y=_") + panelCoordenadas.getRealY());
         panelCoordenadas.repaint();
     }
 }//GEN-LAST:event_clicEnPanelCoordenadas
@@ -416,30 +447,32 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
 /** Closes the dialog */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         setVisible(false);
-        configLER.setWellConfigured(false);
+        configLERA.setWellConfigured(false);
         dispose();
     }//GEN-LAST:event_closeDialog
     
     /**
      * Este m�todo permite cargar en la ventana la configuraci�n actual del LER.
      * @since 2.0
-     * @param tnler El nodo LER que queremos configurar.
+     * @param tnlera El nodo LER que queremos configurar.
      * @param recfg TRUE indica que estamos reconfigurando el LER. FALSE indica que el LER se ha
      * insertado nuevo en la topolog�a.
      */
-    public void ponerConfiguracion(TLERNode tnler, boolean recfg) {
-        configLER = tnler;
+    public void ponerConfiguracion(TActiveLERNode tnlera, boolean recfg) {
+        configLERA = tnlera;
         reconfigurando = recfg;
         if (reconfigurando) {
             this.panelCoordenadas.setEnabled(false);
             this.panelCoordenadas.setToolTipText(null);
 
-            BKUPGenerarEstadisticas = tnler.isGeneratingStats();
-            BKUPMostrarNombre = tnler.nameMustBeDisplayed();
-            BKUPNombre = tnler.getName();
-            BKUPPotencia = tnler.getRoutingPowerInMbps();
-            BKUPTamBuffer = tnler.getBufferSizeInMBytes();
+            BKUPGenerarEstadisticas = tnlera.isGeneratingStats();
+            BKUPMostrarNombre = tnlera.nameMustBeDisplayed();
+            BKUPNombre = tnlera.getName();
+            BKUPPotencia = tnlera.getRoutingPowerInMbps();
+            BKUPTamBuffer = tnlera.getBufferSizeInMBytes();
+            BKUPTamanioDMGP = tnlera.getDMGPSizeInKB();
 
+            this.selectorDeTamanioDMGP.setValue(this.BKUPTamanioDMGP);
             this.selectorDeGenerarEstadisticasAvanzado.setSelected(BKUPGenerarEstadisticas);
             this.selectorDeGenerarEstadisticasSencillo.setSelected(BKUPGenerarEstadisticas);
             this.selectorDePotenciaDeConmutacion.setValue(BKUPPotencia);
@@ -452,7 +485,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
     private TImagesBroker dispensadorDeImagenes;
     private Frame ventanaPadre;
     private JDesignPanel pd;
-    private TLERNode configLER;
+    private TActiveLERNode configLERA;
     private TTopology topo;
     
     private boolean BKUPMostrarNombre;
@@ -460,6 +493,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
     private int BKUPPotencia;
     private int BKUPTamBuffer;
     private boolean BKUPGenerarEstadisticas;
+    private int BKUPTamanioDMGP;
 
     private boolean reconfigurando;
     
@@ -467,6 +501,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
     private javax.swing.JLabel coordenadaX;
     private javax.swing.JLabel coordenadaY;
     private javax.swing.JLabel etiquetaMemoriaBuffer;
+    private javax.swing.JLabel etiquetaMemoriaDMGP;
     private javax.swing.JLabel etiquetaNombre;
     private javax.swing.JLabel etiquetaPotencia;
     private javax.swing.JLabel iconoEnlace1;
@@ -477,6 +512,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField nombreNodo;
     private javax.swing.JPanel panelAvanzado;
     private javax.swing.JPanel panelBotones;
@@ -490,6 +526,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
     private javax.swing.JCheckBox selectorDeGenerarEstadisticasSencillo;
     private javax.swing.JSlider selectorDePotenciaDeConmutacion;
     private javax.swing.JSlider selectorDeTamanioBuffer;
+    private javax.swing.JSlider selectorDeTamanioDMGP;
     private javax.swing.JComboBox selectorSencilloCaracteristicas;
     private javax.swing.JCheckBox verNombre;
     // End of variables declaration//GEN-END:variables
