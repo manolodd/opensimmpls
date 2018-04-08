@@ -20,13 +20,13 @@ import java.util.*;
 import javax.swing.*;
 import com.manolodominguez.opensimmpls.io.osm.TOSMLoader;
 import com.manolodominguez.opensimmpls.scenario.TScenario;
-import com.manolodominguez.opensimmpls.ui.dialogs.JLicencia;
-import com.manolodominguez.opensimmpls.ui.dialogs.JSobre;
-import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaAdvertencia;
-import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaAyuda;
-import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaBooleana;
-import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaComentario;
-import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaError;
+import com.manolodominguez.opensimmpls.ui.dialogs.JLicenseWindow;
+import com.manolodominguez.opensimmpls.ui.dialogs.JAboutWindow;
+import com.manolodominguez.opensimmpls.ui.dialogs.JWarningWindow;
+import com.manolodominguez.opensimmpls.ui.dialogs.JHelpWindow;
+import com.manolodominguez.opensimmpls.ui.dialogs.JDecisionWindow;
+import com.manolodominguez.opensimmpls.ui.dialogs.JCommentWindow;
+import com.manolodominguez.opensimmpls.ui.dialogs.JErrorWindow;
 import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
 import com.manolodominguez.opensimmpls.ui.utils.JOSMFilter;
 import com.manolodominguez.opensimmpls.utils.TIDGenerator;
@@ -318,7 +318,7 @@ public class JSimulador extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void clicEnTutorial(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnTutorial
-        JVentanaAyuda va = new JVentanaAyuda(this, true, this.dispensadorDeImagenes);
+        JHelpWindow va = new JHelpWindow(this, true, this.dispensadorDeImagenes);
         va.show();
     }//GEN-LAST:event_clicEnTutorial
 
@@ -356,22 +356,22 @@ public class JSimulador extends javax.swing.JFrame {
                             getContentPane().add(Escritorio, java.awt.BorderLayout.CENTER);
                         }
                         catch (Exception e) {
-                            JVentanaError ve;
-                            ve = new JVentanaError(this, true, dispensadorDeImagenes);
+                            JErrorWindow ve;
+                            ve = new JErrorWindow(this, true, dispensadorDeImagenes);
                             ve.mostrarMensaje(e.toString());
                             ve.show();
                         }
                     } else {
-                        JVentanaAdvertencia va;
-                        va = new JVentanaAdvertencia(this, true, dispensadorDeImagenes);
+                        JWarningWindow va;
+                        va = new JWarningWindow(this, true, dispensadorDeImagenes);
                         va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JSimulador.DialogoAbrir.FicheroCorrupto"));
                         va.show();
                     }
                     dialogoAbrir = null;
                     finAbrir = true;
                 } else {
-                    JVentanaAdvertencia va;
-                    va = new JVentanaAdvertencia(this, true, dispensadorDeImagenes);
+                    JWarningWindow va;
+                    va = new JWarningWindow(this, true, dispensadorDeImagenes);
                     va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JSimulador.DialogoAbrir.FicheroDebeExistir"));
                     va.show();
                 }
@@ -400,7 +400,7 @@ public class JSimulador extends javax.swing.JFrame {
      * @since 2.0
      */    
 private void clicEnEnviarComentario(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnEnviarComentario
-    JVentanaComentario vc = new JVentanaComentario(dispensadorDeImagenes, this, true);
+    JCommentWindow vc = new JCommentWindow(dispensadorDeImagenes, this, true);
     vc.show();
 }//GEN-LAST:event_clicEnEnviarComentario
 
@@ -429,8 +429,8 @@ private void clicEnVistaMosaicoHorizontal(java.awt.event.ActionEvent evt) {//GEN
         for (int j=ventanas.length-1; j >= 0; j--)
             ventanas[j].setVisible(true);
     } catch (Exception e) {
-        JVentanaError ve;
-        ve = new JVentanaError(this, true, dispensadorDeImagenes);
+        JErrorWindow ve;
+        ve = new JErrorWindow(this, true, dispensadorDeImagenes);
         ve.mostrarMensaje(e.toString());
         ve.show();
     }
@@ -457,8 +457,8 @@ private void clicEnVistaMosaicoVertical(java.awt.event.ActionEvent evt) {//GEN-F
         for (int j=ventanas.length-1; j >= 0; j--)
             ventanas[j].setVisible(true);
     } catch (Exception e) {
-        JVentanaError ve;
-        ve = new JVentanaError(this, true, dispensadorDeImagenes);
+        JErrorWindow ve;
+        ve = new JErrorWindow(this, true, dispensadorDeImagenes);
         ve.mostrarMensaje(e.toString());
         ve.show();
     }
@@ -494,8 +494,8 @@ private void clicEnVistaCascada(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
         for (int j=ventanas.length-1; j >= 0; j--)
             ventanas[j].setVisible(true);
     } catch (Exception e) {
-        JVentanaError ve;
-        ve = new JVentanaError(this, true, dispensadorDeImagenes);
+        JErrorWindow ve;
+        ve = new JErrorWindow(this, true, dispensadorDeImagenes);
         ve.mostrarMensaje(e.toString());
         ve.show();
     }
@@ -513,8 +513,8 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
         }
         ventanas[0].setSelected(true);
     } catch (Exception e) {
-        JVentanaError ve;
-        ve = new JVentanaError(this, true, dispensadorDeImagenes);
+        JErrorWindow ve;
+        ve = new JErrorWindow(this, true, dispensadorDeImagenes);
         ve.mostrarMensaje(e.toString());
         ve.show();
     }
@@ -543,8 +543,8 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
                 }
                 ventanas[0].setSelected(true);
             } catch (Exception e) {
-                JVentanaError ve;
-                ve = new JVentanaError(this, true, dispensadorDeImagenes);
+                JErrorWindow ve;
+                ve = new JErrorWindow(this, true, dispensadorDeImagenes);
                 ve.mostrarMensaje(e.toString());
                 ve.show();
             }
@@ -571,8 +571,8 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
             getContentPane().add(Escritorio, java.awt.BorderLayout.CENTER);
         }
         catch (Exception e) {
-            JVentanaError ve;
-            ve = new JVentanaError(this, true, dispensadorDeImagenes);
+            JErrorWindow ve;
+            ve = new JErrorWindow(this, true, dispensadorDeImagenes);
             ve.mostrarMensaje(e.toString());
             ve.show();
         }
@@ -583,8 +583,8 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
      * @since 2.0
      */    
     private void clicEnLicencia(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnLicencia
-        JLicencia ventanaLicencia;
-        ventanaLicencia = new JLicencia(this, true, dispensadorDeImagenes);
+        JLicenseWindow ventanaLicencia;
+        ventanaLicencia = new JLicenseWindow(this, true, dispensadorDeImagenes);
         ventanaLicencia.show();
     }//GEN-LAST:event_clicEnLicencia
     
@@ -593,8 +593,8 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
      * @since 2.0
      */    
     private void clicEnSobre(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnSobre
-        JSobre nuevoSobre;
-        nuevoSobre = new JSobre(this, true, dispensadorDeImagenes);
+        JAboutWindow nuevoSobre;
+        nuevoSobre = new JAboutWindow(this, true, dispensadorDeImagenes);
         nuevoSobre.show();
     }//GEN-LAST:event_clicEnSobre
     
@@ -619,8 +619,8 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
                         }
                         ventanas[0].setSelected(true);
                     } catch (Exception e) {
-                        JVentanaError ve;
-                        ve = new JVentanaError(this, true, dispensadorDeImagenes);
+                        JErrorWindow ve;
+                        ve = new JErrorWindow(this, true, dispensadorDeImagenes);
                         ve.mostrarMensaje(e.toString());
                         ve.show();
                     }
@@ -646,7 +646,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
      * @since 2.0
      */    
     private void clicEnCualquierSalir() {
-        JVentanaBooleana vb = new JVentanaBooleana(this, true, dispensadorDeImagenes);
+        JDecisionWindow vb = new JDecisionWindow(this, true, dispensadorDeImagenes);
         vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JSimulador.PreguntaSalirDelSimulador"));
         vb.show();
         boolean respuesta = vb.obtenerRespuesta();

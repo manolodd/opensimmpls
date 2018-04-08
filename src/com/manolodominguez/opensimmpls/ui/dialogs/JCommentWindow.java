@@ -15,10 +15,9 @@
  */
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
-import java.awt.*;
-import javax.swing.*;
 import com.manolodominguez.opensimmpls.io.net.TSMTP;
 import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
+import java.awt.Frame;
 
 /**
  * Esta clase implementa una ventana gracias a la cual el usuario de la aplicaci�n
@@ -27,7 +26,7 @@ import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class JVentanaComentario extends javax.swing.JDialog {
+public class JCommentWindow extends javax.swing.JDialog {
 
     /**
      * Ese m�todo crea una nueva instancia de JVentanaEmisor
@@ -38,7 +37,7 @@ public class JVentanaComentario extends javax.swing.JDialog {
      * parte de la interfaz hasta que se cierre. FALSE indica que esto no es asi.
      * @since 2.0
      */
-    public JVentanaComentario(TImagesBroker di, java.awt.Frame parent, boolean modal) {
+    public JCommentWindow(TImagesBroker di, java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         ventanaPadre = parent;
         dispensadorDeImagenes = di;
@@ -79,7 +78,7 @@ public class JVentanaComentario extends javax.swing.JDialog {
         remitente = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes"); // NOI18N
         setTitle(bundle.getString("JVentanaComentario.ContactarAutores")); // NOI18N
         setModal(true);
         setResizable(false);
@@ -96,7 +95,7 @@ public class JVentanaComentario extends javax.swing.JDialog {
 
         jButton2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jButton2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.SOBRE_EMAIL));
-        jButton2.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaComentario.mnemonico.enviar").charAt(0));
+        jButton2.setMnemonic(java.util.ResourceBundle.getBundle("{bundleNameSlashes}").getString("JVentanaComentario.mnemonico.enviar").charAt(0));
         jButton2.setText(bundle.getString("JVentanaComentario.Send")); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -107,7 +106,7 @@ public class JVentanaComentario extends javax.swing.JDialog {
 
         jButton3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jButton3.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.CANCELAR));
-        jButton3.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaComentario.mnemonico.cancelar").charAt(0));
+        jButton3.setMnemonic(java.util.ResourceBundle.getBundle("{bundleNameSlashes}").getString("JVentanaComentario.mnemonico.cancelar").charAt(0));
         jButton3.setText(bundle.getString("JVentanaComentario.Cancel")); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -160,7 +159,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
         if (estadoConexion != TSMTP.CONNECTION_ERROR) {
             int estadoEnvio = enviadorDeCorreo.sendNotification(this.comentario.getText());
             if (estadoEnvio != 0) {
-                JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
+                JWarningWindow va = new JWarningWindow(ventanaPadre, true, dispensadorDeImagenes);
                 va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaComentario.ErrorEnviando"));
                 va.show();
             } else {
@@ -168,12 +167,12 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
                 this.dispose();
             }
         } else {
-            JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
+            JWarningWindow va = new JWarningWindow(ventanaPadre, true, dispensadorDeImagenes);
             va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaComentario.ErrorAlConectar"));
             va.show();
         }
     } else {
-        JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
+        JWarningWindow va = new JWarningWindow(ventanaPadre, true, dispensadorDeImagenes);
         switch (estado) {
             case SERVIDOR_VACIO:{
                 va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaComentario.debePonerSMTP"));

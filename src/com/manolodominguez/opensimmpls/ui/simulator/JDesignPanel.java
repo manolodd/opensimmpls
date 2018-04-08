@@ -34,13 +34,13 @@ import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class JPanelDisenio extends javax.swing.JPanel {
+public class JDesignPanel extends javax.swing.JPanel {
 
     /**
      * Crea una nueva instancia de JPanelDisenio.
      * @since 2.0
      */
-    public JPanelDisenio() {
+    public JDesignPanel() {
         initComponents();
     }
 
@@ -50,7 +50,7 @@ public class JPanelDisenio extends javax.swing.JPanel {
      * @param di El dispensador de im�genes. De �l tomar� el panel todas las im�genes que tenga
      * que mostrar en la pantalla.
      */    
-    public JPanelDisenio(TImagesBroker di) {
+    public JDesignPanel(TImagesBroker di) {
         dispensadorDeImagenes = di;
         initComponents();
     }

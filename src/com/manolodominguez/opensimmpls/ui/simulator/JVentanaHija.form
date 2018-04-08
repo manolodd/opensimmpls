@@ -375,7 +375,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Container class="com.manolodominguez.opensimmpls.ui.simulator.JPanelDisenio" name="panelDisenio">
+                <Container class="com.manolodominguez.opensimmpls.ui.simulator.JDesignPanel" name="panelDisenio">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>

@@ -31,7 +31,7 @@ import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class JVentanaEnlace extends javax.swing.JDialog {
+public class JLinkWindow extends javax.swing.JDialog {
 
     /**
      * Crea una nueva instancia de JVentanaEmisor
@@ -42,7 +42,7 @@ public class JVentanaEnlace extends javax.swing.JDialog {
      * hasta que se cierre. FALSE indica que esto no es asi.
      * @since 2.0
      */
-    public JVentanaEnlace(TTopology t, TImagesBroker di, java.awt.Frame parent, boolean modal) {
+    public JLinkWindow(TTopology t, TImagesBroker di, java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         ventanaPadre = parent;
         dispensadorDeImagenes = di;
@@ -112,7 +112,7 @@ public class JVentanaEnlace extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes"); // NOI18N
         setTitle(bundle.getString("VentanaEnlace.titulo")); // NOI18N
         setModal(true);
         setResizable(false);
@@ -259,7 +259,7 @@ public class JVentanaEnlace extends javax.swing.JDialog {
 
         jButton2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jButton2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR));
-        jButton2.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEnlace.botones.mne.Aceptar").charAt(0));
+        jButton2.setMnemonic(java.util.ResourceBundle.getBundle("{bundleNameSlashes}").getString("VentanaEnlace.botones.mne.Aceptar").charAt(0));
         jButton2.setText(bundle.getString("VentanaEnlace.boton.Ok")); // NOI18N
         jButton2.setToolTipText(bundle.getString("JVentanaEnlace.Adds_the_link_to_the_topology.")); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -271,7 +271,7 @@ public class JVentanaEnlace extends javax.swing.JDialog {
 
         jButton3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jButton3.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.CANCELAR));
-        jButton3.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEnlace.botones.mne.Cancelar").charAt(0));
+        jButton3.setMnemonic(java.util.ResourceBundle.getBundle("{bundleNameSlashes}").getString("VentanaEnlace.botones.mne.Cancelar").charAt(0));
         jButton3.setText(bundle.getString("VentanaEnlace.boton.Cancel")); // NOI18N
         jButton3.setToolTipText(bundle.getString("JVentanaEnlace.Cancel_the_operation")); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -478,7 +478,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     }
     int error = configEnlace.validateConfig(topo, this.reconfigurando);
     if (error != TLinkConfig.OK) {
-        JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
+        JWarningWindow va = new JWarningWindow(ventanaPadre, true, dispensadorDeImagenes);
         va.mostrarMensaje(configEnlace.getErrorMessage(error));
         va.show();
     } else {

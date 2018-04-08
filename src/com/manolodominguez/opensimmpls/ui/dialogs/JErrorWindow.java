@@ -17,24 +17,23 @@ package com.manolodominguez.opensimmpls.ui.dialogs;
 
 import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
 
-/** Esta clase implementa una ventana que muestra una pregunta al usuario y espera
- * una respuesta de stipo SI/NO (true/false). Es polivalente.
+/** Esta clase implementa una ventana que muestra un mensaje de error al
+ * usuario y que muestra adem�s un icono de error.
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class JVentanaAdvertencia extends javax.swing.JDialog {
+public class JErrorWindow extends javax.swing.JDialog {
     
     /**
-     * Crea una nueva ventana de Advertencia.
-     * @param parent Ventana padre dentro de la cual se mostrar� esta ventana de tipo
-     * JVentanaAdvertencia.
-     * @param modal TRUE indica que la ventana impedir� que se seleccione nada del resto de la
-     * interfaz hasta que sea cerrada. FALSe indica que esto no es asi.
-     * @param di Disepnsador de im�genes global de la aplicaci�n.
+     * Crea una nueva ventana de error.
+     * @param parent Ventana padre donde se ubicar� esta ventana de tipo JVentanaError.
+     * @param modal TRUE indica que la ventana impedir� que se pueda seleccionar nada de la interfaz
+     * de usuario hasta que se cierre. FALSE indica que esto no es as�.
+     * @param di Dispensador de im�genes global de la aplicaci�n.
      * @since 2.0
      */
-    public JVentanaAdvertencia(java.awt.Frame parent, boolean modal, TImagesBroker di) {
+    public JErrorWindow(java.awt.Frame parent, boolean modal, TImagesBroker di) {
         super(parent, modal);
         dispensadorDeImagenes = di;
         initComponents();
@@ -54,8 +53,8 @@ public class JVentanaAdvertencia extends javax.swing.JDialog {
         jTextPane1 = new javax.swing.JTextPane();
         jPanel1 = new javax.swing.JPanel();
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations"); // NOI18N
-        setTitle(bundle.getString("VentanaAdvertencia.titulo")); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes"); // NOI18N
+        setTitle(bundle.getString("VentanaError.titulo")); // NOI18N
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -64,12 +63,12 @@ public class JVentanaAdvertencia extends javax.swing.JDialog {
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ADVERTENCIA));
+        jLabel1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ERROR));
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, -1, -1));
 
         jButton1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jButton1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR));
-        jButton1.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaAdvertencia.ResaltadoBoton").charAt(0));
+        jButton1.setMnemonic(java.util.ResourceBundle.getBundle("{bundleNameSlashes}").getString("VentanaError.ResaltadoBoton").charAt(0));
         jButton1.setText(bundle.getString("OK")); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,7 +90,7 @@ public class JVentanaAdvertencia extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     /** Este m�todo captura un evento de rat�n sobre el boton de la ventana. Al
      * recibirlo, cierra la ventana y la elimina.
      */    
@@ -109,19 +108,14 @@ public class JVentanaAdvertencia extends javax.swing.JDialog {
     }//GEN-LAST:event_closeDialog
     
     /** Este m�todo recibe por par�metro un texto y hace que aparezca en la ventana.
-     * @param texto El texto que se desea mostrar en la ventana.
+     * @param texto El textoque se desea que aparezca en la ventana.
      * @since 2.0
      */    
     public void mostrarMensaje(java.lang.String texto) {
         java.awt.Toolkit.getDefaultToolkit().beep();
         jTextPane1.setText(texto);
-    }    
-
-    /** Este objeto es una referencia la dispensador de im�genes global del simulador.
-     * Se encarga de tener precargadas las im�genes, acelerando el proceso de
-     * mostrarlas.
-     * @since 2.0
-     */    
+    }
+    
     private TImagesBroker dispensadorDeImagenes;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

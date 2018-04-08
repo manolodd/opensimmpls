@@ -43,11 +43,11 @@ import com.manolodominguez.opensimmpls.scenario.TTopology;
 import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TNode;
-import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaAdvertencia;
-import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaBooleana;
+import com.manolodominguez.opensimmpls.ui.dialogs.JWarningWindow;
+import com.manolodominguez.opensimmpls.ui.dialogs.JDecisionWindow;
 import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaEmisor;
-import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaEnlace;
-import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaError;
+import com.manolodominguez.opensimmpls.ui.dialogs.JLinkWindow;
+import com.manolodominguez.opensimmpls.ui.dialogs.JErrorWindow;
 import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaLER;
 import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaLERA;
 import com.manolodominguez.opensimmpls.ui.dialogs.JVentanaLSR;
@@ -203,7 +203,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         iconoLSRA = new javax.swing.JLabel();
         iconoEnlace = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        panelDisenio = new com.manolodominguez.opensimmpls.ui.simulator.JPanelDisenio();
+        panelDisenio = new com.manolodominguez.opensimmpls.ui.simulator.JDesignPanel();
         panelSimulacionSuperior = new javax.swing.JPanel();
         panelBotonesSimulacion = new javax.swing.JPanel();
         iconoComenzar = new javax.swing.JLabel();
@@ -1145,7 +1145,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
             } else {
                 TLink ent = (TLink) elementoDisenioClicDerecho;
                 TLinkConfig tceAux = ent.getConfig();
-                JVentanaEnlace ve = new JVentanaEnlace(escenario.getTopology(), dispensadorDeImagenes, VentanaPadre, true);
+                JLinkWindow ve = new JLinkWindow(escenario.getTopology(), dispensadorDeImagenes, VentanaPadre, true);
                 ve.ponerConfiguracion(tceAux, true);
                 ve.show();
                 if (ent.getLinkType() == TLink.EXTERNAL_LINK) {
@@ -1326,7 +1326,7 @@ private void clicEnPopUpDisenioFondoVerNombreNodos(java.awt.event.ActionEvent ev
      * @param evt Evento que hace que se dispare este m�todo.
      */
 private void clicEnPopUpDisenioFondoEliminar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoEliminar
-    JVentanaBooleana vb = new JVentanaBooleana(this.VentanaPadre, true, this.dispensadorDeImagenes);
+    JDecisionWindow vb = new JDecisionWindow(this.VentanaPadre, true, this.dispensadorDeImagenes);
     vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.PreguntaBorrarTodo"));
     vb.show();
     boolean respuesta = vb.obtenerRespuesta();
@@ -1391,12 +1391,12 @@ private void clicEnPopUpDisenioFondoEliminar(java.awt.event.ActionEvent evt) {//
      */
 private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirEnlace
     if (escenario.getTopology().getNumberOfNodes() < 2) {
-        JVentanaAdvertencia va = new JVentanaAdvertencia(VentanaPadre, true, dispensadorDeImagenes);
+        JWarningWindow va = new JWarningWindow(VentanaPadre, true, dispensadorDeImagenes);
         va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija.ErrorAlMenosDosNodos"));
         va.show();
     } else {
         TLinkConfig config = new TLinkConfig();
-        JVentanaEnlace venlace = new JVentanaEnlace(escenario.getTopology(), dispensadorDeImagenes, VentanaPadre, true);
+        JLinkWindow venlace = new JLinkWindow(escenario.getTopology(), dispensadorDeImagenes, VentanaPadre, true);
         venlace.ponerConfiguracion(config, false);
         venlace.cargarNodosPorDefecto();
         venlace.show();
@@ -1413,8 +1413,8 @@ private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
                 }
                 panelDisenio.repaint();
             } catch (Exception e) {
-                JVentanaError err;
-                err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
+                JErrorWindow err;
+                err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
                 err.mostrarMensaje(e.toString());
                 err.show();
             };
@@ -1434,7 +1434,7 @@ private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
      * @param evt Evento que hace que se dispare este m�todo.
      */
 private void clicEnPopUpDisenioEliminar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioEliminar
-    JVentanaBooleana vb = new JVentanaBooleana(this.VentanaPadre, true, this.dispensadorDeImagenes);
+    JDecisionWindow vb = new JDecisionWindow(this.VentanaPadre, true, this.dispensadorDeImagenes);
     vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.preguntaAlEliminar"));
     vb.show();
     boolean respuesta = vb.obtenerRespuesta();
@@ -1444,8 +1444,8 @@ private void clicEnPopUpDisenioEliminar(java.awt.event.ActionEvent evt) {//GEN-F
                 TNode nt = (TNode) elementoDisenioClicDerecho;
                 if (nt.getNodeType() == TNode.TRAFFIC_SINK) {
                     if (this.escenario.getTopology().isThereAnyNodeGeneratingTrafficFor((TTrafficSinkNode) nt)) {
-                        JVentanaAdvertencia va;
-                        va = new JVentanaAdvertencia(VentanaPadre, true, dispensadorDeImagenes);
+                        JWarningWindow va;
+                        va = new JWarningWindow(VentanaPadre, true, dispensadorDeImagenes);
                         va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.NoPuedoBorrarReceptor"));
                         va.show();
                         elementoDisenioClicDerecho = null;
@@ -1537,8 +1537,8 @@ private void clicEnAniadirLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
     try {
         lsra = new TActiveLSRNode(escenario.getTopology().getElementsIDGenerator().getNew(), escenario.getTopology().getIPv4AddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
     } catch (Exception e) {
-        JVentanaError err;
-        err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
+        JErrorWindow err;
+        err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
         err.mostrarMensaje(e.toString());
         err.show();
     }
@@ -1550,8 +1550,8 @@ private void clicEnAniadirLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
             escenario.getTopology().addNode(lsra);
             panelDisenio.repaint();
         } catch (Exception e) {
-            JVentanaError err;
-            err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
+            JErrorWindow err;
+            err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
             err.mostrarMensaje(e.toString());
             err.show();
         };
@@ -1573,8 +1573,8 @@ private void clicEnAniadirLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
     try {
         lsr = new TLSRNode(escenario.getTopology().getElementsIDGenerator().getNew(), escenario.getTopology().getIPv4AddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
     } catch (Exception e) {
-        JVentanaError err;
-        err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
+        JErrorWindow err;
+        err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
         err.mostrarMensaje(e.toString());
         err.show();
     }
@@ -1586,8 +1586,8 @@ private void clicEnAniadirLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
             escenario.getTopology().addNode(lsr);
             panelDisenio.repaint();
         } catch (Exception e) {
-            JVentanaError err;
-            err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
+            JErrorWindow err;
+            err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
             err.mostrarMensaje(e.toString());
             err.show();
         };
@@ -1609,8 +1609,8 @@ private void clicEnAniadirLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
     try {
         lera = new TActiveLERNode(escenario.getTopology().getElementsIDGenerator().getNew(), escenario.getTopology().getIPv4AddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
     } catch (Exception e) {
-        JVentanaError err;
-        err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
+        JErrorWindow err;
+        err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
         err.mostrarMensaje(e.toString());
         err.show();
     }
@@ -1622,8 +1622,8 @@ private void clicEnAniadirLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
             escenario.getTopology().addNode(lera);
             panelDisenio.repaint();
         } catch (Exception e) {
-            JVentanaError err;
-            err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
+            JErrorWindow err;
+            err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
             err.mostrarMensaje(e.toString());
             err.show();
         };
@@ -1879,8 +1879,8 @@ private void clicEnAniadirLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
     try {
         ler = new TLERNode(escenario.getTopology().getElementsIDGenerator().getNew(), escenario.getTopology().getIPv4AddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
     } catch (Exception e) {
-        JVentanaError err;
-        err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
+        JErrorWindow err;
+        err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
         err.mostrarMensaje(e.toString());
         err.show();
     }
@@ -1892,8 +1892,8 @@ private void clicEnAniadirLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
             escenario.getTopology().addNode(ler);
             panelDisenio.repaint();
         } catch (Exception e) {
-            JVentanaError err;
-            err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
+            JErrorWindow err;
+            err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
             err.mostrarMensaje(e.toString());
             err.show();
         };
@@ -2083,8 +2083,8 @@ private void clicEnAniadirReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
     try {
         receptor = new TTrafficSinkNode(escenario.getTopology().getElementsIDGenerator().getNew(), escenario.getTopology().getIPv4AddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
     } catch (Exception e) {
-        JVentanaError err;
-        err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
+        JErrorWindow err;
+        err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
         err.mostrarMensaje(e.toString());
         err.show();
     }
@@ -2096,8 +2096,8 @@ private void clicEnAniadirReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
             escenario.getTopology().addNode(receptor);
             panelDisenio.repaint();
         } catch (Exception e) {
-            JVentanaError err;
-            err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
+            JErrorWindow err;
+            err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
             err.mostrarMensaje(e.toString());
             err.show();
         };
@@ -2126,7 +2126,7 @@ private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-
         }
     }
     if (!hayDestino) {
-        JVentanaAdvertencia va = new JVentanaAdvertencia(VentanaPadre, true, dispensadorDeImagenes);
+        JWarningWindow va = new JWarningWindow(VentanaPadre, true, dispensadorDeImagenes);
         va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.NecesitaHaberUnReceptor"));
         va.show();
     } else {
@@ -2134,8 +2134,8 @@ private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-
         try {
             emisor = new TTrafficGeneratorNode(escenario.getTopology().getElementsIDGenerator().getNew(), escenario.getTopology().getIPv4AddressGenerator().obtenerIP(), escenario.getTopology().getEventIDGenerator(), escenario.getTopology());
         } catch (Exception e) {
-            JVentanaError err;
-            err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
+            JErrorWindow err;
+            err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
             err.mostrarMensaje(e.toString());
             err.show();
         }
@@ -2147,8 +2147,8 @@ private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-
                 escenario.getTopology().addNode(emisor);
                 panelDisenio.repaint();
             } catch (Exception e) {
-                JVentanaError err;
-                err = new JVentanaError(VentanaPadre, true, dispensadorDeImagenes);
+                JErrorWindow err;
+                err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
                 err.mostrarMensaje(e.toString());
                 err.show();
             };
@@ -2370,7 +2370,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             this.escenario.setSaved(true);
             this.setTitle(this.escenario.getScenarioFile().getName());
             TOSMSaver almacenador = new TOSMSaver(escenario);
-            JVentanaBooleana vb = new JVentanaBooleana(this.VentanaPadre, true, this.dispensadorDeImagenes);
+            JDecisionWindow vb = new JDecisionWindow(this.VentanaPadre, true, this.dispensadorDeImagenes);
             vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.PreguntaEmpotrarCRC"));
             vb.show();
             boolean conCRC = vb.obtenerRespuesta();
@@ -2409,7 +2409,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
         }
 
         if (!guardado) {
-            JVentanaBooleana vb = new JVentanaBooleana(VentanaPadre, true, dispensadorDeImagenes);
+            JDecisionWindow vb = new JDecisionWindow(VentanaPadre, true, dispensadorDeImagenes);
             vb.mostrarPregunta(this.getTitle() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.DialogoGuardar.GuardarPrimeraVez"));
             vb.show();
             boolean respuesta = vb.obtenerRespuesta();
@@ -2420,14 +2420,14 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
         } else if ((guardado) && (!modificado)) {
             // No se hace nada, ya est� todo guardado correctamente.
         } else if ((guardado) && (modificado)) {
-            JVentanaBooleana vb = new JVentanaBooleana(VentanaPadre, true, dispensadorDeImagenes);
+            JDecisionWindow vb = new JDecisionWindow(VentanaPadre, true, dispensadorDeImagenes);
             vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.DialogoGuardar.CambiosSinguardar1") + " " + this.getTitle() + " " + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.DialogoGuardar.CambiosSinguardar2"));
             vb.show();
             boolean respuesta = vb.obtenerRespuesta();
             vb.dispose();
             if (respuesta) {
                 TOSMSaver almacenador = new TOSMSaver(escenario);
-                JVentanaBooleana vb2 = new JVentanaBooleana(this.VentanaPadre, true, this.dispensadorDeImagenes);
+                JDecisionWindow vb2 = new JDecisionWindow(this.VentanaPadre, true, this.dispensadorDeImagenes);
                 vb2.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.PreguntaEmpotrarCRC"));
                 vb2.show();
                 boolean conCRC = vb2.obtenerRespuesta();
@@ -2455,7 +2455,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             this.gestionarGuardarComo();
         } else {
             TOSMSaver almacenador = new TOSMSaver(escenario);
-            JVentanaBooleana vb = new JVentanaBooleana(this.VentanaPadre, true, this.dispensadorDeImagenes);
+            JDecisionWindow vb = new JDecisionWindow(this.VentanaPadre, true, this.dispensadorDeImagenes);
             vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.PreguntaEmpotrarCRC"));
             vb.show();
             boolean conCRC = vb.obtenerRespuesta();
@@ -2813,7 +2813,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
     private javax.swing.JPanel panelAnalisisSuperior;
     private javax.swing.JPanel panelBotonesDisenio;
     private javax.swing.JPanel panelBotonesSimulacion;
-    private com.manolodominguez.opensimmpls.ui.simulator.JPanelDisenio panelDisenio;
+    private com.manolodominguez.opensimmpls.ui.simulator.JDesignPanel panelDisenio;
     private javax.swing.JPanel panelDisenioSuperior;
     private javax.swing.JPanel panelFijo;
     private javax.swing.JPanel panelOpciones;

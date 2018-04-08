@@ -3,7 +3,7 @@
 <Form version="1.2" maxVersion="1.2" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
     <Property name="title" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-      <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaError.titulo" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+      <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="VentanaAdvertencia.titulo" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
     </Property>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
@@ -33,7 +33,7 @@
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="dispensadorDeImagenes.obtenerIcono(TImagesBroker.ERROR)" type="code"/>
+          <Connection code="dispensadorDeImagenes.obtenerIcono(TImagesBroker.ADVERTENCIA)" type="code"/>
         </Property>
       </Properties>
       <Constraints>
@@ -51,7 +51,7 @@
           <Connection code="dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR)" type="code"/>
         </Property>
         <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
-          <ResourceString bundle="" key="VentanaError.ResaltadoBoton" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="" key="VentanaAdvertencia.ResaltadoBoton" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="OK" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>

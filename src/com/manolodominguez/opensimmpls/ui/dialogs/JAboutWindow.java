@@ -17,6 +17,7 @@ package com.manolodominguez.opensimmpls.ui.dialogs;
 
 import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
 
+
 /** Implementa una ventana con la imagen del programa de fondo.
  * Se usa para mostrar informaci�n sobre el programa cuando sea
  * solicitada.
@@ -24,7 +25,7 @@ import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class JSobre extends javax.swing.JDialog {
+public class JAboutWindow extends javax.swing.JDialog {
 
     /**
      * Este m�todo crea una nueva instancia de JSobre
@@ -34,7 +35,7 @@ public class JSobre extends javax.swing.JDialog {
      * interfaz hasta que sea cerrada. FALSE indica que esto no es as�.
      * @param di Dispensador de im�genes global de la aplicaci�n.
      */    
-    public JSobre(java.awt.Frame parent, boolean modal, TImagesBroker di) {
+    public JAboutWindow(java.awt.Frame parent, boolean modal, TImagesBroker di) {
         super(parent, modal);
         dispensadorDeImagenes = di;
         initComponents();

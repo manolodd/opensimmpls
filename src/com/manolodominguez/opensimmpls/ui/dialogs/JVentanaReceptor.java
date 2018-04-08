@@ -20,7 +20,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import com.manolodominguez.opensimmpls.scenario.TTrafficSinkNode;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
-import com.manolodominguez.opensimmpls.ui.simulator.JPanelDisenio;
+import com.manolodominguez.opensimmpls.ui.simulator.JDesignPanel;
 import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
 
 /**
@@ -43,7 +43,7 @@ public class JVentanaReceptor extends javax.swing.JDialog {
      * @param modal TRUE indica que la interfaz quedar� deshabilitada hasta que se cierre la ventana
      * de configuraci�n del nodo receptor. FALSE indica que no es as�.
      */
-    public JVentanaReceptor(TTopology t, JPanelDisenio pad, TImagesBroker di, java.awt.Frame parent, boolean modal) {
+    public JVentanaReceptor(TTopology t, JDesignPanel pad, TImagesBroker di, java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         ventanaPadre = parent;
         dispensadorDeImagenes = di;
@@ -59,13 +59,13 @@ public class JVentanaReceptor extends javax.swing.JDialog {
      * @since 2.0
      */    
     public void initComponents2() {
-        panelCoordenadas.ponerPanelOrigen(pd);
+        panelCoordenadas.setDesignPanel(pd);
         java.awt.Dimension tamFrame=this.getSize();
         java.awt.Dimension tamPadre=ventanaPadre.getSize();
         setLocation((tamPadre.width-tamFrame.width)/2, (tamPadre.height-tamFrame.height)/2);
         configReceptor = null;
-        coordenadaX.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.X=_") + panelCoordenadas.obtenerXReal());
-        coordenadaY.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.Y=_") + panelCoordenadas.obtenerYReal());
+        coordenadaX.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.X=_") + panelCoordenadas.getRealX());
+        coordenadaY.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.Y=_") + panelCoordenadas.getRealY());
         BKUPMostrarNombre = true;
         BKUPNombre = "";
         reconfigurando = false;
@@ -86,7 +86,7 @@ public class JVentanaReceptor extends javax.swing.JDialog {
         panelPosicion = new javax.swing.JPanel();
         coordenadaX = new javax.swing.JLabel();
         coordenadaY = new javax.swing.JLabel();
-        panelCoordenadas = new com.manolodominguez.opensimmpls.ui.dialogs.JPanelCoordenadas();
+        panelCoordenadas = new com.manolodominguez.opensimmpls.ui.dialogs.JCoordinatesPanel();
         verNombre = new javax.swing.JCheckBox();
         panelRapido = new javax.swing.JPanel();
         iconoEnlace1 = new javax.swing.JLabel();
@@ -254,14 +254,14 @@ private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c
 private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
     configReceptor.setWellConfigured(true);
     if (!this.reconfigurando){
-        configReceptor.setScreenPosition(new Point(panelCoordenadas.obtenerXReal(),panelCoordenadas.obtenerYReal()));
+        configReceptor.setScreenPosition(new Point(panelCoordenadas.getRealX(),panelCoordenadas.getRealY()));
     }
     configReceptor.setName(nombreNodo.getText());
     configReceptor.setShowName(verNombre.isSelected());
     configReceptor.setGenerateStats(this.selectorGenerarEstadisticaAvanzada.isSelected());
     int error = configReceptor.validateConfig(topo, this.reconfigurando);
     if (error != TTrafficSinkNode.OK) {
-        JVentanaAdvertencia va = new JVentanaAdvertencia(ventanaPadre, true, dispensadorDeImagenes);
+        JWarningWindow va = new JWarningWindow(ventanaPadre, true, dispensadorDeImagenes);
         va.mostrarMensaje(configReceptor.getErrorMessage(error));
         va.show();
     } else {
@@ -272,9 +272,9 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
 
 private void clicEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnPanelCoordenadas
     if (evt.getButton() == MouseEvent.BUTTON1) {
-        panelCoordenadas.ponerCoordenadasReducidas(evt.getPoint());
-        coordenadaX.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.X=_") + panelCoordenadas.obtenerXReal());
-        coordenadaY.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.Y=_") + panelCoordenadas.obtenerYReal());
+        panelCoordenadas.setCoordinates(evt.getPoint());
+        coordenadaX.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.X=_") + panelCoordenadas.getRealX());
+        coordenadaY.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.Y=_") + panelCoordenadas.getRealY());
         panelCoordenadas.repaint();
     }
 }//GEN-LAST:event_clicEnPanelCoordenadas
@@ -322,7 +322,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
 
     private TImagesBroker dispensadorDeImagenes;
     private Frame ventanaPadre;
-    private JPanelDisenio pd;
+    private JDesignPanel pd;
     private TTrafficSinkNode configReceptor;
     private TTopology topo;
     
@@ -344,7 +344,7 @@ private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-
     private javax.swing.JTextField nombreNodo;
     private javax.swing.JPanel panelAvanzado;
     private javax.swing.JPanel panelBotones;
-    private com.manolodominguez.opensimmpls.ui.dialogs.JPanelCoordenadas panelCoordenadas;
+    private com.manolodominguez.opensimmpls.ui.dialogs.JCoordinatesPanel panelCoordenadas;
     private javax.swing.JPanel panelGeneral;
     private javax.swing.JTabbedPane panelPestanias;
     private javax.swing.JPanel panelPosicion;
