@@ -95,8 +95,8 @@ public class JActiveLERWindow extends JDialog {
         Dimension parentSize = this.parent.getSize();
         setLocation((parentSize.width - frameSize.width) / 2, (parentSize.height - frameSize.height) / 2);
         this.activeLERNode = null;
-        this.labelCoordinateX.setText(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLER.X=") + coordinatesPanel.getRealX());
-        this.labelCoordinateY.setText(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLER.Y=") + coordinatesPanel.getRealY());
+        this.labelCoordinateX.setText(this.translations.getString("JVentanaLER.X=") + coordinatesPanel.getRealX());
+        this.labelCoordinateY.setText(this.translations.getString("JVentanaLER.Y=") + coordinatesPanel.getRealY());
         this.currentConfigShowName = true;
         this.currentConfigName = "";
         this.currentConfigRoutingPower = 0;
@@ -104,12 +104,12 @@ public class JActiveLERWindow extends JDialog {
         this.reconguration = false;
         this.currentConfigGenerateStatistics = false;
         this.comboBoxPredefinedOptions.removeAllItems();
-        this.comboBoxPredefinedOptions.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Personalized_LERA"));
-        this.comboBoxPredefinedOptions.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Very_low_range_LERA"));
-        this.comboBoxPredefinedOptions.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Low_range_LERA"));
-        this.comboBoxPredefinedOptions.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Medium_range_LERA"));
-        this.comboBoxPredefinedOptions.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.High_range_LERA"));
-        this.comboBoxPredefinedOptions.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Very_high_range_LERA"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaLERA.Personalized_LERA"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaLERA.Very_low_range_LERA"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaLERA.Low_range_LERA"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaLERA.Medium_range_LERA"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaLERA.High_range_LERA"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaLERA.Very_high_range_LERA"));
         this.comboBoxPredefinedOptions.setSelectedIndex(0);
     }
 
