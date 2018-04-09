@@ -62,7 +62,7 @@ public class JAboutWindow extends JDialog {
      * @since 2.0
      */
     private void initComponents() {
-        this.imageContainer = new JLabel();
+        this.iconContainer = new JLabel();
         getContentPane().setLayout(new AbsoluteLayout());
         setCursor(new Cursor(Cursor.HAND_CURSOR));
         setModal(true);
@@ -75,9 +75,9 @@ public class JAboutWindow extends JDialog {
             }
         });
 
-        this.imageContainer.setHorizontalAlignment(SwingConstants.CENTER);
-        this.imageContainer.setIcon(this.imageBroker.getIcon(TImagesBroker.SPLASH));
-        getContentPane().add(this.imageContainer, new AbsoluteConstraints(0, 0, -1, 300));
+        this.iconContainer.setHorizontalAlignment(SwingConstants.CENTER);
+        this.iconContainer.setIcon(this.imageBroker.getIcon(TImagesBroker.SPLASH));
+        getContentPane().add(this.iconContainer, new AbsoluteConstraints(0, 0, -1, 300));
         pack();
         Dimension frameSize = this.getSize();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -97,5 +97,5 @@ public class JAboutWindow extends JDialog {
     }
 
     private TImagesBroker imageBroker;
-    private javax.swing.JLabel imageContainer;
+    private javax.swing.JLabel iconContainer;
 }

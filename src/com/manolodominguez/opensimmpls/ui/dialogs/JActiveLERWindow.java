@@ -15,520 +15,519 @@
  */
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
 import com.manolodominguez.opensimmpls.scenario.TActiveLERNode;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
 import com.manolodominguez.opensimmpls.ui.simulator.JDesignPanel;
 import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ResourceBundle;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
+import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
  * Esta clase implementa una ventana que nos permite configurar un nodo LER
+ *
  * @author Administrador<B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class JActiveLERWindow extends javax.swing.JDialog {
-    
+public class JActiveLERWindow extends JDialog {
+
     /**
      * Este m�todo crea una nueva instancia de JVentanaconfigLERA
-     * @param t Topolog�a dentro del a cual se encuentra insertado el LER que queremos
-     * configurar.
-     * @param pad Panel de dise�o dentro del cual estamos dise�ando el LER que queremos
-     * configurar.
-     * @param di Dispensador de im�genes global de la aplicaci�n.
-     * @param parent Ventana padre dentro de la cual se ubicar� esta ventana de tipo JVentanaLER
-     * @param modal TRUE indica que la ventana impedir� que se pueda seleccionar nada de la interfaz
-     * de usuario hasta que se cierre. FALSE indica que esto no es asi.
+     *
+     * @param topology Topolog�a dentro del a cual se encuentra insertado el LER
+     * que queremos configurar.
+     * @param designPanel Panel de dise�o dentro del cual estamos dise�ando el
+     * LER que queremos configurar.
+     * @param imageBroker Dispensador de im�genes global de la aplicaci�n.
+     * @param parent Ventana padre dentro de la cual se ubicar� esta
+     * ventana de tipo JVentanaLER
+     * @param modal TRUE indica que la ventana impedir� que se pueda seleccionar
+     * nada de la interfaz de usuario hasta que se cierre. FALSE indica que esto
+     * no es asi.
      * @since 2.0
      */
-    public JActiveLERWindow(TTopology t, JDesignPanel pad, TImagesBroker di, java.awt.Frame parent, boolean modal) {
+    public JActiveLERWindow(TTopology topology, JDesignPanel designPanel, TImagesBroker imageBroker, Frame parent, boolean modal) {
         super(parent, modal);
-        ventanaPadre = parent;
-        dispensadorDeImagenes = di;
-        pd = pad;
-        topo = t;
+        this.parent = parent;
+        this.imageBroker = imageBroker;
+        this.designPanel = designPanel;
+        this.topology = topology;
         initComponents();
         initComponents2();
     }
-    
+
     /**
-     * Este m�todo terminar� de configurar aspectos de la clase que no han podido ser
-     * definidos en el constructor.
+     * Este m�todo terminar� de configurar aspectos de la clase que no han
+     * podido ser definidos en el constructor.
+     *
      * @since 2.0
      */
-    public void initComponents2() {
-        panelCoordenadas.setDesignPanel(pd);
-        java.awt.Dimension tamFrame=this.getSize();
-        java.awt.Dimension tamPadre=ventanaPadre.getSize();
-        setLocation((tamPadre.width-tamFrame.width)/2, (tamPadre.height-tamFrame.height)/2);
-        configLERA=null;
-        coordenadaX.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLER.X=") + panelCoordenadas.getRealX());
-        coordenadaY.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLER.Y=") + panelCoordenadas.getRealY());
-        BKUPMostrarNombre = true;
-        BKUPNombre = "";
-        BKUPPotencia = 0;
-        BKUPTamBuffer = 0;
-        reconfigurando = false;
-        BKUPGenerarEstadisticas = false;
-        this.selectorSencilloCaracteristicas.removeAllItems();
-        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Personalized_LERA"));
-        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Very_low_range_LERA"));
-        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Low_range_LERA"));
-        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Medium_range_LERA"));
-        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.High_range_LERA"));
-        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Very_high_range_LERA"));
-        this.selectorSencilloCaracteristicas.setSelectedIndex(0);
+    private void initComponents2() {
+        this.coordinatesPanel.setDesignPanel(this.designPanel);
+        Dimension frameSize = this.getSize();
+        Dimension parentSize = this.parent.getSize();
+        setLocation((parentSize.width - frameSize.width) / 2, (parentSize.height - frameSize.height) / 2);
+        this.activeLERNode = null;
+        this.labelCoordinateX.setText(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLER.X=") + coordinatesPanel.getRealX());
+        this.labelCoordinateY.setText(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLER.Y=") + coordinatesPanel.getRealY());
+        this.currentConfigShowName = true;
+        this.currentConfigName = "";
+        this.currentConfigRoutingPower = 0;
+        this.currentConfigBufferSize = 0;
+        this.reconguration = false;
+        this.currentConfigGenerateStatistics = false;
+        this.comboBoxPredefinedOptions.removeAllItems();
+        this.comboBoxPredefinedOptions.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Personalized_LERA"));
+        this.comboBoxPredefinedOptions.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Very_low_range_LERA"));
+        this.comboBoxPredefinedOptions.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Low_range_LERA"));
+        this.comboBoxPredefinedOptions.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Medium_range_LERA"));
+        this.comboBoxPredefinedOptions.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.High_range_LERA"));
+        this.comboBoxPredefinedOptions.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA.Very_high_range_LERA"));
+        this.comboBoxPredefinedOptions.setSelectedIndex(0);
     }
-    
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
-        panelPrincipal = new javax.swing.JPanel();
-        panelPestanias = new javax.swing.JTabbedPane();
-        panelGeneral = new javax.swing.JPanel();
-        iconoLER = new javax.swing.JLabel();
-        etiquetaNombre = new javax.swing.JLabel();
-        nombreNodo = new javax.swing.JTextField();
-        panelPosicion = new javax.swing.JPanel();
-        coordenadaX = new javax.swing.JLabel();
-        coordenadaY = new javax.swing.JLabel();
-        panelCoordenadas = new com.manolodominguez.opensimmpls.ui.dialogs.JCoordinatesPanel();
-        verNombre = new javax.swing.JCheckBox();
-        panelRapido = new javax.swing.JPanel();
-        selectorDeGenerarEstadisticasSencillo = new javax.swing.JCheckBox();
-        iconoEnlace1 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        selectorSencilloCaracteristicas = new javax.swing.JComboBox();
-        panelAvanzado = new javax.swing.JPanel();
-        selectorDeGenerarEstadisticasAvanzado = new javax.swing.JCheckBox();
-        iconoEnlace2 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        selectorDePotenciaDeConmutacion = new javax.swing.JSlider();
-        etiquetaPotencia = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        selectorDeTamanioBuffer = new javax.swing.JSlider();
-        etiquetaMemoriaBuffer = new javax.swing.JLabel();
-        selectorDeTamanioDMGP = new javax.swing.JSlider();
-        etiquetaMemoriaDMGP = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        panelBotones = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations"); // NOI18N
-        setTitle(bundle.getString("VentanaLERA.titulo")); // NOI18N
+        this.mainPanel = new JPanel();
+        this.panelTabs = new JTabbedPane();
+        this.panelGeneralConfiguration = new JPanel();
+        this.iconContainerActiveLER = new JLabel();
+        this.labelName = new JLabel();
+        this.textFieldName = new JTextField();
+        this.panelPosition = new JPanel();
+        this.labelCoordinateX = new JLabel();
+        this.labelCoordinateY = new JLabel();
+        this.coordinatesPanel = new JCoordinatesPanel();
+        this.checkBoxShowName = new JCheckBox();
+        this.panelQuickConfiguration = new JPanel();
+        this.checkBoxQuickGenerateStatistics = new JCheckBox();
+        this.iconContainerEnd1 = new JLabel();
+        this.labelActiveLERFeatures = new JLabel();
+        this.comboBoxPredefinedOptions = new JComboBox();
+        this.panelAdvancedConfiguration = new JPanel();
+        this.checkBoxAdvancedGenerateStatistics = new JCheckBox();
+        this.iconContainerEnd2 = new JLabel();
+        this.labelRoutingPower = new JLabel();
+        this.selectorRoutingPower = new JSlider();
+        this.labelRoutingPowerMbps = new JLabel();
+        this.labelBufferSize = new JLabel();
+        this.selectorBufferSize = new JSlider();
+        this.labelBufferSizeMB = new JLabel();
+        this.selectorDMGPSize = new JSlider();
+        this.labelDMGPSizeKB = new JLabel();
+        this.labelDMGPSize = new JLabel();
+        this.panelButtons = new JPanel();
+        this.buttonOK = new JButton();
+        this.buttonCancel = new JButton();
+        ResourceBundle bundle = ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations");
+        setTitle(bundle.getString("VentanaLERA.titulo"));
         setModal(true);
         setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                closeDialog(evt);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent evt) {
+                handleWindowsClosing(evt);
             }
         });
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        panelPrincipal.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        panelPestanias.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-
-        panelGeneral.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        iconoLER.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.LERA));
-        iconoLER.setText(bundle.getString("LERA.Descripcion")); // NOI18N
-        panelGeneral.add(iconoLER, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
-
-        etiquetaNombre.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        etiquetaNombre.setText(bundle.getString("VentanaLERA.etiquetaNombre")); // NOI18N
-        panelGeneral.add(etiquetaNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 80, 120, -1));
-        panelGeneral.add(nombreNodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 105, 125, -1));
-
-        panelPosicion.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("VentanaLER.etiquetaGrupo"))); // NOI18N
-        panelPosicion.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        coordenadaX.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        coordenadaX.setText(bundle.getString("VentanaLER.X=")); // NOI18N
-        panelPosicion.add(coordenadaX, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, -1, -1));
-
-        coordenadaY.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        coordenadaY.setText(bundle.getString("VentanaLER.Y=")); // NOI18N
-        panelPosicion.add(coordenadaY, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
-
-        panelCoordenadas.setBackground(new java.awt.Color(255, 255, 255));
-        panelCoordenadas.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                clicEnPanelCoordenadas(evt);
+        getContentPane().setLayout(new AbsoluteLayout());
+        this.mainPanel.setLayout(new AbsoluteLayout());
+        this.panelTabs.setFont(new Font("Dialog", 0, 12));
+        this.panelGeneralConfiguration.setLayout(new AbsoluteLayout());
+        this.iconContainerActiveLER.setIcon(this.imageBroker.getIcon(TImagesBroker.LERA));
+        this.iconContainerActiveLER.setText(bundle.getString("LERA.Descripcion"));
+        this.panelGeneralConfiguration.add(this.iconContainerActiveLER, new AbsoluteConstraints(15, 20, 335, -1));
+        this.labelName.setFont(new Font("Dialog", 0, 12));
+        this.labelName.setText(bundle.getString("VentanaLERA.etiquetaNombre"));
+        this.panelGeneralConfiguration.add(this.labelName, new AbsoluteConstraints(215, 80, 120, -1));
+        this.panelGeneralConfiguration.add(this.textFieldName, new AbsoluteConstraints(215, 105, 125, -1));
+        this.panelPosition.setBorder(BorderFactory.createTitledBorder(bundle.getString("VentanaLER.etiquetaGrupo")));
+        this.panelPosition.setLayout(new AbsoluteLayout());
+        this.labelCoordinateX.setFont(new Font("Dialog", 0, 12));
+        this.labelCoordinateX.setText(bundle.getString("VentanaLER.X="));
+        this.panelPosition.add(this.labelCoordinateX, new AbsoluteConstraints(100, 100, -1, -1));
+        this.labelCoordinateY.setFont(new Font("Dialog", 0, 12));
+        this.labelCoordinateY.setText(bundle.getString("VentanaLER.Y="));
+        this.panelPosition.add(this.labelCoordinateY, new AbsoluteConstraints(40, 100, -1, -1));
+        this.coordinatesPanel.setBackground(new Color(255, 255, 255));
+        this.coordinatesPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent evt) {
+                handleClickOnCoordinatesPanel(evt);
             }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                ratonEntraEnPanelCoordenadas(evt);
+
+            @Override
+            public void mouseEntered(MouseEvent evt) {
+                handleMouseEnteringInCoordinatesPanel(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                ratonSaleDePanelCoordenadas(evt);
+
+            @Override
+            public void mouseExited(MouseEvent evt) {
+                handleMouseLeavingCoordinatesPanel(evt);
             }
         });
-        panelPosicion.add(panelCoordenadas, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 25, 130, 70));
-
-        panelGeneral.add(panelPosicion, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 75, 180, 125));
-
-        verNombre.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        verNombre.setSelected(true);
-        verNombre.setText(bundle.getString("VentanaLER.verNombre")); // NOI18N
-        panelGeneral.add(verNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 135, -1, -1));
-
-        panelPestanias.addTab(bundle.getString("VentanaLER.tabs.General"), panelGeneral); // NOI18N
-
-        panelRapido.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        selectorDeGenerarEstadisticasSencillo.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        selectorDeGenerarEstadisticasSencillo.setText(bundle.getString("VentanaLERA.GenerarEstadisticas")); // NOI18N
-        selectorDeGenerarEstadisticasSencillo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clicEnGenerarEstadisticasSencillo(evt);
+        this.panelPosition.add(this.coordinatesPanel, new AbsoluteConstraints(25, 25, 130, 70));
+        this.panelGeneralConfiguration.add(this.panelPosition, new AbsoluteConstraints(15, 75, 180, 125));
+        this.checkBoxShowName.setFont(new Font("Dialog", 0, 12));
+        this.checkBoxShowName.setSelected(true);
+        this.checkBoxShowName.setText(bundle.getString("VentanaLER.verNombre"));
+        this.panelGeneralConfiguration.add(this.checkBoxShowName, new AbsoluteConstraints(215, 135, -1, -1));
+        this.panelTabs.addTab(bundle.getString("VentanaLER.tabs.General"), this.panelGeneralConfiguration);
+        this.panelQuickConfiguration.setLayout(new AbsoluteLayout());
+        this.checkBoxQuickGenerateStatistics.setFont(new Font("Dialog", 0, 12));
+        this.checkBoxQuickGenerateStatistics.setText(bundle.getString("VentanaLERA.GenerarEstadisticas"));
+        this.checkBoxQuickGenerateStatistics.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                handleClickOnQuickGenerateStatistics(evt);
             }
         });
-        panelRapido.add(selectorDeGenerarEstadisticasSencillo, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, -1, -1));
-
-        iconoEnlace1.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.ASISTENTE));
-        iconoEnlace1.setText(bundle.getString("VentanaLERA.ConfiguracionRapida")); // NOI18N
-        panelRapido.add(iconoEnlace1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
-
-        jLabel1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText(bundle.getString("VentanaLERA.CaracteristicasDelLER")); // NOI18N
-        panelRapido.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 160, -1));
-
-        selectorSencilloCaracteristicas.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        selectorSencilloCaracteristicas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Personalized", "Very low cost LER", "Low cost LER", "Medium cost LER", "Expensive LER", "Very expensive LER" }));
-        selectorSencilloCaracteristicas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cliEnSelectorSencilloCaracteristicas(evt);
+        this.panelQuickConfiguration.add(this.checkBoxQuickGenerateStatistics, new AbsoluteConstraints(70, 160, -1, -1));
+        this.iconContainerEnd1.setIcon(this.imageBroker.getIcon(TImagesBroker.ASISTENTE));
+        this.iconContainerEnd1.setText(bundle.getString("VentanaLERA.ConfiguracionRapida"));
+        this.panelQuickConfiguration.add(this.iconContainerEnd1, new AbsoluteConstraints(15, 20, 335, -1));
+        this.labelActiveLERFeatures.setFont(new Font("Dialog", 0, 12));
+        this.labelActiveLERFeatures.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelActiveLERFeatures.setText(bundle.getString("VentanaLERA.CaracteristicasDelLER"));
+        this.panelQuickConfiguration.add(this.labelActiveLERFeatures, new AbsoluteConstraints(20, 110, 160, -1));
+        this.comboBoxPredefinedOptions.setFont(new Font("Dialog", 0, 12));
+        this.comboBoxPredefinedOptions.setModel(new DefaultComboBoxModel(new String[]{"Personalized", "Very low cost LER", "Low cost LER", "Medium cost LER", "Expensive LER", "Very expensive LER"}));
+        this.comboBoxPredefinedOptions.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                handleClickOnPredefinedOptions(evt);
             }
         });
-        panelRapido.add(selectorSencilloCaracteristicas, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 110, -1, -1));
-
-        panelPestanias.addTab(bundle.getString("VentanaLER.tabs.Fast"), panelRapido); // NOI18N
-
-        panelAvanzado.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        selectorDeGenerarEstadisticasAvanzado.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        selectorDeGenerarEstadisticasAvanzado.setText(bundle.getString("VentanaLERA.GenerarEstadisticas")); // NOI18N
-        selectorDeGenerarEstadisticasAvanzado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clicEnGenerarEstadisticasAvanzada(evt);
+        this.panelQuickConfiguration.add(this.comboBoxPredefinedOptions, new AbsoluteConstraints(190, 110, -1, -1));
+        this.panelTabs.addTab(bundle.getString("VentanaLER.tabs.Fast"), this.panelQuickConfiguration);
+        this.panelAdvancedConfiguration.setLayout(new AbsoluteLayout());
+        this.checkBoxAdvancedGenerateStatistics.setFont(new Font("Dialog", 0, 12));
+        this.checkBoxAdvancedGenerateStatistics.setText(bundle.getString("VentanaLERA.GenerarEstadisticas"));
+        this.checkBoxAdvancedGenerateStatistics.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                handleClickOnAdvancedGenerateStatistics(evt);
             }
         });
-        panelAvanzado.add(selectorDeGenerarEstadisticasAvanzado, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, -1, -1));
-
-        iconoEnlace2.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.AVANZADA));
-        iconoEnlace2.setText(bundle.getString("VentanaLERA.ConfiguracionAvanzada")); // NOI18N
-        panelAvanzado.add(iconoEnlace2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
-
-        jLabel2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText(bundle.getString("VentanaLER.PotenciaDeConmutacion")); // NOI18N
-        panelAvanzado.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 140, -1));
-
-        selectorDePotenciaDeConmutacion.setMajorTickSpacing(1000);
-        selectorDePotenciaDeConmutacion.setMaximum(10240);
-        selectorDePotenciaDeConmutacion.setMinimum(1);
-        selectorDePotenciaDeConmutacion.setMinorTickSpacing(100);
-        selectorDePotenciaDeConmutacion.setValue(1);
-        selectorDePotenciaDeConmutacion.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                selectorDePotenciadeConmutacionCambiado(evt);
+        this.panelAdvancedConfiguration.add(this.checkBoxAdvancedGenerateStatistics, new AbsoluteConstraints(70, 180, -1, -1));
+        this.iconContainerEnd2.setIcon(this.imageBroker.getIcon(TImagesBroker.AVANZADA));
+        this.iconContainerEnd2.setText(bundle.getString("VentanaLERA.ConfiguracionAvanzada"));
+        this.panelAdvancedConfiguration.add(this.iconContainerEnd2, new AbsoluteConstraints(15, 20, 335, -1));
+        this.labelRoutingPower.setFont(new Font("Dialog", 0, 12));
+        this.labelRoutingPower.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelRoutingPower.setText(bundle.getString("VentanaLER.PotenciaDeConmutacion"));
+        this.panelAdvancedConfiguration.add(this.labelRoutingPower, new AbsoluteConstraints(10, 90, 140, -1));
+        this.selectorRoutingPower.setMajorTickSpacing(1000);
+        this.selectorRoutingPower.setMaximum(10240);
+        this.selectorRoutingPower.setMinimum(1);
+        this.selectorRoutingPower.setMinorTickSpacing(100);
+        this.selectorRoutingPower.setValue(1);
+        this.selectorRoutingPower.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent evt) {
+                handleChangeOnRoutingPower(evt);
             }
         });
-        panelAvanzado.add(selectorDePotenciaDeConmutacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(155, 90, 130, 20));
-
-        etiquetaPotencia.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
-        etiquetaPotencia.setForeground(new java.awt.Color(102, 102, 102));
-        etiquetaPotencia.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        etiquetaPotencia.setText(bundle.getString("VentanaLER.1_Mbps")); // NOI18N
-        panelAvanzado.add(etiquetaPotencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 90, 70, 20));
-
-        jLabel3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText(bundle.getString("VentanaLER.TamanioDelBufferDeEntrada")); // NOI18N
-        panelAvanzado.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 180, -1));
-
-        selectorDeTamanioBuffer.setMajorTickSpacing(50);
-        selectorDeTamanioBuffer.setMaximum(1024);
-        selectorDeTamanioBuffer.setMinimum(1);
-        selectorDeTamanioBuffer.setMinorTickSpacing(100);
-        selectorDeTamanioBuffer.setValue(1);
-        selectorDeTamanioBuffer.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                selectorDeTamanioBufferCambiado(evt);
+        this.panelAdvancedConfiguration.add(this.selectorRoutingPower, new AbsoluteConstraints(155, 90, 130, 20));
+        this.labelRoutingPowerMbps.setFont(new Font("Dialog", 0, 10));
+        this.labelRoutingPowerMbps.setForeground(new Color(102, 102, 102));
+        this.labelRoutingPowerMbps.setHorizontalAlignment(SwingConstants.LEFT);
+        this.labelRoutingPowerMbps.setText(bundle.getString("VentanaLER.1_Mbps"));
+        this.panelAdvancedConfiguration.add(this.labelRoutingPowerMbps, new AbsoluteConstraints(290, 90, 70, 20));
+        this.labelBufferSize.setFont(new java.awt.Font("Dialog", 0, 12));
+        this.labelBufferSize.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelBufferSize.setText(bundle.getString("VentanaLER.TamanioDelBufferDeEntrada"));
+        this.panelAdvancedConfiguration.add(this.labelBufferSize, new AbsoluteConstraints(10, 120, 180, -1));
+        this.selectorBufferSize.setMajorTickSpacing(50);
+        this.selectorBufferSize.setMaximum(1024);
+        this.selectorBufferSize.setMinimum(1);
+        this.selectorBufferSize.setMinorTickSpacing(100);
+        this.selectorBufferSize.setValue(1);
+        this.selectorBufferSize.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent evt) {
+                handleChangeOnBufferSize(evt);
             }
         });
-        panelAvanzado.add(selectorDeTamanioBuffer, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 120, 100, 20));
-
-        etiquetaMemoriaBuffer.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
-        etiquetaMemoriaBuffer.setForeground(new java.awt.Color(102, 102, 102));
-        etiquetaMemoriaBuffer.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        etiquetaMemoriaBuffer.setText(bundle.getString("VentanaLER.1_MB")); // NOI18N
-        panelAvanzado.add(etiquetaMemoriaBuffer, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 120, 60, 20));
-
-        selectorDeTamanioDMGP.setMajorTickSpacing(50);
-        selectorDeTamanioDMGP.setMaximum(102400);
-        selectorDeTamanioDMGP.setMinimum(1);
-        selectorDeTamanioDMGP.setMinorTickSpacing(100);
-        selectorDeTamanioDMGP.setValue(1);
-        selectorDeTamanioDMGP.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                selectorDeTamanioDMGPCambiado(evt);
+        this.panelAdvancedConfiguration.add(this.selectorBufferSize, new AbsoluteConstraints(200, 120, 100, 20));
+        this.labelBufferSizeMB.setFont(new Font("Dialog", 0, 10));
+        this.labelBufferSizeMB.setForeground(new Color(102, 102, 102));
+        this.labelBufferSizeMB.setHorizontalAlignment(SwingConstants.LEFT);
+        this.labelBufferSizeMB.setText(bundle.getString("VentanaLER.1_MB"));
+        this.panelAdvancedConfiguration.add(this.labelBufferSizeMB, new AbsoluteConstraints(300, 120, 60, 20));
+        this.selectorDMGPSize.setMajorTickSpacing(50);
+        this.selectorDMGPSize.setMaximum(102400);
+        this.selectorDMGPSize.setMinimum(1);
+        this.selectorDMGPSize.setMinorTickSpacing(100);
+        this.selectorDMGPSize.setValue(1);
+        this.selectorDMGPSize.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent evt) {
+                handleChangeOnDMGPSize(evt);
             }
         });
-        panelAvanzado.add(selectorDeTamanioDMGP, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 150, 120, 20));
-
-        etiquetaMemoriaDMGP.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
-        etiquetaMemoriaDMGP.setForeground(new java.awt.Color(102, 102, 102));
-        etiquetaMemoriaDMGP.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        etiquetaMemoriaDMGP.setText(bundle.getString("JVentanaLERA.1KB")); // NOI18N
-        panelAvanzado.add(etiquetaMemoriaDMGP, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 150, 70, 20));
-
-        jLabel4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel4.setText(bundle.getString("JVentanaLERA.DMGP_size")); // NOI18N
-        panelAvanzado.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 150, -1));
-
-        panelPestanias.addTab(bundle.getString("VentanaLER.tabs.Advanced"), panelAvanzado); // NOI18N
-
-        panelPrincipal.add(panelPestanias, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 370, 240));
-
-        panelBotones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jButton2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton2.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.ACEPTAR));
-        jButton2.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.botones.mne.Aceptar").charAt(0));
-        jButton2.setText(bundle.getString("VentanaLER.boton.Ok")); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clicEnAceptar(evt);
+        this.panelAdvancedConfiguration.add(this.selectorDMGPSize, new AbsoluteConstraints(170, 150, 120, 20));
+        this.labelDMGPSizeKB.setFont(new Font("Dialog", 0, 10));
+        this.labelDMGPSizeKB.setForeground(new Color(102, 102, 102));
+        this.labelDMGPSizeKB.setHorizontalAlignment(SwingConstants.LEFT);
+        this.labelDMGPSizeKB.setText(bundle.getString("JVentanaLERA.1KB"));
+        this.panelAdvancedConfiguration.add(this.labelDMGPSizeKB, new AbsoluteConstraints(290, 150, 70, 20));
+        this.labelDMGPSize.setFont(new Font("Dialog", 0, 12));
+        this.labelDMGPSize.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelDMGPSize.setText(bundle.getString("JVentanaLERA.DMGP_size"));
+        this.panelAdvancedConfiguration.add(this.labelDMGPSize, new AbsoluteConstraints(10, 150, 150, -1));
+        this.panelTabs.addTab(bundle.getString("VentanaLER.tabs.Advanced"), this.panelAdvancedConfiguration);
+        this.mainPanel.add(this.panelTabs, new AbsoluteConstraints(15, 15, 370, 240));
+        this.panelButtons.setLayout(new AbsoluteLayout());
+        this.buttonOK.setFont(new Font("Dialog", 0, 12));
+        this.buttonOK.setIcon(this.imageBroker.getIcon(TImagesBroker.ACEPTAR));
+        this.buttonOK.setMnemonic(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.botones.mne.Aceptar").charAt(0));
+        this.buttonOK.setText(bundle.getString("VentanaLER.boton.Ok"));
+        this.buttonOK.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                handleClickOnOKButton(evt);
             }
         });
-        panelBotones.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 115, -1));
-
-        jButton3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton3.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.CANCELAR));
-        jButton3.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.botones.mne.Cancelar").charAt(0));
-        jButton3.setText(bundle.getString("VentanaLER.boton.Cancel")); // NOI18N
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clicEnCancelar(evt);
+        this.panelButtons.add(this.buttonOK, new AbsoluteConstraints(15, 15, 115, -1));
+        this.buttonCancel.setFont(new Font("Dialog", 0, 12));
+        this.buttonCancel.setIcon(this.imageBroker.getIcon(TImagesBroker.CANCELAR));
+        this.buttonCancel.setMnemonic(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.botones.mne.Cancelar").charAt(0));
+        this.buttonCancel.setText(bundle.getString("VentanaLER.boton.Cancel"));
+        this.buttonCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                handleClickOnCancelButton(evt);
             }
         });
-        panelBotones.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 15, 115, -1));
-
-        panelPrincipal.add(panelBotones, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 400, 50));
-
-        getContentPane().add(panelPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 310));
-
+        this.panelButtons.add(this.buttonCancel, new AbsoluteConstraints(140, 15, 115, -1));
+        this.mainPanel.add(this.panelButtons, new AbsoluteConstraints(0, 260, 400, 50));
+        getContentPane().add(this.mainPanel, new AbsoluteConstraints(0, 0, -1, 310));
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
-    private void selectorDeTamanioDMGPCambiado(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_selectorDeTamanioDMGPCambiado
-        this.etiquetaMemoriaDMGP.setText(""+this.selectorDeTamanioDMGP.getValue()+" "+java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA._MB."));
-    }//GEN-LAST:event_selectorDeTamanioDMGPCambiado
+    private void handleChangeOnDMGPSize(ChangeEvent evt) {
+        this.labelDMGPSizeKB.setText("" + this.selectorDMGPSize.getValue() + " " + ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLERA._MB."));
+    }
 
-    private void cliEnSelectorSencilloCaracteristicas(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cliEnSelectorSencilloCaracteristicas
-        int opcionSeleccionada = this.selectorSencilloCaracteristicas.getSelectedIndex();
-        if (opcionSeleccionada == 0) {
-            // No se hace nada
-            this.selectorSencilloCaracteristicas.setSelectedIndex(0);
-        } else if (opcionSeleccionada == 1) {
-            this.selectorDePotenciaDeConmutacion.setValue(1);
-            this.selectorDeTamanioBuffer.setValue(1);
-            this.selectorDeTamanioDMGP.setValue(1);
-            this.selectorSencilloCaracteristicas.setSelectedIndex(1);
-        } else if (opcionSeleccionada == 2) {
-            this.selectorDePotenciaDeConmutacion.setValue(2560);
-            this.selectorDeTamanioBuffer.setValue(256);
-            this.selectorDeTamanioDMGP.setValue(2);
-            this.selectorSencilloCaracteristicas.setSelectedIndex(2);
-        } else if (opcionSeleccionada == 3) {
-            this.selectorDePotenciaDeConmutacion.setValue(5120);
-            this.selectorDeTamanioBuffer.setValue(512);
-            this.selectorDeTamanioDMGP.setValue(3);
-            this.selectorSencilloCaracteristicas.setSelectedIndex(3);
-        } else if (opcionSeleccionada == 4) {
-            this.selectorDePotenciaDeConmutacion.setValue(7680);
-            this.selectorDeTamanioBuffer.setValue(768);
-            this.selectorDeTamanioDMGP.setValue(4);
-            this.selectorSencilloCaracteristicas.setSelectedIndex(4);
-        } else if (opcionSeleccionada == 5) {
-            this.selectorDePotenciaDeConmutacion.setValue(10240);
-            this.selectorDeTamanioBuffer.setValue(1024);
-            this.selectorDeTamanioDMGP.setValue(5);
-            this.selectorSencilloCaracteristicas.setSelectedIndex(5);
+    private void handleClickOnPredefinedOptions(ActionEvent evt) {
+        int selectedOption = this.comboBoxPredefinedOptions.getSelectedIndex();
+        if (selectedOption == 0) {
+            // Do nothing
+            this.comboBoxPredefinedOptions.setSelectedIndex(0);
+        } else if (selectedOption == 1) {
+            this.selectorRoutingPower.setValue(1);
+            this.selectorBufferSize.setValue(1);
+            this.selectorDMGPSize.setValue(1);
+            this.comboBoxPredefinedOptions.setSelectedIndex(1);
+        } else if (selectedOption == 2) {
+            this.selectorRoutingPower.setValue(2560);
+            this.selectorBufferSize.setValue(256);
+            this.selectorDMGPSize.setValue(2);
+            this.comboBoxPredefinedOptions.setSelectedIndex(2);
+        } else if (selectedOption == 3) {
+            this.selectorRoutingPower.setValue(5120);
+            this.selectorBufferSize.setValue(512);
+            this.selectorDMGPSize.setValue(3);
+            this.comboBoxPredefinedOptions.setSelectedIndex(3);
+        } else if (selectedOption == 4) {
+            this.selectorRoutingPower.setValue(7680);
+            this.selectorBufferSize.setValue(768);
+            this.selectorDMGPSize.setValue(4);
+            this.comboBoxPredefinedOptions.setSelectedIndex(4);
+        } else if (selectedOption == 5) {
+            this.selectorRoutingPower.setValue(10240);
+            this.selectorBufferSize.setValue(1024);
+            this.selectorDMGPSize.setValue(5);
+            this.comboBoxPredefinedOptions.setSelectedIndex(5);
         }
-    }//GEN-LAST:event_cliEnSelectorSencilloCaracteristicas
-
-    private void selectorDeTamanioBufferCambiado(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_selectorDeTamanioBufferCambiado
-        this.selectorSencilloCaracteristicas.setSelectedIndex(0);
-        this.etiquetaMemoriaBuffer.setText(this.selectorDeTamanioBuffer.getValue() + " " + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.MB"));
-    }//GEN-LAST:event_selectorDeTamanioBufferCambiado
-
-    private void selectorDePotenciadeConmutacionCambiado(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_selectorDePotenciadeConmutacionCambiado
-        this.selectorSencilloCaracteristicas.setSelectedIndex(0);
-        this.etiquetaPotencia.setText(this.selectorDePotenciaDeConmutacion.getValue() + " " + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.Mbps."));
-    }//GEN-LAST:event_selectorDePotenciadeConmutacionCambiado
-
-    private void clicEnGenerarEstadisticasAvanzada(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnGenerarEstadisticasAvanzada
-        this.selectorDeGenerarEstadisticasSencillo.setSelected(this.selectorDeGenerarEstadisticasAvanzado.isSelected());
-    }//GEN-LAST:event_clicEnGenerarEstadisticasAvanzada
-
-    private void clicEnGenerarEstadisticasSencillo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnGenerarEstadisticasSencillo
-        this.selectorDeGenerarEstadisticasAvanzado.setSelected(this.selectorDeGenerarEstadisticasSencillo.isSelected());
-    }//GEN-LAST:event_clicEnGenerarEstadisticasSencillo
-    
-private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnCancelar
-    if (reconfigurando) {
-        configLERA.setShowName(BKUPMostrarNombre);
-        configLERA.setName(BKUPNombre);
-        configLERA.setWellConfigured(true);
-        configLERA.setBufferSizeInMBytes(BKUPTamBuffer);
-        configLERA.setRoutingPowerInMbps(BKUPPotencia);
-        configLERA.setGenerateStats(BKUPGenerarEstadisticas);
-        configLERA.setDMGPSizeInKB(BKUPTamanioDMGP);
-        reconfigurando = false;
-    } else {
-        configLERA.setWellConfigured(false);
     }
-    this.setVisible(false);
-    this.dispose();
-}//GEN-LAST:event_clicEnCancelar
 
-private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
-    configLERA.setWellConfigured(true);
-    if (!this.reconfigurando){
-        configLERA.setScreenPosition(new Point(panelCoordenadas.getRealX(),panelCoordenadas.getRealY()));
+    private void handleChangeOnBufferSize(ChangeEvent evt) {
+        this.comboBoxPredefinedOptions.setSelectedIndex(0);
+        this.labelBufferSizeMB.setText(this.selectorBufferSize.getValue() + " " + ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.MB"));
     }
-    configLERA.setDMGPSizeInKB(this.selectorDeTamanioDMGP.getValue());
-    configLERA.setBufferSizeInMBytes(this.selectorDeTamanioBuffer.getValue());
-    configLERA.setRoutingPowerInMbps(this.selectorDePotenciaDeConmutacion.getValue());
-    configLERA.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
-    configLERA.setName(nombreNodo.getText());
-    configLERA.setShowName(verNombre.isSelected());
-    configLERA.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
-    int error = configLERA.validateConfig(topo, this.reconfigurando);
-    if (error != TActiveLERNode.OK) {
-        JWarningWindow va = new JWarningWindow(ventanaPadre, true, dispensadorDeImagenes);
-        va.mostrarMensaje(configLERA.getErrorMessage(error));
-        va.show();
-    } else {
+
+    private void handleChangeOnRoutingPower(ChangeEvent evt) {
+        this.comboBoxPredefinedOptions.setSelectedIndex(0);
+        this.labelRoutingPowerMbps.setText(this.selectorRoutingPower.getValue() + " " + ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLER.Mbps."));
+    }
+
+    private void handleClickOnAdvancedGenerateStatistics(ActionEvent evt) {
+        this.checkBoxQuickGenerateStatistics.setSelected(this.checkBoxAdvancedGenerateStatistics.isSelected());
+    }
+
+    private void handleClickOnQuickGenerateStatistics(ActionEvent evt) {
+        this.checkBoxAdvancedGenerateStatistics.setSelected(this.checkBoxQuickGenerateStatistics.isSelected());
+    }
+
+    private void handleClickOnCancelButton(ActionEvent evt) {
+        if (this.reconguration) {
+            this.activeLERNode.setShowName(this.currentConfigShowName);
+            this.activeLERNode.setName(this.currentConfigName);
+            this.activeLERNode.setWellConfigured(true);
+            this.activeLERNode.setBufferSizeInMBytes(this.currentConfigBufferSize);
+            this.activeLERNode.setRoutingPowerInMbps(this.currentConfigRoutingPower);
+            this.activeLERNode.setGenerateStats(this.currentConfigGenerateStatistics);
+            this.activeLERNode.setDMGPSizeInKB(this.currentConfigDMGPSize);
+            this.reconguration = false;
+        } else {
+            this.activeLERNode.setWellConfigured(false);
+        }
         this.setVisible(false);
         this.dispose();
     }
-}//GEN-LAST:event_clicEnAceptar
 
-private void clicEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnPanelCoordenadas
-    if (evt.getButton() == MouseEvent.BUTTON1) {
-        panelCoordenadas.setCoordinates(evt.getPoint());
-        coordenadaX.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaconfigLERA.X=_") + panelCoordenadas.getRealX());
-        coordenadaY.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaconfigLERA.Y=_") + panelCoordenadas.getRealY());
-        panelCoordenadas.repaint();
-    }
-}//GEN-LAST:event_clicEnPanelCoordenadas
-
-private void ratonSaleDePanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDePanelCoordenadas
-    this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-}//GEN-LAST:event_ratonSaleDePanelCoordenadas
-
-private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnPanelCoordenadas
-    this.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
-}//GEN-LAST:event_ratonEntraEnPanelCoordenadas
-
-/** Closes the dialog */
-    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
-        setVisible(false);
-        configLERA.setWellConfigured(false);
-        dispose();
-    }//GEN-LAST:event_closeDialog
-    
-    /**
-     * Este m�todo permite cargar en la ventana la configuraci�n actual del LER.
-     * @since 2.0
-     * @param tnlera El nodo LER que queremos configurar.
-     * @param recfg TRUE indica que estamos reconfigurando el LER. FALSE indica que el LER se ha
-     * insertado nuevo en la topolog�a.
-     */
-    public void ponerConfiguracion(TActiveLERNode tnlera, boolean recfg) {
-        configLERA = tnlera;
-        reconfigurando = recfg;
-        if (reconfigurando) {
-            this.panelCoordenadas.setEnabled(false);
-            this.panelCoordenadas.setToolTipText(null);
-
-            BKUPGenerarEstadisticas = tnlera.isGeneratingStats();
-            BKUPMostrarNombre = tnlera.nameMustBeDisplayed();
-            BKUPNombre = tnlera.getName();
-            BKUPPotencia = tnlera.getRoutingPowerInMbps();
-            BKUPTamBuffer = tnlera.getBufferSizeInMBytes();
-            BKUPTamanioDMGP = tnlera.getDMGPSizeInKB();
-
-            this.selectorDeTamanioDMGP.setValue(this.BKUPTamanioDMGP);
-            this.selectorDeGenerarEstadisticasAvanzado.setSelected(BKUPGenerarEstadisticas);
-            this.selectorDeGenerarEstadisticasSencillo.setSelected(BKUPGenerarEstadisticas);
-            this.selectorDePotenciaDeConmutacion.setValue(BKUPPotencia);
-            this.selectorDeTamanioBuffer.setValue(BKUPTamBuffer);
-            this.nombreNodo.setText(BKUPNombre);
-            this.verNombre.setSelected(BKUPMostrarNombre);
+    private void handleClickOnOKButton(ActionEvent evt) {
+        this.activeLERNode.setWellConfigured(true);
+        if (!this.reconguration) {
+            this.activeLERNode.setScreenPosition(new Point(this.coordinatesPanel.getRealX(), this.coordinatesPanel.getRealY()));
+        }
+        this.activeLERNode.setDMGPSizeInKB(this.selectorDMGPSize.getValue());
+        this.activeLERNode.setBufferSizeInMBytes(this.selectorBufferSize.getValue());
+        this.activeLERNode.setRoutingPowerInMbps(this.selectorRoutingPower.getValue());
+        this.activeLERNode.setGenerateStats(this.checkBoxQuickGenerateStatistics.isSelected());
+        this.activeLERNode.setName(this.textFieldName.getText());
+        this.activeLERNode.setShowName(this.checkBoxShowName.isSelected());
+        this.activeLERNode.setGenerateStats(this.checkBoxQuickGenerateStatistics.isSelected());
+        int error = this.activeLERNode.validateConfig(this.topology, this.reconguration);
+        if (error != TActiveLERNode.OK) {
+            JWarningWindow va = new JWarningWindow(this.parent, true, this.imageBroker);
+            va.mostrarMensaje(this.activeLERNode.getErrorMessage(error));
+            va.show();
+        } else {
+            this.setVisible(false);
+            this.dispose();
         }
     }
-    
-    private TImagesBroker dispensadorDeImagenes;
-    private Frame ventanaPadre;
-    private JDesignPanel pd;
-    private TActiveLERNode configLERA;
-    private TTopology topo;
-    
-    private boolean BKUPMostrarNombre;
-    private String BKUPNombre;
-    private int BKUPPotencia;
-    private int BKUPTamBuffer;
-    private boolean BKUPGenerarEstadisticas;
-    private int BKUPTamanioDMGP;
 
-    private boolean reconfigurando;
-    
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel coordenadaX;
-    private javax.swing.JLabel coordenadaY;
-    private javax.swing.JLabel etiquetaMemoriaBuffer;
-    private javax.swing.JLabel etiquetaMemoriaDMGP;
-    private javax.swing.JLabel etiquetaNombre;
-    private javax.swing.JLabel etiquetaPotencia;
-    private javax.swing.JLabel iconoEnlace1;
-    private javax.swing.JLabel iconoEnlace2;
-    private javax.swing.JLabel iconoLER;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField nombreNodo;
-    private javax.swing.JPanel panelAvanzado;
-    private javax.swing.JPanel panelBotones;
-    private com.manolodominguez.opensimmpls.ui.dialogs.JCoordinatesPanel panelCoordenadas;
-    private javax.swing.JPanel panelGeneral;
-    private javax.swing.JTabbedPane panelPestanias;
-    private javax.swing.JPanel panelPosicion;
-    private javax.swing.JPanel panelPrincipal;
-    private javax.swing.JPanel panelRapido;
-    private javax.swing.JCheckBox selectorDeGenerarEstadisticasAvanzado;
-    private javax.swing.JCheckBox selectorDeGenerarEstadisticasSencillo;
-    private javax.swing.JSlider selectorDePotenciaDeConmutacion;
-    private javax.swing.JSlider selectorDeTamanioBuffer;
-    private javax.swing.JSlider selectorDeTamanioDMGP;
-    private javax.swing.JComboBox selectorSencilloCaracteristicas;
-    private javax.swing.JCheckBox verNombre;
-    // End of variables declaration//GEN-END:variables
-    
+    private void handleClickOnCoordinatesPanel(MouseEvent evt) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
+            this.coordinatesPanel.setCoordinates(evt.getPoint());
+            this.labelCoordinateX.setText(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaconfigLERA.X=_") + coordinatesPanel.getRealX());
+            this.labelCoordinateY.setText(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaconfigLERA.Y=_") + coordinatesPanel.getRealY());
+            this.coordinatesPanel.repaint();
+        }
+    }
+
+    private void handleMouseLeavingCoordinatesPanel(MouseEvent evt) {
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }
+
+    private void handleMouseEnteringInCoordinatesPanel(MouseEvent evt) {
+        this.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+    }
+
+    /**
+     * Closes the dialog
+     */
+    private void handleWindowsClosing(WindowEvent evt) {
+        setVisible(false);
+        this.activeLERNode.setWellConfigured(false);
+        dispose();
+    }
+
+    /**
+     * Este m�todo permite cargar en la ventana la configuraci�n actual del LER.
+     *
+     * @since 2.0
+     * @param activeLERNode El nodo LER que queremos configurar.
+     * @param reconfiguration TRUE indica que estamos reconfigurando el LER.
+     * FALSE indica que el LER se ha insertado nuevo en la topolog�a.
+     */
+    public void setConfiguration(TActiveLERNode activeLERNode, boolean reconfiguration) {
+        this.activeLERNode = activeLERNode;
+        this.reconguration = reconfiguration;
+        if (this.reconguration) {
+            this.coordinatesPanel.setEnabled(false);
+            this.coordinatesPanel.setToolTipText(null);
+            this.currentConfigGenerateStatistics = activeLERNode.isGeneratingStats();
+            this.currentConfigShowName = activeLERNode.nameMustBeDisplayed();
+            this.currentConfigName = activeLERNode.getName();
+            this.currentConfigRoutingPower = activeLERNode.getRoutingPowerInMbps();
+            this.currentConfigBufferSize = activeLERNode.getBufferSizeInMBytes();
+            this.currentConfigDMGPSize = activeLERNode.getDMGPSizeInKB();
+            this.selectorDMGPSize.setValue(this.currentConfigDMGPSize);
+            this.checkBoxAdvancedGenerateStatistics.setSelected(this.currentConfigGenerateStatistics);
+            this.checkBoxQuickGenerateStatistics.setSelected(this.currentConfigGenerateStatistics);
+            this.selectorRoutingPower.setValue(this.currentConfigRoutingPower);
+            this.selectorBufferSize.setValue(this.currentConfigBufferSize);
+            this.textFieldName.setText(this.currentConfigName);
+            this.checkBoxShowName.setSelected(this.currentConfigShowName);
+        }
+    }
+
+    private TImagesBroker imageBroker;
+    private Frame parent;
+    private JDesignPanel designPanel;
+    private TActiveLERNode activeLERNode;
+    private TTopology topology;
+    private boolean currentConfigShowName;
+    private String currentConfigName;
+    private int currentConfigRoutingPower;
+    private int currentConfigBufferSize;
+    private boolean currentConfigGenerateStatistics;
+    private int currentConfigDMGPSize;
+    private boolean reconguration;
+    private JLabel labelCoordinateX;
+    private JLabel labelCoordinateY;
+    private JLabel labelBufferSizeMB;
+    private JLabel labelDMGPSizeKB;
+    private JLabel labelName;
+    private JLabel labelRoutingPowerMbps;
+    private JLabel iconContainerEnd1;
+    private JLabel iconContainerEnd2;
+    private JLabel iconContainerActiveLER;
+    private JButton buttonOK;
+    private JButton buttonCancel;
+    private JLabel labelActiveLERFeatures;
+    private JLabel labelRoutingPower;
+    private JLabel labelBufferSize;
+    private JLabel labelDMGPSize;
+    private JTextField textFieldName;
+    private JPanel panelAdvancedConfiguration;
+    private JPanel panelButtons;
+    private JCoordinatesPanel coordinatesPanel;
+    private JPanel panelGeneralConfiguration;
+    private JTabbedPane panelTabs;
+    private JPanel panelPosition;
+    private JPanel mainPanel;
+    private JPanel panelQuickConfiguration;
+    private JCheckBox checkBoxAdvancedGenerateStatistics;
+    private JCheckBox checkBoxQuickGenerateStatistics;
+    private JSlider selectorRoutingPower;
+    private JSlider selectorBufferSize;
+    private JSlider selectorDMGPSize;
+    private JComboBox comboBoxPredefinedOptions;
+    private JCheckBox checkBoxShowName;
 }
