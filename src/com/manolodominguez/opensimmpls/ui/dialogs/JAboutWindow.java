@@ -16,71 +16,86 @@
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
 import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
+import org.netbeans.lib.awtextra.AbsoluteLayout;
 
-
-/** Implementa una ventana con la imagen del programa de fondo.
- * Se usa para mostrar informaci�n sobre el programa cuando sea
- * solicitada.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+/**
+ * This class implements a dialog that is used to show information about
+ * OpenSimMPLS.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
-public class JAboutWindow extends javax.swing.JDialog {
+public class JAboutWindow extends JDialog {
 
     /**
-     * Este m�todo crea una nueva instancia de JSobre
+     * This method is the constructor of the class. It is create a new instance
+     * of JAboutWindow.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param parent Parent window in wich this dialog will be shown.
+     * @param modal this defines whether the dialog should be modal (if true) or
+     * not (if false).
+     * @param imageBroker this is a class that will supply the needed prealoaded
+     * images to be inserted in the dialog.
      * @since 2.0
-     * @param parent Ventana padre dentro de la cual se mostrar� esta ventana de tipo JSobre.
-     * @param modal TRUE indica que la ventana impide que se seleccione nada del resto de la
-     * interfaz hasta que sea cerrada. FALSE indica que esto no es as�.
-     * @param di Dispensador de im�genes global de la aplicaci�n.
-     */    
-    public JAboutWindow(java.awt.Frame parent, boolean modal, TImagesBroker di) {
+     */
+    public JAboutWindow(Frame parent, boolean modal, TImagesBroker imageBroker) {
         super(parent, modal);
-        dispensadorDeImagenes = di;
+        this.imageBroker = imageBroker;
         initComponents();
     }
 
-    /** Este m�todo es llamado desde el constructor para inicializar el cuadro de
-     * di�logo con los valores correctos.
+    /**
+     * This method is called by the constructor to initialize attributes value.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
      */
-    private void initComponents() {//GEN-BEGIN:initComponents
-        Imagen = new javax.swing.JLabel();
-
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    private void initComponents() {
+        this.imageContainer = new JLabel();
+        getContentPane().setLayout(new AbsoluteLayout());
+        setCursor(new Cursor(Cursor.HAND_CURSOR));
         setModal(true);
         setResizable(false);
         setUndecorated(true);
-        addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                cerrarVentana(evt);
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent evt) {
+                closeDialog(evt);
             }
         });
 
-        Imagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Imagen.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.SPLASH));
-        getContentPane().add(Imagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 300));
-
+        this.imageContainer.setHorizontalAlignment(SwingConstants.CENTER);
+        this.imageContainer.setIcon(this.imageBroker.getIcon(TImagesBroker.SPLASH));
+        getContentPane().add(this.imageContainer, new AbsoluteConstraints(0, 0, -1, 300));
         pack();
+        Dimension frameSize = this.getSize();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
 
-        java.awt.Dimension tamFrame=this.getSize();
-        java.awt.Dimension tamPantalla=java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((tamPantalla.width-tamFrame.width)/2, (tamPantalla.height-tamFrame.height)/2);
+    }
 
-    }//GEN-END:initComponents
-
-    /** Cierra el cuadro de di�logo cuando hace un clic de rat�n sobre �l. */
-    private void cerrarVentana(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cerrarVentana
+    /**
+     * This method closes the dialog once the user clic on it.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
+    private void closeDialog(MouseEvent evt) {
         setVisible(false);
         this.dispose();
-    }//GEN-LAST:event_cerrarVentana
+    }
 
-
-    private TImagesBroker dispensadorDeImagenes;
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Imagen;
-    // End of variables declaration//GEN-END:variables
-
+    private TImagesBroker imageBroker;
+    private javax.swing.JLabel imageContainer;
 }

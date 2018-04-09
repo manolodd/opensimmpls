@@ -170,7 +170,7 @@ public class JTrafficGeneratorWindow extends javax.swing.JDialog {
 
         panelGeneral.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        iconoEmisor.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.EMISOR));
+        iconoEmisor.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.EMISOR));
         java.util.ResourceBundle bundle1 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations.propertiess"); // NOI18N
         iconoEmisor.setText(bundle1.getString("VentanaEmisor.DescripcionNodo")); // NOI18N
         panelGeneral.add(iconoEmisor, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
@@ -229,7 +229,7 @@ public class JTrafficGeneratorWindow extends javax.swing.JDialog {
 
         panelRapido.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        iconoEnlace1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ASISTENTE));
+        iconoEnlace1.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.ASISTENTE));
         iconoEnlace1.setText(bundle.getString("VentanaEmisor.configuracionRapida")); // NOI18N
         panelRapido.add(iconoEnlace1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
@@ -262,7 +262,7 @@ public class JTrafficGeneratorWindow extends javax.swing.JDialog {
 
         panelAvanzado.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        iconoEnlace2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.AVANZADA));
+        iconoEnlace2.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.AVANZADA));
         iconoEnlace2.setText(bundle.getString("VentanaEmisor.ConfiguracionAvanzada")); // NOI18N
         panelAvanzado.add(iconoEnlace2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
@@ -397,7 +397,7 @@ public class JTrafficGeneratorWindow extends javax.swing.JDialog {
         panelBotones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR));
+        jButton2.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.ACEPTAR));
         jButton2.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.botones.Aceptar").charAt(0));
         jButton2.setText(bundle.getString("VentanaEmisor.Boton.Aceptar.Texto")); // NOI18N
         jButton2.setToolTipText(bundle.getString("VentanaEmisor.tooltip.Aceptar")); // NOI18N
@@ -409,7 +409,7 @@ public class JTrafficGeneratorWindow extends javax.swing.JDialog {
         panelBotones.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 110, -1));
 
         jButton3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton3.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.CANCELAR));
+        jButton3.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.CANCELAR));
         jButton3.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.botones.Cancelar").charAt(0));
         jButton3.setText(bundle.getString("VentanaEmisor.Boton.Cancelar.Texto")); // NOI18N
         jButton3.setToolTipText(bundle.getString("VentanaEmisor.tooltip.Cancelar")); // NOI18N

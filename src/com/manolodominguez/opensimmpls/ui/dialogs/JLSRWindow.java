@@ -135,7 +135,7 @@ public class JLSRWindow extends javax.swing.JDialog {
 
         panelGeneral.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        iconoReceptor.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.LSR));
+        iconoReceptor.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.LSR));
         iconoReceptor.setText(bundle.getString("VentanaLSR.descripcion")); // NOI18N
         panelGeneral.add(iconoReceptor, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
@@ -180,7 +180,7 @@ public class JLSRWindow extends javax.swing.JDialog {
 
         panelRapido.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        iconoEnlace1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ASISTENTE));
+        iconoEnlace1.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.ASISTENTE));
         iconoEnlace1.setText(bundle.getString("VentanaLSR.ConfiguracionSencilla")); // NOI18N
         panelRapido.add(iconoEnlace1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
@@ -211,7 +211,7 @@ public class JLSRWindow extends javax.swing.JDialog {
 
         panelAvanzado.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        iconoEnlace2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.AVANZADA));
+        iconoEnlace2.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.AVANZADA));
         iconoEnlace2.setText(bundle.getString("VentanaLSR.ConfiguracionAvanzada")); // NOI18N
         panelAvanzado.add(iconoEnlace2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
@@ -277,7 +277,7 @@ public class JLSRWindow extends javax.swing.JDialog {
         panelBotones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR));
+        jButton2.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.ACEPTAR));
         jButton2.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLSR.botones.mne.Aceptar").charAt(0));
         jButton2.setText(bundle.getString("VentanaLSR.boton.Ok")); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -288,7 +288,7 @@ public class JLSRWindow extends javax.swing.JDialog {
         panelBotones.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 105, -1));
 
         jButton3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton3.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.CANCELAR));
+        jButton3.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.CANCELAR));
         jButton3.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLSR.botones.mne.Cancelar").charAt(0));
         jButton3.setText(bundle.getString("VentanaLSR.boton.Cancel")); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {

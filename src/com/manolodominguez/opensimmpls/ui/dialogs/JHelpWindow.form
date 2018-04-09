@@ -106,7 +106,7 @@
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="dispensadorDeImagenes.obtenerIcono(TImagesBroker.CAPTURAWEB)" type="code"/>
+              <Connection code="dispensadorDeImagenes.getIcon(TImagesBroker.CAPTURAWEB)" type="code"/>
             </Property>
           </Properties>
           <Constraints>
@@ -121,7 +121,7 @@
               <Font name="Dialog" size="12" style="1"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="dispensadorDeImagenes.obtenerIcono(TImagesBroker.TUTORIAL)" type="code"/>
+              <Connection code="dispensadorDeImagenes.getIcon(TImagesBroker.TUTORIAL)" type="code"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
               <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="JVentanaAyuda.Open_SimMPLS_1.0_Help" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -167,7 +167,7 @@
             <Component class="javax.swing.JButton" name="jButton1">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.getIcon(TImagesBroker.ACEPTAR)" type="code"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="" key="VentanaAyuda.OK.Mnemonico" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>

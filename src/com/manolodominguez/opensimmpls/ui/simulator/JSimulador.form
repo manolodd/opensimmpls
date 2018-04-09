@@ -36,7 +36,7 @@
                   <Font name="Dialog" size="12" style="0"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.NUEVO_MENU)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.getIcon(simMPLS.ui.utils.TImagesBroker.NUEVO_MENU)" type="code"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="Menu.Letra_resaltada.Nuevo" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -56,7 +56,7 @@
                   <Font name="Dialog" size="12" style="0"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.ABRIR_MENU)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.getIcon(simMPLS.ui.utils.TImagesBroker.ABRIR_MENU)" type="code"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="Menu.Letra_resaltada.Abrir" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -79,7 +79,7 @@
                   <Font name="Dialog" size="12" style="0"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.CERRAR_MENU)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.getIcon(simMPLS.ui.utils.TImagesBroker.CERRAR_MENU)" type="code"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="Menu.Letra_resaltada.Cerrar" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -100,7 +100,7 @@
                   <Font name="Dialog" size="12" style="0"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.GUARDAR_MENU)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.getIcon(simMPLS.ui.utils.TImagesBroker.GUARDAR_MENU)" type="code"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="Menu.Letra_resaltada.Guardar" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -121,7 +121,7 @@
                   <Font name="Dialog" size="12" style="0"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.GUARDAR_COMO_MENU)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.getIcon(simMPLS.ui.utils.TImagesBroker.GUARDAR_COMO_MENU)" type="code"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="Menu.Letra_resaltada.Guardar_como" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -147,7 +147,7 @@
                   <Font name="Dialog" size="12" style="0"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.SALIR_MENU)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.getIcon(simMPLS.ui.utils.TImagesBroker.SALIR_MENU)" type="code"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="Menu.Letra_resaltada.Salir" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -183,7 +183,7 @@
                   <Font name="Dialog" size="12" style="0"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.VISTA_HORIZONTAL)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.getIcon(simMPLS.ui.utils.TImagesBroker.VISTA_HORIZONTAL)" type="code"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="SubmenuVista.MosaicoHorixontal.Resaltado" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -204,7 +204,7 @@
                   <Font name="Dialog" size="12" style="0"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.VISTA_VERTICAL)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.getIcon(simMPLS.ui.utils.TImagesBroker.VISTA_VERTICAL)" type="code"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="SubmenuVista.MosaicoVertical.Resaltado" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -225,7 +225,7 @@
                   <Font name="Dialog" size="12" style="0"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.VISTA_CASCADA)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.getIcon(simMPLS.ui.utils.TImagesBroker.VISTA_CASCADA)" type="code"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="SubmenuVista.Cascadal.Resaltado" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -246,7 +246,7 @@
                   <Font name="Dialog" size="12" style="0"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.VISTA_ICONOS)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.getIcon(simMPLS.ui.utils.TImagesBroker.VISTA_ICONOS)" type="code"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="SubmenuVista.Iconos.Resaltado" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -286,7 +286,7 @@
                   <Font name="Dialog" size="12" style="0"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.TUTORIAL_MENU)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.getIcon(simMPLS.ui.utils.TImagesBroker.TUTORIAL_MENU)" type="code"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="Menu.Letra_resaltada.Contenidos" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -308,7 +308,7 @@
                   <Font name="Dialog" size="12" style="0"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.LICENCIA_MENU)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.getIcon(simMPLS.ui.utils.TImagesBroker.LICENCIA_MENU)" type="code"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="Menu.Letra_resaltada.Licencia" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -331,7 +331,7 @@
                   <Font name="Dialog" size="12" style="0"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.COMENTARIO_MENU)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.getIcon(simMPLS.ui.utils.TImagesBroker.COMENTARIO_MENU)" type="code"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="Menu.Letra_resaltada.Comentario" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -354,7 +354,7 @@
                   <Font name="Dialog" size="12" style="0"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="dispensadorDeImagenes.obtenerIcono(simMPLS.ui.utils.TImagesBroker.SPLASH_MENU)" type="code"/>
+                  <Connection code="dispensadorDeImagenes.getIcon(simMPLS.ui.utils.TImagesBroker.SPLASH_MENU)" type="code"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="simMPLS/lenguajes/lenguajes.properties" key="Menu.Letra_resaltada.Sobre" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>

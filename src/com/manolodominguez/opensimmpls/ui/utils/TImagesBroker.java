@@ -957,7 +957,7 @@ public class TImagesBroker {
      * @return Un objeto ImageIcon con la imagen que se ha solicitado.
      * @since 2.0
      */    
-    public ImageIcon obtenerIcono(int queImagen) {
+    public ImageIcon getIcon(int queImagen) {
         ImageIcon imagenBuscada = imagen[queImagen];
         if (imagenBuscada == null) {
             imagenBuscada = imagen[IMAGEN_NO_ENCONTRADA];

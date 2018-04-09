@@ -67,11 +67,11 @@ public class JDecisionWindow extends javax.swing.JDialog {
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.INTERROGACION));
+        jLabel1.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.INTERROGACION));
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, -1, -1));
 
         jButton1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR));
+        jButton1.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.ACEPTAR));
         jButton1.setMnemonic(java.util.ResourceBundle.getBundle("{bundleNameSlashes}").getString("JVentanaBooleana.mnemonico.si").charAt(0));
         jButton1.setText(bundle.getString("JVentanaBooleana.Si")); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -82,7 +82,7 @@ public class JDecisionWindow extends javax.swing.JDialog {
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 80, 105, -1));
 
         jButton2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.CANCELAR));
+        jButton2.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.CANCELAR));
         jButton2.setMnemonic(java.util.ResourceBundle.getBundle("{bundleNameSlashes}").getString("JVentanaBooleana.mnemonico.no").charAt(0));
         jButton2.setText(bundle.getString("JVentanaBooleana.No")); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {

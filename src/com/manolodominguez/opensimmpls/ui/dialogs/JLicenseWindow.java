@@ -82,7 +82,7 @@ public class JLicenseWindow extends javax.swing.JDialog {
         getContentPane().add(scrollPaneLicense, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 130, 465, 210));
 
         buttonOK.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        buttonOK.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR));
+        buttonOK.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.ACEPTAR));
         buttonOK.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLicencia.ResaltadoBoton").charAt(0));
         buttonOK.setText(bundle.getString("OK")); // NOI18N
         buttonOK.addActionListener(new java.awt.event.ActionListener() {
@@ -92,7 +92,7 @@ public class JLicenseWindow extends javax.swing.JDialog {
         });
         getContentPane().add(buttonOK, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 360, 100, -1));
 
-        licenseIcon.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.OSI_CERTIFIED)
+        licenseIcon.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.OSI_CERTIFIED)
         );
         licenseIcon.setDoubleBuffered(true);
         licenseIcon.setFocusable(false);

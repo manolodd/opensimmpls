@@ -92,11 +92,11 @@ public class JHelpWindow extends javax.swing.JDialog {
         jLabel3.setText(bundle.getString("JVentanaAyuda.At_the_present_time,_Open_SimMPLS_1.0_help_documentation")); // NOI18N
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 420, -1));
 
-        jLabel2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.CAPTURAWEB));
+        jLabel2.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.CAPTURAWEB));
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 190, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jLabel1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.TUTORIAL));
+        jLabel1.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.TUTORIAL));
         jLabel1.setText(bundle.getString("JVentanaAyuda.Open_SimMPLS_1.0_Help")); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 360, -1));
 
@@ -108,7 +108,7 @@ public class JHelpWindow extends javax.swing.JDialog {
 
         jPanel2.setOpaque(false);
 
-        jButton1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.ACEPTAR));
+        jButton1.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.ACEPTAR));
         jButton1.setMnemonic(java.util.ResourceBundle.getBundle("{bundleNameSlashes}").getString("VentanaAyuda.OK.Mnemonico").charAt(0));
         jButton1.setText(bundle.getString("VentanaAyuda.OK")); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {

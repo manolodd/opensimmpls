@@ -94,7 +94,7 @@ public class JCommentWindow extends javax.swing.JDialog {
         panelBotones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton2.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.SOBRE_EMAIL));
+        jButton2.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.SOBRE_EMAIL));
         jButton2.setMnemonic(java.util.ResourceBundle.getBundle("{bundleNameSlashes}").getString("JVentanaComentario.mnemonico.enviar").charAt(0));
         jButton2.setText(bundle.getString("JVentanaComentario.Send")); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -105,7 +105,7 @@ public class JCommentWindow extends javax.swing.JDialog {
         panelBotones.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 110, -1));
 
         jButton3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton3.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.CANCELAR));
+        jButton3.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.CANCELAR));
         jButton3.setMnemonic(java.util.ResourceBundle.getBundle("{bundleNameSlashes}").getString("JVentanaComentario.mnemonico.cancelar").charAt(0));
         jButton3.setText(bundle.getString("JVentanaComentario.Cancel")); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -117,7 +117,7 @@ public class JCommentWindow extends javax.swing.JDialog {
 
         panelPrincipal.add(panelBotones, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 255, 400, 55));
 
-        jLabel1.setIcon(dispensadorDeImagenes.obtenerIcono(TImagesBroker.COMENTARIO));
+        jLabel1.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.COMENTARIO));
         jLabel1.setText(bundle.getString("JVentanaComentario.tooltip.send")); // NOI18N
         panelPrincipal.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, -1, -1));
 
