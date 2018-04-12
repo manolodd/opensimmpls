@@ -192,6 +192,7 @@ public class JActiveLERWindow extends JDialog {
         this.labelActiveLERFeatures.setText(translations.getString("VentanaLERA.CaracteristicasDelLER"));
         this.panelQuickConfiguration.add(this.labelActiveLERFeatures, new AbsoluteConstraints(20, 110, 160, -1));
         this.comboBoxPredefinedOptions.setFont(new Font("Dialog", 0, 12));
+        //FIX: Apply I18N in the next line.
         this.comboBoxPredefinedOptions.setModel(new DefaultComboBoxModel(new String[]{"Personalized", "Very low cost LER", "Low cost LER", "Medium cost LER", "Expensive LER", "Very expensive LER"}));
         this.comboBoxPredefinedOptions.addActionListener(new ActionListener() {
             @Override
