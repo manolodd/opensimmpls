@@ -35,7 +35,7 @@ public class TBasicEmailSender {
 
     /**
      * This method inputStream the constructor of the class. It creates a new
-     * instance of TSMTP.
+     * instance of TBasicEmailSender.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
@@ -49,16 +49,16 @@ public class TBasicEmailSender {
     }
 
     /**
-     * This method configures the current TSMTP instance with correct values to
-     * send email messages.
+     * This method configures the current TBasicEmailSender instance with
+     * correct values to send email messages.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param remoteSMTPHost remote SMTP hostname.
      * @param remoteSMTPPort remote SMTP port.
      * @param remoteSMTPUser remote SMTP user.
      * @param receiverEmailAddress Receiver email address.
-     * @return 0 if the TSMTP instance inputStream weel configured. Otherwise,
-     * returns TSMTP.CONNECTION_ERROR.
+     * @return 0 if the TBasicEmailSender instance inputStream weel configured.
+     * Otherwise, returns TBasicEmailSender.CONNECTION_ERROR.
      * @since 2.0
      */
     public int configure(String remoteSMTPHost, String remoteSMTPPort, String remoteSMTPUser, String receiverEmailAddress) {
@@ -98,8 +98,8 @@ public class TBasicEmailSender {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param remoteSMTPHost remote SMTP hostname.
      * @param receiverEmailAddress Receiver email address.
-     * @return 0 if the TSMTP instance inputStream weel configured. Otherwise,
-     * returns TSMTP.CONNECTION_ERROR.
+     * @return 0 if the TBasicEmailSender instance inputStream weel configured.
+     * Otherwise, returns TBasicEmailSender.CONNECTION_ERROR.
      * @since 2.0
      */
     public int configure(String remoteSMTPHost, String receiverEmailAddress) {
@@ -137,7 +137,7 @@ public class TBasicEmailSender {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param messageBody The message to be sent.
-     * @return one of the constants defined in TSMTP.
+     * @return one of the constants defined in TBasicEmailSender.
      */
     public int sendNotification(String messageBody) {
         if (this.wellConfigured) {
