@@ -15,6 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.scenario.TActiveLERNode;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
 import com.manolodominguez.opensimmpls.ui.simulator.JDesignPanel;
@@ -90,7 +91,7 @@ public class JActiveLERWindow extends JDialog {
      * @since 2.0
      */
     private void initComponents() {
-        this.translations = ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations");
+        this.translations = ResourceBundle.getBundle(AvailableBundles.ACTIVE_LER_WINDOW.getPath());
         this.mainPanel = new JPanel();
         this.panelTabs = new JTabbedPane();
         this.panelGeneralConfiguration = new JPanel();
@@ -486,9 +487,9 @@ public class JActiveLERWindow extends JDialog {
         this.activeLERNode.setGenerateStats(this.checkBoxQuickGenerateStatistics.isSelected());
         int error = this.activeLERNode.validateConfig(this.topology, this.reconguration);
         if (error != TActiveLERNode.OK) {
-            JWarningWindow va = new JWarningWindow(this.parent, true, this.imageBroker);
-            va.mostrarMensaje(this.activeLERNode.getErrorMessage(error));
-            va.setVisible(true);
+            JWarningWindow warningWindow = new JWarningWindow(this.parent, true, this.imageBroker);
+            warningWindow.mostrarMensaje(this.activeLERNode.getErrorMessage(error));
+            warningWindow.setVisible(true);
         } else {
             this.setVisible(false);
             this.dispose();
