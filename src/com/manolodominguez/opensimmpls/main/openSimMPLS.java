@@ -17,7 +17,7 @@ package com.manolodominguez.opensimmpls.main;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
+import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -97,7 +97,7 @@ public class openSimMPLS {
         splash = new com.manolodominguez.opensimmpls.ui.splash.JSplash();
         splash.show();
         splash.ponerTexto(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("Loading_icons..."));
-        imagesBroker = new TImagesBroker();
+        imagesBroker = new TImageBroker();
         splash.ponerTexto(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("openSimMPLS.generandoInterfaz"));
         simulator = new JSimulador(imagesBroker);
         java.awt.Dimension tamPantalla = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -107,7 +107,7 @@ public class openSimMPLS {
     }
 
     // Variables declaration - do not modify
-    private static TImagesBroker imagesBroker;
+    private static TImageBroker imagesBroker;
     private static JSplash splash;
     private static JSimulador simulator;
 }

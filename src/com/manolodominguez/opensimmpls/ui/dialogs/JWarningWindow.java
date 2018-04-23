@@ -15,7 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
-import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
+import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
 
 /** Esta clase implementa una ventana que muestra una pregunta al usuario y espera
  * una respuesta de stipo SI/NO (true/false). Es polivalente.
@@ -34,7 +34,7 @@ public class JWarningWindow extends javax.swing.JDialog {
      * @param di Disepnsador de im�genes global de la aplicaci�n.
      * @since 2.0
      */
-    public JWarningWindow(java.awt.Frame parent, boolean modal, TImagesBroker di) {
+    public JWarningWindow(java.awt.Frame parent, boolean modal, TImageBroker di) {
         super(parent, modal);
         dispensadorDeImagenes = di;
         initComponents();
@@ -64,11 +64,11 @@ public class JWarningWindow extends javax.swing.JDialog {
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.ADVERTENCIA));
+        jLabel1.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ADVERTENCIA));
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, -1, -1));
 
         jButton1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton1.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.ACEPTAR));
+        jButton1.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ACEPTAR));
         jButton1.setMnemonic(java.util.ResourceBundle.getBundle("{bundleNameSlashes}").getString("VentanaAdvertencia.ResaltadoBoton").charAt(0));
         jButton1.setText(bundle.getString("OK")); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -122,7 +122,7 @@ public class JWarningWindow extends javax.swing.JDialog {
      * mostrarlas.
      * @since 2.0
      */    
-    private TImagesBroker dispensadorDeImagenes;
+    private TImageBroker dispensadorDeImagenes;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

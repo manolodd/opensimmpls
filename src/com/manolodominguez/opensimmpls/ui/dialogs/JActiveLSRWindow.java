@@ -19,7 +19,7 @@ import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.scenario.TActiveLSRNode;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
 import com.manolodominguez.opensimmpls.ui.simulator.JDesignPanel;
-import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
+import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -38,6 +38,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -49,22 +50,47 @@ import javax.swing.event.ChangeListener;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
+/**
+ * This class implements a window that is used to configure and reconfigure an
+ * active LSR node.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
+ */
+public class JActiveLSRWindow extends JDialog {
 
-public class JActiveLSRWindow extends javax.swing.JDialog {
-
-
-    public JActiveLSRWindow(TTopology t, JDesignPanel pad, TImagesBroker di, Frame parent, boolean modal) {
+    /**
+     * This is the constructor of the class and creates a new instance of
+     * JActiveLSRWindow.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param designPanel desing panel wich contains the active LER node that is
+     * configured via this JActiveLSRWindow
+     * @param parent Parent window over wich this JActiveLSRWindow is shown.
+     * @param imageBroker An object that supply the needed images to be inserted
+     * in the UI.
+     * @param modal TRUE, if this dialog has to be modal. Otherwise, FALSE.
+     * @param topology Topology the active LSR node belongs to.
+     * @since 2.0
+     */
+    public JActiveLSRWindow(TTopology topology, JDesignPanel designPanel, TImageBroker imageBroker, Frame parent, boolean modal) {
         super(parent, modal);
         this.parent = parent;
-        this.imageBroker = di;
-        this.designPanel = pad;
-        this.topology = t;
+        this.imageBroker = imageBroker;
+        this.designPanel = designPanel;
+        this.topology = topology;
         initComponents();
         initComponents2();
     }
 
-
-        private void initComponents() {
+    /**
+     * This method is called from within the constructor to initialize the
+     * window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
+    private void initComponents() {
         this.translations = ResourceBundle.getBundle(AvailableBundles.ACTIVE_LSR_WINDOW.getPath());
         this.mainPanel = new JPanel();
         this.panelTabs = new JTabbedPane();
@@ -103,14 +129,14 @@ public class JActiveLSRWindow extends javax.swing.JDialog {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent evt) {
-                closeDialog(evt);
+                handleWindowsClosing(evt);
             }
         });
         getContentPane().setLayout(new AbsoluteLayout());
         this.mainPanel.setLayout(new AbsoluteLayout());
         this.panelTabs.setFont(new Font("Dialog", 0, 12));
         this.panelGeneralConfiguration.setLayout(new AbsoluteLayout());
-        this.iconContainerActiveLSR.setIcon(this.imageBroker.getIcon(TImagesBroker.LSRA));
+        this.iconContainerActiveLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSRA));
         this.iconContainerActiveLSR.setText(this.translations.getString("VentanaLSRA.descripcion"));
         this.panelGeneralConfiguration.add(this.iconContainerActiveLSR, new AbsoluteConstraints(15, 20, 335, -1));
         this.labelName.setFont(new Font("Dialog", 0, 12));
@@ -129,17 +155,17 @@ public class JActiveLSRWindow extends javax.swing.JDialog {
         this.coordinatesPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
-                clicEnPanelCoordenadas(evt);
+                handleClickOnCoordinatesPanel(evt);
             }
 
             @Override
             public void mouseEntered(MouseEvent evt) {
-                ratonEntraEnPanelCoordenadas(evt);
+                handleMouseEnteringInCoordinatesPanel(evt);
             }
 
             @Override
             public void mouseExited(MouseEvent evt) {
-                ratonSaleDePanelCoordenadas(evt);
+                handleMouseLeavingCoordinatesPanel(evt);
             }
         });
         this.panelPosition.add(this.coordinatesPanel, new AbsoluteConstraints(25, 25, 130, 70));
@@ -150,7 +176,7 @@ public class JActiveLSRWindow extends javax.swing.JDialog {
         this.panelGeneralConfiguration.add(this.checkBoxShowName, new AbsoluteConstraints(215, 135, -1, -1));
         this.panelTabs.addTab(this.translations.getString("VentanaLSR.tabs.General"), this.panelGeneralConfiguration);
         this.panelQuickConfiguration.setLayout(new AbsoluteLayout());
-        this.iconContainerEnd1.setIcon(this.imageBroker.getIcon(TImagesBroker.ASISTENTE));
+        this.iconContainerEnd1.setIcon(this.imageBroker.getIcon(TImageBroker.ASISTENTE));
         this.iconContainerEnd1.setText(this.translations.getString("VentanaLSRA.ConfiguracionSencilla"));
         this.panelQuickConfiguration.add(this.iconContainerEnd1, new AbsoluteConstraints(15, 20, 335, -1));
         this.checkBoxQuickGenerateStatistics.setFont(new Font("Dialog", 0, 12));
@@ -158,7 +184,7 @@ public class JActiveLSRWindow extends javax.swing.JDialog {
         this.checkBoxQuickGenerateStatistics.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnSelectorDeGenerarEstadisticasSencillo(evt);
+                handleClickOnQuickGenerateStatistics(evt);
             }
         });
         this.panelQuickConfiguration.add(this.checkBoxQuickGenerateStatistics, new AbsoluteConstraints(70, 160, -1, -1));
@@ -172,13 +198,13 @@ public class JActiveLSRWindow extends javax.swing.JDialog {
         this.comboBoxPredefinedOptions.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clicEnSelectorSencilloCaracteristicas(evt);
+                handleClickOnPredefinedOptions(evt);
             }
         });
         this.panelQuickConfiguration.add(this.comboBoxPredefinedOptions, new AbsoluteConstraints(190, 110, -1, -1));
         this.panelTabs.addTab(this.translations.getString("VentanaLSR.tabs.Fast"), this.panelQuickConfiguration);
         this.panelAdvancedConfiguration.setLayout(new AbsoluteLayout());
-        this.iconContainerEnd2.setIcon(this.imageBroker.getIcon(TImagesBroker.AVANZADA));
+        this.iconContainerEnd2.setIcon(this.imageBroker.getIcon(TImageBroker.AVANZADA));
         this.iconContainerEnd2.setText(this.translations.getString("VentanaLSRA.ConfiguracionAvanzada"));
         this.panelAdvancedConfiguration.add(this.iconContainerEnd2, new AbsoluteConstraints(15, 20, 335, -1));
         this.checkBoxAdvancedGenerateStatistics.setFont(new Font("Dialog", 0, 12));
@@ -186,7 +212,7 @@ public class JActiveLSRWindow extends javax.swing.JDialog {
         this.checkBoxAdvancedGenerateStatistics.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clicEnSelectorDeGenerarEstadisticasAvanzado(evt);
+                handleClickOnAdvancedGenerateStatistics(evt);
             }
         });
         this.panelAdvancedConfiguration.add(this.checkBoxAdvancedGenerateStatistics, new AbsoluteConstraints(70, 180, -1, -1));
@@ -206,7 +232,7 @@ public class JActiveLSRWindow extends javax.swing.JDialog {
         this.selectorSwitchingPower.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent evt) {
-                selectorDePotenciaDeConmutacionCambiado(evt);
+                handleChangeOnSwitchingPower(evt);
             }
         });
         this.panelAdvancedConfiguration.add(this.selectorSwitchingPower, new AbsoluteConstraints(155, 90, 130, 20));
@@ -218,7 +244,7 @@ public class JActiveLSRWindow extends javax.swing.JDialog {
         this.selectorBufferSize.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent evt) {
-                selectorDeTamanioBufferCambiado(evt);
+                handleChangeOnBufferSize(evt);
             }
         });
         this.panelAdvancedConfiguration.add(this.selectorBufferSize, new AbsoluteConstraints(200, 120, 100, 20));
@@ -244,7 +270,7 @@ public class JActiveLSRWindow extends javax.swing.JDialog {
         this.selectorDMGPSize.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent evt) {
-                selectorDeTamanioDMGPCambiado(evt);
+                handleChangeOnDMGPSize(evt);
             }
         });
         this.panelAdvancedConfiguration.add(this.selectorDMGPSize, new AbsoluteConstraints(180, 150, 120, 20));
@@ -257,24 +283,24 @@ public class JActiveLSRWindow extends javax.swing.JDialog {
         this.mainPanel.add(this.panelTabs, new AbsoluteConstraints(15, 15, 370, 240));
         this.panelButtons.setLayout(new AbsoluteLayout());
         this.buttonOK.setFont(new Font("Dialog", 0, 12));
-        this.buttonOK.setIcon(this.imageBroker.getIcon(TImagesBroker.ACEPTAR));
+        this.buttonOK.setIcon(this.imageBroker.getIcon(TImageBroker.ACEPTAR));
         this.buttonOK.setMnemonic(this.translations.getString("VentanaLSR.botones.mne.Aceptar").charAt(0));
         this.buttonOK.setText(this.translations.getString("VentanaLSR.boton.Ok"));
         this.buttonOK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnAceptar(evt);
+                handleClickOnOKButton(evt);
             }
         });
         this.panelButtons.add(this.buttonOK, new AbsoluteConstraints(20, 10, 105, -1));
         this.buttonCancel.setFont(new Font("Dialog", 0, 12));
-        this.buttonCancel.setIcon(this.imageBroker.getIcon(TImagesBroker.CANCELAR));
+        this.buttonCancel.setIcon(this.imageBroker.getIcon(TImageBroker.CANCELAR));
         this.buttonCancel.setMnemonic(this.translations.getString("VentanaLSR.botones.mne.Cancelar").charAt(0));
         this.buttonCancel.setText(this.translations.getString("VentanaLSR.boton.Cancel"));
         this.buttonCancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnCancelar(evt);
+                handleClickOnCancelButton(evt);
             }
         });
         this.panelButtons.add(this.buttonCancel, new AbsoluteConstraints(140, 10, 105, -1));
@@ -283,12 +309,18 @@ public class JActiveLSRWindow extends javax.swing.JDialog {
         pack();
     }
 
-    
+    /**
+     * This method is called from within the constructor to do additional
+     * configurations of window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
     private void initComponents2() {
         this.coordinatesPanel.setDesignPanel(designPanel);
-        Dimension tamFrame = this.getSize();
-        Dimension tamPadre = this.parent.getSize();
-        setLocation((tamPadre.width - tamFrame.width) / 2, (tamPadre.height - tamFrame.height) / 2);
+        Dimension frameSize = this.getSize();
+        Dimension parentSize = this.parent.getSize();
+        setLocation((parentSize.width - frameSize.width) / 2, (parentSize.height - frameSize.height) / 2);
         this.activeLSRNode = null;
         this.labelCoordinateX.setText(this.translations.getString("VentanaEmisor.X=_") + coordinatesPanel.getRealX());
         this.labelCoordinateY.setText(this.translations.getString("VentanaEmisor.Y=_") + coordinatesPanel.getRealY());
@@ -308,14 +340,30 @@ public class JActiveLSRWindow extends javax.swing.JDialog {
         this.comboBoxPredefinedOptions.setSelectedIndex(0);
     }
 
-    private void selectorDeTamanioDMGPCambiado(ChangeEvent evt) {
+    /**
+     * This method is called when a change is made in the DMGP size (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleChangeOnDMGPSize(ChangeEvent evt) {
         this.labelDMGPSizeKB.setText("" + this.selectorDMGPSize.getValue() + " " + this.translations.getString("JVentanaLSRA._MB."));
     }
 
-    private void clicEnSelectorSencilloCaracteristicas(ActionEvent evt) {
+    /**
+     * This method is called when a a predefined option is selected in the UI to
+     * configure the Active LSR.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnPredefinedOptions(ActionEvent evt) {
         int opcionSeleccionada = this.comboBoxPredefinedOptions.getSelectedIndex();
         if (opcionSeleccionada == 0) {
         } else if (opcionSeleccionada == 0) {
+            // Do nothing
             this.comboBoxPredefinedOptions.setSelectedIndex(0);
         } else if (opcionSeleccionada == 1) {
             this.selectorSwitchingPower.setValue(1);
@@ -345,25 +393,64 @@ public class JActiveLSRWindow extends javax.swing.JDialog {
         }
     }
 
-    private void selectorDeTamanioBufferCambiado(ChangeEvent evt) {
+    /**
+     * This method is called when a change is made in the buffer size (in the
+     * UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleChangeOnBufferSize(ChangeEvent evt) {
         this.comboBoxPredefinedOptions.setSelectedIndex(0);
         this.labelBufferSizeMB.setText(this.selectorBufferSize.getValue() + " " + this.translations.getString("VentanaLSR.MB"));
     }
 
-    private void selectorDePotenciaDeConmutacionCambiado(ChangeEvent evt) {
+    /**
+     * This method is called when a change is made in the switching power (in
+     * the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleChangeOnSwitchingPower(ChangeEvent evt) {
         this.comboBoxPredefinedOptions.setSelectedIndex(0);
         this.labelSwitchingPowerMbps.setText(this.selectorSwitchingPower.getValue() + " " + this.translations.getString("VentanaLSR.Mbps"));
     }
 
-    private void clicEnSelectorDeGenerarEstadisticasSencillo(ActionEvent evt) {
+    /**
+     * This method is called when a change is made in "generate stistics"
+     * checkbox located at "Quick configuration" tab (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnQuickGenerateStatistics(ActionEvent evt) {
         this.checkBoxAdvancedGenerateStatistics.setSelected(this.checkBoxQuickGenerateStatistics.isSelected());
     }
 
-    private void clicEnSelectorDeGenerarEstadisticasAvanzado(ActionEvent evt) {
+    /**
+     * This method is called when a change is made in "generate stistics"
+     * checkbox located at "Advanced configuration" tab (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnAdvancedGenerateStatistics(ActionEvent evt) {
         this.checkBoxQuickGenerateStatistics.setSelected(this.checkBoxAdvancedGenerateStatistics.isSelected());
     }
 
-    private void clicEnCancelar(ActionEvent evt) {
+    /**
+     * This method is called when a click is done "Cancel" button (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnCancelButton(ActionEvent evt) {
         if (this.reconguration) {
             this.activeLSRNode.setShowName(this.currentConfigShowName);
             this.activeLSRNode.setName(this.currentConfigName);
@@ -380,7 +467,14 @@ public class JActiveLSRWindow extends javax.swing.JDialog {
         this.dispose();
     }
 
-    private void clicEnAceptar(ActionEvent evt) {
+    /**
+     * This method is called when a click is done "Ok" button (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnOKButton(ActionEvent evt) {
         this.activeLSRNode.setWellConfigured(true);
         if (!this.reconguration) {
             this.activeLSRNode.setScreenPosition(new Point(this.coordinatesPanel.getRealX(), this.coordinatesPanel.getRealY()));
@@ -402,7 +496,15 @@ public class JActiveLSRWindow extends javax.swing.JDialog {
         }
     }
 
-    private void clicEnPanelCoordenadas(MouseEvent evt) {
+    /**
+     * This method is called when a click is done over the coordinates panel (in
+     * the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnCoordinatesPanel(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
             this.coordinatesPanel.setCoordinates(evt.getPoint());
             this.labelCoordinateX.setText(this.translations.getString("VentanaEmisor.X=_") + coordinatesPanel.getRealX());
@@ -411,44 +513,67 @@ public class JActiveLSRWindow extends javax.swing.JDialog {
         }
     }
 
-    private void ratonSaleDePanelCoordenadas(MouseEvent evt) {
+    /**
+     * This method is called when the mouse exits the coordinates panel (in the
+     * UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleMouseLeavingCoordinatesPanel(MouseEvent evt) {
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
-    private void ratonEntraEnPanelCoordenadas(MouseEvent evt) {
+    /**
+     * This method is called when the mouse enters the coordinates panel (in the
+     * UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleMouseEnteringInCoordinatesPanel(MouseEvent evt) {
         this.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
     }
 
     /**
-     * Closes the dialog
+     * This method is called when the JActiveLSRWindow is closed (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
      */
-    private void closeDialog(WindowEvent evt) {
+    private void handleWindowsClosing(WindowEvent evt) {
         setVisible(false);
         this.activeLSRNode.setWellConfigured(false);
         dispose();
     }
 
     /**
-     * Este m�todo permite cargar en la ventana la configuraci�n actual del nodo
-     * LSR.
+     * This method configures all components of JActiveLSRWindow with present
+     * values retrieved from the Active LSR. It is used to do a reconfiguration.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param activeLSRNode the Active LSR node to be configured through this
+     * JActiveLERWindow
+     * @param reconfiguration TRUE if the Active LSR is being reconfigured.
+     * FALSE if it is the first configuration of the Active LSR after its
+     * creation.
      * @since 2.0
-     * @param tnlsra Nodo LSR que queremos configurar.
-     * @param recfg TRUE indica que vamos a reconfigurar el nodo LSR. FALSE
-     * indica que el nodo LSR est� siendo insertado nuevo en la topolog�a.
      */
-    public void ponerConfiguracion(TActiveLSRNode tnlsra, boolean recfg) {
-        this.activeLSRNode = tnlsra;
-        this.reconguration = recfg;
+    public void setConfiguration(TActiveLSRNode activeLSRNode, boolean reconfiguration) {
+        this.activeLSRNode = activeLSRNode;
+        this.reconguration = reconfiguration;
         if (this.reconguration) {
             this.coordinatesPanel.setEnabled(false);
             this.coordinatesPanel.setToolTipText(null);
-            this.currentConfigGenerateStatistics = tnlsra.isGeneratingStats();
-            this.currentConfigShowName = tnlsra.nameMustBeDisplayed();
-            this.currentConfigName = tnlsra.getName();
-            this.currentConfigSwitchingPower = tnlsra.getSwitchingPowerInMbps();
-            this.currentConfigBufferSize = tnlsra.getBufferSizeInMBytes();
-            this.currentConfigDMGPSize = tnlsra.getDMGPSizeInKB();
+            this.currentConfigGenerateStatistics = activeLSRNode.isGeneratingStats();
+            this.currentConfigShowName = activeLSRNode.nameMustBeDisplayed();
+            this.currentConfigName = activeLSRNode.getName();
+            this.currentConfigSwitchingPower = activeLSRNode.getSwitchingPowerInMbps();
+            this.currentConfigBufferSize = activeLSRNode.getBufferSizeInMBytes();
+            this.currentConfigDMGPSize = activeLSRNode.getDMGPSizeInKB();
             this.selectorDMGPSize.setValue(this.currentConfigDMGPSize);
             this.checkBoxAdvancedGenerateStatistics.setSelected(this.currentConfigGenerateStatistics);
             this.checkBoxQuickGenerateStatistics.setSelected(this.currentConfigGenerateStatistics);
@@ -459,7 +584,7 @@ public class JActiveLSRWindow extends javax.swing.JDialog {
         }
     }
 
-    private TImagesBroker imageBroker;
+    private TImageBroker imageBroker;
     private Frame parent;
     private JDesignPanel designPanel;
     private TActiveLSRNode activeLSRNode;

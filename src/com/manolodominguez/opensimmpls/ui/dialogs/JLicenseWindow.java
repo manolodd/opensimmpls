@@ -15,7 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
-import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
+import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
 import java.awt.Frame;
 
 /** Esta clase implementa una ventana que muestra la licencia GPL bajo la cual est�
@@ -37,7 +37,7 @@ public class JLicenseWindow extends javax.swing.JDialog {
      * programa a�n sin haber cerrado esta ventana.
      * @since 2.0
      */
-    public JLicenseWindow(Frame parent, boolean modal, TImagesBroker di) {
+    public JLicenseWindow(Frame parent, boolean modal, TImageBroker di) {
         super(parent, modal);
         dispensadorDeImagenes = di;
         initComponents();
@@ -82,7 +82,7 @@ public class JLicenseWindow extends javax.swing.JDialog {
         getContentPane().add(scrollPaneLicense, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 130, 465, 210));
 
         buttonOK.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        buttonOK.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.ACEPTAR));
+        buttonOK.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ACEPTAR));
         buttonOK.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLicencia.ResaltadoBoton").charAt(0));
         buttonOK.setText(bundle.getString("OK")); // NOI18N
         buttonOK.addActionListener(new java.awt.event.ActionListener() {
@@ -92,7 +92,7 @@ public class JLicenseWindow extends javax.swing.JDialog {
         });
         getContentPane().add(buttonOK, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 360, 100, -1));
 
-        licenseIcon.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.OSI_CERTIFIED)
+        licenseIcon.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.OSI_CERTIFIED)
         );
         licenseIcon.setDoubleBuffered(true);
         licenseIcon.setFocusable(false);
@@ -124,7 +124,7 @@ public class JLicenseWindow extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_closeDialog
     
-    private TImagesBroker dispensadorDeImagenes;
+    private TImageBroker dispensadorDeImagenes;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonOK;
     private javax.swing.JTextPane jTextPane2;

@@ -22,7 +22,7 @@ import javax.swing.*;
 import com.manolodominguez.opensimmpls.scenario.TLinkConfig;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
 import com.manolodominguez.opensimmpls.scenario.TNode;
-import com.manolodominguez.opensimmpls.ui.utils.TImagesBroker;
+import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
 
 /**
  * Esta clase implementa una ventana que permite configurar un enlace de la
@@ -42,7 +42,7 @@ public class JLinkWindow extends javax.swing.JDialog {
      * hasta que se cierre. FALSE indica que esto no es asi.
      * @since 2.0
      */
-    public JLinkWindow(TTopology t, TImagesBroker di, java.awt.Frame parent, boolean modal) {
+    public JLinkWindow(TTopology t, TImageBroker di, java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         ventanaPadre = parent;
         dispensadorDeImagenes = di;
@@ -129,7 +129,7 @@ public class JLinkWindow extends javax.swing.JDialog {
 
         panelGeneral.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        iconoEnlace.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.ENLACE));
+        iconoEnlace.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ENLACE));
         iconoEnlace.setText(bundle.getString("VentanaEnlace.descripcion")); // NOI18N
         panelGeneral.add(iconoEnlace, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
@@ -146,7 +146,7 @@ public class JLinkWindow extends javax.swing.JDialog {
         verNombre.setToolTipText(bundle.getString("JVentanaEnlace.tooltip.VerNombre")); // NOI18N
         panelGeneral.add(verNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(255, 80, -1, -1));
 
-        jLabel1.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.ENLACE));
+        jLabel1.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ENLACE));
         panelGeneral.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(158, 120, 50, -1));
 
         jLabel2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
@@ -199,7 +199,7 @@ public class JLinkWindow extends javax.swing.JDialog {
 
         panelRapido.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        iconoEnlace1.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.ASISTENTE));
+        iconoEnlace1.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ASISTENTE));
         iconoEnlace1.setText(bundle.getString("JVentanaEnlace.Rapida.Descripcion")); // NOI18N
         panelRapido.add(iconoEnlace1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
@@ -224,7 +224,7 @@ public class JLinkWindow extends javax.swing.JDialog {
 
         panelAvanzado.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        iconoEnlace2.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.AVANZADA));
+        iconoEnlace2.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.AVANZADA));
         iconoEnlace2.setText(bundle.getString("JVentanaEnlace.Advanced_and_complete_link_configuration.")); // NOI18N
         panelAvanzado.add(iconoEnlace2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
@@ -258,7 +258,7 @@ public class JLinkWindow extends javax.swing.JDialog {
         panelBotones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton2.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.ACEPTAR));
+        jButton2.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ACEPTAR));
         jButton2.setMnemonic(java.util.ResourceBundle.getBundle("{bundleNameSlashes}").getString("VentanaEnlace.botones.mne.Aceptar").charAt(0));
         jButton2.setText(bundle.getString("VentanaEnlace.boton.Ok")); // NOI18N
         jButton2.setToolTipText(bundle.getString("JVentanaEnlace.Adds_the_link_to_the_topology.")); // NOI18N
@@ -270,7 +270,7 @@ public class JLinkWindow extends javax.swing.JDialog {
         panelBotones.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 115, -1));
 
         jButton3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton3.setIcon(dispensadorDeImagenes.getIcon(TImagesBroker.CANCELAR));
+        jButton3.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.CANCELAR));
         jButton3.setMnemonic(java.util.ResourceBundle.getBundle("{bundleNameSlashes}").getString("VentanaEnlace.botones.mne.Cancelar").charAt(0));
         jButton3.setText(bundle.getString("VentanaEnlace.boton.Cancel")); // NOI18N
         jButton3.setToolTipText(bundle.getString("JVentanaEnlace.Cancel_the_operation")); // NOI18N
@@ -545,7 +545,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     private boolean BCKUPCrearEstadisticas;
     private int BCKUPDelay;
     
-    private TImagesBroker dispensadorDeImagenes;
+    private TImageBroker dispensadorDeImagenes;
     private Frame ventanaPadre;
     private TTopology topo;
     private TLinkConfig configEnlace;
