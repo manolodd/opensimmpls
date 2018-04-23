@@ -15,7 +15,9 @@
  */
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
+import java.util.ResourceBundle;
 
 /** Esta clase implementa una ventana que muestra una pregunta al usuario y espera
  * una respuesta de stipo SI/NO (true/false). Es polivalente.
@@ -48,14 +50,14 @@ public class JWarningWindow extends javax.swing.JDialog {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+            this.translations = ResourceBundle.getBundle(AvailableBundles.ACTIVE_LSR_WINDOW.getPath());
 
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jTextPane1 = new javax.swing.JTextPane();
         jPanel1 = new javax.swing.JPanel();
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations"); // NOI18N
-        setTitle(bundle.getString("VentanaAdvertencia.titulo")); // NOI18N
+        setTitle(this.translations.getString("VentanaAdvertencia.titulo")); // NOI18N
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -69,8 +71,8 @@ public class JWarningWindow extends javax.swing.JDialog {
 
         jButton1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jButton1.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ACEPTAR));
-        jButton1.setMnemonic(java.util.ResourceBundle.getBundle("{bundleNameSlashes}").getString("VentanaAdvertencia.ResaltadoBoton").charAt(0));
-        jButton1.setText(bundle.getString("OK")); // NOI18N
+        jButton1.setMnemonic(this.translations.getString("VentanaAdvertencia.ResaltadoBoton").charAt(0));
+        jButton1.setText(this.translations.getString("OK")); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clicEnBoton(evt);
@@ -128,6 +130,6 @@ public class JWarningWindow extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextPane jTextPane1;
-    // End of variables declaration//GEN-END:variables
+    private ResourceBundle translations;
     
 }

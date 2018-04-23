@@ -31,7 +31,7 @@ import java.net.UnknownHostException;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class TSMTP {
+public class TBasicEmailSender {
 
     /**
      * This method inputStream the constructor of the class. It creates a new
@@ -40,7 +40,7 @@ public class TSMTP {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TSMTP() {
+    public TBasicEmailSender() {
         this.remoteSMTPPort = 0;
         this.remoteSMTPUser = "";
         this.receiverEmailAddress = "";
@@ -86,7 +86,7 @@ public class TSMTP {
             return 0;
         } catch (UnknownHostException | NumberFormatException e) {
             this.wellConfigured = false;
-            return TSMTP.CONNECTION_ERROR;
+            return TBasicEmailSender.CONNECTION_ERROR;
         }
     }
 
@@ -127,7 +127,7 @@ public class TSMTP {
             return 0;
         } catch (UnknownHostException e) {
             this.wellConfigured = false;
-            return TSMTP.CONNECTION_ERROR;
+            return TBasicEmailSender.CONNECTION_ERROR;
         }
     }
 
@@ -174,27 +174,27 @@ public class TSMTP {
                                         printStream.println("QUIT");
                                         remoteSMTPHostResponse = bufferedReader.readLine();
                                     } while (!remoteSMTPHostResponse.startsWith("221"));
-                                    return TSMTP.SUCCESSFUL;
+                                    return TBasicEmailSender.SUCCESSFUL;
                                 } else {
-                                    return TSMTP.EMAIL_SENDING_ERROR;
+                                    return TBasicEmailSender.EMAIL_SENDING_ERROR;
                                 }
                             } else {
-                                return TSMTP.DATA_TRANSFER_ERROR;
+                                return TBasicEmailSender.DATA_TRANSFER_ERROR;
                             }
                         } else {
-                            return TSMTP.RECEIVER_RECOGNITION_ERROR;
+                            return TBasicEmailSender.RECEIVER_RECOGNITION_ERROR;
                         }
                     } else {
-                        return TSMTP.SENDER_RECOGNITION_ERROR;
+                        return TBasicEmailSender.SENDER_RECOGNITION_ERROR;
                     }
                 } else {
-                    return TSMTP.DOMAIN_RECOGNITION_ERROR;
+                    return TBasicEmailSender.DOMAIN_RECOGNITION_ERROR;
                 }
             } catch (IOException e) {
-                return TSMTP.CONNECTION_ERROR;
+                return TBasicEmailSender.CONNECTION_ERROR;
             }
         } else {
-            return TSMTP.MISCONFIGURATION_ERROR;
+            return TBasicEmailSender.MISCONFIGURATION_ERROR;
         }
     }
 

@@ -24,7 +24,9 @@ package com.manolodominguez.opensimmpls.resources.translations;
  */
 public enum AvailableBundles {
     ACTIVE_LER_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    ACTIVE_LSR_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations");
+    ACTIVE_LSR_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    WARNING_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    COMMENT_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations");
 
     private final String bundlePath;
 
