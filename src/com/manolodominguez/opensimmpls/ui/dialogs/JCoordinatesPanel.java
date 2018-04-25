@@ -26,17 +26,18 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 /**
- * Esa clase implementa una panel en miniatura que representar� al panel de dise�o
- * principal y que sirve para colocar, de forma visual y en el momento de creaci�n,
- * los nodos que se van insertando.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements a mini-panel that is a scaled version of the main
+ * design panel; it is used to let the user choose the place where a new network
+ * element should be placed
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class JCoordinatesPanel extends JPanel {
 
     /**
      * Crea una nueva instancia de JPanelDisenio
+     *
      * @since 2.0
      */
     public JCoordinatesPanel() {
@@ -45,38 +46,55 @@ public class JCoordinatesPanel extends JPanel {
     }
 
     /**
-     * Crea una nueva instancia de JPanelDisenio
+     * This is the constructor of the class and creates a new instance of
+     * JCoordinatesPanel.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param designPanel the panel that this JCoordinatesPanel is going to show
+     * scaled.
      * @since 2.0
-     * @param designPanel Panel de dise�o cuay representaci�n en miniatura mostrar� el panel de
-     * coordenadas.
-     */    
+     */
     public JCoordinatesPanel(JDesignPanel designPanel) {
         this.designPanel = designPanel;
         initComponents();
     }
 
     /**
-     * Este m�todo establece el panel de dise�o que se mostrar� en miniatura en el
-     * panel de coordenadas.
+     * This method sets the main design panel this JCoordinatesPanel is going to
+     * show scaled
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param designPanel the panel that this JCoordinatesPanel is going to show
+     * scaled.
      * @since 2.0
-     * @param designPanel El panel de dise�o.
-     */    
+     */
     public void setDesignPanel(JDesignPanel designPanel) {
         this.designPanel = designPanel;
-        this.coordinates.x = getSize().width/2;
-        this.coordinates.y = getSize().height/2;
-    }
-
-    private void initComponents () {
-        this.coordinates = new Point(0,0);
+        this.coordinates.x = getSize().width / 2;
+        this.coordinates.y = getSize().height / 2;
     }
 
     /**
-     * Dado un clic sobre el panel de coordenadas, este m�todo devuelve correspondiente
-     * la coordenada X real en el panel de dise�o.
+     * This method is called from within the constructor to initialize the panel
+     * attributes.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     * @return La coordenada X real en el panel de dise�o.
-     */    
+     */
+    private void initComponents() {
+        this.coordinates = new Point(0, 0);
+    }
+
+    /**
+     * This method gets the real X component of the coordinate currently
+     * "active" in the coordinates panel (the one marked with a red point in the
+     * UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return X component of the coordinate currently "active" in the
+     * coordinates panel (the one marked with a red pint in the UI).
+     * @since 2.0
+     */
     public int getRealX() {
         int realWidth = this.designPanel.getSize().width;
         int scaledWidth = this.getSize().width;
@@ -84,11 +102,15 @@ public class JCoordinatesPanel extends JPanel {
     }
 
     /**
-     * Dado un clic sobre el panel de coordenadas, este m�todo devuelve correspondiente
-     * la coordenada Y real en el panel de dise�o.
+     * This method gets the real Y component of the coordinate currently
+     * "active" in the coordinates panel (the one marked with a red point in the
+     * UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return X component of the coordinate currently "active" in the
+     * coordinates panel (the one marked with a red pint in the UI).
      * @since 2.0
-     * @return La coordenada Y real en el panel de dise�o.
-     */    
+     */
     public int getRealY() {
         int realHeight = this.designPanel.getSize().height;
         int scaledHeight = this.getSize().height;
@@ -96,11 +118,14 @@ public class JCoordinatesPanel extends JPanel {
     }
 
     /**
-     * Este m�todo dibuja un punto rojo indicativo en el panel de coordenadas, dado un
-     * punto real del panel de dise�o.
+     * This method sets the coordinate of a point of the coordinates panel (to
+     * be used after a click on it) and repaint the coordinates panel to paint a
+     * red point in that place.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param coordinates the coordinates of a point of the coordinates panel.
      * @since 2.0
-     * @param coordinates Punto (x,y) real del panel de dise�o.
-     */    
+     */
     public void setCoordinates(Point coordinates) {
         if (this.isEnabled()) {
             this.coordinates.x = coordinates.x;
@@ -110,10 +135,13 @@ public class JCoordinatesPanel extends JPanel {
     }
 
     /**
-     * Este m�todo refresca el panel de coordenadas cuando sea necesario.
+     * This method paints the content of the coordinates panel; this draw a
+     * scaled version of the design panel and a red point wherever corresponds.
+     *
      * @since 2.0
-     * @param graphics Lienzo sobre el cual se va a redibujar el panel de coordenadas.
-     */    
+     * @param graphics A canvas to wich the content of the coordinates panel
+     * will be painted.
+     */
     @Override
     public void paint(Graphics graphics) {
         if (this.isEnabled()) {
@@ -121,31 +149,30 @@ public class JCoordinatesPanel extends JPanel {
             graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             if (this.designPanel != null) {
                 BufferedImage image = this.designPanel.capturaDeDisenio();
-                BufferedImage image2 = image.getSubimage(0,0,this.designPanel.getSize().width,this.designPanel.getSize().height);
+                BufferedImage image2 = image.getSubimage(0, 0, this.designPanel.getSize().width, this.designPanel.getSize().height);
                 graphics2D.drawImage(image2.getScaledInstance(getSize().width, getSize().height, BufferedImage.SCALE_FAST), 0, 0, null);
-            }
-            else {
+            } else {
                 graphics2D.setColor(Color.WHITE);
-                graphics2D.fillRect(0,0,getSize().width,getSize().height);
+                graphics2D.fillRect(0, 0, getSize().width, getSize().height);
             }
             graphics2D.setColor(Color.BLACK);
-            graphics2D.drawRect(0,0,getSize().width-1,getSize().height-1);
+            graphics2D.drawRect(0, 0, getSize().width - 1, getSize().height - 1);
             graphics2D.setColor(Color.RED);
-            graphics2D.fillOval(this.coordinates.x-2, this.coordinates.y-2, 5, 5);
+            graphics2D.fillOval(this.coordinates.x - 2, this.coordinates.y - 2, 5, 5);
         } else {
             Graphics2D graphics2D = (Graphics2D) graphics;
             graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             graphics2D.setColor(Color.WHITE);
-            graphics2D.fillRect(0, 0, this.getWidth()-1, this.getHeight()-1);
+            graphics2D.fillRect(0, 0, this.getWidth() - 1, this.getHeight() - 1);
             graphics2D.setStroke(new BasicStroke((float) 2));
             graphics2D.setColor(Color.RED);
             graphics2D.drawLine(0, 0, this.getWidth(), this.getHeight());
             graphics2D.drawLine(this.getWidth(), 0, 0, this.getHeight());
             graphics2D.setColor(Color.GRAY);
             graphics2D.setStroke(new BasicStroke((float) 1));
-            graphics2D.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1);
+            graphics2D.drawRect(0, 0, this.getWidth() - 1, this.getHeight() - 1);
         }
-    }  
+    }
 
     private JDesignPanel designPanel;
     private Point coordinates;
