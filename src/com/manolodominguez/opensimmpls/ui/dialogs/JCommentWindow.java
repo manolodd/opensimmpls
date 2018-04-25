@@ -37,8 +37,26 @@ import javax.swing.SwingConstants;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
+/**
+ * This class implements a window that is used to send an email to OpenSimMPLS
+ * author.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
+ */
 public class JCommentWindow extends JDialog {
 
+    /**
+     * This is the constructor of the class and creates a new instance of
+     * JCommentWindow.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param parent Parent window over wich this JCommentWindow is shown.
+     * @param imageBroker An object that supply the needed images to be inserted
+     * in the UI.
+     * @param modal TRUE, if this dialog has to be modal. Otherwise, FALSE.
+     * @since 2.0
+     */
     public JCommentWindow(TImageBroker imageBroker, Frame parent, boolean modal) {
         super(parent, modal);
         this.parent = parent;
@@ -48,6 +66,13 @@ public class JCommentWindow extends JDialog {
         initComponents2();
     }
 
+    /**
+     * This method is called from within the constructor to initialize the
+     * window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
     private void initComponents() {
         this.translations = ResourceBundle.getBundle(AvailableBundles.COMMENT_WINDOW.getPath());
         this.mainPanel = new JPanel();
@@ -120,57 +145,87 @@ public class JCommentWindow extends JDialog {
         pack();
     }
 
+    /**
+     * This method is called from within the constructor to do additional
+     * configurations of window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
     private void initComponents2() {
-        Dimension tamFrame = this.getSize();
-        Dimension tamPadre = this.parent.getSize();
-        setLocation((tamPadre.width - tamFrame.width) / 2, (tamPadre.height - tamFrame.height) / 2);
+        Dimension frameSize = this.getSize();
+        Dimension parentSize = this.parent.getSize();
+        setLocation((parentSize.width - frameSize.width) / 2, (parentSize.height - frameSize.height) / 2);
     }
 
+    /**
+     * This method is called when a click is done "Cancel" button (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
     private void handleClickOnCancelButton(ActionEvent evt) {
         this.setVisible(false);
         this.dispose();
     }
 
+    /**
+     * This method is called when a click is done on "Send" button (in the UI).
+     * It start sending the email.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
     private void handleClickOnSendButton(ActionEvent evt) {
-        int estado = checkData();
-        if (estado == OK) {
-            int estadoConexion = this.basicEmailSender.configure(this.textFieldSMTPAddress.getText(), this.textFieldSender.getText());
-            if (estadoConexion != TBasicEmailSender.CONNECTION_ERROR) {
-                int estadoEnvio = this.basicEmailSender.sendNotification(this.textAreaComment.getText());
-                if (estadoEnvio != 0) {
-                    JWarningWindow va = new JWarningWindow(this.parent, true, this.imageBroker);
-                    va.mostrarMensaje(this.translations.getString("VentanaComentario.ErrorEnviando"));
-                    va.setVisible(true);
+        int status = checkData();
+        if (status == OK) {
+            int connectionStatus = this.basicEmailSender.configure(this.textFieldSMTPAddress.getText(), this.textFieldSender.getText());
+            if (connectionStatus != TBasicEmailSender.CONNECTION_ERROR) {
+                int sendingStatus = this.basicEmailSender.sendNotification(this.textAreaComment.getText());
+                if (sendingStatus != 0) {
+                    JWarningWindow warningWindow = new JWarningWindow(this.parent, true, this.imageBroker);
+                    warningWindow.mostrarMensaje(this.translations.getString("VentanaComentario.ErrorEnviando"));
+                    warningWindow.setVisible(true);
                 } else {
                     this.setVisible(false);
                     this.dispose();
                 }
             } else {
-                JWarningWindow va = new JWarningWindow(this.parent, true, this.imageBroker);
-                va.mostrarMensaje(this.translations.getString("JVentanaComentario.ErrorAlConectar"));
-                va.setVisible(true);
+                JWarningWindow warningWindow = new JWarningWindow(this.parent, true, this.imageBroker);
+                warningWindow.mostrarMensaje(this.translations.getString("JVentanaComentario.ErrorAlConectar"));
+                warningWindow.setVisible(true);
             }
         } else {
-            JWarningWindow va = new JWarningWindow(this.parent, true, this.imageBroker);
-            switch (estado) {
+            JWarningWindow warningWindow = new JWarningWindow(this.parent, true, this.imageBroker);
+            switch (status) {
                 case JCommentWindow.MISSING_SMTP_SERVER: {
-                    va.mostrarMensaje(this.translations.getString("JVentanaComentario.debePonerSMTP"));
+                    warningWindow.mostrarMensaje(this.translations.getString("JVentanaComentario.debePonerSMTP"));
                     break;
                 }
                 case JCommentWindow.MISSING_SENDER: {
-                    va.mostrarMensaje(this.translations.getString("JVentanaComentario.DebePonerSuEmail"));
+                    warningWindow.mostrarMensaje(this.translations.getString("JVentanaComentario.DebePonerSuEmail"));
                     break;
                 }
                 case JCommentWindow.MISSING_COMMENT: {
-                    va.mostrarMensaje(this.translations.getString("JVentanaComentario.DebePonerComentario"));
+                    warningWindow.mostrarMensaje(this.translations.getString("JVentanaComentario.DebePonerComentario"));
                     break;
                 }
             }
-            va.setVisible(true);
+            warningWindow.setVisible(true);
         }
     }
 
-    public int checkData() {
+    /**
+     * This method checks wheter data typed in the JCommentWindow are correct or
+     * not.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @returns one of the constants defined in this class.
+     * @since 2.0
+     */
+    private int checkData() {
         if (this.textFieldSMTPAddress.getText().equals("")) {
             return JCommentWindow.MISSING_SMTP_SERVER;
         }
@@ -183,6 +238,13 @@ public class JCommentWindow extends JDialog {
         return JCommentWindow.OK;
     }
 
+    /**
+     * This method is called when the JCommentWindow is closed (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
     private void handleWindowsClosing(WindowEvent evt) {
         setVisible(false);
         dispose();
