@@ -24,7 +24,7 @@ import com.manolodominguez.opensimmpls.ui.dialogs.JLicenseWindow;
 import com.manolodominguez.opensimmpls.ui.dialogs.JAboutWindow;
 import com.manolodominguez.opensimmpls.ui.dialogs.JWarningWindow;
 import com.manolodominguez.opensimmpls.ui.dialogs.JHelpWindow;
-import com.manolodominguez.opensimmpls.ui.dialogs.JDecisionWindow;
+import com.manolodominguez.opensimmpls.ui.dialogs.JDecissionWindow;
 import com.manolodominguez.opensimmpls.ui.dialogs.JCommentWindow;
 import com.manolodominguez.opensimmpls.ui.dialogs.JErrorWindow;
 import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
@@ -646,10 +646,10 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
      * @since 2.0
      */    
     private void clicEnCualquierSalir() {
-        JDecisionWindow vb = new JDecisionWindow(this, true, dispensadorDeImagenes);
-        vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JSimulador.PreguntaSalirDelSimulador"));
+        JDecissionWindow vb = new JDecissionWindow(this, true, dispensadorDeImagenes);
+        vb.setQuestion(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JSimulador.PreguntaSalirDelSimulador"));
         vb.show();
-        boolean respuesta = vb.obtenerRespuesta();
+        boolean respuesta = vb.getUserAnswer();
         vb.dispose();
         if (respuesta) {
             cerrarTodo();

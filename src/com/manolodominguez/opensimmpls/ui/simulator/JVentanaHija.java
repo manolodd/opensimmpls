@@ -44,7 +44,7 @@ import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.ui.dialogs.JWarningWindow;
-import com.manolodominguez.opensimmpls.ui.dialogs.JDecisionWindow;
+import com.manolodominguez.opensimmpls.ui.dialogs.JDecissionWindow;
 import com.manolodominguez.opensimmpls.ui.dialogs.JTrafficGeneratorWindow;
 import com.manolodominguez.opensimmpls.ui.dialogs.JLinkWindow;
 import com.manolodominguez.opensimmpls.ui.dialogs.JErrorWindow;
@@ -1326,10 +1326,10 @@ private void clicEnPopUpDisenioFondoVerNombreNodos(java.awt.event.ActionEvent ev
      * @param evt Evento que hace que se dispare este m�todo.
      */
 private void clicEnPopUpDisenioFondoEliminar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoEliminar
-    JDecisionWindow vb = new JDecisionWindow(this.VentanaPadre, true, this.dispensadorDeImagenes);
-    vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.PreguntaBorrarTodo"));
+    JDecissionWindow vb = new JDecissionWindow(this.VentanaPadre, true, this.dispensadorDeImagenes);
+    vb.setQuestion(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.PreguntaBorrarTodo"));
     vb.show();
-    boolean respuesta = vb.obtenerRespuesta();
+    boolean respuesta = vb.getUserAnswer();
     if (respuesta) {
         escenario.getTopology().removeAllElements();
         panelDisenio.repaint();
@@ -1434,10 +1434,10 @@ private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
      * @param evt Evento que hace que se dispare este m�todo.
      */
 private void clicEnPopUpDisenioEliminar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioEliminar
-    JDecisionWindow vb = new JDecisionWindow(this.VentanaPadre, true, this.dispensadorDeImagenes);
-    vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.preguntaAlEliminar"));
+    JDecissionWindow vb = new JDecissionWindow(this.VentanaPadre, true, this.dispensadorDeImagenes);
+    vb.setQuestion(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.preguntaAlEliminar"));
     vb.show();
-    boolean respuesta = vb.obtenerRespuesta();
+    boolean respuesta = vb.getUserAnswer();
     if (respuesta) {
         if (elementoDisenioClicDerecho != null) {
             if (elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
@@ -2370,10 +2370,10 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             this.escenario.setSaved(true);
             this.setTitle(this.escenario.getScenarioFile().getName());
             TOSMSaver almacenador = new TOSMSaver(escenario);
-            JDecisionWindow vb = new JDecisionWindow(this.VentanaPadre, true, this.dispensadorDeImagenes);
-            vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.PreguntaEmpotrarCRC"));
+            JDecissionWindow vb = new JDecissionWindow(this.VentanaPadre, true, this.dispensadorDeImagenes);
+            vb.setQuestion(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.PreguntaEmpotrarCRC"));
             vb.show();
-            boolean conCRC = vb.obtenerRespuesta();
+            boolean conCRC = vb.getUserAnswer();
             boolean correcto = almacenador.save(escenario.getScenarioFile(), conCRC);
             if (correcto) {
                 this.escenario.setModified(false);
@@ -2409,10 +2409,10 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
         }
 
         if (!guardado) {
-            JDecisionWindow vb = new JDecisionWindow(VentanaPadre, true, dispensadorDeImagenes);
-            vb.mostrarPregunta(this.getTitle() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.DialogoGuardar.GuardarPrimeraVez"));
+            JDecissionWindow vb = new JDecissionWindow(VentanaPadre, true, dispensadorDeImagenes);
+            vb.setQuestion(this.getTitle() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.DialogoGuardar.GuardarPrimeraVez"));
             vb.show();
-            boolean respuesta = vb.obtenerRespuesta();
+            boolean respuesta = vb.getUserAnswer();
             vb.dispose();
             if (respuesta) {
                 this.gestionarGuardarComo();
@@ -2420,17 +2420,17 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
         } else if ((guardado) && (!modificado)) {
             // No se hace nada, ya est� todo guardado correctamente.
         } else if ((guardado) && (modificado)) {
-            JDecisionWindow vb = new JDecisionWindow(VentanaPadre, true, dispensadorDeImagenes);
-            vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.DialogoGuardar.CambiosSinguardar1") + " " + this.getTitle() + " " + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.DialogoGuardar.CambiosSinguardar2"));
+            JDecissionWindow vb = new JDecissionWindow(VentanaPadre, true, dispensadorDeImagenes);
+            vb.setQuestion(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.DialogoGuardar.CambiosSinguardar1") + " " + this.getTitle() + " " + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.DialogoGuardar.CambiosSinguardar2"));
             vb.show();
-            boolean respuesta = vb.obtenerRespuesta();
+            boolean respuesta = vb.getUserAnswer();
             vb.dispose();
             if (respuesta) {
                 TOSMSaver almacenador = new TOSMSaver(escenario);
-                JDecisionWindow vb2 = new JDecisionWindow(this.VentanaPadre, true, this.dispensadorDeImagenes);
-                vb2.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.PreguntaEmpotrarCRC"));
+                JDecissionWindow vb2 = new JDecissionWindow(this.VentanaPadre, true, this.dispensadorDeImagenes);
+                vb2.setQuestion(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.PreguntaEmpotrarCRC"));
                 vb2.show();
-                boolean conCRC = vb2.obtenerRespuesta();
+                boolean conCRC = vb2.getUserAnswer();
                 boolean correcto = almacenador.save(escenario.getScenarioFile(), conCRC);
                 if (correcto) {
                     this.escenario.setModified(false);
@@ -2455,10 +2455,10 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             this.gestionarGuardarComo();
         } else {
             TOSMSaver almacenador = new TOSMSaver(escenario);
-            JDecisionWindow vb = new JDecisionWindow(this.VentanaPadre, true, this.dispensadorDeImagenes);
-            vb.mostrarPregunta(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.PreguntaEmpotrarCRC"));
+            JDecissionWindow vb = new JDecissionWindow(this.VentanaPadre, true, this.dispensadorDeImagenes);
+            vb.setQuestion(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.PreguntaEmpotrarCRC"));
             vb.show();
-            boolean conCRC = vb.obtenerRespuesta();
+            boolean conCRC = vb.getUserAnswer();
             boolean correcto = almacenador.save(escenario.getScenarioFile(), conCRC);
             if (correcto) {
                 this.escenario.setModified(false);
