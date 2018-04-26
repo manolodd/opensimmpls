@@ -32,7 +32,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
-import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
@@ -100,9 +99,9 @@ public class JDecissionWindow extends JDialog {
                 handleClickOnYesButton(evt);
             }
         });
-        getContentPane().add(buttonYes, new AbsoluteConstraints(60, 80, 105, -1));
+        getContentPane().add(this.buttonYes, new AbsoluteConstraints(60, 80, 105, -1));
         this.buttonNo.setFont(new Font("Dialog", 0, 12));
-        this.buttonNo.setIcon(imageBroker.getIcon(TImageBroker.CANCELAR));
+        this.buttonNo.setIcon(this.imageBroker.getIcon(TImageBroker.CANCELAR));
         this.buttonNo.setMnemonic(this.translations.getString("JVentanaBooleana.mnemonico.no").charAt(0));
         this.buttonNo.setText(this.translations.getString("JVentanaBooleana.No"));
         this.buttonNo.addActionListener(new ActionListener() {
@@ -111,14 +110,14 @@ public class JDecissionWindow extends JDialog {
                 handleClickOnNoButton(evt);
             }
         });
-        getContentPane().add(buttonNo, new AbsoluteConstraints(180, 80, 105, -1));
-        this.textPaneQuestion.setBackground(UIManager.getDefaults().getColor("Button.background"));
+        getContentPane().add(this.buttonNo, new AbsoluteConstraints(180, 80, 105, -1));
+        this.textPaneQuestion.setBackground(new Color(0, 0, 0, 0));
         this.textPaneQuestion.setEditable(false);
         this.textPaneQuestion.setDisabledTextColor(new Color(0, 0, 0));
         this.textPaneQuestion.setFocusCycleRoot(false);
         this.textPaneQuestion.setFocusable(false);
         this.textPaneQuestion.setEnabled(false);
-        getContentPane().add(textPaneQuestion, new AbsoluteConstraints(55, 15, 285, 50));
+        getContentPane().add(this.textPaneQuestion, new AbsoluteConstraints(55, 15, 285, 50));
         this.mainPanel.setLayout(null);
         getContentPane().add(this.mainPanel, new AbsoluteConstraints(0, 0, 350, 120));
         pack();
@@ -133,8 +132,8 @@ public class JDecissionWindow extends JDialog {
      */
     private void initComponents2() {
         Dimension frameSize = this.getSize();
-        Dimension parentSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((parentSize.width - frameSize.width) / 2, (parentSize.height - frameSize.height) / 2);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
         this.userAnswer = false;
     }
 

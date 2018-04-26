@@ -1415,7 +1415,7 @@ private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
             } catch (Exception e) {
                 JErrorWindow err;
                 err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
-                err.mostrarMensaje(e.toString());
+                err.setErrorMessage(e.toString());
                 err.show();
             };
             this.escenario.setModified(true);
@@ -1539,7 +1539,7 @@ private void clicEnAniadirLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
     } catch (Exception e) {
         JErrorWindow err;
         err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
-        err.mostrarMensaje(e.toString());
+        err.setErrorMessage(e.toString());
         err.show();
     }
     JActiveLSRWindow vlsra = new JActiveLSRWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
@@ -1552,7 +1552,7 @@ private void clicEnAniadirLSRA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
         } catch (Exception e) {
             JErrorWindow err;
             err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
-            err.mostrarMensaje(e.toString());
+            err.setErrorMessage(e.toString());
             err.show();
         };
         this.escenario.setModified(true);
@@ -1575,7 +1575,7 @@ private void clicEnAniadirLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
     } catch (Exception e) {
         JErrorWindow err;
         err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
-        err.mostrarMensaje(e.toString());
+        err.setErrorMessage(e.toString());
         err.show();
     }
     JLSRWindow vlsr = new JLSRWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
@@ -1588,7 +1588,7 @@ private void clicEnAniadirLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
         } catch (Exception e) {
             JErrorWindow err;
             err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
-            err.mostrarMensaje(e.toString());
+            err.setErrorMessage(e.toString());
             err.show();
         };
         this.escenario.setModified(true);
@@ -1611,7 +1611,7 @@ private void clicEnAniadirLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
     } catch (Exception e) {
         JErrorWindow err;
         err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
-        err.mostrarMensaje(e.toString());
+        err.setErrorMessage(e.toString());
         err.show();
     }
     JActiveLERWindow vlera = new JActiveLERWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
@@ -1624,7 +1624,7 @@ private void clicEnAniadirLERA(java.awt.event.MouseEvent evt) {//GEN-FIRST:event
         } catch (Exception e) {
             JErrorWindow err;
             err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
-            err.mostrarMensaje(e.toString());
+            err.setErrorMessage(e.toString());
             err.show();
         };
         this.escenario.setModified(true);
@@ -1881,7 +1881,7 @@ private void clicEnAniadirLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
     } catch (Exception e) {
         JErrorWindow err;
         err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
-        err.mostrarMensaje(e.toString());
+        err.setErrorMessage(e.toString());
         err.show();
     }
     JLERWindow vler = new JLERWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
@@ -1894,7 +1894,7 @@ private void clicEnAniadirLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
         } catch (Exception e) {
             JErrorWindow err;
             err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
-            err.mostrarMensaje(e.toString());
+            err.setErrorMessage(e.toString());
             err.show();
         };
         this.escenario.setModified(true);
@@ -2085,7 +2085,7 @@ private void clicEnAniadirReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
     } catch (Exception e) {
         JErrorWindow err;
         err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
-        err.mostrarMensaje(e.toString());
+        err.setErrorMessage(e.toString());
         err.show();
     }
     JTrafficSinkWindow vr = new JTrafficSinkWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
@@ -2098,7 +2098,7 @@ private void clicEnAniadirReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
         } catch (Exception e) {
             JErrorWindow err;
             err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
-            err.mostrarMensaje(e.toString());
+            err.setErrorMessage(e.toString());
             err.show();
         };
         this.escenario.setModified(true);
@@ -2136,7 +2136,7 @@ private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-
         } catch (Exception e) {
             JErrorWindow err;
             err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
-            err.mostrarMensaje(e.toString());
+            err.setErrorMessage(e.toString());
             err.show();
         }
         JTrafficGeneratorWindow ve = new JTrafficGeneratorWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
@@ -2149,7 +2149,7 @@ private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-
             } catch (Exception e) {
                 JErrorWindow err;
                 err = new JErrorWindow(VentanaPadre, true, dispensadorDeImagenes);
-                err.mostrarMensaje(e.toString());
+                err.setErrorMessage(e.toString());
                 err.show();
             };
             this.escenario.setModified(true);

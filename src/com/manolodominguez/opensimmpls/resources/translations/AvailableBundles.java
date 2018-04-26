@@ -27,6 +27,7 @@ public enum AvailableBundles {
     ACTIVE_LSR_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     WARNING_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     DECISSION_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    ERROR_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     COMMENT_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations");
 
     private final String bundlePath;

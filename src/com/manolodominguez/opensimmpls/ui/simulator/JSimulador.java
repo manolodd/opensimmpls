@@ -358,7 +358,7 @@ public class JSimulador extends javax.swing.JFrame {
                         catch (Exception e) {
                             JErrorWindow ve;
                             ve = new JErrorWindow(this, true, dispensadorDeImagenes);
-                            ve.mostrarMensaje(e.toString());
+                            ve.setErrorMessage(e.toString());
                             ve.show();
                         }
                     } else {
@@ -431,7 +431,7 @@ private void clicEnVistaMosaicoHorizontal(java.awt.event.ActionEvent evt) {//GEN
     } catch (Exception e) {
         JErrorWindow ve;
         ve = new JErrorWindow(this, true, dispensadorDeImagenes);
-        ve.mostrarMensaje(e.toString());
+        ve.setErrorMessage(e.toString());
         ve.show();
     }
 }//GEN-LAST:event_clicEnVistaMosaicoHorizontal
@@ -459,7 +459,7 @@ private void clicEnVistaMosaicoVertical(java.awt.event.ActionEvent evt) {//GEN-F
     } catch (Exception e) {
         JErrorWindow ve;
         ve = new JErrorWindow(this, true, dispensadorDeImagenes);
-        ve.mostrarMensaje(e.toString());
+        ve.setErrorMessage(e.toString());
         ve.show();
     }
 }//GEN-LAST:event_clicEnVistaMosaicoVertical
@@ -496,7 +496,7 @@ private void clicEnVistaCascada(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
     } catch (Exception e) {
         JErrorWindow ve;
         ve = new JErrorWindow(this, true, dispensadorDeImagenes);
-        ve.mostrarMensaje(e.toString());
+        ve.setErrorMessage(e.toString());
         ve.show();
     }
 }//GEN-LAST:event_clicEnVistaCascada
@@ -515,7 +515,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
     } catch (Exception e) {
         JErrorWindow ve;
         ve = new JErrorWindow(this, true, dispensadorDeImagenes);
-        ve.mostrarMensaje(e.toString());
+        ve.setErrorMessage(e.toString());
         ve.show();
     }
 }//GEN-LAST:event_clicEnVistaIconos
@@ -545,7 +545,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
             } catch (Exception e) {
                 JErrorWindow ve;
                 ve = new JErrorWindow(this, true, dispensadorDeImagenes);
-                ve.mostrarMensaje(e.toString());
+                ve.setErrorMessage(e.toString());
                 ve.show();
             }
         }
@@ -573,7 +573,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
         catch (Exception e) {
             JErrorWindow ve;
             ve = new JErrorWindow(this, true, dispensadorDeImagenes);
-            ve.mostrarMensaje(e.toString());
+            ve.setErrorMessage(e.toString());
             ve.show();
         }
     }//GEN-LAST:event_clicEnNuevo
@@ -621,7 +621,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
                     } catch (Exception e) {
                         JErrorWindow ve;
                         ve = new JErrorWindow(this, true, dispensadorDeImagenes);
-                        ve.mostrarMensaje(e.toString());
+                        ve.setErrorMessage(e.toString());
                         ve.show();
                     }
                 } else {
