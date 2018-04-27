@@ -32,21 +32,26 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
-import javax.swing.UIManager;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
+/**
+ * This class implements a window that is used to show error messages.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
+ */
 public class JErrorWindow extends JDialog {
 
     /**
-     * Crea una nueva ventana de error.
+     * This is the constructor of the class and creates a new instance of
+     * JErrorWindow.
      *
-     * @param parent Ventana padre donde se ubicar� esta ventana de tipo
-     * JVentanaError.
-     * @param modal TRUE indica que la ventana impedir� que se pueda seleccionar
-     * nada de la interfaz de usuario hasta que se cierre. FALSE indica que esto
-     * no es as�.
-     * @param imageBroker Dispensador de im�genes global de la aplicaci�n.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param parent Parent window over wich this JErrorWindow is shown.
+     * @param imageBroker An object that supply the needed images to be inserted
+     * in the UI.
+     * @param modal TRUE, if this dialog has to be modal. Otherwise, FALSE.
      * @since 2.0
      */
     public JErrorWindow(Frame parent, boolean modal, TImageBroker imageBroker) {
@@ -56,6 +61,13 @@ public class JErrorWindow extends JDialog {
         initComponents2();
     }
 
+    /**
+     * This method is called from within the constructor to initialize the
+     * window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
     private void initComponents() {
         this.translations = ResourceBundle.getBundle(AvailableBundles.ERROR_WINDOW.getPath());
         this.iconContainerError = new JLabel();
@@ -96,22 +108,52 @@ public class JErrorWindow extends JDialog {
         pack();
     }
 
+    /**
+     * This method is called from within the constructor to do additional
+     * configurations of window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
     private void initComponents2() {
         Dimension frameSize = this.getSize();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
     }
 
+    /**
+     * This method is called when a click is done on the displayed button (in
+     * the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
     private void handleClickOnOkButton(ActionEvent evt) {
         setVisible(false);
         dispose();
     }
 
+    /**
+     * This method is called when the JErrorWindow is closed (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
     private void handleWindowsClosing(WindowEvent evt) {
         setVisible(false);
         dispose();
     }
 
+    /**
+     * This method sets the error message to alert of a given error; the error
+     * message will be displayed in the JErrorWindow.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param errorMessage the error message to alert of a given error.
+     * @since 2.0
+     */
     public void setErrorMessage(String errorMessage) {
         Toolkit.getDefaultToolkit().beep();
         this.textPaneErrorMessage.setText(errorMessage);
