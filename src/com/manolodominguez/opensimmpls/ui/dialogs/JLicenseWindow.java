@@ -16,7 +16,9 @@
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
 import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
+import java.awt.Dimension;
 import java.awt.Frame;
+import javax.swing.JDialog;
 
 /** Esta clase implementa una ventana que muestra la licencia GPL bajo la cual est�
  * liberado el Open SimMPLS y adem�s el certificado OSI del mismo.
@@ -24,7 +26,7 @@ import java.awt.Frame;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class JLicenseWindow extends javax.swing.JDialog {
+public class JLicenseWindow extends JDialog {
     
     /**
      * Es el constructor de la clase. Crea una nueva ventana del tipo JLicencia.
@@ -42,8 +44,8 @@ public class JLicenseWindow extends javax.swing.JDialog {
         dispensadorDeImagenes = di;
         initComponents();
         this.setSize(500, 425);
-        java.awt.Dimension tamFrame=this.getSize();
-        java.awt.Dimension tamPantalla=java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension tamFrame=this.getSize();
+        Dimension tamPantalla= this.getParent().getSize();
         setLocation((tamPantalla.width-tamFrame.width)/2, (tamPantalla.height-tamFrame.height)/2);
     }
     

@@ -23,12 +23,19 @@ package com.manolodominguez.opensimmpls.resources.translations;
  * @version 2.0
  */
 public enum AvailableBundles {
+    LER_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    LSR_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     ACTIVE_LER_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    LICENSE_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    LINK_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    TRAFFIC_GENERATOR_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    TRAFFIC_SINK_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     ACTIVE_LSR_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     WARNING_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     DECISSION_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     ERROR_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     HELP_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    ABOUT_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     COMMENT_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations");
 
     private final String bundlePath;
