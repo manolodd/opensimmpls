@@ -364,7 +364,7 @@ public class JSimulador extends javax.swing.JFrame {
                     } else {
                         JWarningWindow va;
                         va = new JWarningWindow(this, true, dispensadorDeImagenes);
-                        va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JSimulador.DialogoAbrir.FicheroCorrupto"));
+                        va.setWarningMessage(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JSimulador.DialogoAbrir.FicheroCorrupto"));
                         va.show();
                     }
                     dialogoAbrir = null;
@@ -372,7 +372,7 @@ public class JSimulador extends javax.swing.JFrame {
                 } else {
                     JWarningWindow va;
                     va = new JWarningWindow(this, true, dispensadorDeImagenes);
-                    va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JSimulador.DialogoAbrir.FicheroDebeExistir"));
+                    va.setWarningMessage(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JSimulador.DialogoAbrir.FicheroDebeExistir"));
                     va.show();
                 }
             } else {

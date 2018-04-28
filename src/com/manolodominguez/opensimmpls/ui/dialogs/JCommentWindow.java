@@ -186,7 +186,7 @@ public class JCommentWindow extends JDialog {
                 int sendingStatus = this.basicEmailSender.sendNotification(this.textAreaComment.getText());
                 if (sendingStatus != 0) {
                     JWarningWindow warningWindow = new JWarningWindow(this.parent, true, this.imageBroker);
-                    warningWindow.mostrarMensaje(this.translations.getString("VentanaComentario.ErrorEnviando"));
+                    warningWindow.setWarningMessage(this.translations.getString("VentanaComentario.ErrorEnviando"));
                     warningWindow.setVisible(true);
                 } else {
                     this.setVisible(false);
@@ -194,22 +194,22 @@ public class JCommentWindow extends JDialog {
                 }
             } else {
                 JWarningWindow warningWindow = new JWarningWindow(this.parent, true, this.imageBroker);
-                warningWindow.mostrarMensaje(this.translations.getString("JVentanaComentario.ErrorAlConectar"));
+                warningWindow.setWarningMessage(this.translations.getString("JVentanaComentario.ErrorAlConectar"));
                 warningWindow.setVisible(true);
             }
         } else {
             JWarningWindow warningWindow = new JWarningWindow(this.parent, true, this.imageBroker);
             switch (status) {
                 case JCommentWindow.MISSING_SMTP_SERVER: {
-                    warningWindow.mostrarMensaje(this.translations.getString("JVentanaComentario.debePonerSMTP"));
+                    warningWindow.setWarningMessage(this.translations.getString("JVentanaComentario.debePonerSMTP"));
                     break;
                 }
                 case JCommentWindow.MISSING_SENDER: {
-                    warningWindow.mostrarMensaje(this.translations.getString("JVentanaComentario.DebePonerSuEmail"));
+                    warningWindow.setWarningMessage(this.translations.getString("JVentanaComentario.DebePonerSuEmail"));
                     break;
                 }
                 case JCommentWindow.MISSING_COMMENT: {
-                    warningWindow.mostrarMensaje(this.translations.getString("JVentanaComentario.DebePonerComentario"));
+                    warningWindow.setWarningMessage(this.translations.getString("JVentanaComentario.DebePonerComentario"));
                     break;
                 }
             }

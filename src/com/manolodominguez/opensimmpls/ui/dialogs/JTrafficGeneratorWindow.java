@@ -571,7 +571,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     int error = emisor.validateConfig(topo, this.reconfigurando);
     if (error != TTrafficGeneratorNode.OK) {
         JWarningWindow va = new JWarningWindow(ventanaPadre, true, dispensadorDeImagenes);
-        va.mostrarMensaje(emisor.getErrorMessage(error));
+        va.setWarningMessage(emisor.getErrorMessage(error));
         va.show();
     } else {
         this.reconfigurando = false;

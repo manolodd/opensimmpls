@@ -259,7 +259,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     int error = configReceptor.validateConfig(topo, this.reconfigurando);
     if (error != TTrafficSinkNode.OK) {
         JWarningWindow va = new JWarningWindow(ventanaPadre, true, dispensadorDeImagenes);
-        va.mostrarMensaje(configReceptor.getErrorMessage(error));
+        va.setWarningMessage(configReceptor.getErrorMessage(error));
         va.show();
     } else {
         this.setVisible(false);

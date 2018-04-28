@@ -380,7 +380,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     int error = configLSR.validateConfig(topo, this.reconfigurando);
     if (error != TLSRNode.OK) {
         JWarningWindow va = new JWarningWindow(ventanaPadre, true, dispensadorDeImagenes);
-        va.mostrarMensaje(configLSR.getErrorMessage(error));
+        va.setWarningMessage(configLSR.getErrorMessage(error));
         va.show();
     } else {
         this.setVisible(false);

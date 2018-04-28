@@ -488,7 +488,7 @@ public class JActiveLSRWindow extends JDialog {
         int error = this.activeLSRNode.validateConfig(this.topology, this.reconguration);
         if (error != TActiveLSRNode.OK) {
             JWarningWindow warningWindow = new JWarningWindow(this.parent, true, this.imageBroker);
-            warningWindow.mostrarMensaje(this.activeLSRNode.getErrorMessage(error));
+            warningWindow.setWarningMessage(this.activeLSRNode.getErrorMessage(error));
             warningWindow.setVisible(true);
         } else {
             this.setVisible(false);

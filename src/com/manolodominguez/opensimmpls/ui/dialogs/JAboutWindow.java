@@ -80,8 +80,8 @@ public class JAboutWindow extends JDialog {
         getContentPane().add(this.iconContainer, new AbsoluteConstraints(0, 0, -1, 300));
         pack();
         Dimension frameSize = this.getSize();
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
+        Dimension parentSize = this.getParent().getSize();
+        setLocation((parentSize.width - frameSize.width) / 2, (parentSize.height - frameSize.height) / 2);
 
     }
 

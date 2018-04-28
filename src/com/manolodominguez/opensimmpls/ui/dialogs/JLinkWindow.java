@@ -479,7 +479,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     int error = configEnlace.validateConfig(topo, this.reconfigurando);
     if (error != TLinkConfig.OK) {
         JWarningWindow va = new JWarningWindow(ventanaPadre, true, dispensadorDeImagenes);
-        va.mostrarMensaje(configEnlace.getErrorMessage(error));
+        va.setWarningMessage(configEnlace.getErrorMessage(error));
         va.show();
     } else {
         this.setVisible(false);

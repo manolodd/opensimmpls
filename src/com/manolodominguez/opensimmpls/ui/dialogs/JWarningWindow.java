@@ -17,119 +17,156 @@ package com.manolodominguez.opensimmpls.ui.dialogs;
 
 import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ResourceBundle;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
+import org.netbeans.lib.awtextra.AbsoluteLayout;
 
-/** Esta clase implementa una ventana que muestra una pregunta al usuario y espera
- * una respuesta de stipo SI/NO (true/false). Es polivalente.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+/**
+ * This class implements a window that is used to warn the user about some
+ * circunstances.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
-public class JWarningWindow extends javax.swing.JDialog {
-    
+public class JWarningWindow extends JDialog {
+
     /**
-     * Crea una nueva ventana de Advertencia.
-     * @param parent Ventana padre dentro de la cual se mostrar� esta ventana de tipo
-     * JVentanaAdvertencia.
-     * @param modal TRUE indica que la ventana impedir� que se seleccione nada del resto de la
-     * interfaz hasta que sea cerrada. FALSe indica que esto no es asi.
-     * @param di Disepnsador de im�genes global de la aplicaci�n.
+     * This is the constructor of the class and creates a new instance of
+     * JWarningWindow.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param parent Parent window over wich this JWarningWindow is shown.
+     * @param imageBroker An object that supply the needed images to be inserted
+     * in the UI.
+     * @param modal TRUE, if this dialog has to be modal. Otherwise, FALSE.
      * @since 2.0
      */
-    public JWarningWindow(java.awt.Frame parent, boolean modal, TImageBroker di) {
+    public JWarningWindow(Frame parent, boolean modal, TImageBroker imageBroker) {
         super(parent, modal);
-        dispensadorDeImagenes = di;
+        this.imageBroker = imageBroker;
         initComponents();
-        java.awt.Dimension tamFrame=this.getSize();
-        java.awt.Dimension tamPantalla=java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((tamPantalla.width-tamFrame.width)/2, (tamPantalla.height-tamFrame.height)/2);
+        initComponents2();
     }
-    
-    /** Este m�todo se llama desde el constructor para dar los valores iniciales v�lidos
-     * a los atributos de la clase.
+
+    /**
+     * This method is called from within the constructor to initialize the
+     * window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
      */
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-            this.translations = ResourceBundle.getBundle(AvailableBundles.ACTIVE_LSR_WINDOW.getPath());
-
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jTextPane1 = new javax.swing.JTextPane();
-        jPanel1 = new javax.swing.JPanel();
-
-        setTitle(this.translations.getString("VentanaAdvertencia.titulo")); // NOI18N
+        this.translations = ResourceBundle.getBundle(AvailableBundles.WARNING_WINDOW.getPath());
+        this.iconContainerWarningMark = new JLabel();
+        this.buttonOK = new JButton();
+        this.textPaneWarningMessage = new JTextPane();
+        this.mainPanel = new JPanel();
+        setTitle(this.translations.getString("VentanaAdvertencia.titulo"));
         setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                closeDialog(evt);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent evt) {
+                handleWindowsClosing(evt);
             }
         });
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel1.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ADVERTENCIA));
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, -1, -1));
-
-        jButton1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton1.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ACEPTAR));
-        jButton1.setMnemonic(this.translations.getString("VentanaAdvertencia.ResaltadoBoton").charAt(0));
-        jButton1.setText(this.translations.getString("OK")); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clicEnBoton(evt);
+        getContentPane().setLayout(new AbsoluteLayout());
+        this.iconContainerWarningMark.setIcon(this.imageBroker.getIcon(TImageBroker.ADVERTENCIA));
+        getContentPane().add(this.iconContainerWarningMark, new AbsoluteConstraints(10, 15, -1, -1));
+        this.buttonOK.setFont(new Font("Dialog", 0, 12));
+        this.buttonOK.setIcon(this.imageBroker.getIcon(TImageBroker.ACEPTAR));
+        this.buttonOK.setMnemonic(this.translations.getString("VentanaAdvertencia.ResaltadoBoton").charAt(0));
+        this.buttonOK.setText(this.translations.getString("OK"));
+        this.buttonOK.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                handleClickOnOKButton(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(125, 80, 105, -1));
-
-        jTextPane1.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
-        jTextPane1.setEditable(false);
-        jTextPane1.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        jTextPane1.setFocusCycleRoot(false);
-        jTextPane1.setFocusable(false);
-        jTextPane1.setEnabled(false);
-        getContentPane().add(jTextPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(55, 15, 285, 50));
-
-        jPanel1.setLayout(null);
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 120));
-
+        getContentPane().add(this.buttonOK, new AbsoluteConstraints(125, 80, 105, -1));
+        this.textPaneWarningMessage.setBackground(new Color(0, 0, 0, 0));
+        this.textPaneWarningMessage.setEditable(false);
+        this.textPaneWarningMessage.setDisabledTextColor(new Color(0, 0, 0));
+        this.textPaneWarningMessage.setFocusCycleRoot(false);
+        this.textPaneWarningMessage.setFocusable(false);
+        this.textPaneWarningMessage.setEnabled(false);
+        getContentPane().add(this.textPaneWarningMessage, new AbsoluteConstraints(55, 15, 285, 50));
+        this.mainPanel.setLayout(null);
+        getContentPane().add(this.mainPanel, new AbsoluteConstraints(0, 0, 350, 120));
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
-    /** Este m�todo captura un evento de rat�n sobre el boton de la ventana. Al
-     * recibirlo, cierra la ventana y la elimina.
-     */    
-    private void clicEnBoton(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnBoton
-        setVisible(false);
-        dispose();
-    }//GEN-LAST:event_clicEnBoton
-    
-    /** Este m�todo captura un evento de rat�n sobre el boton [X] de la ventana. Al
-     * recibirlo, cierra la ventana y la elimina.
+    /**
+     * This method is called from within the constructor to do additional
+     * configurations of window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
      */
-    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
+    private void initComponents2() {
+        Dimension frameSize = this.getSize();
+        Dimension parentSize = this.getParent().getSize();
+        setLocation((parentSize.width - frameSize.width) / 2, (parentSize.height - frameSize.height) / 2);
+    }
+
+    /**
+     * This method is called when a click is done on the displayed button (in
+     * the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnOKButton(ActionEvent evt) {
         setVisible(false);
         dispose();
-    }//GEN-LAST:event_closeDialog
-    
-    /** Este m�todo recibe por par�metro un texto y hace que aparezca en la ventana.
-     * @param texto El texto que se desea mostrar en la ventana.
-     * @since 2.0
-     */    
-    public void mostrarMensaje(java.lang.String texto) {
-        java.awt.Toolkit.getDefaultToolkit().beep();
-        jTextPane1.setText(texto);
-    }    
+    }
 
-    /** Este objeto es una referencia la dispensador de im�genes global del simulador.
-     * Se encarga de tener precargadas las im�genes, acelerando el proceso de
-     * mostrarlas.
+    /**
+     * This method is called when the JWarningWindow is closed (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
      * @since 2.0
-     */    
-    private TImageBroker dispensadorDeImagenes;
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextPane jTextPane1;
+     */
+    private void handleWindowsClosing(WindowEvent evt) {
+        setVisible(false);
+        dispose();
+    }
+
+    /**
+     * This method sets the warning message to alert of the user of a given
+     * circumstance; the warning message will be displayed in the
+     * JWarningWindow.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param warningMessage the warning message to alert of the user of a given
+     * circumstance.
+     * @since 2.0
+     */
+    public void setWarningMessage(String warningMessage) {
+        Toolkit.getDefaultToolkit().beep();
+        this.textPaneWarningMessage.setText(warningMessage);
+    }
+
+    private TImageBroker imageBroker;
+    private JButton buttonOK;
+    private JLabel iconContainerWarningMark;
+    private JPanel mainPanel;
+    private JTextPane textPaneWarningMessage;
     private ResourceBundle translations;
-    
+
 }

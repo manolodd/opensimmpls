@@ -117,8 +117,8 @@ public class JErrorWindow extends JDialog {
      */
     private void initComponents2() {
         Dimension frameSize = this.getSize();
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
+        Dimension parentSize = this.getParent().getSize();
+        setLocation((parentSize.width - frameSize.width) / 2, (parentSize.height - frameSize.height) / 2);
     }
 
     /**

@@ -488,7 +488,7 @@ public class JActiveLERWindow extends JDialog {
         int error = this.activeLERNode.validateConfig(this.topology, this.reconguration);
         if (error != TActiveLERNode.OK) {
             JWarningWindow warningWindow = new JWarningWindow(this.parent, true, this.imageBroker);
-            warningWindow.mostrarMensaje(this.activeLERNode.getErrorMessage(error));
+            warningWindow.setWarningMessage(this.activeLERNode.getErrorMessage(error));
             warningWindow.setVisible(true);
         } else {
             this.setVisible(false);

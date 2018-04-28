@@ -1392,7 +1392,7 @@ private void clicEnPopUpDisenioFondoEliminar(java.awt.event.ActionEvent evt) {//
 private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirEnlace
     if (escenario.getTopology().getNumberOfNodes() < 2) {
         JWarningWindow va = new JWarningWindow(VentanaPadre, true, dispensadorDeImagenes);
-        va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija.ErrorAlMenosDosNodos"));
+        va.setWarningMessage(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaHija.ErrorAlMenosDosNodos"));
         va.show();
     } else {
         TLinkConfig config = new TLinkConfig();
@@ -1446,7 +1446,7 @@ private void clicEnPopUpDisenioEliminar(java.awt.event.ActionEvent evt) {//GEN-F
                     if (this.escenario.getTopology().isThereAnyNodeGeneratingTrafficFor((TTrafficSinkNode) nt)) {
                         JWarningWindow va;
                         va = new JWarningWindow(VentanaPadre, true, dispensadorDeImagenes);
-                        va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.NoPuedoBorrarReceptor"));
+                        va.setWarningMessage(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.NoPuedoBorrarReceptor"));
                         va.show();
                         elementoDisenioClicDerecho = null;
                     } else {
@@ -2127,7 +2127,7 @@ private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-
     }
     if (!hayDestino) {
         JWarningWindow va = new JWarningWindow(VentanaPadre, true, dispensadorDeImagenes);
-        va.mostrarMensaje(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.NecesitaHaberUnReceptor"));
+        va.setWarningMessage(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.NecesitaHaberUnReceptor"));
         va.show();
     } else {
         TTrafficGeneratorNode emisor = null;

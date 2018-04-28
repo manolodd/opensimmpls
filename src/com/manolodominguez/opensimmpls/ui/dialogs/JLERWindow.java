@@ -382,7 +382,7 @@ private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cl
     int error = configLER.validateConfig(topo, this.reconfigurando);
     if (error != TLERNode.OK) {
         JWarningWindow va = new JWarningWindow(ventanaPadre, true, dispensadorDeImagenes);
-        va.mostrarMensaje(configLER.getErrorMessage(error));
+        va.setWarningMessage(configLER.getErrorMessage(error));
         va.show();
     } else {
         this.setVisible(false);
