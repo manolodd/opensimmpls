@@ -16,6 +16,7 @@
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
 import com.manolodominguez.opensimmpls.resources.license.AvailableLicenseFiles;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -37,45 +38,63 @@ import javax.swing.JTextPane;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
+/**
+ * This class implements a window that is used to show information related to
+ * the license of OpenSimMPLS.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
+ */
 public class JLicenseWindow extends JDialog {
 
-    public JLicenseWindow(Frame parent, boolean modal, TImageBroker di) {
+    /**
+     * This is the constructor of the class and creates a new instance of
+     * JLicenseWindow.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param parent Parent window over wich this JLicenseWindow is shown.
+     * @param imageBroker An object that supply the needed images to be inserted
+     * in the UI.
+     * @param modal TRUE, if this dialog has to be modal. Otherwise, FALSE.
+     * @since 2.0
+     */
+    public JLicenseWindow(Frame parent, boolean modal, TImageBroker imageBroker) {
         super(parent, modal);
-        dispensadorDeImagenes = di;
+        this.imageBroker = imageBroker;
         initComponents();
-        this.setSize(570, 425);
-        Dimension tamFrame = this.getSize();
-        Dimension tamPantalla = this.getParent().getSize();
-        setLocation((tamPantalla.width - tamFrame.width) / 2, (tamPantalla.height - tamFrame.height) / 2);
+        initComponents2();
     }
 
+    /**
+     * This method is called from within the constructor to initialize the
+     * window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
     private void initComponents() {
-
-        scrollPaneLicense = new JScrollPane();
-        textPaneLicense = new JTextPane();
-        buttonOK = new JButton();
-        licenseIcon = new JLabel();
-        jTextPane2 = new JTextPane();
-
-        ResourceBundle bundle = ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations");
-        setTitle(bundle.getString("Open_SimMPLS_license"));
+        this.translations = ResourceBundle.getBundle(AvailableBundles.LICENSE_WINDOW.getPath());
+        this.scrollPaneLicense = new JScrollPane();
+        this.textPaneLicenseText = new JTextPane();
+        this.buttonOK = new JButton();
+        this.iconContainerLicense = new JLabel();
+        this.textPaneShortLicenseDescription = new JTextPane();
+        setTitle(this.translations.getString("Open_SimMPLS_license"));
         setResizable(false);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent evt) {
-                closeDialog(evt);
+                handleWindowsClosing(evt);
             }
         });
         getContentPane().setLayout(new AbsoluteLayout());
-
-        scrollPaneLicense.setBorder(null);
-        scrollPaneLicense.setViewportBorder(BorderFactory.createTitledBorder(""));
-        scrollPaneLicense.setAutoscrolls(true);
-
-        textPaneLicense.setEditable(false);
-        textPaneLicense.setBackground(new Color(246, 247, 224));
+        this.scrollPaneLicense.setBorder(null);
+        this.scrollPaneLicense.setViewportBorder(BorderFactory.createTitledBorder(""));
+        this.scrollPaneLicense.setAutoscrolls(true);
+        this.textPaneLicenseText.setEditable(false);
+        this.textPaneLicenseText.setBackground(new Color(246, 247, 224));
         try {
-            textPaneLicense.read(this.getClass().getResourceAsStream(AvailableLicenseFiles.LICENSE_FILE.getPath()), this);
+            this.textPaneLicenseText.read(this.getClass().getResourceAsStream(AvailableLicenseFiles.LICENSE_FILE.getPath()), this);
         } catch (FileNotFoundException ex) {
             //FIX: This is ugly
             ex.printStackTrace();
@@ -83,57 +102,82 @@ public class JLicenseWindow extends JDialog {
             //FIX: This is ugly
             ex.printStackTrace();
         }
-        textPaneLicense.setCaretPosition(1);
-        scrollPaneLicense.setViewportView(textPaneLicense);
-
-        getContentPane().add(scrollPaneLicense, new AbsoluteConstraints(15, 130, 535, 210));
-
-        buttonOK.setFont(new Font("Dialog", 0, 12));
-        buttonOK.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ACEPTAR));
-        buttonOK.setMnemonic(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLicencia.ResaltadoBoton").charAt(0));
-        buttonOK.setText(bundle.getString("OK"));
-        buttonOK.addActionListener(new ActionListener() {
+        this.textPaneLicenseText.setCaretPosition(1);
+        this.scrollPaneLicense.setViewportView(this.textPaneLicenseText);
+        getContentPane().add(this.scrollPaneLicense, new AbsoluteConstraints(15, 130, 535, 210));
+        this.buttonOK.setFont(new Font("Dialog", 0, 12));
+        this.buttonOK.setIcon(this.imageBroker.getIcon(TImageBroker.ACEPTAR));
+        this.buttonOK.setMnemonic(this.translations.getString("VentanaLicencia.ResaltadoBoton").charAt(0));
+        this.buttonOK.setText(this.translations.getString("OK"));
+        this.buttonOK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                ClicEnElBoton(evt);
+                handleClickOnOkButton(evt);
             }
         });
-        getContentPane().add(buttonOK, new AbsoluteConstraints(15, 360, 100, -1));
-
-        licenseIcon.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.OSI_CERTIFIED)
+        getContentPane().add(this.buttonOK, new AbsoluteConstraints(15, 360, 100, -1));
+        this.iconContainerLicense.setIcon(imageBroker.getIcon(TImageBroker.OSI_CERTIFIED)
         );
-        licenseIcon.setFocusable(false);
-        licenseIcon.setBackground(new Color(0, 0, 0, 0));
-        licenseIcon.setDoubleBuffered(true);
-        licenseIcon.setFocusable(false);
-        getContentPane().add(licenseIcon, new AbsoluteConstraints(15, 15, 120, 100));
-
-        jTextPane2.setEditable(false);
-        jTextPane2.setBackground(new Color(0, 0, 0, 0));
-        jTextPane2.setDisabledTextColor(new Color(0, 0, 0));
-        jTextPane2.setText(bundle.getString("Open_SimMPLS_is_an_Open_Source_Initiative_Certified_software_free_under_the_terms_of_the_GNU_General_Public_License_as_shown_below."));
-        jTextPane2.setAutoscrolls(false);
-        jTextPane2.setEnabled(false);
-        jTextPane2.setFocusable(false);
-        getContentPane().add(jTextPane2, new AbsoluteConstraints(150, 35, 370, 65));
-
+        this.iconContainerLicense.setFocusable(false);
+        this.iconContainerLicense.setBackground(new Color(0, 0, 0, 0));
+        this.iconContainerLicense.setDoubleBuffered(true);
+        this.iconContainerLicense.setFocusable(false);
+        getContentPane().add(this.iconContainerLicense, new AbsoluteConstraints(15, 15, 120, 100));
+        this.textPaneShortLicenseDescription.setEditable(false);
+        this.textPaneShortLicenseDescription.setBackground(new Color(0, 0, 0, 0));
+        this.textPaneShortLicenseDescription.setDisabledTextColor(new Color(0, 0, 0));
+        this.textPaneShortLicenseDescription.setText(this.translations.getString("Open_SimMPLS_is_an_Open_Source_Initiative_Certified_software_free_under_the_terms_of_the_GNU_General_Public_License_as_shown_below."));
+        this.textPaneShortLicenseDescription.setAutoscrolls(false);
+        this.textPaneShortLicenseDescription.setEnabled(false);
+        this.textPaneShortLicenseDescription.setFocusable(false);
+        getContentPane().add(this.textPaneShortLicenseDescription, new AbsoluteConstraints(150, 35, 370, 65));
         pack();
     }
 
-    private void ClicEnElBoton(java.awt.event.ActionEvent evt) {
+    /**
+     * This method is called from within the constructor to do additional
+     * configurations of window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
+    private void initComponents2() {
+        this.setSize(570, 425);
+        Dimension frameSize = this.getSize();
+        Dimension parentSize = this.getParent().getSize();
+        setLocation((parentSize.width - frameSize.width) / 2, (parentSize.height - frameSize.height) / 2);
+    }
+
+    /**
+     * This method is called when a click is done on the displayed button (in
+     * the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnOkButton(ActionEvent evt) {
         setVisible(false);
         dispose();
     }
 
-    private void closeDialog(java.awt.event.WindowEvent evt) {
+    /**
+     * This method is called when the JErrorWindow is closed (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleWindowsClosing(WindowEvent evt) {
         setVisible(false);
         dispose();
     }
 
-    private TImageBroker dispensadorDeImagenes;
-    private javax.swing.JButton buttonOK;
-    private javax.swing.JTextPane jTextPane2;
-    private javax.swing.JLabel licenseIcon;
-    private javax.swing.JScrollPane scrollPaneLicense;
-    private javax.swing.JTextPane textPaneLicense;
+    private TImageBroker imageBroker;
+    private JButton buttonOK;
+    private JTextPane textPaneShortLicenseDescription;
+    private JLabel iconContainerLicense;
+    private JScrollPane scrollPaneLicense;
+    private JTextPane textPaneLicenseText;
+    private ResourceBundle translations;
 }
