@@ -50,219 +50,261 @@ import javax.swing.event.ChangeListener;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
+/**
+ * This class implements a window that is used to configure and reconfigure a
+ * LER node.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
+ */
 public class JLERWindow extends JDialog {
 
-    public JLERWindow(TTopology t, JDesignPanel pad, TImageBroker di, Frame parent, boolean modal) {
+    /**
+     * This is the constructor of the class and creates a new instance of
+     * JLERWindow.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param designPanel desing panel wich contains the LER node that is
+     * configured via this JLERWindow
+     * @param parent Parent window over wich this JLERWindow is shown.
+     * @param imageBroker An object that supply the needed images to be inserted
+     * in the UI.
+     * @param modal TRUE, if this dialog has to be modal. Otherwise, FALSE.
+     * @param topology Topology the LER node belongs to.
+     * @since 2.0
+     */
+    public JLERWindow(TTopology topology, JDesignPanel designPanel, TImageBroker imageBroker, Frame parent, boolean modal) {
         super(parent, modal);
         this.parent = parent;
-        imageBroker = di;
-        designPanel = pad;
-        topology = t;
+        this.imageBroker = imageBroker;
+        this.designPanel = designPanel;
+        this.topology = topology;
         initComponents();
         initComponents2();
     }
 
+    /**
+     * This method is called from within the constructor to initialize the
+     * window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
     private void initComponents() {
         this.translations = ResourceBundle.getBundle(AvailableBundles.LER_WINDOW.getPath());
-        panelPrincipal = new JPanel();
-        panelTabs = new JTabbedPane();
-        mainPanel = new JPanel();
-        iconContainerLER = new JLabel();
-        labelName = new JLabel();
-        textFieldName = new JTextField();
-        panelPosition = new JPanel();
-        labelCoordinateX = new JLabel();
-        labelCoordinateY = new JLabel();
-        coordinatesPanel = new JCoordinatesPanel();
-        checkBoxShowName = new JCheckBox();
-        panelQuickConfiguration = new JPanel();
-        checkBoxQuickGenerateStatistics = new JCheckBox();
-        iconContainerEnd1 = new JLabel();
-        labelLERFeatures = new JLabel();
-        comboBoxPredefinedOptions = new JComboBox();
-        panelAdvancedConfiguration = new JPanel();
-        checkBoxAdvancedGenerateStatistics = new JCheckBox();
-        iconContainerEnd2 = new JLabel();
-        labelRoutingPower = new JLabel();
-        selectorRoutingPower = new JSlider();
-        labelRoutingPowerMbps = new JLabel();
-        labelBufferSize = new JLabel();
-        selectorBufferSize = new JSlider();
-        labelBufferSizeMB = new JLabel();
-        panelButtons = new JPanel();
-        buttonOK = new JButton();
-        buttonCancel = new JButton();
+        this.panelPrincipal = new JPanel();
+        this.panelTabs = new JTabbedPane();
+        this.mainPanel = new JPanel();
+        this.iconContainerLER = new JLabel();
+        this.labelName = new JLabel();
+        this.textFieldName = new JTextField();
+        this.panelPosition = new JPanel();
+        this.labelCoordinateX = new JLabel();
+        this.labelCoordinateY = new JLabel();
+        this.coordinatesPanel = new JCoordinatesPanel();
+        this.checkBoxShowName = new JCheckBox();
+        this.panelQuickConfiguration = new JPanel();
+        this.checkBoxQuickGenerateStatistics = new JCheckBox();
+        this.labelQuickConfiguration = new JLabel();
+        this.labelLERFeatures = new JLabel();
+        this.comboBoxPredefinedOptions = new JComboBox();
+        this.panelAdvancedConfiguration = new JPanel();
+        this.checkBoxAdvancedGenerateStatistics = new JCheckBox();
+        this.labelAdvancedConfiguration = new JLabel();
+        this.labelRoutingPower = new JLabel();
+        this.selectorRoutingPower = new JSlider();
+        this.labelRoutingPowerMbps = new JLabel();
+        this.labelBufferSize = new JLabel();
+        this.selectorBufferSize = new JSlider();
+        this.labelBufferSizeMB = new JLabel();
+        this.panelButtons = new JPanel();
+        this.buttonOK = new JButton();
+        this.buttonCancel = new JButton();
         setTitle(this.translations.getString("VentanaLER.titulo"));
         setModal(true);
         setResizable(false);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent evt) {
-                closeDialog(evt);
+                handleWindowsClosing(evt);
             }
         });
         getContentPane().setLayout(new AbsoluteLayout());
-        panelPrincipal.setLayout(new AbsoluteLayout());
-        panelTabs.setFont(new Font("Dialog", 0, 12));
-        mainPanel.setLayout(new AbsoluteLayout());
-        iconContainerLER.setIcon(imageBroker.getIcon(TImageBroker.LER));
-        iconContainerLER.setText(this.translations.getString("VentanaLER.descripcion"));
-        mainPanel.add(iconContainerLER, new AbsoluteConstraints(15, 20, 335, -1));
-        labelName.setFont(new Font("Dialog", 0, 12));
-        labelName.setText(this.translations.getString("VentanaLER.etiquetaNombre"));
-        mainPanel.add(labelName, new AbsoluteConstraints(215, 80, 120, -1));
-        mainPanel.add(textFieldName, new AbsoluteConstraints(215, 105, 125, -1));
-        panelPosition.setBorder(BorderFactory.createTitledBorder(this.translations.getString("VentanaLER.etiquetaGrupo")));
-        panelPosition.setLayout(new AbsoluteLayout());
-        labelCoordinateX.setFont(new Font("Dialog", 0, 12));
-        labelCoordinateX.setText(this.translations.getString("VentanaLER.X="));
-        panelPosition.add(labelCoordinateX, new AbsoluteConstraints(100, 100, -1, -1));
-        labelCoordinateY.setFont(new Font("Dialog", 0, 12));
-        labelCoordinateY.setText(this.translations.getString("VentanaLER.Y="));
-        panelPosition.add(labelCoordinateY, new AbsoluteConstraints(40, 100, -1, -1));
-        coordinatesPanel.setBackground(new Color(255, 255, 255));
-        coordinatesPanel.addMouseListener(new MouseAdapter() {
+        this.panelPrincipal.setLayout(new AbsoluteLayout());
+        this.panelTabs.setFont(new Font("Dialog", 0, 12));
+        this.mainPanel.setLayout(new AbsoluteLayout());
+        this.iconContainerLER.setIcon(this.imageBroker.getIcon(TImageBroker.LER));
+        this.iconContainerLER.setText(this.translations.getString("VentanaLER.descripcion"));
+        this.mainPanel.add(iconContainerLER, new AbsoluteConstraints(15, 20, 335, -1));
+        this.labelName.setFont(new Font("Dialog", 0, 12));
+        this.labelName.setText(this.translations.getString("VentanaLER.etiquetaNombre"));
+        this.mainPanel.add(this.labelName, new AbsoluteConstraints(215, 80, 120, -1));
+        this.mainPanel.add(textFieldName, new AbsoluteConstraints(215, 105, 125, -1));
+        this.panelPosition.setBorder(BorderFactory.createTitledBorder(this.translations.getString("VentanaLER.etiquetaGrupo")));
+        this.panelPosition.setLayout(new AbsoluteLayout());
+        this.labelCoordinateX.setFont(new Font("Dialog", 0, 12));
+        this.labelCoordinateX.setText(this.translations.getString("VentanaLER.X="));
+        this.panelPosition.add(this.labelCoordinateX, new AbsoluteConstraints(100, 100, -1, -1));
+        this.labelCoordinateY.setFont(new Font("Dialog", 0, 12));
+        this.labelCoordinateY.setText(this.translations.getString("VentanaLER.Y="));
+        this.panelPosition.add(labelCoordinateY, new AbsoluteConstraints(40, 100, -1, -1));
+        this.coordinatesPanel.setBackground(new Color(255, 255, 255));
+        this.coordinatesPanel.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent evt) {
-                clicEnPanelCoordenadas(evt);
+                handleClickOnCoordinatesPanel(evt);
             }
 
+            @Override
             public void mouseEntered(MouseEvent evt) {
-                ratonEntraEnPanelCoordenadas(evt);
+                handleMouseEnteringInCoordinatesPanel(evt);
             }
 
+            @Override
             public void mouseExited(MouseEvent evt) {
-                ratonSaleDePanelCoordenadas(evt);
+                handleMouseLeavingCoordinatesPanel(evt);
             }
         });
-        panelPosition.add(coordinatesPanel, new AbsoluteConstraints(25, 25, 130, 70));
-        mainPanel.add(panelPosition, new AbsoluteConstraints(15, 75, 180, 125));
-        checkBoxShowName.setFont(new Font("Dialog", 0, 12));
-        checkBoxShowName.setSelected(true);
-        checkBoxShowName.setText(this.translations.getString("VentanaLER.verNombre"));
-        mainPanel.add(checkBoxShowName, new AbsoluteConstraints(215, 135, -1, -1));
-        panelTabs.addTab(this.translations.getString("VentanaLER.tabs.General"), mainPanel);
-        panelQuickConfiguration.setLayout(new AbsoluteLayout());
-        checkBoxQuickGenerateStatistics.setFont(new Font("Dialog", 0, 12));
-        checkBoxQuickGenerateStatistics.setText(this.translations.getString("VentanaLER.GenerarEstadisticas"));
-        checkBoxQuickGenerateStatistics.addActionListener(new ActionListener() {
+        this.panelPosition.add(this.coordinatesPanel, new AbsoluteConstraints(25, 25, 130, 70));
+        this.mainPanel.add(this.panelPosition, new AbsoluteConstraints(15, 75, 180, 125));
+        this.checkBoxShowName.setFont(new Font("Dialog", 0, 12));
+        this.checkBoxShowName.setSelected(true);
+        this.checkBoxShowName.setText(this.translations.getString("VentanaLER.verNombre"));
+        this.mainPanel.add(this.checkBoxShowName, new AbsoluteConstraints(215, 135, -1, -1));
+        this.panelTabs.addTab(this.translations.getString("VentanaLER.tabs.General"), this.mainPanel);
+        this.panelQuickConfiguration.setLayout(new AbsoluteLayout());
+        this.checkBoxQuickGenerateStatistics.setFont(new Font("Dialog", 0, 12));
+        this.checkBoxQuickGenerateStatistics.setText(this.translations.getString("VentanaLER.GenerarEstadisticas"));
+        this.checkBoxQuickGenerateStatistics.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnGenerarEstadisticasSencillo(evt);
+                handleClickOnQuickGenerateStatistics(evt);
             }
         });
-        panelQuickConfiguration.add(checkBoxQuickGenerateStatistics, new AbsoluteConstraints(70, 160, -1, -1));
-        iconContainerEnd1.setIcon(imageBroker.getIcon(TImageBroker.ASISTENTE));
-        iconContainerEnd1.setText(this.translations.getString("VentanaLER.ConfiguracionRapida"));
-        panelQuickConfiguration.add(iconContainerEnd1, new AbsoluteConstraints(15, 20, 335, -1));
-        labelLERFeatures.setFont(new Font("Dialog", 0, 12));
-        labelLERFeatures.setHorizontalAlignment(SwingConstants.RIGHT);
-        labelLERFeatures.setText(this.translations.getString("VentanaLER.CaracteristicasDelLER"));
-        panelQuickConfiguration.add(labelLERFeatures, new AbsoluteConstraints(20, 110, 160, -1));
-        comboBoxPredefinedOptions.setFont(new Font("Dialog", 0, 12));
-        comboBoxPredefinedOptions.setModel(new DefaultComboBoxModel(new String[]{"Personalized", "Very low cost LER", "Low cost LER", "Medium cost LER", "Expensive LER", "Very expensive LER"}));
-        comboBoxPredefinedOptions.addActionListener(new ActionListener() {
+        this.panelQuickConfiguration.add(this.checkBoxQuickGenerateStatistics, new AbsoluteConstraints(70, 160, -1, -1));
+        this.labelQuickConfiguration.setIcon(this.imageBroker.getIcon(TImageBroker.ASISTENTE));
+        this.labelQuickConfiguration.setText(this.translations.getString("VentanaLER.ConfiguracionRapida"));
+        this.panelQuickConfiguration.add(labelQuickConfiguration, new AbsoluteConstraints(15, 20, 335, -1));
+        this.labelLERFeatures.setFont(new Font("Dialog", 0, 12));
+        this.labelLERFeatures.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelLERFeatures.setText(this.translations.getString("VentanaLER.CaracteristicasDelLER"));
+        this.panelQuickConfiguration.add(this.labelLERFeatures, new AbsoluteConstraints(20, 110, 160, -1));
+        this.comboBoxPredefinedOptions.setFont(new Font("Dialog", 0, 12));
+        this.comboBoxPredefinedOptions.setModel(new DefaultComboBoxModel(new String[]{"Personalized", "Very low cost LER", "Low cost LER", "Medium cost LER", "Expensive LER", "Very expensive LER"}));
+        this.comboBoxPredefinedOptions.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                cliEnSelectorSencilloCaracteristicas(evt);
+                handleClickOnPredefinedOptions(evt);
             }
         });
-        panelQuickConfiguration.add(comboBoxPredefinedOptions, new AbsoluteConstraints(190, 110, -1, -1));
-        panelTabs.addTab(this.translations.getString("VentanaLER.tabs.Fast"), panelQuickConfiguration);
-        panelAdvancedConfiguration.setLayout(new AbsoluteLayout());
-        checkBoxAdvancedGenerateStatistics.setFont(new Font("Dialog", 0, 12));
-        checkBoxAdvancedGenerateStatistics.setText(this.translations.getString("VentanaLER.GenerarEstadisticas"));
-        checkBoxAdvancedGenerateStatistics.addActionListener(new ActionListener() {
+        this.panelQuickConfiguration.add(this.comboBoxPredefinedOptions, new AbsoluteConstraints(190, 110, -1, -1));
+        this.panelTabs.addTab(this.translations.getString("VentanaLER.tabs.Fast"), this.panelQuickConfiguration);
+        this.panelAdvancedConfiguration.setLayout(new AbsoluteLayout());
+        this.checkBoxAdvancedGenerateStatistics.setFont(new Font("Dialog", 0, 12));
+        this.checkBoxAdvancedGenerateStatistics.setText(this.translations.getString("VentanaLER.GenerarEstadisticas"));
+        this.checkBoxAdvancedGenerateStatistics.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnGenerarEstadisticasAvanzada(evt);
+                handleClickOnAdvancedGenerateStatistics(evt);
             }
         });
-        panelAdvancedConfiguration.add(checkBoxAdvancedGenerateStatistics, new AbsoluteConstraints(70, 160, -1, -1));
-        iconContainerEnd2.setIcon(imageBroker.getIcon(TImageBroker.AVANZADA));
-        iconContainerEnd2.setText(this.translations.getString("VentanaLER.ConfiguracionAvanzada"));
-        panelAdvancedConfiguration.add(iconContainerEnd2, new AbsoluteConstraints(15, 20, 335, -1));
-        labelRoutingPower.setFont(new Font("Dialog", 0, 12));
-        labelRoutingPower.setHorizontalAlignment(SwingConstants.RIGHT);
-        labelRoutingPower.setText(this.translations.getString("VentanaLER.PotenciaDeConmutacion"));
-        panelAdvancedConfiguration.add(labelRoutingPower, new AbsoluteConstraints(10, 90, 140, -1));
-        selectorRoutingPower.setMajorTickSpacing(1000);
-        selectorRoutingPower.setMaximum(10240);
-        selectorRoutingPower.setMinimum(1);
-        selectorRoutingPower.setMinorTickSpacing(100);
-        selectorRoutingPower.setValue(1);
-        selectorRoutingPower.addChangeListener(new ChangeListener() {
+        this.panelAdvancedConfiguration.add(this.checkBoxAdvancedGenerateStatistics, new AbsoluteConstraints(70, 160, -1, -1));
+        this.labelAdvancedConfiguration.setIcon(this.imageBroker.getIcon(TImageBroker.AVANZADA));
+        this.labelAdvancedConfiguration.setText(this.translations.getString("VentanaLER.ConfiguracionAvanzada"));
+        this.panelAdvancedConfiguration.add(labelAdvancedConfiguration, new AbsoluteConstraints(15, 20, 335, -1));
+        this.labelRoutingPower.setFont(new Font("Dialog", 0, 12));
+        this.labelRoutingPower.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelRoutingPower.setText(this.translations.getString("VentanaLER.PotenciaDeConmutacion"));
+        this.panelAdvancedConfiguration.add(this.labelRoutingPower, new AbsoluteConstraints(10, 90, 140, -1));
+        this.selectorRoutingPower.setMajorTickSpacing(1000);
+        this.selectorRoutingPower.setMaximum(10240);
+        this.selectorRoutingPower.setMinimum(1);
+        this.selectorRoutingPower.setMinorTickSpacing(100);
+        this.selectorRoutingPower.setValue(1);
+        this.selectorRoutingPower.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent evt) {
-                selectorDePotenciadeConmutacionCambiado(evt);
+                handleChangeOnRoutingPower(evt);
             }
         });
-        panelAdvancedConfiguration.add(selectorRoutingPower, new AbsoluteConstraints(155, 90, 130, 20));
-        labelRoutingPowerMbps.setFont(new Font("Dialog", 0, 10));
-        labelRoutingPowerMbps.setForeground(new Color(102, 102, 102));
-        labelRoutingPowerMbps.setHorizontalAlignment(SwingConstants.LEFT);
-        labelRoutingPowerMbps.setText(this.translations.getString("VentanaLER.1_Mbps"));
-        panelAdvancedConfiguration.add(labelRoutingPowerMbps, new AbsoluteConstraints(290, 90, 70, 20));
-        labelBufferSize.setFont(new Font("Dialog", 0, 12));
-        labelBufferSize.setHorizontalAlignment(SwingConstants.RIGHT);
-        labelBufferSize.setText(this.translations.getString("VentanaLER.TamanioDelBufferDeEntrada"));
-        panelAdvancedConfiguration.add(labelBufferSize, new AbsoluteConstraints(10, 120, 180, -1));
-        selectorBufferSize.setMajorTickSpacing(50);
-        selectorBufferSize.setMaximum(1024);
-        selectorBufferSize.setMinimum(1);
-        selectorBufferSize.setMinorTickSpacing(100);
-        selectorBufferSize.setValue(1);
-        selectorBufferSize.addChangeListener(new ChangeListener() {
+        this.panelAdvancedConfiguration.add(selectorRoutingPower, new AbsoluteConstraints(155, 90, 130, 20));
+        this.labelRoutingPowerMbps.setFont(new Font("Dialog", 0, 10));
+        this.labelRoutingPowerMbps.setForeground(new Color(102, 102, 102));
+        this.labelRoutingPowerMbps.setHorizontalAlignment(SwingConstants.LEFT);
+        this.labelRoutingPowerMbps.setText(this.translations.getString("VentanaLER.1_Mbps"));
+        this.panelAdvancedConfiguration.add(labelRoutingPowerMbps, new AbsoluteConstraints(290, 90, 70, 20));
+        this.labelBufferSize.setFont(new Font("Dialog", 0, 12));
+        this.labelBufferSize.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelBufferSize.setText(this.translations.getString("VentanaLER.TamanioDelBufferDeEntrada"));
+        this.panelAdvancedConfiguration.add(labelBufferSize, new AbsoluteConstraints(10, 120, 180, -1));
+        this.selectorBufferSize.setMajorTickSpacing(50);
+        this.selectorBufferSize.setMaximum(1024);
+        this.selectorBufferSize.setMinimum(1);
+        this.selectorBufferSize.setMinorTickSpacing(100);
+        this.selectorBufferSize.setValue(1);
+        this.selectorBufferSize.addChangeListener(new ChangeListener() {
+            @Override
             public void stateChanged(ChangeEvent evt) {
-                selectorDeTamanioBufferCambiado(evt);
+                handleChangeOnBufferSize(evt);
             }
         });
-        panelAdvancedConfiguration.add(selectorBufferSize, new AbsoluteConstraints(200, 120, 100, 20));
-        labelBufferSizeMB.setFont(new Font("Dialog", 0, 10));
-        labelBufferSizeMB.setForeground(new Color(102, 102, 102));
-        labelBufferSizeMB.setHorizontalAlignment(SwingConstants.LEFT);
-        labelBufferSizeMB.setText(this.translations.getString("VentanaLER.1_MB"));
-        panelAdvancedConfiguration.add(labelBufferSizeMB, new AbsoluteConstraints(300, 120, 60, 20));
-        panelTabs.addTab(this.translations.getString("VentanaLER.tabs.Advanced"), panelAdvancedConfiguration);
-        panelPrincipal.add(panelTabs, new AbsoluteConstraints(15, 15, 370, 240));
-        panelButtons.setLayout(new AbsoluteLayout());
-        buttonOK.setFont(new Font("Dialog", 0, 12));
-        buttonOK.setIcon(imageBroker.getIcon(TImageBroker.ACEPTAR));
-        buttonOK.setMnemonic(this.translations.getString("VentanaLER.botones.mne.Aceptar").charAt(0));
-        buttonOK.setText(this.translations.getString("VentanaLER.boton.Ok"));
-        buttonOK.addActionListener(new ActionListener() {
+        this.panelAdvancedConfiguration.add(this.selectorBufferSize, new AbsoluteConstraints(200, 120, 100, 20));
+        this.labelBufferSizeMB.setFont(new Font("Dialog", 0, 10));
+        this.labelBufferSizeMB.setForeground(new Color(102, 102, 102));
+        this.labelBufferSizeMB.setHorizontalAlignment(SwingConstants.LEFT);
+        this.labelBufferSizeMB.setText(this.translations.getString("VentanaLER.1_MB"));
+        this.panelAdvancedConfiguration.add(this.labelBufferSizeMB, new AbsoluteConstraints(300, 120, 60, 20));
+        this.panelTabs.addTab(this.translations.getString("VentanaLER.tabs.Advanced"), this.panelAdvancedConfiguration);
+        this.panelPrincipal.add(panelTabs, new AbsoluteConstraints(15, 15, 370, 240));
+        this.panelButtons.setLayout(new AbsoluteLayout());
+        this.buttonOK.setFont(new Font("Dialog", 0, 12));
+        this.buttonOK.setIcon(imageBroker.getIcon(TImageBroker.ACEPTAR));
+        this.buttonOK.setMnemonic(this.translations.getString("VentanaLER.botones.mne.Aceptar").charAt(0));
+        this.buttonOK.setText(this.translations.getString("VentanaLER.boton.Ok"));
+        this.buttonOK.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnAceptar(evt);
+                handleClickOnOKButton(evt);
             }
         });
-        panelButtons.add(buttonOK, new AbsoluteConstraints(15, 15, 115, -1));
-        buttonCancel.setFont(new Font("Dialog", 0, 12));
-        buttonCancel.setIcon(imageBroker.getIcon(TImageBroker.CANCELAR));
-        buttonCancel.setMnemonic(this.translations.getString("VentanaLER.botones.mne.Cancelar").charAt(0));
-        buttonCancel.setText(this.translations.getString("VentanaLER.boton.Cancel"));
-        buttonCancel.addActionListener(new ActionListener() {
+        this.panelButtons.add(this.buttonOK, new AbsoluteConstraints(15, 15, 115, -1));
+        this.buttonCancel.setFont(new Font("Dialog", 0, 12));
+        this.buttonCancel.setIcon(imageBroker.getIcon(TImageBroker.CANCELAR));
+        this.buttonCancel.setMnemonic(this.translations.getString("VentanaLER.botones.mne.Cancelar").charAt(0));
+        this.buttonCancel.setText(this.translations.getString("VentanaLER.boton.Cancel"));
+        this.buttonCancel.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnCancelar(evt);
+                handleClickOnCancelButton(evt);
             }
         });
-        panelButtons.add(buttonCancel, new AbsoluteConstraints(140, 15, 115, -1));
-        panelPrincipal.add(panelButtons, new AbsoluteConstraints(0, 255, 400, 55));
-        getContentPane().add(panelPrincipal, new AbsoluteConstraints(0, 0, -1, 310));
+        this.panelButtons.add(this.buttonCancel, new AbsoluteConstraints(140, 15, 115, -1));
+        this.panelPrincipal.add(this.panelButtons, new AbsoluteConstraints(0, 255, 400, 55));
+        getContentPane().add(this.panelPrincipal, new AbsoluteConstraints(0, 0, -1, 310));
         pack();
     }
 
+    /**
+     * This method is called from within the constructor to do additional
+     * configurations of window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
     private void initComponents2() {
-        coordinatesPanel.setDesignPanel(designPanel);
+        this.coordinatesPanel.setDesignPanel(this.designPanel);
         Dimension frameSize = this.getSize();
-        Dimension parentSize = parent.getSize();
+        Dimension parentSize = this.parent.getSize();
         setLocation((parentSize.width - frameSize.width) / 2, (parentSize.height - frameSize.height) / 2);
-        lerNode = null;
-        labelCoordinateX.setText(this.translations.getString("JVentanaLER.X=") + coordinatesPanel.getRealX());
-        labelCoordinateY.setText(this.translations.getString("JVentanaLER.Y=") + coordinatesPanel.getRealY());
-        currentConfigShowName = true;
-        currentConfigName = "";
-        currentConfigRoutingPower = 0;
-        currentConfigBufferSize = 0;
-        reconguration = false;
-        currentConfigGenerateStatistics = false;
+        this.lerNode = null;
+        this.labelCoordinateX.setText(this.translations.getString("JVentanaLER.X=") + this.coordinatesPanel.getRealX());
+        this.labelCoordinateY.setText(this.translations.getString("JVentanaLER.Y=") + this.coordinatesPanel.getRealY());
+        this.currentConfigShowName = true;
+        this.currentConfigName = "";
+        this.currentConfigRoutingPower = 0;
+        this.currentConfigBufferSize = 0;
+        this.reconguration = false;
+        this.currentConfigGenerateStatistics = false;
         this.comboBoxPredefinedOptions.removeAllItems();
         this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaLER.Personalized_LER"));
         this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaLER.Very_low_range_LER"));
@@ -273,130 +315,225 @@ public class JLERWindow extends JDialog {
         this.comboBoxPredefinedOptions.setSelectedIndex(0);
     }
 
-    private void cliEnSelectorSencilloCaracteristicas(ActionEvent evt) {
-        int opcionSeleccionada = this.comboBoxPredefinedOptions.getSelectedIndex();
-        if (opcionSeleccionada == 0) {
-            // No se hace nada
+    /**
+     * This method is called when a a predefined option is selected in the UI to
+     * configure the LER.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnPredefinedOptions(ActionEvent evt) {
+        int selectedOption = this.comboBoxPredefinedOptions.getSelectedIndex();
+        if (selectedOption == 0) {
+            // Do nothing
             this.comboBoxPredefinedOptions.setSelectedIndex(0);
-        } else if (opcionSeleccionada == 1) {
+        } else if (selectedOption == 1) {
             this.selectorRoutingPower.setValue(1);
             this.selectorBufferSize.setValue(1);
             this.comboBoxPredefinedOptions.setSelectedIndex(1);
-        } else if (opcionSeleccionada == 2) {
+        } else if (selectedOption == 2) {
             this.selectorRoutingPower.setValue(2560);
             this.selectorBufferSize.setValue(256);
             this.comboBoxPredefinedOptions.setSelectedIndex(2);
-        } else if (opcionSeleccionada == 3) {
+        } else if (selectedOption == 3) {
             this.selectorRoutingPower.setValue(5120);
             this.selectorBufferSize.setValue(512);
             this.comboBoxPredefinedOptions.setSelectedIndex(3);
-        } else if (opcionSeleccionada == 4) {
+        } else if (selectedOption == 4) {
             this.selectorRoutingPower.setValue(7680);
             this.selectorBufferSize.setValue(768);
             this.comboBoxPredefinedOptions.setSelectedIndex(4);
-        } else if (opcionSeleccionada == 5) {
+        } else if (selectedOption == 5) {
             this.selectorRoutingPower.setValue(10240);
             this.selectorBufferSize.setValue(1024);
             this.comboBoxPredefinedOptions.setSelectedIndex(5);
         }
     }
 
-    private void selectorDeTamanioBufferCambiado(ChangeEvent evt) {
+    /**
+     * This method is called when a change is made in the buffer size (in the
+     * UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleChangeOnBufferSize(ChangeEvent evt) {
         this.comboBoxPredefinedOptions.setSelectedIndex(0);
         this.labelBufferSizeMB.setText(this.selectorBufferSize.getValue() + " " + this.translations.getString("VentanaLER.MB"));
     }
 
-    private void selectorDePotenciadeConmutacionCambiado(ChangeEvent evt) {
+    /**
+     * This method is called when a change is made in the routing power (in the
+     * UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleChangeOnRoutingPower(ChangeEvent evt) {
         this.comboBoxPredefinedOptions.setSelectedIndex(0);
         this.labelRoutingPowerMbps.setText(this.selectorRoutingPower.getValue() + " " + this.translations.getString("VentanaLER.Mbps."));
     }
 
-    private void clicEnGenerarEstadisticasAvanzada(ActionEvent evt) {
+    /**
+     * This method is called when a change is made in "generate stistics"
+     * checkbox located at "Advanced configuration" tab (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnAdvancedGenerateStatistics(ActionEvent evt) {
         this.checkBoxQuickGenerateStatistics.setSelected(this.checkBoxAdvancedGenerateStatistics.isSelected());
     }
 
-    private void clicEnGenerarEstadisticasSencillo(ActionEvent evt) {
+    /**
+     * This method is called when a change is made in "generate stistics"
+     * checkbox located at "Quick configuration" tab (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnQuickGenerateStatistics(ActionEvent evt) {
         this.checkBoxAdvancedGenerateStatistics.setSelected(this.checkBoxQuickGenerateStatistics.isSelected());
     }
 
-    private void clicEnCancelar(ActionEvent evt) {
-        if (reconguration) {
-            lerNode.setShowName(currentConfigShowName);
-            lerNode.setName(currentConfigName);
-            lerNode.setWellConfigured(true);
-            lerNode.setBufferSizeInMBytes(currentConfigBufferSize);
-            lerNode.setRoutingPowerInMbps(currentConfigRoutingPower);
-            lerNode.setGenerateStats(currentConfigGenerateStatistics);
-            reconguration = false;
+    /**
+     * This method is called when a click is done "Cancel" button (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnCancelButton(ActionEvent evt) {
+        if (this.reconguration) {
+            this.lerNode.setShowName(this.currentConfigShowName);
+            this.lerNode.setName(this.currentConfigName);
+            this.lerNode.setWellConfigured(true);
+            this.lerNode.setBufferSizeInMBytes(this.currentConfigBufferSize);
+            this.lerNode.setRoutingPowerInMbps(this.currentConfigRoutingPower);
+            this.lerNode.setGenerateStats(this.currentConfigGenerateStatistics);
+            this.reconguration = false;
         } else {
-            lerNode.setWellConfigured(false);
+            this.lerNode.setWellConfigured(false);
         }
         this.setVisible(false);
         this.dispose();
     }
 
-    private void clicEnAceptar(ActionEvent evt) {
-        lerNode.setWellConfigured(true);
+    /**
+     * This method is called when a click is done "Ok" button (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnOKButton(ActionEvent evt) {
+        this.lerNode.setWellConfigured(true);
         if (!this.reconguration) {
-            lerNode.setScreenPosition(new Point(coordinatesPanel.getRealX(), coordinatesPanel.getRealY()));
+            this.lerNode.setScreenPosition(new Point(this.coordinatesPanel.getRealX(), this.coordinatesPanel.getRealY()));
         }
-        lerNode.setBufferSizeInMBytes(this.selectorBufferSize.getValue());
-        lerNode.setRoutingPowerInMbps(this.selectorRoutingPower.getValue());
-        lerNode.setGenerateStats(this.checkBoxQuickGenerateStatistics.isSelected());
-        lerNode.setName(textFieldName.getText());
-        lerNode.setShowName(checkBoxShowName.isSelected());
-        lerNode.setGenerateStats(this.checkBoxQuickGenerateStatistics.isSelected());
-        int error = lerNode.validateConfig(topology, this.reconguration);
+        this.lerNode.setBufferSizeInMBytes(this.selectorBufferSize.getValue());
+        this.lerNode.setRoutingPowerInMbps(this.selectorRoutingPower.getValue());
+        this.lerNode.setGenerateStats(this.checkBoxQuickGenerateStatistics.isSelected());
+        this.lerNode.setName(this.textFieldName.getText());
+        this.lerNode.setShowName(this.checkBoxShowName.isSelected());
+        this.lerNode.setGenerateStats(this.checkBoxQuickGenerateStatistics.isSelected());
+        int error = this.lerNode.validateConfig(this.topology, this.reconguration);
         if (error != TLERNode.OK) {
-            JWarningWindow va = new JWarningWindow(parent, true, imageBroker);
-            va.setWarningMessage(lerNode.getErrorMessage(error));
-            va.show();
+            JWarningWindow warningWindow = new JWarningWindow(this.parent, true, this.imageBroker);
+            warningWindow.setWarningMessage(this.lerNode.getErrorMessage(error));
+            warningWindow.setVisible(true);
         } else {
             this.setVisible(false);
             this.dispose();
         }
     }
 
-    private void clicEnPanelCoordenadas(MouseEvent evt) {
+    /**
+     * This method is called when a click is done over the coordinates panel (in
+     * the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnCoordinatesPanel(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            coordinatesPanel.setCoordinates(evt.getPoint());
-            labelCoordinateX.setText(this.translations.getString("VentanaconfigLER.X=_") + coordinatesPanel.getRealX());
-            labelCoordinateY.setText(this.translations.getString("VentanaconfigLER.Y=_") + coordinatesPanel.getRealY());
-            coordinatesPanel.repaint();
+            this.coordinatesPanel.setCoordinates(evt.getPoint());
+            this.labelCoordinateX.setText(this.translations.getString("VentanaconfigLER.X=_") + this.coordinatesPanel.getRealX());
+            this.labelCoordinateY.setText(this.translations.getString("VentanaconfigLER.Y=_") + this.coordinatesPanel.getRealY());
+            this.coordinatesPanel.repaint();
         }
     }
 
-    private void ratonSaleDePanelCoordenadas(MouseEvent evt) {
+    /**
+     * This method is called when the mouse exits the coordinates panel (in the
+     * UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleMouseLeavingCoordinatesPanel(MouseEvent evt) {
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
-    private void ratonEntraEnPanelCoordenadas(MouseEvent evt) {
+    /**
+     * This method is called when the mouse enters the coordinates panel (in the
+     * UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleMouseEnteringInCoordinatesPanel(MouseEvent evt) {
         this.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
     }
 
-    private void closeDialog(WindowEvent evt) {
+    /**
+     * This method is called when the JLERWindow is closed (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleWindowsClosing(WindowEvent evt) {
         setVisible(false);
-        lerNode.setWellConfigured(false);
+        this.lerNode.setWellConfigured(false);
         dispose();
     }
 
-    public void ponerConfiguracion(TLERNode tnler, boolean recfg) {
-        lerNode = tnler;
-        reconguration = recfg;
-        if (reconguration) {
+    /**
+     * This method configures all components of JLERWindow with present values
+     * retrieved from the LER. It is used to do a reconfiguration.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param lerNode the LER node to be configured through this JLERWindow
+     * @param reconfiguration TRUE if the LER is being reconfigured. FALSE if it
+     * is the first configuration of the LER after its creation.
+     * @since 2.0
+     */
+    public void setConfiguration(TLERNode lerNode, boolean reconfiguration) {
+        this.lerNode = lerNode;
+        this.reconguration = reconfiguration;
+        if (this.reconguration) {
             this.coordinatesPanel.setEnabled(false);
             this.coordinatesPanel.setToolTipText(null);
-            currentConfigGenerateStatistics = tnler.isGeneratingStats();
-            currentConfigShowName = tnler.nameMustBeDisplayed();
-            currentConfigName = tnler.getName();
-            currentConfigRoutingPower = tnler.getRoutingPowerInMbps();
-            currentConfigBufferSize = tnler.getBufferSizeInMBytes();
-            this.checkBoxAdvancedGenerateStatistics.setSelected(currentConfigGenerateStatistics);
-            this.checkBoxQuickGenerateStatistics.setSelected(currentConfigGenerateStatistics);
-            this.selectorRoutingPower.setValue(currentConfigRoutingPower);
-            this.selectorBufferSize.setValue(currentConfigBufferSize);
-            this.textFieldName.setText(currentConfigName);
-            this.checkBoxShowName.setSelected(currentConfigShowName);
+            this.currentConfigGenerateStatistics = lerNode.isGeneratingStats();
+            this.currentConfigShowName = lerNode.nameMustBeDisplayed();
+            this.currentConfigName = lerNode.getName();
+            this.currentConfigRoutingPower = lerNode.getRoutingPowerInMbps();
+            this.currentConfigBufferSize = lerNode.getBufferSizeInMBytes();
+            this.checkBoxAdvancedGenerateStatistics.setSelected(this.currentConfigGenerateStatistics);
+            this.checkBoxQuickGenerateStatistics.setSelected(this.currentConfigGenerateStatistics);
+            this.selectorRoutingPower.setValue(this.currentConfigRoutingPower);
+            this.selectorBufferSize.setValue(this.currentConfigBufferSize);
+            this.textFieldName.setText(this.currentConfigName);
+            this.checkBoxShowName.setSelected(this.currentConfigShowName);
         }
     }
 
@@ -416,8 +553,8 @@ public class JLERWindow extends JDialog {
     private JLabel labelBufferSizeMB;
     private JLabel labelName;
     private JLabel labelRoutingPowerMbps;
-    private JLabel iconContainerEnd1;
-    private JLabel iconContainerEnd2;
+    private JLabel labelQuickConfiguration;
+    private JLabel labelAdvancedConfiguration;
     private JLabel iconContainerLER;
     private JButton buttonOK;
     private JButton buttonCancel;

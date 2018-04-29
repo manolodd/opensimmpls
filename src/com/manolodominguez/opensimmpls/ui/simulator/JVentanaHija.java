@@ -1121,7 +1121,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
                     ve.show();
                 } else if (nt.getNodeType() == TNode.LER) {
                     JLERWindow vler = new JLERWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
-                    vler.ponerConfiguracion((TLERNode) nt, true);
+                    vler.setConfiguration((TLERNode) nt, true);
                     vler.show();
                 } else if (nt.getNodeType() == TNode.ACTIVE_LER) {
                     JActiveLERWindow vlera = new JActiveLERWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
@@ -1885,7 +1885,7 @@ private void clicEnAniadirLER(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
         err.show();
     }
     JLERWindow vler = new JLERWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
-    vler.ponerConfiguracion(ler, false);
+    vler.setConfiguration(ler, false);
     vler.show();
     if (ler.isWellConfigured()) {
         try {

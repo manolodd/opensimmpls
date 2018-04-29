@@ -105,12 +105,12 @@ public class JActiveLERWindow extends JDialog {
         this.checkBoxShowName = new JCheckBox();
         this.panelQuickConfiguration = new JPanel();
         this.checkBoxQuickGenerateStatistics = new JCheckBox();
-        this.iconContainerEnd1 = new JLabel();
+        this.labelQuickConfiguration = new JLabel();
         this.labelActiveLERFeatures = new JLabel();
         this.comboBoxPredefinedOptions = new JComboBox();
         this.panelAdvancedConfiguration = new JPanel();
         this.checkBoxAdvancedGenerateStatistics = new JCheckBox();
-        this.iconContainerEnd2 = new JLabel();
+        this.labelAdvancedConfiguration = new JLabel();
         this.labelRoutingPower = new JLabel();
         this.selectorRoutingPower = new JSlider();
         this.labelRoutingPowerMbps = new JLabel();
@@ -185,9 +185,9 @@ public class JActiveLERWindow extends JDialog {
             }
         });
         this.panelQuickConfiguration.add(this.checkBoxQuickGenerateStatistics, new AbsoluteConstraints(70, 160, -1, -1));
-        this.iconContainerEnd1.setIcon(this.imageBroker.getIcon(TImageBroker.ASISTENTE));
-        this.iconContainerEnd1.setText(translations.getString("VentanaLERA.ConfiguracionRapida"));
-        this.panelQuickConfiguration.add(this.iconContainerEnd1, new AbsoluteConstraints(15, 20, 335, -1));
+        this.labelQuickConfiguration.setIcon(this.imageBroker.getIcon(TImageBroker.ASISTENTE));
+        this.labelQuickConfiguration.setText(translations.getString("VentanaLERA.ConfiguracionRapida"));
+        this.panelQuickConfiguration.add(this.labelQuickConfiguration, new AbsoluteConstraints(15, 20, 335, -1));
         this.labelActiveLERFeatures.setFont(new Font("Dialog", 0, 12));
         this.labelActiveLERFeatures.setHorizontalAlignment(SwingConstants.RIGHT);
         this.labelActiveLERFeatures.setText(translations.getString("VentanaLERA.CaracteristicasDelLER"));
@@ -213,9 +213,9 @@ public class JActiveLERWindow extends JDialog {
             }
         });
         this.panelAdvancedConfiguration.add(this.checkBoxAdvancedGenerateStatistics, new AbsoluteConstraints(70, 180, -1, -1));
-        this.iconContainerEnd2.setIcon(this.imageBroker.getIcon(TImageBroker.AVANZADA));
-        this.iconContainerEnd2.setText(translations.getString("VentanaLERA.ConfiguracionAvanzada"));
-        this.panelAdvancedConfiguration.add(this.iconContainerEnd2, new AbsoluteConstraints(15, 20, 335, -1));
+        this.labelAdvancedConfiguration.setIcon(this.imageBroker.getIcon(TImageBroker.AVANZADA));
+        this.labelAdvancedConfiguration.setText(translations.getString("VentanaLERA.ConfiguracionAvanzada"));
+        this.panelAdvancedConfiguration.add(this.labelAdvancedConfiguration, new AbsoluteConstraints(15, 20, 335, -1));
         this.labelRoutingPower.setFont(new Font("Dialog", 0, 12));
         this.labelRoutingPower.setHorizontalAlignment(SwingConstants.RIGHT);
         this.labelRoutingPower.setText(translations.getString("VentanaLER.PotenciaDeConmutacion"));
@@ -602,8 +602,8 @@ public class JActiveLERWindow extends JDialog {
     private JLabel labelDMGPSizeKB;
     private JLabel labelName;
     private JLabel labelRoutingPowerMbps;
-    private JLabel iconContainerEnd1;
-    private JLabel iconContainerEnd2;
+    private JLabel labelQuickConfiguration;
+    private JLabel labelAdvancedConfiguration;
     private JLabel iconContainerActiveLER;
     private JButton buttonOK;
     private JButton buttonCancel;

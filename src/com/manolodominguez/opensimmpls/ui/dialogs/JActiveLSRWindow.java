@@ -104,12 +104,12 @@ public class JActiveLSRWindow extends JDialog {
         this.coordinatesPanel = new JCoordinatesPanel();
         this.checkBoxShowName = new JCheckBox();
         this.panelQuickConfiguration = new JPanel();
-        this.iconContainerEnd1 = new JLabel();
+        this.labelQuickConfiguration = new JLabel();
         this.checkBoxQuickGenerateStatistics = new JCheckBox();
         this.labelActiveLSRFeatures = new JLabel();
         this.comboBoxPredefinedOptions = new JComboBox();
         this.panelAdvancedConfiguration = new JPanel();
-        this.iconContainerEnd2 = new JLabel();
+        this.labelAdvancedConfiguration = new JLabel();
         this.checkBoxAdvancedGenerateStatistics = new JCheckBox();
         this.labelSwitchingPower = new JLabel();
         this.labelBufferSize = new JLabel();
@@ -176,9 +176,9 @@ public class JActiveLSRWindow extends JDialog {
         this.panelGeneralConfiguration.add(this.checkBoxShowName, new AbsoluteConstraints(215, 135, -1, -1));
         this.panelTabs.addTab(this.translations.getString("VentanaLSR.tabs.General"), this.panelGeneralConfiguration);
         this.panelQuickConfiguration.setLayout(new AbsoluteLayout());
-        this.iconContainerEnd1.setIcon(this.imageBroker.getIcon(TImageBroker.ASISTENTE));
-        this.iconContainerEnd1.setText(this.translations.getString("VentanaLSRA.ConfiguracionSencilla"));
-        this.panelQuickConfiguration.add(this.iconContainerEnd1, new AbsoluteConstraints(15, 20, 335, -1));
+        this.labelQuickConfiguration.setIcon(this.imageBroker.getIcon(TImageBroker.ASISTENTE));
+        this.labelQuickConfiguration.setText(this.translations.getString("VentanaLSRA.ConfiguracionSencilla"));
+        this.panelQuickConfiguration.add(this.labelQuickConfiguration, new AbsoluteConstraints(15, 20, 335, -1));
         this.checkBoxQuickGenerateStatistics.setFont(new Font("Dialog", 0, 12));
         this.checkBoxQuickGenerateStatistics.setText(this.translations.getString("VentanaLSRA.GenerarEstadisticas"));
         this.checkBoxQuickGenerateStatistics.addActionListener(new ActionListener() {
@@ -204,9 +204,9 @@ public class JActiveLSRWindow extends JDialog {
         this.panelQuickConfiguration.add(this.comboBoxPredefinedOptions, new AbsoluteConstraints(190, 110, -1, -1));
         this.panelTabs.addTab(this.translations.getString("VentanaLSR.tabs.Fast"), this.panelQuickConfiguration);
         this.panelAdvancedConfiguration.setLayout(new AbsoluteLayout());
-        this.iconContainerEnd2.setIcon(this.imageBroker.getIcon(TImageBroker.AVANZADA));
-        this.iconContainerEnd2.setText(this.translations.getString("VentanaLSRA.ConfiguracionAvanzada"));
-        this.panelAdvancedConfiguration.add(this.iconContainerEnd2, new AbsoluteConstraints(15, 20, 335, -1));
+        this.labelAdvancedConfiguration.setIcon(this.imageBroker.getIcon(TImageBroker.AVANZADA));
+        this.labelAdvancedConfiguration.setText(this.translations.getString("VentanaLSRA.ConfiguracionAvanzada"));
+        this.panelAdvancedConfiguration.add(this.labelAdvancedConfiguration, new AbsoluteConstraints(15, 20, 335, -1));
         this.checkBoxAdvancedGenerateStatistics.setFont(new Font("Dialog", 0, 12));
         this.checkBoxAdvancedGenerateStatistics.setText(this.translations.getString("VentanaLSRA.GenerarEstadisticas"));
         this.checkBoxAdvancedGenerateStatistics.addActionListener(new ActionListener() {
@@ -602,8 +602,8 @@ public class JActiveLSRWindow extends JDialog {
     private JLabel labelDMGPSizeKB;
     private JLabel labelName;
     private JLabel labelSwitchingPowerMbps;
-    private JLabel iconContainerEnd1;
-    private JLabel iconContainerEnd2;
+    private JLabel labelQuickConfiguration;
+    private JLabel labelAdvancedConfiguration;
     private JLabel iconContainerActiveLSR;
     private JButton buttonOK;
     private JButton buttonCancel;
