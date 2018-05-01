@@ -360,32 +360,32 @@ public class JActiveLSRWindow extends JDialog {
      * @since 2.0
      */
     private void handleClickOnPredefinedOptions(ActionEvent evt) {
-        int opcionSeleccionada = this.comboBoxPredefinedOptions.getSelectedIndex();
-        if (opcionSeleccionada == 0) {
-        } else if (opcionSeleccionada == 0) {
+        int selectedOption = this.comboBoxPredefinedOptions.getSelectedIndex();
+        if (selectedOption == 0) {
+        } else if (selectedOption == 0) {
             // Do nothing
             this.comboBoxPredefinedOptions.setSelectedIndex(0);
-        } else if (opcionSeleccionada == 1) {
+        } else if (selectedOption == 1) {
             this.selectorSwitchingPower.setValue(1);
             this.selectorBufferSize.setValue(1);
             this.selectorDMGPSize.setValue(1);
             this.comboBoxPredefinedOptions.setSelectedIndex(1);
-        } else if (opcionSeleccionada == 2) {
+        } else if (selectedOption == 2) {
             this.selectorSwitchingPower.setValue(2560);
             this.selectorBufferSize.setValue(256);
             this.selectorDMGPSize.setValue(2);
             this.comboBoxPredefinedOptions.setSelectedIndex(2);
-        } else if (opcionSeleccionada == 3) {
+        } else if (selectedOption == 3) {
             this.selectorSwitchingPower.setValue(5120);
             this.selectorBufferSize.setValue(512);
             this.selectorDMGPSize.setValue(3);
             this.comboBoxPredefinedOptions.setSelectedIndex(3);
-        } else if (opcionSeleccionada == 4) {
+        } else if (selectedOption == 4) {
             this.selectorSwitchingPower.setValue(7680);
             this.selectorDMGPSize.setValue(4);
             this.selectorBufferSize.setValue(768);
             this.comboBoxPredefinedOptions.setSelectedIndex(4);
-        } else if (opcionSeleccionada == 5) {
+        } else if (selectedOption == 5) {
             this.selectorSwitchingPower.setValue(10240);
             this.selectorBufferSize.setValue(1024);
             this.selectorDMGPSize.setValue(5);

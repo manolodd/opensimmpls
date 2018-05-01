@@ -56,6 +56,9 @@ import com.manolodominguez.opensimmpls.ui.dialogs.JTrafficSinkWindow;
 import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
 import com.manolodominguez.opensimmpls.ui.utils.JOSMFilter;
 import com.manolodominguez.opensimmpls.ui.utils.TProgressEventListener;
+import java.beans.PropertyVetoException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Esta clase implementa una ventana que save� un escenario completo y dar�
@@ -134,7 +137,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
         panelDisenio.ponerDispensadorDeImagenes(dispensadorDeImagenes);
         panelSimulacion.ponerDispensadorDeImagenes(dispensadorDeImagenes);
         Dimension tamPantalla = VentanaPadre.getSize();
-        this.setSize((tamPantalla.width / 2), (tamPantalla.height / 2));
+        this.setSize((tamPantalla.width * 9 / 10), (tamPantalla.height * 9 / 10));
         Dimension tamFrame = this.getSize();
         this.setLocation((tamPantalla.width - tamFrame.width) / 2, (tamPantalla.height - tamFrame.height) / 2);
         escenario = new TScenario();

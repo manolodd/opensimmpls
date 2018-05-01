@@ -15,475 +15,565 @@
  */
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.scenario.TLSRNode;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
 import com.manolodominguez.opensimmpls.ui.simulator.JDesignPanel;
 import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ResourceBundle;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
+import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
- * Esta clase implementa una ventana que permite configurar un nodo LSR.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements a window that is used to configure and reconfigure a
+ * LSR node.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
-public class JLSRWindow extends javax.swing.JDialog {
+public class JLSRWindow extends JDialog {
 
     /**
-     * Crea una nueva instancia de JVentanaLSR
-     * @param t Topolog�a dentro de la cual se encuentra el nodo LSR que queremos configurar.
-     * @param pad Panel de dise�o donde estamos dise�ando el LSR que queremos configurar.
-     * @param di Dispensador de im�genes global del a aplicaci�n.
-     * @param parent Ventana padre dentro de la cual se ubicar� esta ventana de tipo JVentanaLSR.
-     * @param modal TRUE indica que esta ventana impedira que se pueda seleccionar cualquier otra
-     * zona de la interfaz hasta que se haya cerrado. FALSE significa que esto no es
-     * as�.
+     * This is the constructor of the class and creates a new instance of
+     * JLSRWindow.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param designPanel desing panel wich contains the LER node that is
+     * configured via this JLSRWindow
+     * @param parent Parent window over wich this JLSRWindow is shown.
+     * @param imageBroker An object that supply the needed images to be inserted
+     * in the UI.
+     * @param modal TRUE, if this dialog has to be modal. Otherwise, FALSE.
+     * @param topology Topology the LSR node belongs to.
      * @since 2.0
      */
-    public JLSRWindow(TTopology t, JDesignPanel pad, TImageBroker di, java.awt.Frame parent, boolean modal) {
+    public JLSRWindow(TTopology topology, JDesignPanel designPanel, TImageBroker imageBroker, Frame parent, boolean modal) {
         super(parent, modal);
-        ventanaPadre = parent;
-        dispensadorDeImagenes = di;
-        pd = pad;
-        topo = t;
+        this.parent = parent;
+        this.imageBroker = imageBroker;
+        this.designPanel = designPanel;
+        this.topology = topology;
         initComponents();
         initComponents2();
     }
 
     /**
-     * Este m�todo configura aspectos de la calse que no han podido ser configurados
-     * por el constructor.
+     * This method is called from within the constructor to initialize the
+     * window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
-    public void initComponents2() {
-        panelCoordenadas.setDesignPanel(pd);
-        java.awt.Dimension tamFrame=this.getSize();
-        java.awt.Dimension tamPadre=ventanaPadre.getSize();
-        setLocation((tamPadre.width-tamFrame.width)/2, (tamPadre.height-tamFrame.height)/2);
-        configLSR = null;
-        coordenadaX.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.X=_") + panelCoordenadas.getRealX());
-        coordenadaY.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.Y=_") + panelCoordenadas.getRealY());
-        BKUPMostrarNombre = true;
-        BKUPNombre = "";
-        BKUPPotencia = 0;
-        BKUPTamBuffer = 0;
-        BKUPGenerarEstadisticas = false;
-        reconfigurando = false;
-        this.selectorSencilloCaracteristicas.removeAllItems();
-        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLSR.Personalized_LSR"));
-        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLSR.Very_low_range_LSR"));
-        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLSR.Low_range_LSR"));
-        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLSR.Medium_range_LSR"));
-        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLSR.High_range_LSR"));
-        this.selectorSencilloCaracteristicas.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaLSR.Very_high_range_LSR"));
-        this.selectorSencilloCaracteristicas.setSelectedIndex(0);
-    }
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
      */
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
-        panelPrincipal = new javax.swing.JPanel();
-        panelPestanias = new javax.swing.JTabbedPane();
-        panelGeneral = new javax.swing.JPanel();
-        iconoReceptor = new javax.swing.JLabel();
-        etiquetaNombre = new javax.swing.JLabel();
-        nombreNodo = new javax.swing.JTextField();
-        panelPosicion = new javax.swing.JPanel();
-        coordenadaX = new javax.swing.JLabel();
-        coordenadaY = new javax.swing.JLabel();
-        panelCoordenadas = new com.manolodominguez.opensimmpls.ui.dialogs.JCoordinatesPanel();
-        verNombre = new javax.swing.JCheckBox();
-        panelRapido = new javax.swing.JPanel();
-        iconoEnlace1 = new javax.swing.JLabel();
-        selectorDeGenerarEstadisticasSencillo = new javax.swing.JCheckBox();
-        jLabel1 = new javax.swing.JLabel();
-        selectorSencilloCaracteristicas = new javax.swing.JComboBox();
-        panelAvanzado = new javax.swing.JPanel();
-        iconoEnlace2 = new javax.swing.JLabel();
-        selectorDeGenerarEstadisticasAvanzado = new javax.swing.JCheckBox();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        selectorDePotenciaDeConmutacion = new javax.swing.JSlider();
-        selectorDeTamanioBuffer = new javax.swing.JSlider();
-        etiquetaPotencia = new javax.swing.JLabel();
-        etiquetaMemoriaBuffer = new javax.swing.JLabel();
-        panelBotones = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations"); // NOI18N
-        setTitle(bundle.getString("VentanaLSR.titulo")); // NOI18N
+        this.translations = ResourceBundle.getBundle(AvailableBundles.LSR_WINDOW.getPath());
+        this.mainPanel = new JPanel();
+        this.panelTabs = new JTabbedPane();
+        this.panelGeneralConfiguration = new JPanel();
+        this.iconContainerLSR = new JLabel();
+        this.labelName = new JLabel();
+        this.textFieldName = new JTextField();
+        this.panelPosition = new JPanel();
+        this.labelCoordinateX = new JLabel();
+        this.labelCoordinateY = new JLabel();
+        this.coordinatesPanel = new JCoordinatesPanel();
+        this.checkBoxShowName = new JCheckBox();
+        this.panelQuickConfiguration = new JPanel();
+        this.labelQuickConfiguration = new JLabel();
+        this.checkBoxQuickGenerateStatistics = new JCheckBox();
+        this.labelLSRFeatures = new JLabel();
+        this.comboBoxPredefinedOptions = new JComboBox();
+        this.panelAdvancedConfiguration = new JPanel();
+        this.labelAdvancedConfiguration = new JLabel();
+        this.checkBoxAdvancedGenerateStatistics = new JCheckBox();
+        this.labelSwitchingPower = new JLabel();
+        this.labelBufferSize = new JLabel();
+        this.selectorSwitchingPower = new JSlider();
+        this.selectorBufferSize = new JSlider();
+        this.labelSwitchingPowerMbps = new JLabel();
+        this.labelBufferSizeMB = new JLabel();
+        this.panelButtons = new JPanel();
+        this.buttonOK = new JButton();
+        this.buttonCancel = new JButton();
+        setTitle(this.translations.getString("VentanaLSR.titulo"));
         setModal(true);
         setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                closeDialog(evt);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent evt) {
+                handleWindowsClosing(evt);
             }
         });
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        panelPrincipal.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        panelPestanias.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-
-        panelGeneral.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        iconoReceptor.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.LSR));
-        iconoReceptor.setText(bundle.getString("VentanaLSR.descripcion")); // NOI18N
-        panelGeneral.add(iconoReceptor, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
-
-        etiquetaNombre.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        etiquetaNombre.setText(bundle.getString("VentanaLSR.etiquetaNombre")); // NOI18N
-        panelGeneral.add(etiquetaNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 80, 120, -1));
-        panelGeneral.add(nombreNodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 105, 125, -1));
-
-        panelPosicion.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("VentanaLSR.titulogrupo"))); // NOI18N
-        panelPosicion.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        coordenadaX.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        coordenadaX.setText(bundle.getString("VentanaLSR.X=")); // NOI18N
-        panelPosicion.add(coordenadaX, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, -1, -1));
-
-        coordenadaY.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        coordenadaY.setText(bundle.getString("VentanaLSR.Y=")); // NOI18N
-        panelPosicion.add(coordenadaY, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
-
-        panelCoordenadas.setBackground(new java.awt.Color(255, 255, 255));
-        panelCoordenadas.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                clicEnPanelCoordenadas(evt);
+        getContentPane().setLayout(new AbsoluteLayout());
+        this.mainPanel.setLayout(new AbsoluteLayout());
+        this.panelTabs.setFont(new Font("Dialog", 0, 12));
+        this.panelGeneralConfiguration.setLayout(new AbsoluteLayout());
+        this.iconContainerLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSR));
+        this.iconContainerLSR.setText(this.translations.getString("VentanaLSR.descripcion"));
+        this.panelGeneralConfiguration.add(this.iconContainerLSR, new AbsoluteConstraints(15, 20, 335, -1));
+        this.labelName.setFont(new Font("Dialog", 0, 12));
+        this.labelName.setText(this.translations.getString("VentanaLSR.etiquetaNombre"));
+        this.panelGeneralConfiguration.add(this.labelName, new AbsoluteConstraints(215, 80, 120, -1));
+        this.panelGeneralConfiguration.add(this.textFieldName, new AbsoluteConstraints(215, 105, 125, -1));
+        this.panelPosition.setBorder(BorderFactory.createTitledBorder(this.translations.getString("VentanaLSR.titulogrupo")));
+        this.panelPosition.setLayout(new AbsoluteLayout());
+        this.labelCoordinateX.setFont(new Font("Dialog", 0, 12));
+        this.labelCoordinateX.setText(this.translations.getString("VentanaLSR.X="));
+        this.panelPosition.add(this.labelCoordinateX, new AbsoluteConstraints(100, 100, -1, -1));
+        this.labelCoordinateY.setFont(new Font("Dialog", 0, 12));
+        this.labelCoordinateY.setText(this.translations.getString("VentanaLSR.Y="));
+        this.panelPosition.add(this.labelCoordinateY, new AbsoluteConstraints(40, 100, -1, -1));
+        this.coordinatesPanel.setBackground(new Color(255, 255, 255));
+        this.coordinatesPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent evt) {
+                handleClickOnCoordinatesPanel(evt);
             }
+
+            @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                ratonEntraEnPanelCoordenadas(evt);
+                handleMouseEnteringInCoordinatesPanel(evt);
             }
+
+            @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                ratonSaleDePanelCoordenadas(evt);
+                handleMouseLeavingCoordinatesPanel(evt);
             }
         });
-        panelPosicion.add(panelCoordenadas, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 25, 130, 70));
-
-        panelGeneral.add(panelPosicion, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 75, 180, 125));
-
-        verNombre.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        verNombre.setSelected(true);
-        verNombre.setText(bundle.getString("VentanaLSR.verNombre")); // NOI18N
-        panelGeneral.add(verNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 135, -1, -1));
-
-        panelPestanias.addTab(bundle.getString("VentanaLSR.tabs.General"), panelGeneral); // NOI18N
-
-        panelRapido.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        iconoEnlace1.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ASISTENTE));
-        iconoEnlace1.setText(bundle.getString("VentanaLSR.ConfiguracionSencilla")); // NOI18N
-        panelRapido.add(iconoEnlace1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
-
-        selectorDeGenerarEstadisticasSencillo.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        selectorDeGenerarEstadisticasSencillo.setText(bundle.getString("VentanaLSR.GenerarEstadisticas")); // NOI18N
-        selectorDeGenerarEstadisticasSencillo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clicEnSelectorDeGenerarEstadisticasSencillo(evt);
+        this.panelPosition.add(this.coordinatesPanel, new AbsoluteConstraints(25, 25, 130, 70));
+        this.panelGeneralConfiguration.add(this.panelPosition, new AbsoluteConstraints(15, 75, 180, 125));
+        this.checkBoxShowName.setFont(new Font("Dialog", 0, 12));
+        this.checkBoxShowName.setSelected(true);
+        this.checkBoxShowName.setText(this.translations.getString("VentanaLSR.verNombre"));
+        this.panelGeneralConfiguration.add(checkBoxShowName, new AbsoluteConstraints(215, 135, -1, -1));
+        this.panelTabs.addTab(this.translations.getString("VentanaLSR.tabs.General"), this.panelGeneralConfiguration);
+        this.panelQuickConfiguration.setLayout(new AbsoluteLayout());
+        this.labelQuickConfiguration.setIcon(this.imageBroker.getIcon(TImageBroker.ASISTENTE));
+        this.labelQuickConfiguration.setText(this.translations.getString("VentanaLSR.ConfiguracionSencilla"));
+        this.panelQuickConfiguration.add(this.labelQuickConfiguration, new AbsoluteConstraints(15, 20, 335, -1));
+        this.checkBoxQuickGenerateStatistics.setFont(new Font("Dialog", 0, 12));
+        this.checkBoxQuickGenerateStatistics.setText(this.translations.getString("VentanaLSR.GenerarEstadisticas"));
+        this.checkBoxQuickGenerateStatistics.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                handleClickOnQuickGenerateStatistics(evt);
             }
         });
-        panelRapido.add(selectorDeGenerarEstadisticasSencillo, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, -1, -1));
-
-        jLabel1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText(bundle.getString("VentanaLSR.Caracteristicas")); // NOI18N
-        panelRapido.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 160, -1));
-
-        selectorSencilloCaracteristicas.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        selectorSencilloCaracteristicas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Personalized", "Very low cost LSR", "Low cost LSR", "Medium cost LSR", "Expensive LSR", "Very expensive LSR" }));
-        selectorSencilloCaracteristicas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clicEnSelectorSencilloCaracteristicas(evt);
+        this.panelQuickConfiguration.add(checkBoxQuickGenerateStatistics, new AbsoluteConstraints(70, 160, -1, -1));
+        this.labelLSRFeatures.setFont(new Font("Dialog", 0, 12));
+        this.labelLSRFeatures.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelLSRFeatures.setText(this.translations.getString("VentanaLSR.Caracteristicas"));
+        this.panelQuickConfiguration.add(this.labelLSRFeatures, new AbsoluteConstraints(20, 110, 160, -1));
+        this.comboBoxPredefinedOptions.setFont(new Font("Dialog", 0, 12));
+        this.comboBoxPredefinedOptions.setModel(new DefaultComboBoxModel(new String[]{"Personalized", "Very low cost LSR", "Low cost LSR", "Medium cost LSR", "Expensive LSR", "Very expensive LSR"}));
+        this.comboBoxPredefinedOptions.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                handleClickOnPredefinedOptions(evt);
             }
         });
-        panelRapido.add(selectorSencilloCaracteristicas, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 110, -1, -1));
-
-        panelPestanias.addTab(bundle.getString("VentanaLSR.tabs.Fast"), panelRapido); // NOI18N
-
-        panelAvanzado.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        iconoEnlace2.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.AVANZADA));
-        iconoEnlace2.setText(bundle.getString("VentanaLSR.ConfiguracionAvanzada")); // NOI18N
-        panelAvanzado.add(iconoEnlace2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
-
-        selectorDeGenerarEstadisticasAvanzado.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        selectorDeGenerarEstadisticasAvanzado.setText(bundle.getString("VentanaLSR.GenerarEstadisticas")); // NOI18N
-        selectorDeGenerarEstadisticasAvanzado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clicEnSelectorDeGenerarEstadisticasAvanzado(evt);
+        this.panelQuickConfiguration.add(this.comboBoxPredefinedOptions, new AbsoluteConstraints(190, 110, -1, -1));
+        this.panelTabs.addTab(this.translations.getString("VentanaLSR.tabs.Fast"), this.panelQuickConfiguration);
+        this.panelAdvancedConfiguration.setLayout(new AbsoluteLayout());
+        this.labelAdvancedConfiguration.setIcon(this.imageBroker.getIcon(TImageBroker.AVANZADA));
+        this.labelAdvancedConfiguration.setText(this.translations.getString("VentanaLSR.ConfiguracionAvanzada"));
+        this.panelAdvancedConfiguration.add(this.labelAdvancedConfiguration, new AbsoluteConstraints(15, 20, 335, -1));
+        this.checkBoxAdvancedGenerateStatistics.setFont(new Font("Dialog", 0, 12));
+        this.checkBoxAdvancedGenerateStatistics.setText(this.translations.getString("VentanaLSR.GenerarEstadisticas"));
+        this.checkBoxAdvancedGenerateStatistics.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                handleClickOnAdvancedGenerateStatistics(evt);
             }
         });
-        panelAvanzado.add(selectorDeGenerarEstadisticasAvanzado, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, -1, -1));
-
-        jLabel2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText(bundle.getString("VentanaLSR.PotenciaConmutacion")); // NOI18N
-        panelAvanzado.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 140, -1));
-
-        jLabel3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText(bundle.getString("VentanaLSR.TamanioBufferEntrada")); // NOI18N
-        panelAvanzado.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 180, -1));
-
-        selectorDePotenciaDeConmutacion.setMajorTickSpacing(1000);
-        selectorDePotenciaDeConmutacion.setMaximum(10240);
-        selectorDePotenciaDeConmutacion.setMinimum(1);
-        selectorDePotenciaDeConmutacion.setMinorTickSpacing(100);
-        selectorDePotenciaDeConmutacion.setValue(1);
-        selectorDePotenciaDeConmutacion.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                selectorDePotenciaDeConmutacionCambiado(evt);
+        this.panelAdvancedConfiguration.add(this.checkBoxAdvancedGenerateStatistics, new AbsoluteConstraints(70, 160, -1, -1));
+        this.labelSwitchingPower.setFont(new Font("Dialog", 0, 12));
+        this.labelSwitchingPower.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelSwitchingPower.setText(this.translations.getString("VentanaLSR.PotenciaConmutacion"));
+        this.panelAdvancedConfiguration.add(this.labelSwitchingPower, new AbsoluteConstraints(10, 90, 140, -1));
+        this.labelBufferSize.setFont(new Font("Dialog", 0, 12));
+        this.labelBufferSize.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelBufferSize.setText(this.translations.getString("VentanaLSR.TamanioBufferEntrada"));
+        this.panelAdvancedConfiguration.add(this.labelBufferSize, new AbsoluteConstraints(10, 120, 180, -1));
+        this.selectorSwitchingPower.setMajorTickSpacing(1000);
+        this.selectorSwitchingPower.setMaximum(10240);
+        this.selectorSwitchingPower.setMinimum(1);
+        this.selectorSwitchingPower.setMinorTickSpacing(100);
+        this.selectorSwitchingPower.setValue(1);
+        this.selectorSwitchingPower.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent evt) {
+                handleChangeOnSwitchingPower(evt);
             }
         });
-        panelAvanzado.add(selectorDePotenciaDeConmutacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(155, 90, 130, 20));
-
-        selectorDeTamanioBuffer.setMajorTickSpacing(50);
-        selectorDeTamanioBuffer.setMaximum(1024);
-        selectorDeTamanioBuffer.setMinimum(1);
-        selectorDeTamanioBuffer.setMinorTickSpacing(100);
-        selectorDeTamanioBuffer.setValue(1);
-        selectorDeTamanioBuffer.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                selectorDeTamanioBufferCambiado(evt);
+        this.panelAdvancedConfiguration.add(this.selectorSwitchingPower, new AbsoluteConstraints(155, 90, 130, 20));
+        this.selectorBufferSize.setMajorTickSpacing(50);
+        this.selectorBufferSize.setMaximum(1024);
+        this.selectorBufferSize.setMinimum(1);
+        this.selectorBufferSize.setMinorTickSpacing(100);
+        this.selectorBufferSize.setValue(1);
+        this.selectorBufferSize.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent evt) {
+                handleChangeOnBufferSize(evt);
             }
         });
-        panelAvanzado.add(selectorDeTamanioBuffer, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 120, 100, 20));
-
-        etiquetaPotencia.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
-        etiquetaPotencia.setForeground(new java.awt.Color(102, 102, 102));
-        etiquetaPotencia.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        etiquetaPotencia.setText(bundle.getString("VentanaLSR.1_Mbps")); // NOI18N
-        panelAvanzado.add(etiquetaPotencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 90, 70, 20));
-
-        etiquetaMemoriaBuffer.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
-        etiquetaMemoriaBuffer.setForeground(new java.awt.Color(102, 102, 102));
-        etiquetaMemoriaBuffer.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        etiquetaMemoriaBuffer.setText(bundle.getString("VentanaLSR.1_MB")); // NOI18N
-        panelAvanzado.add(etiquetaMemoriaBuffer, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 120, 60, 20));
-
-        panelPestanias.addTab(bundle.getString("VentanaLSR.tabs.Advanced"), panelAvanzado); // NOI18N
-
-        panelPrincipal.add(panelPestanias, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 370, 240));
-
-        panelBotones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jButton2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton2.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ACEPTAR));
-        jButton2.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLSR.botones.mne.Aceptar").charAt(0));
-        jButton2.setText(bundle.getString("VentanaLSR.boton.Ok")); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clicEnAceptar(evt);
+        this.panelAdvancedConfiguration.add(this.selectorBufferSize, new AbsoluteConstraints(200, 120, 100, 20));
+        this.labelSwitchingPowerMbps.setFont(new Font("Dialog", 0, 10));
+        this.labelSwitchingPowerMbps.setForeground(new Color(102, 102, 102));
+        this.labelSwitchingPowerMbps.setHorizontalAlignment(SwingConstants.LEFT);
+        this.labelSwitchingPowerMbps.setText(this.translations.getString("VentanaLSR.1_Mbps"));
+        this.panelAdvancedConfiguration.add(this.labelSwitchingPowerMbps, new AbsoluteConstraints(290, 90, 70, 20));
+        this.labelBufferSizeMB.setFont(new Font("Dialog", 0, 10));
+        this.labelBufferSizeMB.setForeground(new Color(102, 102, 102));
+        this.labelBufferSizeMB.setHorizontalAlignment(SwingConstants.LEFT);
+        this.labelBufferSizeMB.setText(this.translations.getString("VentanaLSR.1_MB"));
+        this.panelAdvancedConfiguration.add(this.labelBufferSizeMB, new AbsoluteConstraints(300, 120, 60, 20));
+        this.panelTabs.addTab(this.translations.getString("VentanaLSR.tabs.Advanced"), this.panelAdvancedConfiguration);
+        this.mainPanel.add(this.panelTabs, new AbsoluteConstraints(15, 15, 370, 240));
+        this.panelButtons.setLayout(new AbsoluteLayout());
+        this.buttonOK.setFont(new Font("Dialog", 0, 12));
+        this.buttonOK.setIcon(this.imageBroker.getIcon(TImageBroker.ACEPTAR));
+        this.buttonOK.setMnemonic(this.translations.getString("VentanaLSR.botones.mne.Aceptar").charAt(0));
+        this.buttonOK.setText(this.translations.getString("VentanaLSR.boton.Ok"));
+        this.buttonOK.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                handleClickOnOKButton(evt);
             }
         });
-        panelBotones.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 105, -1));
-
-        jButton3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton3.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.CANCELAR));
-        jButton3.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLSR.botones.mne.Cancelar").charAt(0));
-        jButton3.setText(bundle.getString("VentanaLSR.boton.Cancel")); // NOI18N
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clicEnCancelar(evt);
+        this.panelButtons.add(this.buttonOK, new AbsoluteConstraints(15, 15, 105, -1));
+        this.buttonCancel.setFont(new Font("Dialog", 0, 12));
+        this.buttonCancel.setIcon(this.imageBroker.getIcon(TImageBroker.CANCELAR));
+        this.buttonCancel.setMnemonic(this.translations.getString("VentanaLSR.botones.mne.Cancelar").charAt(0));
+        this.buttonCancel.setText(this.translations.getString("VentanaLSR.boton.Cancel"));
+        this.buttonCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                handleClickOnCancelButton(evt);
             }
         });
-        panelBotones.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(135, 15, 105, -1));
-
-        panelPrincipal.add(panelBotones, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 255, 400, 55));
-
-        getContentPane().add(panelPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 310));
-
+        this.panelButtons.add(this.buttonCancel, new AbsoluteConstraints(135, 15, 105, -1));
+        this.mainPanel.add(this.panelButtons, new AbsoluteConstraints(0, 255, 400, 55));
+        getContentPane().add(this.mainPanel, new AbsoluteConstraints(0, 0, -1, 310));
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
-    private void clicEnSelectorSencilloCaracteristicas(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnSelectorSencilloCaracteristicas
-        int opcionSeleccionada = this.selectorSencilloCaracteristicas.getSelectedIndex();
-        if (opcionSeleccionada == 0) {
-        } else if (opcionSeleccionada == 0) {
-            this.selectorSencilloCaracteristicas.setSelectedIndex(0);
-        } else if (opcionSeleccionada == 1) {
-            this.selectorDePotenciaDeConmutacion.setValue(1);
-            this.selectorDeTamanioBuffer.setValue(1);
-            this.selectorSencilloCaracteristicas.setSelectedIndex(1);
-        } else if (opcionSeleccionada == 2) {
-            this.selectorDePotenciaDeConmutacion.setValue(2560);
-            this.selectorDeTamanioBuffer.setValue(256);
-            this.selectorSencilloCaracteristicas.setSelectedIndex(2);
-        } else if (opcionSeleccionada == 3) {
-            this.selectorDePotenciaDeConmutacion.setValue(5120);
-            this.selectorDeTamanioBuffer.setValue(512);
-            this.selectorSencilloCaracteristicas.setSelectedIndex(3);
-        } else if (opcionSeleccionada == 4) {
-            this.selectorDePotenciaDeConmutacion.setValue(7680);
-            this.selectorDeTamanioBuffer.setValue(768);
-            this.selectorSencilloCaracteristicas.setSelectedIndex(4);
-        } else if (opcionSeleccionada == 5) {
-            this.selectorDePotenciaDeConmutacion.setValue(10240);
-            this.selectorDeTamanioBuffer.setValue(1024);
-            this.selectorSencilloCaracteristicas.setSelectedIndex(5);
+    /**
+     * This method is called from within the constructor to do additional
+     * configurations of window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
+    private void initComponents2() {
+        this.coordinatesPanel.setDesignPanel(this.designPanel);
+        Dimension frameSize = this.getSize();
+        Dimension parentSize = this.parent.getSize();
+        setLocation((parentSize.width - frameSize.width) / 2, (parentSize.height - frameSize.height) / 2);
+        this.lsrNode = null;
+        this.labelCoordinateX.setText(this.translations.getString("VentanaEmisor.X=_") + this.coordinatesPanel.getRealX());
+        this.labelCoordinateY.setText(this.translations.getString("VentanaEmisor.Y=_") + this.coordinatesPanel.getRealY());
+        this.currentConfigShowName = true;
+        this.currentConfigName = "";
+        this.currentConfigSwitchingPower = 0;
+        this.currentConfigBufferSize = 0;
+        this.currentConfigGenerateStatistics = false;
+        this.reconfiguration = false;
+        this.comboBoxPredefinedOptions.removeAllItems();
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaLSR.Personalized_LSR"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaLSR.Very_low_range_LSR"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaLSR.Low_range_LSR"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaLSR.Medium_range_LSR"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaLSR.High_range_LSR"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaLSR.Very_high_range_LSR"));
+        this.comboBoxPredefinedOptions.setSelectedIndex(0);
+    }
+
+    /**
+     * This method is called when a a predefined option is selected in the UI to
+     * configure the LSR.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnPredefinedOptions(java.awt.event.ActionEvent evt) {
+        int selectedOption = this.comboBoxPredefinedOptions.getSelectedIndex();
+        if (selectedOption == 0) {
+        } else if (selectedOption == 0) {
+            this.comboBoxPredefinedOptions.setSelectedIndex(0);
+        } else if (selectedOption == 1) {
+            this.selectorSwitchingPower.setValue(1);
+            this.selectorBufferSize.setValue(1);
+            this.comboBoxPredefinedOptions.setSelectedIndex(1);
+        } else if (selectedOption == 2) {
+            this.selectorSwitchingPower.setValue(2560);
+            this.selectorBufferSize.setValue(256);
+            this.comboBoxPredefinedOptions.setSelectedIndex(2);
+        } else if (selectedOption == 3) {
+            this.selectorSwitchingPower.setValue(5120);
+            this.selectorBufferSize.setValue(512);
+            this.comboBoxPredefinedOptions.setSelectedIndex(3);
+        } else if (selectedOption == 4) {
+            this.selectorSwitchingPower.setValue(7680);
+            this.selectorBufferSize.setValue(768);
+            this.comboBoxPredefinedOptions.setSelectedIndex(4);
+        } else if (selectedOption == 5) {
+            this.selectorSwitchingPower.setValue(10240);
+            this.selectorBufferSize.setValue(1024);
+            this.comboBoxPredefinedOptions.setSelectedIndex(5);
         }
-    }//GEN-LAST:event_clicEnSelectorSencilloCaracteristicas
-
-    private void selectorDeTamanioBufferCambiado(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_selectorDeTamanioBufferCambiado
-        this.selectorSencilloCaracteristicas.setSelectedIndex(0);
-        this.etiquetaMemoriaBuffer.setText(this.selectorDeTamanioBuffer.getValue() + " " + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLSR.MB"));
-    }//GEN-LAST:event_selectorDeTamanioBufferCambiado
-
-    private void selectorDePotenciaDeConmutacionCambiado(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_selectorDePotenciaDeConmutacionCambiado
-        this.selectorSencilloCaracteristicas.setSelectedIndex(0);
-        this.etiquetaPotencia.setText(this.selectorDePotenciaDeConmutacion.getValue() + " " + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaLSR.Mbps"));
-    }//GEN-LAST:event_selectorDePotenciaDeConmutacionCambiado
-
-    private void clicEnSelectorDeGenerarEstadisticasSencillo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnSelectorDeGenerarEstadisticasSencillo
-        this.selectorDeGenerarEstadisticasAvanzado.setSelected(this.selectorDeGenerarEstadisticasSencillo.isSelected());
-    }//GEN-LAST:event_clicEnSelectorDeGenerarEstadisticasSencillo
-
-    private void clicEnSelectorDeGenerarEstadisticasAvanzado(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnSelectorDeGenerarEstadisticasAvanzado
-        this.selectorDeGenerarEstadisticasSencillo.setSelected(this.selectorDeGenerarEstadisticasAvanzado.isSelected());
-    }//GEN-LAST:event_clicEnSelectorDeGenerarEstadisticasAvanzado
-
-private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnCancelar
-    if (reconfigurando) {
-        configLSR.setShowName(BKUPMostrarNombre);
-        configLSR.setName(BKUPNombre);
-        configLSR.setWellConfigured(true);
-        configLSR.setBufferSizeInMBytes(BKUPTamBuffer);
-        configLSR.setGenerateStats(BKUPGenerarEstadisticas);
-        configLSR.setSwitchingPowerInMbps(BKUPPotencia);
-        reconfigurando = false;
-    } else {
-        configLSR.setWellConfigured(false);
     }
-    this.setVisible(false);
-    this.dispose();
-}//GEN-LAST:event_clicEnCancelar
 
-private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
-    configLSR.setWellConfigured(true);
-    if (!this.reconfigurando){
-        configLSR.setScreenPosition(new Point(panelCoordenadas.getRealX(),panelCoordenadas.getRealY()));
+    /**
+     * This method is called when a change is made in the buffer size (in the
+     * UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleChangeOnBufferSize(ChangeEvent evt) {
+        this.comboBoxPredefinedOptions.setSelectedIndex(0);
+        this.labelBufferSizeMB.setText(this.selectorBufferSize.getValue() + " " + this.translations.getString("VentanaLSR.MB"));
     }
-    configLSR.setBufferSizeInMBytes(this.selectorDeTamanioBuffer.getValue());
-    configLSR.setSwitchingPowerInMbps(this.selectorDePotenciaDeConmutacion.getValue());
-    configLSR.setName(nombreNodo.getText());
-    configLSR.setGenerateStats(this.selectorDeGenerarEstadisticasSencillo.isSelected());
-    configLSR.setShowName(verNombre.isSelected());
-    int error = configLSR.validateConfig(topo, this.reconfigurando);
-    if (error != TLSRNode.OK) {
-        JWarningWindow va = new JWarningWindow(ventanaPadre, true, dispensadorDeImagenes);
-        va.setWarningMessage(configLSR.getErrorMessage(error));
-        va.show();
-    } else {
+
+    /**
+     * This method is called when a change is made in the switching power (in
+     * the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleChangeOnSwitchingPower(ChangeEvent evt) {
+        this.comboBoxPredefinedOptions.setSelectedIndex(0);
+        this.labelSwitchingPowerMbps.setText(this.selectorSwitchingPower.getValue() + " " + this.translations.getString("VentanaLSR.Mbps"));
+    }
+
+    /**
+     * This method is called when a change is made in "generate stistics"
+     * checkbox located at "Quick configuration" tab (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnQuickGenerateStatistics(ActionEvent evt) {
+        this.checkBoxAdvancedGenerateStatistics.setSelected(this.checkBoxQuickGenerateStatistics.isSelected());
+    }
+
+    /**
+     * This method is called when a change is made in "generate stistics"
+     * checkbox located at "Advanced configuration" tab (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnAdvancedGenerateStatistics(ActionEvent evt) {
+        this.checkBoxQuickGenerateStatistics.setSelected(this.checkBoxAdvancedGenerateStatistics.isSelected());
+    }
+
+    /**
+     * This method is called when a click is done "Cancel" button (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnCancelButton(ActionEvent evt) {
+        if (this.reconfiguration) {
+            this.lsrNode.setShowName(this.currentConfigShowName);
+            this.lsrNode.setName(this.currentConfigName);
+            this.lsrNode.setWellConfigured(true);
+            this.lsrNode.setBufferSizeInMBytes(this.currentConfigBufferSize);
+            this.lsrNode.setGenerateStats(this.currentConfigGenerateStatistics);
+            this.lsrNode.setSwitchingPowerInMbps(this.currentConfigSwitchingPower);
+            this.reconfiguration = false;
+        } else {
+            this.lsrNode.setWellConfigured(false);
+        }
         this.setVisible(false);
         this.dispose();
     }
-}//GEN-LAST:event_clicEnAceptar
-
-private void clicEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicEnPanelCoordenadas
-    if (evt.getButton() == MouseEvent.BUTTON1) {
-        panelCoordenadas.setCoordinates(evt.getPoint());
-        coordenadaX.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.X=_") + panelCoordenadas.getRealX());
-        coordenadaY.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.Y=_") + panelCoordenadas.getRealY());
-        panelCoordenadas.repaint();
-    }
-}//GEN-LAST:event_clicEnPanelCoordenadas
-
-private void ratonSaleDePanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonSaleDePanelCoordenadas
-    this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-}//GEN-LAST:event_ratonSaleDePanelCoordenadas
-
-private void ratonEntraEnPanelCoordenadas(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnPanelCoordenadas
-    this.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
-}//GEN-LAST:event_ratonEntraEnPanelCoordenadas
-
-    /** Closes the dialog */
-    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
-        setVisible(false);
-        configLSR.setWellConfigured(false);
-        dispose();
-    }//GEN-LAST:event_closeDialog
 
     /**
-     * Este m�todo permite cargar en la ventana la configuraci�n actual del nodo LSR.
+     * This method is called when a click is done "Ok" button (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
      * @since 2.0
-     * @param tnlsr Nodo LSR que queremos configurar.
-     * @param recfg TRUE indica que vamos a reconfigurar el nodo LSR. FALSE indica que el nodo LSR
-     * est� siendo insertado nuevo en la topolog�a.
-     */    
-    public void ponerConfiguracion(TLSRNode tnlsr, boolean recfg) {
-        configLSR = tnlsr;
-        reconfigurando = recfg;
-        if (reconfigurando) {
-            this.panelCoordenadas.setEnabled(false);
-            this.panelCoordenadas.setToolTipText(null);
-
-            BKUPGenerarEstadisticas = tnlsr.isGeneratingStats();
-            BKUPMostrarNombre = tnlsr.nameMustBeDisplayed();
-            BKUPNombre = tnlsr.getName();
-            BKUPPotencia = tnlsr.getSwitchingPowerInMbps();
-            BKUPTamBuffer = tnlsr.getBufferSizeInMBytes();
-
-            this.selectorDeGenerarEstadisticasAvanzado.setSelected(BKUPGenerarEstadisticas);
-            this.selectorDeGenerarEstadisticasSencillo.setSelected(BKUPGenerarEstadisticas);
-            this.selectorDePotenciaDeConmutacion.setValue(BKUPPotencia);
-            this.selectorDeTamanioBuffer.setValue(BKUPTamBuffer);
-            this.nombreNodo.setText(BKUPNombre);
-            this.verNombre.setSelected(BKUPMostrarNombre);
+     */
+    private void handleClickOnOKButton(ActionEvent evt) {
+        this.lsrNode.setWellConfigured(true);
+        if (!this.reconfiguration) {
+            this.lsrNode.setScreenPosition(new Point(this.coordinatesPanel.getRealX(), this.coordinatesPanel.getRealY()));
+        }
+        this.lsrNode.setBufferSizeInMBytes(this.selectorBufferSize.getValue());
+        this.lsrNode.setSwitchingPowerInMbps(this.selectorSwitchingPower.getValue());
+        this.lsrNode.setName(this.textFieldName.getText());
+        this.lsrNode.setGenerateStats(this.checkBoxQuickGenerateStatistics.isSelected());
+        this.lsrNode.setShowName(this.checkBoxShowName.isSelected());
+        int error = this.lsrNode.validateConfig(this.topology, this.reconfiguration);
+        if (error != TLSRNode.OK) {
+            JWarningWindow warningWindow = new JWarningWindow(this.parent, true, this.imageBroker);
+            warningWindow.setWarningMessage(lsrNode.getErrorMessage(error));
+            warningWindow.setVisible(true);
+        } else {
+            this.setVisible(false);
+            this.dispose();
         }
     }
 
-    private TImageBroker dispensadorDeImagenes;
-    private Frame ventanaPadre;
-    private JDesignPanel pd;
-    private TLSRNode configLSR;
-    private TTopology topo;
-    
-    private boolean BKUPMostrarNombre;
-    private String BKUPNombre;
-    private int BKUPPotencia;
-    private int BKUPTamBuffer;
-    private boolean BKUPGenerarEstadisticas;
+    /**
+     * This method is called when a click is done over the coordinates panel (in
+     * the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnCoordinatesPanel(MouseEvent evt) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
+            this.coordinatesPanel.setCoordinates(evt.getPoint());
+            this.labelCoordinateX.setText(this.translations.getString("VentanaEmisor.X=_") + this.coordinatesPanel.getRealX());
+            this.labelCoordinateY.setText(this.translations.getString("VentanaEmisor.Y=_") + this.coordinatesPanel.getRealY());
+            this.coordinatesPanel.repaint();
+        }
+    }
 
-    private boolean reconfigurando;
+    /**
+     * This method is called when the mouse exits the coordinates panel (in the
+     * UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleMouseLeavingCoordinatesPanel(MouseEvent evt) {
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel coordenadaX;
-    private javax.swing.JLabel coordenadaY;
-    private javax.swing.JLabel etiquetaMemoriaBuffer;
-    private javax.swing.JLabel etiquetaNombre;
-    private javax.swing.JLabel etiquetaPotencia;
-    private javax.swing.JLabel iconoEnlace1;
-    private javax.swing.JLabel iconoEnlace2;
-    private javax.swing.JLabel iconoReceptor;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField nombreNodo;
-    private javax.swing.JPanel panelAvanzado;
-    private javax.swing.JPanel panelBotones;
-    private com.manolodominguez.opensimmpls.ui.dialogs.JCoordinatesPanel panelCoordenadas;
-    private javax.swing.JPanel panelGeneral;
-    private javax.swing.JTabbedPane panelPestanias;
-    private javax.swing.JPanel panelPosicion;
-    private javax.swing.JPanel panelPrincipal;
-    private javax.swing.JPanel panelRapido;
-    private javax.swing.JCheckBox selectorDeGenerarEstadisticasAvanzado;
-    private javax.swing.JCheckBox selectorDeGenerarEstadisticasSencillo;
-    private javax.swing.JSlider selectorDePotenciaDeConmutacion;
-    private javax.swing.JSlider selectorDeTamanioBuffer;
-    private javax.swing.JComboBox selectorSencilloCaracteristicas;
-    private javax.swing.JCheckBox verNombre;
-    // End of variables declaration//GEN-END:variables
+    /**
+     * This method is called when the mouse enters the coordinates panel (in the
+     * UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleMouseEnteringInCoordinatesPanel(MouseEvent evt) {
+        this.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+    }
 
+    /**
+     * This method is called when the JLSRWindow is closed (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleWindowsClosing(WindowEvent evt) {
+        setVisible(false);
+        this.lsrNode.setWellConfigured(false);
+        dispose();
+    }
+
+    /**
+     * This method configures all components of JLSRWindow with present values
+     * retrieved from the LSR. It is used to do a reconfiguration.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param lsrNode the LSR node to be configured through this JLERWindow
+     * @param reconfiguration TRUE if the LSR is being reconfigured. FALSE if it
+     * is the first configuration of the LSR after its creation.
+     * @since 2.0
+     */
+    public void ponerConfiguracion(TLSRNode lsrNode, boolean reconfiguration) {
+        this.lsrNode = lsrNode;
+        this.reconfiguration = reconfiguration;
+        if (this.reconfiguration) {
+            this.coordinatesPanel.setEnabled(false);
+            this.coordinatesPanel.setToolTipText(null);
+            this.currentConfigGenerateStatistics = lsrNode.isGeneratingStats();
+            this.currentConfigShowName = lsrNode.nameMustBeDisplayed();
+            this.currentConfigName = lsrNode.getName();
+            this.currentConfigSwitchingPower = lsrNode.getSwitchingPowerInMbps();
+            this.currentConfigBufferSize = lsrNode.getBufferSizeInMBytes();
+            this.checkBoxAdvancedGenerateStatistics.setSelected(this.currentConfigGenerateStatistics);
+            this.checkBoxQuickGenerateStatistics.setSelected(this.currentConfigGenerateStatistics);
+            this.selectorSwitchingPower.setValue(this.currentConfigSwitchingPower);
+            this.selectorBufferSize.setValue(this.currentConfigBufferSize);
+            this.textFieldName.setText(this.currentConfigName);
+            this.checkBoxShowName.setSelected(this.currentConfigShowName);
+        }
+    }
+
+    private TImageBroker imageBroker;
+    private Frame parent;
+    private JDesignPanel designPanel;
+    private TLSRNode lsrNode;
+    private TTopology topology;
+    private boolean currentConfigShowName;
+    private String currentConfigName;
+    private int currentConfigSwitchingPower;
+    private int currentConfigBufferSize;
+    private boolean currentConfigGenerateStatistics;
+    private boolean reconfiguration;
+    private JLabel labelCoordinateX;
+    private JLabel labelCoordinateY;
+    private JLabel labelBufferSizeMB;
+    private JLabel labelName;
+    private JLabel labelSwitchingPowerMbps;
+    private JLabel labelQuickConfiguration;
+    private JLabel labelAdvancedConfiguration;
+    private JLabel iconContainerLSR;
+    private JButton buttonOK;
+    private JButton buttonCancel;
+    private JLabel labelLSRFeatures;
+    private JLabel labelSwitchingPower;
+    private JLabel labelBufferSize;
+    private JTextField textFieldName;
+    private JPanel panelAdvancedConfiguration;
+    private JPanel panelButtons;
+    private JCoordinatesPanel coordinatesPanel;
+    private JPanel panelGeneralConfiguration;
+    private JTabbedPane panelTabs;
+    private JPanel panelPosition;
+    private JPanel mainPanel;
+    private JPanel panelQuickConfiguration;
+    private JCheckBox checkBoxAdvancedGenerateStatistics;
+    private JCheckBox checkBoxQuickGenerateStatistics;
+    private JSlider selectorSwitchingPower;
+    private JSlider selectorBufferSize;
+    private JComboBox comboBoxPredefinedOptions;
+    private JCheckBox checkBoxShowName;
+    private ResourceBundle translations;
 }
