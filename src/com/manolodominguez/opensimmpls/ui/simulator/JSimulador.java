@@ -19,17 +19,22 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 import com.manolodominguez.opensimmpls.io.osm.TOSMLoader;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.scenario.TScenario;
 import com.manolodominguez.opensimmpls.ui.dialogs.JLicenseWindow;
 import com.manolodominguez.opensimmpls.ui.dialogs.JAboutWindow;
 import com.manolodominguez.opensimmpls.ui.dialogs.JWarningWindow;
-import com.manolodominguez.opensimmpls.ui.dialogs.JHelpWindow;
 import com.manolodominguez.opensimmpls.ui.dialogs.JDecissionWindow;
 import com.manolodominguez.opensimmpls.ui.dialogs.JCommentWindow;
 import com.manolodominguez.opensimmpls.ui.dialogs.JErrorWindow;
 import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
 import com.manolodominguez.opensimmpls.ui.utils.JOSMFilter;
 import com.manolodominguez.opensimmpls.utils.TIDGenerator;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Esta clase implementa un simulador completo para simular, valga la redundancia,
@@ -318,8 +323,16 @@ public class JSimulador extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void clicEnTutorial(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnTutorial
-        JHelpWindow va = new JHelpWindow(this, true, this.dispensadorDeImagenes);
-        va.show();
+        if (Desktop.isDesktopSupported()) {
+            try {
+                URL url = this.getClass().getResource(ResourceBundle.getBundle(AvailableBundles.ABOUT_WINDOW.getPath()).getString("JSimulator.GuidePath"));
+                Desktop.getDesktop().browse(url.toURI());
+            } catch (IOException ex) {
+                Logger.getLogger(JSimulador.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (URISyntaxException ex) {
+                Logger.getLogger(JSimulador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_clicEnTutorial
 
     private void clicEnAbrir(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAbrir

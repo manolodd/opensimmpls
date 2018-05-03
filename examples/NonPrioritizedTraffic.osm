@@ -17,7 +17,7 @@
 #Titulo#Non priorizitation of GoS traffic#
 #Autor#Manuel Domínguez Dorado#
 #Descripcion#Two identical flows goes from senders to the receiver. One is GoS tagged and enter the domain via an active LER, but there are not active LSR in the domain, so it is not prioritized.#
-#Temporizacion#1000000#100#
+#Temporizacion#1000001#100#
 
 @!Escenario
 

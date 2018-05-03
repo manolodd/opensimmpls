@@ -16,8 +16,8 @@
 package com.manolodominguez.opensimmpls.resources.license;
 
 /**
- * This enum is used to access bundles from a centralilzed point. This easies
- * accessing the bundles from classes.
+ * This enum is used to access license files from a centralilzed point. This
+ * easies accessing from classes.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0

@@ -34,7 +34,6 @@ public enum AvailableBundles {
     WARNING_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     DECISSION_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     ERROR_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    HELP_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     ABOUT_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     COMMENT_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations");
 
