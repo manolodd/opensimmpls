@@ -1132,7 +1132,7 @@ public class JScenarioWindow extends javax.swing.JInternalFrame {
                     vlera.show();
                 } else if (nt.getNodeType() == TNode.LSR) {
                     JLSRWindow vlsr = new JLSRWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
-                    vlsr.ponerConfiguracion((TLSRNode) nt, true);
+                    vlsr.setConfiguration((TLSRNode) nt, true);
                     vlsr.show();
                 } else if (nt.getNodeType() == TNode.ACTIVE_LSR) {
                     JActiveLSRWindow vlsra = new JActiveLSRWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
@@ -1149,7 +1149,7 @@ public class JScenarioWindow extends javax.swing.JInternalFrame {
                 TLink ent = (TLink) elementoDisenioClicDerecho;
                 TLinkConfig tceAux = ent.getConfig();
                 JLinkWindow ve = new JLinkWindow(escenario.getTopology(), dispensadorDeImagenes, VentanaPadre, true);
-                ve.ponerConfiguracion(tceAux, true);
+                ve.setConfiguration(tceAux, true);
                 ve.show();
                 if (ent.getLinkType() == TLink.EXTERNAL_LINK) {
                     TExternalLink ext = (TExternalLink) ent;
@@ -1400,8 +1400,8 @@ private void clicEnAniadirEnlace(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
     } else {
         TLinkConfig config = new TLinkConfig();
         JLinkWindow venlace = new JLinkWindow(escenario.getTopology(), dispensadorDeImagenes, VentanaPadre, true);
-        venlace.ponerConfiguracion(config, false);
-        venlace.cargarNodosPorDefecto();
+        venlace.setConfiguration(config, false);
+        //venlace.loadAllNodesThatHaveAvailablePorts();
         venlace.show();
         if (config.isWellConfigured()) {
             try {
@@ -1582,7 +1582,7 @@ private void clicEnAniadirLSR(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
         err.show();
     }
     JLSRWindow vlsr = new JLSRWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
-    vlsr.ponerConfiguracion(lsr, false);
+    vlsr.setConfiguration(lsr, false);
     vlsr.show();
     if (lsr.isWellConfigured()) {
         try {

@@ -113,12 +113,12 @@ public class JActiveLSRWindow extends JDialog {
         this.checkBoxAdvancedGenerateStatistics = new JCheckBox();
         this.labelSwitchingPower = new JLabel();
         this.labelBufferSize = new JLabel();
-        this.selectorSwitchingPower = new JSlider();
-        this.selectorBufferSize = new JSlider();
+        this.sliderSwitchingPower = new JSlider();
+        this.sliderBufferSize = new JSlider();
         this.labelSwitchingPowerMbps = new JLabel();
         this.labelBufferSizeMB = new JLabel();
         this.labelDMGPSize = new JLabel();
-        this.selectorDMGPSize = new JSlider();
+        this.sliderDMGPSize = new JSlider();
         this.labelDMGPSizeKB = new JLabel();
         this.panelButtons = new JPanel();
         this.buttonOK = new JButton();
@@ -224,30 +224,30 @@ public class JActiveLSRWindow extends JDialog {
         this.labelBufferSize.setHorizontalAlignment(SwingConstants.RIGHT);
         this.labelBufferSize.setText(this.translations.getString("VentanaLSR.TamanioBufferEntrada"));
         this.panelAdvancedConfiguration.add(this.labelBufferSize, new AbsoluteConstraints(10, 120, 180, -1));
-        this.selectorSwitchingPower.setMajorTickSpacing(1000);
-        this.selectorSwitchingPower.setMaximum(10240);
-        this.selectorSwitchingPower.setMinimum(1);
-        this.selectorSwitchingPower.setMinorTickSpacing(100);
-        this.selectorSwitchingPower.setValue(1);
-        this.selectorSwitchingPower.addChangeListener(new ChangeListener() {
+        this.sliderSwitchingPower.setMajorTickSpacing(1000);
+        this.sliderSwitchingPower.setMaximum(10240);
+        this.sliderSwitchingPower.setMinimum(1);
+        this.sliderSwitchingPower.setMinorTickSpacing(100);
+        this.sliderSwitchingPower.setValue(1);
+        this.sliderSwitchingPower.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent evt) {
                 handleChangeOnSwitchingPower(evt);
             }
         });
-        this.panelAdvancedConfiguration.add(this.selectorSwitchingPower, new AbsoluteConstraints(155, 90, 130, 20));
-        this.selectorBufferSize.setMajorTickSpacing(50);
-        this.selectorBufferSize.setMaximum(1024);
-        this.selectorBufferSize.setMinimum(1);
-        this.selectorBufferSize.setMinorTickSpacing(100);
-        this.selectorBufferSize.setValue(1);
-        this.selectorBufferSize.addChangeListener(new ChangeListener() {
+        this.panelAdvancedConfiguration.add(this.sliderSwitchingPower, new AbsoluteConstraints(155, 90, 130, 20));
+        this.sliderBufferSize.setMajorTickSpacing(50);
+        this.sliderBufferSize.setMaximum(1024);
+        this.sliderBufferSize.setMinimum(1);
+        this.sliderBufferSize.setMinorTickSpacing(100);
+        this.sliderBufferSize.setValue(1);
+        this.sliderBufferSize.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent evt) {
                 handleChangeOnBufferSize(evt);
             }
         });
-        this.panelAdvancedConfiguration.add(this.selectorBufferSize, new AbsoluteConstraints(200, 120, 100, 20));
+        this.panelAdvancedConfiguration.add(this.sliderBufferSize, new AbsoluteConstraints(200, 120, 100, 20));
         this.labelSwitchingPowerMbps.setFont(new Font("Dialog", 0, 10));
         this.labelSwitchingPowerMbps.setForeground(new Color(102, 102, 102));
         this.labelSwitchingPowerMbps.setHorizontalAlignment(SwingConstants.LEFT);
@@ -262,18 +262,18 @@ public class JActiveLSRWindow extends JDialog {
         this.labelDMGPSize.setHorizontalAlignment(SwingConstants.RIGHT);
         this.labelDMGPSize.setText(this.translations.getString("JVentanaLSRA.DMGP_size"));
         this.panelAdvancedConfiguration.add(this.labelDMGPSize, new AbsoluteConstraints(10, 150, 160, -1));
-        this.selectorDMGPSize.setMajorTickSpacing(50);
-        this.selectorDMGPSize.setMaximum(102400);
-        this.selectorDMGPSize.setMinimum(1);
-        this.selectorDMGPSize.setMinorTickSpacing(100);
-        this.selectorDMGPSize.setValue(1);
-        this.selectorDMGPSize.addChangeListener(new ChangeListener() {
+        this.sliderDMGPSize.setMajorTickSpacing(50);
+        this.sliderDMGPSize.setMaximum(102400);
+        this.sliderDMGPSize.setMinimum(1);
+        this.sliderDMGPSize.setMinorTickSpacing(100);
+        this.sliderDMGPSize.setValue(1);
+        this.sliderDMGPSize.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent evt) {
                 handleChangeOnDMGPSize(evt);
             }
         });
-        this.panelAdvancedConfiguration.add(this.selectorDMGPSize, new AbsoluteConstraints(180, 150, 120, 20));
+        this.panelAdvancedConfiguration.add(this.sliderDMGPSize, new AbsoluteConstraints(180, 150, 120, 20));
         this.labelDMGPSizeKB.setFont(new Font("Dialog", 0, 10));
         this.labelDMGPSizeKB.setForeground(new Color(102, 102, 102));
         this.labelDMGPSizeKB.setHorizontalAlignment(SwingConstants.LEFT);
@@ -348,7 +348,7 @@ public class JActiveLSRWindow extends JDialog {
      * @since 2.0
      */
     private void handleChangeOnDMGPSize(ChangeEvent evt) {
-        this.labelDMGPSizeKB.setText("" + this.selectorDMGPSize.getValue() + " " + this.translations.getString("JVentanaLSRA._MB."));
+        this.labelDMGPSizeKB.setText("" + this.sliderDMGPSize.getValue() + " " + this.translations.getString("JVentanaLSRA._MB."));
     }
 
     /**
@@ -366,29 +366,29 @@ public class JActiveLSRWindow extends JDialog {
             // Do nothing
             this.comboBoxPredefinedOptions.setSelectedIndex(0);
         } else if (selectedOption == 1) {
-            this.selectorSwitchingPower.setValue(1);
-            this.selectorBufferSize.setValue(1);
-            this.selectorDMGPSize.setValue(1);
+            this.sliderSwitchingPower.setValue(1);
+            this.sliderBufferSize.setValue(1);
+            this.sliderDMGPSize.setValue(1);
             this.comboBoxPredefinedOptions.setSelectedIndex(1);
         } else if (selectedOption == 2) {
-            this.selectorSwitchingPower.setValue(2560);
-            this.selectorBufferSize.setValue(256);
-            this.selectorDMGPSize.setValue(2);
+            this.sliderSwitchingPower.setValue(2560);
+            this.sliderBufferSize.setValue(256);
+            this.sliderDMGPSize.setValue(2);
             this.comboBoxPredefinedOptions.setSelectedIndex(2);
         } else if (selectedOption == 3) {
-            this.selectorSwitchingPower.setValue(5120);
-            this.selectorBufferSize.setValue(512);
-            this.selectorDMGPSize.setValue(3);
+            this.sliderSwitchingPower.setValue(5120);
+            this.sliderBufferSize.setValue(512);
+            this.sliderDMGPSize.setValue(3);
             this.comboBoxPredefinedOptions.setSelectedIndex(3);
         } else if (selectedOption == 4) {
-            this.selectorSwitchingPower.setValue(7680);
-            this.selectorDMGPSize.setValue(4);
-            this.selectorBufferSize.setValue(768);
+            this.sliderSwitchingPower.setValue(7680);
+            this.sliderDMGPSize.setValue(4);
+            this.sliderBufferSize.setValue(768);
             this.comboBoxPredefinedOptions.setSelectedIndex(4);
         } else if (selectedOption == 5) {
-            this.selectorSwitchingPower.setValue(10240);
-            this.selectorBufferSize.setValue(1024);
-            this.selectorDMGPSize.setValue(5);
+            this.sliderSwitchingPower.setValue(10240);
+            this.sliderBufferSize.setValue(1024);
+            this.sliderDMGPSize.setValue(5);
             this.comboBoxPredefinedOptions.setSelectedIndex(5);
         }
     }
@@ -403,7 +403,7 @@ public class JActiveLSRWindow extends JDialog {
      */
     private void handleChangeOnBufferSize(ChangeEvent evt) {
         this.comboBoxPredefinedOptions.setSelectedIndex(0);
-        this.labelBufferSizeMB.setText(this.selectorBufferSize.getValue() + " " + this.translations.getString("VentanaLSR.MB"));
+        this.labelBufferSizeMB.setText(this.sliderBufferSize.getValue() + " " + this.translations.getString("VentanaLSR.MB"));
     }
 
     /**
@@ -416,7 +416,7 @@ public class JActiveLSRWindow extends JDialog {
      */
     private void handleChangeOnSwitchingPower(ChangeEvent evt) {
         this.comboBoxPredefinedOptions.setSelectedIndex(0);
-        this.labelSwitchingPowerMbps.setText(this.selectorSwitchingPower.getValue() + " " + this.translations.getString("VentanaLSR.Mbps"));
+        this.labelSwitchingPowerMbps.setText(this.sliderSwitchingPower.getValue() + " " + this.translations.getString("VentanaLSR.Mbps"));
     }
 
     /**
@@ -479,9 +479,9 @@ public class JActiveLSRWindow extends JDialog {
         if (!this.reconguration) {
             this.activeLSRNode.setScreenPosition(new Point(this.coordinatesPanel.getRealX(), this.coordinatesPanel.getRealY()));
         }
-        this.activeLSRNode.setDMGPSizeInKB(this.selectorDMGPSize.getValue());
-        this.activeLSRNode.setBufferSizeInMBytes(this.selectorBufferSize.getValue());
-        this.activeLSRNode.setSwitchingPowerInMbps(this.selectorSwitchingPower.getValue());
+        this.activeLSRNode.setDMGPSizeInKB(this.sliderDMGPSize.getValue());
+        this.activeLSRNode.setBufferSizeInMBytes(this.sliderBufferSize.getValue());
+        this.activeLSRNode.setSwitchingPowerInMbps(this.sliderSwitchingPower.getValue());
         this.activeLSRNode.setName(this.textFieldName.getText());
         this.activeLSRNode.setGenerateStats(this.checkBoxQuickGenerateStatistics.isSelected());
         this.activeLSRNode.setShowName(this.checkBoxShowName.isSelected());
@@ -574,11 +574,11 @@ public class JActiveLSRWindow extends JDialog {
             this.currentConfigSwitchingPower = activeLSRNode.getSwitchingPowerInMbps();
             this.currentConfigBufferSize = activeLSRNode.getBufferSizeInMBytes();
             this.currentConfigDMGPSize = activeLSRNode.getDMGPSizeInKB();
-            this.selectorDMGPSize.setValue(this.currentConfigDMGPSize);
+            this.sliderDMGPSize.setValue(this.currentConfigDMGPSize);
             this.checkBoxAdvancedGenerateStatistics.setSelected(this.currentConfigGenerateStatistics);
             this.checkBoxQuickGenerateStatistics.setSelected(this.currentConfigGenerateStatistics);
-            this.selectorSwitchingPower.setValue(this.currentConfigSwitchingPower);
-            this.selectorBufferSize.setValue(this.currentConfigBufferSize);
+            this.sliderSwitchingPower.setValue(this.currentConfigSwitchingPower);
+            this.sliderBufferSize.setValue(this.currentConfigBufferSize);
             this.textFieldName.setText(this.currentConfigName);
             this.checkBoxShowName.setSelected(this.currentConfigShowName);
         }
@@ -622,9 +622,9 @@ public class JActiveLSRWindow extends JDialog {
     private JPanel panelQuickConfiguration;
     private JCheckBox checkBoxAdvancedGenerateStatistics;
     private JCheckBox checkBoxQuickGenerateStatistics;
-    private JSlider selectorSwitchingPower;
-    private JSlider selectorBufferSize;
-    private JSlider selectorDMGPSize;
+    private JSlider sliderSwitchingPower;
+    private JSlider sliderBufferSize;
+    private JSlider sliderDMGPSize;
     private JComboBox comboBoxPredefinedOptions;
     private JCheckBox checkBoxShowName;
     private ResourceBundle translations;

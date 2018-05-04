@@ -112,10 +112,10 @@ public class JLERWindow extends JDialog {
         this.checkBoxAdvancedGenerateStatistics = new JCheckBox();
         this.labelAdvancedConfiguration = new JLabel();
         this.labelRoutingPower = new JLabel();
-        this.selectorRoutingPower = new JSlider();
+        this.sliderRoutingPower = new JSlider();
         this.labelRoutingPowerMbps = new JLabel();
         this.labelBufferSize = new JLabel();
-        this.selectorBufferSize = new JSlider();
+        this.sliderBufferSize = new JSlider();
         this.labelBufferSizeMB = new JLabel();
         this.panelButtons = new JPanel();
         this.buttonOK = new JButton();
@@ -216,18 +216,18 @@ public class JLERWindow extends JDialog {
         this.labelRoutingPower.setHorizontalAlignment(SwingConstants.RIGHT);
         this.labelRoutingPower.setText(this.translations.getString("VentanaLER.PotenciaDeConmutacion"));
         this.panelAdvancedConfiguration.add(this.labelRoutingPower, new AbsoluteConstraints(10, 90, 140, -1));
-        this.selectorRoutingPower.setMajorTickSpacing(1000);
-        this.selectorRoutingPower.setMaximum(10240);
-        this.selectorRoutingPower.setMinimum(1);
-        this.selectorRoutingPower.setMinorTickSpacing(100);
-        this.selectorRoutingPower.setValue(1);
-        this.selectorRoutingPower.addChangeListener(new ChangeListener() {
+        this.sliderRoutingPower.setMajorTickSpacing(1000);
+        this.sliderRoutingPower.setMaximum(10240);
+        this.sliderRoutingPower.setMinimum(1);
+        this.sliderRoutingPower.setMinorTickSpacing(100);
+        this.sliderRoutingPower.setValue(1);
+        this.sliderRoutingPower.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent evt) {
                 handleChangeOnRoutingPower(evt);
             }
         });
-        this.panelAdvancedConfiguration.add(selectorRoutingPower, new AbsoluteConstraints(155, 90, 130, 20));
+        this.panelAdvancedConfiguration.add(sliderRoutingPower, new AbsoluteConstraints(155, 90, 130, 20));
         this.labelRoutingPowerMbps.setFont(new Font("Dialog", 0, 10));
         this.labelRoutingPowerMbps.setForeground(new Color(102, 102, 102));
         this.labelRoutingPowerMbps.setHorizontalAlignment(SwingConstants.LEFT);
@@ -237,18 +237,18 @@ public class JLERWindow extends JDialog {
         this.labelBufferSize.setHorizontalAlignment(SwingConstants.RIGHT);
         this.labelBufferSize.setText(this.translations.getString("VentanaLER.TamanioDelBufferDeEntrada"));
         this.panelAdvancedConfiguration.add(labelBufferSize, new AbsoluteConstraints(10, 120, 180, -1));
-        this.selectorBufferSize.setMajorTickSpacing(50);
-        this.selectorBufferSize.setMaximum(1024);
-        this.selectorBufferSize.setMinimum(1);
-        this.selectorBufferSize.setMinorTickSpacing(100);
-        this.selectorBufferSize.setValue(1);
-        this.selectorBufferSize.addChangeListener(new ChangeListener() {
+        this.sliderBufferSize.setMajorTickSpacing(50);
+        this.sliderBufferSize.setMaximum(1024);
+        this.sliderBufferSize.setMinimum(1);
+        this.sliderBufferSize.setMinorTickSpacing(100);
+        this.sliderBufferSize.setValue(1);
+        this.sliderBufferSize.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent evt) {
                 handleChangeOnBufferSize(evt);
             }
         });
-        this.panelAdvancedConfiguration.add(this.selectorBufferSize, new AbsoluteConstraints(200, 120, 100, 20));
+        this.panelAdvancedConfiguration.add(this.sliderBufferSize, new AbsoluteConstraints(200, 120, 100, 20));
         this.labelBufferSizeMB.setFont(new Font("Dialog", 0, 10));
         this.labelBufferSizeMB.setForeground(new Color(102, 102, 102));
         this.labelBufferSizeMB.setHorizontalAlignment(SwingConstants.LEFT);
@@ -329,24 +329,24 @@ public class JLERWindow extends JDialog {
             // Do nothing
             this.comboBoxPredefinedOptions.setSelectedIndex(0);
         } else if (selectedOption == 1) {
-            this.selectorRoutingPower.setValue(1);
-            this.selectorBufferSize.setValue(1);
+            this.sliderRoutingPower.setValue(1);
+            this.sliderBufferSize.setValue(1);
             this.comboBoxPredefinedOptions.setSelectedIndex(1);
         } else if (selectedOption == 2) {
-            this.selectorRoutingPower.setValue(2560);
-            this.selectorBufferSize.setValue(256);
+            this.sliderRoutingPower.setValue(2560);
+            this.sliderBufferSize.setValue(256);
             this.comboBoxPredefinedOptions.setSelectedIndex(2);
         } else if (selectedOption == 3) {
-            this.selectorRoutingPower.setValue(5120);
-            this.selectorBufferSize.setValue(512);
+            this.sliderRoutingPower.setValue(5120);
+            this.sliderBufferSize.setValue(512);
             this.comboBoxPredefinedOptions.setSelectedIndex(3);
         } else if (selectedOption == 4) {
-            this.selectorRoutingPower.setValue(7680);
-            this.selectorBufferSize.setValue(768);
+            this.sliderRoutingPower.setValue(7680);
+            this.sliderBufferSize.setValue(768);
             this.comboBoxPredefinedOptions.setSelectedIndex(4);
         } else if (selectedOption == 5) {
-            this.selectorRoutingPower.setValue(10240);
-            this.selectorBufferSize.setValue(1024);
+            this.sliderRoutingPower.setValue(10240);
+            this.sliderBufferSize.setValue(1024);
             this.comboBoxPredefinedOptions.setSelectedIndex(5);
         }
     }
@@ -361,7 +361,7 @@ public class JLERWindow extends JDialog {
      */
     private void handleChangeOnBufferSize(ChangeEvent evt) {
         this.comboBoxPredefinedOptions.setSelectedIndex(0);
-        this.labelBufferSizeMB.setText(this.selectorBufferSize.getValue() + " " + this.translations.getString("VentanaLER.MB"));
+        this.labelBufferSizeMB.setText(this.sliderBufferSize.getValue() + " " + this.translations.getString("VentanaLER.MB"));
     }
 
     /**
@@ -374,7 +374,7 @@ public class JLERWindow extends JDialog {
      */
     private void handleChangeOnRoutingPower(ChangeEvent evt) {
         this.comboBoxPredefinedOptions.setSelectedIndex(0);
-        this.labelRoutingPowerMbps.setText(this.selectorRoutingPower.getValue() + " " + this.translations.getString("VentanaLER.Mbps."));
+        this.labelRoutingPowerMbps.setText(this.sliderRoutingPower.getValue() + " " + this.translations.getString("VentanaLER.Mbps."));
     }
 
     /**
@@ -436,8 +436,8 @@ public class JLERWindow extends JDialog {
         if (!this.reconguration) {
             this.lerNode.setScreenPosition(new Point(this.coordinatesPanel.getRealX(), this.coordinatesPanel.getRealY()));
         }
-        this.lerNode.setBufferSizeInMBytes(this.selectorBufferSize.getValue());
-        this.lerNode.setRoutingPowerInMbps(this.selectorRoutingPower.getValue());
+        this.lerNode.setBufferSizeInMBytes(this.sliderBufferSize.getValue());
+        this.lerNode.setRoutingPowerInMbps(this.sliderRoutingPower.getValue());
         this.lerNode.setGenerateStats(this.checkBoxQuickGenerateStatistics.isSelected());
         this.lerNode.setName(this.textFieldName.getText());
         this.lerNode.setShowName(this.checkBoxShowName.isSelected());
@@ -530,8 +530,8 @@ public class JLERWindow extends JDialog {
             this.currentConfigBufferSize = lerNode.getBufferSizeInMBytes();
             this.checkBoxAdvancedGenerateStatistics.setSelected(this.currentConfigGenerateStatistics);
             this.checkBoxQuickGenerateStatistics.setSelected(this.currentConfigGenerateStatistics);
-            this.selectorRoutingPower.setValue(this.currentConfigRoutingPower);
-            this.selectorBufferSize.setValue(this.currentConfigBufferSize);
+            this.sliderRoutingPower.setValue(this.currentConfigRoutingPower);
+            this.sliderBufferSize.setValue(this.currentConfigBufferSize);
             this.textFieldName.setText(this.currentConfigName);
             this.checkBoxShowName.setSelected(this.currentConfigShowName);
         }
@@ -572,8 +572,8 @@ public class JLERWindow extends JDialog {
     private JPanel panelQuickConfiguration;
     private JCheckBox checkBoxAdvancedGenerateStatistics;
     private JCheckBox checkBoxQuickGenerateStatistics;
-    private JSlider selectorRoutingPower;
-    private JSlider selectorBufferSize;
+    private JSlider sliderRoutingPower;
+    private JSlider sliderBufferSize;
     private JComboBox comboBoxPredefinedOptions;
     private JCheckBox checkBoxShowName;
     private ResourceBundle translations;

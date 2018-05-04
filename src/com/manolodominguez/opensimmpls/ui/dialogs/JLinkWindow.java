@@ -15,360 +15,377 @@
  */
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.scenario.TLinkConfig;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Iterator;
+import java.util.ResourceBundle;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
+import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
- * Esta clase implementa una ventana que permite configurar un enlace de la
- * topolog�a.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements a window that is used to configure and reconfigure a
+ * link.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
-public class JLinkWindow extends javax.swing.JDialog {
+public class JLinkWindow extends JDialog {
 
     /**
-     * Crea una nueva instancia de JVentanaEmisor
-     * @param t Topolog�a dentro de la cual est� insertado el enlace.
-     * @param di Dispensador de im�genes global de la aplicaci�n.
-     * @param parent Ventana padre donde se ubicar� esta ventana de tipo JVentanaEnlace.
-     * @param modal TRUE indica que la ventana impedir� que se pueda seleccionar nada de la interfza
-     * hasta que se cierre. FALSE indica que esto no es asi.
+     * This is the constructor of the class and creates a new instance of
+     * JLinkWindow.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param parent Parent window over wich this JLinkWindow is shown.
+     * @param imageBroker An object that supply the needed images to be inserted
+     * in the UI.
+     * @param modal TRUE, if this dialog has to be modal. Otherwise, FALSE.
+     * @param topology Topology the link node belongs to.
      * @since 2.0
      */
-    public JLinkWindow(TTopology t, TImageBroker di, java.awt.Frame parent, boolean modal) {
+    public JLinkWindow(TTopology topology, TImageBroker imageBroker, Frame parent, boolean modal) {
         super(parent, modal);
-        ventanaPadre = parent;
-        dispensadorDeImagenes = di;
-        topo = t;
-        configEnlace = null;
+        this.parent = parent;
+        this.imageBroker = imageBroker;
+        this.topology = topology;
+        this.linkConfig = null;
         initComponents();
         initComponents2();
     }
 
     /**
-     * Este m�todo configura aspectos de la ventana que no han podido ser configurados
-     * en el constructor.
+     * This method is called from within the constructor to initialize the
+     * window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
-    public void initComponents2() {
-        java.awt.Dimension tamFrame=this.getSize();
-        java.awt.Dimension tamPadre=ventanaPadre.getSize();
-        setLocation((tamPadre.width-tamFrame.width)/2, (tamPadre.height-tamFrame.height)/2);
-        BCKUPNombre = null;
-        BCKUPMostrarNombre = false;
-        BCKUPCrearEstadisticas = false;
-        BCKUPDelay = 1000;
-        this.delayFacil.removeAllItems();
-        this.delayFacil.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.Personalized"));
-        this.delayFacil.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.Too_fast"));
-        this.delayFacil.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.Fast"));
-        this.delayFacil.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.Normal"));
-        this.delayFacil.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.Low"));
-        this.delayFacil.addItem(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaHija.Too_low"));
-        this.delayFacil.setSelectedIndex(0);
-    }
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
      */
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
-        panelPrincipal = new javax.swing.JPanel();
-        panelPestanias = new javax.swing.JTabbedPane();
-        panelGeneral = new javax.swing.JPanel();
-        iconoEnlace = new javax.swing.JLabel();
-        etiquetaNombre = new javax.swing.JLabel();
-        nombreEnlace = new javax.swing.JTextField();
-        verNombre = new javax.swing.JCheckBox();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        selectorExtremoDerecho = new javax.swing.JComboBox();
-        selectorExtremoIzquierdo = new javax.swing.JComboBox();
-        selectorPuertoDerecho = new javax.swing.JComboBox();
-        selectorPuertoIzquierdo = new javax.swing.JComboBox();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        panelRapido = new javax.swing.JPanel();
-        iconoEnlace1 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        delayFacil = new javax.swing.JComboBox();
-        panelAvanzado = new javax.swing.JPanel();
-        iconoEnlace2 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        delayAvanzado = new javax.swing.JSlider();
-        etiquetaDelay = new javax.swing.JLabel();
-        panelBotones = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("simMPLS/lenguajes/lenguajes"); // NOI18N
-        setTitle(bundle.getString("VentanaEnlace.titulo")); // NOI18N
+        this.translations = ResourceBundle.getBundle(AvailableBundles.LINK_WINDOW.getPath());
+        this.mainPanel = new JPanel();
+        this.panelTabs = new JTabbedPane();
+        this.panelGeneralConfiguration = new JPanel();
+        this.labelLink = new JLabel();
+        this.labelName = new JLabel();
+        this.textFieldName = new JTextField();
+        this.checkBoxShowName = new JCheckBox();
+        this.iconContainerLink = new JLabel();
+        this.labelHeadEnd = new JLabel();
+        this.labelTailEnd = new JLabel();
+        this.comboBoxTailEndNode = new JComboBox();
+        this.comboBoxHeadEndNode = new JComboBox();
+        this.comboBoxTailEndNodePort = new JComboBox();
+        this.comboBoxHeadEndNodePort = new JComboBox();
+        this.labelHeadEndColons = new JLabel();
+        this.labelTailEndColons = new JLabel();
+        this.panelQuickConfiguration = new JPanel();
+        this.iconContainerWizard = new JLabel();
+        this.labelSpeed = new JLabel();
+        this.comboBoxPredefinedOptions = new JComboBox();
+        this.panelAdvancedConfiguration = new JPanel();
+        this.iconContainerToolbox = new JLabel();
+        this.labelDelay = new JLabel();
+        this.sliderDelay = new JSlider();
+        this.labelNs = new JLabel();
+        this.panelButtons = new JPanel();
+        this.buttonOK = new JButton();
+        this.buttonCancel = new JButton();
+        setTitle(this.translations.getString("VentanaEnlace.titulo"));
         setModal(true);
         setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                closeDialog(evt);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent evt) {
+                handleWindowsClosing(evt);
             }
         });
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        panelPrincipal.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        panelPestanias.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-
-        panelGeneral.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        iconoEnlace.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ENLACE));
-        iconoEnlace.setText(bundle.getString("VentanaEnlace.descripcion")); // NOI18N
-        panelGeneral.add(iconoEnlace, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
-
-        etiquetaNombre.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        etiquetaNombre.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        etiquetaNombre.setText(bundle.getString("VentanaEnlace.etiquetaNombre")); // NOI18N
-        panelGeneral.add(etiquetaNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 110, -1));
-
-        nombreEnlace.setToolTipText(bundle.getString("JVentanaEnlace.tooltip.NombreEnlace")); // NOI18N
-        panelGeneral.add(nombreEnlace, new org.netbeans.lib.awtextra.AbsoluteConstraints(135, 80, 110, -1));
-
-        verNombre.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        verNombre.setText(bundle.getString("VentanaEnlace.verNombre")); // NOI18N
-        verNombre.setToolTipText(bundle.getString("JVentanaEnlace.tooltip.VerNombre")); // NOI18N
-        panelGeneral.add(verNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(255, 80, -1, -1));
-
-        jLabel1.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ENLACE));
-        panelGeneral.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(158, 120, 50, -1));
-
-        jLabel2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText(bundle.getString("VentanaEnlace.etiquetaExtremoIzquierdo")); // NOI18N
-        panelGeneral.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 135, 130, -1));
-
-        jLabel3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText(bundle.getString("VentanaEnlace.etiquetaExtremoDerecho")); // NOI18N
-        panelGeneral.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 135, 130, -1));
-
-        selectorExtremoDerecho.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        selectorExtremoDerecho.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
-        selectorExtremoDerecho.setToolTipText(bundle.getString("JVentanaEnlace.tooltip.ExtremoIzquierdo")); // NOI18N
-        selectorExtremoDerecho.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clicEnCambioNodoDerecho(evt);
+        getContentPane().setLayout(new AbsoluteLayout());
+        this.mainPanel.setLayout(new AbsoluteLayout());
+        this.panelTabs.setFont(new Font("Dialog", 0, 12));
+        this.panelGeneralConfiguration.setLayout(new AbsoluteLayout());
+        this.labelLink.setIcon(this.imageBroker.getIcon(TImageBroker.ENLACE));
+        this.labelLink.setText(this.translations.getString("VentanaEnlace.descripcion"));
+        this.panelGeneralConfiguration.add(this.labelLink, new AbsoluteConstraints(15, 20, 335, -1));
+        this.labelName.setFont(new Font("Dialog", 0, 12));
+        this.labelName.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelName.setText(this.translations.getString("VentanaEnlace.etiquetaNombre"));
+        this.panelGeneralConfiguration.add(this.labelName, new AbsoluteConstraints(10, 80, 110, -1));
+        this.textFieldName.setToolTipText(this.translations.getString("JVentanaEnlace.tooltip.NombreEnlace"));
+        this.panelGeneralConfiguration.add(this.textFieldName, new AbsoluteConstraints(135, 80, 110, -1));
+        this.checkBoxShowName.setFont(new Font("Dialog", 0, 12));
+        this.checkBoxShowName.setText(this.translations.getString("VentanaEnlace.verNombre"));
+        this.checkBoxShowName.setToolTipText(this.translations.getString("JVentanaEnlace.tooltip.VerNombre"));
+        this.panelGeneralConfiguration.add(this.checkBoxShowName, new AbsoluteConstraints(255, 80, -1, -1));
+        this.iconContainerLink.setIcon(this.imageBroker.getIcon(TImageBroker.ENLACE));
+        this.panelGeneralConfiguration.add(this.iconContainerLink, new AbsoluteConstraints(158, 120, 50, -1));
+        this.labelHeadEnd.setFont(new Font("Dialog", 0, 12));
+        this.labelHeadEnd.setHorizontalAlignment(SwingConstants.CENTER);
+        this.labelHeadEnd.setText(this.translations.getString("VentanaEnlace.etiquetaExtremoIzquierdo"));
+        this.panelGeneralConfiguration.add(this.labelHeadEnd, new AbsoluteConstraints(15, 135, 130, -1));
+        this.labelTailEnd.setFont(new Font("Dialog", 0, 12));
+        this.labelTailEnd.setHorizontalAlignment(SwingConstants.CENTER);
+        this.labelTailEnd.setText(this.translations.getString("VentanaEnlace.etiquetaExtremoDerecho"));
+        this.panelGeneralConfiguration.add(this.labelTailEnd, new AbsoluteConstraints(220, 135, 130, -1));
+        this.comboBoxTailEndNode.setFont(new Font("Dialog", 0, 12));
+        this.comboBoxTailEndNode.setModel(new DefaultComboBoxModel(new String[]{""}));
+        this.comboBoxTailEndNode.setToolTipText(this.translations.getString("JVentanaEnlace.tooltip.ExtremoIzquierdo"));
+        this.comboBoxTailEndNode.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                handleChangeInTailEndNode(evt);
             }
         });
-        panelGeneral.add(selectorExtremoDerecho, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 160, 90, -1));
-
-        selectorExtremoIzquierdo.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        selectorExtremoIzquierdo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
-        selectorExtremoIzquierdo.setToolTipText(bundle.getString("JVentanaEnlace.tooltip.extremoDerecho")); // NOI18N
-        selectorExtremoIzquierdo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clicEnCambioNodoIzquierdo(evt);
+        this.panelGeneralConfiguration.add(this.comboBoxTailEndNode, new AbsoluteConstraints(220, 160, 90, -1));
+        this.comboBoxHeadEndNode.setFont(new Font("Dialog", 0, 12));
+        this.comboBoxHeadEndNode.setModel(new DefaultComboBoxModel(new String[]{""}));
+        this.comboBoxHeadEndNode.setToolTipText(this.translations.getString("JVentanaEnlace.tooltip.extremoDerecho"));
+        this.comboBoxHeadEndNode.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                handleChangeInHeadEndNode(evt);
             }
         });
-        panelGeneral.add(selectorExtremoIzquierdo, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 160, 90, -1));
-
-        selectorPuertoDerecho.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        selectorPuertoDerecho.setToolTipText(bundle.getString("JVentanaEnlace.tooltip.puertoEntrada")); // NOI18N
-        panelGeneral.add(selectorPuertoDerecho, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 160, -1, -1));
-
-        selectorPuertoIzquierdo.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        selectorPuertoIzquierdo.setToolTipText(bundle.getString("JVentanaEnlace.tooltip.puertosalida")); // NOI18N
-        panelGeneral.add(selectorPuertoIzquierdo, new org.netbeans.lib.awtextra.AbsoluteConstraints(115, 160, -1, -1));
-
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText(bundle.getString("JVentanaEnlace.:")); // NOI18N
-        panelGeneral.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(105, 165, 10, -1));
-
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText(bundle.getString("JVentanaEnlace.:")); // NOI18N
-        panelGeneral.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 165, 10, -1));
-
-        panelPestanias.addTab(bundle.getString("VentanaEnlace.tabs.General"), panelGeneral); // NOI18N
-
-        panelRapido.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        iconoEnlace1.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ASISTENTE));
-        iconoEnlace1.setText(bundle.getString("JVentanaEnlace.Rapida.Descripcion")); // NOI18N
-        panelRapido.add(iconoEnlace1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
-
-        jLabel6.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel6.setText(bundle.getString("JVentanaEnlace.Link_speed")); // NOI18N
-        panelRapido.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 105, 100, -1));
-
-        delayFacil.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        delayFacil.setMaximumRowCount(6);
-        delayFacil.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Personalizado", "Very high", "High", "Normal", "Low", "Very low" }));
-        delayFacil.setSelectedIndex(3);
-        delayFacil.setToolTipText(bundle.getString("JVentanaEnlace.Select_the_link_speed")); // NOI18N
-        delayFacil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clicEnDelayFacil(evt);
+        this.panelGeneralConfiguration.add(this.comboBoxHeadEndNode, new AbsoluteConstraints(15, 160, 90, -1));
+        this.comboBoxTailEndNodePort.setFont(new Font("Dialog", 0, 12));
+        this.comboBoxTailEndNodePort.setToolTipText(this.translations.getString("JVentanaEnlace.tooltip.puertoEntrada"));
+        this.panelGeneralConfiguration.add(comboBoxTailEndNodePort, new AbsoluteConstraints(320, 160, -1, -1));
+        this.comboBoxHeadEndNodePort.setFont(new Font("Dialog", 0, 12));
+        this.comboBoxHeadEndNodePort.setToolTipText(this.translations.getString("JVentanaEnlace.tooltip.puertosalida"));
+        this.panelGeneralConfiguration.add(this.comboBoxHeadEndNodePort, new AbsoluteConstraints(115, 160, -1, -1));
+        this.labelHeadEndColons.setHorizontalAlignment(SwingConstants.CENTER);
+        this.labelHeadEndColons.setText(this.translations.getString("JVentanaEnlace.:"));
+        this.panelGeneralConfiguration.add(this.labelHeadEndColons, new AbsoluteConstraints(105, 165, 10, -1));
+        this.labelTailEndColons.setHorizontalAlignment(SwingConstants.CENTER);
+        this.labelTailEndColons.setText(this.translations.getString("JVentanaEnlace.:"));
+        this.panelGeneralConfiguration.add(this.labelTailEndColons, new AbsoluteConstraints(310, 165, 10, -1));
+        this.panelTabs.addTab(this.translations.getString("VentanaEnlace.tabs.General"), panelGeneralConfiguration);
+        this.panelQuickConfiguration.setLayout(new AbsoluteLayout());
+        this.iconContainerWizard.setIcon(this.imageBroker.getIcon(TImageBroker.ASISTENTE));
+        this.iconContainerWizard.setText(this.translations.getString("JVentanaEnlace.Rapida.Descripcion"));
+        this.panelQuickConfiguration.add(this.iconContainerWizard, new AbsoluteConstraints(15, 20, 335, -1));
+        this.labelSpeed.setFont(new Font("Dialog", 0, 12));
+        this.labelSpeed.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelSpeed.setText(this.translations.getString("JVentanaEnlace.Link_speed"));
+        this.panelQuickConfiguration.add(this.labelSpeed, new AbsoluteConstraints(20, 105, 100, -1));
+        this.comboBoxPredefinedOptions.setFont(new Font("Dialog", 0, 12));
+        this.comboBoxPredefinedOptions.setMaximumRowCount(6);
+        this.comboBoxPredefinedOptions.setModel(new DefaultComboBoxModel(new String[]{"Personalizado", "Very high", "High", "Normal", "Low", "Very low"}));
+        this.comboBoxPredefinedOptions.setSelectedIndex(3);
+        this.comboBoxPredefinedOptions.setToolTipText(this.translations.getString("JVentanaEnlace.Select_the_link_speed"));
+        this.comboBoxPredefinedOptions.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                handleClickOnPredefinedOptions(evt);
             }
         });
-        panelRapido.add(delayFacil, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 100, 180, -1));
-
-        panelPestanias.addTab(bundle.getString("VentanaEnlace.tabs.Fast"), panelRapido); // NOI18N
-
-        panelAvanzado.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        iconoEnlace2.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.AVANZADA));
-        iconoEnlace2.setText(bundle.getString("JVentanaEnlace.Advanced_and_complete_link_configuration.")); // NOI18N
-        panelAvanzado.add(iconoEnlace2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
-
-        jLabel7.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setText(bundle.getString("JVentanaEnlace.Link_delay")); // NOI18N
-        panelAvanzado.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 105, 100, -1));
-
-        delayAvanzado.setMajorTickSpacing(1000);
-        delayAvanzado.setMaximum(500000);
-        delayAvanzado.setMinimum(1);
-        delayAvanzado.setMinorTickSpacing(1000);
-        delayAvanzado.setToolTipText(bundle.getString("JVentanaEnlace.Slide_it_to_set_the_link_delay.")); // NOI18N
-        delayAvanzado.setValue(125000);
-        delayAvanzado.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                clicEnDelayAvanzado(evt);
+        this.panelQuickConfiguration.add(this.comboBoxPredefinedOptions, new AbsoluteConstraints(140, 100, 180, -1));
+        this.panelTabs.addTab(this.translations.getString("VentanaEnlace.tabs.Fast"), this.panelQuickConfiguration);
+        this.panelAdvancedConfiguration.setLayout(new AbsoluteLayout());
+        this.iconContainerToolbox.setIcon(this.imageBroker.getIcon(TImageBroker.AVANZADA));
+        this.iconContainerToolbox.setText(this.translations.getString("JVentanaEnlace.Advanced_and_complete_link_configuration."));
+        this.panelAdvancedConfiguration.add(this.iconContainerToolbox, new AbsoluteConstraints(15, 20, 335, -1));
+        this.labelDelay.setFont(new Font("Dialog", 0, 12));
+        this.labelDelay.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelDelay.setText(this.translations.getString("JVentanaEnlace.Link_delay"));
+        this.panelAdvancedConfiguration.add(this.labelDelay, new AbsoluteConstraints(20, 105, 100, -1));
+        this.sliderDelay.setMajorTickSpacing(1000);
+        this.sliderDelay.setMaximum(500000);
+        this.sliderDelay.setMinimum(1);
+        this.sliderDelay.setMinorTickSpacing(1000);
+        this.sliderDelay.setToolTipText(this.translations.getString("JVentanaEnlace.Slide_it_to_set_the_link_delay."));
+        this.sliderDelay.setValue(125000);
+        this.sliderDelay.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent evt) {
+                handleChangeOnDelay(evt);
             }
         });
-        panelAvanzado.add(delayAvanzado, new org.netbeans.lib.awtextra.AbsoluteConstraints(125, 105, 150, -1));
-
-        etiquetaDelay.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
-        etiquetaDelay.setForeground(new java.awt.Color(102, 102, 102));
-        etiquetaDelay.setText(bundle.getString("JVentanaEnlace.500_ns.")); // NOI18N
-        panelAvanzado.add(etiquetaDelay, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 105, 70, -1));
-
-        panelPestanias.addTab(bundle.getString("VentanaEnlace.tabs.Advanced"), panelAvanzado); // NOI18N
-
-        panelPrincipal.add(panelPestanias, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 370, 240));
-
-        panelBotones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jButton2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton2.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ACEPTAR));
-        jButton2.setMnemonic(java.util.ResourceBundle.getBundle("{bundleNameSlashes}").getString("VentanaEnlace.botones.mne.Aceptar").charAt(0));
-        jButton2.setText(bundle.getString("VentanaEnlace.boton.Ok")); // NOI18N
-        jButton2.setToolTipText(bundle.getString("JVentanaEnlace.Adds_the_link_to_the_topology.")); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clicEnAceptar(evt);
+        this.panelAdvancedConfiguration.add(this.sliderDelay, new AbsoluteConstraints(125, 105, 150, -1));
+        this.labelNs.setFont(new Font("Dialog", 0, 10));
+        this.labelNs.setForeground(new Color(102, 102, 102));
+        this.labelNs.setText(this.translations.getString("JVentanaEnlace.500_ns."));
+        this.panelAdvancedConfiguration.add(this.labelNs, new AbsoluteConstraints(280, 105, 70, -1));
+        this.panelTabs.addTab(this.translations.getString("VentanaEnlace.tabs.Advanced"), this.panelAdvancedConfiguration);
+        this.mainPanel.add(this.panelTabs, new AbsoluteConstraints(15, 15, 370, 240));
+        this.panelButtons.setLayout(new AbsoluteLayout());
+        this.buttonOK.setFont(new Font("Dialog", 0, 12));
+        this.buttonOK.setIcon(this.imageBroker.getIcon(TImageBroker.ACEPTAR));
+        this.buttonOK.setMnemonic(this.translations.getString("VentanaEnlace.botones.mne.Aceptar").charAt(0));
+        this.buttonOK.setText(this.translations.getString("VentanaEnlace.boton.Ok"));
+        this.buttonOK.setToolTipText(this.translations.getString("JVentanaEnlace.Adds_the_link_to_the_topology."));
+        this.buttonOK.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                handleClickOnOKButton(evt);
             }
         });
-        panelBotones.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 115, -1));
-
-        jButton3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jButton3.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.CANCELAR));
-        jButton3.setMnemonic(java.util.ResourceBundle.getBundle("{bundleNameSlashes}").getString("VentanaEnlace.botones.mne.Cancelar").charAt(0));
-        jButton3.setText(bundle.getString("VentanaEnlace.boton.Cancel")); // NOI18N
-        jButton3.setToolTipText(bundle.getString("JVentanaEnlace.Cancel_the_operation")); // NOI18N
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clicEnCancelar(evt);
+        this.panelButtons.add(this.buttonOK, new AbsoluteConstraints(15, 15, 115, -1));
+        this.buttonCancel.setFont(new Font("Dialog", 0, 12));
+        this.buttonCancel.setIcon(this.imageBroker.getIcon(TImageBroker.CANCELAR));
+        this.buttonCancel.setMnemonic(this.translations.getString("VentanaEnlace.botones.mne.Cancelar").charAt(0));
+        this.buttonCancel.setText(this.translations.getString("VentanaEnlace.boton.Cancel"));
+        this.buttonCancel.setToolTipText(this.translations.getString("JVentanaEnlace.Cancel_the_operation"));
+        this.buttonCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                handleClickOnCancelButton(evt);
             }
         });
-        panelBotones.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(145, 15, 115, -1));
-
-        panelPrincipal.add(panelBotones, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 255, 400, 55));
-
-        getContentPane().add(panelPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 310));
-
+        this.panelButtons.add(this.buttonCancel, new AbsoluteConstraints(145, 15, 115, -1));
+        this.mainPanel.add(this.panelButtons, new AbsoluteConstraints(0, 255, 400, 55));
+        getContentPane().add(this.mainPanel, new AbsoluteConstraints(0, 0, -1, 310));
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
-private void clicEnCambioNodoDerecho(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnCambioNodoDerecho
-    this.selectorPuertoDerecho.removeAllItems();
-    this.selectorPuertoDerecho.addItem("");
-    this.selectorPuertoDerecho.setSelectedIndex(0);
-    if (this.selectorExtremoDerecho.getSelectedIndex() != 0) {
-        TNode seleccionado = topo.getFirstNodeNamed((String) selectorExtremoDerecho.getSelectedItem());
-        Iterator it = topo.getNodesIterator();
-        TNode nt;
-        if (seleccionado != null) {
-//          Actualizar los ports de dicho nodo
-            int i=0;
-            for (i=0; i<seleccionado.getPorts().getNumberOfPorts(); i++) {
-                if (seleccionado.getPorts().getPort(i).isAvailable())
-                    this.selectorPuertoDerecho.addItem(""+i);
+    /**
+     * This method is called from within the constructor to do additional
+     * configurations of window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
+    private void initComponents2() {
+        Dimension frameSize = this.getSize();
+        Dimension parentSize = this.parent.getSize();
+        setLocation((parentSize.width - frameSize.width) / 2, (parentSize.height - frameSize.height) / 2);
+        this.currentConfigName = null;
+        this.currentConfigShowName = false;
+        this.currentConfigDelay = 1000;
+        this.comboBoxPredefinedOptions.removeAllItems();
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaHija.Personalized"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaHija.Too_fast"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaHija.Fast"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaHija.Normal"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaHija.Low"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaHija.Too_low"));
+        this.comboBoxPredefinedOptions.setSelectedIndex(0);
+        loadAllNodesThatHaveAvailablePorts();
+    }
+
+    /**
+     * This method is called when a new tail end node is selected in the UI.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleChangeInTailEndNode(ActionEvent evt) {
+        this.comboBoxTailEndNodePort.removeAllItems();
+        this.comboBoxTailEndNodePort.addItem("");
+        this.comboBoxTailEndNodePort.setSelectedIndex(0);
+        if (this.comboBoxTailEndNode.getSelectedIndex() != 0) {
+            TNode selectedTailEndNode = this.topology.getFirstNodeNamed((String) this.comboBoxTailEndNode.getSelectedItem());
+            // FIX: two next variables seem not to be used. Clean.
+            Iterator it = this.topology.getNodesIterator();
+            TNode nt;
+            if (selectedTailEndNode != null) {
+                // Update available ports for that node
+                int i = 0;
+                for (i = 0; i < selectedTailEndNode.getPorts().getNumberOfPorts(); i++) {
+                    if (selectedTailEndNode.getPorts().getPort(i).isAvailable()) {
+                        this.comboBoxTailEndNodePort.addItem("" + i);
+                    }
+                }
             }
-//          Actualizar los ports de dicho nodo
         }
     }
-}//GEN-LAST:event_clicEnCambioNodoDerecho
 
-private void clicEnCambioNodoIzquierdo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnCambioNodoIzquierdo
-    this.selectorExtremoDerecho.removeAllItems();
-    this.selectorExtremoDerecho.addItem("");
-    this.selectorExtremoDerecho.setSelectedIndex(0);
-    this.selectorPuertoIzquierdo.removeAllItems();
-    this.selectorPuertoIzquierdo.addItem("");
-    this.selectorPuertoIzquierdo.setSelectedIndex(0);
-    this.selectorPuertoDerecho.removeAllItems();
-    this.selectorPuertoDerecho.addItem("");
-    this.selectorPuertoDerecho.setSelectedIndex(0);
-    if (this.selectorExtremoIzquierdo.getSelectedIndex() != 0) {
-        TNode seleccionado = topo.getFirstNodeNamed((String) selectorExtremoIzquierdo.getSelectedItem());
-        Iterator it = topo.getNodesIterator();
-        TNode nt;
-        if (seleccionado != null) {
-//          Actualizar los ports de dicho nodo
-            int i=0;
-            for (i=0; i<seleccionado.getPorts().getNumberOfPorts(); i++) {
-                if (seleccionado.getPorts().getPort(i).isAvailable())
-                    this.selectorPuertoIzquierdo.addItem(""+i);
-            }
-//          Actualizar los ports de dicho nodo
-            while (it.hasNext()) {
-                nt = (TNode) it.next();
-                if (!nt.getName().equals(seleccionado.getName())) {
-                    if (nt.hasAvailablePorts()) {
-                        if (!topo.isThereAnyLinkThatJoins(nt.getNodeID(), seleccionado.getNodeID())) {
-                            switch (seleccionado.getNodeType()) {
-                                case TNode.TRAFFIC_GENERATOR: {
-                                    if ((nt.getNodeType() == TNode.LER) || (nt.getNodeType() == TNode.ACTIVE_LER)) {
-                                        selectorExtremoDerecho.addItem(nt.getName());
+    /**
+     * This method is called when a new head end node is selected in the UI.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleChangeInHeadEndNode(ActionEvent evt) {
+        this.comboBoxTailEndNode.removeAllItems();
+        this.comboBoxTailEndNode.addItem("");
+        this.comboBoxTailEndNode.setSelectedIndex(0);
+        this.comboBoxHeadEndNodePort.removeAllItems();
+        this.comboBoxHeadEndNodePort.addItem("");
+        this.comboBoxHeadEndNodePort.setSelectedIndex(0);
+        this.comboBoxTailEndNodePort.removeAllItems();
+        this.comboBoxTailEndNodePort.addItem("");
+        this.comboBoxTailEndNodePort.setSelectedIndex(0);
+        if (this.comboBoxHeadEndNode.getSelectedIndex() != 0) {
+            TNode selectedHeadEndNode = this.topology.getFirstNodeNamed((String) this.comboBoxHeadEndNode.getSelectedItem());
+            Iterator it = this.topology.getNodesIterator();
+            TNode nt;
+            if (selectedHeadEndNode != null) {
+                // Update available ports for that node
+                int i = 0;
+                for (i = 0; i < selectedHeadEndNode.getPorts().getNumberOfPorts(); i++) {
+                    if (selectedHeadEndNode.getPorts().getPort(i).isAvailable()) {
+                        this.comboBoxHeadEndNodePort.addItem("" + i);
+                    }
+                }
+                // Once selected the head end node, this computes those nodes 
+                // that are candidates for tail end nodes. Not all nodes can be
+                // linked.
+                while (it.hasNext()) {
+                    nt = (TNode) it.next();
+                    if (!nt.getName().equals(selectedHeadEndNode.getName())) {
+                        if (nt.hasAvailablePorts()) {
+                            if (!this.topology.isThereAnyLinkThatJoins(nt.getNodeID(), selectedHeadEndNode.getNodeID())) {
+                                switch (selectedHeadEndNode.getNodeType()) {
+                                    case TNode.TRAFFIC_GENERATOR: {
+                                        if ((nt.getNodeType() == TNode.LER) || (nt.getNodeType() == TNode.ACTIVE_LER)) {
+                                            this.comboBoxTailEndNode.addItem(nt.getName());
+                                        }
+                                        break;
                                     }
-                                    break;
-                                }
-                                case TNode.TRAFFIC_SINK: {
-                                    if ((nt.getNodeType() == TNode.LER) || (nt.getNodeType() == TNode.ACTIVE_LER)) {
-                                        selectorExtremoDerecho.addItem(nt.getName());
+                                    case TNode.TRAFFIC_SINK: {
+                                        if ((nt.getNodeType() == TNode.LER) || (nt.getNodeType() == TNode.ACTIVE_LER)) {
+                                            this.comboBoxTailEndNode.addItem(nt.getName());
+                                        }
+                                        break;
                                     }
-                                    break;
-                                }
-                                case TNode.LER: {
-                                    selectorExtremoDerecho.addItem(nt.getName());
-                                    break;
-                                }
-                                case TNode.ACTIVE_LER: {
-                                    selectorExtremoDerecho.addItem(nt.getName());
-                                    break;
-                                }
-                                case TNode.LSR: {
-                                    if ((nt.getNodeType() == TNode.LER) || (nt.getNodeType() == TNode.ACTIVE_LER)
-                                       || (nt.getNodeType() == TNode.LSR) || (nt.getNodeType() == TNode.ACTIVE_LSR)) {
-                                        selectorExtremoDerecho.addItem(nt.getName());
+                                    case TNode.LER: {
+                                        this.comboBoxTailEndNode.addItem(nt.getName());
+                                        break;
                                     }
-                                    break;
-                                }
-                                case TNode.ACTIVE_LSR: {
-                                    if ((nt.getNodeType() == TNode.LER) || (nt.getNodeType() == TNode.ACTIVE_LER)
-                                       || (nt.getNodeType() == TNode.LSR) || (nt.getNodeType() == TNode.ACTIVE_LSR)) {
-                                        selectorExtremoDerecho.addItem(nt.getName());
+                                    case TNode.ACTIVE_LER: {
+                                        this.comboBoxTailEndNode.addItem(nt.getName());
+                                        break;
                                     }
-                                    break;
+                                    case TNode.LSR: {
+                                        if ((nt.getNodeType() == TNode.LER) || (nt.getNodeType() == TNode.ACTIVE_LER)
+                                                || (nt.getNodeType() == TNode.LSR) || (nt.getNodeType() == TNode.ACTIVE_LSR)) {
+                                            this.comboBoxTailEndNode.addItem(nt.getName());
+                                        }
+                                        break;
+                                    }
+                                    case TNode.ACTIVE_LSR: {
+                                        if ((nt.getNodeType() == TNode.LER) || (nt.getNodeType() == TNode.ACTIVE_LER)
+                                                || (nt.getNodeType() == TNode.LSR) || (nt.getNodeType() == TNode.ACTIVE_LSR)) {
+                                            this.comboBoxTailEndNode.addItem(nt.getName());
+                                        }
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -377,207 +394,235 @@ private void clicEnCambioNodoIzquierdo(java.awt.event.ActionEvent evt) {//GEN-FI
             }
         }
     }
-}//GEN-LAST:event_clicEnCambioNodoIzquierdo
 
-/**
- * Este m�todo carga todos los nodos de la topolog�a en una lista para poder
- * seleccionar dentro de ella los dos nodos que va a unir el enlace.
- * @since 2.0
- */
-public void cargarNodosPorDefecto() {
-    Iterator it = topo.getNodesIterator();
-    TNode nt;
-    while (it.hasNext()) {
-        nt = (TNode) it.next();
-        if (nt.hasAvailablePorts()) {
-            selectorExtremoIzquierdo.addItem(nt.getName());
-            selectorExtremoIzquierdo.setSelectedIndex(0);
+    /**
+     * This method loads the first list of nodes that can be head end nodes. It
+     * will contain all nodes that has at leas an available port.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
+    private void loadAllNodesThatHaveAvailablePorts() {
+        Iterator nodesIterator = this.topology.getNodesIterator();
+        TNode node;
+        while (nodesIterator.hasNext()) {
+            node = (TNode) nodesIterator.next();
+            if (node.hasAvailablePorts()) {
+                this.comboBoxHeadEndNode.addItem(node.getName());
+                this.comboBoxHeadEndNode.setSelectedIndex(0);
+            }
         }
     }
-}
 
-private void clicEnDelayFacil(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnDelayFacil
-    switch (this.delayFacil.getSelectedIndex()) {
-        case 0: {
-            // dejo como est� el delay en la configuraci�n avanzada
-            this.delayFacil.setSelectedIndex(0);
-            break;
+    /**
+     * This method is called when a a predefined option is selected in the UI to
+     * configure the link.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnPredefinedOptions(ActionEvent evt) {
+        switch (this.comboBoxPredefinedOptions.getSelectedIndex()) {
+            case 0: {
+                // Do nothing
+                this.comboBoxPredefinedOptions.setSelectedIndex(0);
+                break;
+            }
+            case 1: {
+                this.sliderDelay.setValue(1000);
+                this.comboBoxPredefinedOptions.setSelectedIndex(1);
+                break;
+            }
+            case 2: {
+                this.sliderDelay.setValue(62500);
+                this.comboBoxPredefinedOptions.setSelectedIndex(2);
+                break;
+            }
+            case 3: {
+                this.sliderDelay.setValue(125000);
+                this.comboBoxPredefinedOptions.setSelectedIndex(3);
+                break;
+            }
+            case 4: {
+                this.sliderDelay.setValue(187500);
+                this.comboBoxPredefinedOptions.setSelectedIndex(4);
+                break;
+            }
+            case 5: {
+                this.sliderDelay.setValue(250000);
+                this.comboBoxPredefinedOptions.setSelectedIndex(5);
+                break;
+            }
         }
-        case 1: {
-            this.delayAvanzado.setValue(1000);
-            this.delayFacil.setSelectedIndex(1);
-            break;
-        }
-        case 2: {
-            this.delayAvanzado.setValue(62500);
-            this.delayFacil.setSelectedIndex(2);
-            break;
-        }
-        case 3: {
-            this.delayAvanzado.setValue(125000);
-            this.delayFacil.setSelectedIndex(3);
-            break;
-        }
-        case 4: {
-            this.delayAvanzado.setValue(187500);
-            this.delayFacil.setSelectedIndex(4);
-            break;
-        }
-        case 5: {
-            this.delayAvanzado.setValue(250000);
-            this.delayFacil.setSelectedIndex(5);
-            break;
-        }
+        this.labelNs.setText(this.sliderDelay.getValue() + this.translations.getString("JVentanaEnlace._ns."));
     }
-    this.etiquetaDelay.setText(this.delayAvanzado.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaEnlace._ns."));
-}//GEN-LAST:event_clicEnDelayFacil
 
-private void clicEnDelayAvanzado(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_clicEnDelayAvanzado
-    this.delayFacil.setSelectedIndex(0);
-    this.etiquetaDelay.setText(this.delayAvanzado.getValue() + java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaEnlace._ns."));
-}//GEN-LAST:event_clicEnDelayAvanzado
-
-private void clicEnCancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnCancelar
-    if (this.reconfigurando) {
-        configEnlace.setName(BCKUPNombre);
-        configEnlace.setShowName(BCKUPMostrarNombre);
-        configEnlace.setLinkDelay(BCKUPDelay);
-        this.reconfigurando = false;
-        configEnlace.setWellConfigured(true);
-    } else {
-        configEnlace.setWellConfigured(false);
+    /**
+     * This method is called when a change is made in the Delay (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleChangeOnDelay(ChangeEvent evt) {
+        this.comboBoxPredefinedOptions.setSelectedIndex(0);
+        this.labelNs.setText(this.sliderDelay.getValue() + this.translations.getString("JVentanaEnlace._ns."));
     }
-    this.setVisible(false);
-    this.dispose();
-}//GEN-LAST:event_clicEnCancelar
 
-private void clicEnAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnAceptar
-    configEnlace.setWellConfigured(true);
-    configEnlace.setName(nombreEnlace.getText());
-    configEnlace.setShowName(verNombre.isSelected());
-    configEnlace.setLinkDelay(this.delayAvanzado.getValue());
-    
-    if (!this.reconfigurando) {
-        configEnlace.setHeadEndNodeName((String) selectorExtremoIzquierdo.getSelectedItem());
-        configEnlace.setTailEndNodeName((String) selectorExtremoDerecho.getSelectedItem());
-        configEnlace.discoverLinkType(topo);
-        if (((String)this.selectorPuertoIzquierdo.getSelectedItem()).equals("")) {
-            configEnlace.setHeadEndNodePortID(-1);
+    /**
+     * This method is called when a click is done "Cancel" button (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnCancelButton(ActionEvent evt) {
+        if (this.reconfiguration) {
+            this.linkConfig.setName(this.currentConfigName);
+            this.linkConfig.setShowName(this.currentConfigShowName);
+            this.linkConfig.setLinkDelay(this.currentConfigDelay);
+            this.reconfiguration = false;
+            this.linkConfig.setWellConfigured(true);
         } else {
-            String aux = (String) this.selectorPuertoIzquierdo.getSelectedItem();
-            int aux2 = Integer.valueOf(aux).intValue();
-            configEnlace.setHeadEndNodePortID(aux2);
+            this.linkConfig.setWellConfigured(false);
         }
-        if (((String)this.selectorPuertoDerecho.getSelectedItem()).equals("")) {
-            configEnlace.setTailEndNodePortID(-1);
-        } else {
-            String aux = (String) this.selectorPuertoDerecho.getSelectedItem();
-            int aux2 = Integer.valueOf(aux).intValue();
-            configEnlace.setTailEndNodePortID(aux2);
-        }
-    }
-    int error = configEnlace.validateConfig(topo, this.reconfigurando);
-    if (error != TLinkConfig.OK) {
-        JWarningWindow va = new JWarningWindow(ventanaPadre, true, dispensadorDeImagenes);
-        va.setWarningMessage(configEnlace.getErrorMessage(error));
-        va.show();
-    } else {
         this.setVisible(false);
         this.dispose();
     }
-}//GEN-LAST:event_clicEnAceptar
-
-    /** Closes the dialog */
-    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
-        setVisible(false);
-        configEnlace.setWellConfigured(false);
-        dispose();
-    }//GEN-LAST:event_closeDialog
 
     /**
-     * Este m�todo permite cargar en la ventana la configuraci�n actual del enlace que estamos
-     * configurando.
+     * This method is called when a click is done "Ok" button (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
      * @since 2.0
-     * @param recfg TRUE indica que se est� reconfigurando el enlace. FALSE indica que el enlace se
-     * est� insertando nuevo.
-     * @param tcenlace El enlace que estamos configurando.
-     */    
-    public void ponerConfiguracion(TLinkConfig tcenlace, boolean recfg) {
-        configEnlace = tcenlace;
-        if (recfg) {
-            this.reconfigurando = recfg;
-            BCKUPNombre = tcenlace.getName();
-            BCKUPMostrarNombre = tcenlace.nameMustBeDisplayed();
-            BCKUPDelay = tcenlace.getLinkDelay();
-
-            this.nombreEnlace.setText(tcenlace.getName());
-            this.verNombre.setSelected(tcenlace.nameMustBeDisplayed());
-            this.delayFacil.setSelectedIndex(0);
-            this.delayAvanzado.setValue(tcenlace.getLinkDelay());
-            
-            this.selectorExtremoIzquierdo.setEnabled(false);
-            this.selectorPuertoIzquierdo.setEnabled(false);
-            this.selectorExtremoDerecho.setEnabled(false);
-            this.selectorPuertoDerecho.setEnabled(false);
-            
-            this.selectorExtremoIzquierdo.removeAllItems();
-            this.selectorExtremoIzquierdo.addItem(tcenlace.getHeadEndNodeName());
-            this.selectorExtremoIzquierdo.setSelectedIndex(0);
-
-            this.selectorPuertoIzquierdo.removeAllItems();
-            this.selectorPuertoIzquierdo.addItem(""+tcenlace.getHeadEndNodePortID());
-            this.selectorPuertoIzquierdo.setSelectedIndex(0);
-            
-            this.selectorExtremoDerecho.removeAllItems();
-            this.selectorExtremoDerecho.addItem(tcenlace.getTailEndNodeName());
-            this.selectorExtremoDerecho.setSelectedIndex(0);
-
-            this.selectorPuertoDerecho.removeAllItems();
-            this.selectorPuertoDerecho.addItem(""+tcenlace.getTailEndNodePortID());
-            this.selectorPuertoDerecho.setSelectedIndex(0);
+     */
+    private void handleClickOnOKButton(ActionEvent evt) {
+        this.linkConfig.setWellConfigured(true);
+        this.linkConfig.setName(this.textFieldName.getText());
+        this.linkConfig.setShowName(this.checkBoxShowName.isSelected());
+        this.linkConfig.setLinkDelay(this.sliderDelay.getValue());
+        if (!this.reconfiguration) {
+            this.linkConfig.setHeadEndNodeName((String) this.comboBoxHeadEndNode.getSelectedItem());
+            this.linkConfig.setTailEndNodeName((String) this.comboBoxTailEndNode.getSelectedItem());
+            this.linkConfig.discoverLinkType(this.topology);
+            if (((String) this.comboBoxHeadEndNodePort.getSelectedItem()).equals("")) {
+                this.linkConfig.setHeadEndNodePortID(-1);
+            } else {
+                String aux = (String) this.comboBoxHeadEndNodePort.getSelectedItem();
+                int aux2 = Integer.parseInt(aux);
+                this.linkConfig.setHeadEndNodePortID(aux2);
+            }
+            if (((String) this.comboBoxTailEndNodePort.getSelectedItem()).equals("")) {
+                this.linkConfig.setTailEndNodePortID(-1);
+            } else {
+                String aux = (String) this.comboBoxTailEndNodePort.getSelectedItem();
+                int aux2 = Integer.parseInt(aux);
+                this.linkConfig.setTailEndNodePortID(aux2);
+            }
+        }
+        int error = this.linkConfig.validateConfig(this.topology, this.reconfiguration);
+        if (error != TLinkConfig.OK) {
+            JWarningWindow warningWindow = new JWarningWindow(this.parent, true, this.imageBroker);
+            warningWindow.setWarningMessage(this.linkConfig.getErrorMessage(error));
+            warningWindow.setVisible(true);
+        } else {
+            this.setVisible(false);
+            this.dispose();
         }
     }
 
-    private boolean reconfigurando;
-    
-    private String BCKUPNombre;
-    private boolean BCKUPMostrarNombre;
-    private boolean BCKUPCrearEstadisticas;
-    private int BCKUPDelay;
-    
-    private TImageBroker dispensadorDeImagenes;
-    private Frame ventanaPadre;
-    private TTopology topo;
-    private TLinkConfig configEnlace;
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JSlider delayAvanzado;
-    private javax.swing.JComboBox delayFacil;
-    private javax.swing.JLabel etiquetaDelay;
-    private javax.swing.JLabel etiquetaNombre;
-    private javax.swing.JLabel iconoEnlace;
-    private javax.swing.JLabel iconoEnlace1;
-    private javax.swing.JLabel iconoEnlace2;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JTextField nombreEnlace;
-    private javax.swing.JPanel panelAvanzado;
-    private javax.swing.JPanel panelBotones;
-    private javax.swing.JPanel panelGeneral;
-    private javax.swing.JTabbedPane panelPestanias;
-    private javax.swing.JPanel panelPrincipal;
-    private javax.swing.JPanel panelRapido;
-    private javax.swing.JComboBox selectorExtremoDerecho;
-    private javax.swing.JComboBox selectorExtremoIzquierdo;
-    private javax.swing.JComboBox selectorPuertoDerecho;
-    private javax.swing.JComboBox selectorPuertoIzquierdo;
-    private javax.swing.JCheckBox verNombre;
-    // End of variables declaration//GEN-END:variables
+    /**
+     * This method is called when the JLinkWindow is closed (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleWindowsClosing(WindowEvent evt) {
+        setVisible(false);
+        this.linkConfig.setWellConfigured(false);
+        dispose();
+    }
 
+    /**
+     * This method configures all components of JLinkWindow with present values
+     * retrieved from the link configuration object specified. It is used to do
+     * a reconfiguration.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param linkConfig the configuration object for a link, that will be
+     * configured through this JLinkWindow
+     * @param reconfiguration TRUE if the link is being reconfigured. FALSE if
+     * it is the first configuration of the link after its creation.
+     * @since 2.0
+     */
+    public void setConfiguration(TLinkConfig linkConfig, boolean reconfiguration) {
+        this.linkConfig = linkConfig;
+        if (reconfiguration) {
+            this.reconfiguration = reconfiguration;
+            this.currentConfigName = linkConfig.getName();
+            this.currentConfigShowName = linkConfig.nameMustBeDisplayed();
+            this.currentConfigDelay = linkConfig.getLinkDelay();
+            this.textFieldName.setText(linkConfig.getName());
+            this.checkBoxShowName.setSelected(linkConfig.nameMustBeDisplayed());
+            this.comboBoxPredefinedOptions.setSelectedIndex(0);
+            this.sliderDelay.setValue(linkConfig.getLinkDelay());
+            this.comboBoxHeadEndNode.setEnabled(false);
+            this.comboBoxHeadEndNodePort.setEnabled(false);
+            this.comboBoxTailEndNode.setEnabled(false);
+            this.comboBoxTailEndNodePort.setEnabled(false);
+            this.comboBoxHeadEndNode.removeAllItems();
+            this.comboBoxHeadEndNode.addItem(linkConfig.getHeadEndNodeName());
+            this.comboBoxHeadEndNode.setSelectedIndex(0);
+            this.comboBoxHeadEndNodePort.removeAllItems();
+            this.comboBoxHeadEndNodePort.addItem("" + linkConfig.getHeadEndNodePortID());
+            this.comboBoxHeadEndNodePort.setSelectedIndex(0);
+            this.comboBoxTailEndNode.removeAllItems();
+            this.comboBoxTailEndNode.addItem(linkConfig.getTailEndNodeName());
+            this.comboBoxTailEndNode.setSelectedIndex(0);
+            this.comboBoxTailEndNodePort.removeAllItems();
+            this.comboBoxTailEndNodePort.addItem("" + linkConfig.getTailEndNodePortID());
+            this.comboBoxTailEndNodePort.setSelectedIndex(0);
+        }
+    }
+
+    private boolean reconfiguration;
+    private String currentConfigName;
+    private boolean currentConfigShowName;
+    private int currentConfigDelay;
+    private TImageBroker imageBroker;
+    private Frame parent;
+    private TTopology topology;
+    private TLinkConfig linkConfig;
+    private JSlider sliderDelay;
+    private JComboBox comboBoxPredefinedOptions;
+    private JLabel labelNs;
+    private JLabel labelName;
+    private JLabel labelLink;
+    private JLabel iconContainerWizard;
+    private JLabel iconContainerToolbox;
+    private JButton buttonOK;
+    private JButton buttonCancel;
+    private JLabel iconContainerLink;
+    private JLabel labelHeadEnd;
+    private JLabel labelTailEnd;
+    private JLabel labelHeadEndColons;
+    private JLabel labelTailEndColons;
+    private JLabel labelSpeed;
+    private JLabel labelDelay;
+    private JTextField textFieldName;
+    private JPanel panelAdvancedConfiguration;
+    private JPanel panelButtons;
+    private JPanel panelGeneralConfiguration;
+    private JTabbedPane panelTabs;
+    private JPanel mainPanel;
+    private JPanel panelQuickConfiguration;
+    private JComboBox comboBoxTailEndNode;
+    private JComboBox comboBoxHeadEndNode;
+    private JComboBox comboBoxTailEndNodePort;
+    private JComboBox comboBoxHeadEndNodePort;
+    private JCheckBox checkBoxShowName;
+    private ResourceBundle translations;
 }
