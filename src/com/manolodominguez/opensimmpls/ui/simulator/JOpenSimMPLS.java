@@ -44,7 +44,7 @@ import java.util.logging.Logger;
  * @version 1.0
  * @since 2.0
  */
-public class JSimulador extends javax.swing.JFrame {
+public class JOpenSimMPLS extends javax.swing.JFrame {
     
     /**
      * Este m�todo crea una nueva instancia de la clase, esto es un nuevo simulador.
@@ -52,7 +52,7 @@ public class JSimulador extends javax.swing.JFrame {
      * @param di El dispensador de im�genes que se encargar� de precargar las im�genes necesarias
      * en el simulador, ahorrando tiempo y mejorando el rendimiento de la aplicaci�n.
      */
-    public JSimulador(TImageBroker di) {
+    public JOpenSimMPLS(TImageBroker di) {
         dispensadorDeImagenes = di;
         initComponents();
         initComponents2();
@@ -95,6 +95,7 @@ public class JSimulador extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         licenciaMenuItem = new javax.swing.JMenuItem();
         comentarioMenuItem1 = new javax.swing.JMenuItem();
+        contribuyeMenuItem1 = new javax.swing.JMenuItem();
         sobreMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -303,6 +304,20 @@ public class JSimulador extends javax.swing.JFrame {
         });
         submenuAyuda.add(comentarioMenuItem1);
 
+        contribuyeMenuItem1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        contribuyeMenuItem1.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.COMENTARIO_MENU));
+        contribuyeMenuItem1.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("Menu.LetraResaltada.Contribuye").charAt(0));
+        contribuyeMenuItem1.setText(bundle.getString("Contribute")); // NOI18N
+        contribuyeMenuItem1.setToolTipText(bundle.getString("Contribute")); // NOI18N
+        contribuyeMenuItem1.setDoubleBuffered(true);
+        contribuyeMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clicEnContribuye(evt);
+            }
+        });
+        submenuAyuda.add(contribuyeMenuItem1);
+
+
         sobreMenuItem.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         sobreMenuItem.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.SPLASH_MENU));
         sobreMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("Menu.Letra_resaltada.Sobre").charAt(0));
@@ -328,9 +343,9 @@ public class JSimulador extends javax.swing.JFrame {
                 URL url = this.getClass().getResource(ResourceBundle.getBundle(AvailableBundles.ABOUT_WINDOW.getPath()).getString("JSimulator.GuidePath"));
                 Desktop.getDesktop().browse(url.toURI());
             } catch (IOException ex) {
-                Logger.getLogger(JSimulador.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(JOpenSimMPLS.class.getName()).log(Level.SEVERE, null, ex);
             } catch (URISyntaxException ex) {
-                Logger.getLogger(JSimulador.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(JOpenSimMPLS.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_clicEnTutorial
@@ -358,7 +373,7 @@ public class JSimulador extends javax.swing.JFrame {
                             String tit = esc.getScenarioFile().getName();
                             numVentanasAbiertas++;
                             activarOpciones();
-                            JVentanaHija nuevoEscenario = new JVentanaHija(this, dispensadorDeImagenes, tit);
+                            JScenarioWindow nuevoEscenario = new JScenarioWindow(this, dispensadorDeImagenes, tit);
                             nuevoEscenario.ponerEscenario(esc);
                             Escritorio.add(nuevoEscenario, javax.swing.JLayeredPane.FRAME_CONTENT_LAYER);
                             try {
@@ -395,14 +410,14 @@ public class JSimulador extends javax.swing.JFrame {
     }//GEN-LAST:event_clicEnAbrir
 
     private void clicEnGuardarComo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnGuardarComo
-        JVentanaHija vActiva= (JVentanaHija) Escritorio.getSelectedFrame();
+        JScenarioWindow vActiva= (JScenarioWindow) Escritorio.getSelectedFrame();
         if (vActiva != null) {
             vActiva.gestionarGuardarComo();
         }
     }//GEN-LAST:event_clicEnGuardarComo
 
     private void clicEnGuardar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnGuardar
-        JVentanaHija vActiva= (JVentanaHija) Escritorio.getSelectedFrame();
+        JScenarioWindow vActiva= (JScenarioWindow) Escritorio.getSelectedFrame();
         if (vActiva != null) {
             vActiva.gestionarGuardar();
         }
@@ -413,8 +428,19 @@ public class JSimulador extends javax.swing.JFrame {
      * @since 2.0
      */    
 private void clicEnEnviarComentario(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnEnviarComentario
-    JCommentWindow vc = new JCommentWindow(dispensadorDeImagenes, this, true);
-    vc.show();
+    JWarningWindow warningWindow = new JWarningWindow(this, true, dispensadorDeImagenes);
+    warningWindow.setWarningMessage("Not developed yet");
+    warningWindow.setVisible(true);
+    //JCommentWindow vc = new JCommentWindow(dispensadorDeImagenes, this, true);
+    //vc.show();
+}//GEN-LAST:event_clicEnEnviarComentario
+
+private void clicEnContribuye(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnEnviarComentario
+    JWarningWindow warningWindow = new JWarningWindow(this, true, dispensadorDeImagenes);
+    warningWindow.setWarningMessage("Not developed yet");
+    warningWindow.setVisible(true);
+    //JCommentWindow vc = new JCommentWindow(dispensadorDeImagenes, this, true);
+    //vc.show();
 }//GEN-LAST:event_clicEnEnviarComentario
 
 /**
@@ -538,7 +564,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
  * @since 2.0
  */
     private void clicEnCerrar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clicEnCerrar
-        JVentanaHija vActiva= (JVentanaHija) Escritorio.getSelectedFrame();
+        JScenarioWindow vActiva= (JScenarioWindow) Escritorio.getSelectedFrame();
         if (vActiva != null) {
             vActiva.gestionarGuardarParaCerrar();
             vActiva.cerrar();
@@ -574,7 +600,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
             String tit = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TextoUntitled-")+id;
             numVentanasAbiertas++;
             activarOpciones();
-            JVentanaHija nuevoEscenario = new JVentanaHija(this, dispensadorDeImagenes, tit);
+            JScenarioWindow nuevoEscenario = new JScenarioWindow(this, dispensadorDeImagenes, tit);
             Escritorio.add(nuevoEscenario, javax.swing.JLayeredPane.FRAME_CONTENT_LAYER);
             try {
                 nuevoEscenario.setSelected(true);
@@ -617,7 +643,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
      */    
     public void cerrarTodo() {
         while (numVentanasAbiertas > 0) {
-            JVentanaHija vActiva= (JVentanaHija) Escritorio.getSelectedFrame();
+            JScenarioWindow vActiva= (JScenarioWindow) Escritorio.getSelectedFrame();
             if (vActiva != null) {
                 vActiva.gestionarGuardarParaCerrar();
                 vActiva.cerrar();
@@ -752,6 +778,7 @@ private void clicEnVistaIconos(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
     private javax.swing.JMenuItem cascadaMenuItem;
     private javax.swing.JMenuItem cerrarMenuItem;
     private javax.swing.JMenuItem comentarioMenuItem1;
+    private javax.swing.JMenuItem contribuyeMenuItem1;
     private javax.swing.JMenuItem guardarComoMenuItem;
     private javax.swing.JMenuItem guardarMenuItem;
     private javax.swing.JMenuItem iconosMenuItem;

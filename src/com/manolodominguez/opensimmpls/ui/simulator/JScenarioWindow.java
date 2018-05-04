@@ -68,7 +68,7 @@ import java.util.logging.Logger;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class JVentanaHija extends javax.swing.JInternalFrame {
+public class JScenarioWindow extends javax.swing.JInternalFrame {
 
      /**
      * Este m�todo es el constructor de la clase. Crea una nueva instancia de
@@ -80,7 +80,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
      * @param di Dispensador de im�genes de donde se obtendr�n todas las
      * im�genes que se necesiten.
      */
-    public JVentanaHija(JSimulador padre, TImageBroker di) {
+    public JScenarioWindow(JOpenSimMPLS padre, TImageBroker di) {
         dispensadorDeImagenes = di;
         VentanaPadre = padre;
         initComponents();
@@ -99,7 +99,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
      * @param di Dispensador de im�genes de donde se obtendr�n todas las
      * im�genes que se necesiten.
      */
-    public JVentanaHija(JSimulador padre, TImageBroker di, java.lang.String titulo) {
+    public JScenarioWindow(JOpenSimMPLS padre, TImageBroker di, java.lang.String titulo) {
         dispensadorDeImagenes = di;
         VentanaPadre = padre;
         initComponents();
@@ -119,7 +119,7 @@ public class JVentanaHija extends javax.swing.JInternalFrame {
      * que contendr� un escenario y todos sus datos.
      * @since 2.0
      */
-    public JVentanaHija(JSimulador padre, TImageBroker di, TScenario esc) {
+    public JScenarioWindow(JOpenSimMPLS padre, TImageBroker di, TScenario esc) {
         dispensadorDeImagenes = di;
         VentanaPadre = padre;
         initComponents();
@@ -2734,7 +2734,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
      *
      * @since 2.0
      */
-    private JSimulador VentanaPadre;
+    private JOpenSimMPLS VentanaPadre;
     /**
      * Este atributo contiene en todo momento un referencia al elemento de la
      * topolog�a (nodo o enlace) sobre el que se est� intentando abrir un men�

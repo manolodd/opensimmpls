@@ -21,7 +21,7 @@ import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
-import com.manolodominguez.opensimmpls.ui.simulator.JSimulador;
+import com.manolodominguez.opensimmpls.ui.simulator.JOpenSimMPLS;
 import com.manolodominguez.opensimmpls.ui.splash.JSplash;
 
 /**
@@ -99,7 +99,7 @@ public class openSimMPLS {
         splash.ponerTexto(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("Loading_icons..."));
         imagesBroker = new TImageBroker();
         splash.ponerTexto(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("openSimMPLS.generandoInterfaz"));
-        simulator = new JSimulador(imagesBroker);
+        simulator = new JOpenSimMPLS(imagesBroker);
         java.awt.Dimension tamPantalla = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         simulator.setBounds(0, 0, tamPantalla.width, tamPantalla.height);
         simulator.show();
@@ -109,5 +109,5 @@ public class openSimMPLS {
     // Variables declaration - do not modify
     private static TImageBroker imagesBroker;
     private static JSplash splash;
-    private static JSimulador simulator;
+    private static JOpenSimMPLS simulator;
 }
