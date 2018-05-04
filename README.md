@@ -10,7 +10,7 @@
 
 It supports standard MPLS operation as well as GoS/MPLS operation. See "Guarantee of Service (GoS) Support Over MPLS using Active Techniques" proposal at http://opensimmpls.manolodominguez.com/content/common/pdf/documentation/gossobrempls.pdf
 
-![OpenSimMPLS logo](https://raw.githubusercontent.com/manolodd/opensimmpls/master/src/com/manolodominguez/opensimmpls/resources/images/splash.png)
+![OpenSimMPLS logo](https://raw.githubusercontent.com/manolodd/opensimmpls/master/src/com/manolodominguez/opensimmpls/resources/images/splash_inicio.png)
 
 # LICENSE
 
