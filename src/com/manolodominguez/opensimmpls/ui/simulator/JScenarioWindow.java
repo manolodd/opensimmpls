@@ -1120,7 +1120,7 @@ public class JScenarioWindow extends javax.swing.JInternalFrame {
                 TNode nt = (TNode) elementoDisenioClicDerecho;
                 if (nt.getNodeType() == TNode.TRAFFIC_GENERATOR) {
                     JTrafficGeneratorWindow ve = new JTrafficGeneratorWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
-                    ve.ponerConfiguracion((TTrafficGeneratorNode) nt, true);
+                    ve.setConfiguration((TTrafficGeneratorNode) nt, true);
                     ve.show();
                 } else if (nt.getNodeType() == TNode.LER) {
                     JLERWindow vler = new JLERWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
@@ -2143,7 +2143,7 @@ private void clicEnAniadirEmisorDeTrafico(java.awt.event.MouseEvent evt) {//GEN-
             err.show();
         }
         JTrafficGeneratorWindow ve = new JTrafficGeneratorWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
-        ve.ponerConfiguracion(emisor, false);
+        ve.setConfiguration(emisor, false);
         ve.show();
         if (emisor.isWellConfigured()) {
             try {

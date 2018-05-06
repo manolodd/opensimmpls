@@ -51,690 +51,813 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
+import org.netbeans.lib.awtextra.AbsoluteLayout;
 
-
+/**
+ * This class implements a window that is used to configure and reconfigure a
+ * traffic generator node.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
+ */
 public class JTrafficGeneratorWindow extends JDialog {
 
-
-    public JTrafficGeneratorWindow(TTopology t, JDesignPanel pad, TImageBroker di, Frame parent, boolean modal) {
+    /**
+     * This is the constructor of the class and creates a new instance of
+     * JTrafficGeneratorWindow.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param designPanel desing panel wich contains the traffic generator node
+     * that is configured via this JTrafficGeneratorWindow
+     * @param parent Parent window over wich this JTrafficGeneratorWindow is
+     * shown.
+     * @param imageBroker An object that supply the needed images to be inserted
+     * in the UI.
+     * @param modal TRUE, if this dialog has to be modal. Otherwise, FALSE.
+     * @param topology Topology the traffic generator node belongs to.
+     * @since 2.0
+     */
+    public JTrafficGeneratorWindow(TTopology topology, JDesignPanel designPanel, TImageBroker imageBroker, Frame parent, boolean modal) {
         super(parent, modal);
-        ventanaPadre = parent;
-        dispensadorDeImagenes = di;
-        pd = pad;
-        topo = t;
+        this.parent = parent;
+        this.imageBroker = imageBroker;
+        this.designPanel = designPanel;
+        this.topology = topology;
         initComponents();
         initComponents2();
     }
 
-
-    public void initComponents2() {
-        panelCoordenadas.setDesignPanel(pd);
-        Dimension tamFrame=this.getSize();
-        Dimension tamPadre=ventanaPadre.getSize();
-        setLocation((tamPadre.width-tamFrame.width)/2, (tamPadre.height-tamFrame.height)/2);
-        emisor = null;
-        coordenadaX.setText(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.X=_") + panelCoordenadas.getRealX());
-        coordenadaY.setText(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.Y=_") + panelCoordenadas.getRealY());
-        Iterator it = topo.getNodesIterator();
-        selectorDelReceptor.removeAllItems();
-        selectorDelReceptor.addItem("");
-        TNode nt;
-        while (it.hasNext()) {
-            nt = (TNode) it.next();
-            if (nt.getNodeType() == TNode.TRAFFIC_SINK) {
-                selectorDelReceptor.addItem(nt.getName());
-            }
-        }
-        this.selectorDeGoS.removeAllItems();
-        this.selectorDeGoS.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaEmisor.None"));
-        this.selectorDeGoS.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaEmisor.Level_1"));
-        this.selectorDeGoS.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaEmisor.Level_2"));
-        this.selectorDeGoS.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaEmisor.Level_3"));
-        this.selectorDeGoS.setSelectedIndex(0);
-        this.selectorSencilloTrafico.removeAllItems();
-        this.selectorSencilloTrafico.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaEmisor.Personalized"));
-        this.selectorSencilloTrafico.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaEmisor.Email"));
-        this.selectorSencilloTrafico.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaEmisor.Web"));
-        this.selectorSencilloTrafico.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaEmisor.P2P_file_sharing"));
-        this.selectorSencilloTrafico.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaEmisor.Bank_data_transaction"));
-        this.selectorSencilloTrafico.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaEmisor.Tele-medical_video"));
-        this.selectorSencilloTrafico.addItem(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaEmisor.Bulk_traffic"));
-        this.selectorSencilloTrafico.setSelectedIndex(0);
-        selectorDelReceptor.setSelectedIndex(0);
-        BKUPDestino = "";
-        BKUPLSPDeBackup = false;
-        BKUPMostrarNombre = true;
-        BKUPNivelDeGos = 0;
-        BKUPNombre = "";
-        BKUPTasaTrafico = 1000;
-        BKUPTipoTrafico = TTrafficGeneratorNode.CONSTANT_TRAFFIC_RATE;
-        BKUPGenerarEstadisticas = false;
-        BKUPTamDatosConstante = 1024;
-        BKUPEncapsularEnMPLS = false;
-        reconfigurando = false;
-    }
-
+    /**
+     * This method is called from within the constructor to initialize the
+     * window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
     private void initComponents() {
         this.translations = ResourceBundle.getBundle(AvailableBundles.TRAFFIC_GENERATOR_WINDOW.getPath());
-        buttonGroup1 = new ButtonGroup();
-        panelPrincipal = new JPanel();
-        panelPestanias = new JTabbedPane();
-        panelGeneral = new JPanel();
-        iconoEmisor = new JLabel();
-        etiquetaNombre = new JLabel();
-        nombreNodo = new JTextField();
-        panelPosicion = new JPanel();
-        coordenadaX = new JLabel();
-        coordenadaY = new JLabel();
-        panelCoordenadas = new com.manolodominguez.opensimmpls.ui.dialogs.JCoordinatesPanel();
-        verNombre = new JCheckBox();
-        jLabel6 = new JLabel();
-        selectorDelReceptor = new JComboBox();
-        panelRapido = new JPanel();
-        iconoEnlace1 = new JLabel();
-        jLabel1 = new JLabel();
-        selectorDeGenerarEstadisticasSencillo = new JCheckBox();
-        selectorSencilloTrafico = new JComboBox();
-        panelAvanzado = new JPanel();
-        iconoEnlace2 = new JLabel();
-        jLabel2 = new JLabel();
-        etiquetaTasa = new JLabel();
-        selectorDeGenerarEstadisticas = new JCheckBox();
-        jLabel4 = new JLabel();
-        selectorDeGoS = new JComboBox();
-        selectorLSPDeRespaldo = new JCheckBox();
-        jLabel5 = new JLabel();
-        traficoConstante = new JRadioButton();
-        traficoVariable = new JRadioButton();
-        encapsularSobreMPLS = new JCheckBox();
-        selectorDeTasa = new JSlider();
-        selectorDeTamPaquete = new JSlider();
-        etiquetaOctetos = new JLabel();
-        etiquetaTamPaquete = new JLabel();
-        panelBotones = new JPanel();
-        jButton2 = new JButton();
-        jButton3 = new JButton();
-
-        setTitle(this.translations.getString("VentanaEmisor.TituloVentana")); // NOI18N
+        this.buttonGroup = new ButtonGroup();
+        this.mainPanel = new JPanel();
+        this.panelTabs = new JTabbedPane();
+        this.panelGeneralConfiguration = new JPanel();
+        this.iconContainerTrafficGenerator = new JLabel();
+        this.labelName = new JLabel();
+        this.textFieldName = new JTextField();
+        this.panelPosition = new JPanel();
+        this.labelCoordinateX = new JLabel();
+        this.labelCoordinateY = new JLabel();
+        this.coordinatesPanel = new com.manolodominguez.opensimmpls.ui.dialogs.JCoordinatesPanel();
+        this.checkBoxShowName = new JCheckBox();
+        this.labelTargetTrafficSinkNode = new JLabel();
+        this.comboBoxTargetTrafficSinkNode = new JComboBox();
+        this.panelQuickConfiguration = new JPanel();
+        this.labelQuickConfiguration = new JLabel();
+        this.labelQuickTrafficType = new JLabel();
+        this.checkBoxQuickGenerateStatistics = new JCheckBox();
+        this.comboBoxPredefinedOptions = new JComboBox();
+        this.panelAdvancedConfiguration = new JPanel();
+        this.labelAdvancedConfiguration = new JLabel();
+        this.labelTrafficGenerationRate = new JLabel();
+        this.labelTrafficGenerationRateMbps = new JLabel();
+        this.checkBoxAdvancedGenerateStatistics = new JCheckBox();
+        this.labelGoSLevel = new JLabel();
+        this.comboBoxGoSLevel = new JComboBox();
+        this.checkBoxBackupLSP = new JCheckBox();
+        this.labelAdvancedTrafficType = new JLabel();
+        this.radioButtonConstantPacketSize = new JRadioButton();
+        this.constantTrafficVariablePacketSize = new JRadioButton();
+        this.checkBoxEncapsulateOverMPLS = new JCheckBox();
+        this.sliderTrafficGenerationRate = new JSlider();
+        this.sliderConstantTrafficPayloadSize = new JSlider();
+        this.labelConstanTrafficPayloadSize = new JLabel();
+        this.labelPayloadSize = new JLabel();
+        this.panelButtons = new JPanel();
+        this.buttonOK = new JButton();
+        this.buttonCancel = new JButton();
+        setTitle(this.translations.getString("VentanaEmisor.TituloVentana"));
         setModal(true);
         setResizable(false);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent evt) {
-                closeDialog(evt);
+                handleWindowsClosing(evt);
             }
         });
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        panelPrincipal.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        panelPestanias.setFont(new Font("Dialog", 0, 12)); // NOI18N
-
-        panelGeneral.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        iconoEmisor.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.EMISOR));
-        iconoEmisor.setText(this.translations.getString("VentanaEmisor.DescripcionNodo")); // NOI18N
-        panelGeneral.add(iconoEmisor, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
-
-        etiquetaNombre.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        etiquetaNombre.setText(this.translations.getString("VentanaEmisor.Etiqueta.NombreNodo")); // NOI18N
-        panelGeneral.add(etiquetaNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 105, 120, -1));
-
-        nombreNodo.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.Nombre")); // NOI18N
-        panelGeneral.add(nombreNodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 130, 125, -1));
-
-        panelPosicion.setBorder(BorderFactory.createTitledBorder(this.translations.getString("VentanaEmisor.Etiqueta.Posicion"))); // NOI18N
-        panelPosicion.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        coordenadaX.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        coordenadaX.setText(this.translations.getString("VentanaEmisor.X=_45")); // NOI18N
-        panelPosicion.add(coordenadaX, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, -1, -1));
-
-        coordenadaY.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        coordenadaY.setText(this.translations.getString("VentanaEmisor.Y=_1024")); // NOI18N
-        panelPosicion.add(coordenadaY, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
-
-        panelCoordenadas.setBackground(new Color(255, 255, 255));
-        panelCoordenadas.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.posicion")); // NOI18N
-        panelCoordenadas.addMouseListener(new MouseAdapter() {
+        getContentPane().setLayout(new AbsoluteLayout());
+        this.mainPanel.setLayout(new AbsoluteLayout());
+        this.panelTabs.setFont(new Font("Dialog", 0, 12));
+        this.panelGeneralConfiguration.setLayout(new AbsoluteLayout());
+        this.iconContainerTrafficGenerator.setIcon(this.imageBroker.getIcon(TImageBroker.EMISOR));
+        this.iconContainerTrafficGenerator.setText(this.translations.getString("VentanaEmisor.DescripcionNodo"));
+        this.panelGeneralConfiguration.add(this.iconContainerTrafficGenerator, new AbsoluteConstraints(15, 20, 335, -1));
+        this.labelName.setFont(new Font("Dialog", 0, 12));
+        this.labelName.setText(this.translations.getString("VentanaEmisor.Etiqueta.NombreNodo"));
+        this.panelGeneralConfiguration.add(this.labelName, new AbsoluteConstraints(215, 105, 120, -1));
+        this.textFieldName.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.Nombre"));
+        this.panelGeneralConfiguration.add(this.textFieldName, new AbsoluteConstraints(215, 130, 125, -1));
+        this.panelPosition.setBorder(BorderFactory.createTitledBorder(this.translations.getString("VentanaEmisor.Etiqueta.Posicion")));
+        this.panelPosition.setLayout(new AbsoluteLayout());
+        this.labelCoordinateX.setFont(new Font("Dialog", 0, 12));
+        this.labelCoordinateX.setText(this.translations.getString("VentanaEmisor.X=_45"));
+        this.panelPosition.add(this.labelCoordinateX, new AbsoluteConstraints(100, 100, -1, -1));
+        this.labelCoordinateY.setFont(new Font("Dialog", 0, 12));
+        this.labelCoordinateY.setText(this.translations.getString("VentanaEmisor.Y=_1024"));
+        this.panelPosition.add(this.labelCoordinateY, new AbsoluteConstraints(40, 100, -1, -1));
+        this.coordinatesPanel.setBackground(new Color(255, 255, 255));
+        this.coordinatesPanel.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.posicion"));
+        this.coordinatesPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
-                clicEnPanelCoordenadas(evt);
+                handleClickOnCoordinatesPanel(evt);
             }
+
             @Override
             public void mouseEntered(MouseEvent evt) {
-                ratonEntraEnPanelCoordenadas(evt);
+                handleMouseEnteringInCoordinatesPanel(evt);
             }
+
             @Override
             public void mouseExited(MouseEvent evt) {
-                ratonSaleDePanelCoordenadas(evt);
+                handleMouseLeavingCoordinatesPanel(evt);
             }
         });
-        panelPosicion.add(panelCoordenadas, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 25, 130, 70));
-
-        panelGeneral.add(panelPosicion, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 100, 180, 125));
-
-        verNombre.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        verNombre.setSelected(true);
-        verNombre.setText(this.translations.getString("VentanaEmisor.Etiqueta.VerNombre")); // NOI18N
-        verNombre.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.VerNombre")); // NOI18N
-        panelGeneral.add(verNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 175, -1, -1));
-
-        jLabel6.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        jLabel6.setHorizontalAlignment(SwingConstants.RIGHT);
-        jLabel6.setText(this.translations.getString("VentanaEmisor.DestinoTrafico")); // NOI18N
-        panelGeneral.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 245, 170, -1));
-
-        selectorDelReceptor.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        selectorDelReceptor.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.destinodeltrafico")); // NOI18N
-        panelGeneral.add(selectorDelReceptor, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 240, -1, -1));
-
-        panelPestanias.addTab(this.translations.getString("VentanaEmisor.Tab.General"), panelGeneral); // NOI18N
-
-        panelRapido.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        iconoEnlace1.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ASISTENTE));
-        iconoEnlace1.setText(this.translations.getString("VentanaEmisor.configuracionRapida")); // NOI18N
-        panelRapido.add(iconoEnlace1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
-
-        jLabel1.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        jLabel1.setHorizontalAlignment(SwingConstants.RIGHT);
-        jLabel1.setText(this.translations.getString("VentanaEmisor.TipoDeTrafico1")); // NOI18N
-        panelRapido.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 125, 115, -1));
-
-        selectorDeGenerarEstadisticasSencillo.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        selectorDeGenerarEstadisticasSencillo.setText(this.translations.getString("VentanaEmisor.GenerarEstadisticas1")); // NOI18N
-        selectorDeGenerarEstadisticasSencillo.setToolTipText(this.translations.getString("VentanaEmisor.GenerarEstadisticas1")); // NOI18N
-        selectorDeGenerarEstadisticasSencillo.addActionListener(new ActionListener() {
+        this.panelPosition.add(this.coordinatesPanel, new AbsoluteConstraints(25, 25, 130, 70));
+        this.panelGeneralConfiguration.add(this.panelPosition, new AbsoluteConstraints(15, 100, 180, 125));
+        this.checkBoxShowName.setFont(new Font("Dialog", 0, 12));
+        this.checkBoxShowName.setSelected(true);
+        this.checkBoxShowName.setText(this.translations.getString("VentanaEmisor.Etiqueta.VerNombre"));
+        this.checkBoxShowName.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.VerNombre"));
+        this.panelGeneralConfiguration.add(this.checkBoxShowName, new AbsoluteConstraints(215, 175, -1, -1));
+        this.labelTargetTrafficSinkNode.setFont(new Font("Dialog", 0, 12));
+        this.labelTargetTrafficSinkNode.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelTargetTrafficSinkNode.setText(this.translations.getString("VentanaEmisor.DestinoTrafico"));
+        this.panelGeneralConfiguration.add(this.labelTargetTrafficSinkNode, new AbsoluteConstraints(20, 245, 170, -1));
+        this.comboBoxTargetTrafficSinkNode.setFont(new Font("Dialog", 0, 12));
+        this.comboBoxTargetTrafficSinkNode.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.destinodeltrafico"));
+        this.panelGeneralConfiguration.add(this.comboBoxTargetTrafficSinkNode, new AbsoluteConstraints(200, 240, -1, -1));
+        this.panelTabs.addTab(this.translations.getString("VentanaEmisor.Tab.General"), this.panelGeneralConfiguration);
+        this.panelQuickConfiguration.setLayout(new AbsoluteLayout());
+        this.labelQuickConfiguration.setIcon(this.imageBroker.getIcon(TImageBroker.ASISTENTE));
+        this.labelQuickConfiguration.setText(this.translations.getString("VentanaEmisor.configuracionRapida"));
+        this.panelQuickConfiguration.add(this.labelQuickConfiguration, new AbsoluteConstraints(15, 20, 335, -1));
+        this.labelQuickTrafficType.setFont(new Font("Dialog", 0, 12));
+        this.labelQuickTrafficType.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelQuickTrafficType.setText(this.translations.getString("VentanaEmisor.TipoDeTrafico1"));
+        this.panelQuickConfiguration.add(this.labelQuickTrafficType, new AbsoluteConstraints(20, 125, 115, -1));
+        this.checkBoxQuickGenerateStatistics.setFont(new Font("Dialog", 0, 12));
+        this.checkBoxQuickGenerateStatistics.setText(this.translations.getString("VentanaEmisor.GenerarEstadisticas1"));
+        this.checkBoxQuickGenerateStatistics.setToolTipText(this.translations.getString("VentanaEmisor.GenerarEstadisticas1"));
+        this.checkBoxQuickGenerateStatistics.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnGenerarEstadisticasSencillo(evt);
+                handleClickOnQuickGenerateStatistics(evt);
             }
         });
-        panelRapido.add(selectorDeGenerarEstadisticasSencillo, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 195, -1, -1));
-
-        selectorSencilloTrafico.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        selectorSencilloTrafico.setModel(new DefaultComboBoxModel(new String[] { "Personalized", "Email", "Web", "P2P file sharing", "Bank data transaction", "Tele-medical video", "Bulk traffic" }));
-        selectorSencilloTrafico.setToolTipText(this.translations.getString("VentanaEmisor.TipoDeTrafico1")); // NOI18N
-        selectorSencilloTrafico.addActionListener(new ActionListener() {
+        this.panelQuickConfiguration.add(this.checkBoxQuickGenerateStatistics, new AbsoluteConstraints(70, 195, -1, -1));
+        this.comboBoxPredefinedOptions.setFont(new Font("Dialog", 0, 12));
+        this.comboBoxPredefinedOptions.setModel(new DefaultComboBoxModel(new String[]{"Personalized", "Email", "Web", "P2P file sharing", "Bank data transaction", "Tele-medical video", "Bulk traffic"}));
+        this.comboBoxPredefinedOptions.setToolTipText(this.translations.getString("VentanaEmisor.TipoDeTrafico1"));
+        this.comboBoxPredefinedOptions.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnSelectorSencilloTrafico(evt);
+                handleClickOnPredefinedOptions(evt);
             }
         });
-        panelRapido.add(selectorSencilloTrafico, new org.netbeans.lib.awtextra.AbsoluteConstraints(145, 120, -1, -1));
-
-        panelPestanias.addTab(this.translations.getString("VentanaEmisor.Tab.Rapida"), panelRapido); // NOI18N
-
-        panelAvanzado.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        iconoEnlace2.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.AVANZADA));
-        iconoEnlace2.setText(this.translations.getString("VentanaEmisor.ConfiguracionAvanzada")); // NOI18N
-        panelAvanzado.add(iconoEnlace2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
-
-        jLabel2.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        jLabel2.setHorizontalAlignment(SwingConstants.RIGHT);
-        jLabel2.setText(this.translations.getString("VentanaEmisor.TasaDeTrafico")); // NOI18N
-        panelAvanzado.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 90, 100, -1));
-
-        etiquetaTasa.setFont(new Font("Dialog", 0, 10)); // NOI18N
-        etiquetaTasa.setForeground(new Color(102, 102, 102));
-        etiquetaTasa.setHorizontalAlignment(SwingConstants.LEFT);
-        etiquetaTasa.setText(this.translations.getString("VentanaEmisor.Kbpsinicial")); // NOI18N
-        panelAvanzado.add(etiquetaTasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 90, 70, -1));
-
-        selectorDeGenerarEstadisticas.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        selectorDeGenerarEstadisticas.setText(this.translations.getString("VentanaEmisor.GenerarEstadisticas2")); // NOI18N
-        selectorDeGenerarEstadisticas.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.GenerarEstadisticas2")); // NOI18N
-        selectorDeGenerarEstadisticas.addActionListener(new ActionListener() {
+        this.panelQuickConfiguration.add(this.comboBoxPredefinedOptions, new AbsoluteConstraints(145, 120, -1, -1));
+        this.panelTabs.addTab(this.translations.getString("VentanaEmisor.Tab.Rapida"), this.panelQuickConfiguration);
+        this.panelAdvancedConfiguration.setLayout(new AbsoluteLayout());
+        this.labelAdvancedConfiguration.setIcon(this.imageBroker.getIcon(TImageBroker.AVANZADA));
+        this.labelAdvancedConfiguration.setText(this.translations.getString("VentanaEmisor.ConfiguracionAvanzada"));
+        this.panelAdvancedConfiguration.add(this.labelAdvancedConfiguration, new AbsoluteConstraints(15, 20, 335, -1));
+        this.labelTrafficGenerationRate.setFont(new Font("Dialog", 0, 12));
+        this.labelTrafficGenerationRate.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelTrafficGenerationRate.setText(this.translations.getString("VentanaEmisor.TasaDeTrafico"));
+        this.panelAdvancedConfiguration.add(this.labelTrafficGenerationRate, new AbsoluteConstraints(15, 90, 100, -1));
+        this.labelTrafficGenerationRateMbps.setFont(new Font("Dialog", 0, 10));
+        this.labelTrafficGenerationRateMbps.setForeground(new Color(102, 102, 102));
+        this.labelTrafficGenerationRateMbps.setHorizontalAlignment(SwingConstants.LEFT);
+        this.labelTrafficGenerationRateMbps.setText(this.translations.getString("VentanaEmisor.Kbpsinicial"));
+        this.panelAdvancedConfiguration.add(this.labelTrafficGenerationRateMbps, new AbsoluteConstraints(290, 90, 70, -1));
+        this.checkBoxAdvancedGenerateStatistics.setFont(new Font("Dialog", 0, 12));
+        this.checkBoxAdvancedGenerateStatistics.setText(this.translations.getString("VentanaEmisor.GenerarEstadisticas2"));
+        this.checkBoxAdvancedGenerateStatistics.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.GenerarEstadisticas2"));
+        this.checkBoxAdvancedGenerateStatistics.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnGenerarEstadisticasAvanzado(evt);
+                handleClickOnAdvancedGenerateStatistics(evt);
             }
         });
-        panelAvanzado.add(selectorDeGenerarEstadisticas, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 270, -1, -1));
-
-        jLabel4.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        jLabel4.setHorizontalAlignment(SwingConstants.RIGHT);
-        jLabel4.setText(this.translations.getString("VentanaEmisor.NivelDeGoS")); // NOI18N
-        panelAvanzado.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 85, -1));
-
-        selectorDeGoS.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        selectorDeGoS.setModel(new DefaultComboBoxModel(new String[] { "None", "Level 1", "Level 2", "Level 3" }));
-        selectorDeGoS.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.nivelDeGoS")); // NOI18N
-        selectorDeGoS.addActionListener(new ActionListener() {
+        this.panelAdvancedConfiguration.add(this.checkBoxAdvancedGenerateStatistics, new AbsoluteConstraints(70, 270, -1, -1));
+        this.labelGoSLevel.setFont(new Font("Dialog", 0, 12));
+        this.labelGoSLevel.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelGoSLevel.setText(this.translations.getString("VentanaEmisor.NivelDeGoS"));
+        this.panelAdvancedConfiguration.add(this.labelGoSLevel, new AbsoluteConstraints(10, 240, 85, -1));
+        this.comboBoxGoSLevel.setFont(new Font("Dialog", 0, 12));
+        this.comboBoxGoSLevel.setModel(new DefaultComboBoxModel(new String[]{"None", "Level 1", "Level 2", "Level 3"}));
+        this.comboBoxGoSLevel.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.nivelDeGoS"));
+        this.comboBoxGoSLevel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnNivelGoS(evt);
+                handleClickOnGoSLevel(evt);
             }
         });
-        panelAvanzado.add(selectorDeGoS, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 230, -1, -1));
-
-        selectorLSPDeRespaldo.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        selectorLSPDeRespaldo.setText(this.translations.getString("VentanaEmisor.CrearLSPBackup")); // NOI18N
-        selectorLSPDeRespaldo.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.crearUnLSPdeBackup")); // NOI18N
-        selectorLSPDeRespaldo.addActionListener(new ActionListener() {
+        this.panelAdvancedConfiguration.add(this.comboBoxGoSLevel, new AbsoluteConstraints(100, 230, -1, -1));
+        this.checkBoxBackupLSP.setFont(new Font("Dialog", 0, 12));
+        this.checkBoxBackupLSP.setText(this.translations.getString("VentanaEmisor.CrearLSPBackup"));
+        this.checkBoxBackupLSP.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.crearUnLSPdeBackup"));
+        this.checkBoxBackupLSP.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnLSPDeRespaldo(evt);
+                handleClickOnBackupLSP(evt);
             }
         });
-        panelAvanzado.add(selectorLSPDeRespaldo, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 230, -1, -1));
-
-        jLabel5.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        jLabel5.setHorizontalAlignment(SwingConstants.RIGHT);
-        jLabel5.setText(this.translations.getString("VentanaEmisor.TipoDeTrafico3")); // NOI18N
-        panelAvanzado.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 125, 100, -1));
-
-        buttonGroup1.add(traficoConstante);
-        traficoConstante.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        traficoConstante.setText(this.translations.getString("VentanaEmisor.TraficoConstante")); // NOI18N
-        traficoConstante.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.traficoConstante")); // NOI18N
-        traficoConstante.addActionListener(new ActionListener() {
+        this.panelAdvancedConfiguration.add(this.checkBoxBackupLSP, new AbsoluteConstraints(200, 230, -1, -1));
+        this.labelAdvancedTrafficType.setFont(new Font("Dialog", 0, 12));
+        this.labelAdvancedTrafficType.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelAdvancedTrafficType.setText(this.translations.getString("VentanaEmisor.TipoDeTrafico3"));
+        this.panelAdvancedConfiguration.add(this.labelAdvancedTrafficType, new AbsoluteConstraints(15, 125, 100, -1));
+        this.buttonGroup.add(this.radioButtonConstantPacketSize);
+        this.radioButtonConstantPacketSize.setFont(new Font("Dialog", 0, 12));
+        this.radioButtonConstantPacketSize.setText(this.translations.getString("VentanaEmisor.TraficoConstante"));
+        this.radioButtonConstantPacketSize.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.traficoConstante"));
+        this.radioButtonConstantPacketSize.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnTraficoConstante(evt);
+                handleClickOnConstantTraffic(evt);
             }
         });
-        panelAvanzado.add(traficoConstante, new org.netbeans.lib.awtextra.AbsoluteConstraints(125, 125, -1, 20));
-
-        buttonGroup1.add(traficoVariable);
-        traficoVariable.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        traficoVariable.setSelected(true);
-        traficoVariable.setText(this.translations.getString("VentanaEmisor.TraficoVariable")); // NOI18N
-        traficoVariable.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.traficovariable")); // NOI18N
-        traficoVariable.addActionListener(new ActionListener() {
+        this.panelAdvancedConfiguration.add(this.radioButtonConstantPacketSize, new AbsoluteConstraints(125, 125, -1, 20));
+        this.buttonGroup.add(this.constantTrafficVariablePacketSize);
+        this.constantTrafficVariablePacketSize.setFont(new Font("Dialog", 0, 12));
+        this.constantTrafficVariablePacketSize.setSelected(true);
+        this.constantTrafficVariablePacketSize.setText(this.translations.getString("VentanaEmisor.TraficoVariable"));
+        this.constantTrafficVariablePacketSize.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.traficovariable"));
+        this.constantTrafficVariablePacketSize.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnTraficoVariable(evt);
+                handleClickOnVariableTraffic(evt);
             }
         });
-        panelAvanzado.add(traficoVariable, new org.netbeans.lib.awtextra.AbsoluteConstraints(225, 125, -1, 20));
-
-        encapsularSobreMPLS.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        encapsularSobreMPLS.setText(this.translations.getString("VentanaEmisor.EncapsularSobreMPLS")); // NOI18N
-        encapsularSobreMPLS.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.encapsularsobrempls")); // NOI18N
-        encapsularSobreMPLS.addActionListener(new ActionListener() {
+        this.panelAdvancedConfiguration.add(constantTrafficVariablePacketSize, new AbsoluteConstraints(225, 125, -1, 20));
+        this.checkBoxEncapsulateOverMPLS.setFont(new Font("Dialog", 0, 12));
+        this.checkBoxEncapsulateOverMPLS.setText(this.translations.getString("VentanaEmisor.EncapsularSobreMPLS"));
+        this.checkBoxEncapsulateOverMPLS.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.encapsularsobrempls"));
+        this.checkBoxEncapsulateOverMPLS.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnEncapsularSobreMPLS(evt);
+                handleClickOnEncapsulateOverMPLS(evt);
             }
         });
-        panelAvanzado.add(encapsularSobreMPLS, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 190, -1, -1));
-
-        selectorDeTasa.setMajorTickSpacing(1000);
-        selectorDeTasa.setMaximum(10240);
-        selectorDeTasa.setMinimum(1);
-        selectorDeTasa.setMinorTickSpacing(100);
-        selectorDeTasa.setToolTipText(this.translations.getString("VentanaEmisor.tooltipo.CambiarTasa")); // NOI18N
-        selectorDeTasa.addChangeListener(new ChangeListener() {
+        this.panelAdvancedConfiguration.add(this.checkBoxEncapsulateOverMPLS, new AbsoluteConstraints(50, 190, -1, -1));
+        this.sliderTrafficGenerationRate.setMajorTickSpacing(1000);
+        this.sliderTrafficGenerationRate.setMaximum(10240);
+        this.sliderTrafficGenerationRate.setMinimum(1);
+        this.sliderTrafficGenerationRate.setMinorTickSpacing(100);
+        this.sliderTrafficGenerationRate.setToolTipText(this.translations.getString("VentanaEmisor.tooltipo.CambiarTasa"));
+        this.sliderTrafficGenerationRate.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent evt) {
-                cambioEnSelectorDeTasa(evt);
+                handleChangeOnTrafficGenerationRate(evt);
             }
         });
-        panelAvanzado.add(selectorDeTasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 90, 165, -1));
-
-        selectorDeTamPaquete.setMajorTickSpacing(1000);
-        selectorDeTamPaquete.setMaximum(65495);
-        selectorDeTamPaquete.setMinorTickSpacing(100);
-        selectorDeTamPaquete.setToolTipText(this.translations.getString("VentanaEmisor.tooltipo.CambiarTasa")); // NOI18N
-        selectorDeTamPaquete.setValue(1024);
-        selectorDeTamPaquete.setEnabled(false);
-        selectorDeTamPaquete.addChangeListener(new ChangeListener() {
+        this.panelAdvancedConfiguration.add(this.sliderTrafficGenerationRate, new AbsoluteConstraints(120, 90, 165, -1));
+        this.sliderConstantTrafficPayloadSize.setMajorTickSpacing(1000);
+        this.sliderConstantTrafficPayloadSize.setMaximum(65495);
+        this.sliderConstantTrafficPayloadSize.setMinorTickSpacing(100);
+        this.sliderConstantTrafficPayloadSize.setToolTipText(this.translations.getString("VentanaEmisor.tooltipo.CambiarTasa"));
+        this.sliderConstantTrafficPayloadSize.setValue(1024);
+        this.sliderConstantTrafficPayloadSize.setEnabled(false);
+        this.sliderConstantTrafficPayloadSize.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent evt) {
-                clicEnSelectorDeTamPaquete(evt);
+                handleChangeOnConstantTrafficPayloadSize(evt);
             }
         });
-        panelAvanzado.add(selectorDeTamPaquete, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 160, 120, -1));
-
-        etiquetaOctetos.setFont(new Font("Dialog", 0, 10)); // NOI18N
-        etiquetaOctetos.setForeground(new Color(102, 102, 102));
-        etiquetaOctetos.setHorizontalAlignment(SwingConstants.LEFT);
-        etiquetaOctetos.setText("null");
-        etiquetaOctetos.setEnabled(false);
-        panelAvanzado.add(etiquetaOctetos, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 160, 70, -1));
-
-        etiquetaTamPaquete.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        etiquetaTamPaquete.setHorizontalAlignment(SwingConstants.RIGHT);
-        etiquetaTamPaquete.setText(this.translations.getString("JVentanaEmisor.TamCargaUtil")); // NOI18N
-        etiquetaTamPaquete.setEnabled(false);
-        panelAvanzado.add(etiquetaTamPaquete, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 140, -1));
-
-        panelPestanias.addTab(this.translations.getString("VentanaEmisor.Tab.Avanzada"), panelAvanzado); // NOI18N
-
-        panelPrincipal.add(panelPestanias, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 370, 330));
-
-        getContentPane().add(panelPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 350));
-
-        panelBotones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jButton2.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        jButton2.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ACEPTAR));
-        jButton2.setMnemonic(this.translations.getString("VentanaEmisor.botones.Aceptar").charAt(0));
-        jButton2.setText(this.translations.getString("VentanaEmisor.Boton.Aceptar.Texto")); // NOI18N
-        jButton2.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.Aceptar")); // NOI18N
-        jButton2.addActionListener(new ActionListener() {
+        this.panelAdvancedConfiguration.add(this.sliderConstantTrafficPayloadSize, new AbsoluteConstraints(160, 160, 120, -1));
+        this.labelConstanTrafficPayloadSize.setFont(new Font("Dialog", 0, 10));
+        this.labelConstanTrafficPayloadSize.setForeground(new Color(102, 102, 102));
+        this.labelConstanTrafficPayloadSize.setHorizontalAlignment(SwingConstants.LEFT);
+        this.labelConstanTrafficPayloadSize.setText("null");
+        this.labelConstanTrafficPayloadSize.setEnabled(false);
+        this.panelAdvancedConfiguration.add(this.labelConstanTrafficPayloadSize, new AbsoluteConstraints(290, 160, 70, -1));
+        this.labelPayloadSize.setFont(new Font("Dialog", 0, 12));
+        this.labelPayloadSize.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelPayloadSize.setText(this.translations.getString("JVentanaEmisor.TamCargaUtil"));
+        this.labelPayloadSize.setEnabled(false);
+        this.panelAdvancedConfiguration.add(this.labelPayloadSize, new AbsoluteConstraints(10, 160, 140, -1));
+        this.panelTabs.addTab(this.translations.getString("VentanaEmisor.Tab.Avanzada"), panelAdvancedConfiguration);
+        this.mainPanel.add(this.panelTabs, new AbsoluteConstraints(15, 15, 370, 330));
+        getContentPane().add(this.mainPanel, new AbsoluteConstraints(0, 0, 400, 350));
+        this.panelButtons.setLayout(new AbsoluteLayout());
+        this.buttonOK.setFont(new Font("Dialog", 0, 12));
+        this.buttonOK.setIcon(this.imageBroker.getIcon(TImageBroker.ACEPTAR));
+        this.buttonOK.setMnemonic(this.translations.getString("VentanaEmisor.botones.Aceptar").charAt(0));
+        this.buttonOK.setText(this.translations.getString("VentanaEmisor.Boton.Aceptar.Texto"));
+        this.buttonOK.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.Aceptar"));
+        this.buttonOK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnAceptar(evt);
+                handleClickOnOKButton(evt);
             }
         });
-        panelBotones.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 110, -1));
-
-        jButton3.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        jButton3.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.CANCELAR));
-        jButton3.setMnemonic(this.translations.getString("VentanaEmisor.botones.Cancelar").charAt(0));
-        jButton3.setText(this.translations.getString("VentanaEmisor.Boton.Cancelar.Texto")); // NOI18N
-        jButton3.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.Cancelar")); // NOI18N
-        jButton3.addActionListener(new ActionListener() {
+        this.panelButtons.add(this.buttonOK, new AbsoluteConstraints(15, 15, 110, -1));
+        this.buttonCancel.setFont(new Font("Dialog", 0, 12));
+        this.buttonCancel.setIcon(this.imageBroker.getIcon(TImageBroker.CANCELAR));
+        this.buttonCancel.setMnemonic(this.translations.getString("VentanaEmisor.botones.Cancelar").charAt(0));
+        this.buttonCancel.setText(this.translations.getString("VentanaEmisor.Boton.Cancelar.Texto"));
+        this.buttonCancel.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.Cancelar"));
+        this.buttonCancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnCancelar(evt);
+                handleClickOnCancelButton(evt);
             }
         });
-        panelBotones.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 15, 110, -1));
-
-        getContentPane().add(panelBotones, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 400, 50));
-
+        this.panelButtons.add(this.buttonCancel, new AbsoluteConstraints(140, 15, 110, -1));
+        getContentPane().add(this.panelButtons, new AbsoluteConstraints(0, 340, 400, 50));
         pack();
     }
 
-    private void clicEnSelectorSencilloTrafico(ActionEvent evt) {
-        int seleccionado = this.selectorSencilloTrafico.getSelectedIndex();
-        if (seleccionado > 0) {
-            if (seleccionado == 1) {
-                this.selectorLSPDeRespaldo.setSelected(false);
-                this.selectorDeGoS.setSelectedIndex(0);
-                this.traficoConstante.setSelected(false);
-                this.traficoVariable.setSelected(true);
-                this.selectorDeTamPaquete.setValue(0);
-                this.selectorDeTasa.setValue(1);
-                this.selectorDeTamPaquete.setEnabled(false);
-            } else if (seleccionado == 2) {
-                this.selectorLSPDeRespaldo.setSelected(false);
-                this.selectorDeGoS.setSelectedIndex(0);
-                this.traficoConstante.setSelected(false);
-                this.traficoVariable.setSelected(true);
-                this.selectorDeTamPaquete.setValue(0);
-                this.selectorDeTasa.setValue(7);
-                this.selectorDeTamPaquete.setEnabled(false);
-            } else if (seleccionado == 3) {
-                this.selectorLSPDeRespaldo.setSelected(false);
-                this.selectorDeGoS.setSelectedIndex(0);
-                this.traficoConstante.setSelected(false);
-                this.traficoVariable.setSelected(true);
-                this.selectorDeTamPaquete.setValue(0);
-                this.selectorDeTasa.setValue(3413);
-                this.selectorDeTamPaquete.setEnabled(false);
-            } else if (seleccionado == 4) {
-                this.selectorLSPDeRespaldo.setSelected(true);
-                this.selectorDeGoS.setSelectedIndex(0);
-                this.traficoConstante.setSelected(false);
-                this.traficoVariable.setSelected(true);
-                this.selectorDeTamPaquete.setValue(0);
-                this.selectorDeTasa.setValue(10240);
-                this.selectorDeTamPaquete.setEnabled(false);
-            } else if (seleccionado == 5) {
-                this.selectorLSPDeRespaldo.setSelected(true);
-                this.selectorDeGoS.setSelectedIndex(2);
-                this.traficoConstante.setSelected(false);
-                this.traficoVariable.setSelected(true);
-                this.selectorDeTamPaquete.setValue(0);
-                this.selectorDeTasa.setValue(341);
-                this.selectorDeTamPaquete.setEnabled(false);
-            } else if (seleccionado == 6) {
-                this.selectorLSPDeRespaldo.setSelected(false);
-                this.selectorDeGoS.setSelectedIndex(0);
-                this.traficoConstante.setSelected(false);
-                this.traficoVariable.setSelected(true);
-                this.selectorDeTamPaquete.setValue(0);
-                this.selectorDeTasa.setValue(6827);
-                this.selectorDeTamPaquete.setEnabled(false);
+    /**
+     * This method is called from within the constructor to do additional
+     * configurations of window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
+    private void initComponents2() {
+        this.coordinatesPanel.setDesignPanel(this.designPanel);
+        Dimension frameSize = this.getSize();
+        Dimension parentSize = this.parent.getSize();
+        setLocation((parentSize.width - frameSize.width) / 2, (parentSize.height - frameSize.height) / 2);
+        this.trafficGeneratorNode = null;
+        this.labelCoordinateX.setText(this.translations.getString("VentanaEmisor.X=_") + this.coordinatesPanel.getRealX());
+        this.labelCoordinateY.setText(this.translations.getString("VentanaEmisor.Y=_") + this.coordinatesPanel.getRealY());
+        Iterator iterator = this.topology.getNodesIterator();
+        this.comboBoxTargetTrafficSinkNode.removeAllItems();
+        this.comboBoxTargetTrafficSinkNode.addItem("");
+        TNode node;
+        while (iterator.hasNext()) {
+            node = (TNode) iterator.next();
+            if (node.getNodeType() == TNode.TRAFFIC_SINK) {
+                this.comboBoxTargetTrafficSinkNode.addItem(node.getName());
             }
         }
-        this.selectorSencilloTrafico.setSelectedIndex(seleccionado);
+        this.comboBoxGoSLevel.removeAllItems();
+        this.comboBoxGoSLevel.addItem(this.translations.getString("JVentanaEmisor.None"));
+        this.comboBoxGoSLevel.addItem(this.translations.getString("JVentanaEmisor.Level_1"));
+        this.comboBoxGoSLevel.addItem(this.translations.getString("JVentanaEmisor.Level_2"));
+        this.comboBoxGoSLevel.addItem(this.translations.getString("JVentanaEmisor.Level_3"));
+        this.comboBoxGoSLevel.setSelectedIndex(0);
+        this.comboBoxPredefinedOptions.removeAllItems();
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaEmisor.Personalized"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaEmisor.Email"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaEmisor.Web"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaEmisor.P2P_file_sharing"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaEmisor.Bank_data_transaction"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaEmisor.Tele-medical_video"));
+        this.comboBoxPredefinedOptions.addItem(this.translations.getString("JVentanaEmisor.Bulk_traffic"));
+        this.comboBoxPredefinedOptions.setSelectedIndex(0);
+        this.comboBoxTargetTrafficSinkNode.setSelectedIndex(0);
+        this.currentConfigTargetTrafficSinkNode = "";
+        this.currentConfigCreateBackupLSP = false;
+        this.currentConfigShowName = true;
+        this.currentConfigGoSLevel = 0;
+        this.currentConfigName = "";
+        this.currentConfigTrafficGenerationRate = 1000;
+        this.currentConfigTrafficType = TTrafficGeneratorNode.CONSTANT_TRAFFIC_RATE;
+        this.currentConfigGenerateStatistics = false;
+        this.currentConfigConstanTrafficPayloadSize = 1024;
+        this.currentConfigEncapsulateOverMPLS = false;
+        this.reconfiguration = false;
     }
 
-    private void clicEnSelectorDeTamPaquete(ChangeEvent evt) {
-    int tamSeleccionado = this.selectorDeTamPaquete.getValue();
-    String unidades = this.translations.getString("JVentanaEmisor.Octetos");
-    this.etiquetaOctetos.setText(tamSeleccionado + " " +unidades);
+    /**
+     * This method is called when a a predefined option is selected in the UI to
+     * configure the traffic generator.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnPredefinedOptions(ActionEvent evt) {
+        int selectedOption = this.comboBoxPredefinedOptions.getSelectedIndex();
+        if (selectedOption > 0) {
+            if (selectedOption == 1) {
+                this.checkBoxBackupLSP.setSelected(false);
+                this.comboBoxGoSLevel.setSelectedIndex(0);
+                this.radioButtonConstantPacketSize.setSelected(false);
+                this.constantTrafficVariablePacketSize.setSelected(true);
+                this.sliderConstantTrafficPayloadSize.setValue(0);
+                this.sliderTrafficGenerationRate.setValue(1);
+                this.sliderConstantTrafficPayloadSize.setEnabled(false);
+            } else if (selectedOption == 2) {
+                this.checkBoxBackupLSP.setSelected(false);
+                this.comboBoxGoSLevel.setSelectedIndex(0);
+                this.radioButtonConstantPacketSize.setSelected(false);
+                this.constantTrafficVariablePacketSize.setSelected(true);
+                this.sliderConstantTrafficPayloadSize.setValue(0);
+                this.sliderTrafficGenerationRate.setValue(7);
+                this.sliderConstantTrafficPayloadSize.setEnabled(false);
+            } else if (selectedOption == 3) {
+                this.checkBoxBackupLSP.setSelected(false);
+                this.comboBoxGoSLevel.setSelectedIndex(0);
+                this.radioButtonConstantPacketSize.setSelected(false);
+                this.constantTrafficVariablePacketSize.setSelected(true);
+                this.sliderConstantTrafficPayloadSize.setValue(0);
+                this.sliderTrafficGenerationRate.setValue(3413);
+                this.sliderConstantTrafficPayloadSize.setEnabled(false);
+            } else if (selectedOption == 4) {
+                this.checkBoxBackupLSP.setSelected(true);
+                this.comboBoxGoSLevel.setSelectedIndex(0);
+                this.radioButtonConstantPacketSize.setSelected(false);
+                this.constantTrafficVariablePacketSize.setSelected(true);
+                this.sliderConstantTrafficPayloadSize.setValue(0);
+                this.sliderTrafficGenerationRate.setValue(10240);
+                this.sliderConstantTrafficPayloadSize.setEnabled(false);
+            } else if (selectedOption == 5) {
+                this.checkBoxBackupLSP.setSelected(true);
+                this.comboBoxGoSLevel.setSelectedIndex(2);
+                this.radioButtonConstantPacketSize.setSelected(false);
+                this.constantTrafficVariablePacketSize.setSelected(true);
+                this.sliderConstantTrafficPayloadSize.setValue(0);
+                this.sliderTrafficGenerationRate.setValue(341);
+                this.sliderConstantTrafficPayloadSize.setEnabled(false);
+            } else if (selectedOption == 6) {
+                this.checkBoxBackupLSP.setSelected(false);
+                this.comboBoxGoSLevel.setSelectedIndex(0);
+                this.radioButtonConstantPacketSize.setSelected(false);
+                this.constantTrafficVariablePacketSize.setSelected(true);
+                this.sliderConstantTrafficPayloadSize.setValue(0);
+                this.sliderTrafficGenerationRate.setValue(6827);
+                this.sliderConstantTrafficPayloadSize.setEnabled(false);
+            }
+        }
+        this.comboBoxPredefinedOptions.setSelectedIndex(selectedOption);
     }
 
-private void clicEnGenerarEstadisticasAvanzado(ActionEvent evt) {
-    this.selectorDeGenerarEstadisticasSencillo.setSelected(this.selectorDeGenerarEstadisticas.isSelected());
-}
-
-private void clicEnGenerarEstadisticasSencillo(ActionEvent evt) {
-    this.selectorDeGenerarEstadisticas.setSelected(this.selectorDeGenerarEstadisticasSencillo.isSelected());
-}
-
-private void clicEnLSPDeRespaldo(ActionEvent evt) {
-    this.selectorSencilloTrafico.setSelectedIndex(0);
-}
-
-private void clicEnNivelGoS(ActionEvent evt) {
-    this.selectorSencilloTrafico.setSelectedIndex(0);
-}
-
-private void clicEnEncapsularSobreMPLS(ActionEvent evt) {
-    this.selectorSencilloTrafico.setSelectedIndex(0);
-}
-
-private void clicEnTraficoVariable(ActionEvent evt) {
-    this.selectorSencilloTrafico.setSelectedIndex(0);
-    this.selectorDeTamPaquete.setEnabled(false);
-    this.etiquetaOctetos.setEnabled(false);
-    this.etiquetaTamPaquete.setEnabled(false);
-}
-
-private void clicEnTraficoConstante(ActionEvent evt) {
-    this.selectorSencilloTrafico.setSelectedIndex(0);
-    this.selectorDeTamPaquete.setEnabled(true);
-    this.etiquetaOctetos.setEnabled(true);
-    this.etiquetaTamPaquete.setEnabled(true);
-}
-
-private void cambioEnSelectorDeTasa(ChangeEvent evt) {
-    this.selectorSencilloTrafico.setSelectedIndex(0);
-    int tasaSeleccionada = this.selectorDeTasa.getValue();
-    String unidades = this.translations.getString("VentanaEmisor.unidades.kbps");
-    this.etiquetaTasa.setText(tasaSeleccionada + " " +unidades);
-}
-
-private void clicEnCancelar(ActionEvent evt) {
-    if (reconfigurando) {
-        emisor.setTargetNode(BKUPDestino);
-        emisor.setRequestBackupLSP(BKUPLSPDeBackup);
-        emisor.setShowName(BKUPMostrarNombre);
-        emisor.setGoSLevel(BKUPNivelDeGos);
-        emisor.setName(BKUPNombre);
-        emisor.setTrafficGenerationRate(BKUPTasaTrafico);
-        emisor.setTrafficGenerationMode(BKUPTipoTrafico);
-        emisor.setGenerateStats(BKUPGenerarEstadisticas);
-        emisor.setConstantPayloadSizeInBytes(BKUPTamDatosConstante);
-        emisor.setWellConfigured(true);
-        emisor.encapsulateOverMPLS(BKUPEncapsularEnMPLS);
-        reconfigurando = false;
-    } else {
-        emisor.setWellConfigured(false);
+    /**
+     * This method is called when a change is made in payload size (for constant
+     * traffic generation), in the UI.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleChangeOnConstantTrafficPayloadSize(ChangeEvent evt) {
+        int selectedPayloadSize = this.sliderConstantTrafficPayloadSize.getValue();
+        String units = this.translations.getString("JVentanaEmisor.Octetos");
+        this.labelConstanTrafficPayloadSize.setText(selectedPayloadSize + " " + units);
     }
-    this.setVisible(false);
-    this.dispose();
-}
 
-private void clicEnAceptar(ActionEvent evt) {
-    emisor.setWellConfigured(true);
-    if (!this.reconfigurando){
-        emisor.setScreenPosition(new Point(panelCoordenadas.getRealX(),panelCoordenadas.getRealY()));
+    /**
+     * This method is called when a change is made in "generate stistics"
+     * checkbox located at "Advanced configuration" tab (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnAdvancedGenerateStatistics(ActionEvent evt) {
+        this.checkBoxQuickGenerateStatistics.setSelected(this.checkBoxAdvancedGenerateStatistics.isSelected());
     }
-    emisor.setName(nombreNodo.getText());
-    emisor.setShowName(verNombre.isSelected());
-    emisor.setGenerateStats(this.selectorDeGenerarEstadisticas.isSelected());
-    emisor.setTrafficGenerationRate(this.selectorDeTasa.getValue());
-    emisor.setRequestBackupLSP(this.selectorLSPDeRespaldo.isSelected());
-    emisor.encapsulateOverMPLS(this.encapsularSobreMPLS.isSelected());
-    emisor.setGoSLevel(this.selectorDeGoS.getSelectedIndex());
-    emisor.setTargetNode((String) this.selectorDelReceptor.getSelectedItem());
-    emisor.setConstantPayloadSizeInBytes(this.selectorDeTamPaquete.getValue());
-    if (this.traficoConstante.isSelected()) {
-        emisor.setTrafficGenerationMode(TTrafficGeneratorNode.CONSTANT_TRAFFIC_RATE);
-    } else if (this.traficoVariable.isSelected()) {
-        emisor.setTrafficGenerationMode(TTrafficGeneratorNode.VARIABLE_TRAFFIC_RATE);
+
+    /**
+     * This method is called when a change is made in "generate stistics"
+     * checkbox located at "Quick configuration" tab (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnQuickGenerateStatistics(ActionEvent evt) {
+        this.checkBoxAdvancedGenerateStatistics.setSelected(this.checkBoxQuickGenerateStatistics.isSelected());
     }
-    int error = emisor.validateConfig(topo, this.reconfigurando);
-    if (error != TTrafficGeneratorNode.OK) {
-        JWarningWindow va = new JWarningWindow(ventanaPadre, true, dispensadorDeImagenes);
-        va.setWarningMessage(emisor.getErrorMessage(error));
-        va.show();
-    } else {
-        this.reconfigurando = false;
+
+    /**
+     * This method is called when a change is made in "Backup LSP", in the UI.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnBackupLSP(ActionEvent evt) {
+        this.comboBoxPredefinedOptions.setSelectedIndex(0);
+    }
+
+    /**
+     * This method is called when a change is made in "GoS Level", in the UI.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnGoSLevel(ActionEvent evt) {
+        this.comboBoxPredefinedOptions.setSelectedIndex(0);
+    }
+
+    /**
+     * This method is called when a change is made in "Encapsulate over MPLS",
+     * in the UI.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnEncapsulateOverMPLS(ActionEvent evt) {
+        this.comboBoxPredefinedOptions.setSelectedIndex(0);
+    }
+
+    /**
+     * This method is called when a change is made in "Variable traffic", in the
+     * UI.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnVariableTraffic(ActionEvent evt) {
+        this.comboBoxPredefinedOptions.setSelectedIndex(0);
+        this.sliderConstantTrafficPayloadSize.setEnabled(false);
+        this.labelConstanTrafficPayloadSize.setEnabled(false);
+        this.labelPayloadSize.setEnabled(false);
+    }
+
+    /**
+     * This method is called when a change is made in "Constant traffic", in the
+     * UI.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnConstantTraffic(ActionEvent evt) {
+        this.comboBoxPredefinedOptions.setSelectedIndex(0);
+        this.sliderConstantTrafficPayloadSize.setEnabled(true);
+        this.labelConstanTrafficPayloadSize.setEnabled(true);
+        this.labelPayloadSize.setEnabled(true);
+    }
+
+    /**
+     * This method is called when a change is made in "Traffic generation rate",
+     * in the UI.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleChangeOnTrafficGenerationRate(ChangeEvent evt) {
+        this.comboBoxPredefinedOptions.setSelectedIndex(0);
+        int selectedTrafficGenerationRate = this.sliderTrafficGenerationRate.getValue();
+        String units = this.translations.getString("VentanaEmisor.unidades.kbps");
+        this.labelTrafficGenerationRateMbps.setText(selectedTrafficGenerationRate + " " + units);
+    }
+
+    /**
+     * This method is called when a click is done "Cancel" button (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnCancelButton(ActionEvent evt) {
+        if (this.reconfiguration) {
+            this.trafficGeneratorNode.setTargetNode(this.currentConfigTargetTrafficSinkNode);
+            this.trafficGeneratorNode.setRequestBackupLSP(this.currentConfigCreateBackupLSP);
+            this.trafficGeneratorNode.setShowName(this.currentConfigShowName);
+            this.trafficGeneratorNode.setGoSLevel(this.currentConfigGoSLevel);
+            this.trafficGeneratorNode.setName(this.currentConfigName);
+            this.trafficGeneratorNode.setTrafficGenerationRate(this.currentConfigTrafficGenerationRate);
+            this.trafficGeneratorNode.setTrafficGenerationMode(this.currentConfigTrafficType);
+            this.trafficGeneratorNode.setGenerateStats(this.currentConfigGenerateStatistics);
+            this.trafficGeneratorNode.setConstantPayloadSizeInBytes(this.currentConfigConstanTrafficPayloadSize);
+            this.trafficGeneratorNode.setWellConfigured(true);
+            this.trafficGeneratorNode.encapsulateOverMPLS(this.currentConfigEncapsulateOverMPLS);
+            this.reconfiguration = false;
+        } else {
+            this.trafficGeneratorNode.setWellConfigured(false);
+        }
         this.setVisible(false);
         this.dispose();
     }
-}
 
-private void clicEnPanelCoordenadas(MouseEvent evt) {
-    if (evt.getButton() == MouseEvent.BUTTON1) {
-        panelCoordenadas.setCoordinates(evt.getPoint());
-        coordenadaX.setText(this.translations.getString("VentanaEmisor.X=_") + panelCoordenadas.getRealX());
-        coordenadaY.setText(this.translations.getString("VentanaEmisor.Y=_") + panelCoordenadas.getRealY());
-        panelCoordenadas.repaint();
+    /**
+     * This method is called when a click is done "Ok" button (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnOKButton(ActionEvent evt) {
+        this.trafficGeneratorNode.setWellConfigured(true);
+        if (!this.reconfiguration) {
+            this.trafficGeneratorNode.setScreenPosition(new Point(this.coordinatesPanel.getRealX(), this.coordinatesPanel.getRealY()));
+        }
+        this.trafficGeneratorNode.setName(this.textFieldName.getText());
+        this.trafficGeneratorNode.setShowName(this.checkBoxShowName.isSelected());
+        this.trafficGeneratorNode.setGenerateStats(this.checkBoxAdvancedGenerateStatistics.isSelected());
+        this.trafficGeneratorNode.setTrafficGenerationRate(this.sliderTrafficGenerationRate.getValue());
+        this.trafficGeneratorNode.setRequestBackupLSP(this.checkBoxBackupLSP.isSelected());
+        this.trafficGeneratorNode.encapsulateOverMPLS(this.checkBoxEncapsulateOverMPLS.isSelected());
+        this.trafficGeneratorNode.setGoSLevel(this.comboBoxGoSLevel.getSelectedIndex());
+        this.trafficGeneratorNode.setTargetNode((String) this.comboBoxTargetTrafficSinkNode.getSelectedItem());
+        this.trafficGeneratorNode.setConstantPayloadSizeInBytes(this.sliderConstantTrafficPayloadSize.getValue());
+        if (this.radioButtonConstantPacketSize.isSelected()) {
+            this.trafficGeneratorNode.setTrafficGenerationMode(TTrafficGeneratorNode.CONSTANT_TRAFFIC_RATE);
+        } else if (this.constantTrafficVariablePacketSize.isSelected()) {
+            this.trafficGeneratorNode.setTrafficGenerationMode(TTrafficGeneratorNode.VARIABLE_TRAFFIC_RATE);
+        }
+        int error = this.trafficGeneratorNode.validateConfig(this.topology, this.reconfiguration);
+        if (error != TTrafficGeneratorNode.OK) {
+            JWarningWindow warningWindow = new JWarningWindow(this.parent, true, this.imageBroker);
+            warningWindow.setWarningMessage(this.trafficGeneratorNode.getErrorMessage(error));
+            warningWindow.setVisible(true);
+        } else {
+            this.reconfiguration = false;
+            this.setVisible(false);
+            this.dispose();
+        }
     }
-}
 
-private void ratonSaleDePanelCoordenadas(MouseEvent evt) {
-    this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-}
+    /**
+     * This method is called when a click is done over the coordinates panel (in
+     * the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnCoordinatesPanel(MouseEvent evt) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
+            this.coordinatesPanel.setCoordinates(evt.getPoint());
+            this.labelCoordinateX.setText(this.translations.getString("VentanaEmisor.X=_") + this.coordinatesPanel.getRealX());
+            this.labelCoordinateY.setText(this.translations.getString("VentanaEmisor.Y=_") + this.coordinatesPanel.getRealY());
+            this.coordinatesPanel.repaint();
+        }
+    }
 
-private void ratonEntraEnPanelCoordenadas(MouseEvent evt) {
-    this.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
-}
+    /**
+     * This method is called when the mouse exits the coordinates panel (in the
+     * UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleMouseLeavingCoordinatesPanel(MouseEvent evt) {
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }
 
-    private void closeDialog(WindowEvent evt) {
+    /**
+     * This method is called when the mouse enters the coordinates panel (in the
+     * UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleMouseEnteringInCoordinatesPanel(MouseEvent evt) {
+        this.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+    }
+
+    /**
+     * This method is called when the JTrafficGeneratorWindow is closed (in the
+     * UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleWindowsClosing(WindowEvent evt) {
         setVisible(false);
-        emisor.setWellConfigured(false);
+        this.trafficGeneratorNode.setWellConfigured(false);
         dispose();
     }
 
-
-    public void ponerConfiguracion(TTrafficGeneratorNode tce, boolean recfg) {
-        emisor = tce;
-        reconfigurando = recfg;
-        if (reconfigurando) {
-            this.panelCoordenadas.setEnabled(false);
-            this.panelCoordenadas.setToolTipText(null);
-            TNode nt = this.topo.getNode(emisor.getTargetIPv4Address());
-            if (nt != null) {
-                BKUPDestino = nt.getName();
+    /**
+     * This method configures all components of JTrafficGeneratorWindow with
+     * present values retrieved from the traffic generator node. It is used to
+     * do a reconfiguration.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param trafficGeneratorNode the traffic generator node to be configured
+     * through this JTrafficGeneratorWindow
+     * @param reconfiguration TRUE if the traffic generator node is being
+     * reconfigured. FALSE if it is the first configuration of the traffic
+     * generator node after its creation.
+     * @since 2.0
+     */
+    public void setConfiguration(TTrafficGeneratorNode trafficGeneratorNode, boolean reconfiguration) {
+        this.trafficGeneratorNode = trafficGeneratorNode;
+        this.reconfiguration = reconfiguration;
+        if (this.reconfiguration) {
+            this.coordinatesPanel.setEnabled(false);
+            this.coordinatesPanel.setToolTipText(null);
+            TNode node = this.topology.getNode(this.trafficGeneratorNode.getTargetIPv4Address());
+            if (node != null) {
+                this.currentConfigTargetTrafficSinkNode = node.getName();
             }
-            BKUPLSPDeBackup = emisor.isRequestingBackupLSP();
-            BKUPMostrarNombre = emisor.nameMustBeDisplayed();
-            BKUPNivelDeGos = emisor.getGoSLevel();
-            BKUPNombre = emisor.getName();
-            BKUPTasaTrafico = emisor.getTrafficGenerationRate();
-            BKUPTipoTrafico = emisor.getTrafficGenerationMode();
-            BKUPGenerarEstadisticas = emisor.isGeneratingStats();
-            BKUPTamDatosConstante = emisor.getConstantPayloadSizeInBytes();
-            this.BKUPEncapsularEnMPLS = emisor.isEncapsulatingOverMPLS();
-            
-            
-            this.encapsularSobreMPLS.setSelected(BKUPEncapsularEnMPLS);
-            this.nombreNodo.setText(BKUPNombre);
-            if (BKUPTipoTrafico == TTrafficGeneratorNode.CONSTANT_TRAFFIC_RATE) {
-                this.traficoConstante.setSelected(true);
-                this.traficoVariable.setSelected(false);
+            this.currentConfigCreateBackupLSP = this.trafficGeneratorNode.isRequestingBackupLSP();
+            this.currentConfigShowName = this.trafficGeneratorNode.nameMustBeDisplayed();
+            this.currentConfigGoSLevel = this.trafficGeneratorNode.getGoSLevel();
+            this.currentConfigName = this.trafficGeneratorNode.getName();
+            this.currentConfigTrafficGenerationRate = this.trafficGeneratorNode.getTrafficGenerationRate();
+            this.currentConfigTrafficType = this.trafficGeneratorNode.getTrafficGenerationMode();
+            this.currentConfigGenerateStatistics = this.trafficGeneratorNode.isGeneratingStats();
+            this.currentConfigConstanTrafficPayloadSize = this.trafficGeneratorNode.getConstantPayloadSizeInBytes();
+            this.currentConfigEncapsulateOverMPLS = this.trafficGeneratorNode.isEncapsulatingOverMPLS();
+            this.checkBoxEncapsulateOverMPLS.setSelected(this.currentConfigEncapsulateOverMPLS);
+            this.textFieldName.setText(this.currentConfigName);
+            if (this.currentConfigTrafficType == TTrafficGeneratorNode.CONSTANT_TRAFFIC_RATE) {
+                this.radioButtonConstantPacketSize.setSelected(true);
+                this.constantTrafficVariablePacketSize.setSelected(false);
             } else {
-                this.traficoConstante.setSelected(false);
-                this.traficoVariable.setSelected(true);
+                this.radioButtonConstantPacketSize.setSelected(false);
+                this.constantTrafficVariablePacketSize.setSelected(true);
             }
-            this.selectorDeGenerarEstadisticas.setSelected(BKUPGenerarEstadisticas);
-            this.selectorDeGenerarEstadisticasSencillo.setSelected(BKUPGenerarEstadisticas);
-            this.selectorLSPDeRespaldo.setSelected(BKUPLSPDeBackup);
-            this.verNombre.setSelected(BKUPMostrarNombre);
-            int numDestinos = selectorDelReceptor.getItemCount();
+            this.checkBoxAdvancedGenerateStatistics.setSelected(this.currentConfigGenerateStatistics);
+            this.checkBoxQuickGenerateStatistics.setSelected(this.currentConfigGenerateStatistics);
+            this.checkBoxBackupLSP.setSelected(this.currentConfigCreateBackupLSP);
+            this.checkBoxShowName.setSelected(this.currentConfigShowName);
+            int numTargetTrafficSinkNodes = this.comboBoxTargetTrafficSinkNode.getItemCount();
             int i = 0;
-            String destinoAux;
-            for (i = 0; i<numDestinos; i++) {
-                destinoAux = (String) selectorDelReceptor.getItemAt(i);
-                if (destinoAux.equals(BKUPDestino)) {
-                    selectorDelReceptor.setSelectedIndex(i);
+            String auxTargetTrafficSinkNode;
+            for (i = 0; i < numTargetTrafficSinkNodes; i++) {
+                auxTargetTrafficSinkNode = (String) this.comboBoxTargetTrafficSinkNode.getItemAt(i);
+                if (auxTargetTrafficSinkNode.equals(this.currentConfigTargetTrafficSinkNode)) {
+                    this.comboBoxTargetTrafficSinkNode.setSelectedIndex(i);
                 }
             }
-            if (this.selectorDeGoS.getItemCount() >= BKUPNivelDeGos) {
-                this.selectorDeGoS.setSelectedIndex(BKUPNivelDeGos);
+            if (this.comboBoxGoSLevel.getItemCount() >= this.currentConfigGoSLevel) {
+                this.comboBoxGoSLevel.setSelectedIndex(this.currentConfigGoSLevel);
             }
-            this.selectorSencilloTrafico.setSelectedIndex(0);
-            this.selectorDeTasa.setValue(BKUPTasaTrafico);
+            this.comboBoxPredefinedOptions.setSelectedIndex(0);
+            this.sliderTrafficGenerationRate.setValue(this.currentConfigTrafficGenerationRate);
 
-            if (BKUPTipoTrafico == TTrafficGeneratorNode.CONSTANT_TRAFFIC_RATE) {
-                this.selectorDeTamPaquete.setEnabled(true);
-                this.etiquetaOctetos.setEnabled(true);
-                this.etiquetaTamPaquete.setEnabled(true);
-                String unidades = this.translations.getString("JVentanaEmisor.Octetos");
-                this.etiquetaOctetos.setText(this.BKUPTamDatosConstante + " " +unidades);        }
-                this.selectorDeTamPaquete.setValue(this.BKUPTamDatosConstante);
+            if (this.currentConfigTrafficType == TTrafficGeneratorNode.CONSTANT_TRAFFIC_RATE) {
+                this.sliderConstantTrafficPayloadSize.setEnabled(true);
+                this.labelConstanTrafficPayloadSize.setEnabled(true);
+                this.labelPayloadSize.setEnabled(true);
+                String units = this.translations.getString("JVentanaEmisor.Octetos");
+                this.labelConstanTrafficPayloadSize.setText(this.currentConfigConstanTrafficPayloadSize + " " + units);
             }
+            this.sliderConstantTrafficPayloadSize.setValue(this.currentConfigConstanTrafficPayloadSize);
+        }
     }
 
-    private TImageBroker dispensadorDeImagenes;
-    private Frame ventanaPadre;
-    private JDesignPanel pd;
-    private TTrafficGeneratorNode emisor;
-    private TTopology topo;
-    
-    private String BKUPDestino;
-    private boolean BKUPLSPDeBackup;
-    private boolean BKUPMostrarNombre;
-    private int BKUPNivelDeGos;
-    private String BKUPNombre;
-    private int BKUPTasaTrafico;
-    private int BKUPTipoTrafico;
-    private boolean BKUPGenerarEstadisticas;
-    private int BKUPTamDatosConstante;
-    private boolean BKUPEncapsularEnMPLS;
-
-    private boolean reconfigurando;
-    
-    private ButtonGroup buttonGroup1;
-    private JLabel coordenadaX;
-    private JLabel coordenadaY;
-    private JCheckBox encapsularSobreMPLS;
-    private JLabel etiquetaNombre;
-    private JLabel etiquetaOctetos;
-    private JLabel etiquetaTamPaquete;
-    private JLabel etiquetaTasa;
-    private JLabel iconoEmisor;
-    private JLabel iconoEnlace1;
-    private JLabel iconoEnlace2;
-    private JButton jButton2;
-    private JButton jButton3;
-    private JLabel jLabel1;
-    private JLabel jLabel2;
-    private JLabel jLabel4;
-    private JLabel jLabel5;
-    private JLabel jLabel6;
-    private JTextField nombreNodo;
-    private JPanel panelAvanzado;
-    private JPanel panelBotones;
-    private JCoordinatesPanel panelCoordenadas;
-    private JPanel panelGeneral;
-    private JTabbedPane panelPestanias;
-    private JPanel panelPosicion;
-    private JPanel panelPrincipal;
-    private JPanel panelRapido;
-    private JCheckBox selectorDeGenerarEstadisticas;
-    private JCheckBox selectorDeGenerarEstadisticasSencillo;
-    private JComboBox selectorDeGoS;
-    private JSlider selectorDeTamPaquete;
-    private JSlider selectorDeTasa;
-    private JComboBox selectorDelReceptor;
-    private JCheckBox selectorLSPDeRespaldo;
-    private JComboBox selectorSencilloTrafico;
-    private JRadioButton traficoConstante;
-    private JRadioButton traficoVariable;
-    private JCheckBox verNombre;
+    private TImageBroker imageBroker;
+    private Frame parent;
+    private JDesignPanel designPanel;
+    private TTrafficGeneratorNode trafficGeneratorNode;
+    private TTopology topology;
+    private String currentConfigTargetTrafficSinkNode;
+    private boolean currentConfigCreateBackupLSP;
+    private boolean currentConfigShowName;
+    private int currentConfigGoSLevel;
+    private String currentConfigName;
+    private int currentConfigTrafficGenerationRate;
+    private int currentConfigTrafficType;
+    private boolean currentConfigGenerateStatistics;
+    private int currentConfigConstanTrafficPayloadSize;
+    private boolean currentConfigEncapsulateOverMPLS;
+    private boolean reconfiguration;
+    private ButtonGroup buttonGroup;
+    private JLabel labelCoordinateX;
+    private JLabel labelCoordinateY;
+    private JCheckBox checkBoxEncapsulateOverMPLS;
+    private JLabel labelName;
+    private JLabel labelConstanTrafficPayloadSize;
+    private JLabel labelPayloadSize;
+    private JLabel labelTrafficGenerationRateMbps;
+    private JLabel iconContainerTrafficGenerator;
+    private JLabel labelQuickConfiguration;
+    private JLabel labelAdvancedConfiguration;
+    private JButton buttonOK;
+    private JButton buttonCancel;
+    private JLabel labelQuickTrafficType;
+    private JLabel labelTrafficGenerationRate;
+    private JLabel labelGoSLevel;
+    private JLabel labelAdvancedTrafficType;
+    private JLabel labelTargetTrafficSinkNode;
+    private JTextField textFieldName;
+    private JPanel panelAdvancedConfiguration;
+    private JPanel panelButtons;
+    private JCoordinatesPanel coordinatesPanel;
+    private JPanel panelGeneralConfiguration;
+    private JTabbedPane panelTabs;
+    private JPanel panelPosition;
+    private JPanel mainPanel;
+    private JPanel panelQuickConfiguration;
+    private JCheckBox checkBoxAdvancedGenerateStatistics;
+    private JCheckBox checkBoxQuickGenerateStatistics;
+    private JComboBox comboBoxGoSLevel;
+    private JSlider sliderConstantTrafficPayloadSize;
+    private JSlider sliderTrafficGenerationRate;
+    private JComboBox comboBoxTargetTrafficSinkNode;
+    private JCheckBox checkBoxBackupLSP;
+    private JComboBox comboBoxPredefinedOptions;
+    private JRadioButton radioButtonConstantPacketSize;
+    private JRadioButton constantTrafficVariablePacketSize;
+    private JCheckBox checkBoxShowName;
     private ResourceBundle translations;
 }
