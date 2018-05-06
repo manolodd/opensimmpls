@@ -44,267 +44,377 @@ import javax.swing.JTextField;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
+/**
+ * This class implements a window that is used to configure and reconfigure a
+ * Traffic Sink node.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
+ */
 public class JTrafficSinkWindow extends JDialog {
 
-    public JTrafficSinkWindow(TTopology t, JDesignPanel pad, TImageBroker di, Frame parent, boolean modal) {
+    /**
+     * This is the constructor of the class and creates a new instance of
+     * JTrafficSinkWindow.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param designPanel desing panel wich contains the traffic sink node that
+     * is configured via this JTrafficSinkWindow
+     * @param parent Parent window over wich this JTrafficSinkWindow is shown.
+     * @param imageBroker An object that supply the needed images to be inserted
+     * in the UI.
+     * @param modal TRUE, if this dialog has to be modal. Otherwise, FALSE.
+     * @param topology Topology the traffic sink node belongs to.
+     * @since 2.0
+     */
+    public JTrafficSinkWindow(TTopology topology, JDesignPanel designPanel, TImageBroker imageBroker, Frame parent, boolean modal) {
         super(parent, modal);
-        ventanaPadre = parent;
-        dispensadorDeImagenes = di;
-        pd = pad;
-        topo = t;
+        this.parent = parent;
+        this.imageBroker = imageBroker;
+        this.designPanel = designPanel;
+        this.topology = topology;
         initComponents();
         initComponents2();
     }
 
-    private void initComponents2() {
-        panelCoordenadas.setDesignPanel(pd);
-        Dimension tamFrame=this.getSize();
-        Dimension tamPadre=ventanaPadre.getSize();
-        setLocation((tamPadre.width-tamFrame.width)/2, (tamPadre.height-tamFrame.height)/2);
-        configReceptor = null;
-        coordenadaX.setText(this.translations.getString("VentanaEmisor.X=_") + panelCoordenadas.getRealX());
-        coordenadaY.setText(this.translations.getString("VentanaEmisor.Y=_") + panelCoordenadas.getRealY());
-        BKUPMostrarNombre = true;
-        BKUPNombre = "";
-        reconfigurando = false;
-    }
-
+    /**
+     * This method is called from within the constructor to initialize the
+     * window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
     private void initComponents() {
         this.translations = ResourceBundle.getBundle(AvailableBundles.TRAFFIC_SINK_WINDOW.getPath());
-        panelPrincipal = new JPanel();
-        panelPestanias = new JTabbedPane();
-        panelGeneral = new JPanel();
-        iconoReceptor = new JLabel();
-        etiquetaNombre = new JLabel();
-        nombreNodo = new JTextField();
-        panelPosicion = new JPanel();
-        coordenadaX = new JLabel();
-        coordenadaY = new JLabel();
-        panelCoordenadas = new com.manolodominguez.opensimmpls.ui.dialogs.JCoordinatesPanel();
-        verNombre = new JCheckBox();
-        panelRapido = new JPanel();
-        iconoEnlace1 = new JLabel();
-        selectorGenerarEstadisticaFacil = new JCheckBox();
-        panelAvanzado = new JPanel();
-        iconoEnlace2 = new JLabel();
-        selectorGenerarEstadisticaAvanzada = new JCheckBox();
-        panelBotones = new JPanel();
-        jButton2 = new JButton();
-        jButton3 = new JButton();
+        this.mainPanel = new JPanel();
+        this.panelTabs = new JTabbedPane();
+        this.panelGeneralConfiguration = new JPanel();
+        this.iconContainerTrafficSink = new JLabel();
+        this.labelName = new JLabel();
+        this.textFieldName = new JTextField();
+        this.panelPosition = new JPanel();
+        this.labelCoordinateX = new JLabel();
+        this.labelCoordinateY = new JLabel();
+        this.coordinatesPanel = new JCoordinatesPanel();
+        this.checkBoxShowName = new JCheckBox();
+        this.panelQuickConfiguration = new JPanel();
+        this.labelQuickConfiguration = new JLabel();
+        this.checkBoxQuickGenerateStatistics = new JCheckBox();
+        this.panelAdvancedConfiguration = new JPanel();
+        this.labelAdvancedConfiguration = new JLabel();
+        this.checkBoxAdvancedGenerateStatistics = new JCheckBox();
+        this.panelButtons = new JPanel();
+        this.buttonOK = new JButton();
+        this.buttonCancel = new JButton();
         setTitle(this.translations.getString("VentanaReceptor.titulo"));
         setModal(true);
         setResizable(false);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent evt) {
-                closeDialog(evt);
+                handleWindowsClosing(evt);
             }
         });
         getContentPane().setLayout(new AbsoluteLayout());
-        panelPrincipal.setLayout(new AbsoluteLayout());
-        panelPestanias.setFont(new Font("Dialog", 0, 12));
-        panelGeneral.setLayout(new AbsoluteLayout());
-        iconoReceptor.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.RECEPTOR));
-        iconoReceptor.setText(this.translations.getString("VentanaReceptor.descripcion"));
-        panelGeneral.add(iconoReceptor, new AbsoluteConstraints(15, 20, 335, -1));
-        etiquetaNombre.setFont(new Font("Dialog", 0, 12));
-        etiquetaNombre.setText(this.translations.getString("VentanaReceptor.etiquetaNombre"));
-        panelGeneral.add(etiquetaNombre, new AbsoluteConstraints(215, 80, 120, -1));
-        panelGeneral.add(nombreNodo, new AbsoluteConstraints(215, 105, 125, -1));
-        panelPosicion.setBorder(BorderFactory.createTitledBorder(this.translations.getString("VentanaReceptor.titulogrupo")));
-        panelPosicion.setLayout(new AbsoluteLayout());
-        coordenadaX.setFont(new Font("Dialog", 0, 12));
-        coordenadaX.setText(this.translations.getString("VentanaReceptor.X=_"));
-        panelPosicion.add(coordenadaX, new AbsoluteConstraints(100, 100, -1, -1));
-        coordenadaY.setFont(new Font("Dialog", 0, 12));
-        coordenadaY.setText(this.translations.getString("VentanaReceptor.Y=_"));
-        panelPosicion.add(coordenadaY, new AbsoluteConstraints(40, 100, -1, -1));
-        panelCoordenadas.setBackground(new Color(255, 255, 255));
-        panelCoordenadas.addMouseListener(new MouseAdapter() {
+        this.mainPanel.setLayout(new AbsoluteLayout());
+        this.panelTabs.setFont(new Font("Dialog", 0, 12));
+        this.panelGeneralConfiguration.setLayout(new AbsoluteLayout());
+        this.iconContainerTrafficSink.setIcon(this.imageBroker.getIcon(TImageBroker.RECEPTOR));
+        this.iconContainerTrafficSink.setText(this.translations.getString("VentanaReceptor.descripcion"));
+        this.panelGeneralConfiguration.add(this.iconContainerTrafficSink, new AbsoluteConstraints(15, 20, 335, -1));
+        this.labelName.setFont(new Font("Dialog", 0, 12));
+        this.labelName.setText(this.translations.getString("VentanaReceptor.etiquetaNombre"));
+        this.panelGeneralConfiguration.add(this.labelName, new AbsoluteConstraints(215, 80, 120, -1));
+        this.panelGeneralConfiguration.add(this.textFieldName, new AbsoluteConstraints(215, 105, 125, -1));
+        this.panelPosition.setBorder(BorderFactory.createTitledBorder(this.translations.getString("VentanaReceptor.titulogrupo")));
+        this.panelPosition.setLayout(new AbsoluteLayout());
+        this.labelCoordinateX.setFont(new Font("Dialog", 0, 12));
+        this.labelCoordinateX.setText(this.translations.getString("VentanaReceptor.X=_"));
+        this.panelPosition.add(this.labelCoordinateX, new AbsoluteConstraints(100, 100, -1, -1));
+        this.labelCoordinateY.setFont(new Font("Dialog", 0, 12));
+        this.labelCoordinateY.setText(this.translations.getString("VentanaReceptor.Y=_"));
+        this.panelPosition.add(this.labelCoordinateY, new AbsoluteConstraints(40, 100, -1, -1));
+        this.coordinatesPanel.setBackground(new Color(255, 255, 255));
+        this.coordinatesPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
-                clicEnPanelCoordenadas(evt);
+                handleClickOnCoordinatesPanel(evt);
             }
+
             @Override
             public void mouseEntered(MouseEvent evt) {
-                ratonEntraEnPanelCoordenadas(evt);
+                handleMouseEnteringInCoordinatesPanel(evt);
             }
+
             @Override
             public void mouseExited(MouseEvent evt) {
-                ratonSaleDePanelCoordenadas(evt);
+                handleMouseLeavingCoordinatesPanel(evt);
             }
         });
-        panelPosicion.add(panelCoordenadas, new AbsoluteConstraints(25, 25, 130, 70));
-        panelGeneral.add(panelPosicion, new AbsoluteConstraints(15, 75, 180, 125));
-        verNombre.setFont(new Font("Dialog", 0, 12));
-        verNombre.setSelected(true);
-        verNombre.setText(this.translations.getString("VentanaReceptor.verNombre"));
-        panelGeneral.add(verNombre, new AbsoluteConstraints(215, 135, -1, -1));
-        panelPestanias.addTab(this.translations.getString("VentanaReceptor.tab.General"), panelGeneral);
-        panelRapido.setLayout(new AbsoluteLayout());
-        iconoEnlace1.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ASISTENTE));
-        iconoEnlace1.setText(this.translations.getString("JVentanaReceptor.configuracionSencilla"));
-        panelRapido.add(iconoEnlace1, new AbsoluteConstraints(15, 20, 335, -1));
-        selectorGenerarEstadisticaFacil.setFont(new Font("Dialog", 0, 12));
-        selectorGenerarEstadisticaFacil.setText(this.translations.getString("JVentanaReceptor.generarEstadisticas"));
-        selectorGenerarEstadisticaFacil.addActionListener(new ActionListener() {
+        this.panelPosition.add(this.coordinatesPanel, new AbsoluteConstraints(25, 25, 130, 70));
+        this.panelGeneralConfiguration.add(this.panelPosition, new AbsoluteConstraints(15, 75, 180, 125));
+        this.checkBoxShowName.setFont(new Font("Dialog", 0, 12));
+        this.checkBoxShowName.setSelected(true);
+        this.checkBoxShowName.setText(this.translations.getString("VentanaReceptor.verNombre"));
+        this.panelGeneralConfiguration.add(this.checkBoxShowName, new AbsoluteConstraints(215, 135, -1, -1));
+        this.panelTabs.addTab(this.translations.getString("VentanaReceptor.tab.General"), this.panelGeneralConfiguration);
+        this.panelQuickConfiguration.setLayout(new AbsoluteLayout());
+        this.labelQuickConfiguration.setIcon(this.imageBroker.getIcon(TImageBroker.ASISTENTE));
+        this.labelQuickConfiguration.setText(this.translations.getString("JVentanaReceptor.configuracionSencilla"));
+        this.panelQuickConfiguration.add(this.labelQuickConfiguration, new AbsoluteConstraints(15, 20, 335, -1));
+        this.checkBoxQuickGenerateStatistics.setFont(new Font("Dialog", 0, 12));
+        this.checkBoxQuickGenerateStatistics.setText(this.translations.getString("JVentanaReceptor.generarEstadisticas"));
+        this.checkBoxQuickGenerateStatistics.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnGenerarEstadisticaFacil(evt);
+                handleClickOnQuickGenerateStatistics(evt);
             }
         });
-        panelRapido.add(selectorGenerarEstadisticaFacil, new AbsoluteConstraints(60, 125, -1, -1));
-        panelPestanias.addTab(this.translations.getString("VentanaReceptor.tab.Fast"), panelRapido);
-        panelAvanzado.setLayout(new AbsoluteLayout());
-        iconoEnlace2.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.AVANZADA));
-        iconoEnlace2.setText(this.translations.getString("JVentanaReceptor.configuracionAvanzada"));
-        panelAvanzado.add(iconoEnlace2, new AbsoluteConstraints(15, 20, 335, -1));
-        selectorGenerarEstadisticaAvanzada.setFont(new Font("Dialog", 0, 12));
-        selectorGenerarEstadisticaAvanzada.setText(this.translations.getString("JVentanaReceptor.GenerEstadisticas"));
-        selectorGenerarEstadisticaAvanzada.addActionListener(new ActionListener() {
+        this.panelQuickConfiguration.add(this.checkBoxQuickGenerateStatistics, new AbsoluteConstraints(60, 125, -1, -1));
+        this.panelTabs.addTab(this.translations.getString("VentanaReceptor.tab.Fast"), this.panelQuickConfiguration);
+        this.panelAdvancedConfiguration.setLayout(new AbsoluteLayout());
+        this.labelAdvancedConfiguration.setIcon(this.imageBroker.getIcon(TImageBroker.AVANZADA));
+        this.labelAdvancedConfiguration.setText(this.translations.getString("JVentanaReceptor.configuracionAvanzada"));
+        this.panelAdvancedConfiguration.add(this.labelAdvancedConfiguration, new AbsoluteConstraints(15, 20, 335, -1));
+        this.checkBoxAdvancedGenerateStatistics.setFont(new Font("Dialog", 0, 12));
+        this.checkBoxAdvancedGenerateStatistics.setText(this.translations.getString("JVentanaReceptor.GenerEstadisticas"));
+        this.checkBoxAdvancedGenerateStatistics.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnGenerarEstadisticaAvanzada(evt);
+                handleClickOnAdvancedGenerateStatistics(evt);
             }
         });
-        panelAvanzado.add(selectorGenerarEstadisticaAvanzada, new AbsoluteConstraints(60, 125, -1, -1));
-        panelPestanias.addTab(this.translations.getString("VentanaReceptor.tab.Advanced"), panelAvanzado);
-        panelPrincipal.add(panelPestanias, new AbsoluteConstraints(15, 15, 370, 240));
-        panelBotones.setLayout(new AbsoluteLayout());
-        jButton2.setFont(new Font("Dialog", 0, 12));
-        jButton2.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ACEPTAR));
-        jButton2.setMnemonic(this.translations.getString("VentanaReceptor.botones.mne.Aceptar").charAt(0));
-        jButton2.setText(this.translations.getString("VentanaReceptor.boton.Ok"));
-        jButton2.addActionListener(new ActionListener() {
+        this.panelAdvancedConfiguration.add(this.checkBoxAdvancedGenerateStatistics, new AbsoluteConstraints(60, 125, -1, -1));
+        this.panelTabs.addTab(this.translations.getString("VentanaReceptor.tab.Advanced"), this.panelAdvancedConfiguration);
+        this.mainPanel.add(this.panelTabs, new AbsoluteConstraints(15, 15, 370, 240));
+        this.panelButtons.setLayout(new AbsoluteLayout());
+        this.buttonOK.setFont(new Font("Dialog", 0, 12));
+        this.buttonOK.setIcon(this.imageBroker.getIcon(TImageBroker.ACEPTAR));
+        this.buttonOK.setMnemonic(this.translations.getString("VentanaReceptor.botones.mne.Aceptar").charAt(0));
+        this.buttonOK.setText(this.translations.getString("VentanaReceptor.boton.Ok"));
+        this.buttonOK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnAceptar(evt);
+                handleClickOnOKButton(evt);
             }
         });
-        panelBotones.add(jButton2, new AbsoluteConstraints(15, 15, 105, -1));
-        jButton3.setFont(new Font("Dialog", 0, 12));
-        jButton3.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.CANCELAR));
-        jButton3.setMnemonic(this.translations.getString("VentanaReceptor.botones.mne.Cancelar").charAt(0));
-        jButton3.setText(this.translations.getString("VentanaReceptor.boton.Cancel"));
-        jButton3.addActionListener(new ActionListener() {
+        this.panelButtons.add(this.buttonOK, new AbsoluteConstraints(15, 15, 105, -1));
+        this.buttonCancel.setFont(new Font("Dialog", 0, 12));
+        this.buttonCancel.setIcon(this.imageBroker.getIcon(TImageBroker.CANCELAR));
+        this.buttonCancel.setMnemonic(this.translations.getString("VentanaReceptor.botones.mne.Cancelar").charAt(0));
+        this.buttonCancel.setText(this.translations.getString("VentanaReceptor.boton.Cancel"));
+        this.buttonCancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnCancelar(evt);
+                handleClickOnCancelButton(evt);
             }
         });
-        panelBotones.add(jButton3, new AbsoluteConstraints(135, 15, 105, -1));
-        panelPrincipal.add(panelBotones, new AbsoluteConstraints(0, 255, 400, 55));
-        getContentPane().add(panelPrincipal, new AbsoluteConstraints(0, 0, -1, 310));
+        this.panelButtons.add(this.buttonCancel, new AbsoluteConstraints(135, 15, 105, -1));
+        this.mainPanel.add(this.panelButtons, new AbsoluteConstraints(0, 255, 400, 55));
+        getContentPane().add(this.mainPanel, new AbsoluteConstraints(0, 0, -1, 310));
         pack();
     }
 
-private void clicEnGenerarEstadisticaAvanzada(ActionEvent evt) {
-    this.selectorGenerarEstadisticaFacil.setSelected(this.selectorGenerarEstadisticaAvanzada.isSelected());
-}
-
-private void clicEnGenerarEstadisticaFacil(ActionEvent evt) {
-    this.selectorGenerarEstadisticaAvanzada.setSelected(this.selectorGenerarEstadisticaFacil.isSelected());
-}
-
-private void clicEnCancelar(ActionEvent evt) {
-    if (reconfigurando) {
-        configReceptor.setShowName(BKUPMostrarNombre);
-        configReceptor.setName(BKUPNombre);
-        configReceptor.setWellConfigured(true);
-        reconfigurando = false;
-    } else {
-        configReceptor.setWellConfigured(false);
+    /**
+     * This method is called from within the constructor to do additional
+     * configurations of window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
+    private void initComponents2() {
+        this.coordinatesPanel.setDesignPanel(designPanel);
+        Dimension frameSize = this.getSize();
+        Dimension parentSize = this.parent.getSize();
+        setLocation((parentSize.width - frameSize.width) / 2, (parentSize.height - frameSize.height) / 2);
+        this.trafficSinkNode = null;
+        this.labelCoordinateX.setText(this.translations.getString("VentanaEmisor.X=_") + this.coordinatesPanel.getRealX());
+        this.labelCoordinateY.setText(this.translations.getString("VentanaEmisor.Y=_") + this.coordinatesPanel.getRealY());
+        this.currentConfigShowName = true;
+        this.currentConfigName = "";
+        this.reconfiguration = false;
     }
-    this.setVisible(false);
-    this.dispose();
-}
 
-private void clicEnAceptar(ActionEvent evt) {
-    configReceptor.setWellConfigured(true);
-    if (!this.reconfigurando){
-        configReceptor.setScreenPosition(new Point(panelCoordenadas.getRealX(),panelCoordenadas.getRealY()));
+    /**
+     * This method is called when a change is made in "generate stistics"
+     * checkbox located at "Advanced configuration" tab (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnAdvancedGenerateStatistics(ActionEvent evt) {
+        this.checkBoxQuickGenerateStatistics.setSelected(this.checkBoxAdvancedGenerateStatistics.isSelected());
     }
-    configReceptor.setName(nombreNodo.getText());
-    configReceptor.setShowName(verNombre.isSelected());
-    configReceptor.setGenerateStats(this.selectorGenerarEstadisticaAvanzada.isSelected());
-    int error = configReceptor.validateConfig(topo, this.reconfigurando);
-    if (error != TTrafficSinkNode.OK) {
-        JWarningWindow va = new JWarningWindow(ventanaPadre, true, dispensadorDeImagenes);
-        va.setWarningMessage(configReceptor.getErrorMessage(error));
-        va.setVisible(true);
-    } else {
+
+    /**
+     * This method is called when a change is made in "generate stistics"
+     * checkbox located at "Quick configuration" tab (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnQuickGenerateStatistics(ActionEvent evt) {
+        this.checkBoxAdvancedGenerateStatistics.setSelected(this.checkBoxQuickGenerateStatistics.isSelected());
+    }
+
+    /**
+     * This method is called when a click is done "Cancel" button (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnCancelButton(ActionEvent evt) {
+        if (this.reconfiguration) {
+            this.trafficSinkNode.setShowName(this.currentConfigShowName);
+            this.trafficSinkNode.setName(this.currentConfigName);
+            this.trafficSinkNode.setWellConfigured(true);
+            this.reconfiguration = false;
+        } else {
+            this.trafficSinkNode.setWellConfigured(false);
+        }
         this.setVisible(false);
         this.dispose();
     }
-}
 
-private void clicEnPanelCoordenadas(MouseEvent evt) {
-    if (evt.getButton() == MouseEvent.BUTTON1) {
-        panelCoordenadas.setCoordinates(evt.getPoint());
-        coordenadaX.setText(this.translations.getString("VentanaEmisor.X=_") + panelCoordenadas.getRealX());
-        coordenadaY.setText(this.translations.getString("VentanaEmisor.Y=_") + panelCoordenadas.getRealY());
-        panelCoordenadas.repaint();
-    }
-}
-
-private void ratonSaleDePanelCoordenadas(MouseEvent evt) {
-    this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-}
-
-private void ratonEntraEnPanelCoordenadas(MouseEvent evt) {
-    this.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
-}
-
-    private void closeDialog(WindowEvent evt) {
-        setVisible(false);
-        configReceptor.setWellConfigured(false);
-        dispose();
-    }
-
-    public void ponerConfiguracion(TTrafficSinkNode tnr, boolean recfg) {
-        configReceptor = tnr;
-        reconfigurando = recfg;
-        if (reconfigurando) {
-            this.panelCoordenadas.setEnabled(false);
-            this.panelCoordenadas.setToolTipText(null);
-            BKUPGenerarEstadisticas = tnr.isGeneratingStats();
-            BKUPMostrarNombre = tnr.nameMustBeDisplayed();
-            BKUPNombre = tnr.getName();
-            this.nombreNodo.setText(BKUPNombre);
-            this.verNombre.setSelected(BKUPMostrarNombre);
-            this.selectorGenerarEstadisticaAvanzada.setSelected(BKUPGenerarEstadisticas);
-            this.selectorGenerarEstadisticaFacil.setSelected(BKUPGenerarEstadisticas);
+    /**
+     * This method is called when a click is done "Ok" button (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnOKButton(ActionEvent evt) {
+        this.trafficSinkNode.setWellConfigured(true);
+        if (!this.reconfiguration) {
+            this.trafficSinkNode.setScreenPosition(new Point(this.coordinatesPanel.getRealX(), this.coordinatesPanel.getRealY()));
+        }
+        this.trafficSinkNode.setName(this.textFieldName.getText());
+        this.trafficSinkNode.setShowName(this.checkBoxShowName.isSelected());
+        this.trafficSinkNode.setGenerateStats(this.checkBoxAdvancedGenerateStatistics.isSelected());
+        int error = this.trafficSinkNode.validateConfig(this.topology, this.reconfiguration);
+        if (error != TTrafficSinkNode.OK) {
+            JWarningWindow warningWindow = new JWarningWindow(this.parent, true, this.imageBroker);
+            warningWindow.setWarningMessage(this.trafficSinkNode.getErrorMessage(error));
+            warningWindow.setVisible(true);
+        } else {
+            this.setVisible(false);
+            this.dispose();
         }
     }
 
-    private TImageBroker dispensadorDeImagenes;
-    private Frame ventanaPadre;
-    private JDesignPanel pd;
-    private TTrafficSinkNode configReceptor;
-    private TTopology topo;
-    private boolean BKUPMostrarNombre;
-    private String BKUPNombre;
-    private boolean BKUPGenerarEstadisticas;
-    private boolean reconfigurando;
-    private JLabel coordenadaX;
-    private JLabel coordenadaY;
-    private JLabel etiquetaNombre;
-    private JLabel iconoEnlace1;
-    private JLabel iconoEnlace2;
-    private JLabel iconoReceptor;
-    private JButton jButton2;
-    private JButton jButton3;
-    private JTextField nombreNodo;
-    private JPanel panelAvanzado;
-    private JPanel panelBotones;
-    private com.manolodominguez.opensimmpls.ui.dialogs.JCoordinatesPanel panelCoordenadas;
-    private JPanel panelGeneral;
-    private JTabbedPane panelPestanias;
-    private JPanel panelPosicion;
-    private JPanel panelPrincipal;
-    private JPanel panelRapido;
-    private JCheckBox selectorGenerarEstadisticaAvanzada;
-    private JCheckBox selectorGenerarEstadisticaFacil;
-    private JCheckBox verNombre;
+    /**
+     * This method is called when a click is done over the coordinates panel (in
+     * the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnCoordinatesPanel(MouseEvent evt) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
+            this.coordinatesPanel.setCoordinates(evt.getPoint());
+            this.labelCoordinateX.setText(this.translations.getString("VentanaEmisor.X=_") + this.coordinatesPanel.getRealX());
+            this.labelCoordinateY.setText(this.translations.getString("VentanaEmisor.Y=_") + this.coordinatesPanel.getRealY());
+            this.coordinatesPanel.repaint();
+        }
+    }
+
+    /**
+     * This method is called when the mouse exits the coordinates panel (in the
+     * UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleMouseLeavingCoordinatesPanel(MouseEvent evt) {
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }
+
+    /**
+     * This method is called when the mouse enters the coordinates panel (in the
+     * UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleMouseEnteringInCoordinatesPanel(MouseEvent evt) {
+        this.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+    }
+
+    /**
+     * This method is called when the JTrafficSinkWindow is closed (in the UI).
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleWindowsClosing(WindowEvent evt) {
+        setVisible(false);
+        this.trafficSinkNode.setWellConfigured(false);
+        dispose();
+    }
+
+    /**
+     * This method configures all components of JTrafficSinkWindow with present
+     * values retrieved from the LSR. It is used to do a reconfiguration.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param trafficSinkNode the traffic sink node to be configured through
+     * this JTrafficSinkWindow
+     * @param reconfiguration TRUE if the traffic sink node is being
+     * reconfigured. FALSE if it is the first configuration of the traffic sink
+     * node after its creation.
+     * @since 2.0
+     */
+    public void setConfiguration(TTrafficSinkNode trafficSinkNode, boolean reconfiguration) {
+        this.trafficSinkNode = trafficSinkNode;
+        this.reconfiguration = reconfiguration;
+        if (this.reconfiguration) {
+            this.coordinatesPanel.setEnabled(false);
+            this.coordinatesPanel.setToolTipText(null);
+            this.currentConfigGenerateStatistics = trafficSinkNode.isGeneratingStats();
+            this.currentConfigShowName = trafficSinkNode.nameMustBeDisplayed();
+            this.currentConfigName = trafficSinkNode.getName();
+            this.textFieldName.setText(this.currentConfigName);
+            this.checkBoxShowName.setSelected(this.currentConfigShowName);
+            this.checkBoxAdvancedGenerateStatistics.setSelected(this.currentConfigGenerateStatistics);
+            this.checkBoxQuickGenerateStatistics.setSelected(this.currentConfigGenerateStatistics);
+        }
+    }
+
+    private TImageBroker imageBroker;
+    private Frame parent;
+    private JDesignPanel designPanel;
+    private TTrafficSinkNode trafficSinkNode;
+    private TTopology topology;
+    private boolean currentConfigShowName;
+    private String currentConfigName;
+    private boolean currentConfigGenerateStatistics;
+    private boolean reconfiguration;
+    private JLabel labelCoordinateX;
+    private JLabel labelCoordinateY;
+    private JLabel labelName;
+    private JLabel labelQuickConfiguration;
+    private JLabel labelAdvancedConfiguration;
+    private JLabel iconContainerTrafficSink;
+    private JButton buttonOK;
+    private JButton buttonCancel;
+    private JTextField textFieldName;
+    private JPanel panelAdvancedConfiguration;
+    private JPanel panelButtons;
+    private JCoordinatesPanel coordinatesPanel;
+    private JPanel panelGeneralConfiguration;
+    private JTabbedPane panelTabs;
+    private JPanel panelPosition;
+    private JPanel mainPanel;
+    private JPanel panelQuickConfiguration;
+    private JCheckBox checkBoxAdvancedGenerateStatistics;
+    private JCheckBox checkBoxQuickGenerateStatistics;
+    private JCheckBox checkBoxShowName;
     private ResourceBundle translations;
 }

@@ -1140,7 +1140,7 @@ public class JScenarioWindow extends javax.swing.JInternalFrame {
                     vlsra.show();
                 } else if (nt.getNodeType() == TNode.TRAFFIC_SINK) {
                     JTrafficSinkWindow vr = new JTrafficSinkWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
-                    vr.ponerConfiguracion((TTrafficSinkNode) nt, true);
+                    vr.setConfiguration((TTrafficSinkNode) nt, true);
                     vr.show();
                 }
                 elementoDisenioClicDerecho = null;
@@ -2092,7 +2092,7 @@ private void clicEnAniadirReceptor(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
         err.show();
     }
     JTrafficSinkWindow vr = new JTrafficSinkWindow(escenario.getTopology(), panelDisenio, dispensadorDeImagenes, VentanaPadre, true);
-    vr.ponerConfiguracion(receptor, false);
+    vr.setConfiguration(receptor, false);
     vr.show();
     if (receptor.isWellConfigured()) {
         try {
