@@ -15,6 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.scenario.TTrafficGeneratorNode;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
 import com.manolodominguez.opensimmpls.scenario.TNode;
@@ -114,7 +115,7 @@ public class JTrafficGeneratorWindow extends JDialog {
     }
 
     private void initComponents() {
-
+        this.translations = ResourceBundle.getBundle(AvailableBundles.TRAFFIC_GENERATOR_WINDOW.getPath());
         buttonGroup1 = new ButtonGroup();
         panelPrincipal = new JPanel();
         panelPestanias = new JTabbedPane();
@@ -154,8 +155,7 @@ public class JTrafficGeneratorWindow extends JDialog {
         jButton2 = new JButton();
         jButton3 = new JButton();
 
-        ResourceBundle bundle = ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations"); // NOI18N
-        setTitle(bundle.getString("VentanaEmisor.TituloVentana")); // NOI18N
+        setTitle(this.translations.getString("VentanaEmisor.TituloVentana")); // NOI18N
         setModal(true);
         setResizable(false);
         addWindowListener(new WindowAdapter() {
@@ -173,30 +173,29 @@ public class JTrafficGeneratorWindow extends JDialog {
         panelGeneral.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         iconoEmisor.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.EMISOR));
-        ResourceBundle bundle1 = ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations.propertiess"); // NOI18N
-        iconoEmisor.setText(bundle1.getString("VentanaEmisor.DescripcionNodo")); // NOI18N
+        iconoEmisor.setText(this.translations.getString("VentanaEmisor.DescripcionNodo")); // NOI18N
         panelGeneral.add(iconoEmisor, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
         etiquetaNombre.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        etiquetaNombre.setText(bundle.getString("VentanaEmisor.Etiqueta.NombreNodo")); // NOI18N
+        etiquetaNombre.setText(this.translations.getString("VentanaEmisor.Etiqueta.NombreNodo")); // NOI18N
         panelGeneral.add(etiquetaNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 105, 120, -1));
 
-        nombreNodo.setToolTipText(bundle.getString("VentanaEmisor.tooltip.Nombre")); // NOI18N
+        nombreNodo.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.Nombre")); // NOI18N
         panelGeneral.add(nombreNodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 130, 125, -1));
 
-        panelPosicion.setBorder(BorderFactory.createTitledBorder(bundle.getString("VentanaEmisor.Etiqueta.Posicion"))); // NOI18N
+        panelPosicion.setBorder(BorderFactory.createTitledBorder(this.translations.getString("VentanaEmisor.Etiqueta.Posicion"))); // NOI18N
         panelPosicion.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         coordenadaX.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        coordenadaX.setText(bundle.getString("VentanaEmisor.X=_45")); // NOI18N
+        coordenadaX.setText(this.translations.getString("VentanaEmisor.X=_45")); // NOI18N
         panelPosicion.add(coordenadaX, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, -1, -1));
 
         coordenadaY.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        coordenadaY.setText(bundle.getString("VentanaEmisor.Y=_1024")); // NOI18N
+        coordenadaY.setText(this.translations.getString("VentanaEmisor.Y=_1024")); // NOI18N
         panelPosicion.add(coordenadaY, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
 
         panelCoordenadas.setBackground(new Color(255, 255, 255));
-        panelCoordenadas.setToolTipText(bundle.getString("VentanaEmisor.tooltip.posicion")); // NOI18N
+        panelCoordenadas.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.posicion")); // NOI18N
         panelCoordenadas.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
@@ -217,35 +216,35 @@ public class JTrafficGeneratorWindow extends JDialog {
 
         verNombre.setFont(new Font("Dialog", 0, 12)); // NOI18N
         verNombre.setSelected(true);
-        verNombre.setText(bundle.getString("VentanaEmisor.Etiqueta.VerNombre")); // NOI18N
-        verNombre.setToolTipText(bundle.getString("VentanaEmisor.tooltip.VerNombre")); // NOI18N
+        verNombre.setText(this.translations.getString("VentanaEmisor.Etiqueta.VerNombre")); // NOI18N
+        verNombre.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.VerNombre")); // NOI18N
         panelGeneral.add(verNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 175, -1, -1));
 
         jLabel6.setFont(new Font("Dialog", 0, 12)); // NOI18N
         jLabel6.setHorizontalAlignment(SwingConstants.RIGHT);
-        jLabel6.setText(bundle.getString("VentanaEmisor.DestinoTrafico")); // NOI18N
+        jLabel6.setText(this.translations.getString("VentanaEmisor.DestinoTrafico")); // NOI18N
         panelGeneral.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 245, 170, -1));
 
         selectorDelReceptor.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        selectorDelReceptor.setToolTipText(bundle.getString("VentanaEmisor.tooltip.destinodeltrafico")); // NOI18N
+        selectorDelReceptor.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.destinodeltrafico")); // NOI18N
         panelGeneral.add(selectorDelReceptor, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 240, -1, -1));
 
-        panelPestanias.addTab(bundle.getString("VentanaEmisor.Tab.General"), panelGeneral); // NOI18N
+        panelPestanias.addTab(this.translations.getString("VentanaEmisor.Tab.General"), panelGeneral); // NOI18N
 
         panelRapido.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         iconoEnlace1.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ASISTENTE));
-        iconoEnlace1.setText(bundle.getString("VentanaEmisor.configuracionRapida")); // NOI18N
+        iconoEnlace1.setText(this.translations.getString("VentanaEmisor.configuracionRapida")); // NOI18N
         panelRapido.add(iconoEnlace1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
         jLabel1.setFont(new Font("Dialog", 0, 12)); // NOI18N
         jLabel1.setHorizontalAlignment(SwingConstants.RIGHT);
-        jLabel1.setText(bundle.getString("VentanaEmisor.TipoDeTrafico1")); // NOI18N
+        jLabel1.setText(this.translations.getString("VentanaEmisor.TipoDeTrafico1")); // NOI18N
         panelRapido.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 125, 115, -1));
 
         selectorDeGenerarEstadisticasSencillo.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        selectorDeGenerarEstadisticasSencillo.setText(bundle.getString("VentanaEmisor.GenerarEstadisticas1")); // NOI18N
-        selectorDeGenerarEstadisticasSencillo.setToolTipText(bundle.getString("VentanaEmisor.GenerarEstadisticas1")); // NOI18N
+        selectorDeGenerarEstadisticasSencillo.setText(this.translations.getString("VentanaEmisor.GenerarEstadisticas1")); // NOI18N
+        selectorDeGenerarEstadisticasSencillo.setToolTipText(this.translations.getString("VentanaEmisor.GenerarEstadisticas1")); // NOI18N
         selectorDeGenerarEstadisticasSencillo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -256,7 +255,7 @@ public class JTrafficGeneratorWindow extends JDialog {
 
         selectorSencilloTrafico.setFont(new Font("Dialog", 0, 12)); // NOI18N
         selectorSencilloTrafico.setModel(new DefaultComboBoxModel(new String[] { "Personalized", "Email", "Web", "P2P file sharing", "Bank data transaction", "Tele-medical video", "Bulk traffic" }));
-        selectorSencilloTrafico.setToolTipText(bundle.getString("VentanaEmisor.TipoDeTrafico1")); // NOI18N
+        selectorSencilloTrafico.setToolTipText(this.translations.getString("VentanaEmisor.TipoDeTrafico1")); // NOI18N
         selectorSencilloTrafico.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -265,28 +264,28 @@ public class JTrafficGeneratorWindow extends JDialog {
         });
         panelRapido.add(selectorSencilloTrafico, new org.netbeans.lib.awtextra.AbsoluteConstraints(145, 120, -1, -1));
 
-        panelPestanias.addTab(bundle.getString("VentanaEmisor.Tab.Rapida"), panelRapido); // NOI18N
+        panelPestanias.addTab(this.translations.getString("VentanaEmisor.Tab.Rapida"), panelRapido); // NOI18N
 
         panelAvanzado.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         iconoEnlace2.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.AVANZADA));
-        iconoEnlace2.setText(bundle.getString("VentanaEmisor.ConfiguracionAvanzada")); // NOI18N
+        iconoEnlace2.setText(this.translations.getString("VentanaEmisor.ConfiguracionAvanzada")); // NOI18N
         panelAvanzado.add(iconoEnlace2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 20, 335, -1));
 
         jLabel2.setFont(new Font("Dialog", 0, 12)); // NOI18N
         jLabel2.setHorizontalAlignment(SwingConstants.RIGHT);
-        jLabel2.setText(bundle.getString("VentanaEmisor.TasaDeTrafico")); // NOI18N
+        jLabel2.setText(this.translations.getString("VentanaEmisor.TasaDeTrafico")); // NOI18N
         panelAvanzado.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 90, 100, -1));
 
         etiquetaTasa.setFont(new Font("Dialog", 0, 10)); // NOI18N
         etiquetaTasa.setForeground(new Color(102, 102, 102));
         etiquetaTasa.setHorizontalAlignment(SwingConstants.LEFT);
-        etiquetaTasa.setText(bundle.getString("VentanaEmisor.Kbpsinicial")); // NOI18N
+        etiquetaTasa.setText(this.translations.getString("VentanaEmisor.Kbpsinicial")); // NOI18N
         panelAvanzado.add(etiquetaTasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 90, 70, -1));
 
         selectorDeGenerarEstadisticas.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        selectorDeGenerarEstadisticas.setText(bundle.getString("VentanaEmisor.GenerarEstadisticas2")); // NOI18N
-        selectorDeGenerarEstadisticas.setToolTipText(bundle.getString("VentanaEmisor.tooltip.GenerarEstadisticas2")); // NOI18N
+        selectorDeGenerarEstadisticas.setText(this.translations.getString("VentanaEmisor.GenerarEstadisticas2")); // NOI18N
+        selectorDeGenerarEstadisticas.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.GenerarEstadisticas2")); // NOI18N
         selectorDeGenerarEstadisticas.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -297,12 +296,12 @@ public class JTrafficGeneratorWindow extends JDialog {
 
         jLabel4.setFont(new Font("Dialog", 0, 12)); // NOI18N
         jLabel4.setHorizontalAlignment(SwingConstants.RIGHT);
-        jLabel4.setText(bundle.getString("VentanaEmisor.NivelDeGoS")); // NOI18N
+        jLabel4.setText(this.translations.getString("VentanaEmisor.NivelDeGoS")); // NOI18N
         panelAvanzado.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 85, -1));
 
         selectorDeGoS.setFont(new Font("Dialog", 0, 12)); // NOI18N
         selectorDeGoS.setModel(new DefaultComboBoxModel(new String[] { "None", "Level 1", "Level 2", "Level 3" }));
-        selectorDeGoS.setToolTipText(bundle.getString("VentanaEmisor.tooltip.nivelDeGoS")); // NOI18N
+        selectorDeGoS.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.nivelDeGoS")); // NOI18N
         selectorDeGoS.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -312,8 +311,8 @@ public class JTrafficGeneratorWindow extends JDialog {
         panelAvanzado.add(selectorDeGoS, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 230, -1, -1));
 
         selectorLSPDeRespaldo.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        selectorLSPDeRespaldo.setText(bundle.getString("VentanaEmisor.CrearLSPBackup")); // NOI18N
-        selectorLSPDeRespaldo.setToolTipText(bundle.getString("VentanaEmisor.tooltip.crearUnLSPdeBackup")); // NOI18N
+        selectorLSPDeRespaldo.setText(this.translations.getString("VentanaEmisor.CrearLSPBackup")); // NOI18N
+        selectorLSPDeRespaldo.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.crearUnLSPdeBackup")); // NOI18N
         selectorLSPDeRespaldo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -324,13 +323,13 @@ public class JTrafficGeneratorWindow extends JDialog {
 
         jLabel5.setFont(new Font("Dialog", 0, 12)); // NOI18N
         jLabel5.setHorizontalAlignment(SwingConstants.RIGHT);
-        jLabel5.setText(bundle.getString("VentanaEmisor.TipoDeTrafico3")); // NOI18N
+        jLabel5.setText(this.translations.getString("VentanaEmisor.TipoDeTrafico3")); // NOI18N
         panelAvanzado.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 125, 100, -1));
 
         buttonGroup1.add(traficoConstante);
         traficoConstante.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        traficoConstante.setText(bundle.getString("VentanaEmisor.TraficoConstante")); // NOI18N
-        traficoConstante.setToolTipText(bundle.getString("VentanaEmisor.tooltip.traficoConstante")); // NOI18N
+        traficoConstante.setText(this.translations.getString("VentanaEmisor.TraficoConstante")); // NOI18N
+        traficoConstante.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.traficoConstante")); // NOI18N
         traficoConstante.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -342,8 +341,8 @@ public class JTrafficGeneratorWindow extends JDialog {
         buttonGroup1.add(traficoVariable);
         traficoVariable.setFont(new Font("Dialog", 0, 12)); // NOI18N
         traficoVariable.setSelected(true);
-        traficoVariable.setText(bundle.getString("VentanaEmisor.TraficoVariable")); // NOI18N
-        traficoVariable.setToolTipText(bundle.getString("VentanaEmisor.tooltip.traficovariable")); // NOI18N
+        traficoVariable.setText(this.translations.getString("VentanaEmisor.TraficoVariable")); // NOI18N
+        traficoVariable.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.traficovariable")); // NOI18N
         traficoVariable.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -353,8 +352,8 @@ public class JTrafficGeneratorWindow extends JDialog {
         panelAvanzado.add(traficoVariable, new org.netbeans.lib.awtextra.AbsoluteConstraints(225, 125, -1, 20));
 
         encapsularSobreMPLS.setFont(new Font("Dialog", 0, 12)); // NOI18N
-        encapsularSobreMPLS.setText(bundle.getString("VentanaEmisor.EncapsularSobreMPLS")); // NOI18N
-        encapsularSobreMPLS.setToolTipText(bundle.getString("VentanaEmisor.tooltip.encapsularsobrempls")); // NOI18N
+        encapsularSobreMPLS.setText(this.translations.getString("VentanaEmisor.EncapsularSobreMPLS")); // NOI18N
+        encapsularSobreMPLS.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.encapsularsobrempls")); // NOI18N
         encapsularSobreMPLS.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -367,7 +366,7 @@ public class JTrafficGeneratorWindow extends JDialog {
         selectorDeTasa.setMaximum(10240);
         selectorDeTasa.setMinimum(1);
         selectorDeTasa.setMinorTickSpacing(100);
-        selectorDeTasa.setToolTipText(bundle.getString("VentanaEmisor.tooltipo.CambiarTasa")); // NOI18N
+        selectorDeTasa.setToolTipText(this.translations.getString("VentanaEmisor.tooltipo.CambiarTasa")); // NOI18N
         selectorDeTasa.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent evt) {
@@ -379,7 +378,7 @@ public class JTrafficGeneratorWindow extends JDialog {
         selectorDeTamPaquete.setMajorTickSpacing(1000);
         selectorDeTamPaquete.setMaximum(65495);
         selectorDeTamPaquete.setMinorTickSpacing(100);
-        selectorDeTamPaquete.setToolTipText(bundle.getString("VentanaEmisor.tooltipo.CambiarTasa")); // NOI18N
+        selectorDeTamPaquete.setToolTipText(this.translations.getString("VentanaEmisor.tooltipo.CambiarTasa")); // NOI18N
         selectorDeTamPaquete.setValue(1024);
         selectorDeTamPaquete.setEnabled(false);
         selectorDeTamPaquete.addChangeListener(new ChangeListener() {
@@ -399,11 +398,11 @@ public class JTrafficGeneratorWindow extends JDialog {
 
         etiquetaTamPaquete.setFont(new Font("Dialog", 0, 12)); // NOI18N
         etiquetaTamPaquete.setHorizontalAlignment(SwingConstants.RIGHT);
-        etiquetaTamPaquete.setText(bundle.getString("JVentanaEmisor.TamCargaUtil")); // NOI18N
+        etiquetaTamPaquete.setText(this.translations.getString("JVentanaEmisor.TamCargaUtil")); // NOI18N
         etiquetaTamPaquete.setEnabled(false);
         panelAvanzado.add(etiquetaTamPaquete, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 140, -1));
 
-        panelPestanias.addTab(bundle.getString("VentanaEmisor.Tab.Avanzada"), panelAvanzado); // NOI18N
+        panelPestanias.addTab(this.translations.getString("VentanaEmisor.Tab.Avanzada"), panelAvanzado); // NOI18N
 
         panelPrincipal.add(panelPestanias, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 15, 370, 330));
 
@@ -413,9 +412,9 @@ public class JTrafficGeneratorWindow extends JDialog {
 
         jButton2.setFont(new Font("Dialog", 0, 12)); // NOI18N
         jButton2.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.ACEPTAR));
-        jButton2.setMnemonic(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.botones.Aceptar").charAt(0));
-        jButton2.setText(bundle.getString("VentanaEmisor.Boton.Aceptar.Texto")); // NOI18N
-        jButton2.setToolTipText(bundle.getString("VentanaEmisor.tooltip.Aceptar")); // NOI18N
+        jButton2.setMnemonic(this.translations.getString("VentanaEmisor.botones.Aceptar").charAt(0));
+        jButton2.setText(this.translations.getString("VentanaEmisor.Boton.Aceptar.Texto")); // NOI18N
+        jButton2.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.Aceptar")); // NOI18N
         jButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -426,9 +425,9 @@ public class JTrafficGeneratorWindow extends JDialog {
 
         jButton3.setFont(new Font("Dialog", 0, 12)); // NOI18N
         jButton3.setIcon(dispensadorDeImagenes.getIcon(TImageBroker.CANCELAR));
-        jButton3.setMnemonic(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.botones.Cancelar").charAt(0));
-        jButton3.setText(bundle.getString("VentanaEmisor.Boton.Cancelar.Texto")); // NOI18N
-        jButton3.setToolTipText(bundle.getString("VentanaEmisor.tooltip.Cancelar")); // NOI18N
+        jButton3.setMnemonic(this.translations.getString("VentanaEmisor.botones.Cancelar").charAt(0));
+        jButton3.setText(this.translations.getString("VentanaEmisor.Boton.Cancelar.Texto")); // NOI18N
+        jButton3.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.Cancelar")); // NOI18N
         jButton3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -500,7 +499,7 @@ public class JTrafficGeneratorWindow extends JDialog {
 
     private void clicEnSelectorDeTamPaquete(ChangeEvent evt) {
     int tamSeleccionado = this.selectorDeTamPaquete.getValue();
-    String unidades = ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaEmisor.Octetos");
+    String unidades = this.translations.getString("JVentanaEmisor.Octetos");
     this.etiquetaOctetos.setText(tamSeleccionado + " " +unidades);
     }
 
@@ -541,7 +540,7 @@ private void clicEnTraficoConstante(ActionEvent evt) {
 private void cambioEnSelectorDeTasa(ChangeEvent evt) {
     this.selectorSencilloTrafico.setSelectedIndex(0);
     int tasaSeleccionada = this.selectorDeTasa.getValue();
-    String unidades = ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.unidades.kbps");
+    String unidades = this.translations.getString("VentanaEmisor.unidades.kbps");
     this.etiquetaTasa.setText(tasaSeleccionada + " " +unidades);
 }
 
@@ -600,8 +599,8 @@ private void clicEnAceptar(ActionEvent evt) {
 private void clicEnPanelCoordenadas(MouseEvent evt) {
     if (evt.getButton() == MouseEvent.BUTTON1) {
         panelCoordenadas.setCoordinates(evt.getPoint());
-        coordenadaX.setText(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.X=_") + panelCoordenadas.getRealX());
-        coordenadaY.setText(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("VentanaEmisor.Y=_") + panelCoordenadas.getRealY());
+        coordenadaX.setText(this.translations.getString("VentanaEmisor.X=_") + panelCoordenadas.getRealX());
+        coordenadaY.setText(this.translations.getString("VentanaEmisor.Y=_") + panelCoordenadas.getRealY());
         panelCoordenadas.repaint();
     }
 }
@@ -674,7 +673,7 @@ private void ratonEntraEnPanelCoordenadas(MouseEvent evt) {
                 this.selectorDeTamPaquete.setEnabled(true);
                 this.etiquetaOctetos.setEnabled(true);
                 this.etiquetaTamPaquete.setEnabled(true);
-                String unidades = ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JVentanaEmisor.Octetos");
+                String unidades = this.translations.getString("JVentanaEmisor.Octetos");
                 this.etiquetaOctetos.setText(this.BKUPTamDatosConstante + " " +unidades);        }
                 this.selectorDeTamPaquete.setValue(this.BKUPTamDatosConstante);
             }
@@ -737,5 +736,5 @@ private void ratonEntraEnPanelCoordenadas(MouseEvent evt) {
     private JRadioButton traficoConstante;
     private JRadioButton traficoVariable;
     private JCheckBox verNombre;
-
+    private ResourceBundle translations;
 }
