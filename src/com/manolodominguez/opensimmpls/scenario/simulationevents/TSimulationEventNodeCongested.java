@@ -15,102 +15,78 @@
  */
 package com.manolodominguez.opensimmpls.scenario.simulationevents;
 
-import com.manolodominguez.opensimmpls.scenario.TLink;
-import com.manolodominguez.opensimmpls.scenario.TNode;
-import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
-
 /**
- * Esta clase implemetna un evento que ser� usado para notificar el nivel de
- * congesti�n de un nodo.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements a simulation event that is generated to adversite of
+ * the congestion level of a node.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class TSimulationEventNodeCongested extends TSimulationEvent {
 
     /**
-     * Crea una nueva instancia de TESNodoCongestionado
+     * This method is the constructor of the class. It creates a new instance of
+     * TSimulationEventNodeCongested.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param source The object that generates the event.
+     * @param eventID The event unique identifier.
+     * @param timeInstant The time instant when the event was generated.
+     * @param congestionLevel The congestion level advertised by the source
+     * node. A value between 0 and 100 (without decimals).
      * @since 2.0
-     * @param inst Instante de tiempo en el que se gener� el evento.
-     * @param pc Porcentaje de congesti�n del nodo (0%,..,100%)
-     * @param emisor Nodo que gener� el evento.
-     * @param id identificador unico del evento.
      */
-    public TSimulationEventNodeCongested(Object emisor, long id, long inst, long pc) {
-        super(emisor, id, inst);
-        porcentajeCongestion = pc;
+    public TSimulationEventNodeCongested(Object source, long eventID, long timeInstant, long congestionLevel) {
+        super(source, eventID, timeInstant);
+        this.congestionLevel = congestionLevel;
     }
 
     /**
-     * Este m�todo devuelve el porcentaje de congesti�n que indica el evento.
-     * @return Porcentaje de congesti�n del nodo que gener� el evento.
+     * This method gets the congestion level advertised by the source node.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The congestion level advertised by the source node. A value
+     * between 0 and 100 (without decimals).
      * @since 2.0
-     */    
-    public long obtenerPorcentajeCongestion() {
-        return this.porcentajeCongestion;
+     */
+    public long getCongestionLevel() {
+        return this.congestionLevel;
     }
-    
+
     /**
-     * Este m�todo obtiene el subtipo del evento, si los hubiese.
-     * @return El subtipo del evento.
+     * This method gets the subtype of this simulation event. One of the
+     * constants of TSimulationEvent.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the subtype of this simulation event.
+     * TSimulationEvent.NODE_CONGESTED.
      * @since 2.0
-     */    
+     */
+    @Override
     public int getSubtype() {
-        return super.NODE_CONGESTED;
+        return TSimulationEvent.NODE_CONGESTED;
     }
 
     /**
-     * Este m�todo obtiene el nombre del enlace que origin� el evento.
-     * @return El nombre del enlace que origin� el evento.
+     * This method gets a human readable explanation of this event.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a human readable explanation of this event.
      * @since 2.0
-     */    
-    public String obtenerNombre() {
-        TTopologyElement et = null;
-        TLink ent = null;
-        TNode nt = null;
-        et = super.getSource();
-        if (et.getElementType() == TTopologyElement.LINK) {
-            ent = (TLink) et;
-            return ent.getName();
-        } else if (et.getElementType() == TTopologyElement.NODE) {
-            nt = (TNode) et;
-            return nt.getName();
-        }
-        return ("");
-    }
-
-    /**
-     * Este m�todo obtiene un texto con el tipo de evento.
-     * @return Un texto con el tipo de evento.
-     * @since 2.0
-     */    
-    public String obtenerNombreTipo() {
-        TTopologyElement et = null;
-        et = super.getSource();
-        if (et.getElementType() == TTopologyElement.LINK) {
-            return ("Enlace ");
-        } else if (et.getElementType() == TTopologyElement.NODE) {
-            return ("Nodo ");
-        }
-        return ("");
-    }
-
-    /**
-     * Este m�todo explcia el evento en una l�nea de texto.
-     * @return El texto explicando el evento.
-     * @since 2.0
-     */    
+     */
+    @Override
     public String toString() {
-        String cad = "";
-        cad += "[";
-        cad += this.obtenerNombreTipo();
-        cad += " ";
-        cad += this.obtenerNombre();
-        cad += "] ";
-        cad += "est� congestionado al ";
-        cad += this.porcentajeCongestion + "%";
-        return(cad);
+        String string = "";
+        string += "[";
+        string += this.getSourceTypeAsString();
+        string += " ";
+        string += this.getSourceName();
+        string += "] ";
+        // FIX: i18N needed
+        string += "está congestionado al ";
+        string += this.congestionLevel + "%";
+        return (string);
     }
 
-    private long porcentajeCongestion;
+    private long congestionLevel;
 }
