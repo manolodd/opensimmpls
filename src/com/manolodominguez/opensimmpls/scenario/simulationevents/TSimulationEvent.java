@@ -15,6 +15,8 @@
  */
 package com.manolodominguez.opensimmpls.scenario.simulationevents;
 
+import com.manolodominguez.opensimmpls.scenario.TLink;
+import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
 
 /**
@@ -64,6 +66,50 @@ public abstract class TSimulationEvent extends TOpenSimMPLSEvent {
      */
     public abstract int getSubtype();
 
+    /**
+     * This method gets the name of the topology element that generated the
+     * event.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the name of the topology element that generated the event.
+     * @since 2.0
+     */
+    public String getSourceName() {
+        TTopologyElement topologyElement = null;
+        TLink link = null;
+        TNode node = null;
+        topologyElement = this.getSource();
+        if (topologyElement.getElementType() == TTopologyElement.LINK) {
+            link = (TLink) topologyElement;
+            return link.getName();
+        } else if (topologyElement.getElementType() == TTopologyElement.NODE) {
+            node = (TNode) topologyElement;
+            return node.getName();
+        }
+        return ("");
+    }
+
+    /**
+     * This method gets the type of the topology element that generated the
+     * event, as a String.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the type of the topology element that generated the event, as a
+     * String.
+     * @since 2.0
+     */
+    public String getSourceTypeAsString() {
+        TTopologyElement topologyElement = null;
+        topologyElement = this.getSource();
+        if (topologyElement.getElementType() == TTopologyElement.LINK) {
+            // FIX: i18N needed
+            return ("Enlace ");
+        } else if (topologyElement.getElementType() == TTopologyElement.NODE) {
+            // FIX: i18N needed
+            return ("Nodo ");
+        }
+        return ("");
+    }    
     /**
      * This method, returns the topology element that generates the event.
      *
