@@ -16,153 +16,144 @@
 package com.manolodominguez.opensimmpls.scenario.simulationevents;
 
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
-import com.manolodominguez.opensimmpls.scenario.TLink;
-import com.manolodominguez.opensimmpls.scenario.TNode;
-import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
 
 /**
- * Esta clase implementa un evento que ser� usado para indecar que un paquete est�
- * circulando por un enlace.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements a simulation event that is generated when a packet is
+ * in transit.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class TSimulationEventPacketOnFly extends TSimulationEvent {
 
     /**
-     * Crea una nueva instancia de TESPaqueteEnTransito
+     * This method is the constructor of the class. It creates a new instance of
+     * TSimulationEventPacketOnFly.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param source The object that generates the event.
+     * @param eventID The event unique identifier.
+     * @param timeInstant The time instant when the event was generated.
+     * @param packetType the size of the packet thas the source node has
+     * generated.
+     * @param transitPercentage The percentaje of the link that the packet has
+     * completed towards the next hop, a value between 0 and 100 (without
+     * decimals).
      * @since 2.0
-     * @param inst Instante de tiempo en el que se produjo el evento.
-     * @param pt Porcentaje de reccorido del enlace que lleva recorrido el paquete por el cual se
-     * genero el evento.
-     * @param emisor Enlace que gener� el evento.
-     * @param id Identificador unico del evento.
-     * @param tipoPaquete Tipo del paquete (de qu� trafico es) al que se refiere el evento.
      */
-    public TSimulationEventPacketOnFly(Object emisor, long id, long inst, int tipoPaquete, long pt) {
-        super(emisor, id, inst);
-        tipoP = tipoPaquete;
-        porcentajeTransito = pt;
+    public TSimulationEventPacketOnFly(Object source, long eventID, long timeInstant, int packetType, long transitPercentage) {
+        super(source, eventID, timeInstant);
+        this.packetType = packetType;
+        this.transitPercentage = transitPercentage;
     }
 
     /**
-     * Este m�todo obtiene el porcentaje del enalce que ha recorrido ya el paquete al
-     * que se refiete el evento.
+     * This method gets the percentaje of the link that the packet has completed
+     * towards the next hop.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The percentaje of the link that the packet has completed towards
+     * the next hop, a value between 0 and 100 (without decimals).
      * @since 2.0
-     * @return El porcentaje de recorrido del paquete.
-     */    
-    public long obtenerPorcentajeTransito() {
-        return this.porcentajeTransito;
-    }
-    
-    /**
-     * Este m�todo obtiene el tipo de paquete al que se refiere el evento.
-     * @return El tipo el paquete.
-     * @since 2.0
-     */    
-    public int obtenerTipoPaquete() {
-        return tipoP;
+     */
+    public long getTransitPercentage() {
+        return this.transitPercentage;
     }
 
     /**
-     * Este m�todo obtiene el subtipo del evento, si los hubiese.
-     * @return El subtipo del evento.
+     * This method gets the type of the packet that is in transit through the
+     * link.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the type of the packet in transit through the link. One of the
+     * constants defined in TAbstractPDU.
      * @since 2.0
-     */    
+     */
+    public int getPacketType() {
+        return packetType;
+    }
+
+    /**
+     * This method gets the subtype of this simulation event. One of the
+     * constants of TSimulationEvent.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the subtype of this simulation event.
+     * TSimulationEvent.PACKET_ON_FLY.
+     * @since 2.0
+     */
+    @Override
     public int getSubtype() {
-        return super.PACKET_ON_FLY;
+        return TSimulationEvent.PACKET_ON_FLY;
     }
 
     /**
-     * Este m�todo obtiene el nombre del enlace que origin� el evento.
-     * @return El nombre del enlace que origin� el evento.
+     * This method gets the type of the packet that is in transit through the
+     * link, as String.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the type of the packet that is in transit through the link, as
+     * String.
      * @since 2.0
-     */    
-    public String obtenerNombre() {
-        TTopologyElement et = null;
-        TLink ent = null;
-        TNode nt = null;
-        et = super.getSource();
-        if (et.getElementType() == TTopologyElement.LINK) {
-            ent = (TLink) et;
-            return ent.getName();
-        } else if (et.getElementType() == TTopologyElement.NODE) {
-            nt = (TNode) et;
-            return nt.getName();
-        }
-        return ("");
-    }
-
-    /**
-     * Este m�todo obtiene un texto con el tipo de evento.
-     * @return Un texto con el tipo de evento.
-     * @since 2.0
-     */    
-    public String obtenerNombreTipo() {
-        TTopologyElement et = null;
-        et = super.getSource();
-        if (et.getElementType() == TTopologyElement.LINK) {
-            return ("Enlace ");
-        } else if (et.getElementType() == TTopologyElement.NODE) {
-            return ("Nodo ");
-        }
-        return ("");
-    }
-
-    /**
-     * Este m�todo obtiene una representaci�n textual del tipo de paquete.
-     * @return El tipo de paquete, en texto.
-     * @since 2.0
-     */    
-    public String obtenerNombreTipoPaquete() {
-        String strTipo = "";
-        switch (tipoP) {
+     */
+    public String getPacketTypeAsString() {
+        String strPacketType = "";
+        switch (this.packetType) {
             case TAbstractPDU.IPV4: {
-                strTipo = "IPv4";
+                // FIX: i18N required
+                strPacketType = "IPv4";
                 break;
             }
             case TAbstractPDU.IPV4_GOS: {
-                strTipo = "IPv4 con GoS";
+                // FIX: i18N required
+                strPacketType = "IPv4 con GoS";
                 break;
             }
             case TAbstractPDU.MPLS: {
-                strTipo = "MPLS";
+                // FIX: i18N required
+                strPacketType = "MPLS";
                 break;
             }
             case TAbstractPDU.MPLS_GOS: {
-                strTipo = "MPLS con GoS";
+                // FIX: i18N required
+                strPacketType = "MPLS con GoS";
                 break;
             }
             case TAbstractPDU.TLDP: {
-                strTipo = "LDP";
+                // FIX: i18N required
+                strPacketType = "LDP";
                 break;
             }
             case TAbstractPDU.GPSRP: {
-                strTipo = "GPSRP";
+                // FIX: i18N required
+                strPacketType = "GPSRP";
                 break;
             }
         }
-        return(strTipo);
+        return (strPacketType);
     }
-    
 
     /**
-     * Este m�todo explcia el evento en una l�nea de texto.
-     * @return El texto explicando el evento.
+     * This method gets a human readable explanation of this event.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a human readable explanation of this event.
      * @since 2.0
-     */    
+     */
+    @Override
     public String toString() {
-        String cad = "";
-        cad += "[";
-        cad += this.obtenerNombreTipo();
-        cad += " ";
-        cad += this.obtenerNombre();
-        cad += "] ";
-        cad += "transporta un paquete ";
-        cad += this.obtenerNombreTipoPaquete();
-        return(cad);
+        String string = "";
+        string += "[";
+        string += this.getSourceTypeAsString();
+        string += " ";
+        string += this.getSourceName();
+        string += "] ";
+        // FIX: i18N needed
+        string += "transporta un paquete ";
+        string += this.getPacketTypeAsString();
+        return (string);
     }
 
-    private long porcentajeTransito;
-    private int tipoP;
+    private long transitPercentage;
+    private int packetType;
 }
