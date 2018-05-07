@@ -23,6 +23,7 @@ package com.manolodominguez.opensimmpls.resources.translations;
  * @version 2.0
  */
 public enum AvailableBundles {
+    E_SIMULATION_SINGLE_SUBSCRIBER("com/manolodominguez/opensimmpls/resources/translations/translations"),
     LER_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     LSR_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     ACTIVE_LER_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),

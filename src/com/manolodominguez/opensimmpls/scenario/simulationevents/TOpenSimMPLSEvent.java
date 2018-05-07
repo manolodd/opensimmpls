@@ -35,11 +35,11 @@ public abstract class TOpenSimMPLSEvent extends EventObject implements Comparabl
      * @param instant Every events includes the moment of their generation, in
      * nanoseconds. It allow syncronizing everything that is happening during a
      * simulation.
-     * @param sender The object that generates the event.
+     * @param source The object that generates the event.
      * @param eventID The unique event identifier.
      */
-    public TOpenSimMPLSEvent(Object sender, long eventID, long instant) {
-        super(sender);
+    public TOpenSimMPLSEvent(Object source, long eventID, long instant) {
+        super(source);
         this.eventID = eventID;
         this.instant = instant;
     }

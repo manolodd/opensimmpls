@@ -82,7 +82,7 @@ public class TSimulationEventPacketOnFly extends TSimulationEvent {
         TTopologyElement et = null;
         TLink ent = null;
         TNode nt = null;
-        et = super.obtenerFuente();
+        et = super.getSource();
         if (et.getElementType() == TTopologyElement.LINK) {
             ent = (TLink) et;
             return ent.getName();
@@ -100,7 +100,7 @@ public class TSimulationEventPacketOnFly extends TSimulationEvent {
      */    
     public String obtenerNombreTipo() {
         TTopologyElement et = null;
-        et = super.obtenerFuente();
+        et = super.getSource();
         if (et.getElementType() == TTopologyElement.LINK) {
             return ("Enlace ");
         } else if (et.getElementType() == TTopologyElement.NODE) {
