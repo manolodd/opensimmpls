@@ -38,7 +38,7 @@ public class TSimulationEventListener implements ISimulationEventListener {
      */
     public TSimulationEventListener() {
         this.simulationEventsBuffer = new TreeSet();
-        this.monitor = new TLock();
+        this.eventsLock = new TLock();
         this.simulationPanel = null;
     }
 
@@ -64,6 +64,7 @@ public class TSimulationEventListener implements ISimulationEventListener {
      */
     @Override
     public synchronized void captureSimulationEvents(TSimulationEvent simulationEvent) {
+        // FIX: If nothing different is done... is it neccesary a switch?
         switch (simulationEvent.getSubtype()) {
             case TSimulationEvent.PACKET_GENERATED: {
                 this.simulationPanel.addEvent(simulationEvent);
@@ -145,16 +146,16 @@ public class TSimulationEventListener implements ISimulationEventListener {
      *
      */
     public void reset() {
-        this.monitor.lock();
+        this.eventsLock.lock();
         Iterator iterator = this.simulationEventsBuffer.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
         }
-        this.monitor.unLock();
+        this.eventsLock.unLock();
     }
 
-    private TLock monitor;
+    private TLock eventsLock;
     private TreeSet simulationEventsBuffer;
     private JSimulationPanel simulationPanel;
 }
