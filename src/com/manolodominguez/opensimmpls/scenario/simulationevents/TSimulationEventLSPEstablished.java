@@ -20,82 +20,104 @@ import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
 
 /**
- * Esta clase implementa un evento que se usar� para notificar que se ha creado un
- * LSP.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements a simulation event that is generated when a new LSP is
+ * established.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class TSimulationEventLSPEstablished extends TSimulationEvent {
 
     /**
-     * Crea una nueva instancia de TESLSPEstablecido
+     * This method is the constructor of the class. It creates a new instance of
+     * TSimulationEventLSPEstablished.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param source The object that generates the event.
+     * @param eventID The event unique identifier.
+     * @param timeInstant The time instant when the event was generated.
      * @since 2.0
-     * @param inst Instante de tiempo en el que se gener� el evento.
-     * @param emisor nodo que gener� el evento
-     * @param id Identificador unico del evento.
      */
-    public TSimulationEventLSPEstablished(Object emisor, long id, long inst) {
-        super(emisor, id, inst);
+    public TSimulationEventLSPEstablished(Object source, long eventID, long timeInstant) {
+        super(source, eventID, timeInstant);
     }
 
     /**
-     * Este m�todo obtiene el subtipo del evento, si los hubiese.
-     * @return El subtipo del evento.
+     * This method gets the subtype of this simulation event. One of the
+     * constants of TSimulationEvent.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the subtype of this simulation event. One of the constants of
+     * TSimulationEvent.
      * @since 2.0
-     */    
+     */
+    @Override
     public int getSubtype() {
-        return super.LSP_ESTABLISHED;
+        return TSimulationEvent.LSP_ESTABLISHED;
     }
 
     /**
-     * Este m�todo obtiene el nombre del enlace que origin� el evento.
-     * @return El nombre del enlace que origin� el evento.
+     * This method gets the name of the topology element that generated the
+     * event.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the name of the topology element that generated the event.
      * @since 2.0
-     */    
-    public String obtenerNombre() {
-        TTopologyElement et = null;
-        TLink ent = null;
-        TNode nt = null;
-        et = super.getSource();
-        if (et.getElementType() == TTopologyElement.LINK) {
-            ent = (TLink) et;
-            return ent.getName();
-        } else if (et.getElementType() == TTopologyElement.NODE) {
-            nt = (TNode) et;
-            return nt.getName();
+     */
+    private String getSourceName() {
+        TTopologyElement topologyElement = null;
+        TLink link = null;
+        TNode node = null;
+        topologyElement = super.getSource();
+        if (topologyElement.getElementType() == TTopologyElement.LINK) {
+            link = (TLink) topologyElement;
+            return link.getName();
+        } else if (topologyElement.getElementType() == TTopologyElement.NODE) {
+            node = (TNode) topologyElement;
+            return node.getName();
         }
         return ("");
     }
 
     /**
-     * Este m�todo obtiene un texto con el tipo de evento.
-     * @return Un texto con el tipo de evento.
+     * This method gets the type of the topology element that generated the
+     * event, as a String.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the type of the topology element that generated the event, as a
+     * String.
      * @since 2.0
-     */    
-    public String obtenerNombreTipo() {
-        TTopologyElement et = null;
-        et = super.getSource();
-        if (et.getElementType() == TTopologyElement.LINK) {
+     */
+    private String getSourceTypeAsString() {
+        TTopologyElement topologyElement = null;
+        topologyElement = super.getSource();
+        if (topologyElement.getElementType() == TTopologyElement.LINK) {
+            // FIX: i18N needed
             return ("Enlace ");
-        } else if (et.getElementType() == TTopologyElement.NODE) {
+        } else if (topologyElement.getElementType() == TTopologyElement.NODE) {
+            // FIX: i18N needed
             return ("Nodo ");
         }
         return ("");
     }
 
     /**
-     * Este m�todo explcia el evento en una l�nea de texto.
-     * @return El texto explicando el evento.
+     * This method gets a human readable explanation of this event.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a human readable explanation of this event.
      * @since 2.0
-     */    
+     */
+    @Override
     public String toString() {
         String cad = "";
         cad += "[";
-        cad += this.obtenerNombreTipo();
+        cad += this.getSourceTypeAsString();
         cad += " ";
-        cad += this.obtenerNombre();
-        cad += "] ha establecido un tramo de LSP";
-        return(cad);
+        cad += this.getSourceName();
+        cad += "] ";
+        // FIX: i18N needed
+        cad += "ha establecido un tramo de LSP";
+        return (cad);
     }
 }
