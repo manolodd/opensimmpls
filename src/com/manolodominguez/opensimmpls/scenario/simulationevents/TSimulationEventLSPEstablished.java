@@ -47,8 +47,8 @@ public class TSimulationEventLSPEstablished extends TSimulationEvent {
      * constants of TSimulationEvent.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return the subtype of this simulation event. One of the constants of
-     * TSimulationEvent.
+     * @return the subtype of this simulation event.
+     * TSimulationEvent.LSP_ESTABLISHED.
      * @since 2.0
      */
     @Override
