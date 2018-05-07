@@ -110,14 +110,14 @@ public class TSimulationEventLSPEstablished extends TSimulationEvent {
      */
     @Override
     public String toString() {
-        String cad = "";
-        cad += "[";
-        cad += this.getSourceTypeAsString();
-        cad += " ";
-        cad += this.getSourceName();
-        cad += "] ";
+        String string = "";
+        string += "[";
+        string += this.getSourceTypeAsString();
+        string += " ";
+        string += this.getSourceName();
+        string += "] ";
         // FIX: i18N needed
-        cad += "ha establecido un tramo de LSP";
-        return (cad);
+        string += "ha establecido un tramo de LSP";
+        return (string);
     }
 }
