@@ -26,7 +26,7 @@ public class TSimulationEventLabelRequested extends TSimulationEvent {
 
     /**
      * This method is the constructor of the class. It creates a new instance of
-     * TSimulationEventLabelDenied.
+     * TSimulationEventLabelRequested.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param source The object that generates the event.
