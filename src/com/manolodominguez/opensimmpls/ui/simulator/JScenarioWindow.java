@@ -1513,7 +1513,7 @@ private void clicDerechoEnPanelDisenio(java.awt.event.MouseEvent evt) {//GEN-FIR
             diseFondoPopUp.show(this, evt.getX() + 7, evt.getY() - 27);
         } else if (et.getElementType() == TTopologyElement.NODE) {
             TNode nt = (TNode) et;
-            dVerNombreMenuItem.setSelected(nt.nameMustBeDisplayed());
+            dVerNombreMenuItem.setSelected(nt.getShowName());
             elementoDisenioClicDerecho = et;
             diseElementoPopUp.show(this, evt.getX() + 7, evt.getY() + 15);
         } else if (et.getElementType() == TTopologyElement.LINK) {

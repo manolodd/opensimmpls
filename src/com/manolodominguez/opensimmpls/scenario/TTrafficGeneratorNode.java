@@ -863,7 +863,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
         serializedElement += "#";
         serializedElement += this.isSelected();
         serializedElement += "#";
-        serializedElement += this.nameMustBeDisplayed();
+        serializedElement += this.getShowName();
         serializedElement += "#";
         serializedElement += this.isGeneratingStats();
         serializedElement += "#";

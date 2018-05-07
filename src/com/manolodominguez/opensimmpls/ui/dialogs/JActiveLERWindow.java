@@ -569,7 +569,7 @@ public class JActiveLERWindow extends JDialog {
             this.coordinatesPanel.setEnabled(false);
             this.coordinatesPanel.setToolTipText(null);
             this.currentConfigGenerateStatistics = activeLERNode.isGeneratingStats();
-            this.currentConfigShowName = activeLERNode.nameMustBeDisplayed();
+            this.currentConfigShowName = activeLERNode.getShowName();
             this.currentConfigName = activeLERNode.getName();
             this.currentConfigRoutingPower = activeLERNode.getRoutingPowerInMbps();
             this.currentConfigBufferSize = activeLERNode.getBufferSizeInMBytes();

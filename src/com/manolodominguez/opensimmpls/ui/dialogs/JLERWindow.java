@@ -524,7 +524,7 @@ public class JLERWindow extends JDialog {
             this.coordinatesPanel.setEnabled(false);
             this.coordinatesPanel.setToolTipText(null);
             this.currentConfigGenerateStatistics = lerNode.isGeneratingStats();
-            this.currentConfigShowName = lerNode.nameMustBeDisplayed();
+            this.currentConfigShowName = lerNode.getShowName();
             this.currentConfigName = lerNode.getName();
             this.currentConfigRoutingPower = lerNode.getRoutingPowerInMbps();
             this.currentConfigBufferSize = lerNode.getBufferSizeInMBytes();

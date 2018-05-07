@@ -758,7 +758,7 @@ public class JTrafficGeneratorWindow extends JDialog {
                 this.currentConfigTargetTrafficSinkNode = node.getName();
             }
             this.currentConfigCreateBackupLSP = this.trafficGeneratorNode.isRequestingBackupLSP();
-            this.currentConfigShowName = this.trafficGeneratorNode.nameMustBeDisplayed();
+            this.currentConfigShowName = this.trafficGeneratorNode.getShowName();
             this.currentConfigGoSLevel = this.trafficGeneratorNode.getGoSLevel();
             this.currentConfigName = this.trafficGeneratorNode.getName();
             this.currentConfigTrafficGenerationRate = this.trafficGeneratorNode.getTrafficGenerationRate();

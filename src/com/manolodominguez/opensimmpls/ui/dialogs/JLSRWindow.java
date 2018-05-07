@@ -523,7 +523,7 @@ public class JLSRWindow extends JDialog {
             this.coordinatesPanel.setEnabled(false);
             this.coordinatesPanel.setToolTipText(null);
             this.currentConfigGenerateStatistics = lsrNode.isGeneratingStats();
-            this.currentConfigShowName = lsrNode.nameMustBeDisplayed();
+            this.currentConfigShowName = lsrNode.getShowName();
             this.currentConfigName = lsrNode.getName();
             this.currentConfigSwitchingPower = lsrNode.getSwitchingPowerInMbps();
             this.currentConfigBufferSize = lsrNode.getBufferSizeInMBytes();

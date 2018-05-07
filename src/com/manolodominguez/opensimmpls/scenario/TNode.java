@@ -264,7 +264,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public boolean nameMustBeDisplayed() {
+    public boolean getShowName() {
         return this.showName;
     }
 

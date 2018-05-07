@@ -412,7 +412,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
                     break;
                 }
             }
-            if (nodo.nameMustBeDisplayed()) {
+            if (nodo.getShowName()) {
                 FontMetrics fm = this.getFontMetrics(this.getFont());
                 int anchoTexto = fm.charsWidth(nodo.getName().toCharArray(), 0, nodo.getName().length());
                 int posX = (nodo.getScreenPosition().x + 24) - ((anchoTexto/2));

@@ -310,7 +310,7 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
         serializedElement += "#";
         serializedElement += this.isSelected();
         serializedElement += "#";
-        serializedElement += this.nameMustBeDisplayed();
+        serializedElement += this.getShowName();
         serializedElement += "#";
         serializedElement += this.isGeneratingStats();
         serializedElement += "#";

@@ -378,7 +378,7 @@ public class JTrafficSinkWindow extends JDialog {
             this.coordinatesPanel.setEnabled(false);
             this.coordinatesPanel.setToolTipText(null);
             this.currentConfigGenerateStatistics = trafficSinkNode.isGeneratingStats();
-            this.currentConfigShowName = trafficSinkNode.nameMustBeDisplayed();
+            this.currentConfigShowName = trafficSinkNode.getShowName();
             this.currentConfigName = trafficSinkNode.getName();
             this.textFieldName.setText(this.currentConfigName);
             this.checkBoxShowName.setSelected(this.currentConfigShowName);

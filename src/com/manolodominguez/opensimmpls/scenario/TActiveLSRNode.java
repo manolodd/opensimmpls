@@ -1960,7 +1960,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         serializedElement += "#";
         serializedElement += this.isSelected();
         serializedElement += "#";
-        serializedElement += this.nameMustBeDisplayed();
+        serializedElement += this.getShowName();
         serializedElement += "#";
         serializedElement += this.isGeneratingStats();
         serializedElement += "#";

@@ -569,7 +569,7 @@ public class JActiveLSRWindow extends JDialog {
             this.coordinatesPanel.setEnabled(false);
             this.coordinatesPanel.setToolTipText(null);
             this.currentConfigGenerateStatistics = activeLSRNode.isGeneratingStats();
-            this.currentConfigShowName = activeLSRNode.nameMustBeDisplayed();
+            this.currentConfigShowName = activeLSRNode.getShowName();
             this.currentConfigName = activeLSRNode.getName();
             this.currentConfigSwitchingPower = activeLSRNode.getSwitchingPowerInMbps();
             this.currentConfigBufferSize = activeLSRNode.getBufferSizeInMBytes();

@@ -1803,7 +1803,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         serializedElement += "#";
         serializedElement += this.isSelected();
         serializedElement += "#";
-        serializedElement += this.nameMustBeDisplayed();
+        serializedElement += this.getShowName();
         serializedElement += "#";
         serializedElement += this.isGeneratingStats();
         serializedElement += "#";
