@@ -492,35 +492,35 @@ public class JSimulationPanel extends javax.swing.JPanel {
                     if (evento.getSubtype() == TSimulationEvent.PACKET_ON_FLY) {
                         TSimulationEventPacketOnFly ept = (TSimulationEventPacketOnFly) evento;
                         TLink et = (TLink) ept.getSource();
-                        Point p = et.getScreenPacketPosition(ept.obtenerPorcentajeTransito());
-                        if (ept.obtenerTipoPaquete() == TAbstractPDU.GPSRP) {
+                        Point p = et.getScreenPacketPosition(ept.getTransitPercentage());
+                        if (ept.getPacketType() == TAbstractPDU.GPSRP) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_GOS), p.x-14, p.y-14, null);
-                        } else if (ept.obtenerTipoPaquete() == TAbstractPDU.TLDP) {
+                        } else if (ept.getPacketType() == TAbstractPDU.TLDP) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_LDP), p.x-8, p.y-8, null);
-                        } else if (ept.obtenerTipoPaquete() == TAbstractPDU.IPV4) {
+                        } else if (ept.getPacketType() == TAbstractPDU.IPV4) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_IPV4), p.x-8, p.y-8, null);
-                        } else if (ept.obtenerTipoPaquete() == TAbstractPDU.IPV4_GOS) {
+                        } else if (ept.getPacketType() == TAbstractPDU.IPV4_GOS) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_IPV4_GOS), p.x-8, p.y-8, null);
-                        } else if (ept.obtenerTipoPaquete() == TAbstractPDU.MPLS) {
+                        } else if (ept.getPacketType() == TAbstractPDU.MPLS) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_MPLS), p.x-8, p.y-8, null);
-                        } else if (ept.obtenerTipoPaquete() == TAbstractPDU.MPLS_GOS) {
+                        } else if (ept.getPacketType() == TAbstractPDU.MPLS_GOS) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_MPLS_GOS), p.x-8, p.y-8, null);
                         }
                     } else if (evento.getSubtype() == TSimulationEvent.PACKET_DISCARDED) {
                         TSimulationEventPacketDiscarded epd = (TSimulationEventPacketDiscarded) evento;
                         TNode nt = (TNode) epd.getSource();
                         Point p = nt.getScreenPosition();
-                        if (epd.obtenerTipoPaquete() == TAbstractPDU.GPSRP) {
+                        if (epd.getPacketType() == TAbstractPDU.GPSRP) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_GOS_CAE), p.x, p.y+24, null);
-                        } else if (epd.obtenerTipoPaquete() == TAbstractPDU.TLDP) {
+                        } else if (epd.getPacketType() == TAbstractPDU.TLDP) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_LDP_CAE), p.x, p.y+24, null);
-                        } else if (epd.obtenerTipoPaquete() == TAbstractPDU.IPV4) {
+                        } else if (epd.getPacketType() == TAbstractPDU.IPV4) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_IPV4_CAE), p.x, p.y+24, null);
-                        } else if (epd.obtenerTipoPaquete() == TAbstractPDU.IPV4_GOS) {
+                        } else if (epd.getPacketType() == TAbstractPDU.IPV4_GOS) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_IPV4_GOS_CAE), p.x, p.y+24, null);
-                        } else if (epd.obtenerTipoPaquete() == TAbstractPDU.MPLS) {
+                        } else if (epd.getPacketType() == TAbstractPDU.MPLS) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_MPLS_CAE), p.x, p.y+24, null);
-                        } else if (epd.obtenerTipoPaquete() == TAbstractPDU.MPLS_GOS) {
+                        } else if (epd.getPacketType() == TAbstractPDU.MPLS_GOS) {
                             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_MPLS_GOS_CAE), p.x, p.y+24, null);
                         }
                     } else if (evento.getSubtype() == TSimulationEvent.LSP_ESTABLISHED) {
@@ -578,7 +578,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
                         TNode nt = (TNode) enc.getSource();
                         Point p = nt.getScreenPosition();
                         int tipo = nt.getNodeType();
-                        long cong = enc.obtenerPorcentajeCongestion();
+                        long cong = enc.getCongestionLevel();
                         if ((cong >= 50) && (cong < 75)) {
                             if (tipo == TNode.TRAFFIC_GENERATOR) {
                                 g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.EMISOR_CONGESTIONADO_20), p.x, p.y, null);
