@@ -16,9 +16,6 @@
 package com.manolodominguez.opensimmpls.scenario.simulationevents;
 
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
-import com.manolodominguez.opensimmpls.scenario.TLink;
-import com.manolodominguez.opensimmpls.scenario.TNode;
-import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
 
 /**
  * This class implements a simulation event that is generated when a packet is
