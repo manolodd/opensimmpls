@@ -15,6 +15,9 @@
  */
 package com.manolodominguez.opensimmpls.scenario.simulationevents;
 
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.ResourceBundle;
+
 /**
  * This class implements an exception that will be thrown when more than a
  * single listener is subscribed to the progress event generator.
@@ -32,6 +35,7 @@ public class ESimulationSingleSubscriber extends Exception {
      * @since 2.0
      */
     public ESimulationSingleSubscriber() {
+        this.translations = ResourceBundle.getBundle(AvailableBundles.E_SIMULATION_SINGLE_SUBSCRIBER.getPath());
     }
 
     /**
@@ -44,7 +48,9 @@ public class ESimulationSingleSubscriber extends Exception {
      */
     @Override
     public String toString() {
-        return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("ESimulacionUnSoloSuscriptor.toString"));
+        return (this.translations.getString("ESimulacionUnSoloSuscriptor.toString"));
     }
 
+    private ResourceBundle translations;
+   
 }
