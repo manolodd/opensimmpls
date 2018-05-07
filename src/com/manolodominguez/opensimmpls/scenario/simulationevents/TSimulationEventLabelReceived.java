@@ -15,88 +15,60 @@
  */
 package com.manolodominguez.opensimmpls.scenario.simulationevents;
 
-import com.manolodominguez.opensimmpls.scenario.TLink;
-import com.manolodominguez.opensimmpls.scenario.TNode;
-import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
-
 /**
- * Esta clase implementa un evento que ser� usado para notificar que una etiqueta
- * se ha recibido.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements a simulation event that is generated when a MPLS label
+ * is received.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class TSimulationEventLabelReceived extends TSimulationEvent {
 
     /**
-     * Crea una nueva instancia de TESEtiquetaRecibida
+     * This method is the constructor of the class. It creates a new instance of
+     * TSimulationEventLabelDenied.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param source The object that generates the event.
+     * @param eventID The event unique identifier.
+     * @param timeInstant The time instant when the event was generated.
      * @since 2.0
-     * @param inst Instante de tiempo en el que se gener� el evento.
-     * @param emisor Nodo que gener� el evento.
-     * @param id Identificador unico para el evento.
      */
-    public TSimulationEventLabelReceived(Object emisor, long id, long inst) {
-        super(emisor, id, inst);
+    public TSimulationEventLabelReceived(Object source, long eventID, long timeInstant) {
+        super(source, eventID, timeInstant);
     }
 
     /**
-     * Este m�todo obtiene el subtipo del evento, si los hubiese.
-     * @return El subtipo del evento.
+     * This method gets the subtype of this simulation event. One of the
+     * constants of TSimulationEvent.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the subtype of this simulation event.
+     * TSimulationEvent.LABEL_RECEIVED.
      * @since 2.0
-     */    
+     */ 
+    @Override
     public int getSubtype() {
-        return super.LABEL_RECEIVED;
+        return TSimulationEvent.LABEL_RECEIVED;
     }
 
     /**
-     * Este m�todo obtiene el nombre del enlace que origin� el evento.
-     * @return El nombre del enlace que origin� el evento.
+     * This method gets a human readable explanation of this event.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a human readable explanation of this event.
      * @since 2.0
-     */    
-    public String obtenerNombre() {
-        TTopologyElement et = null;
-        TLink ent = null;
-        TNode nt = null;
-        et = super.getSource();
-        if (et.getElementType() == TTopologyElement.LINK) {
-            ent = (TLink) et;
-            return ent.getName();
-        } else if (et.getElementType() == TTopologyElement.NODE) {
-            nt = (TNode) et;
-            return nt.getName();
-        }
-        return ("");
-    }
-
-    /**
-     * Este m�todo obtiene un texto con el tipo de evento.
-     * @return Un texto con el tipo de evento.
-     * @since 2.0
-     */    
-    public String obtenerNombreTipo() {
-        TTopologyElement et = null;
-        et = super.getSource();
-        if (et.getElementType() == TTopologyElement.LINK) {
-            return ("Enlace ");
-        } else if (et.getElementType() == TTopologyElement.NODE) {
-            return ("Nodo ");
-        }
-        return ("");
-    }
-
-    /**
-     * Este m�todo explcia el evento en una l�nea de texto.
-     * @return El texto explicando el evento.
-     * @since 2.0
-     */    
+     */
+    @Override
     public String toString() {
-        String cad = "";
-        cad += "[";
-        cad += this.obtenerNombreTipo();
-        cad += " ";
-        cad += this.obtenerNombre();
-        cad += "] ";
-        cad += "ha recibido una etiqueta";
-        return(cad);
+        String string = "";
+        string += "[";
+        string += this.getSourceTypeAsString();
+        string += " ";
+        string += this.getSourceName();
+        string += "] ";
+        // FIX: i18N needed
+        string += "ha recibido una etiqueta";
+        return(string);
     }
 }
