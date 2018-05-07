@@ -16,140 +16,124 @@
 package com.manolodominguez.opensimmpls.scenario.simulationevents;
 
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
-import com.manolodominguez.opensimmpls.scenario.TLink;
-import com.manolodominguez.opensimmpls.scenario.TNode;
-import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
 
 /**
- * Esta clase implementa un evento que ser� usado para notificar que un paquete ha
- * salido de un nodo.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements a simulation event that is generated when a packet is
+ * sent.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class TSimulationEventPacketSent extends TSimulationEvent {
 
     /**
-     * Crea una nueva instancia de TESPaqueteEnviado
+     * This method is the constructor of the class. It creates a new instance of
+     * TSimulationEventPacketSent.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param source The object that generates the event.
+     * @param eventID The event unique identifier.
+     * @param timeInstant The time instant when the event was generated.
+     * @param packetType the size of the packet thas the source node has
+     * generated.
      * @since 2.0
-     * @param inst Instante de tiempo en el que se produjo el evento.
-     * @param emisor Nodo que gener� el evento.
-     * @param id Identificador �nico del evento.
-     * @param tipoPaquete Tipo e paquete al que se refiere el evento.
      */
-    public TSimulationEventPacketSent(Object emisor, long id, long inst, int tipoPaquete) {
-        super(emisor, id, inst);
-        tipoP = tipoPaquete;
+    public TSimulationEventPacketSent(Object source, long eventID, long timeInstant, int packetType) {
+        super(source, eventID, timeInstant);
+        this.packetType = packetType;
     }
 
     /**
-     * ste m�todo obtiene el tipo del paquete al que se refiere el evento.
-     * @return El tipo de paquete al que se refiere el evento.
+     * This method gets the type of the packet sent by the source node.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the type of the packet sent by the source node. One of the
+     * constants defined in TAbstractPDU.
      * @since 2.0
-     */    
-    public int obtenerTipoPaquete() {
-        return tipoP;
+     */
+    public int getPacketType() {
+        return this.packetType;
     }
 
     /**
-     * Este m�todo obtiene el subtipo del evento, si los hubiese.
-     * @return El subtipo del evento.
+     * This method gets the subtype of this simulation event. One of the
+     * constants of TSimulationEvent.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the subtype of this simulation event.
+     * TSimulationEvent.PACKET_SENT.
      * @since 2.0
-     */    
+     */
+    @Override
     public int getSubtype() {
-        return super.PACKET_SENT;
+        return TSimulationEvent.PACKET_SENT;
     }
 
     /**
-     * Este m�todo obtiene el nombre del enlace que origin� el evento.
-     * @return El nombre del enlace que origin� el evento.
+     * This method gets the type of the packet routed by the source node, as
+     * String.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the type of the packet routed by the source node, as String.
      * @since 2.0
-     */    
-    public String obtenerNombre() {
-        TTopologyElement et = null;
-        TLink ent = null;
-        TNode nt = null;
-        et = super.getSource();
-        if (et.getElementType() == TTopologyElement.LINK) {
-            ent = (TLink) et;
-            return ent.getName();
-        } else if (et.getElementType() == TTopologyElement.NODE) {
-            nt = (TNode) et;
-            return nt.getName();
-        }
-        return ("");
-    }
-
-    /**
-     * Este m�todo obtiene un texto con el tipo de evento.
-     * @return Un texto con el tipo de evento.
-     * @since 2.0
-     */    
-    public String obtenerNombreTipo() {
-        TTopologyElement et = null;
-        et = super.getSource();
-        if (et.getElementType() == TTopologyElement.LINK) {
-            return ("Enlace ");
-        } else if (et.getElementType() == TTopologyElement.NODE) {
-            return ("Nodo ");
-        }
-        return ("");
-    }
-
-    /**
-     * Este m�todo obtiene una representaci�no textual del tipo del paquete al que se
-     * refiere el evento.
-     * @return El tipo el paquete al que se refiere el evento, expresado como texto.
-     * @since 2.0
-     */    
-    public String obtenerNombreTipoPaquete() {
-        String strTipo = "";
-        switch (tipoP) {
+     */
+    public String getPacketTypeAsString() {
+        String strPacketType = "";
+        switch (this.packetType) {
             case TAbstractPDU.IPV4: {
-                strTipo = "IPv4";
+                // FIX: i18N required
+                strPacketType = "IPv4";
                 break;
             }
             case TAbstractPDU.IPV4_GOS: {
-                strTipo = "IPv4 con GoS";
+                // FIX: i18N required
+                strPacketType = "IPv4 con GoS";
                 break;
             }
             case TAbstractPDU.MPLS: {
-                strTipo = "MPLS";
+                // FIX: i18N required
+                strPacketType = "MPLS";
                 break;
             }
             case TAbstractPDU.MPLS_GOS: {
-                strTipo = "MPLS con GoS";
+                // FIX: i18N required
+                strPacketType = "MPLS con GoS";
                 break;
             }
             case TAbstractPDU.TLDP: {
-                strTipo = "LDP";
+                // FIX: i18N required
+                strPacketType = "LDP";
                 break;
             }
             case TAbstractPDU.GPSRP: {
-                strTipo = "GPSRP";
+                // FIX: i18N required
+                strPacketType = "GPSRP";
                 break;
             }
         }
-        return(strTipo);
+        return (strPacketType);
     }
-    
 
     /**
-     * Este m�todo explcia el evento en una l�nea de texto.
-     * @return El texto explicando el evento.
+     * This method gets a human readable explanation of this event.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a human readable explanation of this event.
      * @since 2.0
-     */    
+     */
+    @Override
     public String toString() {
-        String cad = "";
-        cad += "[";
-        cad += this.obtenerNombreTipo();
-        cad += " ";
-        cad += this.obtenerNombre();
-        cad += "] ";
-        cad += "ha enviado un paquete ";
-        cad += this.obtenerNombreTipoPaquete();
-        return(cad);
+        String string = "";
+        string += "[";
+        string += this.getSourceTypeAsString();
+        string += " ";
+        string += this.getSourceName();
+        string += "] ";
+        // FIX: i18N needed
+        string += "ha enviado un paquete ";
+        string += this.getPacketTypeAsString();
+        return (string);
     }
 
-    private int tipoP;
+    private int packetType;
 }
