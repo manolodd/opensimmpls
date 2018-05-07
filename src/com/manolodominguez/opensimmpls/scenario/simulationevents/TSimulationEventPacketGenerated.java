@@ -36,7 +36,7 @@ public class TSimulationEventPacketGenerated extends TSimulationEvent {
      * @param timeInstant The time instant when the event was generated.
      * @param packetType the size of the packet thas the source node has
      * generated.
-     * @param packetSize
+     * @param packetSize The size of the packet generated.
      * @since 2.0
      */
     public TSimulationEventPacketGenerated(Object source, long eventID, long timeInstant, int packetType, int packetSize) {
