@@ -148,7 +148,7 @@ public class JCoordinatesPanel extends JPanel {
             Graphics2D graphics2D = (Graphics2D) graphics;
             graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             if (this.designPanel != null) {
-                BufferedImage image = this.designPanel.capturaDeDisenio();
+                BufferedImage image = this.designPanel.getDesignScreenshot();
                 BufferedImage image2 = image.getSubimage(0, 0, this.designPanel.getSize().width, this.designPanel.getSize().height);
                 graphics2D.drawImage(image2.getScaledInstance(getSize().width, getSize().height, BufferedImage.SCALE_FAST), 0, 0, null);
             } else {

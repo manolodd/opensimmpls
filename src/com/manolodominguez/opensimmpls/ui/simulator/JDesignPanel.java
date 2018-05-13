@@ -23,8 +23,8 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
@@ -34,18 +34,19 @@ import java.util.Iterator;
 import javax.swing.JPanel;
 
 /**
- * Esta clase implementa un panel donde se puede dise�ar la topolog�a que luego
- * va a ser representada por el simulador.
+ * This class implements a panel that paints a topology. It is used mainly to
+ * let the user show the topology he/she is designing.
  *
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class JDesignPanel extends JPanel {
 
     /**
-     * Crea una nueva instancia de JPanelDisenio.
+     * This is the constructor of the class and creates a new instance of
+     * JDesignPanel.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public JDesignPanel() {
@@ -53,11 +54,13 @@ public class JDesignPanel extends JPanel {
     }
 
     /**
-     * Crea una nueva instancia de JPanelDisenio.
+     * This is the constructor of the class and creates a new instance of
+     * JDesignPanel.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param imageBroker The image broker that will provide the needed images
+     * to paint the topology.
      * @since 2.0
-     * @param imageBroker El dispensador de im�genes. De �l tomar� el panel
-     * todas las im�genes que tenga que mostrar en la pantalla.
      */
     public JDesignPanel(TImageBroker imageBroker) {
         this.imageBroker = imageBroker;
@@ -65,22 +68,26 @@ public class JDesignPanel extends JPanel {
     }
 
     /**
-     * Este m�todo asocia con el panel de dise�o un dispensador de im�genes del
-     * cual el panel tomar� las im�genes que tenga que mostrar en pantalla.
+     * This method sets the image broker that will provide the needed images to
+     * paint the topology.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param imageBroker The image broker that will provide the needed images
+     * to paint the topology.
      * @since 2.0
-     * @param imageBroker El dispensador de im�genes.
      */
-    public void ponerDispensadorDeImagenes(TImageBroker imageBroker) {
+    public void setImageBroker(TImageBroker imageBroker) {
         this.imageBroker = imageBroker;
     }
 
     /**
+     * This method initialize some attributes.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     private void initComponents() {
         this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.buffer = null;
         this.bufferedImage = null;
         this.bufferedG2D = null;
         this.topology = null;
@@ -90,46 +97,53 @@ public class JDesignPanel extends JPanel {
     }
 
     /**
-     * Este m�todo permite establecer una topolog�a ya creada en el panel de
-     * dise�o.
+     * This method sets the topology that has to be painted in the panel.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param topology the topology that has to be painted in the panel.
      * @since 2.0
-     * @param topology La topolog�a ya creda que queremos mostrar y modificar en
-     * el panel de dise�o.
      */
-    public void ponerTopologia(TTopology topology) {
+    public void setTopology(TTopology topology) {
         this.topology = topology;
     }
 
     /**
-     * Este m�todo permite obtener el grosor en p�xeles con que debe mostrarse
-     * un enlace en el panel de dise�o a tenor de su retardo real.
+     * This method gets the thickness that has to be used when painting the
+     * links specified as an argument.
      *
-     * @param linkDelay El retardo real del enlace.
-     * @return El grosor en p�xeles con que se debe mostrar el enlace en la zona
-     * de dise�o.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param linkDelay the thickness that has to be used when painting the
+     * links specified as an argument.
      * @since 2.0
      */
-    public double obtenerGrosorEnlace(double linkDelay) {
+    private double getLinkThickness(double linkDelay) {
         // FIX: Do not use harcoded values. Use class constants instead.
         return (16 / Math.log(linkDelay + 100));
     }
 
     /**
-     * @param g2Dbuf
+     * This method prepares the place where the topology is going to be painted
+     * setting attributes as the size, antialias, and so on..
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param graphics2D the place where the topology is going to be painted.
      * @since 2.0
      */
-    private void prepararImagen(Graphics2D g2Dbuf) {
-        g2Dbuf.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2Dbuf.setColor(Color.WHITE);
-        g2Dbuf.fillRect(0, 0, screenSize.width, screenSize.height);
+    private void prepareImage(Graphics2D graphics2D) {
+        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics2D.setColor(Color.WHITE);
+        graphics2D.fillRect(0, 0, this.screenSize.width, this.screenSize.height);
     }
 
     /**
-     * @param g2Dbuf
+     * This method paints the MPLS domain corresponding to the topology being
+     * painted.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param graphics2D the place where the topology is going to be painted.
      * @since 2.0
      */
-    private void dibujarDominio(Graphics2D g2Dbuf) {
+    private void paintDomain(Graphics2D graphics2D) {
         Iterator nodesIterator = this.topology.getNodesIterator();
         TNode node;
         Polygon polygon = new Polygon();
@@ -145,12 +159,11 @@ public class JDesignPanel extends JPanel {
         // FIX: Do not use harcoded values. Use class constants instead.
         if (vertexes > 2) {
             // FIX: Do not use harcoded values. Use class constants instead.
-            g2Dbuf.setColor(new Color(239, 222, 209));
-            g2Dbuf.fillPolygon(polygon);
+            graphics2D.setColor(new Color(239, 222, 209));
+            graphics2D.fillPolygon(polygon);
+            graphics2D.setColor(new Color(232, 212, 197));
+            graphics2D.drawPolygon(polygon);
             // FIX: Do not use harcoded values. Use class constants instead.
-            g2Dbuf.setColor(new Color(232, 212, 197));
-            g2Dbuf.drawPolygon(polygon);
-        // FIX: Do not use harcoded values. Use class constants instead.
         } else if (vertexes == 2) {
             int x1 = Math.min(polygon.xpoints[0], polygon.xpoints[1]);
             int y1 = Math.min(polygon.ypoints[0], polygon.ypoints[1]);
@@ -159,198 +172,192 @@ public class JDesignPanel extends JPanel {
             int width = x2 - x1;
             int height = y2 - y1;
             // FIX: Do not use harcoded values. Use class constants instead.
-            g2Dbuf.setColor(new Color(239, 222, 209));
-            g2Dbuf.fillRect(x1, y1, width, height);
+            graphics2D.setColor(new Color(239, 222, 209));
+            graphics2D.fillRect(x1, y1, width, height);
+            graphics2D.setColor(new Color(232, 212, 197));
+            graphics2D.drawRect(x1, y1, width, height);
             // FIX: Do not use harcoded values. Use class constants instead.
-            g2Dbuf.setColor(new Color(232, 212, 197));
-            g2Dbuf.drawRect(x1, y1, width, height);
-        // FIX: Do not use harcoded values. Use class constants instead.
         } else if (vertexes == 1) {
             // FIX: Do not use harcoded values. Use class constants instead.
-            g2Dbuf.setColor(new Color(239, 222, 209));
-            // FIX: Do not use harcoded values. Use class constants instead.
-            g2Dbuf.fillOval(polygon.xpoints[0] - 50, polygon.ypoints[0] - 40, 100, 80);
-            // FIX: Do not use harcoded values. Use class constants instead.
-            g2Dbuf.setColor(new Color(232, 212, 197));
-            // FIX: Do not use harcoded values. Use class constants instead.
-            g2Dbuf.drawOval(polygon.xpoints[0] - 50, polygon.ypoints[0] - 40, 100, 80);
+            graphics2D.setColor(new Color(239, 222, 209));
+            graphics2D.fillOval(polygon.xpoints[0] - 50, polygon.ypoints[0] - 40, 100, 80);
+            graphics2D.setColor(new Color(232, 212, 197));
+            graphics2D.drawOval(polygon.xpoints[0] - 50, polygon.ypoints[0] - 40, 100, 80);
         }
     }
 
     /**
-     * @param g2Dbuf
+     * This method paints links corresponding to the topology being painted.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param graphics2D the place where the topology is going to be painted.
      * @since 2.0
      */
-    private void dibujarEnlaces(Graphics2D g2Dbuf) {
+    private void paintLinks(Graphics2D graphics2D) {
         Iterator linksIterator = this.topology.getLinksIterator();
         while (linksIterator.hasNext()) {
             TLink link = (TLink) linksIterator.next();
             Point headEnd = link.getHeadEndNode().getScreenPosition();
             Point tailEnd = link.getTailEndNode().getScreenPosition();
             int linkDelay = link.getDelay();
-            g2Dbuf.setStroke(new BasicStroke((float) obtenerGrosorEnlace(linkDelay)));
+            graphics2D.setStroke(new BasicStroke((float) getLinkThickness(linkDelay)));
             if (link.getLinkType() == TLink.EXTERNAL_LINK) {
-                g2Dbuf.setColor(Color.GRAY);
+                graphics2D.setColor(Color.GRAY);
             } else {
-                g2Dbuf.setColor(Color.BLUE);
+                graphics2D.setColor(Color.BLUE);
             }
             // FIX: Do not use harcoded values. Use class constants instead.
-            g2Dbuf.drawLine(headEnd.x + 24, headEnd.y + 24, tailEnd.x + 24, tailEnd.y + 24);
-            g2Dbuf.setStroke(new BasicStroke((float) 1));
+            graphics2D.drawLine(headEnd.x + 24, headEnd.y + 24, tailEnd.x + 24, tailEnd.y + 24);
+            graphics2D.setStroke(new BasicStroke((float) 1));
             if (link.getShowName()) {
-                FontMetrics fm = this.getFontMetrics(this.getFont());
-                int textWidth = fm.charsWidth(link.getName().toCharArray(), 0, link.getName().length());
+                FontMetrics fontMetrics = this.getFontMetrics(this.getFont());
+                int textWidth = fontMetrics.charsWidth(link.getName().toCharArray(), 0, link.getName().length());
                 // FIX: Do not use harcoded values. Use class constants instead.
                 int posX1 = link.getHeadEndNode().getScreenPosition().x + 24;
-                // FIX: Do not use harcoded values. Use class constants instead.
                 int posY1 = link.getHeadEndNode().getScreenPosition().y + 24;
-                // FIX: Do not use harcoded values. Use class constants instead.
                 int posX2 = link.getTailEndNode().getScreenPosition().x + 24;
-                // FIX: Do not use harcoded values. Use class constants instead.
                 int posY2 = link.getTailEndNode().getScreenPosition().y + 24;
-                // FIX: Do not use harcoded values. Use class constants instead.
                 int posX = Math.min(posX1, posX2) + ((Math.max(posX1, posX2) - Math.min(posX1, posX2)) / 2) - (textWidth / 2);
-                // FIX: Do not use harcoded values. Use class constants instead.
                 int posY = Math.min(posY1, posY2) + ((Math.max(posY1, posY2) - Math.min(posY1, posY2)) / 2) + 5;
-                // FIX: Do not use harcoded values. Use class constants instead.
-                g2Dbuf.setColor(new Color(255, 254, 226));
-                // FIX: Do not use harcoded values. Use class constants instead.
-                g2Dbuf.fillRoundRect(posX - 3, posY - 13, textWidth + 5, 17, 10, 10);
-                g2Dbuf.setColor(Color.GRAY);
-                g2Dbuf.drawString(link.getName(), posX, posY);
-                // FIX: Do not use harcoded values. Use class constants instead.
-                g2Dbuf.drawRoundRect(posX - 3, posY - 13, textWidth + 5, 17, 10, 10);
+                graphics2D.setColor(new Color(255, 254, 226));
+                graphics2D.fillRoundRect(posX - 3, posY - 13, textWidth + 5, 17, 10, 10);
+                graphics2D.setColor(Color.GRAY);
+                graphics2D.drawString(link.getName(), posX, posY);
+                graphics2D.drawRoundRect(posX - 3, posY - 13, textWidth + 5, 17, 10, 10);
             }
         }
     }
 
     /**
-     * @param g2Dbuf
+     * This method paints nodes corresponding to the topology being painted.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param graphics2D the place where the topology is going to be painted.
      * @since 2.0
      */
-    private void dibujarNodos(Graphics2D g2Dbuf) {
+    private void paintNodes(Graphics2D graphics2D) {
         // FIX: Do not use harcoded values. Use class constants instead.
         this.maxX = 10;
         // FIX: Do not use harcoded values. Use class constants instead.
         this.maxY = 10;
-        Iterator nodesIterator = topology.getNodesIterator();
+        Iterator nodesIterator = this.topology.getNodesIterator();
         while (nodesIterator.hasNext()) {
             TNode node = (TNode) nodesIterator.next();
             Point nodePosition = node.getScreenPosition();
             // FIX: Do not use harcoded values. Use class constants instead.
-            if ((nodePosition.x + 48) > maxX) {
-            // FIX: Do not use harcoded values. Use class constants instead.
-                maxX = nodePosition.x + 48;
+            if ((nodePosition.x + 48) > this.maxX) {
+                // FIX: Do not use harcoded values. Use class constants instead.
+                this.maxX = nodePosition.x + 48;
             }
             // FIX: Do not use harcoded values. Use class constants instead.
-            if ((nodePosition.y + 48) > maxY) {
-            // FIX: Do not use harcoded values. Use class constants instead.
-                maxY = nodePosition.y + 48;
+            if ((nodePosition.y + 48) > this.maxY) {
+                // FIX: Do not use harcoded values. Use class constants instead.
+                this.maxY = nodePosition.y + 48;
             }
-            this.setPreferredSize(new Dimension(maxX, maxY));
+            this.setPreferredSize(new Dimension(this.maxX, this.maxY));
             this.revalidate();
             int nodeType = node.getNodeType();
             switch (nodeType) {
                 case TNode.TRAFFIC_GENERATOR: {
                     if (node.isSelected() == TNode.UNSELECTED) {
-                        g2Dbuf.drawImage(imageBroker.obtenerImagen(TImageBroker.EMISOR), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.EMISOR), nodePosition.x, nodePosition.y, null);
                     } else {
-                        g2Dbuf.drawImage(imageBroker.obtenerImagen(TImageBroker.EMISOR_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.EMISOR_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
                     }
                     break;
                 }
                 case TNode.TRAFFIC_SINK: {
                     if (node.isSelected() == TNode.UNSELECTED) {
-                        g2Dbuf.drawImage(imageBroker.obtenerImagen(TImageBroker.RECEPTOR), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.RECEPTOR), nodePosition.x, nodePosition.y, null);
                     } else {
-                        g2Dbuf.drawImage(imageBroker.obtenerImagen(TImageBroker.RECEPTOR_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.RECEPTOR_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
                     }
                     break;
                 }
                 case TNode.LER: {
                     if (node.isSelected() == TNode.UNSELECTED) {
-                        g2Dbuf.drawImage(imageBroker.obtenerImagen(TImageBroker.LER), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LER), nodePosition.x, nodePosition.y, null);
                     } else {
-                        g2Dbuf.drawImage(imageBroker.obtenerImagen(TImageBroker.LER_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LER_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
                     }
                     break;
                 }
                 case TNode.ACTIVE_LER: {
                     if (node.isSelected() == TNode.UNSELECTED) {
-                        g2Dbuf.drawImage(imageBroker.obtenerImagen(TImageBroker.LERA), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LERA), nodePosition.x, nodePosition.y, null);
                     } else {
-                        g2Dbuf.drawImage(imageBroker.obtenerImagen(TImageBroker.LERA_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LERA_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
                     }
                     break;
                 }
                 case TNode.LSR: {
                     if (node.isSelected() == TNode.UNSELECTED) {
-                        g2Dbuf.drawImage(imageBroker.obtenerImagen(TImageBroker.LSR), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSR), nodePosition.x, nodePosition.y, null);
                     } else {
-                        g2Dbuf.drawImage(imageBroker.obtenerImagen(TImageBroker.LSR_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSR_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
                     }
                     break;
                 }
                 case TNode.ACTIVE_LSR: {
                     if (node.isSelected() == TNode.UNSELECTED) {
-                        g2Dbuf.drawImage(imageBroker.obtenerImagen(TImageBroker.LSRA), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSRA), nodePosition.x, nodePosition.y, null);
                     } else {
-                        g2Dbuf.drawImage(imageBroker.obtenerImagen(TImageBroker.LSRA_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSRA_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
                     }
                     break;
                 }
             }
             if (node.getShowName()) {
-                FontMetrics fm = this.getFontMetrics(this.getFont());
-                int anchoTexto = fm.charsWidth(node.getName().toCharArray(), 0, node.getName().length());
-                int posX = (node.getScreenPosition().x + 24) - ((anchoTexto / 2));
+                FontMetrics fontMetrics = this.getFontMetrics(this.getFont());
+                int textWidth = fontMetrics.charsWidth(node.getName().toCharArray(), 0, node.getName().length());
+                // FIX: Do not use harcoded values. Use class constants instead.
+                int posX = (node.getScreenPosition().x + 24) - ((textWidth / 2));
                 int posY = node.getScreenPosition().y + 60;
-                g2Dbuf.setColor(Color.WHITE);
-                g2Dbuf.fillRoundRect(posX - 3, posY - 13, anchoTexto + 5, 17, 10, 10);
-                g2Dbuf.setColor(Color.GRAY);
-                g2Dbuf.drawString(node.getName(), posX, posY);
-                g2Dbuf.drawRoundRect(posX - 3, posY - 13, anchoTexto + 5, 17, 10, 10);
+                graphics2D.setColor(Color.WHITE);
+                graphics2D.fillRoundRect(posX - 3, posY - 13, textWidth + 5, 17, 10, 10);
+                graphics2D.setColor(Color.GRAY);
+                graphics2D.drawString(node.getName(), posX, posY);
+                graphics2D.drawRoundRect(posX - 3, posY - 13, textWidth + 5, 17, 10, 10);
             }
         }
     }
 
     /**
-     * Esta imagen obtiene una captura del dise�o en un momento dado, en forma
-     * de imagen bitmap.
+     * This method gets a screeenshot corresponding to the current topology
+     * design.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a screeenshot corresponding to the current topology design.
      * @since 2.0
-     * @return La imagen capturada del dise�o de la topolog�a en un momento
-     * dado.
      */
-    public BufferedImage capturaDeDisenio() {
-        if (bufferedImage == null) {
-            bufferedImage = new BufferedImage(screenSize.width, screenSize.height, BufferedImage.TYPE_4BYTE_ABGR);
-            bufferedG2D = bufferedImage.createGraphics();
+    public BufferedImage getDesignScreenshot() {
+        if (this.bufferedImage == null) {
+            this.bufferedImage = new BufferedImage(this.screenSize.width, this.screenSize.height, BufferedImage.TYPE_4BYTE_ABGR);
+            this.bufferedG2D = this.bufferedImage.createGraphics();
         }
-        prepararImagen(bufferedG2D);
-        if (topology != null) {
-            dibujarDominio(bufferedG2D);
-            dibujarEnlaces(bufferedG2D);
-            dibujarNodos(bufferedG2D);
+        prepareImage(this.bufferedG2D);
+        if (this.topology != null) {
+            paintDomain(this.bufferedG2D);
+            paintLinks(this.bufferedG2D);
+            paintNodes(this.bufferedG2D);
         }
         return bufferedImage;
     }
 
     /**
-     * Este m�todo redibuja la pantalla de dise�o cuando es necesario,
-     * autom�ticamente.
+     * This method paints the topology design whenever necessary, automatically.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param graphics the place where the topology design has to be painted.
      * @since 2.0
-     * @param g El lienzo donde se debe redibujar la captura del dise�o de la
-     * topolog�a.
      */
-    public void paint(java.awt.Graphics g) {
-        BufferedImage ima = this.capturaDeDisenio();
-        g.drawImage(ima, 0, 0, null);
+    @Override
+    public void paint(Graphics graphics) {
+        BufferedImage bufferedImageAux = this.getDesignScreenshot();
+        graphics.drawImage(bufferedImageAux, 0, 0, null);
     }
 
     private TImageBroker imageBroker;
-    private Image buffer;
     private BufferedImage bufferedImage;
     private Graphics2D bufferedG2D;
     private TTopology topology;

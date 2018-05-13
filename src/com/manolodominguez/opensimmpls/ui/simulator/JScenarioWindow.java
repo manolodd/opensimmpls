@@ -134,14 +134,14 @@ public class JScenarioWindow extends javax.swing.JInternalFrame {
      * @since 2.0
      */
     public void initComponents2() {
-        panelDisenio.ponerDispensadorDeImagenes(dispensadorDeImagenes);
+        panelDisenio.setImageBroker(dispensadorDeImagenes);
         panelSimulacion.ponerDispensadorDeImagenes(dispensadorDeImagenes);
         Dimension tamPantalla = VentanaPadre.getSize();
         this.setSize((tamPantalla.width * 9 / 10), (tamPantalla.height * 9 / 10));
         Dimension tamFrame = this.getSize();
         this.setLocation((tamPantalla.width - tamFrame.width) / 2, (tamPantalla.height - tamFrame.height) / 2);
         escenario = new TScenario();
-        panelDisenio.ponerTopologia(escenario.getTopology());
+        panelDisenio.setTopology(escenario.getTopology());
         panelSimulacion.ponerTopologia(escenario.getTopology());
         nodoSeleccionado = null;
         elementoDisenioClicDerecho = null;
@@ -1354,7 +1354,7 @@ private void clicEnPopUpDisenioFondoEliminar(java.awt.event.ActionEvent evt) {//
         long durac = esc.getSimulation().getSimulationLengthInNs();
         long pas = esc.getSimulation().getSimulationStepLengthInNs();
         escenario = esc;
-        panelDisenio.ponerTopologia(esc.getTopology());
+        panelDisenio.setTopology(esc.getTopology());
         panelSimulacion.ponerTopologia(esc.getTopology());
         nodoSeleccionado = null;
         elementoDisenioClicDerecho = null;
