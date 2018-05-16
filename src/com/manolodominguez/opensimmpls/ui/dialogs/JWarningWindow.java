@@ -168,5 +168,4 @@ public class JWarningWindow extends JDialog {
     private JPanel mainPanel;
     private JTextPane textPaneWarningMessage;
     private ResourceBundle translations;
-
 }
