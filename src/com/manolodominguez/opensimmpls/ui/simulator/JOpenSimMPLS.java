@@ -71,12 +71,12 @@ public class JOpenSimMPLS extends JFrame {
      * simulador.
      *
      * @since 2.0
-     * @param di El dispensador de im�genes que se encargar� de precargar las
-     * im�genes necesarias en el simulador, ahorrando tiempo y mejorando el
-     * rendimiento de la aplicaci�n.
+     * @param imageBroker El dispensador de im�genes que se encargar� de
+     * precargar las im�genes necesarias en el simulador, ahorrando tiempo y
+     * mejorando el rendimiento de la aplicaci�n.
      */
-    public JOpenSimMPLS(TImageBroker di) {
-        this.dispensadorDeImagenes = di;
+    public JOpenSimMPLS(TImageBroker imageBroker) {
+        this.imageBroker = imageBroker;
         initComponents();
         initComponents2();
     }
@@ -89,254 +89,254 @@ public class JOpenSimMPLS extends JFrame {
      */
     private void initComponents() {
         this.translations = ResourceBundle.getBundle(AvailableBundles.OPENSIMMPLS_WINDOW.getPath());
-        this.Escritorio = new JDesktopPane();
-        this.menu = new JMenuBar();
-        this.submenuEscenario = new JMenu();
-        this.nuevoMenuItem = new JMenuItem();
-        this.abrirMenuItem = new JMenuItem();
-        this.cerrarMenuItem = new JMenuItem();
-        this.guardarMenuItem = new JMenuItem();
-        this.guardarComoMenuItem = new JMenuItem();
-        this.jSeparator1 = new JSeparator();
-        this.salirMenuItem = new JMenuItem();
-        this.submenuVista = new JMenu();
-        this.mosaicoHorizontalMenuItem = new JMenuItem();
-        this.mosaicoVerticalMenuItem = new JMenuItem();
-        this.cascadaMenuItem = new JMenuItem();
-        this.iconosMenuItem = new JMenuItem();
-        this.submenuAyuda = new JMenu();
-        this.tutorialMenuItem = new JMenuItem();
-        this.jSeparator2 = new JSeparator();
-        this.licenciaMenuItem = new JMenuItem();
-        this.comentarioMenuItem1 = new JMenuItem();
-        this.contribuyeMenuItem1 = new JMenuItem();
-        this.sobreMenuItem = new JMenuItem();
+        this.desktopPane = new JDesktopPane();
+        this.menuBar = new JMenuBar();
+        this.menuScenario = new JMenu();
+        this.menuItemNew = new JMenuItem();
+        this.menuItemOpen = new JMenuItem();
+        this.menuItemClose = new JMenuItem();
+        this.menuItemSave = new JMenuItem();
+        this.menuItemSaveAs = new JMenuItem();
+        this.separatorMenuScenario = new JSeparator();
+        this.menuItemExit = new JMenuItem();
+        this.menuView = new JMenu();
+        this.menuItemHorizontalMosaic = new JMenuItem();
+        this.menuItemVerticalMosaic = new JMenuItem();
+        this.menuItemCascade = new JMenuItem();
+        this.menuItemIcons = new JMenuItem();
+        this.menuHelp = new JMenu();
+        this.menuItemQuickGuide = new JMenuItem();
+        this.separatorMenuHelp = new JSeparator();
+        this.menuItemLicense = new JMenuItem();
+        this.menuItemAskTheCommunity = new JMenuItem();
+        this.menuItemContribute = new JMenuItem();
+        this.menuItemAbout = new JMenuItem();
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle(this.translations.getString("Open_SimMPLS"));
-        setIconImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.SPLASH_MENU));
+        setIconImage(this.imageBroker.obtenerImagen(TImageBroker.SPLASH_MENU));
         setName(this.translations.getString("simulator"));
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent evt) {
-                exitForm(evt);
+                handleWindowsClosing(evt);
             }
         });
-        getContentPane().add(this.Escritorio, BorderLayout.CENTER);
-        this.menu.setDoubleBuffered(true);
-        this.submenuEscenario.setMnemonic(this.translations.getString("LetraEscenario").charAt(0));
-        this.submenuEscenario.setText(this.translations.getString("Scene"));
-        this.submenuEscenario.setToolTipText(this.translations.getString("Scene"));
-        this.submenuEscenario.setActionCommand(this.translations.getString("File"));
-        this.submenuEscenario.setDoubleBuffered(true);
-        this.submenuEscenario.setFont(new Font("Dialog", 0, 12));
-        this.nuevoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
-        this.nuevoMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.nuevoMenuItem.setIcon(this.dispensadorDeImagenes.getIcon(TImageBroker.NUEVO_MENU));
-        this.nuevoMenuItem.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Nuevo").charAt(0));
-        this.nuevoMenuItem.setText(this.translations.getString("New"));
-        this.nuevoMenuItem.setDoubleBuffered(true);
-        this.nuevoMenuItem.addActionListener(new ActionListener() {
+        getContentPane().add(this.desktopPane, BorderLayout.CENTER);
+        this.menuBar.setDoubleBuffered(true);
+        this.menuScenario.setMnemonic(this.translations.getString("LetraEscenario").charAt(0));
+        this.menuScenario.setText(this.translations.getString("Scene"));
+        this.menuScenario.setToolTipText(this.translations.getString("Scene"));
+        this.menuScenario.setActionCommand(this.translations.getString("File"));
+        this.menuScenario.setDoubleBuffered(true);
+        this.menuScenario.setFont(new Font("Dialog", 0, 12));
+        this.menuItemNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
+        this.menuItemNew.setFont(new Font("Dialog", 0, 12));
+        this.menuItemNew.setIcon(this.imageBroker.getIcon(TImageBroker.NUEVO_MENU));
+        this.menuItemNew.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Nuevo").charAt(0));
+        this.menuItemNew.setText(this.translations.getString("New"));
+        this.menuItemNew.setDoubleBuffered(true);
+        this.menuItemNew.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnNuevo(evt);
+                handleClickOnNew(evt);
             }
         });
-        this.submenuEscenario.add(this.nuevoMenuItem);
-        this.abrirMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.abrirMenuItem.setIcon(this.dispensadorDeImagenes.getIcon(TImageBroker.ABRIR_MENU));
-        this.abrirMenuItem.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Abrir").charAt(0));
-        this.abrirMenuItem.setText(this.translations.getString("Open"));
-        this.abrirMenuItem.setDoubleBuffered(true);
-        this.abrirMenuItem.addActionListener(new ActionListener() {
+        this.menuScenario.add(this.menuItemNew);
+        this.menuItemOpen.setFont(new Font("Dialog", 0, 12));
+        this.menuItemOpen.setIcon(this.imageBroker.getIcon(TImageBroker.ABRIR_MENU));
+        this.menuItemOpen.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Abrir").charAt(0));
+        this.menuItemOpen.setText(this.translations.getString("Open"));
+        this.menuItemOpen.setDoubleBuffered(true);
+        this.menuItemOpen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnAbrir(evt);
+                handleClickOnOpen(evt);
             }
         });
-        this.submenuEscenario.add(this.abrirMenuItem);
-        this.cerrarMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
-        this.cerrarMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.cerrarMenuItem.setIcon(this.dispensadorDeImagenes.getIcon(TImageBroker.CERRAR_MENU));
-        this.cerrarMenuItem.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Cerrar").charAt(0));
-        this.cerrarMenuItem.setText(this.translations.getString("Close"));
-        this.cerrarMenuItem.setDoubleBuffered(true);
-        this.cerrarMenuItem.setEnabled(false);
-        this.cerrarMenuItem.addActionListener(new ActionListener() {
+        this.menuScenario.add(this.menuItemOpen);
+        this.menuItemClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
+        this.menuItemClose.setFont(new Font("Dialog", 0, 12));
+        this.menuItemClose.setIcon(this.imageBroker.getIcon(TImageBroker.CERRAR_MENU));
+        this.menuItemClose.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Cerrar").charAt(0));
+        this.menuItemClose.setText(this.translations.getString("Close"));
+        this.menuItemClose.setDoubleBuffered(true);
+        this.menuItemClose.setEnabled(false);
+        this.menuItemClose.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnCerrar(evt);
+                handleClickOnCloseScenario(evt);
             }
         });
-        this.submenuEscenario.add(this.cerrarMenuItem);
-        this.guardarMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.guardarMenuItem.setIcon(this.dispensadorDeImagenes.getIcon(TImageBroker.GUARDAR_MENU));
-        this.guardarMenuItem.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Guardar").charAt(0));
-        this.guardarMenuItem.setText(this.translations.getString("Save"));
-        this.guardarMenuItem.setDoubleBuffered(true);
-        this.guardarMenuItem.setEnabled(false);
-        this.guardarMenuItem.addActionListener(new ActionListener() {
+        this.menuScenario.add(this.menuItemClose);
+        this.menuItemSave.setFont(new Font("Dialog", 0, 12));
+        this.menuItemSave.setIcon(this.imageBroker.getIcon(TImageBroker.GUARDAR_MENU));
+        this.menuItemSave.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Guardar").charAt(0));
+        this.menuItemSave.setText(this.translations.getString("Save"));
+        this.menuItemSave.setDoubleBuffered(true);
+        this.menuItemSave.setEnabled(false);
+        this.menuItemSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnGuardar(evt);
+                handleClickOnSave(evt);
             }
         });
-        this.submenuEscenario.add(guardarMenuItem);
-        this.guardarComoMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.guardarComoMenuItem.setIcon(this.dispensadorDeImagenes.getIcon(TImageBroker.GUARDAR_COMO_MENU));
-        this.guardarComoMenuItem.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Guardar_como").charAt(0));
-        this.guardarComoMenuItem.setText(this.translations.getString("Save_as..."));
-        this.guardarComoMenuItem.setDoubleBuffered(true);
-        this.guardarComoMenuItem.setEnabled(false);
-        this.guardarComoMenuItem.addActionListener(new ActionListener() {
+        this.menuScenario.add(menuItemSave);
+        this.menuItemSaveAs.setFont(new Font("Dialog", 0, 12));
+        this.menuItemSaveAs.setIcon(this.imageBroker.getIcon(TImageBroker.GUARDAR_COMO_MENU));
+        this.menuItemSaveAs.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Guardar_como").charAt(0));
+        this.menuItemSaveAs.setText(this.translations.getString("Save_as..."));
+        this.menuItemSaveAs.setDoubleBuffered(true);
+        this.menuItemSaveAs.setEnabled(false);
+        this.menuItemSaveAs.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnGuardarComo(evt);
+                handleClickOnSaveAs(evt);
             }
         });
-        this.submenuEscenario.add(this.guardarComoMenuItem);
-        this.submenuEscenario.add(this.jSeparator1);
-        this.salirMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_MASK));
-        this.salirMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.salirMenuItem.setIcon(this.dispensadorDeImagenes.getIcon(TImageBroker.SALIR_MENU));
-        this.salirMenuItem.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Salir").charAt(0));
-        this.salirMenuItem.setText(this.translations.getString("Exit"));
-        this.salirMenuItem.setDoubleBuffered(true);
-        this.salirMenuItem.addActionListener(new ActionListener() {
+        this.menuScenario.add(this.menuItemSaveAs);
+        this.menuScenario.add(this.separatorMenuScenario);
+        this.menuItemExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_MASK));
+        this.menuItemExit.setFont(new Font("Dialog", 0, 12));
+        this.menuItemExit.setIcon(this.imageBroker.getIcon(TImageBroker.SALIR_MENU));
+        this.menuItemExit.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Salir").charAt(0));
+        this.menuItemExit.setText(this.translations.getString("Exit"));
+        this.menuItemExit.setDoubleBuffered(true);
+        this.menuItemExit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnSalir(evt);
+                handleClickOnExit(evt);
             }
         });
-        this.submenuEscenario.add(this.salirMenuItem);
-        this.menu.add(this.submenuEscenario);
-        this.submenuVista.setMnemonic(this.translations.getString("MenuPrincipal.Vista.Resaltado").charAt(0));
-        this.submenuVista.setText(this.translations.getString("MenuPrincipal.Vista"));
-        this.submenuVista.setDoubleBuffered(true);
-        this.submenuVista.setFont(new Font("Dialog", 0, 12));
-        this.mosaicoHorizontalMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.mosaicoHorizontalMenuItem.setIcon(this.dispensadorDeImagenes.getIcon(TImageBroker.VISTA_HORIZONTAL));
-        this.mosaicoHorizontalMenuItem.setMnemonic(this.translations.getString("SubmenuVista.MosaicoHorixontal.Resaltado").charAt(0));
-        this.mosaicoHorizontalMenuItem.setText(this.translations.getString("SubmenuVista.MosaicoHorizontal"));
-        this.mosaicoHorizontalMenuItem.setDoubleBuffered(true);
-        this.mosaicoHorizontalMenuItem.setEnabled(false);
-        this.mosaicoHorizontalMenuItem.addActionListener(new ActionListener() {
+        this.menuScenario.add(this.menuItemExit);
+        this.menuBar.add(this.menuScenario);
+        this.menuView.setMnemonic(this.translations.getString("MenuPrincipal.Vista.Resaltado").charAt(0));
+        this.menuView.setText(this.translations.getString("MenuPrincipal.Vista"));
+        this.menuView.setDoubleBuffered(true);
+        this.menuView.setFont(new Font("Dialog", 0, 12));
+        this.menuItemHorizontalMosaic.setFont(new Font("Dialog", 0, 12));
+        this.menuItemHorizontalMosaic.setIcon(this.imageBroker.getIcon(TImageBroker.VISTA_HORIZONTAL));
+        this.menuItemHorizontalMosaic.setMnemonic(this.translations.getString("SubmenuVista.MosaicoHorixontal.Resaltado").charAt(0));
+        this.menuItemHorizontalMosaic.setText(this.translations.getString("SubmenuVista.MosaicoHorizontal"));
+        this.menuItemHorizontalMosaic.setDoubleBuffered(true);
+        this.menuItemHorizontalMosaic.setEnabled(false);
+        this.menuItemHorizontalMosaic.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnVistaMosaicoHorizontal(evt);
+                handleClickOnHorizontalMosaic(evt);
             }
         });
-        this.submenuVista.add(this.mosaicoHorizontalMenuItem);
-        this.mosaicoVerticalMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.mosaicoVerticalMenuItem.setIcon(this.dispensadorDeImagenes.getIcon(TImageBroker.VISTA_VERTICAL));
-        this.mosaicoVerticalMenuItem.setMnemonic(this.translations.getString("SubmenuVista.MosaicoVertical.Resaltado").charAt(0));
-        this.mosaicoVerticalMenuItem.setText(this.translations.getString("SubmenuVista.MosaicoVertical"));
-        this.mosaicoVerticalMenuItem.setDoubleBuffered(true);
-        this.mosaicoVerticalMenuItem.setEnabled(false);
-        this.mosaicoVerticalMenuItem.addActionListener(new ActionListener() {
+        this.menuView.add(this.menuItemHorizontalMosaic);
+        this.menuItemVerticalMosaic.setFont(new Font("Dialog", 0, 12));
+        this.menuItemVerticalMosaic.setIcon(this.imageBroker.getIcon(TImageBroker.VISTA_VERTICAL));
+        this.menuItemVerticalMosaic.setMnemonic(this.translations.getString("SubmenuVista.MosaicoVertical.Resaltado").charAt(0));
+        this.menuItemVerticalMosaic.setText(this.translations.getString("SubmenuVista.MosaicoVertical"));
+        this.menuItemVerticalMosaic.setDoubleBuffered(true);
+        this.menuItemVerticalMosaic.setEnabled(false);
+        this.menuItemVerticalMosaic.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnVistaMosaicoVertical(evt);
+                handleClickOnVerticalMosaic(evt);
             }
         });
-        this.submenuVista.add(this.mosaicoVerticalMenuItem);
-        this.cascadaMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.cascadaMenuItem.setIcon(this.dispensadorDeImagenes.getIcon(TImageBroker.VISTA_CASCADA));
-        this.cascadaMenuItem.setMnemonic(this.translations.getString("SubmenuVista.Cascadal.Resaltado").charAt(0));
-        this.cascadaMenuItem.setText(this.translations.getString("SubmenuVista.Cascada"));
-        this.cascadaMenuItem.setDoubleBuffered(true);
-        this.cascadaMenuItem.setEnabled(false);
-        this.cascadaMenuItem.addActionListener(new ActionListener() {
+        this.menuView.add(this.menuItemVerticalMosaic);
+        this.menuItemCascade.setFont(new Font("Dialog", 0, 12));
+        this.menuItemCascade.setIcon(this.imageBroker.getIcon(TImageBroker.VISTA_CASCADA));
+        this.menuItemCascade.setMnemonic(this.translations.getString("SubmenuVista.Cascadal.Resaltado").charAt(0));
+        this.menuItemCascade.setText(this.translations.getString("SubmenuVista.Cascada"));
+        this.menuItemCascade.setDoubleBuffered(true);
+        this.menuItemCascade.setEnabled(false);
+        this.menuItemCascade.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnVistaCascada(evt);
+                handleClickOnCascade(evt);
             }
         });
-        this.submenuVista.add(this.cascadaMenuItem);
-        this.iconosMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.iconosMenuItem.setIcon(this.dispensadorDeImagenes.getIcon(TImageBroker.VISTA_ICONOS));
-        this.iconosMenuItem.setMnemonic(this.translations.getString("SubmenuVista.Iconos.Resaltado").charAt(0));
-        this.iconosMenuItem.setText(this.translations.getString("SubmenuVista.Iconos"));
-        this.iconosMenuItem.setDoubleBuffered(true);
-        this.iconosMenuItem.setEnabled(false);
-        this.iconosMenuItem.addActionListener(new ActionListener() {
+        this.menuView.add(this.menuItemCascade);
+        this.menuItemIcons.setFont(new Font("Dialog", 0, 12));
+        this.menuItemIcons.setIcon(this.imageBroker.getIcon(TImageBroker.VISTA_ICONOS));
+        this.menuItemIcons.setMnemonic(this.translations.getString("SubmenuVista.Iconos.Resaltado").charAt(0));
+        this.menuItemIcons.setText(this.translations.getString("SubmenuVista.Iconos"));
+        this.menuItemIcons.setDoubleBuffered(true);
+        this.menuItemIcons.setEnabled(false);
+        this.menuItemIcons.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnVistaIconos(evt);
+                handleClickOnIcons(evt);
             }
         });
-        this.submenuVista.add(this.iconosMenuItem);
-        this.menu.add(this.submenuVista);
-        this.submenuAyuda.setMnemonic(this.translations.getString("LetraAyuda").charAt(0));
-        this.submenuAyuda.setText(this.translations.getString("Help"));
-        this.submenuAyuda.setDoubleBuffered(true);
-        this.submenuAyuda.setFont(new Font("Dialog", 0, 12));
-        this.tutorialMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
-        this.tutorialMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.tutorialMenuItem.setIcon(this.dispensadorDeImagenes.getIcon(TImageBroker.TUTORIAL_MENU));
-        this.tutorialMenuItem.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Contenidos").charAt(0));
-        this.tutorialMenuItem.setText(this.translations.getString("Contents"));
-        this.tutorialMenuItem.setDoubleBuffered(true);
-        this.tutorialMenuItem.addActionListener(new ActionListener() {
+        this.menuView.add(this.menuItemIcons);
+        this.menuBar.add(this.menuView);
+        this.menuHelp.setMnemonic(this.translations.getString("LetraAyuda").charAt(0));
+        this.menuHelp.setText(this.translations.getString("Help"));
+        this.menuHelp.setDoubleBuffered(true);
+        this.menuHelp.setFont(new Font("Dialog", 0, 12));
+        this.menuItemQuickGuide.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+        this.menuItemQuickGuide.setFont(new Font("Dialog", 0, 12));
+        this.menuItemQuickGuide.setIcon(this.imageBroker.getIcon(TImageBroker.TUTORIAL_MENU));
+        this.menuItemQuickGuide.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Contenidos").charAt(0));
+        this.menuItemQuickGuide.setText(this.translations.getString("Contents"));
+        this.menuItemQuickGuide.setDoubleBuffered(true);
+        this.menuItemQuickGuide.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnTutorial(evt);
+                handleClickOnQickGuide(evt);
             }
         });
-        this.submenuAyuda.add(this.tutorialMenuItem);
-        this.submenuAyuda.add(this.jSeparator2);
-        this.licenciaMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.licenciaMenuItem.setIcon(this.dispensadorDeImagenes.getIcon(TImageBroker.LICENCIA_MENU));
-        this.licenciaMenuItem.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Licencia").charAt(0));
-        this.licenciaMenuItem.setText(this.translations.getString("License"));
-        this.licenciaMenuItem.setToolTipText(this.translations.getString("License"));
-        this.licenciaMenuItem.setDoubleBuffered(true);
-        this.licenciaMenuItem.addActionListener(new ActionListener() {
+        this.menuHelp.add(this.menuItemQuickGuide);
+        this.menuHelp.add(this.separatorMenuHelp);
+        this.menuItemLicense.setFont(new Font("Dialog", 0, 12));
+        this.menuItemLicense.setIcon(this.imageBroker.getIcon(TImageBroker.LICENCIA_MENU));
+        this.menuItemLicense.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Licencia").charAt(0));
+        this.menuItemLicense.setText(this.translations.getString("License"));
+        this.menuItemLicense.setToolTipText(this.translations.getString("License"));
+        this.menuItemLicense.setDoubleBuffered(true);
+        this.menuItemLicense.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnLicencia(evt);
+                handleClickOnLicense(evt);
             }
         });
-        this.submenuAyuda.add(this.licenciaMenuItem);
-        this.comentarioMenuItem1.setFont(new Font("Dialog", 0, 12));
-        this.comentarioMenuItem1.setIcon(this.dispensadorDeImagenes.getIcon(TImageBroker.COMENTARIO_MENU));
-        this.comentarioMenuItem1.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Comentario").charAt(0));
-        this.comentarioMenuItem1.setText(this.translations.getString("Contact_the_authors"));
-        this.comentarioMenuItem1.setToolTipText(this.translations.getString("License"));
-        this.comentarioMenuItem1.setDoubleBuffered(true);
-        this.comentarioMenuItem1.addActionListener(new ActionListener() {
+        this.menuHelp.add(this.menuItemLicense);
+        this.menuItemAskTheCommunity.setFont(new Font("Dialog", 0, 12));
+        this.menuItemAskTheCommunity.setIcon(this.imageBroker.getIcon(TImageBroker.COMENTARIO_MENU));
+        this.menuItemAskTheCommunity.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Comentario").charAt(0));
+        this.menuItemAskTheCommunity.setText(this.translations.getString("Contact_the_authors"));
+        this.menuItemAskTheCommunity.setToolTipText(this.translations.getString("License"));
+        this.menuItemAskTheCommunity.setDoubleBuffered(true);
+        this.menuItemAskTheCommunity.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnEnviarComentario(evt);
+                handleClickOnAskTheCommunity(evt);
             }
         });
-        this.submenuAyuda.add(this.comentarioMenuItem1);
-        this.contribuyeMenuItem1.setFont(new Font("Dialog", 0, 12));
-        this.contribuyeMenuItem1.setIcon(this.dispensadorDeImagenes.getIcon(TImageBroker.COMENTARIO_MENU));
-        this.contribuyeMenuItem1.setMnemonic(this.translations.getString("Menu.LetraResaltada.Contribuye").charAt(0));
-        this.contribuyeMenuItem1.setText(this.translations.getString("Contribute"));
-        this.contribuyeMenuItem1.setToolTipText(this.translations.getString("Contribute"));
-        this.contribuyeMenuItem1.setDoubleBuffered(true);
-        this.contribuyeMenuItem1.addActionListener(new ActionListener() {
+        this.menuHelp.add(this.menuItemAskTheCommunity);
+        this.menuItemContribute.setFont(new Font("Dialog", 0, 12));
+        this.menuItemContribute.setIcon(this.imageBroker.getIcon(TImageBroker.COMENTARIO_MENU));
+        this.menuItemContribute.setMnemonic(this.translations.getString("Menu.LetraResaltada.Contribuye").charAt(0));
+        this.menuItemContribute.setText(this.translations.getString("Contribute"));
+        this.menuItemContribute.setToolTipText(this.translations.getString("Contribute"));
+        this.menuItemContribute.setDoubleBuffered(true);
+        this.menuItemContribute.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnContribuye(evt);
+                handleClickOnContribute(evt);
             }
         });
-        this.submenuAyuda.add(this.contribuyeMenuItem1);
-        this.sobreMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.sobreMenuItem.setIcon(this.dispensadorDeImagenes.getIcon(TImageBroker.SPLASH_MENU));
-        this.sobreMenuItem.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Sobre").charAt(0));
-        this.sobreMenuItem.setText(this.translations.getString("About"));
-        this.sobreMenuItem.setDoubleBuffered(true);
-        this.sobreMenuItem.addActionListener(new ActionListener() {
+        this.menuHelp.add(this.menuItemContribute);
+        this.menuItemAbout.setFont(new Font("Dialog", 0, 12));
+        this.menuItemAbout.setIcon(this.imageBroker.getIcon(TImageBroker.SPLASH_MENU));
+        this.menuItemAbout.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Sobre").charAt(0));
+        this.menuItemAbout.setText(this.translations.getString("About"));
+        this.menuItemAbout.setDoubleBuffered(true);
+        this.menuItemAbout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnSobre(evt);
+                handleClickOnAbout(evt);
             }
         });
-        this.submenuAyuda.add(this.sobreMenuItem);
-        this.menu.add(this.submenuAyuda);
-        setJMenuBar(this.menu);
+        this.menuHelp.add(this.menuItemAbout);
+        this.menuBar.add(this.menuHelp);
+        setJMenuBar(this.menuBar);
         pack();
     }
 
@@ -347,92 +347,105 @@ public class JOpenSimMPLS extends JFrame {
      * @since 2.0
      */
     private void initComponents2() {
-        this.GeneradorId = new TIDGenerator();
-        this.numVentanasAbiertas = 0;
+        this.openScenariosIDGenerator = new TIDGenerator();
+        // FIX: do not use harcoded values. Use class constants instead.
+        this.numOpenScenarios = 0;
     }
 
-    private void clicEnTutorial(ActionEvent evt) {
+    private void handleClickOnQickGuide(ActionEvent evt) {
         if (Desktop.isDesktopSupported()) {
             try {
                 URL url = this.getClass().getResource(this.translations.getString("JSimulator.GuidePath"));
                 Desktop.getDesktop().browse(url.toURI());
             } catch (IOException ex) {
-                Logger.getLogger(JOpenSimMPLS.class.getName()).log(Level.SEVERE, null, ex);
+                JErrorWindow errorWindow = new JErrorWindow(this, true, this.imageBroker);
+                // FIX: i18N needed
+                errorWindow.setErrorMessage("Cannot open Quick Guide");
+                errorWindow.setVisible(true);
             } catch (URISyntaxException ex) {
-                Logger.getLogger(JOpenSimMPLS.class.getName()).log(Level.SEVERE, null, ex);
+                JErrorWindow errorWindow = new JErrorWindow(this, true, this.imageBroker);
+                // FIX: i18N needed
+                errorWindow.setErrorMessage("Cannot open Quick Guide");
+                errorWindow.setVisible(true);
             }
+        } else {
+            JErrorWindow errorWindow = new JErrorWindow(this, true, this.imageBroker);
+            // FIX: i18N needed
+            errorWindow.setErrorMessage("Cannot open Quick Guide");
+            errorWindow.setVisible(true);
         }
     }
 
-    private void clicEnAbrir(ActionEvent evt) {
-        boolean finAbrir = false;
-        JFileChooser dialogoAbrir = new JFileChooser();
-        dialogoAbrir.setFileFilter(new JOSMFilter());
-        dialogoAbrir.setDialogType(JFileChooser.CUSTOM_DIALOG);
-        dialogoAbrir.setApproveButtonMnemonic('A');
-        dialogoAbrir.setApproveButtonText(this.translations.getString("JSimulador.DialogoAbrir.OK"));
-        dialogoAbrir.setDialogTitle(this.translations.getString("JSimulador.DialogoAbrir.CargarUnEscenario"));
-        dialogoAbrir.setAcceptAllFileFilterUsed(false);
-        dialogoAbrir.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        while (!finAbrir) {
-            int resultado = dialogoAbrir.showOpenDialog(this);
-            if (resultado == JFileChooser.APPROVE_OPTION) {
-                if (dialogoAbrir.getSelectedFile().exists()) {
-                    TOSMLoader cargador = new TOSMLoader();
-                    boolean cargado = cargador.cargar(dialogoAbrir.getSelectedFile());
-                    if (cargado) {
+    private void handleClickOnOpen(ActionEvent evt) {
+        boolean openProcessFinished = false;
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new JOSMFilter());
+        fileChooser.setDialogType(JFileChooser.CUSTOM_DIALOG);
+        fileChooser.setApproveButtonMnemonic('A');
+        fileChooser.setApproveButtonText(this.translations.getString("JSimulador.DialogoAbrir.OK"));
+        fileChooser.setDialogTitle(this.translations.getString("JSimulador.DialogoAbrir.CargarUnEscenario"));
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        while (!openProcessFinished) {
+            int fileChoosingResult = fileChooser.showOpenDialog(this);
+            if (fileChoosingResult == JFileChooser.APPROVE_OPTION) {
+                if (fileChooser.getSelectedFile().exists()) {
+                    TOSMLoader osmLoader = new TOSMLoader();
+                    boolean isLoaded = osmLoader.cargar(fileChooser.getSelectedFile());
+                    if (isLoaded) {
                         try {
-                            TScenario esc = new TScenario();
-                            esc = cargador.getScenario();
-                            String tit = esc.getScenarioFile().getName();
-                            this.numVentanasAbiertas++;
-                            activarOpciones();
-                            JScenarioWindow nuevoEscenario = new JScenarioWindow(this, this.dispensadorDeImagenes, tit);
-                            nuevoEscenario.ponerEscenario(esc);
-                            this.Escritorio.add(nuevoEscenario, JLayeredPane.FRAME_CONTENT_LAYER);
+                            TScenario scenario = new TScenario();
+                            scenario = osmLoader.getScenario();
+                            String title = scenario.getScenarioFile().getName();
+                            this.numOpenScenarios++;
+                            activateOptions();
+                            JScenarioWindow newScenarioWindow = new JScenarioWindow(this, this.imageBroker, title);
+                            newScenarioWindow.setScenario(scenario);
+                            this.desktopPane.add(newScenarioWindow, JLayeredPane.FRAME_CONTENT_LAYER);
                             try {
-                                nuevoEscenario.setSelected(true);
+                                newScenarioWindow.setSelected(true);
                             } catch (Exception e) {
+                                // FIX: This is ugly
                                 e.printStackTrace();
                             }
-                            getContentPane().add(this.Escritorio, BorderLayout.CENTER);
+                            getContentPane().add(this.desktopPane, BorderLayout.CENTER);
                         } catch (Exception e) {
-                            JErrorWindow ve;
-                            ve = new JErrorWindow(this, true, this.dispensadorDeImagenes);
-                            ve.setErrorMessage(e.toString());
-                            ve.show();
+                            JErrorWindow errorWindow;
+                            errorWindow = new JErrorWindow(this, true, this.imageBroker);
+                            errorWindow.setErrorMessage(e.toString());
+                            errorWindow.setVisible(true);
                         }
                     } else {
-                        JWarningWindow va;
-                        va = new JWarningWindow(this, true, this.dispensadorDeImagenes);
-                        va.setWarningMessage(this.translations.getString("JSimulador.DialogoAbrir.FicheroCorrupto"));
-                        va.show();
+                        JWarningWindow warningWindow;
+                        warningWindow = new JWarningWindow(this, true, this.imageBroker);
+                        warningWindow.setWarningMessage(this.translations.getString("JSimulador.DialogoAbrir.FicheroCorrupto"));
+                        warningWindow.setVisible(true);
                     }
-                    dialogoAbrir = null;
-                    finAbrir = true;
+                    fileChooser = null;
+                    openProcessFinished = true;
                 } else {
-                    JWarningWindow va;
-                    va = new JWarningWindow(this, true, this.dispensadorDeImagenes);
-                    va.setWarningMessage(this.translations.getString("JSimulador.DialogoAbrir.FicheroDebeExistir"));
-                    va.show();
+                    JWarningWindow warningWindow;
+                    warningWindow = new JWarningWindow(this, true, this.imageBroker);
+                    warningWindow.setWarningMessage(this.translations.getString("JSimulador.DialogoAbrir.FicheroDebeExistir"));
+                    warningWindow.setVisible(true);
                 }
             } else {
-                finAbrir = true;
+                openProcessFinished = true;
             }
         }
     }
 
-    private void clicEnGuardarComo(ActionEvent evt) {
-        JScenarioWindow vActiva = (JScenarioWindow) Escritorio.getSelectedFrame();
-        if (vActiva != null) {
-            vActiva.gestionarGuardarComo();
+    private void handleClickOnSaveAs(ActionEvent evt) {
+        JScenarioWindow activeScenario = (JScenarioWindow) this.desktopPane.getSelectedFrame();
+        if (activeScenario != null) {
+            activeScenario.handleSaveAs();
         }
     }
 
-    private void clicEnGuardar(ActionEvent evt) {
-        JScenarioWindow vActiva = (JScenarioWindow) Escritorio.getSelectedFrame();
-        if (vActiva != null) {
-            vActiva.gestionarGuardar();
+    private void handleClickOnSave(ActionEvent evt) {
+        JScenarioWindow activeScenario = (JScenarioWindow) this.desktopPane.getSelectedFrame();
+        if (activeScenario != null) {
+            activeScenario.handleSave();
         }
     }
 
@@ -440,48 +453,46 @@ public class JOpenSimMPLS extends JFrame {
      * @param evt
      * @since 2.0
      */
-    private void clicEnEnviarComentario(ActionEvent evt) {
-        JWarningWindow warningWindow = new JWarningWindow(this, true, this.dispensadorDeImagenes);
+    private void handleClickOnAskTheCommunity(ActionEvent evt) {
+        JWarningWindow warningWindow = new JWarningWindow(this, true, this.imageBroker);
+        // FIX: i18N needed
         warningWindow.setWarningMessage("Not developed yet");
         warningWindow.setVisible(true);
-        //JCommentWindow vc = new JCommentWindow(dispensadorDeImagenes, this, true);
-        //vc.show();
     }
 
-    private void clicEnContribuye(ActionEvent evt) {
-        JWarningWindow warningWindow = new JWarningWindow(this, true, this.dispensadorDeImagenes);
+    private void handleClickOnContribute(ActionEvent evt) {
+        JWarningWindow warningWindow = new JWarningWindow(this, true, this.imageBroker);
+        // FIX: i18N needed
         warningWindow.setWarningMessage("Not developed yet");
         warningWindow.setVisible(true);
-        //JCommentWindow vc = new JCommentWindow(dispensadorDeImagenes, this, true);
-        //vc.show();
     }
 
     /**
      * @param evt
      * @since 2.0
      */
-    private void clicEnVistaMosaicoHorizontal(ActionEvent evt) {
-        JInternalFrame ventanas[] = this.Escritorio.getAllFrames();
-        Dimension tam = this.Escritorio.getSize();
-        int incremento = tam.width / ventanas.length;
-        Point p = new Point(0, 0);
-        tam.width = incremento;
+    private void handleClickOnHorizontalMosaic(ActionEvent evt) {
+        JInternalFrame[] openScenarios = this.desktopPane.getAllFrames();
+        Dimension parentSize = this.desktopPane.getSize();
+        int width = parentSize.width / openScenarios.length;
+        Point point = new Point(0, 0);
+        parentSize.width = width;
         try {
-            for (int i = ventanas.length - 1; i >= 0; i--) {
-                ventanas[i].setVisible(false);
-                ventanas[i].setIcon(false);
-                ventanas[i].setSize(tam);
-                ventanas[i].setLocation(p);
-                p.x += incremento;
+            for (int i = openScenarios.length - 1; i >= 0; i--) {
+                openScenarios[i].setVisible(false);
+                openScenarios[i].setIcon(false);
+                openScenarios[i].setSize(parentSize);
+                openScenarios[i].setLocation(point);
+                point.x += width;
             }
-            for (int j = ventanas.length - 1; j >= 0; j--) {
-                ventanas[j].setVisible(true);
+            for (int j = openScenarios.length - 1; j >= 0; j--) {
+                openScenarios[j].setVisible(true);
             }
         } catch (Exception e) {
-            JErrorWindow ve;
-            ve = new JErrorWindow(this, true, this.dispensadorDeImagenes);
-            ve.setErrorMessage(e.toString());
-            ve.show();
+            JErrorWindow errorWindow;
+            errorWindow = new JErrorWindow(this, true, this.imageBroker);
+            errorWindow.setErrorMessage(e.toString());
+            errorWindow.setVisible(true);
         }
     }
 
@@ -489,28 +500,28 @@ public class JOpenSimMPLS extends JFrame {
      * @param evt
      * @since 2.0
      */
-    private void clicEnVistaMosaicoVertical(ActionEvent evt) {
-        JInternalFrame ventanas[] = this.Escritorio.getAllFrames();
-        Dimension tam = this.Escritorio.getSize();
-        int incremento = tam.height / ventanas.length;
-        Point p = new Point(0, 0);
-        tam.height = incremento;
+    private void handleClickOnVerticalMosaic(ActionEvent evt) {
+        JInternalFrame[] openScenarios = this.desktopPane.getAllFrames();
+        Dimension parentSize = this.desktopPane.getSize();
+        int height = parentSize.height / openScenarios.length;
+        Point point = new Point(0, 0);
+        parentSize.height = height;
         try {
-            for (int i = ventanas.length - 1; i >= 0; i--) {
-                ventanas[i].setVisible(false);
-                ventanas[i].setIcon(false);
-                ventanas[i].setSize(tam);
-                ventanas[i].setLocation(p);
-                p.y += incremento;
+            for (int i = openScenarios.length - 1; i >= 0; i--) {
+                openScenarios[i].setVisible(false);
+                openScenarios[i].setIcon(false);
+                openScenarios[i].setSize(parentSize);
+                openScenarios[i].setLocation(point);
+                point.y += height;
             }
-            for (int j = ventanas.length - 1; j >= 0; j--) {
-                ventanas[j].setVisible(true);
+            for (int j = openScenarios.length - 1; j >= 0; j--) {
+                openScenarios[j].setVisible(true);
             }
         } catch (Exception e) {
-            JErrorWindow ve;
-            ve = new JErrorWindow(this, true, this.dispensadorDeImagenes);
-            ve.setErrorMessage(e.toString());
-            ve.show();
+            JErrorWindow errorWindow;
+            errorWindow = new JErrorWindow(this, true, this.imageBroker);
+            errorWindow.setErrorMessage(e.toString());
+            errorWindow.setVisible(rootPaneCheckingEnabled);
         }
     }
 
@@ -518,39 +529,39 @@ public class JOpenSimMPLS extends JFrame {
      * @param evt
      * @since 2.0
      */
-    private void clicEnVistaCascada(ActionEvent evt) {
-        int incremento = 20;
-        Dimension d = this.Escritorio.getSize();
-        d.height = d.height - incremento;
-        d.width = d.width - incremento;
-        Point p = new Point(incremento, incremento);
-        Dimension tam = this.Escritorio.getSize();
-        tam.height = tam.height / 2;
-        tam.width = tam.width / 2;
-        JInternalFrame ventanas[] = this.Escritorio.getAllFrames();
+    private void handleClickOnCascade(ActionEvent evt) {
+        int displacement = 20;
+        Dimension dimension = this.desktopPane.getSize();
+        dimension.height = dimension.height - displacement;
+        dimension.width = dimension.width - displacement;
+        Point point = new Point(displacement, displacement);
+        Dimension scenarioWindowSize = this.desktopPane.getSize();
+        scenarioWindowSize.height = scenarioWindowSize.height / 2;
+        scenarioWindowSize.width = scenarioWindowSize.width / 2;
+        JInternalFrame[] openScenarios = this.desktopPane.getAllFrames();
         try {
-            for (int i = ventanas.length - 1; i >= 0; i--) {
-                ventanas[i].setVisible(false);
-                ventanas[i].setIcon(false);
-                ventanas[i].setSize(tam);
-                ventanas[i].setLocation(p);
-                p.x += incremento;
-                p.y += incremento;
-                if ((p.x + tam.width) >= d.width) {
-                    p.x = incremento;
+            for (int i = openScenarios.length - 1; i >= 0; i--) {
+                openScenarios[i].setVisible(false);
+                openScenarios[i].setIcon(false);
+                openScenarios[i].setSize(scenarioWindowSize);
+                openScenarios[i].setLocation(point);
+                point.x += displacement;
+                point.y += displacement;
+                if ((point.x + scenarioWindowSize.width) >= dimension.width) {
+                    point.x = displacement;
                 }
-                if ((p.y + tam.height) >= d.height) {
-                    p.y = incremento;
+                if ((point.y + scenarioWindowSize.height) >= dimension.height) {
+                    point.y = displacement;
                 }
             }
-            for (int j = ventanas.length - 1; j >= 0; j--) {
-                ventanas[j].setVisible(true);
+            for (int j = openScenarios.length - 1; j >= 0; j--) {
+                openScenarios[j].setVisible(true);
             }
         } catch (Exception e) {
-            JErrorWindow ve;
-            ve = new JErrorWindow(this, true, this.dispensadorDeImagenes);
-            ve.setErrorMessage(e.toString());
-            ve.show();
+            JErrorWindow errorWindow;
+            errorWindow = new JErrorWindow(this, true, this.imageBroker);
+            errorWindow.setErrorMessage(e.toString());
+            errorWindow.setVisible(true);
         }
     }
 
@@ -558,8 +569,8 @@ public class JOpenSimMPLS extends JFrame {
      * @param evt
      * @since 2.0
      */
-    private void clicEnVistaIconos(ActionEvent evt) {
-        JInternalFrame ventanas[] = this.Escritorio.getAllFrames();
+    private void handleClickOnIcons(ActionEvent evt) {
+        JInternalFrame ventanas[] = this.desktopPane.getAllFrames();
         try {
             for (int i = 0; i < ventanas.length; i++) {
                 ventanas[i].setIcon(true);
@@ -567,7 +578,7 @@ public class JOpenSimMPLS extends JFrame {
             ventanas[0].setSelected(true);
         } catch (Exception e) {
             JErrorWindow ve;
-            ve = new JErrorWindow(this, true, this.dispensadorDeImagenes);
+            ve = new JErrorWindow(this, true, this.imageBroker);
             ve.setErrorMessage(e.toString());
             ve.show();
         }
@@ -577,20 +588,20 @@ public class JOpenSimMPLS extends JFrame {
      * @param evt
      * @since 2.0
      */
-    private void clicEnCerrar(ActionEvent evt) {
-        JScenarioWindow vActiva = (JScenarioWindow) Escritorio.getSelectedFrame();
+    private void handleClickOnCloseScenario(ActionEvent evt) {
+        JScenarioWindow vActiva = (JScenarioWindow) desktopPane.getSelectedFrame();
         if (vActiva != null) {
             vActiva.gestionarGuardarParaCerrar();
             vActiva.cerrar();
-            this.numVentanasAbiertas--;
+            this.numOpenScenarios--;
         }
-        if (this.numVentanasAbiertas == 0) {
+        if (this.numOpenScenarios == 0) {
             desactivarOpciones();
         } else {
-            if (this.numVentanasAbiertas == 1) {
+            if (this.numOpenScenarios == 1) {
                 desactivarOpcionesVista();
             }
-            JInternalFrame ventanas[] = this.Escritorio.getAllFrames();
+            JInternalFrame ventanas[] = this.desktopPane.getAllFrames();
             try {
                 if (ventanas[0].isIcon()) {
                     ventanas[0].setIcon(false);
@@ -598,7 +609,7 @@ public class JOpenSimMPLS extends JFrame {
                 ventanas[0].setSelected(true);
             } catch (Exception e) {
                 JErrorWindow ve;
-                ve = new JErrorWindow(this, true, this.dispensadorDeImagenes);
+                ve = new JErrorWindow(this, true, this.imageBroker);
                 ve.setErrorMessage(e.toString());
                 ve.show();
             }
@@ -609,23 +620,23 @@ public class JOpenSimMPLS extends JFrame {
      * @param evt
      * @since 2.0
      */
-    private void clicEnNuevo(ActionEvent evt) {
+    private void handleClickOnNew(ActionEvent evt) {
         try {
-            int id = this.GeneradorId.getNew();
+            int id = this.openScenariosIDGenerator.getNew();
             String tit = this.translations.getString("TextoUntitled-") + id;
-            this.numVentanasAbiertas++;
-            activarOpciones();
-            JScenarioWindow nuevoEscenario = new JScenarioWindow(this, this.dispensadorDeImagenes, tit);
-            this.Escritorio.add(nuevoEscenario, JLayeredPane.FRAME_CONTENT_LAYER);
+            this.numOpenScenarios++;
+            activateOptions();
+            JScenarioWindow nuevoEscenario = new JScenarioWindow(this, this.imageBroker, tit);
+            this.desktopPane.add(nuevoEscenario, JLayeredPane.FRAME_CONTENT_LAYER);
             try {
                 nuevoEscenario.setSelected(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            getContentPane().add(this.Escritorio, BorderLayout.CENTER);
+            getContentPane().add(this.desktopPane, BorderLayout.CENTER);
         } catch (Exception e) {
             JErrorWindow ve;
-            ve = new JErrorWindow(this, true, this.dispensadorDeImagenes);
+            ve = new JErrorWindow(this, true, this.imageBroker);
             ve.setErrorMessage(e.toString());
             ve.show();
         }
@@ -635,9 +646,9 @@ public class JOpenSimMPLS extends JFrame {
      * @param evt
      * @since 2.0
      */
-    private void clicEnLicencia(ActionEvent evt) {
+    private void handleClickOnLicense(ActionEvent evt) {
         JLicenseWindow ventanaLicencia;
-        ventanaLicencia = new JLicenseWindow(this, true, this.dispensadorDeImagenes);
+        ventanaLicencia = new JLicenseWindow(this, true, this.imageBroker);
         ventanaLicencia.show();
     }
 
@@ -645,9 +656,9 @@ public class JOpenSimMPLS extends JFrame {
      * @param evt
      * @since 2.0
      */
-    private void clicEnSobre(ActionEvent evt) {
+    private void handleClickOnAbout(ActionEvent evt) {
         JAboutWindow nuevoSobre;
-        nuevoSobre = new JAboutWindow(this, true, this.dispensadorDeImagenes);
+        nuevoSobre = new JAboutWindow(this, true, this.imageBroker);
         nuevoSobre.show();
     }
 
@@ -658,15 +669,15 @@ public class JOpenSimMPLS extends JFrame {
      * @since 2.0
      */
     public void cerrarTodo() {
-        while (this.numVentanasAbiertas > 0) {
-            JScenarioWindow vActiva = (JScenarioWindow) this.Escritorio.getSelectedFrame();
+        while (this.numOpenScenarios > 0) {
+            JScenarioWindow vActiva = (JScenarioWindow) this.desktopPane.getSelectedFrame();
             if (vActiva != null) {
                 vActiva.gestionarGuardarParaCerrar();
                 vActiva.cerrar();
-                this.numVentanasAbiertas--;
+                this.numOpenScenarios--;
             }
-            if (this.numVentanasAbiertas > 0) {
-                JInternalFrame ventanas[] = this.Escritorio.getAllFrames();
+            if (this.numOpenScenarios > 0) {
+                JInternalFrame ventanas[] = this.desktopPane.getAllFrames();
                 if (ventanas.length > 0) {
                     try {
                         if (ventanas[0].isIcon()) {
@@ -675,12 +686,12 @@ public class JOpenSimMPLS extends JFrame {
                         ventanas[0].setSelected(true);
                     } catch (Exception e) {
                         JErrorWindow ve;
-                        ve = new JErrorWindow(this, true, this.dispensadorDeImagenes);
+                        ve = new JErrorWindow(this, true, this.imageBroker);
                         ve.setErrorMessage(e.toString());
                         ve.show();
                     }
                 } else {
-                    this.numVentanasAbiertas = 0;
+                    this.numOpenScenarios = 0;
                 }
             }
         }
@@ -692,7 +703,7 @@ public class JOpenSimMPLS extends JFrame {
      * @param evt
      * @since 2.0
      */
-    private void clicEnSalir(ActionEvent evt) {
+    private void handleClickOnExit(ActionEvent evt) {
         clicEnCualquierSalir();
     }
 
@@ -700,7 +711,7 @@ public class JOpenSimMPLS extends JFrame {
      * @since 2.0
      */
     private void clicEnCualquierSalir() {
-        JDecissionWindow vb = new JDecissionWindow(this, true, this.dispensadorDeImagenes);
+        JDecissionWindow vb = new JDecissionWindow(this, true, this.imageBroker);
         vb.setQuestion(this.translations.getString("JSimulador.PreguntaSalirDelSimulador"));
         vb.show();
         boolean respuesta = vb.getUserAnswer();
@@ -717,7 +728,7 @@ public class JOpenSimMPLS extends JFrame {
      * @param evt
      * @since 2.0
      */
-    private void exitForm(WindowEvent evt) {
+    private void handleWindowsClosing(WindowEvent evt) {
         clicEnCualquierSalir();
     }
 
@@ -725,19 +736,19 @@ public class JOpenSimMPLS extends JFrame {
      * @since 2.0
      */
     private void desactivarOpciones() {
-        this.cerrarMenuItem.setEnabled(false);
-        this.guardarComoMenuItem.setEnabled(false);
-        this.guardarMenuItem.setEnabled(false);
+        this.menuItemClose.setEnabled(false);
+        this.menuItemSaveAs.setEnabled(false);
+        this.menuItemSave.setEnabled(false);
         desactivarOpcionesVista();
     }
 
     /**
      * @since 2.0
      */
-    private void activarOpciones() {
-        this.cerrarMenuItem.setEnabled(true);
-        this.guardarComoMenuItem.setEnabled(true);
-        this.guardarMenuItem.setEnabled(true);
+    private void activateOptions() {
+        this.menuItemClose.setEnabled(true);
+        this.menuItemSaveAs.setEnabled(true);
+        this.menuItemSave.setEnabled(true);
         activarOpcionesVista();
     }
 
@@ -745,16 +756,16 @@ public class JOpenSimMPLS extends JFrame {
      * @since 2.0
      */
     private void desactivarOpcionesVista() {
-        if (this.numVentanasAbiertas == 0) {
-            this.mosaicoHorizontalMenuItem.setEnabled(false);
-            this.mosaicoVerticalMenuItem.setEnabled(false);
-            this.cascadaMenuItem.setEnabled(false);
-            this.iconosMenuItem.setEnabled(false);
-        } else if (this.numVentanasAbiertas == 1) {
-            this.mosaicoHorizontalMenuItem.setEnabled(false);
-            this.mosaicoVerticalMenuItem.setEnabled(false);
-            this.cascadaMenuItem.setEnabled(false);
-            this.iconosMenuItem.setEnabled(true);
+        if (this.numOpenScenarios == 0) {
+            this.menuItemHorizontalMosaic.setEnabled(false);
+            this.menuItemVerticalMosaic.setEnabled(false);
+            this.menuItemCascade.setEnabled(false);
+            this.menuItemIcons.setEnabled(false);
+        } else if (this.numOpenScenarios == 1) {
+            this.menuItemHorizontalMosaic.setEnabled(false);
+            this.menuItemVerticalMosaic.setEnabled(false);
+            this.menuItemCascade.setEnabled(false);
+            this.menuItemIcons.setEnabled(true);
         }
     }
 
@@ -762,43 +773,43 @@ public class JOpenSimMPLS extends JFrame {
      * @since 2.0
      */
     private void activarOpcionesVista() {
-        if (this.numVentanasAbiertas == 1) {
-            this.mosaicoHorizontalMenuItem.setEnabled(false);
-            this.mosaicoVerticalMenuItem.setEnabled(false);
-            this.cascadaMenuItem.setEnabled(false);
-            this.iconosMenuItem.setEnabled(true);
-        } else if (this.numVentanasAbiertas > 1) {
-            this.mosaicoHorizontalMenuItem.setEnabled(true);
-            this.mosaicoVerticalMenuItem.setEnabled(true);
-            this.cascadaMenuItem.setEnabled(true);
-            this.iconosMenuItem.setEnabled(true);
+        if (this.numOpenScenarios == 1) {
+            this.menuItemHorizontalMosaic.setEnabled(false);
+            this.menuItemVerticalMosaic.setEnabled(false);
+            this.menuItemCascade.setEnabled(false);
+            this.menuItemIcons.setEnabled(true);
+        } else if (this.numOpenScenarios > 1) {
+            this.menuItemHorizontalMosaic.setEnabled(true);
+            this.menuItemVerticalMosaic.setEnabled(true);
+            this.menuItemCascade.setEnabled(true);
+            this.menuItemIcons.setEnabled(true);
         }
     }
 
-    private TImageBroker dispensadorDeImagenes;
-    private TIDGenerator GeneradorId;
-    private int numVentanasAbiertas;
-    private JDesktopPane Escritorio;
-    private JMenuItem abrirMenuItem;
-    private JMenuItem cascadaMenuItem;
-    private JMenuItem cerrarMenuItem;
-    private JMenuItem comentarioMenuItem1;
-    private JMenuItem contribuyeMenuItem1;
-    private JMenuItem guardarComoMenuItem;
-    private JMenuItem guardarMenuItem;
-    private JMenuItem iconosMenuItem;
-    private JSeparator jSeparator1;
-    private JSeparator jSeparator2;
-    private JMenuItem licenciaMenuItem;
-    private JMenuBar menu;
-    private JMenuItem mosaicoHorizontalMenuItem;
-    private JMenuItem mosaicoVerticalMenuItem;
-    private JMenuItem nuevoMenuItem;
-    private JMenuItem salirMenuItem;
-    private JMenuItem sobreMenuItem;
-    private JMenu submenuAyuda;
-    private JMenu submenuEscenario;
-    private JMenu submenuVista;
-    private JMenuItem tutorialMenuItem;
+    private TImageBroker imageBroker;
+    private TIDGenerator openScenariosIDGenerator;
+    private int numOpenScenarios;
+    private JDesktopPane desktopPane;
+    private JMenuItem menuItemOpen;
+    private JMenuItem menuItemCascade;
+    private JMenuItem menuItemClose;
+    private JMenuItem menuItemAskTheCommunity;
+    private JMenuItem menuItemContribute;
+    private JMenuItem menuItemSaveAs;
+    private JMenuItem menuItemSave;
+    private JMenuItem menuItemIcons;
+    private JSeparator separatorMenuScenario;
+    private JSeparator separatorMenuHelp;
+    private JMenuItem menuItemLicense;
+    private JMenuBar menuBar;
+    private JMenuItem menuItemHorizontalMosaic;
+    private JMenuItem menuItemVerticalMosaic;
+    private JMenuItem menuItemNew;
+    private JMenuItem menuItemExit;
+    private JMenuItem menuItemAbout;
+    private JMenu menuHelp;
+    private JMenu menuScenario;
+    private JMenu menuView;
+    private JMenuItem menuItemQuickGuide;
     private ResourceBundle translations;
 }

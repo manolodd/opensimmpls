@@ -1349,7 +1349,7 @@ private void clicEnPopUpDisenioFondoEliminar(java.awt.event.ActionEvent evt) {//
      * que contendr� un escenario y todos sus datos.
      * @since 2.0
      */
-    public void ponerEscenario(TScenario esc) {
+    public void setScenario(TScenario esc) {
         this.controlTemporizacionDesactivado = true;
         long durac = esc.getSimulation().getSimulationLengthInNs();
         long pas = esc.getSimulation().getSimulationStepLengthInNs();
@@ -2344,7 +2344,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
      *
      * @since 2.0
      */
-    public void gestionarGuardarComo() {
+    public void handleSaveAs() {
         anotarDatosDeEscenario();
         JFileChooser dialogoGuardar = new JFileChooser();
         dialogoGuardar.setFileFilter(new JOSMFilter());
@@ -2418,7 +2418,7 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
             boolean respuesta = vb.getUserAnswer();
             vb.dispose();
             if (respuesta) {
-                this.gestionarGuardarComo();
+                this.handleSaveAs();
             }
         } else if ((guardado) && (!modificado)) {
             // No se hace nada, ya est� todo guardado correctamente.
@@ -2450,12 +2450,12 @@ private void clicAlPausar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clic
      *
      * @since 2.0
      */
-    public void gestionarGuardar() {
+    public void handleSave() {
         boolean guardado = this.escenario.isSaved();
         boolean modificado = this.escenario.isModified();
         anotarDatosDeEscenario();
         if (!guardado) {
-            this.gestionarGuardarComo();
+            this.handleSaveAs();
         } else {
             TOSMSaver almacenador = new TOSMSaver(escenario);
             JDecissionWindow vb = new JDecissionWindow(this.VentanaPadre, true, this.dispensadorDeImagenes);
