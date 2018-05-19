@@ -56,24 +56,21 @@ import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 
 /**
- * Esta clase implementa un simulador completo para simular, valga la
- * redundancia, escenarios MPLS y escenarios MPLS con Garant�a de Servicio.
+ * This class implements the main OpenSimMPLS GUI and start OpenSimMPLS.
  *
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
- * @since 2.0
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class JOpenSimMPLS extends JFrame {
 
     /**
-     * Este m�todo crea una nueva instancia de la clase, esto es un nuevo
-     * simulador.
+     * This is the constructor of the class and creates a new instance of
+     * JOpenSimMPLS.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param imageBroker An object that supply the needed images to be inserted
+     * in the UI.
      * @since 2.0
-     * @param imageBroker El dispensador de im�genes que se encargar� de
-     * precargar las im�genes necesarias en el simulador, ahorrando tiempo y
-     * mejorando el rendimiento de la aplicaci�n.
      */
     public JOpenSimMPLS(TImageBroker imageBroker) {
         this.imageBroker = imageBroker;
@@ -82,9 +79,10 @@ public class JOpenSimMPLS extends JFrame {
     }
 
     /**
-     * Este m�todo se llama desde el constructor de la clase y lo que hace es
-     * dar unos valores iniciales a los atributos.
+     * This method is called from within the constructor to initialize the
+     * window components.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     private void initComponents() {
@@ -341,17 +339,26 @@ public class JOpenSimMPLS extends JFrame {
     }
 
     /**
-     * Este m�todo inicia los componentes que no han sido suficientemente
-     * definidos por el constructor.
+     * This method is called from within the constructor to do additional
+     * configurations of window components.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     private void initComponents2() {
-        this.openScenariosIDGenerator = new TIDGenerator();
+        this.scenarioWindowIDGenerator = new TIDGenerator();
         // FIX: do not use harcoded values. Use class constants instead.
         this.numOpenScenarios = 0;
     }
 
+    /**
+     * This method opens the OpenSImMPLS Quick User Guide using the PDF reader
+     * configured in the operating system.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
     private void handleClickOnQickGuide(ActionEvent evt) {
         if (Desktop.isDesktopSupported()) {
             try {
@@ -376,6 +383,14 @@ public class JOpenSimMPLS extends JFrame {
         }
     }
 
+    /**
+     * This method opens a dialog to choose an existing OpenSimMPLS scenario and
+     * opens it.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
     private void handleClickOnOpen(ActionEvent evt) {
         boolean openProcessFinished = false;
         JFileChooser fileChooser = new JFileChooser();
@@ -398,7 +413,7 @@ public class JOpenSimMPLS extends JFrame {
                             scenario = osmLoader.getScenario();
                             String title = scenario.getScenarioFile().getName();
                             this.numOpenScenarios++;
-                            activateOptions();
+                            enableMenuOptions();
                             JScenarioWindow newScenarioWindow = new JScenarioWindow(this, this.imageBroker, title);
                             newScenarioWindow.setScenario(scenario);
                             this.desktopPane.add(newScenarioWindow, JLayeredPane.FRAME_CONTENT_LAYER);
@@ -435,6 +450,14 @@ public class JOpenSimMPLS extends JFrame {
         }
     }
 
+    /**
+     * This method opens a dialog to choose name for the current active scenario
+     * and saves it.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
     private void handleClickOnSaveAs(ActionEvent evt) {
         JScenarioWindow activeScenario = (JScenarioWindow) this.desktopPane.getSelectedFrame();
         if (activeScenario != null) {
@@ -442,6 +465,13 @@ public class JOpenSimMPLS extends JFrame {
         }
     }
 
+    /**
+     * This method saves the current active scenario using its current name.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
     private void handleClickOnSave(ActionEvent evt) {
         JScenarioWindow activeScenario = (JScenarioWindow) this.desktopPane.getSelectedFrame();
         if (activeScenario != null) {
@@ -450,25 +480,73 @@ public class JOpenSimMPLS extends JFrame {
     }
 
     /**
-     * @param evt
+     * This method opens the GitHub URL where OpenSimMPLS users can ask whatever
+     * they want to the OpenSimMPLS community.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
      * @since 2.0
      */
     private void handleClickOnAskTheCommunity(ActionEvent evt) {
-        JWarningWindow warningWindow = new JWarningWindow(this, true, this.imageBroker);
-        // FIX: i18N needed
-        warningWindow.setWarningMessage("Not developed yet");
-        warningWindow.setVisible(true);
-    }
-
-    private void handleClickOnContribute(ActionEvent evt) {
-        JWarningWindow warningWindow = new JWarningWindow(this, true, this.imageBroker);
-        // FIX: i18N needed
-        warningWindow.setWarningMessage("Not developed yet");
-        warningWindow.setVisible(true);
+        if (Desktop.isDesktopSupported()) {
+            try {
+                URL url = new URL("https://github.com/manolodd/opensimmpls/issues/new?labels=From%20OpenSimMPLS");
+                Desktop.getDesktop().browse(url.toURI());
+            } catch (IOException ex) {
+                JErrorWindow errorWindow = new JErrorWindow(this, true, this.imageBroker);
+                // FIX: i18N needed
+                errorWindow.setErrorMessage("Cannot open the community URL");
+                errorWindow.setVisible(true);
+            } catch (URISyntaxException ex) {
+                JErrorWindow errorWindow = new JErrorWindow(this, true, this.imageBroker);
+                // FIX: i18N needed
+                errorWindow.setErrorMessage("Cannot open the community URL");
+                errorWindow.setVisible(true);
+            }
+        } else {
+            JErrorWindow errorWindow = new JErrorWindow(this, true, this.imageBroker);
+            // FIX: i18N needed
+            errorWindow.setErrorMessage("Cannot open the community URL");
+            errorWindow.setVisible(true);
+        }
     }
 
     /**
-     * @param evt
+     * This method opens the OpenSimMPLS GitHub URL.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void handleClickOnContribute(ActionEvent evt) {
+        if (Desktop.isDesktopSupported()) {
+            try {
+                URL url = new URL("https://github.com/manolodd/opensimmpls");
+                Desktop.getDesktop().browse(url.toURI());
+            } catch (IOException ex) {
+                JErrorWindow errorWindow = new JErrorWindow(this, true, this.imageBroker);
+                // FIX: i18N needed
+                errorWindow.setErrorMessage("Cannot open OpenSimMPLS site in GitHub");
+                errorWindow.setVisible(true);
+            } catch (URISyntaxException ex) {
+                JErrorWindow errorWindow = new JErrorWindow(this, true, this.imageBroker);
+                // FIX: i18N needed
+                errorWindow.setErrorMessage("Cannot open OpenSimMPLS site in GitHub");
+                errorWindow.setVisible(true);
+            }
+        } else {
+            JErrorWindow errorWindow = new JErrorWindow(this, true, this.imageBroker);
+            // FIX: i18N needed
+            errorWindow.setErrorMessage("Cannot open OpenSimMPLS site in GitHub");
+            errorWindow.setVisible(true);
+        }
+    }
+
+    /**
+     * This method places all open scenarios in horizontal mosaic form.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
      * @since 2.0
      */
     private void handleClickOnHorizontalMosaic(ActionEvent evt) {
@@ -497,7 +575,10 @@ public class JOpenSimMPLS extends JFrame {
     }
 
     /**
-     * @param evt
+     * This method places all open scenarios in vertical mosaic form.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
      * @since 2.0
      */
     private void handleClickOnVerticalMosaic(ActionEvent evt) {
@@ -526,7 +607,10 @@ public class JOpenSimMPLS extends JFrame {
     }
 
     /**
-     * @param evt
+     * This method places all open scenarios in cascade form.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
      * @since 2.0
      */
     private void handleClickOnCascade(ActionEvent evt) {
@@ -566,129 +650,146 @@ public class JOpenSimMPLS extends JFrame {
     }
 
     /**
-     * @param evt
+     * This method places all open scenarios in icons form.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
      * @since 2.0
      */
     private void handleClickOnIcons(ActionEvent evt) {
-        JInternalFrame ventanas[] = this.desktopPane.getAllFrames();
+        JInternalFrame[] openScenarios = this.desktopPane.getAllFrames();
         try {
-            for (int i = 0; i < ventanas.length; i++) {
-                ventanas[i].setIcon(true);
+            for (int i = 0; i < openScenarios.length; i++) {
+                openScenarios[i].setIcon(true);
             }
-            ventanas[0].setSelected(true);
+            openScenarios[0].setSelected(true);
         } catch (Exception e) {
-            JErrorWindow ve;
-            ve = new JErrorWindow(this, true, this.imageBroker);
-            ve.setErrorMessage(e.toString());
-            ve.show();
+            JErrorWindow errorWindow;
+            errorWindow = new JErrorWindow(this, true, this.imageBroker);
+            errorWindow.setErrorMessage(e.toString());
+            errorWindow.setVisible(true);
         }
     }
 
     /**
-     * @param evt
+     * This method closes the currently active scenario.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
      * @since 2.0
      */
     private void handleClickOnCloseScenario(ActionEvent evt) {
-        JScenarioWindow vActiva = (JScenarioWindow) desktopPane.getSelectedFrame();
-        if (vActiva != null) {
-            vActiva.gestionarGuardarParaCerrar();
-            vActiva.cerrar();
+        JScenarioWindow activeScenario = (JScenarioWindow) desktopPane.getSelectedFrame();
+        if (activeScenario != null) {
+            activeScenario.gestionarGuardarParaCerrar();
+            activeScenario.cerrar();
             this.numOpenScenarios--;
         }
         if (this.numOpenScenarios == 0) {
-            desactivarOpciones();
+            disableMenuOptions();
         } else {
             if (this.numOpenScenarios == 1) {
-                desactivarOpcionesVista();
+                disableViewOptions();
             }
-            JInternalFrame ventanas[] = this.desktopPane.getAllFrames();
+            JInternalFrame[] openScenarios = this.desktopPane.getAllFrames();
             try {
-                if (ventanas[0].isIcon()) {
-                    ventanas[0].setIcon(false);
+                if (openScenarios[0].isIcon()) {
+                    openScenarios[0].setIcon(false);
                 }
-                ventanas[0].setSelected(true);
+                openScenarios[0].setSelected(true);
             } catch (Exception e) {
-                JErrorWindow ve;
-                ve = new JErrorWindow(this, true, this.imageBroker);
-                ve.setErrorMessage(e.toString());
-                ve.show();
+                JErrorWindow errorWindow;
+                errorWindow = new JErrorWindow(this, true, this.imageBroker);
+                errorWindow.setErrorMessage(e.toString());
+                errorWindow.setVisible(true);
             }
         }
     }
 
     /**
-     * @param evt
+     * This method creates a new blank scenario.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
      * @since 2.0
      */
     private void handleClickOnNew(ActionEvent evt) {
         try {
-            int id = this.openScenariosIDGenerator.getNew();
-            String tit = this.translations.getString("TextoUntitled-") + id;
+            int scenarioWindowID = this.scenarioWindowIDGenerator.getNew();
+            String scenarioWindowTitle = this.translations.getString("TextoUntitled-") + scenarioWindowID;
             this.numOpenScenarios++;
-            activateOptions();
-            JScenarioWindow nuevoEscenario = new JScenarioWindow(this, this.imageBroker, tit);
-            this.desktopPane.add(nuevoEscenario, JLayeredPane.FRAME_CONTENT_LAYER);
+            enableMenuOptions();
+            JScenarioWindow newScenario = new JScenarioWindow(this, this.imageBroker, scenarioWindowTitle);
+            this.desktopPane.add(newScenario, JLayeredPane.FRAME_CONTENT_LAYER);
             try {
-                nuevoEscenario.setSelected(true);
+                newScenario.setSelected(true);
             } catch (Exception e) {
+                // FIX: This is ugly
                 e.printStackTrace();
             }
             getContentPane().add(this.desktopPane, BorderLayout.CENTER);
         } catch (Exception e) {
-            JErrorWindow ve;
-            ve = new JErrorWindow(this, true, this.imageBroker);
-            ve.setErrorMessage(e.toString());
-            ve.show();
+            JErrorWindow errorWindow;
+            errorWindow = new JErrorWindow(this, true, this.imageBroker);
+            errorWindow.setErrorMessage(e.toString());
+            errorWindow.setVisible(true);
         }
     }
 
     /**
-     * @param evt
+     * This method opens a new dialog that shows the OpenSimMPLS license.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
      * @since 2.0
      */
     private void handleClickOnLicense(ActionEvent evt) {
-        JLicenseWindow ventanaLicencia;
-        ventanaLicencia = new JLicenseWindow(this, true, this.imageBroker);
-        ventanaLicencia.show();
+        JLicenseWindow licenseWindow;
+        licenseWindow = new JLicenseWindow(this, true, this.imageBroker);
+        licenseWindow.setVisible(true);
     }
 
     /**
-     * @param evt
+     * This method opens a new dialog that shows information about OpenSimMPLS:
+     * version, name, status, author...
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
      * @since 2.0
      */
     private void handleClickOnAbout(ActionEvent evt) {
-        JAboutWindow nuevoSobre;
-        nuevoSobre = new JAboutWindow(this, true, this.imageBroker);
-        nuevoSobre.show();
+        JAboutWindow aboutWindow;
+        aboutWindow = new JAboutWindow(this, true, this.imageBroker);
+        aboutWindow.setVisible(true);
     }
 
     /**
-     * Este m�todo cierra todas las ventanas hijas que haya abiertas en ese
-     * momento.
+     * This method closes all open scenarios.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void cerrarTodo() {
+    public void closeAll() {
         while (this.numOpenScenarios > 0) {
-            JScenarioWindow vActiva = (JScenarioWindow) this.desktopPane.getSelectedFrame();
-            if (vActiva != null) {
-                vActiva.gestionarGuardarParaCerrar();
-                vActiva.cerrar();
+            JScenarioWindow activeScenario = (JScenarioWindow) this.desktopPane.getSelectedFrame();
+            if (activeScenario != null) {
+                activeScenario.gestionarGuardarParaCerrar();
+                activeScenario.cerrar();
                 this.numOpenScenarios--;
             }
             if (this.numOpenScenarios > 0) {
-                JInternalFrame ventanas[] = this.desktopPane.getAllFrames();
-                if (ventanas.length > 0) {
+                JInternalFrame[] openScenarios = this.desktopPane.getAllFrames();
+                if (openScenarios.length > 0) {
                     try {
-                        if (ventanas[0].isIcon()) {
-                            ventanas[0].setIcon(false);
+                        if (openScenarios[0].isIcon()) {
+                            openScenarios[0].setIcon(false);
                         }
-                        ventanas[0].setSelected(true);
+                        openScenarios[0].setSelected(true);
                     } catch (Exception e) {
-                        JErrorWindow ve;
-                        ve = new JErrorWindow(this, true, this.imageBroker);
-                        ve.setErrorMessage(e.toString());
-                        ve.show();
+                        JErrorWindow errorWindow;
+                        errorWindow = new JErrorWindow(this, true, this.imageBroker);
+                        errorWindow.setErrorMessage(e.toString());
+                        errorWindow.setVisible(true);
                     }
                 } else {
                     this.numOpenScenarios = 0;
@@ -698,64 +799,85 @@ public class JOpenSimMPLS extends JFrame {
     }
 
     /**
-     * Sale del simulador cuando se elige desde el men� ARCHIVO
+     * This method exit OpenSimMPLS when the "Exit" option are selected.
      *
-     * @param evt
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
      * @since 2.0
      */
     private void handleClickOnExit(ActionEvent evt) {
-        clicEnCualquierSalir();
+        clickOnAnyExitOption();
     }
 
     /**
+     * This method exit OpenSimMPLS independently on whether the user closed the
+     * windows or chose the "Exit" option.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    private void clicEnCualquierSalir() {
-        JDecissionWindow vb = new JDecissionWindow(this, true, this.imageBroker);
-        vb.setQuestion(this.translations.getString("JSimulador.PreguntaSalirDelSimulador"));
-        vb.show();
-        boolean respuesta = vb.getUserAnswer();
-        vb.dispose();
-        if (respuesta) {
-            cerrarTodo();
+    private void clickOnAnyExitOption() {
+        JDecissionWindow decissionWindow = new JDecissionWindow(this, true, this.imageBroker);
+        decissionWindow.setQuestion(this.translations.getString("JSimulador.PreguntaSalirDelSimulador"));
+        decissionWindow.setVisible(true);
+        boolean userAnswer = decissionWindow.getUserAnswer();
+        decissionWindow.dispose();
+        if (userAnswer) {
+            closeAll();
             this.dispose();
         }
     }
 
     /**
-     * Sale del simulador
+     * This method exit OpenSimMPLS when the OpenSimMPLS window is closed.
      *
-     * @param evt
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
      * @since 2.0
      */
     private void handleWindowsClosing(WindowEvent evt) {
-        clicEnCualquierSalir();
+        clickOnAnyExitOption();
     }
 
     /**
+     * This method disables some menu options that are not needed under certain
+     * circumstances.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
      * @since 2.0
      */
-    private void desactivarOpciones() {
+    private void disableMenuOptions() {
         this.menuItemClose.setEnabled(false);
         this.menuItemSaveAs.setEnabled(false);
         this.menuItemSave.setEnabled(false);
-        desactivarOpcionesVista();
+        disableViewOptions();
     }
 
     /**
+     * This method enables some menu options that are needed under certain
+     * circumstances.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
      * @since 2.0
      */
-    private void activateOptions() {
+    private void enableMenuOptions() {
         this.menuItemClose.setEnabled(true);
         this.menuItemSaveAs.setEnabled(true);
         this.menuItemSave.setEnabled(true);
-        activarOpcionesVista();
+        enableViewOptions();
     }
 
     /**
+     * This method disables some view options that are not needed under certain
+     * circumstances.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
      * @since 2.0
      */
-    private void desactivarOpcionesVista() {
+    private void disableViewOptions() {
         if (this.numOpenScenarios == 0) {
             this.menuItemHorizontalMosaic.setEnabled(false);
             this.menuItemVerticalMosaic.setEnabled(false);
@@ -770,9 +892,14 @@ public class JOpenSimMPLS extends JFrame {
     }
 
     /**
+     * This method enables some view options that are not needed under certain
+     * circumstances.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
      * @since 2.0
      */
-    private void activarOpcionesVista() {
+    private void enableViewOptions() {
         if (this.numOpenScenarios == 1) {
             this.menuItemHorizontalMosaic.setEnabled(false);
             this.menuItemVerticalMosaic.setEnabled(false);
@@ -787,7 +914,7 @@ public class JOpenSimMPLS extends JFrame {
     }
 
     private TImageBroker imageBroker;
-    private TIDGenerator openScenariosIDGenerator;
+    private TIDGenerator scenarioWindowIDGenerator;
     private int numOpenScenarios;
     private JDesktopPane desktopPane;
     private JMenuItem menuItemOpen;
