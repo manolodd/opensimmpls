@@ -41,7 +41,7 @@ Please, refer always to the project home page at:
 
 # COMPILING FROM SOURCES
 
-You can download latest compiled stable releases from the releases section of this repository. However, if you want to test new features (please, do it and give feedback), you will need to compile the project from sources. Follow these steps:
+The best option is to download latest compiled stable releases from the releases section of this repository. However, if you want to test new features (please, do it and give feedback), you will need to compile the project from sources. Follow these steps:
 
  - Clone the OpenSimMPLS repo: 
 ```console
@@ -83,20 +83,28 @@ If you want to contribute to OpenSimMPLS project, follow these instructions:
 
  - Log in to your GitHub account.
  - Look for OpenSimMPLS project.
- - Create a fork of OpenSimMPL (Development branch) in your own GitHub repository.
- - Clone your OpenSimMPLS repository to your PC or laptop.
- - Create a branch in your local cloned GIT repository. I recommend to name this branch as "opensimmpls-festureyouaredeveloping" or something similar.
- - Do all modifications on this branch, file additions or deletions, modifications, commits...
- - Push your modifications to your remote github OpenSimMPLS repository.
- - Go again to yout GitHub account, choose your OpenSimMPLS repository and then your "opensimmpls-festureyouaredeveloping" branch (since the previous step, this branch should be there) and click on the green button at the left. This will guide you to make a pull request (send your modifications on your own OpenSimMPLS repository to OpenSimMPLS main repository from where you did your fork at the beginning). Choose the development branch of OpenSimMPLS as base branch to merge.
+ - Select the <b>development branch</b> of OpenSimMPLS and create a fork in your own GitHub repository.
+ - Clone <b>your</b> OpenSimMPLS repository to your PC or laptop.
+ - Do all modifications in local, file additions or deletions, modifications, commits...
+ - Push your modifications to <b>your</b> remote github OpenSimMPLS repository.
+ - Go again to yout GitHub account, choose your OpenSimMPLS repository and click on the tab "Pull requests".
+ - Then, click on the green button at the right "New pull request". This will guide you to make a pull request (send your modifications on your own OpenSimMPLS repository to OpenSimMPLS main repository from where you did your fork at the beginning). 
+ - Choose the development branch of manolodd/OpenSimMPLS as base branch to merge to. Then "Create pull request" (give a title and a description, please).
  - That's all; I will have your contribution and I will try to merge it into the development branch of OpenSimMPLS. Please, comment your contribution as much as possible; I have to be able to understand your contribution.
 
-This is a very easy process. However, if it is very difficult to you, simply send me all your modifications (scenario, sources, documentation...) to:
+REMEMBER!!!! all your contributions have to be compatible with Apache Software License 2.0 and you have to own all rights on them. And no source code contributions has to be compatible to Creative Commons - By.
 
-opensimmpls@manolodominguez.com
+# WHAT CAN YOU CONTRIBUTE?
 
-And I will do my best to understand them and, somewhat, include your contribution into the project.
+Lot of things. Most people doesn't have the possibility to contribute code. But there are lots of other thigs that are very important too:
 
-REMEMBER!!!! all your contributions have to be compatible with Apache Software License 2.0 and you have to own all rights on them.
+ - Source code.
+ - Translations.
+ - Scenarios already designed.
+ - Teaching units. Lots of <b>OpenSimMPLS</b> users are university techers. They use <b>OpenSimMPLS to teach network subjects</b>. If this is your case, share with everybody your teaching units: things you ask your students, exams, exercises based on <b>OpenSimMPLS</b>, and so on.
+ - Documentation. Independently of your native language, there is an <b>OpenSimMPLS</b> user that also have the same native language. I've not the possibility of documenting everything, but if you do that, share it!
+ - Presentations.
+ - New icons and graphics art.
+ - Ideas.
 
 #### Thanks for contributing.
