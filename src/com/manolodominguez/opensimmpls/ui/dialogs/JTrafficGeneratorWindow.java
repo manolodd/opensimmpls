@@ -107,7 +107,7 @@ public class JTrafficGeneratorWindow extends JDialog {
         this.panelPosition = new JPanel();
         this.labelCoordinateX = new JLabel();
         this.labelCoordinateY = new JLabel();
-        this.coordinatesPanel = new com.manolodominguez.opensimmpls.ui.dialogs.JCoordinatesPanel();
+        this.coordinatesPanel = new JCoordinatesPanel();
         this.checkBoxShowName = new JCheckBox();
         this.labelTargetTrafficSinkNode = new JLabel();
         this.comboBoxTargetTrafficSinkNode = new JComboBox();

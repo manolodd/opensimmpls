@@ -37,7 +37,8 @@ public enum AvailableBundles {
     ERROR_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     ABOUT_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     COMMENT_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    OPENSIMMPLS_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations");
+    OPENSIMMPLS_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    SCENARIO_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations");
 
     private final String bundlePath;
 
