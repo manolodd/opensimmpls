@@ -1056,7 +1056,7 @@ public class JScenarioWindow extends JInternalFrame {
 
     private void ratonPulsadoYSoltadoEnPanelSimulacion(MouseEvent evt) {//GEN-FIRST:event_ratonPulsadoYSoltadoEnPanelSimulacion
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            TTopologyElement et = scenario.getTopology().getElementInScreenPosition(evt.getPoint());
+            TTopologyElement et = this.scenario.getTopology().getElementInScreenPosition(evt.getPoint());
             if (et != null) {
                 if (et.getElementType() == TTopologyElement.NODE) {
                     TNode nt = (TNode) et;
@@ -1088,18 +1088,18 @@ public class JScenarioWindow extends JInternalFrame {
         GridBagConstraints gbc = null;
         if (this.selectorElementoEstadisticas.getSelectedIndex() == 0) {
             this.panelAnalisis.removeAll();
-            grafico1 = null;
-            grafico2 = null;
-            grafico3 = null;
-            grafico4 = null;
-            grafico5 = null;
-            grafico6 = null;
-            panelGrafico1 = null;
-            panelGrafico2 = null;
-            panelGrafico3 = null;
-            panelGrafico4 = null;
-            panelGrafico5 = null;
-            panelGrafico6 = null;
+            this.grafico1 = null;
+            this.grafico2 = null;
+            this.grafico3 = null;
+            this.grafico4 = null;
+            this.grafico5 = null;
+            this.grafico6 = null;
+            this.panelGrafico1 = null;
+            this.panelGrafico2 = null;
+            this.panelGrafico3 = null;
+            this.panelGrafico4 = null;
+            this.panelGrafico5 = null;
+            this.panelGrafico6 = null;
             this.etiquetaEstadisticasTituloEscenario.setText(this.nombreEscenario.getText());
             this.etiquetaEstadisticasNombreAutor.setText(this.nombreAutor.getText());
             this.areaEstadisticasDescripcion.setText(this.descripcionEscenario.getText());
@@ -1157,8 +1157,8 @@ public class JScenarioWindow extends JInternalFrame {
      */
     private void ratonArrastradoEnPanelSimulacion(MouseEvent evt) {//GEN-FIRST:event_ratonArrastradoEnPanelSimulacion
         if (evt.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
-            if (nodoSeleccionado != null) {
-                TTopology topo = scenario.getTopology();
+            if (this.nodoSeleccionado != null) {
+                TTopology topo = this.scenario.getTopology();
                 Point p2 = evt.getPoint();
                 if (p2.x < 0) {
                     p2.x = 0;
@@ -1172,8 +1172,8 @@ public class JScenarioWindow extends JInternalFrame {
                 if (p2.y > panelDisenio.getSize().height) {
                     p2.y = panelDisenio.getSize().height;
                 }
-                nodoSeleccionado.setScreenPosition(new Point(p2.x, p2.y));
-                panelSimulacion.repaint();
+                this.nodoSeleccionado.setScreenPosition(new Point(p2.x, p2.y));
+                this.panelSimulacion.repaint();
                 this.scenario.setModified(true);
             }
         }
@@ -1189,12 +1189,12 @@ public class JScenarioWindow extends JInternalFrame {
      */
     private void ratonSoltadoEnPanelSimulacion(MouseEvent evt) {//GEN-FIRST:event_ratonSoltadoEnPanelSimulacion
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            if (nodoSeleccionado != null) {
-                nodoSeleccionado.setSelected(TNode.UNSELECTED);
-                nodoSeleccionado = null;
+            if (this.nodoSeleccionado != null) {
+                this.nodoSeleccionado.setSelected(TNode.UNSELECTED);
+                this.nodoSeleccionado = null;
                 this.scenario.setModified(true);
             }
-            panelSimulacion.repaint();
+            this.panelSimulacion.repaint();
         }
     }//GEN-LAST:event_ratonSoltadoEnPanelSimulacion
 
@@ -1208,15 +1208,15 @@ public class JScenarioWindow extends JInternalFrame {
      */
     private void clicEnPanelSimulacion(MouseEvent evt) {//GEN-FIRST:event_clicEnPanelSimulacion
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            TTopology topo = scenario.getTopology();
+            TTopology topo = this.scenario.getTopology();
             TTopologyElement et = topo.getElementInScreenPosition(evt.getPoint());
             if (et != null) {
                 this.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 if (et.getElementType() == TTopologyElement.NODE) {
                     TNode nt = (TNode) et;
-                    nodoSeleccionado = nt;
-                    if (nodoSeleccionado != null) {
-                        nodoSeleccionado.setSelected(TNode.SELECTED);
+                    this.nodoSeleccionado = nt;
+                    if (this.nodoSeleccionado != null) {
+                        this.nodoSeleccionado.setSelected(TNode.SELECTED);
                         this.scenario.setModified(true);
                     }
                 }
@@ -1224,7 +1224,7 @@ public class JScenarioWindow extends JInternalFrame {
                 this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                 this.setToolTipText(null);
             }
-            panelSimulacion.repaint();
+            this.panelSimulacion.repaint();
         }
     }//GEN-LAST:event_clicEnPanelSimulacion
 
@@ -1238,40 +1238,40 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que provoca la llamada.
      */
     private void clicEnPropiedadesPopUpDisenioElemento(ActionEvent evt) {//GEN-FIRST:event_clicEnPropiedadesPopUpDisenioElemento
-        if (elementoDisenioClicDerecho != null) {
-            if (elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
-                TNode nt = (TNode) elementoDisenioClicDerecho;
+        if (this.elementoDisenioClicDerecho != null) {
+            if (this.elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
+                TNode nt = (TNode) this.elementoDisenioClicDerecho;
                 if (nt.getNodeType() == TNode.TRAFFIC_GENERATOR) {
-                    JTrafficGeneratorWindow ve = new JTrafficGeneratorWindow(scenario.getTopology(), panelDisenio, imageBroker, parent, true);
+                    JTrafficGeneratorWindow ve = new JTrafficGeneratorWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
                     ve.setConfiguration((TTrafficGeneratorNode) nt, true);
                     ve.show();
                 } else if (nt.getNodeType() == TNode.LER) {
-                    JLERWindow vler = new JLERWindow(scenario.getTopology(), panelDisenio, imageBroker, parent, true);
+                    JLERWindow vler = new JLERWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
                     vler.setConfiguration((TLERNode) nt, true);
                     vler.show();
                 } else if (nt.getNodeType() == TNode.ACTIVE_LER) {
-                    JActiveLERWindow vlera = new JActiveLERWindow(scenario.getTopology(), panelDisenio, imageBroker, parent, true);
+                    JActiveLERWindow vlera = new JActiveLERWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
                     vlera.setConfiguration((TActiveLERNode) nt, true);
                     vlera.show();
                 } else if (nt.getNodeType() == TNode.LSR) {
-                    JLSRWindow vlsr = new JLSRWindow(scenario.getTopology(), panelDisenio, imageBroker, parent, true);
+                    JLSRWindow vlsr = new JLSRWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
                     vlsr.setConfiguration((TLSRNode) nt, true);
                     vlsr.show();
                 } else if (nt.getNodeType() == TNode.ACTIVE_LSR) {
-                    JActiveLSRWindow vlsra = new JActiveLSRWindow(scenario.getTopology(), panelDisenio, imageBroker, parent, true);
+                    JActiveLSRWindow vlsra = new JActiveLSRWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
                     vlsra.setConfiguration((TActiveLSRNode) nt, true);
                     vlsra.show();
                 } else if (nt.getNodeType() == TNode.TRAFFIC_SINK) {
-                    JTrafficSinkWindow vr = new JTrafficSinkWindow(scenario.getTopology(), panelDisenio, imageBroker, parent, true);
+                    JTrafficSinkWindow vr = new JTrafficSinkWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
                     vr.setConfiguration((TTrafficSinkNode) nt, true);
                     vr.show();
                 }
-                elementoDisenioClicDerecho = null;
-                panelDisenio.repaint();
+                this.elementoDisenioClicDerecho = null;
+                this.panelDisenio.repaint();
             } else {
-                TLink ent = (TLink) elementoDisenioClicDerecho;
+                TLink ent = (TLink) this.elementoDisenioClicDerecho;
                 TLinkConfig tceAux = ent.getConfig();
-                JLinkWindow ve = new JLinkWindow(scenario.getTopology(), imageBroker, parent, true);
+                JLinkWindow ve = new JLinkWindow(this.scenario.getTopology(), this.imageBroker, this.parent, true);
                 ve.setConfiguration(tceAux, true);
                 ve.show();
                 if (ent.getLinkType() == TLink.EXTERNAL_LINK) {
@@ -1281,8 +1281,8 @@ public class JScenarioWindow extends JInternalFrame {
                     TInternalLink inte = (TInternalLink) ent;
                     inte.configure(tceAux, this.scenario.getTopology(), true);
                 }
-                elementoDisenioClicDerecho = null;
-                panelDisenio.repaint();
+                this.elementoDisenioClicDerecho = null;
+                this.panelDisenio.repaint();
                 int minimoDelay = this.scenario.getTopology().getMinimumDelay();
                 int pasoActual = this.pasoNs.getValue();
                 if (pasoActual > minimoDelay) {
@@ -1301,24 +1301,24 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     public void controlarParametrosTemporales() {
-        if (!controlTemporizacionDesactivado) {
-            if (duracionMs.getValue() == 0) {
-                duracionNs.setMinimum(1);
+        if (!this.controlTemporizacionDesactivado) {
+            if (this.duracionMs.getValue() == 0) {
+                this.duracionNs.setMinimum(1);
             } else {
-                duracionNs.setMinimum(0);
+                this.duracionNs.setMinimum(0);
             }
-            int duracionTotal = duracionMs.getValue() * 1000000 + this.duracionNs.getValue();
-            int minDelay = scenario.getTopology().getMinimumDelay();
+            int duracionTotal = this.duracionMs.getValue() * 1000000 + this.duracionNs.getValue();
+            int minDelay = this.scenario.getTopology().getMinimumDelay();
             if (minDelay < duracionTotal) {
-                pasoNs.setMaximum(minDelay);
+                this.pasoNs.setMaximum(minDelay);
             } else {
-                pasoNs.setMaximum(duracionTotal);
+                this.pasoNs.setMaximum(duracionTotal);
             }
             this.etiquetaDuracionMs.setText(this.duracionMs.getValue() + this.translations.getString("VentanaHija._ms."));
             this.etiquetaDuracionNs.setText(this.duracionNs.getValue() + this.translations.getString("VentanaHija._ns."));
             this.etiquetaPasoNs.setText(this.pasoNs.getValue() + this.translations.getString("VentanaHija._ns."));
-            scenario.getSimulation().setSimulationLengthInNs(new TTimestamp(duracionMs.getValue(), duracionNs.getValue()).getTotalAsNanoseconds());
-            scenario.getSimulation().setSimulationStepLengthInNs(pasoNs.getValue());
+            this.scenario.getSimulation().setSimulationLengthInNs(new TTimestamp(this.duracionMs.getValue(), this.duracionNs.getValue()).getTotalAsNanoseconds());
+            this.scenario.getSimulation().setSimulationStepLengthInNs(this.pasoNs.getValue());
         }
     }
 
@@ -1367,7 +1367,7 @@ public class JScenarioWindow extends JInternalFrame {
      */
     private void mlsPorTicCambiado(ChangeEvent evt) {//GEN-FIRST:event_mlsPorTicCambiado
         this.etiquetaMlsPorTic.setText(this.mlsPorTic.getValue() + this.translations.getString("VentanaHija.Simulacion.etiquetaMsTic"));
-        panelSimulacion.ponerMlsPorTic(this.mlsPorTic.getValue());
+        this.panelSimulacion.ponerMlsPorTic(this.mlsPorTic.getValue());
     }//GEN-LAST:event_mlsPorTicCambiado
 
     /**
@@ -1379,13 +1379,13 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void clicEnPopUpDisenioFondoOcultarNombreEnlaces(ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoOcultarNombreEnlaces
-        Iterator it = scenario.getTopology().getLinksIterator();
+        Iterator it = this.scenario.getTopology().getLinksIterator();
         TLink enlaceAux;
         while (it.hasNext()) {
             enlaceAux = (TLink) it.next();
             enlaceAux.setShowName(false);
         }
-        panelDisenio.repaint();
+        this.panelDisenio.repaint();
         this.scenario.setModified(true);
     }//GEN-LAST:event_clicEnPopUpDisenioFondoOcultarNombreEnlaces
 
@@ -1397,13 +1397,13 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void clicEnPopUpDisenioFondoVerNombreEnlaces(ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoVerNombreEnlaces
-        Iterator it = scenario.getTopology().getLinksIterator();
+        Iterator it = this.scenario.getTopology().getLinksIterator();
         TLink enlaceAux;
         while (it.hasNext()) {
             enlaceAux = (TLink) it.next();
             enlaceAux.setShowName(true);
         }
-        panelDisenio.repaint();
+        this.panelDisenio.repaint();
         this.scenario.setModified(true);
     }//GEN-LAST:event_clicEnPopUpDisenioFondoVerNombreEnlaces
 
@@ -1416,13 +1416,13 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void clicEnPopUpDisenioFondoOcultarNombreNodos(ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoOcultarNombreNodos
-        Iterator it = scenario.getTopology().getNodesIterator();
+        Iterator it = this.scenario.getTopology().getNodesIterator();
         TNode nodoAux;
         while (it.hasNext()) {
             nodoAux = (TNode) it.next();
             nodoAux.setShowName(false);
         }
-        panelDisenio.repaint();
+        this.panelDisenio.repaint();
         this.scenario.setModified(true);
     }//GEN-LAST:event_clicEnPopUpDisenioFondoOcultarNombreNodos
 
@@ -1434,13 +1434,13 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void clicEnPopUpDisenioFondoVerNombreNodos(ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoVerNombreNodos
-        Iterator it = scenario.getTopology().getNodesIterator();
+        Iterator it = this.scenario.getTopology().getNodesIterator();
         TNode nodoAux;
         while (it.hasNext()) {
             nodoAux = (TNode) it.next();
             nodoAux.setShowName(true);
         }
-        panelDisenio.repaint();
+        this.panelDisenio.repaint();
         this.scenario.setModified(true);
     }//GEN-LAST:event_clicEnPopUpDisenioFondoVerNombreNodos
 
@@ -1457,8 +1457,8 @@ public class JScenarioWindow extends JInternalFrame {
         vb.show();
         boolean respuesta = vb.getUserAnswer();
         if (respuesta) {
-            scenario.getTopology().removeAllElements();
-            panelDisenio.repaint();
+            this.scenario.getTopology().removeAllElements();
+            this.panelDisenio.repaint();
         }
         this.scenario.setModified(true);
     }//GEN-LAST:event_clicEnPopUpDisenioFondoEliminar
@@ -1476,14 +1476,14 @@ public class JScenarioWindow extends JInternalFrame {
         this.controlTemporizacionDesactivado = true;
         long durac = esc.getSimulation().getSimulationLengthInNs();
         long pas = esc.getSimulation().getSimulationStepLengthInNs();
-        scenario = esc;
-        panelDisenio.setTopology(esc.getTopology());
-        panelSimulacion.ponerTopologia(esc.getTopology());
-        nodoSeleccionado = null;
-        elementoDisenioClicDerecho = null;
-        aProgresoGeneracion = new TProgressEventListener(barraDeProgreso);
+        this.scenario = esc;
+        this.panelDisenio.setTopology(esc.getTopology());
+        this.panelSimulacion.ponerTopologia(esc.getTopology());
+        this.nodoSeleccionado = null;
+        this.elementoDisenioClicDerecho = null;
+        this.aProgresoGeneracion = new TProgressEventListener(this.barraDeProgreso);
         try {
-            esc.getTopology().getTimer().addProgressEventListener(aProgresoGeneracion);
+            esc.getTopology().getTimer().addProgressEventListener(this.aProgresoGeneracion);
         } catch (EProgressEventGeneratorOnlyAllowASingleListener e) {
             e.printStackTrace();
         }
@@ -1504,7 +1504,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.descripcionEscenario.setText(esc.getDescription());
         this.descripcionEscenario.setCaretPosition(1);
         this.controlTemporizacionDesactivado = false;
-        scenario.getSimulation().setSimulationPanel(this.panelSimulacion);
+        this.scenario.getSimulation().setSimulationPanel(this.panelSimulacion);
         this.controlarParametrosTemporales();
     }
 
@@ -1516,34 +1516,34 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt Evento que hace que se dispare este m�todo.
      */
     private void clicEnAniadirEnlace(MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirEnlace
-        if (scenario.getTopology().getNumberOfNodes() < 2) {
-            JWarningWindow va = new JWarningWindow(parent, true, imageBroker);
+        if (this.scenario.getTopology().getNumberOfNodes() < 2) {
+            JWarningWindow va = new JWarningWindow(this.parent, true, this.imageBroker);
             va.setWarningMessage(this.translations.getString("VentanaHija.ErrorAlMenosDosNodos"));
             va.show();
         } else {
             TLinkConfig config = new TLinkConfig();
-            JLinkWindow venlace = new JLinkWindow(scenario.getTopology(), imageBroker, parent, true);
+            JLinkWindow venlace = new JLinkWindow(this.scenario.getTopology(), this.imageBroker, this.parent, true);
             venlace.setConfiguration(config, false);
             //venlace.loadAllNodesThatHaveAvailablePorts();
             venlace.show();
             if (config.isWellConfigured()) {
                 try {
                     if (config.getLinkType() == TLink.INTERNAL_LINK) {
-                        TInternalLink enlaceInterno = new TInternalLink(scenario.getTopology().getElementsIDGenerator().getNew(), scenario.getTopology().getEventIDGenerator(), scenario.getTopology());
+                        TInternalLink enlaceInterno = new TInternalLink(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
                         enlaceInterno.configure(config, scenario.getTopology(), false);
-                        scenario.getTopology().addLink(enlaceInterno);
+                        this.scenario.getTopology().addLink(enlaceInterno);
                     } else {
-                        TExternalLink enlaceExterno = new TExternalLink(scenario.getTopology().getElementsIDGenerator().getNew(), scenario.getTopology().getEventIDGenerator(), scenario.getTopology());
-                        enlaceExterno.configure(config, scenario.getTopology(), false);
-                        scenario.getTopology().addLink(enlaceExterno);
+                        TExternalLink enlaceExterno = new TExternalLink(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+                        enlaceExterno.configure(config, this.scenario.getTopology(), false);
+                        this.scenario.getTopology().addLink(enlaceExterno);
                     }
-                    panelDisenio.repaint();
+                    this.panelDisenio.repaint();
                 } catch (Exception e) {
                     JErrorWindow err;
-                    err = new JErrorWindow(parent, true, imageBroker);
+                    err = new JErrorWindow(this.parent, true, this.imageBroker);
                     err.setErrorMessage(e.toString());
                     err.show();
-                };
+                }
                 this.scenario.setModified(true);
             } else {
                 config = null;
@@ -1565,31 +1565,31 @@ public class JScenarioWindow extends JInternalFrame {
         vb.show();
         boolean respuesta = vb.getUserAnswer();
         if (respuesta) {
-            if (elementoDisenioClicDerecho != null) {
-                if (elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
-                    TNode nt = (TNode) elementoDisenioClicDerecho;
+            if (this.elementoDisenioClicDerecho != null) {
+                if (this.elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
+                    TNode nt = (TNode) this.elementoDisenioClicDerecho;
                     if (nt.getNodeType() == TNode.TRAFFIC_SINK) {
                         if (this.scenario.getTopology().isThereAnyNodeGeneratingTrafficFor((TTrafficSinkNode) nt)) {
                             JWarningWindow va;
-                            va = new JWarningWindow(parent, true, imageBroker);
+                            va = new JWarningWindow(this.parent, true, this.imageBroker);
                             va.setWarningMessage(this.translations.getString("JVentanaHija.NoPuedoBorrarReceptor"));
                             va.show();
-                            elementoDisenioClicDerecho = null;
+                            this.elementoDisenioClicDerecho = null;
                         } else {
-                            scenario.getTopology().disconnectNodeAndRemove(nt);
-                            elementoDisenioClicDerecho = null;
-                            panelDisenio.repaint();
+                            this.scenario.getTopology().disconnectNodeAndRemove(nt);
+                            this.elementoDisenioClicDerecho = null;
+                            this.panelDisenio.repaint();
                         }
                     } else {
-                        scenario.getTopology().disconnectNodeAndRemove(nt);
-                        elementoDisenioClicDerecho = null;
-                        panelDisenio.repaint();
+                        this.scenario.getTopology().disconnectNodeAndRemove(nt);
+                        this.elementoDisenioClicDerecho = null;
+                        this.panelDisenio.repaint();
                     }
                 } else {
-                    TLink ent = (TLink) elementoDisenioClicDerecho;
-                    scenario.getTopology().removeLink(ent);
-                    elementoDisenioClicDerecho = null;
-                    panelDisenio.repaint();
+                    TLink ent = (TLink) this.elementoDisenioClicDerecho;
+                    this.scenario.getTopology().removeLink(ent);
+                    this.elementoDisenioClicDerecho = null;
+                    this.panelDisenio.repaint();
                 }
                 this.scenario.setModified(true);
             }
@@ -1606,17 +1606,17 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void clicEnPopUpDisenioVerNombre(ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioVerNombre
-        if (elementoDisenioClicDerecho != null) {
-            if (elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
-                TNode nt = (TNode) elementoDisenioClicDerecho;
-                nt.setShowName(dVerNombreMenuItem.isSelected());
-                elementoDisenioClicDerecho = null;
-                panelDisenio.repaint();
+        if (this.elementoDisenioClicDerecho != null) {
+            if (this.elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
+                TNode nt = (TNode) this.elementoDisenioClicDerecho;
+                nt.setShowName(this.dVerNombreMenuItem.isSelected());
+                this.elementoDisenioClicDerecho = null;
+                this.panelDisenio.repaint();
             } else {
-                TLink ent = (TLink) elementoDisenioClicDerecho;
-                ent.setShowName(dVerNombreMenuItem.isSelected());
-                elementoDisenioClicDerecho = null;
-                panelDisenio.repaint();
+                TLink ent = (TLink) this.elementoDisenioClicDerecho;
+                ent.setShowName(this.dVerNombreMenuItem.isSelected());
+                this.elementoDisenioClicDerecho = null;
+                this.panelDisenio.repaint();
             }
             this.scenario.setModified(true);
         }
@@ -1631,23 +1631,23 @@ public class JScenarioWindow extends JInternalFrame {
      */
     private void clicDerechoEnPanelDisenio(MouseEvent evt) {//GEN-FIRST:event_clicDerechoEnPanelDisenio
         if (evt.getButton() == MouseEvent.BUTTON3) {
-            TTopologyElement et = scenario.getTopology().getElementInScreenPosition(evt.getPoint());
+            TTopologyElement et = this.scenario.getTopology().getElementInScreenPosition(evt.getPoint());
             if (et == null) {
-                diseFondoPopUp.show(this, evt.getX() + 7, evt.getY() - 27);
+                this.diseFondoPopUp.show(this, evt.getX() + 7, evt.getY() - 27);
             } else if (et.getElementType() == TTopologyElement.NODE) {
                 TNode nt = (TNode) et;
-                dVerNombreMenuItem.setSelected(nt.getShowName());
-                elementoDisenioClicDerecho = et;
-                diseElementoPopUp.show(this, evt.getX() + 7, evt.getY() + 15);
+                this.dVerNombreMenuItem.setSelected(nt.getShowName());
+                this.elementoDisenioClicDerecho = et;
+                this.diseElementoPopUp.show(this, evt.getX() + 7, evt.getY() + 15);
             } else if (et.getElementType() == TTopologyElement.LINK) {
                 TLink ent = (TLink) et;
-                dVerNombreMenuItem.setSelected(ent.getShowName());
-                elementoDisenioClicDerecho = et;
-                diseElementoPopUp.show(this, evt.getX() + 7, evt.getY() + 15);
+                this.dVerNombreMenuItem.setSelected(ent.getShowName());
+                this.elementoDisenioClicDerecho = et;
+                this.diseElementoPopUp.show(this, evt.getX() + 7, evt.getY() + 15);
             }
         } else {
-            elementoDisenioClicDerecho = null;
-            panelDisenio.repaint();
+            this.elementoDisenioClicDerecho = null;
+            this.panelDisenio.repaint();
         }
     }//GEN-LAST:event_clicDerechoEnPanelDisenio
 
@@ -1661,23 +1661,23 @@ public class JScenarioWindow extends JInternalFrame {
     private void clicEnAniadirLSRA(MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLSRA
         TActiveLSRNode lsra = null;
         try {
-            lsra = new TActiveLSRNode(scenario.getTopology().getElementsIDGenerator().getNew(), scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), scenario.getTopology().getEventIDGenerator(), scenario.getTopology());
+            lsra = new TActiveLSRNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
         } catch (Exception e) {
             JErrorWindow err;
-            err = new JErrorWindow(parent, true, imageBroker);
+            err = new JErrorWindow(this.parent, true, this.imageBroker);
             err.setErrorMessage(e.toString());
             err.show();
         }
-        JActiveLSRWindow vlsra = new JActiveLSRWindow(scenario.getTopology(), panelDisenio, imageBroker, parent, true);
+        JActiveLSRWindow vlsra = new JActiveLSRWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
         vlsra.setConfiguration(lsra, false);
         vlsra.show();
         if (lsra.isWellConfigured()) {
             try {
-                scenario.getTopology().addNode(lsra);
-                panelDisenio.repaint();
+                this.scenario.getTopology().addNode(lsra);
+                this.panelDisenio.repaint();
             } catch (Exception e) {
                 JErrorWindow err;
-                err = new JErrorWindow(parent, true, imageBroker);
+                err = new JErrorWindow(this.parent, true, this.imageBroker);
                 err.setErrorMessage(e.toString());
                 err.show();
             };
@@ -1697,26 +1697,26 @@ public class JScenarioWindow extends JInternalFrame {
     private void clicEnAniadirLSR(MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLSR
         TLSRNode lsr = null;
         try {
-            lsr = new TLSRNode(scenario.getTopology().getElementsIDGenerator().getNew(), scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), scenario.getTopology().getEventIDGenerator(), scenario.getTopology());
+            lsr = new TLSRNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
         } catch (Exception e) {
             JErrorWindow err;
-            err = new JErrorWindow(parent, true, imageBroker);
+            err = new JErrorWindow(this.parent, true, this.imageBroker);
             err.setErrorMessage(e.toString());
             err.show();
         }
-        JLSRWindow vlsr = new JLSRWindow(scenario.getTopology(), panelDisenio, imageBroker, parent, true);
+        JLSRWindow vlsr = new JLSRWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
         vlsr.setConfiguration(lsr, false);
         vlsr.show();
         if (lsr.isWellConfigured()) {
             try {
-                scenario.getTopology().addNode(lsr);
-                panelDisenio.repaint();
+                this.scenario.getTopology().addNode(lsr);
+                this.panelDisenio.repaint();
             } catch (Exception e) {
                 JErrorWindow err;
-                err = new JErrorWindow(parent, true, imageBroker);
+                err = new JErrorWindow(this.parent, true, this.imageBroker);
                 err.setErrorMessage(e.toString());
                 err.show();
-            };
+            }
             this.scenario.setModified(true);
         } else {
             lsr = null;
@@ -1733,26 +1733,26 @@ public class JScenarioWindow extends JInternalFrame {
     private void clicEnAniadirLERA(MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLERA
         TActiveLERNode lera = null;
         try {
-            lera = new TActiveLERNode(scenario.getTopology().getElementsIDGenerator().getNew(), scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), scenario.getTopology().getEventIDGenerator(), scenario.getTopology());
+            lera = new TActiveLERNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
         } catch (Exception e) {
             JErrorWindow err;
-            err = new JErrorWindow(parent, true, imageBroker);
+            err = new JErrorWindow(this.parent, true, this.imageBroker);
             err.setErrorMessage(e.toString());
             err.show();
         }
-        JActiveLERWindow vlera = new JActiveLERWindow(scenario.getTopology(), panelDisenio, imageBroker, parent, true);
+        JActiveLERWindow vlera = new JActiveLERWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
         vlera.setConfiguration(lera, false);
         vlera.show();
         if (lera.isWellConfigured()) {
             try {
-                scenario.getTopology().addNode(lera);
-                panelDisenio.repaint();
+                this.scenario.getTopology().addNode(lera);
+                this.panelDisenio.repaint();
             } catch (Exception e) {
                 JErrorWindow err;
-                err = new JErrorWindow(parent, true, imageBroker);
+                err = new JErrorWindow(this.parent, true, this.imageBroker);
                 err.setErrorMessage(e.toString());
                 err.show();
-            };
+            }
             this.scenario.setModified(true);
         } else {
             lera = null;
@@ -1770,23 +1770,23 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonSobrePanelSimulacion(MouseEvent evt) {//GEN-FIRST:event_ratonSobrePanelSimulacion
-        TTopology topo = scenario.getTopology();
+        TTopology topo = this.scenario.getTopology();
         TTopologyElement et = topo.getElementInScreenPosition(evt.getPoint());
         if (et != null) {
             this.setCursor(new Cursor(Cursor.HAND_CURSOR));
             if (et.getElementType() == TTopologyElement.NODE) {
                 TNode nt = (TNode) et;
                 if (nt.getPorts().isArtificiallyCongested()) {
-                    panelSimulacion.setToolTipText(this.translations.getString("JVentanaHija.Congestion") + nt.getPorts().getCongestionLevel() + this.translations.getString("JVentanaHija.POrcentaje") + this.translations.getString("VentanaHija.paraDejarDeCongestionar"));
+                    this.panelSimulacion.setToolTipText(this.translations.getString("JVentanaHija.Congestion") + nt.getPorts().getCongestionLevel() + this.translations.getString("JVentanaHija.POrcentaje") + this.translations.getString("VentanaHija.paraDejarDeCongestionar"));
                 } else {
-                    panelSimulacion.setToolTipText(this.translations.getString("JVentanaHija.Congestion") + nt.getPorts().getCongestionLevel() + this.translations.getString("JVentanaHija.POrcentaje") + this.translations.getString("VentanaHija.paraCongestionar"));
+                    this.panelSimulacion.setToolTipText(this.translations.getString("JVentanaHija.Congestion") + nt.getPorts().getCongestionLevel() + this.translations.getString("JVentanaHija.POrcentaje") + this.translations.getString("VentanaHija.paraCongestionar"));
                 }
             } else if (et.getElementType() == TTopologyElement.LINK) {
                 TLink ent = (TLink) et;
                 if (ent.isBroken()) {
-                    panelSimulacion.setToolTipText(this.translations.getString("JVentanaHija.EnlaceRoto"));
+                    this.panelSimulacion.setToolTipText(this.translations.getString("JVentanaHija.EnlaceRoto"));
                 } else {
-                    panelSimulacion.setToolTipText(this.translations.getString("JVentanaHija.EnlaceFuncionando"));
+                    this.panelSimulacion.setToolTipText(this.translations.getString("JVentanaHija.EnlaceFuncionando"));
                 }
             }
         } else {
@@ -1810,20 +1810,20 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt Evento que hace que se dispare este m�todo.
      */
     private void ratonSobrePanelDisenio(MouseEvent evt) {//GEN-FIRST:event_ratonSobrePanelDisenio
-        TTopology topo = scenario.getTopology();
+        TTopology topo = this.scenario.getTopology();
         TTopologyElement et = topo.getElementInScreenPosition(evt.getPoint());
         if (et != null) {
             this.setCursor(new Cursor(Cursor.HAND_CURSOR));
             if (et.getElementType() == TTopologyElement.NODE) {
                 TNode nt = (TNode) et;
-                panelDisenio.setToolTipText(this.translations.getString("JVentanaHija.PanelDisenio.IP") + nt.getIPv4Address());
+                this.panelDisenio.setToolTipText(this.translations.getString("JVentanaHija.PanelDisenio.IP") + nt.getIPv4Address());
             } else if (et.getElementType() == TTopologyElement.LINK) {
                 TLink ent = (TLink) et;
-                panelDisenio.setToolTipText(this.translations.getString("JVentanaHija.panelDisenio.Retardo") + ent.getDelay() + this.translations.getString("JVentanaHija.panelDisenio.ns"));
+                this.panelDisenio.setToolTipText(this.translations.getString("JVentanaHija.panelDisenio.Retardo") + ent.getDelay() + this.translations.getString("JVentanaHija.panelDisenio.ns"));
             }
         } else {
             this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            panelDisenio.setToolTipText(null);
+            this.panelDisenio.setToolTipText(null);
         }
     }//GEN-LAST:event_ratonSobrePanelDisenio
 
@@ -1837,23 +1837,23 @@ public class JScenarioWindow extends JInternalFrame {
      */
     private void arrastrandoEnPanelDisenio(MouseEvent evt) {//GEN-FIRST:event_arrastrandoEnPanelDisenio
         if (evt.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
-            if (nodoSeleccionado != null) {
+            if (this.nodoSeleccionado != null) {
                 TTopology topo = scenario.getTopology();
                 Point p2 = evt.getPoint();
                 if (p2.x < 0) {
                     p2.x = 0;
                 }
-                if (p2.x > panelDisenio.getSize().width) {
-                    p2.x = panelDisenio.getSize().width;
+                if (p2.x > this.panelDisenio.getSize().width) {
+                    p2.x = this.panelDisenio.getSize().width;
                 }
                 if (p2.y < 0) {
                     p2.y = 0;
                 }
-                if (p2.y > panelDisenio.getSize().height) {
-                    p2.y = panelDisenio.getSize().height;
+                if (p2.y > this.panelDisenio.getSize().height) {
+                    p2.y = this.panelDisenio.getSize().height;
                 }
-                nodoSeleccionado.setScreenPosition(new Point(p2.x, p2.y));
-                panelDisenio.repaint();
+                this.nodoSeleccionado.setScreenPosition(new Point(p2.x, p2.y));
+                this.panelDisenio.repaint();
                 this.scenario.setModified(true);
             }
         }
@@ -1869,12 +1869,12 @@ public class JScenarioWindow extends JInternalFrame {
      */
     private void clicSoltadoEnPanelDisenio(MouseEvent evt) {//GEN-FIRST:event_clicSoltadoEnPanelDisenio
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            if (nodoSeleccionado != null) {
-                nodoSeleccionado.setSelected(TNode.UNSELECTED);
-                nodoSeleccionado = null;
+            if (this.nodoSeleccionado != null) {
+                this.nodoSeleccionado.setSelected(TNode.UNSELECTED);
+                this.nodoSeleccionado = null;
                 this.scenario.setModified(true);
             }
-            panelDisenio.repaint();
+            this.panelDisenio.repaint();
         }
     }//GEN-LAST:event_clicSoltadoEnPanelDisenio
 
@@ -1887,13 +1887,13 @@ public class JScenarioWindow extends JInternalFrame {
      */
     private void clicEnPanelDisenio(MouseEvent evt) {//GEN-FIRST:event_clicEnPanelDisenio
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            TTopology topo = scenario.getTopology();
-            nodoSeleccionado = topo.getNodeInScreenPosition(evt.getPoint());
-            if (nodoSeleccionado != null) {
-                nodoSeleccionado.setSelected(TNode.SELECTED);
+            TTopology topo = this.scenario.getTopology();
+            this.nodoSeleccionado = topo.getNodeInScreenPosition(evt.getPoint());
+            if (this.nodoSeleccionado != null) {
+                this.nodoSeleccionado.setSelected(TNode.SELECTED);
                 this.scenario.setModified(true);
             }
-            panelDisenio.repaint();
+            this.panelDisenio.repaint();
         }
     }//GEN-LAST:event_clicEnPanelDisenio
 
@@ -1905,7 +1905,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDelIconoPausar(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoPausar
-        iconoPausar.setIcon(imageBroker.getIcon(TImageBroker.BOTON_PAUSA));
+        this.iconoPausar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PAUSA));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_ratonSaleDelIconoPausar
 
@@ -1917,7 +1917,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt Evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoPausar(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoPausar
-        iconoPausar.setIcon(imageBroker.getIcon(TImageBroker.BOTON_PAUSA_BRILLO));
+        this.iconoPausar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PAUSA_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_ratonEntraEnIconoPausar
 
@@ -1929,7 +1929,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt Evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDelIconoFinalizar(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoFinalizar
-        iconoFinalizar.setIcon(imageBroker.getIcon(TImageBroker.BOTON_PARAR));
+        this.iconoFinalizar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PARAR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_ratonSaleDelIconoFinalizar
 
@@ -1941,7 +1941,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt Evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoFinalizar(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoFinalizar
-        iconoFinalizar.setIcon(imageBroker.getIcon(TImageBroker.BOTON_PARAR_BRILLO));
+        this.iconoFinalizar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PARAR_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_ratonEntraEnIconoFinalizar
 
@@ -1953,7 +1953,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt Evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDelIconoReanudar(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoReanudar
-        iconoReanudar.setIcon(imageBroker.getIcon(TImageBroker.BOTON_COMENZAR));
+        this.iconoReanudar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_COMENZAR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_ratonSaleDelIconoReanudar
 
@@ -1965,7 +1965,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt Evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoReanudar(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoReanudar
-        iconoReanudar.setIcon(imageBroker.getIcon(TImageBroker.BOTON_COMENZAR_BRILLO));
+        this.iconoReanudar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_COMENZAR_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_ratonEntraEnIconoReanudar
 
@@ -1977,7 +1977,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt Evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDelIconoComenzar(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoComenzar
-        iconoComenzar.setIcon(imageBroker.getIcon(TImageBroker.BOTON_GENERAR));
+        this.iconoComenzar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_GENERAR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_ratonSaleDelIconoComenzar
 
@@ -1989,7 +1989,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt Evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoComenzar(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoComenzar
-        iconoComenzar.setIcon(imageBroker.getIcon(TImageBroker.BOTON_GENERAR_BRILLO));
+        this.iconoComenzar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_GENERAR_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_ratonEntraEnIconoComenzar
 
@@ -2003,26 +2003,26 @@ public class JScenarioWindow extends JInternalFrame {
     private void clicEnAniadirLER(MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLER
         TLERNode ler = null;
         try {
-            ler = new TLERNode(scenario.getTopology().getElementsIDGenerator().getNew(), scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), scenario.getTopology().getEventIDGenerator(), scenario.getTopology());
+            ler = new TLERNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
         } catch (Exception e) {
             JErrorWindow err;
-            err = new JErrorWindow(parent, true, imageBroker);
+            err = new JErrorWindow(this.parent, true, this.imageBroker);
             err.setErrorMessage(e.toString());
             err.show();
         }
-        JLERWindow vler = new JLERWindow(scenario.getTopology(), panelDisenio, imageBroker, parent, true);
+        JLERWindow vler = new JLERWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
         vler.setConfiguration(ler, false);
         vler.show();
         if (ler.isWellConfigured()) {
             try {
-                scenario.getTopology().addNode(ler);
-                panelDisenio.repaint();
+                this.scenario.getTopology().addNode(ler);
+                this.panelDisenio.repaint();
             } catch (Exception e) {
                 JErrorWindow err;
-                err = new JErrorWindow(parent, true, imageBroker);
+                err = new JErrorWindow(this.parent, true, this.imageBroker);
                 err.setErrorMessage(e.toString());
                 err.show();
-            };
+            }
             this.scenario.setModified(true);
         } else {
             ler = null;
@@ -2037,7 +2037,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo
      */
     private void ratonSaleDeIconoEnlace(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoEnlace
-        iconoEnlace.setIcon(imageBroker.getIcon(TImageBroker.ENLACE_MENU));
+        this.iconoEnlace.setIcon(this.imageBroker.getIcon(TImageBroker.ENLACE_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_ratonSaleDeIconoEnlace
 
@@ -2049,7 +2049,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoEnlace(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoEnlace
-        iconoEnlace.setIcon(imageBroker.getIcon(TImageBroker.ENLACE_MENU_BRILLO));
+        this.iconoEnlace.setIcon(this.imageBroker.getIcon(TImageBroker.ENLACE_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_ratonEntraEnIconoEnlace
 
@@ -2061,7 +2061,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDeIconoLSRA(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLSRA
-        iconoLSRA.setIcon(imageBroker.getIcon(TImageBroker.LSRA_MENU));
+        this.iconoLSRA.setIcon(this.imageBroker.getIcon(TImageBroker.LSRA_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_ratonSaleDeIconoLSRA
 
@@ -2073,7 +2073,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoLSRA(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLSRA
-        iconoLSRA.setIcon(imageBroker.getIcon(TImageBroker.LSRA_MENU_BRILLO));
+        this.iconoLSRA.setIcon(this.imageBroker.getIcon(TImageBroker.LSRA_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_ratonEntraEnIconoLSRA
 
@@ -2085,7 +2085,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDeIconoLSR(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLSR
-        iconoLSR.setIcon(imageBroker.getIcon(TImageBroker.LSR_MENU));
+        this.iconoLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSR_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_ratonSaleDeIconoLSR
 
@@ -2097,7 +2097,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoLSR(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLSR
-        iconoLSR.setIcon(imageBroker.getIcon(TImageBroker.LSR_MENU_BRILLO));
+        this.iconoLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSR_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_ratonEntraEnIconoLSR
 
@@ -2109,7 +2109,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDeIconoLERA(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLERA
-        iconoLERA.setIcon(imageBroker.getIcon(TImageBroker.LERA_MENU));
+        this.iconoLERA.setIcon(this.imageBroker.getIcon(TImageBroker.LERA_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_ratonSaleDeIconoLERA
 
@@ -2121,7 +2121,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoLERA(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLERA
-        iconoLERA.setIcon(imageBroker.getIcon(TImageBroker.LERA_MENU_BRILLO));
+        this.iconoLERA.setIcon(this.imageBroker.getIcon(TImageBroker.LERA_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_ratonEntraEnIconoLERA
 
@@ -2133,7 +2133,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDeIconoLER(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLER
-        iconoLER.setIcon(imageBroker.getIcon(TImageBroker.LER_MENU));
+        this.iconoLER.setIcon(this.imageBroker.getIcon(TImageBroker.LER_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_ratonSaleDeIconoLER
 
@@ -2145,7 +2145,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoLER(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLER
-        iconoLER.setIcon(imageBroker.getIcon(TImageBroker.LER_MENU_BRILLO));
+        this.iconoLER.setIcon(this.imageBroker.getIcon(TImageBroker.LER_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_ratonEntraEnIconoLER
 
@@ -2157,7 +2157,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDeIconoReceptor(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoReceptor
-        iconoReceptor.setIcon(imageBroker.getIcon(TImageBroker.RECEPTOR_MENU));
+        this.iconoReceptor.setIcon(this.imageBroker.getIcon(TImageBroker.RECEPTOR_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_ratonSaleDeIconoReceptor
 
@@ -2169,7 +2169,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoReceptor(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoReceptor
-        iconoReceptor.setIcon(imageBroker.getIcon(TImageBroker.RECEPTOR_MENU_BRILLO));
+        this.iconoReceptor.setIcon(this.imageBroker.getIcon(TImageBroker.RECEPTOR_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_ratonEntraEnIconoReceptor
 
@@ -2181,7 +2181,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDeIconoEmisor(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoEmisor
-        iconoEmisor.setIcon(imageBroker.getIcon(TImageBroker.EMISOR_MENU));
+        this.iconoEmisor.setIcon(this.imageBroker.getIcon(TImageBroker.EMISOR_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_ratonSaleDeIconoEmisor
 
@@ -2193,7 +2193,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoEmisor(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoEmisor
-        iconoEmisor.setIcon(imageBroker.getIcon(TImageBroker.EMISOR_MENU_BRILLO));
+        this.iconoEmisor.setIcon(this.imageBroker.getIcon(TImageBroker.EMISOR_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_ratonEntraEnIconoEmisor
 
@@ -2207,26 +2207,26 @@ public class JScenarioWindow extends JInternalFrame {
     private void clicEnAniadirReceptor(MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirReceptor
         TTrafficSinkNode receptor = null;
         try {
-            receptor = new TTrafficSinkNode(scenario.getTopology().getElementsIDGenerator().getNew(), scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), scenario.getTopology().getEventIDGenerator(), scenario.getTopology());
+            receptor = new TTrafficSinkNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
         } catch (Exception e) {
             JErrorWindow err;
-            err = new JErrorWindow(parent, true, imageBroker);
+            err = new JErrorWindow(this.parent, true, this.imageBroker);
             err.setErrorMessage(e.toString());
             err.show();
         }
-        JTrafficSinkWindow vr = new JTrafficSinkWindow(scenario.getTopology(), panelDisenio, imageBroker, parent, true);
+        JTrafficSinkWindow vr = new JTrafficSinkWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
         vr.setConfiguration(receptor, false);
         vr.show();
         if (receptor.isWellConfigured()) {
             try {
-                scenario.getTopology().addNode(receptor);
-                panelDisenio.repaint();
+                this.scenario.getTopology().addNode(receptor);
+                this.panelDisenio.repaint();
             } catch (Exception e) {
                 JErrorWindow err;
-                err = new JErrorWindow(parent, true, imageBroker);
+                err = new JErrorWindow(this.parent, true, this.imageBroker);
                 err.setErrorMessage(e.toString());
                 err.show();
-            };
+            }
             this.scenario.setModified(true);
         } else {
             receptor = null;
@@ -2241,7 +2241,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void clicEnAniadirEmisorDeTrafico(MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirEmisorDeTrafico
-        TTopology t = scenario.getTopology();
+        TTopology t = this.scenario.getTopology();
         Iterator it = t.getNodesIterator();
         TNode nt;
         boolean hayDestino = false;
@@ -2252,32 +2252,32 @@ public class JScenarioWindow extends JInternalFrame {
             }
         }
         if (!hayDestino) {
-            JWarningWindow va = new JWarningWindow(parent, true, imageBroker);
+            JWarningWindow va = new JWarningWindow(this.parent, true, this.imageBroker);
             va.setWarningMessage(this.translations.getString("JVentanaHija.NecesitaHaberUnReceptor"));
             va.show();
         } else {
             TTrafficGeneratorNode emisor = null;
             try {
-                emisor = new TTrafficGeneratorNode(scenario.getTopology().getElementsIDGenerator().getNew(), scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), scenario.getTopology().getEventIDGenerator(), scenario.getTopology());
+                emisor = new TTrafficGeneratorNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             } catch (Exception e) {
                 JErrorWindow err;
-                err = new JErrorWindow(parent, true, imageBroker);
+                err = new JErrorWindow(this.parent, true, this.imageBroker);
                 err.setErrorMessage(e.toString());
                 err.show();
             }
-            JTrafficGeneratorWindow ve = new JTrafficGeneratorWindow(scenario.getTopology(), panelDisenio, imageBroker, parent, true);
+            JTrafficGeneratorWindow ve = new JTrafficGeneratorWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
             ve.setConfiguration(emisor, false);
             ve.show();
             if (emisor.isWellConfigured()) {
                 try {
-                    scenario.getTopology().addNode(emisor);
-                    panelDisenio.repaint();
+                    this.scenario.getTopology().addNode(emisor);
+                    this.panelDisenio.repaint();
                 } catch (Exception e) {
                     JErrorWindow err;
-                    err = new JErrorWindow(parent, true, imageBroker);
+                    err = new JErrorWindow(this.parent, true, this.imageBroker);
                     err.setErrorMessage(e.toString());
                     err.show();
-                };
+                }
                 this.scenario.setModified(true);
             } else {
                 emisor = null;
@@ -2294,7 +2294,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt Evento que hace que este m�todo se dispare.
      */
     private void clicAlPausar(MouseEvent evt) {//GEN-FIRST:event_clicAlPausar
-        if (iconoPausar.isEnabled()) {
+        if (this.iconoPausar.isEnabled()) {
             this.scenario.getTopology().getTimer().setPaused(true);
             activarOpcionesAlDetener();
         }
@@ -2309,7 +2309,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que este m�todo se dispare.
      */
     private void clicEnFinalizar(MouseEvent evt) {//GEN-FIRST:event_clicEnFinalizar
-        if (iconoFinalizar.isEnabled()) {
+        if (this.iconoFinalizar.isEnabled()) {
             this.scenario.getTopology().getTimer().reset();
             this.crearTraza.setEnabled(true);
             this.panelSimulacion.ponerFicheroTraza(null);
@@ -2325,7 +2325,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que este m�todo se dispare.
      */
     private void clicEnReanudar(MouseEvent evt) {//GEN-FIRST:event_clicEnReanudar
-        if (iconoReanudar.isEnabled()) {
+        if (this.iconoReanudar.isEnabled()) {
             activarOpcionesAlComenzar();
             this.scenario.getTopology().getTimer().setPaused(false);
             this.scenario.getTopology().getTimer().restart();
@@ -2340,18 +2340,18 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que este m�todo se dispare.
      */
     private void clicEnComenzar(MouseEvent evt) {//GEN-FIRST:event_clicEnComenzar
-        if (iconoComenzar.isEnabled()) {
-            scenario.reset();
-            if (!scenario.getTopology().getTimer().isRunning()) {
-                scenario.getTopology().getTimer().setFinishTimestamp(new TTimestamp(duracionMs.getValue(), duracionNs.getValue()));
+        if (this.iconoComenzar.isEnabled()) {
+            this.scenario.reset();
+            if (!this.scenario.getTopology().getTimer().isRunning()) {
+                this.scenario.getTopology().getTimer().setFinishTimestamp(new TTimestamp(this.duracionMs.getValue(), this.duracionNs.getValue()));
             }
-            scenario.getTopology().getTimer().setTick(pasoNs.getValue());
+            this.scenario.getTopology().getTimer().setTick(this.pasoNs.getValue());
             crearListaElementosEstadistica();
             this.scenario.setModified(true);
             this.scenario.getTopology().getTimer().reset();
-            panelSimulacion.reset();
-            panelSimulacion.repaint();
-            scenario.simulate();
+            this.panelSimulacion.reset();
+            this.panelSimulacion.repaint();
+            this.scenario.simulate();
             int minimoDelay = this.scenario.getTopology().getMinimumDelay();
             int pasoActual = this.pasoNs.getValue();
             if (pasoActual > minimoDelay) {
@@ -2404,10 +2404,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void activarOpcionesAlDetener() {
-        iconoComenzar.setEnabled(false);
-        iconoReanudar.setEnabled(true);
-        iconoFinalizar.setEnabled(true);
-        iconoPausar.setEnabled(false);
+        this.iconoComenzar.setEnabled(false);
+        this.iconoReanudar.setEnabled(true);
+        this.iconoFinalizar.setEnabled(true);
+        this.iconoPausar.setEnabled(false);
     }
 
     /**
@@ -2417,10 +2417,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void activarOpcionesAlFinalizar() {
-        iconoComenzar.setEnabled(true);
-        iconoReanudar.setEnabled(false);
-        iconoFinalizar.setEnabled(false);
-        iconoPausar.setEnabled(false);
+        this.iconoComenzar.setEnabled(true);
+        this.iconoReanudar.setEnabled(false);
+        this.iconoFinalizar.setEnabled(false);
+        this.iconoPausar.setEnabled(false);
     }
 
     /**
@@ -2430,10 +2430,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void activarOpcionesTrasGenerar() {
-        iconoComenzar.setEnabled(false);
-        iconoReanudar.setEnabled(false);
-        iconoFinalizar.setEnabled(true);
-        iconoPausar.setEnabled(true);
+        this.iconoComenzar.setEnabled(false);
+        this.iconoReanudar.setEnabled(false);
+        this.iconoFinalizar.setEnabled(true);
+        this.iconoPausar.setEnabled(true);
     }
 
     /**
@@ -2443,10 +2443,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void activarOpcionesAlComenzar() {
-        iconoComenzar.setEnabled(false);
-        iconoReanudar.setEnabled(false);
-        iconoFinalizar.setEnabled(true);
-        iconoPausar.setEnabled(true);
+        this.iconoComenzar.setEnabled(false);
+        this.iconoReanudar.setEnabled(false);
+        this.iconoFinalizar.setEnabled(true);
+        this.iconoPausar.setEnabled(true);
     }
 
     /**
@@ -2493,15 +2493,15 @@ public class JScenarioWindow extends JInternalFrame {
                 nombreFich += this.translations.getString(".osm");
             }
             dialogoGuardar.setSelectedFile(new File(nombreFich));
-            scenario.setScenarioFile(dialogoGuardar.getSelectedFile());
+            this.scenario.setScenarioFile(dialogoGuardar.getSelectedFile());
             this.scenario.setSaved(true);
             this.setTitle(this.scenario.getScenarioFile().getName());
-            TOSMSaver almacenador = new TOSMSaver(scenario);
+            TOSMSaver almacenador = new TOSMSaver(this.scenario);
             JDecissionWindow vb = new JDecissionWindow(this.parent, true, this.imageBroker);
             vb.setQuestion(this.translations.getString("JVentanaHija.PreguntaEmpotrarCRC"));
             vb.show();
             boolean conCRC = vb.getUserAnswer();
-            boolean correcto = almacenador.save(scenario.getScenarioFile(), conCRC);
+            boolean correcto = almacenador.save(this.scenario.getScenarioFile(), conCRC);
             if (correcto) {
                 this.scenario.setModified(false);
                 this.scenario.setSaved(true);
@@ -2524,19 +2524,19 @@ public class JScenarioWindow extends JInternalFrame {
 
         // Detengo la simulaci�n antes de cerrar, si es necesario.
         if (this.scenario.getTopology().getTimer().isRunning()) {
-            panelSimulacion.reset();
-            panelSimulacion.repaint();
-            scenario.reset();
-            if (!scenario.getTopology().getTimer().isRunning()) {
-                scenario.getTopology().getTimer().setFinishTimestamp(new TTimestamp(duracionMs.getValue(), duracionNs.getValue()));
+            this.panelSimulacion.reset();
+            this.panelSimulacion.repaint();
+            this.scenario.reset();
+            if (!this.scenario.getTopology().getTimer().isRunning()) {
+                this.scenario.getTopology().getTimer().setFinishTimestamp(new TTimestamp(this.duracionMs.getValue(), this.duracionNs.getValue()));
             }
-            scenario.getTopology().getTimer().setTick(pasoNs.getValue());
+            this.scenario.getTopology().getTimer().setTick(this.pasoNs.getValue());
             this.scenario.getTopology().getTimer().setPaused(false);
             activarOpcionesAlFinalizar();
         }
 
         if (!guardado) {
-            JDecissionWindow vb = new JDecissionWindow(parent, true, imageBroker);
+            JDecissionWindow vb = new JDecissionWindow(this.parent, true, this.imageBroker);
             vb.setQuestion(this.getTitle() + this.translations.getString("JVentanaHija.DialogoGuardar.GuardarPrimeraVez"));
             vb.show();
             boolean respuesta = vb.getUserAnswer();
@@ -2547,18 +2547,18 @@ public class JScenarioWindow extends JInternalFrame {
         } else if ((guardado) && (!modificado)) {
             // No se hace nada, ya est� todo guardado correctamente.
         } else if ((guardado) && (modificado)) {
-            JDecissionWindow vb = new JDecissionWindow(parent, true, imageBroker);
+            JDecissionWindow vb = new JDecissionWindow(this.parent, true, this.imageBroker);
             vb.setQuestion(this.translations.getString("JVentanaHija.DialogoGuardar.CambiosSinguardar1") + " " + this.getTitle() + " " + this.translations.getString("JVentanaHija.DialogoGuardar.CambiosSinguardar2"));
             vb.show();
             boolean respuesta = vb.getUserAnswer();
             vb.dispose();
             if (respuesta) {
-                TOSMSaver almacenador = new TOSMSaver(scenario);
+                TOSMSaver almacenador = new TOSMSaver(this.scenario);
                 JDecissionWindow vb2 = new JDecissionWindow(this.parent, true, this.imageBroker);
                 vb2.setQuestion(this.translations.getString("JVentanaHija.PreguntaEmpotrarCRC"));
                 vb2.show();
                 boolean conCRC = vb2.getUserAnswer();
-                boolean correcto = almacenador.save(scenario.getScenarioFile(), conCRC);
+                boolean correcto = almacenador.save(this.scenario.getScenarioFile(), conCRC);
                 if (correcto) {
                     this.scenario.setModified(false);
                     this.scenario.setSaved(true);
@@ -2581,12 +2581,12 @@ public class JScenarioWindow extends JInternalFrame {
         if (!guardado) {
             this.handleSaveAs();
         } else {
-            TOSMSaver almacenador = new TOSMSaver(scenario);
+            TOSMSaver almacenador = new TOSMSaver(this.scenario);
             JDecissionWindow vb = new JDecissionWindow(this.parent, true, this.imageBroker);
             vb.setQuestion(this.translations.getString("JVentanaHija.PreguntaEmpotrarCRC"));
             vb.show();
             boolean conCRC = vb.getUserAnswer();
-            boolean correcto = almacenador.save(scenario.getScenarioFile(), conCRC);
+            boolean correcto = almacenador.save(this.scenario.getScenarioFile(), conCRC);
             if (correcto) {
                 this.scenario.setModified(false);
                 this.scenario.setSaved(true);
@@ -2657,47 +2657,47 @@ public class JScenarioWindow extends JInternalFrame {
             int numeroGraficos = nt.getStats().getNumberOfAvailableDatasets();
 
             if (numeroGraficos > 0) {
-                grafico1 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset1(),
+                this.grafico1 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset1(),
                         TStats.TIME,
                         TStats.NUMBER_OF_PACKETS,
                         (XYSeriesCollection) nt.getStats().getDataset1(),
                         PlotOrientation.VERTICAL,
                         true, true, true);
-                grafico1.getPlot().setBackgroundPaint(Color.WHITE);
-                grafico1.getPlot().setForegroundAlpha((float) 0.5);
-                grafico1.getPlot().setOutlinePaint(new Color(14, 69, 125));
-                grafico1.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
-                grafico1.setBackgroundPaint(new Color(210, 226, 242));
-                grafico1.setBorderPaint(Color.BLACK);
-                grafico1.getTitle().setPaint(new Color(79, 138, 198));
-                this.panelGrafico1 = new ChartPanel(grafico1);
-                panelGrafico1.setBorder(new LineBorder(Color.BLACK));
-                panelGrafico1.setPreferredSize(new Dimension(600, 300));
+                this.grafico1.getPlot().setBackgroundPaint(Color.WHITE);
+                this.grafico1.getPlot().setForegroundAlpha((float) 0.5);
+                this.grafico1.getPlot().setOutlinePaint(new Color(14, 69, 125));
+                this.grafico1.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
+                this.grafico1.setBackgroundPaint(new Color(210, 226, 242));
+                this.grafico1.setBorderPaint(Color.BLACK);
+                this.grafico1.getTitle().setPaint(new Color(79, 138, 198));
+                this.panelGrafico1 = new ChartPanel(this.grafico1);
+                this.panelGrafico1.setBorder(new LineBorder(Color.BLACK));
+                this.panelGrafico1.setPreferredSize(new Dimension(600, 300));
                 gbc = new GridBagConstraints();
                 gbc.gridx = 0;
                 gbc.gridy = 1;
                 gbc.insets = new Insets(10, 5, 10, 5);
                 gbc.anchor = GridBagConstraints.NORTH;
                 gbc.fill = GridBagConstraints.HORIZONTAL;
-                this.panelAnalisis.add(panelGrafico1, gbc);
+                this.panelAnalisis.add(this.panelGrafico1, gbc);
             }
             if (numeroGraficos > 1) {
-                grafico2 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset2(),
+                this.grafico2 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset2(),
                         TStats.TIME,
                         TStats.NUMBER_OF_PACKETS,
                         (XYSeriesCollection) nt.getStats().getDataset2(),
                         PlotOrientation.VERTICAL,
                         true, true, true);
-                grafico2.getPlot().setBackgroundPaint(Color.WHITE);
-                grafico2.getPlot().setForegroundAlpha((float) 0.5);
-                grafico2.getPlot().setOutlinePaint(new Color(14, 69, 125));
-                grafico2.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
-                grafico2.setBackgroundPaint(new Color(210, 226, 242));
-                grafico2.setBorderPaint(Color.BLACK);
-                grafico2.getTitle().setPaint(new Color(79, 138, 198));
-                this.panelGrafico2 = new ChartPanel(grafico2);
-                panelGrafico2.setPreferredSize(new Dimension(600, 300));
-                panelGrafico2.setBorder(new LineBorder(Color.BLACK));
+                this.grafico2.getPlot().setBackgroundPaint(Color.WHITE);
+                this.grafico2.getPlot().setForegroundAlpha((float) 0.5);
+                this.grafico2.getPlot().setOutlinePaint(new Color(14, 69, 125));
+                this.grafico2.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
+                this.grafico2.setBackgroundPaint(new Color(210, 226, 242));
+                this.grafico2.setBorderPaint(Color.BLACK);
+                this.grafico2.getTitle().setPaint(new Color(79, 138, 198));
+                this.panelGrafico2 = new ChartPanel(this.grafico2);
+                this.panelGrafico2.setPreferredSize(new Dimension(600, 300));
+                this.panelGrafico2.setBorder(new LineBorder(Color.BLACK));
                 gbc = new GridBagConstraints();
                 gbc.gridx = 0;
                 gbc.gridy = 2;
@@ -2707,102 +2707,102 @@ public class JScenarioWindow extends JInternalFrame {
                 this.panelAnalisis.add(panelGrafico2, gbc);
             }
             if (numeroGraficos > 2) {
-                grafico3 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset3(),
+                this.grafico3 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset3(),
                         TStats.TIME,
                         TStats.NUMBER_OF_PACKETS,
                         (XYSeriesCollection) nt.getStats().getDataset3(),
                         PlotOrientation.VERTICAL,
                         true, true, true);
-                grafico3.getPlot().setBackgroundPaint(Color.WHITE);
-                grafico3.getPlot().setForegroundAlpha((float) 0.5);
-                grafico3.getPlot().setOutlinePaint(new Color(14, 69, 125));
-                grafico3.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
-                grafico3.setBackgroundPaint(new Color(210, 226, 242));
-                grafico3.setBorderPaint(Color.BLACK);
-                grafico3.getTitle().setPaint(new Color(79, 138, 198));
-                this.panelGrafico3 = new ChartPanel(grafico3);
-                panelGrafico3.setBorder(new LineBorder(Color.BLACK));
-                panelGrafico3.setPreferredSize(new Dimension(600, 300));
+                this.grafico3.getPlot().setBackgroundPaint(Color.WHITE);
+                this.grafico3.getPlot().setForegroundAlpha((float) 0.5);
+                this.grafico3.getPlot().setOutlinePaint(new Color(14, 69, 125));
+                this.grafico3.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
+                this.grafico3.setBackgroundPaint(new Color(210, 226, 242));
+                this.grafico3.setBorderPaint(Color.BLACK);
+                this.grafico3.getTitle().setPaint(new Color(79, 138, 198));
+                this.panelGrafico3 = new ChartPanel(this.grafico3);
+                this.panelGrafico3.setBorder(new LineBorder(Color.BLACK));
+                this.panelGrafico3.setPreferredSize(new Dimension(600, 300));
                 gbc = new GridBagConstraints();
                 gbc.gridx = 0;
                 gbc.gridy = 3;
                 gbc.insets = new Insets(10, 5, 10, 5);
                 gbc.anchor = GridBagConstraints.NORTH;
                 gbc.fill = GridBagConstraints.HORIZONTAL;
-                this.panelAnalisis.add(panelGrafico3, gbc);
+                this.panelAnalisis.add(this.panelGrafico3, gbc);
             }
             if (numeroGraficos > 3) {
-                grafico4 = ChartFactory.createBarChart(nt.getStats().getTitleOfDataset4(),
+                this.grafico4 = ChartFactory.createBarChart(nt.getStats().getTitleOfDataset4(),
                         TStats.DESCRIPTION,
                         TStats.NUMBER,
                         (DefaultCategoryDataset) nt.getStats().getDataset4(),
                         PlotOrientation.VERTICAL,
                         true, true, true);
-                grafico4.getPlot().setBackgroundPaint(Color.WHITE);
-                grafico4.getPlot().setForegroundAlpha((float) 0.5);
-                grafico4.getPlot().setOutlinePaint(new Color(14, 69, 125));
-                grafico4.setBackgroundPaint(new Color(210, 226, 242));
-                grafico4.setBorderPaint(Color.BLACK);
-                grafico4.getTitle().setPaint(new Color(79, 138, 198));
-                this.panelGrafico4 = new ChartPanel(grafico4);
-                panelGrafico4.setBorder(new LineBorder(Color.BLACK));
-                panelGrafico4.setPreferredSize(new Dimension(600, 300));
+                this.grafico4.getPlot().setBackgroundPaint(Color.WHITE);
+                this.grafico4.getPlot().setForegroundAlpha((float) 0.5);
+                this.grafico4.getPlot().setOutlinePaint(new Color(14, 69, 125));
+                this.grafico4.setBackgroundPaint(new Color(210, 226, 242));
+                this.grafico4.setBorderPaint(Color.BLACK);
+                this.grafico4.getTitle().setPaint(new Color(79, 138, 198));
+                this.panelGrafico4 = new ChartPanel(this.grafico4);
+                this.panelGrafico4.setBorder(new LineBorder(Color.BLACK));
+                this.panelGrafico4.setPreferredSize(new Dimension(600, 300));
                 gbc = new GridBagConstraints();
                 gbc.gridx = 0;
                 gbc.gridy = 4;
                 gbc.insets = new Insets(10, 5, 10, 5);
                 gbc.anchor = GridBagConstraints.NORTH;
                 gbc.fill = GridBagConstraints.HORIZONTAL;
-                this.panelAnalisis.add(panelGrafico4, gbc);
+                this.panelAnalisis.add(this.panelGrafico4, gbc);
             }
             if (numeroGraficos > 4) {
-                grafico5 = ChartFactory.createBarChart(nt.getStats().getTitleOfDataset5(),
+                this.grafico5 = ChartFactory.createBarChart(nt.getStats().getTitleOfDataset5(),
                         TStats.DESCRIPTION,
                         TStats.NUMBER,
                         (DefaultCategoryDataset) nt.getStats().getDataset5(),
                         PlotOrientation.VERTICAL,
                         true, true, true);
-                grafico5.getPlot().setBackgroundPaint(Color.WHITE);
-                grafico5.getPlot().setForegroundAlpha((float) 0.5);
-                grafico5.getPlot().setOutlinePaint(new Color(14, 69, 125));
-                grafico5.setBackgroundPaint(new Color(210, 226, 242));
-                grafico5.setBorderPaint(Color.BLACK);
-                grafico5.getTitle().setPaint(new Color(79, 138, 198));
-                this.panelGrafico5 = new ChartPanel(grafico5);
-                panelGrafico5.setBorder(new LineBorder(Color.BLACK));
-                panelGrafico5.setPreferredSize(new Dimension(600, 300));
+                this.grafico5.getPlot().setBackgroundPaint(Color.WHITE);
+                this.grafico5.getPlot().setForegroundAlpha((float) 0.5);
+                this.grafico5.getPlot().setOutlinePaint(new Color(14, 69, 125));
+                this.grafico5.setBackgroundPaint(new Color(210, 226, 242));
+                this.grafico5.setBorderPaint(Color.BLACK);
+                this.grafico5.getTitle().setPaint(new Color(79, 138, 198));
+                this.panelGrafico5 = new ChartPanel(this.grafico5);
+                this.panelGrafico5.setBorder(new LineBorder(Color.BLACK));
+                this.panelGrafico5.setPreferredSize(new Dimension(600, 300));
                 gbc = new GridBagConstraints();
                 gbc.gridx = 0;
                 gbc.gridy = 5;
                 gbc.insets = new Insets(10, 5, 10, 5);
                 gbc.anchor = GridBagConstraints.NORTH;
                 gbc.fill = GridBagConstraints.HORIZONTAL;
-                this.panelAnalisis.add(panelGrafico5, gbc);
+                this.panelAnalisis.add(this.panelGrafico5, gbc);
             }
             if (numeroGraficos > 5) {
-                grafico6 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset6(),
+                this.grafico6 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset6(),
                         TStats.TIME,
                         TStats.NUMBER_OF_PACKETS,
                         (XYSeriesCollection) nt.getStats().getDataset6(),
                         PlotOrientation.VERTICAL,
                         true, true, true);
-                grafico6.getPlot().setBackgroundPaint(Color.WHITE);
-                grafico6.getPlot().setForegroundAlpha((float) 0.5);
-                grafico6.getPlot().setOutlinePaint(new Color(14, 69, 125));
-                grafico6.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
-                grafico6.setBackgroundPaint(new Color(210, 226, 242));
-                grafico6.setBorderPaint(Color.BLACK);
-                grafico6.getTitle().setPaint(new Color(79, 138, 198));
-                this.panelGrafico6 = new ChartPanel(grafico6);
-                panelGrafico6.setBorder(new LineBorder(Color.BLACK));
-                panelGrafico6.setPreferredSize(new Dimension(600, 300));
+                this.grafico6.getPlot().setBackgroundPaint(Color.WHITE);
+                this.grafico6.getPlot().setForegroundAlpha((float) 0.5);
+                this.grafico6.getPlot().setOutlinePaint(new Color(14, 69, 125));
+                this.grafico6.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
+                this.grafico6.setBackgroundPaint(new Color(210, 226, 242));
+                this.grafico6.setBorderPaint(Color.BLACK);
+                this.grafico6.getTitle().setPaint(new Color(79, 138, 198));
+                this.panelGrafico6 = new ChartPanel(this.grafico6);
+                this.panelGrafico6.setBorder(new LineBorder(Color.BLACK));
+                this.panelGrafico6.setPreferredSize(new Dimension(600, 300));
                 gbc = new GridBagConstraints();
                 gbc.gridx = 0;
                 gbc.gridy = 6;
                 gbc.insets = new Insets(10, 5, 10, 10);
                 gbc.anchor = GridBagConstraints.NORTH;
                 gbc.fill = GridBagConstraints.HORIZONTAL;
-                this.panelAnalisis.add(panelGrafico6, gbc);
+                this.panelAnalisis.add(this.panelGrafico6, gbc);
             }
         }
         this.panelAnalisis.repaint();
