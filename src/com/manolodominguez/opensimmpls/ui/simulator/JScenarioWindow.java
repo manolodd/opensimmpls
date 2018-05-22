@@ -219,7 +219,7 @@ public class JScenarioWindow extends JInternalFrame {
      *
      * @since 2.0
      */
-    private void initComponents() {//GEN-BEGIN:initComponents
+    private void initComponents() {
         this.translations = ResourceBundle.getBundle(AvailableBundles.SCENARIO_WINDOW.getPath());
         GridBagConstraints gridBagConstraints;
         this.diseElementoPopUp = new JPopupMenu();
@@ -288,7 +288,6 @@ public class JScenarioWindow extends JInternalFrame {
         this.jLabel4 = new JLabel();
         this.pasoNs = new JSlider();
         this.etiquetaPasoNs = new JLabel();
-
         this.diseElementoPopUp.setFont(new Font("Dialog", 0, 12));
         this.dEliminarMenuItem.setFont(new Font("Dialog", 0, 12));
         this.dEliminarMenuItem.setMnemonic(this.translations.getString("VentanaHija.PopUpDisenio.mne.Delete").charAt(0));
@@ -299,7 +298,6 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnPopUpDisenioEliminar(evt);
             }
         });
-
         this.diseElementoPopUp.add(this.dEliminarMenuItem);
 
         this.dVerNombreMenuItem.setFont(new Font("Dialog", 0, 12));
@@ -311,11 +309,8 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnPopUpDisenioVerNombre(evt);
             }
         });
-
         this.diseElementoPopUp.add(this.dVerNombreMenuItem);
-
         this.diseElementoPopUp.add(this.jSeparator1);
-
         this.dPropiedadesMenuItem.setFont(new Font("Dialog", 0, 12));
         this.dPropiedadesMenuItem.setMnemonic(this.translations.getString("VentanaHija.PopUpDisenio.mne.Propiedades").charAt(0));
         this.dPropiedadesMenuItem.setText(this.translations.getString("VentanaHija.PopUpDisenio.Propiedades"));
@@ -325,9 +320,7 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnPropiedadesPopUpDisenioElemento(evt);
             }
         });
-
         this.diseElementoPopUp.add(this.dPropiedadesMenuItem);
-
         this.diseFondoPopUp.setFont(new Font("Dialog", 0, 12));
         this.dVerNombresNodosMenuItem.setFont(new Font("Dialog", 0, 12));
         this.dVerNombresNodosMenuItem.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.verTodosNodos").charAt(0));
@@ -338,9 +331,7 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnPopUpDisenioFondoVerNombreNodos(evt);
             }
         });
-
         this.diseFondoPopUp.add(this.dVerNombresNodosMenuItem);
-
         this.dOcultarNombresNodosMenuItem.setFont(new Font("Dialog", 0, 12));
         this.dOcultarNombresNodosMenuItem.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.ocultarTodosNodos").charAt(0));
         this.dOcultarNombresNodosMenuItem.setText(this.translations.getString("popUpDisenioFondo.ocultarTodosNodos"));
@@ -350,9 +341,7 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnPopUpDisenioFondoOcultarNombreNodos(evt);
             }
         });
-
         this.diseFondoPopUp.add(this.dOcultarNombresNodosMenuItem);
-
         this.dVerNombresEnlacesMenuItem.setFont(new Font("Dialog", 0, 12));
         this.dVerNombresEnlacesMenuItem.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.verTodosEnlaces").charAt(0));
         this.dVerNombresEnlacesMenuItem.setText(this.translations.getString("popUpDisenioFondo.verTodosEnlaces"));
@@ -362,9 +351,7 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnPopUpDisenioFondoVerNombreEnlaces(evt);
             }
         });
-
         this.diseFondoPopUp.add(this.dVerNombresEnlacesMenuItem);
-
         this.dOcultarNombresEnlacesMenuItem.setFont(new Font("Dialog", 0, 12));
         this.dOcultarNombresEnlacesMenuItem.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.ocultarTodosEnlaces").charAt(0));
         this.dOcultarNombresEnlacesMenuItem.setText(this.translations.getString("popUpDisenioFondo.ocultarTodosEnlaces"));
@@ -374,11 +361,8 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnPopUpDisenioFondoOcultarNombreEnlaces(evt);
             }
         });
-
         this.diseFondoPopUp.add(this.dOcultarNombresEnlacesMenuItem);
-
         this.diseFondoPopUp.add(this.jSeparator2);
-
         this.dEliminarTodoMenuItem.setFont(new Font("Dialog", 0, 12));
         this.dEliminarTodoMenuItem.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.eliminarTodo").charAt(0));
         this.dEliminarTodoMenuItem.setText(this.translations.getString("popUpDisenioFondo.borrarTodo"));
@@ -388,9 +372,7 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnPopUpDisenioFondoEliminar(evt);
             }
         });
-
         this.diseFondoPopUp.add(this.dEliminarTodoMenuItem);
-
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
@@ -404,9 +386,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.jTabbedPane1.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         this.jTabbedPane1.setFont(new Font("Dialog", 0, 12));
         this.panelDisenioSuperior.setLayout(new BorderLayout());
-
         this.panelBotonesDisenio.setLayout(new FlowLayout(FlowLayout.LEFT));
-
         this.panelBotonesDisenio.setBorder(new EtchedBorder());
         this.iconoEmisor.setIcon(this.imageBroker.getIcon(TImageBroker.EMISOR_MENU));
         this.iconoEmisor.setToolTipText(this.translations.getString("VentanaHija.Topic.Emisor"));
@@ -426,9 +406,7 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnAniadirEmisorDeTrafico(evt);
             }
         });
-
         this.panelBotonesDisenio.add(this.iconoEmisor);
-
         this.iconoReceptor.setIcon(this.imageBroker.getIcon(TImageBroker.RECEPTOR_MENU));
         this.iconoReceptor.setToolTipText(this.translations.getString("VentanaHija.Topic.Receptor"));
         this.iconoReceptor.addMouseListener(new MouseAdapter() {
@@ -447,9 +425,7 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnAniadirReceptor(evt);
             }
         });
-
         this.panelBotonesDisenio.add(this.iconoReceptor);
-
         this.iconoLER.setIcon(this.imageBroker.getIcon(TImageBroker.LER_MENU));
         this.iconoLER.setToolTipText(this.translations.getString("VentanaHija.Topic.LER"));
         this.iconoLER.addMouseListener(new MouseAdapter() {
@@ -468,9 +444,7 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnAniadirLER(evt);
             }
         });
-
         this.panelBotonesDisenio.add(this.iconoLER);
-
         this.iconoLERA.setIcon(this.imageBroker.getIcon(TImageBroker.LERA_MENU));
         this.iconoLERA.setToolTipText(this.translations.getString("VentanaHija.Topic.LERActivo"));
         this.iconoLERA.addMouseListener(new MouseAdapter() {
@@ -489,9 +463,7 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnAniadirLERA(evt);
             }
         });
-
         this.panelBotonesDisenio.add(this.iconoLERA);
-
         this.iconoLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSR_MENU));
         this.iconoLSR.setToolTipText(this.translations.getString("VentanaHija.Topic.LSR"));
         this.iconoLSR.addMouseListener(new MouseAdapter() {
@@ -510,9 +482,7 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnAniadirLSR(evt);
             }
         });
-
         this.panelBotonesDisenio.add(iconoLSR);
-
         this.iconoLSRA.setIcon(this.imageBroker.getIcon(TImageBroker.LSRA_MENU));
         this.iconoLSRA.setToolTipText(this.translations.getString("VentanaHija.Topic.LSRActivo"));
         this.iconoLSRA.addMouseListener(new MouseAdapter() {
@@ -531,9 +501,7 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnAniadirLSRA(evt);
             }
         });
-
         this.panelBotonesDisenio.add(this.iconoLSRA);
-
         this.iconoEnlace.setIcon(this.imageBroker.getIcon(TImageBroker.ENLACE_MENU));
         this.iconoEnlace.setToolTipText(this.translations.getString("VentanaHija.Topic.Enlace"));
         this.iconoEnlace.addMouseListener(new MouseAdapter() {
@@ -552,14 +520,10 @@ public class JScenarioWindow extends JInternalFrame {
                 ratonSaleDeIconoEnlace(evt);
             }
         });
-
         this.panelBotonesDisenio.add(this.iconoEnlace);
-
         this.panelDisenioSuperior.add(this.panelBotonesDisenio, BorderLayout.NORTH);
-
         this.jScrollPane1.setBorder(new BevelBorder(BevelBorder.LOWERED));
         this.panelDisenio.setLayout(null);
-
         this.panelDisenio.setBackground(Color.white);
         this.panelDisenio.setBorder(new EtchedBorder());
         this.panelDisenio.addMouseListener(new MouseAdapter() {
@@ -589,17 +553,11 @@ public class JScenarioWindow extends JInternalFrame {
                 ratonSobrePanelDisenio(evt);
             }
         });
-
         this.jScrollPane1.setViewportView(this.panelDisenio);
-
         this.panelDisenioSuperior.add(this.jScrollPane1, BorderLayout.CENTER);
-
         this.jTabbedPane1.addTab(this.translations.getString("VentanaHija.Tab.Disenio"), this.imageBroker.getIcon(TImageBroker.DISENIO), this.panelDisenioSuperior, this.translations.getString("VentanaHija.A_panel_to_design_network_topology"));
-
         this.panelSimulacionSuperior.setLayout(new BorderLayout());
-
         this.panelBotonesSimulacion.setLayout(new FlowLayout(FlowLayout.LEFT));
-
         this.panelBotonesSimulacion.setBorder(new EtchedBorder());
         this.iconoComenzar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_GENERAR));
         this.iconoComenzar.setToolTipText(this.translations.getString("VentanaHija.Topic.Generar"));
@@ -619,9 +577,7 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnComenzar(evt);
             }
         });
-
         this.panelBotonesSimulacion.add(this.iconoComenzar);
-
         this.iconoFinalizar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PARAR));
         this.iconoFinalizar.setToolTipText(this.translations.getString("VentanaHija.Topic.Finalizar"));
         this.iconoFinalizar.setEnabled(false);
@@ -641,9 +597,7 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnFinalizar(evt);
             }
         });
-
         this.panelBotonesSimulacion.add(this.iconoFinalizar);
-
         this.iconoReanudar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_COMENZAR));
         this.iconoReanudar.setToolTipText(this.translations.getString("VentanaHija.Topic.Simulacion"));
         this.iconoReanudar.setEnabled(false);
@@ -663,9 +617,7 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnReanudar(evt);
             }
         });
-
         this.panelBotonesSimulacion.add(this.iconoReanudar);
-
         this.iconoPausar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PAUSA));
         this.iconoPausar.setToolTipText(this.translations.getString("VentanaHija.Topic.Detener"));
         this.iconoPausar.setEnabled(false);
@@ -685,14 +637,11 @@ public class JScenarioWindow extends JInternalFrame {
                 clicAlPausar(evt);
             }
         });
-
         this.panelBotonesSimulacion.add(this.iconoPausar);
-
         this.barraDeProgreso.setFont(new Font("Dialog", 0, 12));
         this.barraDeProgreso.setToolTipText(this.translations.getString("VentanaHija.BarraProgreso.tooltip"));
         this.barraDeProgreso.setStringPainted(true);
         this.panelBotonesSimulacion.add(this.barraDeProgreso);
-
         this.mlsPorTic.setMajorTickSpacing(10);
         this.mlsPorTic.setMaximum(500);
         this.mlsPorTic.setMinimum(1);
@@ -706,18 +655,13 @@ public class JScenarioWindow extends JInternalFrame {
                 mlsPorTicCambiado(evt);
             }
         });
-
         this.panelBotonesSimulacion.add(this.mlsPorTic);
-
         this.etiquetaMlsPorTic.setFont(new Font("Dialog", 0, 10));
         this.etiquetaMlsPorTic.setForeground(new Color(102, 102, 102));
         this.panelBotonesSimulacion.add(this.etiquetaMlsPorTic);
-
         this.crearTraza.setText(this.translations.getString("JVentanaHija.Create_trace_file"));
         this.panelBotonesSimulacion.add(this.crearTraza);
-
         this.panelSimulacionSuperior.add(this.panelBotonesSimulacion, BorderLayout.NORTH);
-
         this.jScrollPane2.setBorder(new BevelBorder(BevelBorder.LOWERED));
         this.panelSimulacion.setBorder(new EtchedBorder());
         this.panelSimulacion.addMouseListener(new MouseAdapter() {
@@ -747,21 +691,14 @@ public class JScenarioWindow extends JInternalFrame {
                 ratonSobrePanelSimulacion(evt);
             }
         });
-
         this.jScrollPane2.setViewportView(this.panelSimulacion);
-
         this.panelSimulacionSuperior.add(this.jScrollPane2, BorderLayout.CENTER);
-
         this.jTabbedPane1.addTab(this.translations.getString("VentanaHija.Tab.Simulacion"), this.imageBroker.getIcon(TImageBroker.SIMULACION), this.panelSimulacionSuperior, this.translations.getString("VentanaHija.A_panel_to_generate_and_play_simulation."));
-
         this.panelAnalisisSuperior.setLayout(new BorderLayout());
-
         this.panelSeleccionElemento.setLayout(new FlowLayout(FlowLayout.LEFT));
-
         this.panelSeleccionElemento.setBorder(new EtchedBorder());
         this.jLabel1.setText(this.translations.getString("JVentanaHija.SelcUnElemParaVerDatos"));
         this.panelSeleccionElemento.add(this.jLabel1);
-
         this.selectorElementoEstadisticas.setModel(new DefaultComboBoxModel(new String[]{""}));
         this.selectorElementoEstadisticas.addActionListener(new ActionListener() {
             @Override
@@ -769,17 +706,12 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnSeleccionalElementoEstadistica(evt);
             }
         });
-
         this.panelSeleccionElemento.add(this.selectorElementoEstadisticas);
-
         this.panelAnalisisSuperior.add(this.panelSeleccionElemento, BorderLayout.NORTH);
-
         this.jScrollPane4.setBorder(new BevelBorder(BevelBorder.LOWERED));
         this.panelAnalisis.setLayout(new GridBagLayout());
-
         this.panelAnalisis.setBackground(new Color(252, 246, 226));
         this.panelFijo.setLayout(new GridBagLayout());
-
         this.panelFijo.setBackground(new Color(252, 246, 226));
         this.etiquetaEstadisticasTituloEscenario.setBackground(new Color(252, 246, 226));
         this.etiquetaEstadisticasTituloEscenario.setFont(new Font("Arial", 1, 18));
@@ -788,7 +720,6 @@ public class JScenarioWindow extends JInternalFrame {
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         this.panelFijo.add(this.etiquetaEstadisticasTituloEscenario, gridBagConstraints);
-
         this.etiquetaEstadisticasNombreAutor.setBackground(new Color(252, 246, 226));
         this.etiquetaEstadisticasNombreAutor.setFont(new Font("Arial", 1, 14));
         this.etiquetaEstadisticasNombreAutor.setForeground(new Color(102, 0, 51));
@@ -799,7 +730,6 @@ public class JScenarioWindow extends JInternalFrame {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         this.panelFijo.add(this.etiquetaEstadisticasNombreAutor, gridBagConstraints);
-
         this.areaEstadisticasDescripcion.setBackground(new Color(252, 246, 226));
         this.areaEstadisticasDescripcion.setEditable(false);
         this.areaEstadisticasDescripcion.setFont(new Font("MonoSpaced", 0, 11));
@@ -816,7 +746,6 @@ public class JScenarioWindow extends JInternalFrame {
         gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         this.panelFijo.add(this.areaEstadisticasDescripcion, gridBagConstraints);
-
         this.etiquetaNombreElementoEstadistica.setBackground(new Color(252, 246, 226));
         this.etiquetaNombreElementoEstadistica.setFont(new Font("Arial", 1, 14));
         this.etiquetaNombreElementoEstadistica.setHorizontalAlignment(SwingConstants.CENTER);
@@ -825,23 +754,15 @@ public class JScenarioWindow extends JInternalFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         this.panelFijo.add(this.etiquetaNombreElementoEstadistica, gridBagConstraints);
-
         this.panelAnalisis.add(this.panelFijo, new GridBagConstraints());
-
         this.jScrollPane4.setViewportView(this.panelAnalisis);
-
         this.panelAnalisisSuperior.add(this.jScrollPane4, BorderLayout.CENTER);
-
         this.jTabbedPane1.addTab(this.translations.getString("JVentanaHija.Analisis"), this.imageBroker.getIcon(TImageBroker.ANALISIS), this.panelAnalisisSuperior, this.translations.getString("JVentanaHija.Analisis.Tooltip"));
-
         this.panelOpcionesSuperior.setLayout(new BorderLayout());
-
         this.jScrollPane3.setBorder(null);
         this.panelOpciones.setLayout(new GridBagLayout());
-
         this.panelOpciones.setPreferredSize(new Dimension(380, 230));
         this.jPanel3.setLayout(new GridBagLayout());
-
         this.jPanel3.setBorder(new TitledBorder(null, this.translations.getString("VentanaHija.GParameters"), TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", 0, 12)));
         this.jLabel5.setFont(new Font("Dialog", 0, 12));
         this.jLabel5.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -853,14 +774,12 @@ public class JScenarioWindow extends JInternalFrame {
         gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.jPanel3.add(this.jLabel5, gridBagConstraints);
-
         this.nombreEscenario.setToolTipText(this.translations.getString("VentanaHija.Type_a__title_of_the_scene"));
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 200.0;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.jPanel3.add(this.nombreEscenario, gridBagConstraints);
-
         this.jLabel6.setFont(new Font("Dialog", 0, 12));
         this.jLabel6.setHorizontalAlignment(SwingConstants.RIGHT);
         this.jLabel6.setText(this.translations.getString("VentanaHija.Scene_author"));
@@ -870,7 +789,6 @@ public class JScenarioWindow extends JInternalFrame {
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.jPanel3.add(this.jLabel6, gridBagConstraints);
-
         this.nombreAutor.setToolTipText(this.translations.getString("VentanaHija.Type_de_name_of_the_author"));
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -879,7 +797,6 @@ public class JScenarioWindow extends JInternalFrame {
         gridBagConstraints.weightx = 200.0;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.jPanel3.add(this.nombreAutor, gridBagConstraints);
-
         this.jLabel7.setFont(new Font("Dialog", 0, 12));
         this.jLabel7.setHorizontalAlignment(SwingConstants.RIGHT);
         this.jLabel7.setText(this.translations.getString("VentanaHija.Description"));
@@ -889,7 +806,6 @@ public class JScenarioWindow extends JInternalFrame {
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.jPanel3.add(this.jLabel7, gridBagConstraints);
-
         this.descripcionEscenario.setToolTipText(this.translations.getString("VentanaHija.Enter_a_short_description."));
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -898,7 +814,6 @@ public class JScenarioWindow extends JInternalFrame {
         gridBagConstraints.weightx = 200.0;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.jPanel3.add(this.descripcionEscenario, gridBagConstraints);
-
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -907,9 +822,7 @@ public class JScenarioWindow extends JInternalFrame {
         gridBagConstraints.weightx = 350.0;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.panelOpciones.add(this.jPanel3, gridBagConstraints);
-
         this.jPanel2.setLayout(new GridBagLayout());
-
         this.jPanel2.setBorder(new TitledBorder(null, this.translations.getString("VentanaHija.TParameters"), TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", 0, 12)));
         this.jLabel3.setFont(new Font("Dialog", 0, 12));
         this.jLabel3.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -919,7 +832,6 @@ public class JScenarioWindow extends JInternalFrame {
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.jPanel2.add(this.jLabel3, gridBagConstraints);
-
         this.duracionMs.setMajorTickSpacing(2);
         this.duracionMs.setMaximum(2);
         this.duracionMs.setMinorTickSpacing(1);
@@ -934,13 +846,11 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnDuracionMs(evt);
             }
         });
-
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 150.0;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.jPanel2.add(this.duracionMs, gridBagConstraints);
-
         this.etiquetaDuracionMs.setFont(new Font("Dialog", 0, 10));
         this.etiquetaDuracionMs.setForeground(new Color(102, 102, 102));
         this.etiquetaDuracionMs.setText(this.translations.getString("VentanaHija.ms."));
@@ -952,7 +862,6 @@ public class JScenarioWindow extends JInternalFrame {
         gridBagConstraints.weightx = 40.0;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.jPanel2.add(this.etiquetaDuracionMs, gridBagConstraints);
-
         this.duracionNs.setMajorTickSpacing(1000);
         this.duracionNs.setMaximum(999999);
         this.duracionNs.setMinorTickSpacing(100);
@@ -967,13 +876,11 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnDuracionNs(evt);
             }
         });
-
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 150.0;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.jPanel2.add(this.duracionNs, gridBagConstraints);
-
         this.etiquetaDuracionNs.setFont(new Font("Dialog", 0, 10));
         this.etiquetaDuracionNs.setForeground(new Color(102, 102, 102));
         this.etiquetaDuracionNs.setText(this.translations.getString("VentanaHija.ns."));
@@ -985,7 +892,6 @@ public class JScenarioWindow extends JInternalFrame {
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.jPanel2.add(this.etiquetaDuracionNs, gridBagConstraints);
-
         this.jLabel4.setFont(new Font("Dialog", 0, 12));
         this.jLabel4.setHorizontalAlignment(SwingConstants.RIGHT);
         this.jLabel4.setText(this.translations.getString("VentanaHija.Step"));
@@ -996,7 +902,6 @@ public class JScenarioWindow extends JInternalFrame {
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.jPanel2.add(this.jLabel4, gridBagConstraints);
-
         this.pasoNs.setMajorTickSpacing(1000);
         this.pasoNs.setMaximum(999999);
         this.pasoNs.setMinimum(1);
@@ -1011,7 +916,6 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnPasoNs(evt);
             }
         });
-
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -1019,7 +923,6 @@ public class JScenarioWindow extends JInternalFrame {
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.jPanel2.add(this.pasoNs, gridBagConstraints);
-
         this.etiquetaPasoNs.setFont(new Font("Dialog", 0, 10));
         this.etiquetaPasoNs.setForeground(new Color(102, 102, 102));
         this.etiquetaPasoNs.setText(this.translations.getString("VentanaHija.ns."));
@@ -1033,7 +936,6 @@ public class JScenarioWindow extends JInternalFrame {
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.jPanel2.add(this.etiquetaPasoNs, gridBagConstraints);
-
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -1042,19 +944,14 @@ public class JScenarioWindow extends JInternalFrame {
         gridBagConstraints.weightx = 350.0;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.panelOpciones.add(this.jPanel2, gridBagConstraints);
-
         this.jScrollPane3.setViewportView(this.panelOpciones);
-
         this.panelOpcionesSuperior.add(this.jScrollPane3, BorderLayout.NORTH);
-
         this.jTabbedPane1.addTab(this.translations.getString("VentanaHija.Options"), imageBroker.getIcon(TImageBroker.OPCIONES), this.panelOpcionesSuperior, this.translations.getString("VentanaHija.Options_about_the_scene"));
-
         getContentPane().add(this.jTabbedPane1, BorderLayout.CENTER);
-
         pack();
-    }//GEN-END:initComponents
+    }
 
-    private void ratonPulsadoYSoltadoEnPanelSimulacion(MouseEvent evt) {//GEN-FIRST:event_ratonPulsadoYSoltadoEnPanelSimulacion
+    private void ratonPulsadoYSoltadoEnPanelSimulacion(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
             TTopologyElement et = this.scenario.getTopology().getElementInScreenPosition(evt.getPoint());
             if (et != null) {
@@ -1082,9 +979,9 @@ public class JScenarioWindow extends JInternalFrame {
             elementoDisenioClicDerecho = null;
             panelDisenio.repaint();
         }
-    }//GEN-LAST:event_ratonPulsadoYSoltadoEnPanelSimulacion
+    }
 
-    private void clicEnSeleccionalElementoEstadistica(ActionEvent evt) {//GEN-FIRST:event_clicEnSeleccionalElementoEstadistica
+    private void clicEnSeleccionalElementoEstadistica(ActionEvent evt) {
         GridBagConstraints gbc = null;
         if (this.selectorElementoEstadisticas.getSelectedIndex() == 0) {
             this.panelAnalisis.removeAll();
@@ -1145,7 +1042,7 @@ public class JScenarioWindow extends JInternalFrame {
             String nombreEltoSeleccionado = (String) this.selectorElementoEstadisticas.getSelectedItem();
             this.crearEInsertarGraficas(nombreEltoSeleccionado);
         }
-    }//GEN-LAST:event_clicEnSeleccionalElementoEstadistica
+    }
 
     /**
      * Este m�todo se llama cuando se arrastra el rat�n sobre el panel de
@@ -1155,7 +1052,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que provoca la llamada.
      * @since 2.0
      */
-    private void ratonArrastradoEnPanelSimulacion(MouseEvent evt) {//GEN-FIRST:event_ratonArrastradoEnPanelSimulacion
+    private void ratonArrastradoEnPanelSimulacion(MouseEvent evt) {
         if (evt.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
             if (this.nodoSeleccionado != null) {
                 TTopology topo = this.scenario.getTopology();
@@ -1177,7 +1074,7 @@ public class JScenarioWindow extends JInternalFrame {
                 this.scenario.setModified(true);
             }
         }
-    }//GEN-LAST:event_ratonArrastradoEnPanelSimulacion
+    }
 
     /**
      * Este m�todo se llama cuando se libera un bot�n del rat�n estando en el
@@ -1187,7 +1084,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que genera la llamada.
      * @since 2.0
      */
-    private void ratonSoltadoEnPanelSimulacion(MouseEvent evt) {//GEN-FIRST:event_ratonSoltadoEnPanelSimulacion
+    private void ratonSoltadoEnPanelSimulacion(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
             if (this.nodoSeleccionado != null) {
                 this.nodoSeleccionado.setSelected(TNode.UNSELECTED);
@@ -1196,7 +1093,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
             this.panelSimulacion.repaint();
         }
-    }//GEN-LAST:event_ratonSoltadoEnPanelSimulacion
+    }
 
     /**
      * Este m�todo se llama cuando se presiona un bot�n del rat�n en el panel de
@@ -1206,7 +1103,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que provoca la llamada.
      */
-    private void clicEnPanelSimulacion(MouseEvent evt) {//GEN-FIRST:event_clicEnPanelSimulacion
+    private void clicEnPanelSimulacion(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
             TTopology topo = this.scenario.getTopology();
             TTopologyElement et = topo.getElementInScreenPosition(evt.getPoint());
@@ -1226,7 +1123,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
             this.panelSimulacion.repaint();
         }
-    }//GEN-LAST:event_clicEnPanelSimulacion
+    }
 
     /**
      * Este m�todo se llama cuando se hace clic derecho sobre un elemento en la
@@ -1237,7 +1134,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que provoca la llamada.
      */
-    private void clicEnPropiedadesPopUpDisenioElemento(ActionEvent evt) {//GEN-FIRST:event_clicEnPropiedadesPopUpDisenioElemento
+    private void clicEnPropiedadesPopUpDisenioElemento(ActionEvent evt) {
         if (this.elementoDisenioClicDerecho != null) {
             if (this.elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
                 TNode nt = (TNode) this.elementoDisenioClicDerecho;
@@ -1291,7 +1188,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
             this.scenario.setModified(true);
         }
-    }//GEN-LAST:event_clicEnPropiedadesPopUpDisenioElemento
+    }
 
     /**
      * Este m�todo se encarga de controlar que la duraci�n de la simulaci�on y
@@ -1329,10 +1226,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que el m�todo salte.
      */
-    private void clicEnPasoNs(ChangeEvent evt) {//GEN-FIRST:event_clicEnPasoNs
+    private void clicEnPasoNs(ChangeEvent evt) {
         controlarParametrosTemporales();
         this.scenario.setModified(true);
-    }//GEN-LAST:event_clicEnPasoNs
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando se cambia la duraci�n de la
@@ -1341,10 +1238,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se ejecute este m�todo.
      */
-    private void clicEnDuracionNs(ChangeEvent evt) {//GEN-FIRST:event_clicEnDuracionNs
+    private void clicEnDuracionNs(ChangeEvent evt) {
         controlarParametrosTemporales();
         this.scenario.setModified(true);
-    }//GEN-LAST:event_clicEnDuracionNs
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando se cambia la duraci�n de la
@@ -1353,10 +1250,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que produce que se ejecute este m�todo.
      */
-    private void clicEnDuracionMs(ChangeEvent evt) {//GEN-FIRST:event_clicEnDuracionMs
+    private void clicEnDuracionMs(ChangeEvent evt) {
         controlarParametrosTemporales();
         this.scenario.setModified(true);
-    }//GEN-LAST:event_clicEnDuracionMs
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando se cambia el tiempo que se
@@ -1365,10 +1262,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void mlsPorTicCambiado(ChangeEvent evt) {//GEN-FIRST:event_mlsPorTicCambiado
+    private void mlsPorTicCambiado(ChangeEvent evt) {
         this.etiquetaMlsPorTic.setText(this.mlsPorTic.getValue() + this.translations.getString("VentanaHija.Simulacion.etiquetaMsTic"));
         this.panelSimulacion.ponerMlsPorTic(this.mlsPorTic.getValue());
-    }//GEN-LAST:event_mlsPorTicCambiado
+    }
 
     /**
      * Este m�todo se ejecuta cuando se hace clic en la opci�n de ocultar el
@@ -1378,7 +1275,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void clicEnPopUpDisenioFondoOcultarNombreEnlaces(ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoOcultarNombreEnlaces
+    private void clicEnPopUpDisenioFondoOcultarNombreEnlaces(ActionEvent evt) {
         Iterator it = this.scenario.getTopology().getLinksIterator();
         TLink enlaceAux;
         while (it.hasNext()) {
@@ -1387,7 +1284,7 @@ public class JScenarioWindow extends JInternalFrame {
         }
         this.panelDisenio.repaint();
         this.scenario.setModified(true);
-    }//GEN-LAST:event_clicEnPopUpDisenioFondoOcultarNombreEnlaces
+    }
 
     /**
      * Este m�todo se ejecuta cuando se hace clic en la opci�n de ver el nombre
@@ -1396,7 +1293,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void clicEnPopUpDisenioFondoVerNombreEnlaces(ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoVerNombreEnlaces
+    private void clicEnPopUpDisenioFondoVerNombreEnlaces(ActionEvent evt) {
         Iterator it = this.scenario.getTopology().getLinksIterator();
         TLink enlaceAux;
         while (it.hasNext()) {
@@ -1405,7 +1302,7 @@ public class JScenarioWindow extends JInternalFrame {
         }
         this.panelDisenio.repaint();
         this.scenario.setModified(true);
-    }//GEN-LAST:event_clicEnPopUpDisenioFondoVerNombreEnlaces
+    }
 
     /**
      * Este m�todo se ejecuta cuando se hace clic en la opci�n de ocultar el
@@ -1415,7 +1312,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void clicEnPopUpDisenioFondoOcultarNombreNodos(ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoOcultarNombreNodos
+    private void clicEnPopUpDisenioFondoOcultarNombreNodos(ActionEvent evt) {
         Iterator it = this.scenario.getTopology().getNodesIterator();
         TNode nodoAux;
         while (it.hasNext()) {
@@ -1424,7 +1321,7 @@ public class JScenarioWindow extends JInternalFrame {
         }
         this.panelDisenio.repaint();
         this.scenario.setModified(true);
-    }//GEN-LAST:event_clicEnPopUpDisenioFondoOcultarNombreNodos
+    }
 
     /**
      * Este m�todo se ejecuta cuando se hace clic en la opci�n de ver el nombre
@@ -1433,7 +1330,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void clicEnPopUpDisenioFondoVerNombreNodos(ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoVerNombreNodos
+    private void clicEnPopUpDisenioFondoVerNombreNodos(ActionEvent evt) {
         Iterator it = this.scenario.getTopology().getNodesIterator();
         TNode nodoAux;
         while (it.hasNext()) {
@@ -1442,7 +1339,7 @@ public class JScenarioWindow extends JInternalFrame {
         }
         this.panelDisenio.repaint();
         this.scenario.setModified(true);
-    }//GEN-LAST:event_clicEnPopUpDisenioFondoVerNombreNodos
+    }
 
     /**
      * Este m�todo se ejecuta cuando se hace clic en la opci�n de eliminar todo
@@ -1451,7 +1348,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void clicEnPopUpDisenioFondoEliminar(ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioFondoEliminar
+    private void clicEnPopUpDisenioFondoEliminar(ActionEvent evt) {
         JDecissionWindow vb = new JDecissionWindow(this.parent, true, this.imageBroker);
         vb.setQuestion(this.translations.getString("JVentanaHija.PreguntaBorrarTodo"));
         vb.show();
@@ -1461,7 +1358,7 @@ public class JScenarioWindow extends JInternalFrame {
             this.panelDisenio.repaint();
         }
         this.scenario.setModified(true);
-    }//GEN-LAST:event_clicEnPopUpDisenioFondoEliminar
+    }
 
     /**
      * Este m�todo asigna un escenario ya creado a la ventana hija. A partir de
@@ -1515,7 +1412,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void clicEnAniadirEnlace(MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirEnlace
+    private void clicEnAniadirEnlace(MouseEvent evt) {
         if (this.scenario.getTopology().getNumberOfNodes() < 2) {
             JWarningWindow va = new JWarningWindow(this.parent, true, this.imageBroker);
             va.setWarningMessage(this.translations.getString("VentanaHija.ErrorAlMenosDosNodos"));
@@ -1549,7 +1446,7 @@ public class JScenarioWindow extends JInternalFrame {
                 config = null;
             }
         }
-    }//GEN-LAST:event_clicEnAniadirEnlace
+    }
 
     /**
      * Este m�todo se ejecuta cuando se hace clic en la opci�n eliminar que
@@ -1559,7 +1456,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void clicEnPopUpDisenioEliminar(ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioEliminar
+    private void clicEnPopUpDisenioEliminar(ActionEvent evt) {
         JDecissionWindow vb = new JDecissionWindow(this.parent, true, this.imageBroker);
         vb.setQuestion(this.translations.getString("JVentanaHija.preguntaAlEliminar"));
         vb.show();
@@ -1595,7 +1492,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
         }
 
-    }//GEN-LAST:event_clicEnPopUpDisenioEliminar
+    }
 
     /**
      * Este m�todo se ejecuta cuando se hace clic en la opci�n de ver/ocultar
@@ -1605,7 +1502,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void clicEnPopUpDisenioVerNombre(ActionEvent evt) {//GEN-FIRST:event_clicEnPopUpDisenioVerNombre
+    private void clicEnPopUpDisenioVerNombre(ActionEvent evt) {
         if (this.elementoDisenioClicDerecho != null) {
             if (this.elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
                 TNode nt = (TNode) this.elementoDisenioClicDerecho;
@@ -1620,7 +1517,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
             this.scenario.setModified(true);
         }
-    }//GEN-LAST:event_clicEnPopUpDisenioVerNombre
+    }
 
     /**
      * Este m�todo se ejecuta cuando se hace clic con el bot�n derecho en la
@@ -1629,7 +1526,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que este m�todo se dispare.
      */
-    private void clicDerechoEnPanelDisenio(MouseEvent evt) {//GEN-FIRST:event_clicDerechoEnPanelDisenio
+    private void clicDerechoEnPanelDisenio(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON3) {
             TTopologyElement et = this.scenario.getTopology().getElementInScreenPosition(evt.getPoint());
             if (et == null) {
@@ -1649,7 +1546,7 @@ public class JScenarioWindow extends JInternalFrame {
             this.elementoDisenioClicDerecho = null;
             this.panelDisenio.repaint();
         }
-    }//GEN-LAST:event_clicDerechoEnPanelDisenio
+    }
 
     /**
      * Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LSRA
@@ -1658,7 +1555,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void clicEnAniadirLSRA(MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLSRA
+    private void clicEnAniadirLSRA(MouseEvent evt) {
         TActiveLSRNode lsra = null;
         try {
             lsra = new TActiveLSRNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
@@ -1685,7 +1582,7 @@ public class JScenarioWindow extends JInternalFrame {
         } else {
             lsra = null;
         }
-    }//GEN-LAST:event_clicEnAniadirLSRA
+    }
 
     /**
      * Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LSR
@@ -1694,7 +1591,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que este m�todo se dispare.
      */
-    private void clicEnAniadirLSR(MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLSR
+    private void clicEnAniadirLSR(MouseEvent evt) {
         TLSRNode lsr = null;
         try {
             lsr = new TLSRNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
@@ -1721,8 +1618,7 @@ public class JScenarioWindow extends JInternalFrame {
         } else {
             lsr = null;
         }
-    }//GEN-LAST:event_clicEnAniadirLSR
-
+    }
     /**
      * Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LSRA
      * nuevo en la barra de herramientas de la pantalla de dise�o.
@@ -1730,7 +1626,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void clicEnAniadirLERA(MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLERA
+    private void clicEnAniadirLERA(MouseEvent evt) {
         TActiveLERNode lera = null;
         try {
             lera = new TActiveLERNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
@@ -1757,7 +1653,7 @@ public class JScenarioWindow extends JInternalFrame {
         } else {
             lera = null;
         }
-    }//GEN-LAST:event_clicEnAniadirLERA
+    }
 
     /**
      * Este m�todo se ejecuta cuando se mueve el rat�n dentro del �rea de
@@ -1769,7 +1665,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonSobrePanelSimulacion(MouseEvent evt) {//GEN-FIRST:event_ratonSobrePanelSimulacion
+    private void ratonSobrePanelSimulacion(MouseEvent evt) {
         TTopology topo = this.scenario.getTopology();
         TTopologyElement et = topo.getElementInScreenPosition(evt.getPoint());
         if (et != null) {
@@ -1798,7 +1694,7 @@ public class JScenarioWindow extends JInternalFrame {
                 this.panelSimulacion.setToolTipText(this.translations.getString("JVentanaHija.OcultarLeyenda"));
             }
         }
-    }//GEN-LAST:event_ratonSobrePanelSimulacion
+    }
 
     /**
      * Este m�todo se ejecuta cuando se mueve el rat�n dentro del �rea de
@@ -1809,7 +1705,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void ratonSobrePanelDisenio(MouseEvent evt) {//GEN-FIRST:event_ratonSobrePanelDisenio
+    private void ratonSobrePanelDisenio(MouseEvent evt) {
         TTopology topo = this.scenario.getTopology();
         TTopologyElement et = topo.getElementInScreenPosition(evt.getPoint());
         if (et != null) {
@@ -1825,7 +1721,7 @@ public class JScenarioWindow extends JInternalFrame {
             this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             this.panelDisenio.setToolTipText(null);
         }
-    }//GEN-LAST:event_ratonSobrePanelDisenio
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando se est� arrastrando el rat�n
@@ -1835,7 +1731,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void arrastrandoEnPanelDisenio(MouseEvent evt) {//GEN-FIRST:event_arrastrandoEnPanelDisenio
+    private void arrastrandoEnPanelDisenio(MouseEvent evt) {
         if (evt.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
             if (this.nodoSeleccionado != null) {
                 TTopology topo = scenario.getTopology();
@@ -1857,7 +1753,7 @@ public class JScenarioWindow extends JInternalFrame {
                 this.scenario.setModified(true);
             }
         }
-    }//GEN-LAST:event_arrastrandoEnPanelDisenio
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando soltamos el bot�n del raton a
@@ -1867,7 +1763,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void clicSoltadoEnPanelDisenio(MouseEvent evt) {//GEN-FIRST:event_clicSoltadoEnPanelDisenio
+    private void clicSoltadoEnPanelDisenio(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
             if (this.nodoSeleccionado != null) {
                 this.nodoSeleccionado.setSelected(TNode.UNSELECTED);
@@ -1876,7 +1772,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
             this.panelDisenio.repaint();
         }
-    }//GEN-LAST:event_clicSoltadoEnPanelDisenio
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando se hace un clic con el bot�n
@@ -1885,7 +1781,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void clicEnPanelDisenio(MouseEvent evt) {//GEN-FIRST:event_clicEnPanelDisenio
+    private void clicEnPanelDisenio(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
             TTopology topo = this.scenario.getTopology();
             this.nodoSeleccionado = topo.getNodeInScreenPosition(evt.getPoint());
@@ -1895,7 +1791,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
             this.panelDisenio.repaint();
         }
-    }//GEN-LAST:event_clicEnPanelDisenio
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono de
@@ -1904,10 +1800,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDelIconoPausar(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoPausar
+    private void ratonSaleDelIconoPausar(MouseEvent evt) {
         this.iconoPausar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PAUSA));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_ratonSaleDelIconoPausar
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono de
@@ -1916,10 +1812,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoPausar(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoPausar
+    private void ratonEntraEnIconoPausar(MouseEvent evt) {
         this.iconoPausar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PAUSA_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_ratonEntraEnIconoPausar
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono de
@@ -1928,10 +1824,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDelIconoFinalizar(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoFinalizar
+    private void ratonSaleDelIconoFinalizar(MouseEvent evt) {
         this.iconoFinalizar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PARAR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_ratonSaleDelIconoFinalizar
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono de
@@ -1940,10 +1836,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoFinalizar(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoFinalizar
+    private void ratonEntraEnIconoFinalizar(MouseEvent evt) {
         this.iconoFinalizar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PARAR_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_ratonEntraEnIconoFinalizar
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono de
@@ -1952,10 +1848,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDelIconoReanudar(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoReanudar
+    private void ratonSaleDelIconoReanudar(MouseEvent evt) {
         this.iconoReanudar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_COMENZAR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_ratonSaleDelIconoReanudar
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono de
@@ -1964,10 +1860,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoReanudar(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoReanudar
+    private void ratonEntraEnIconoReanudar(MouseEvent evt) {
         this.iconoReanudar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_COMENZAR_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_ratonEntraEnIconoReanudar
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono
@@ -1976,10 +1872,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDelIconoComenzar(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDelIconoComenzar
+    private void ratonSaleDelIconoComenzar(MouseEvent evt) {
         this.iconoComenzar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_GENERAR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_ratonSaleDelIconoComenzar
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
@@ -1988,10 +1884,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoComenzar(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoComenzar
+    private void ratonEntraEnIconoComenzar(MouseEvent evt) {
         this.iconoComenzar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_GENERAR_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_ratonEntraEnIconoComenzar
+    }
 
     /**
      * Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LER
@@ -2000,7 +1896,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void clicEnAniadirLER(MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirLER
+    private void clicEnAniadirLER(MouseEvent evt) {
         TLERNode ler = null;
         try {
             ler = new TLERNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
@@ -2027,7 +1923,7 @@ public class JScenarioWindow extends JInternalFrame {
         } else {
             ler = null;
         }
-    }//GEN-LAST:event_clicEnAniadirLER
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono
@@ -2036,10 +1932,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo
      */
-    private void ratonSaleDeIconoEnlace(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoEnlace
+    private void ratonSaleDeIconoEnlace(MouseEvent evt) {
         this.iconoEnlace.setIcon(this.imageBroker.getIcon(TImageBroker.ENLACE_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_ratonSaleDeIconoEnlace
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
@@ -2048,10 +1944,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoEnlace(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoEnlace
+    private void ratonEntraEnIconoEnlace(MouseEvent evt) {
         this.iconoEnlace.setIcon(this.imageBroker.getIcon(TImageBroker.ENLACE_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_ratonEntraEnIconoEnlace
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LSRA
@@ -2060,10 +1956,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDeIconoLSRA(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLSRA
+    private void ratonSaleDeIconoLSRA(MouseEvent evt) {
         this.iconoLSRA.setIcon(this.imageBroker.getIcon(TImageBroker.LSRA_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_ratonSaleDeIconoLSRA
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
@@ -2072,10 +1968,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoLSRA(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLSRA
+    private void ratonEntraEnIconoLSRA(MouseEvent evt) {
         this.iconoLSRA.setIcon(this.imageBroker.getIcon(TImageBroker.LSRA_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_ratonEntraEnIconoLSRA
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LSR
@@ -2084,10 +1980,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDeIconoLSR(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLSR
+    private void ratonSaleDeIconoLSR(MouseEvent evt) {
         this.iconoLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSR_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_ratonSaleDeIconoLSR
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
@@ -2096,10 +1992,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoLSR(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLSR
+    private void ratonEntraEnIconoLSR(MouseEvent evt) {
         this.iconoLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSR_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_ratonEntraEnIconoLSR
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LERA
@@ -2108,10 +2004,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDeIconoLERA(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLERA
+    private void ratonSaleDeIconoLERA(MouseEvent evt) {
         this.iconoLERA.setIcon(this.imageBroker.getIcon(TImageBroker.LERA_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_ratonSaleDeIconoLERA
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
@@ -2120,10 +2016,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoLERA(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLERA
+    private void ratonEntraEnIconoLERA(MouseEvent evt) {
         this.iconoLERA.setIcon(this.imageBroker.getIcon(TImageBroker.LERA_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_ratonEntraEnIconoLERA
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LER
@@ -2132,10 +2028,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDeIconoLER(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoLER
+    private void ratonSaleDeIconoLER(MouseEvent evt) {
         this.iconoLER.setIcon(this.imageBroker.getIcon(TImageBroker.LER_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_ratonSaleDeIconoLER
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
@@ -2144,10 +2040,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoLER(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoLER
+    private void ratonEntraEnIconoLER(MouseEvent evt) {
         this.iconoLER.setIcon(this.imageBroker.getIcon(TImageBroker.LER_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_ratonEntraEnIconoLER
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono
@@ -2156,10 +2052,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDeIconoReceptor(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoReceptor
+    private void ratonSaleDeIconoReceptor(MouseEvent evt) {
         this.iconoReceptor.setIcon(this.imageBroker.getIcon(TImageBroker.RECEPTOR_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_ratonSaleDeIconoReceptor
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
@@ -2168,10 +2064,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoReceptor(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoReceptor
+    private void ratonEntraEnIconoReceptor(MouseEvent evt) {
         this.iconoReceptor.setIcon(this.imageBroker.getIcon(TImageBroker.RECEPTOR_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_ratonEntraEnIconoReceptor
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono
@@ -2180,10 +2076,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDeIconoEmisor(MouseEvent evt) {//GEN-FIRST:event_ratonSaleDeIconoEmisor
+    private void ratonSaleDeIconoEmisor(MouseEvent evt) {
         this.iconoEmisor.setIcon(this.imageBroker.getIcon(TImageBroker.EMISOR_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_ratonSaleDeIconoEmisor
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
@@ -2192,10 +2088,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoEmisor(MouseEvent evt) {//GEN-FIRST:event_ratonEntraEnIconoEmisor
+    private void ratonEntraEnIconoEmisor(MouseEvent evt) {
         this.iconoEmisor.setIcon(this.imageBroker.getIcon(TImageBroker.EMISOR_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_ratonEntraEnIconoEmisor
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
@@ -2204,7 +2100,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void clicEnAniadirReceptor(MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirReceptor
+    private void clicEnAniadirReceptor(MouseEvent evt) {
         TTrafficSinkNode receptor = null;
         try {
             receptor = new TTrafficSinkNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
@@ -2231,7 +2127,7 @@ public class JScenarioWindow extends JInternalFrame {
         } else {
             receptor = null;
         }
-    }//GEN-LAST:event_clicEnAniadirReceptor
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
@@ -2240,7 +2136,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void clicEnAniadirEmisorDeTrafico(MouseEvent evt) {//GEN-FIRST:event_clicEnAniadirEmisorDeTrafico
+    private void clicEnAniadirEmisorDeTrafico(MouseEvent evt) {
         TTopology t = this.scenario.getTopology();
         Iterator it = t.getNodesIterator();
         TNode nt;
@@ -2283,7 +2179,7 @@ public class JScenarioWindow extends JInternalFrame {
                 emisor = null;
             }
         }
-    }//GEN-LAST:event_clicEnAniadirEmisorDeTrafico
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
@@ -2293,12 +2189,12 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que este m�todo se dispare.
      */
-    private void clicAlPausar(MouseEvent evt) {//GEN-FIRST:event_clicAlPausar
+    private void clicAlPausar(MouseEvent evt) {
         if (this.iconoPausar.isEnabled()) {
             this.scenario.getTopology().getTimer().setPaused(true);
             activarOpcionesAlDetener();
         }
-    }//GEN-LAST:event_clicAlPausar
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
@@ -2308,14 +2204,14 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que este m�todo se dispare.
      */
-    private void clicEnFinalizar(MouseEvent evt) {//GEN-FIRST:event_clicEnFinalizar
+    private void clicEnFinalizar(MouseEvent evt) {
         if (this.iconoFinalizar.isEnabled()) {
             this.scenario.getTopology().getTimer().reset();
             this.crearTraza.setEnabled(true);
             this.panelSimulacion.ponerFicheroTraza(null);
             activarOpcionesAlFinalizar();
         }
-    }//GEN-LAST:event_clicEnFinalizar
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
@@ -2324,13 +2220,13 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que este m�todo se dispare.
      */
-    private void clicEnReanudar(MouseEvent evt) {//GEN-FIRST:event_clicEnReanudar
+    private void clicEnReanudar(MouseEvent evt) {
         if (this.iconoReanudar.isEnabled()) {
             activarOpcionesAlComenzar();
             this.scenario.getTopology().getTimer().setPaused(false);
             this.scenario.getTopology().getTimer().restart();
         }
-    }//GEN-LAST:event_clicEnReanudar
+    }
 
     /**
      * Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
@@ -2339,7 +2235,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que este m�todo se dispare.
      */
-    private void clicEnComenzar(MouseEvent evt) {//GEN-FIRST:event_clicEnComenzar
+    private void clicEnComenzar(MouseEvent evt) {
         if (this.iconoComenzar.isEnabled()) {
             this.scenario.reset();
             if (!this.scenario.getTopology().getTimer().isRunning()) {
@@ -2371,7 +2267,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
             activarOpcionesTrasGenerar();
         }
-    }//GEN-LAST:event_clicEnComenzar
+    }
 
     /**
      * Este m�todo se llama cuando comienza la simulaci�n del escenario. Crea
@@ -2821,54 +2717,13 @@ public class JScenarioWindow extends JInternalFrame {
         this.scenario.setDescription(this.descripcionEscenario.getText());
     }
 
-    /**
-     * Este atributo es el objeto encargado de actualizar la barra de progreso
-     * del escenario que se usa a la hora de generar la simulaci�n y a la hora
-     * de ejecutarla.
-     *
-     * @since 2.0
-     */
     private TProgressEventListener aProgresoGeneracion;
-    /**
-     * Este atributo contendr� todo el escenario completo de la simulaci�n:
-     * topology, an�lisis y simulaci�n.
-     *
-     * @since 2.0
-     */
     private TScenario scenario;
-    /**
-     * Este atributo contendr� en todo momento una referencia al nodo del
-     * escenario que se est� arrastrando.
-     *
-     * @since 2.0
-     */
     private TNode nodoSeleccionado;
-    /**
-     * Este atributo contendr� todas las im�genes de Open SimMPLS para poder
-     * acceder a ellas de forma m�s r�pida y para no tener que cargar la misma
-     * imagen en distintas instancias.
-     *
-     * @since 2.0
-     */
     private TImageBroker imageBroker;
-    /**
-     * Este atributo es una referencia a la ventana padre que recoge dentro de
-     * si a esta ventana hija.
-     *
-     * @since 2.0
-     */
     private JOpenSimMPLS parent;
-    /**
-     * Este atributo contiene en todo momento un referencia al elemento de la
-     * topolog�a (nodo o enlace) sobre el que se est� intentando abrir un men�
-     * contextual (clic con el bot�n derecho).
-     *
-     * @since 2.0
-     */
     private TTopologyElement elementoDisenioClicDerecho;
-
     private boolean controlTemporizacionDesactivado;
-
     private ChartPanel panelGrafico1;
     private ChartPanel panelGrafico2;
     private ChartPanel panelGrafico3;
@@ -2881,8 +2736,6 @@ public class JScenarioWindow extends JInternalFrame {
     private JFreeChart grafico4;
     private JFreeChart grafico5;
     private JFreeChart grafico6;
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     private JTextArea areaEstadisticasDescripcion;
     private JProgressBar barraDeProgreso;
     private JCheckBox crearTraza;
