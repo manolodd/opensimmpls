@@ -94,10 +94,9 @@ import javax.swing.event.ChangeListener;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.Spacer;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.DefaultCategoryDataset;
-import org.jfree.data.XYSeriesCollection;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.xy.XYSeriesCollection;
 
 /**
  * Esta clase implementa una ventana que save� un escenario completo y dar�
@@ -2552,7 +2551,13 @@ public class JScenarioWindow extends JInternalFrame {
 
             int numeroGraficos = nt.getStats().getNumberOfAvailableDatasets();
 
-            if (numeroGraficos > 0) {
+            if (numeroGraficos > 0) {       
+                
+                this.grafico1 = new JXYChart(nt.getStats().getTitleOfDataset1(),
+                        TStats.TIME,
+                        TStats.NUMBER_OF_PACKETS,
+                        (XYSeriesCollection) nt.getStats().getDataset1());
+                /*
                 this.grafico1 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset1(),
                         TStats.TIME,
                         TStats.NUMBER_OF_PACKETS,
@@ -2562,22 +2567,31 @@ public class JScenarioWindow extends JInternalFrame {
                 this.grafico1.getPlot().setBackgroundPaint(Color.WHITE);
                 this.grafico1.getPlot().setForegroundAlpha((float) 0.5);
                 this.grafico1.getPlot().setOutlinePaint(new Color(14, 69, 125));
-                this.grafico1.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
+//                this.grafico1.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
                 this.grafico1.setBackgroundPaint(new Color(210, 226, 242));
                 this.grafico1.setBorderPaint(Color.BLACK);
                 this.grafico1.getTitle().setPaint(new Color(79, 138, 198));
                 this.panelGrafico1 = new ChartPanel(this.grafico1);
                 this.panelGrafico1.setBorder(new LineBorder(Color.BLACK));
                 this.panelGrafico1.setPreferredSize(new Dimension(600, 300));
+                */
                 gbc = new GridBagConstraints();
                 gbc.gridx = 0;
                 gbc.gridy = 1;
                 gbc.insets = new Insets(10, 5, 10, 5);
                 gbc.anchor = GridBagConstraints.NORTH;
                 gbc.fill = GridBagConstraints.HORIZONTAL;
-                this.panelAnalisis.add(this.panelGrafico1, gbc);
+//                this.panelAnalisis.add(this.panelGrafico1, gbc);
+                this.panelAnalisis.add(this.grafico1.getChartPanel(), gbc);
             }
             if (numeroGraficos > 1) {
+                
+                this.grafico2 = new JXYChart(nt.getStats().getTitleOfDataset2(),
+                        TStats.TIME,
+                        TStats.NUMBER_OF_PACKETS,
+                        (XYSeriesCollection) nt.getStats().getDataset2());
+                
+/*                
                 this.grafico2 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset2(),
                         TStats.TIME,
                         TStats.NUMBER_OF_PACKETS,
@@ -2587,7 +2601,7 @@ public class JScenarioWindow extends JInternalFrame {
                 this.grafico2.getPlot().setBackgroundPaint(Color.WHITE);
                 this.grafico2.getPlot().setForegroundAlpha((float) 0.5);
                 this.grafico2.getPlot().setOutlinePaint(new Color(14, 69, 125));
-                this.grafico2.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
+//                this.grafico2.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
                 this.grafico2.setBackgroundPaint(new Color(210, 226, 242));
                 this.grafico2.setBorderPaint(Color.BLACK);
                 this.grafico2.getTitle().setPaint(new Color(79, 138, 198));
@@ -2595,14 +2609,22 @@ public class JScenarioWindow extends JInternalFrame {
                 this.panelGrafico2.setPreferredSize(new Dimension(600, 300));
                 this.panelGrafico2.setBorder(new LineBorder(Color.BLACK));
                 gbc = new GridBagConstraints();
+                */
                 gbc.gridx = 0;
                 gbc.gridy = 2;
                 gbc.insets = new Insets(10, 5, 10, 5);
                 gbc.anchor = GridBagConstraints.NORTH;
                 gbc.fill = GridBagConstraints.HORIZONTAL;
-                this.panelAnalisis.add(panelGrafico2, gbc);
+//                this.panelAnalisis.add(panelGrafico2, gbc);
+                this.panelAnalisis.add(this.grafico2.getChartPanel(), gbc);
             }
             if (numeroGraficos > 2) {
+                this.grafico3 = new JXYChart(nt.getStats().getTitleOfDataset3(),
+                        TStats.TIME,
+                        TStats.NUMBER_OF_PACKETS,
+                        (XYSeriesCollection) nt.getStats().getDataset3());
+                
+/*                
                 this.grafico3 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset3(),
                         TStats.TIME,
                         TStats.NUMBER_OF_PACKETS,
@@ -2612,20 +2634,22 @@ public class JScenarioWindow extends JInternalFrame {
                 this.grafico3.getPlot().setBackgroundPaint(Color.WHITE);
                 this.grafico3.getPlot().setForegroundAlpha((float) 0.5);
                 this.grafico3.getPlot().setOutlinePaint(new Color(14, 69, 125));
-                this.grafico3.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
+//                this.grafico3.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
                 this.grafico3.setBackgroundPaint(new Color(210, 226, 242));
                 this.grafico3.setBorderPaint(Color.BLACK);
                 this.grafico3.getTitle().setPaint(new Color(79, 138, 198));
                 this.panelGrafico3 = new ChartPanel(this.grafico3);
                 this.panelGrafico3.setBorder(new LineBorder(Color.BLACK));
                 this.panelGrafico3.setPreferredSize(new Dimension(600, 300));
+                */
                 gbc = new GridBagConstraints();
                 gbc.gridx = 0;
                 gbc.gridy = 3;
                 gbc.insets = new Insets(10, 5, 10, 5);
                 gbc.anchor = GridBagConstraints.NORTH;
                 gbc.fill = GridBagConstraints.HORIZONTAL;
-                this.panelAnalisis.add(this.panelGrafico3, gbc);
+//                this.panelAnalisis.add(this.panelGrafico3, gbc);
+                this.panelAnalisis.add(this.grafico3.getChartPanel(), gbc);
             }
             if (numeroGraficos > 3) {
                 this.grafico4 = ChartFactory.createBarChart(nt.getStats().getTitleOfDataset4(),
@@ -2685,7 +2709,7 @@ public class JScenarioWindow extends JInternalFrame {
                 this.grafico6.getPlot().setBackgroundPaint(Color.WHITE);
                 this.grafico6.getPlot().setForegroundAlpha((float) 0.5);
                 this.grafico6.getPlot().setOutlinePaint(new Color(14, 69, 125));
-                this.grafico6.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
+//                this.grafico6.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
                 this.grafico6.setBackgroundPaint(new Color(210, 226, 242));
                 this.grafico6.setBorderPaint(Color.BLACK);
                 this.grafico6.getTitle().setPaint(new Color(79, 138, 198));
@@ -2703,7 +2727,7 @@ public class JScenarioWindow extends JInternalFrame {
         }
         this.panelAnalisis.repaint();
     }
-
+    
     /**
      * Este m�todo se encarga de anotar los datos del escenario desde la
      * interfaz de usuario hasta los correspondientes atributos del objeto que
@@ -2730,9 +2754,16 @@ public class JScenarioWindow extends JInternalFrame {
     private ChartPanel panelGrafico4;
     private ChartPanel panelGrafico5;
     private ChartPanel panelGrafico6;
+    /*
     private JFreeChart grafico1;
     private JFreeChart grafico2;
     private JFreeChart grafico3;
+*/
+    private JXYChart grafico1;
+    private JXYChart grafico2;
+    private JXYChart grafico3;
+
+
     private JFreeChart grafico4;
     private JFreeChart grafico5;
     private JFreeChart grafico6;

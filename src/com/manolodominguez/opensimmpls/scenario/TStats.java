@@ -16,7 +16,7 @@
 package com.manolodominguez.opensimmpls.scenario;
 
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
-import org.jfree.data.AbstractDataset;
+import org.jfree.data.general.AbstractDataset;
 
 /**
  * This class is abstract. It will be implemented by subclasses to allow

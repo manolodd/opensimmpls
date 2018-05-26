@@ -16,9 +16,9 @@
 package com.manolodominguez.opensimmpls.scenario;
 
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
-import org.jfree.data.AbstractDataset;
-import org.jfree.data.XYSeries;
-import org.jfree.data.XYSeriesCollection;
+import org.jfree.data.general.AbstractDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 /**
  * This class implements a statistics collector for a receiver node.
