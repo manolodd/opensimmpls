@@ -67,10 +67,11 @@ java -jar openSimMPLS-bin-v{YourVersion}.jar
 
 OpenSimMPLS uses third-party components each one of them having its own OSS license. License compatibility has been taken into account to allow OpenSimMPLS be released under its current OSS licence. They are:
 
-- Jfreechart - LGPL - http://www.jfree.org/jfreechart/
-- Liquidlnf - Apache Software License 2.0 - https://sourceforge.net/projects/liquidlnf/
-- slf4j-api - MIT - https://www.slf4j.org/
-- slf4j-simple - MIT - https://www.slf4j.org/
+- Jfreechart 1.5.0 - LGPL - http://www.jfree.org/jfreechart
+- Liquidlnf - Apache Software License 2.0 - https://sourceforge.net/projects/liquidlnf
+- slf4j-api 1.7.25 - MIT - https://www.slf4j.org
+- slf4j-simple 1.7.25 - MIT - https://www.slf4j.org
+- miglayout-swing 5.1 - BSD - https://github.com/mikaelgrev/miglayout
 
 Thanks folks!
 
