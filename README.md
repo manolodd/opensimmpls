@@ -72,6 +72,7 @@ OpenSimMPLS uses third-party components each one of them having its own OSS lice
 - slf4j-api 1.7.25 - MIT - https://www.slf4j.org
 - slf4j-simple 1.7.25 - MIT - https://www.slf4j.org
 - miglayout-swing 5.1 - BSD - https://github.com/mikaelgrev/miglayout
+- miglayout-core 5.1 - BSD - https://github.com/mikaelgrev/miglayout
 
 Thanks folks!
 
