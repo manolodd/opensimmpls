@@ -17,7 +17,7 @@
 #Titulo#Recovering packet via GPSRP#
 #Autor#Manuel Domínguez Dorado#
 #Descripcion#Three IPv4 flows (one is GoS tagged) arrives to Active LSR 2, that became congested and start discarding packets. This LER will start recovering ONLY GoS packets through Active LSR 1 or Entrance active LER. The rest of the traffic is not receovered.#
-#Temporizacion#1000000#100#
+#Temporizacion#1000001#100#
 
 @!Escenario
 

@@ -15,14 +15,15 @@
  */
 package com.manolodominguez.opensimmpls.main;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import com.manolodominguez.opensimmpls.ui.simulator.JOpenSimMPLS;
 import com.manolodominguez.opensimmpls.ui.splash.JSplash;
+import java.awt.Toolkit;
+import java.util.ResourceBundle;
+import javax.swing.SwingUtilities;
 
 /**
  * This class implements a new OpenSimMPLS network simulator. This is the main
@@ -39,6 +40,7 @@ public class openSimMPLS {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
+    // FIX: Remo this and replace by Apache 2.0 software license
     public static void mostrarGPL() {
         try {
             System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("Open_SimMPLS_1.0_"));
@@ -79,31 +81,34 @@ public class openSimMPLS {
         if (args.length > 0) {
             mostrarGPL();
         }
-        try {
-            boolean nimbusSet = false;
-            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    nimbusSet = true;
-                    break;
+        SwingUtilities.invokeLater(() -> {
+
+            try {
+                boolean nimbusSet = false;
+                for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                    if ("Nimbus".equals(info.getName())) {
+                        UIManager.setLookAndFeel(info.getClassName());
+                        nimbusSet = true;
+                        break;
+                    }
                 }
+                if (!nimbusSet) {
+                    UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
+                }
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+                System.out.println("An error happened when starting OpenSimMPLS");
             }
-            if (!nimbusSet) {
-                UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
-            System.out.println("An error happened when starting OpenSimMPLS");
-        }
-        splash = new com.manolodominguez.opensimmpls.ui.splash.JSplash();
-        splash.show();
-        splash.ponerTexto(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("Loading_icons..."));
-        imagesBroker = new TImageBroker();
-        splash.ponerTexto(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("openSimMPLS.generandoInterfaz"));
-        simulator = new JOpenSimMPLS(imagesBroker);
-        java.awt.Dimension tamPantalla = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        simulator.setBounds(0, 0, tamPantalla.width, tamPantalla.height);
-        simulator.show();
-        splash.dispose();
+            splash = new JSplash();
+            splash.setVisible(true);
+            splash.ponerTexto(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("Loading_icons..."));
+            imagesBroker = new TImageBroker();
+            splash.ponerTexto(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("openSimMPLS.generandoInterfaz"));
+            simulator = new JOpenSimMPLS(imagesBroker);
+            java.awt.Dimension tamPantalla = Toolkit.getDefaultToolkit().getScreenSize();
+            simulator.setBounds(0, 0, tamPantalla.width, tamPantalla.height);
+            simulator.setVisible(true);
+            splash.dispose();
+        });
     }
 
     // Variables declaration - do not modify

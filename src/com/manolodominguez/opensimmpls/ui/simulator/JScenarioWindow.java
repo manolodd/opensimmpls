@@ -47,6 +47,7 @@ import com.manolodominguez.opensimmpls.ui.dialogs.JTrafficSinkWindow;
 import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
 import com.manolodominguez.opensimmpls.ui.utils.JOSMFilter;
 import com.manolodominguez.opensimmpls.ui.utils.TProgressEventListener;
+import com.manolodominguez.opensimmpls.ui.utils.JScrollablePanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -68,7 +69,6 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -87,14 +87,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
+import net.miginfocom.swing.MigLayout;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -166,52 +162,6 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se encarga de start los atributos de la clase que no hayan
-     * sido aun iniciados por NetBeans.
-     *
-     * @since 2.0
-     */
-    private void initComponents2() {
-        this.panelDisenio.setImageBroker(this.imageBroker);
-        this.panelSimulacion.ponerDispensadorDeImagenes(this.imageBroker);
-        Dimension tamPantalla = this.parent.getSize();
-        this.setSize((tamPantalla.width * 9 / 10), (tamPantalla.height * 9 / 10));
-        Dimension tamFrame = this.getSize();
-        this.setLocation((tamPantalla.width - tamFrame.width) / 2, (tamPantalla.height - tamFrame.height) / 2);
-        this.scenario = new TScenario();
-        this.panelDisenio.setTopology(this.scenario.getTopology());
-        this.panelSimulacion.ponerTopologia(this.scenario.getTopology());
-        this.nodoSeleccionado = null;
-        this.elementoDisenioClicDerecho = null;
-        this.aProgresoGeneracion = new TProgressEventListener(this.barraDeProgreso);
-        try {
-            this.scenario.getTopology().getTimer().addProgressEventListener(this.aProgresoGeneracion);
-        } catch (EProgressEventGeneratorOnlyAllowASingleListener e) {
-            e.printStackTrace();
-        }
-        this.mlsPorTic.setValue(1);
-        this.pasoNs.setMaximum(this.duracionMs.getValue() * 1000000 + this.duracionNs.getValue());
-        this.etiquetaMlsPorTic.setText(this.mlsPorTic.getValue() + this.translations.getString("VentanaHija.Simulacion.EtiquetaMsTic"));
-        this.etiquetaDuracionMs.setText(this.duracionMs.getValue() + this.translations.getString("VentanaHija._ms."));
-        this.etiquetaDuracionNs.setText(this.duracionNs.getValue() + this.translations.getString("VentanaHija._ns."));
-        this.etiquetaPasoNs.setText(this.pasoNs.getValue() + this.translations.getString("VentanaHija_ns."));
-        this.controlTemporizacionDesactivado = false;
-        this.scenario.getSimulation().setSimulationPanel(this.panelSimulacion);
-        this.panelGrafico1 = null;
-        this.panelGrafico2 = null;
-        this.panelGrafico3 = null;
-        this.panelGrafico4 = null;
-        this.panelGrafico5 = null;
-        this.panelGrafico6 = null;
-        this.grafico1 = null;
-        this.grafico2 = null;
-        this.grafico3 = null;
-        this.grafico4 = null;
-        this.grafico5 = null;
-        this.grafico6 = null;
-    }
-
-    /**
      * Este m�todo es llamado desde el constructor para actualizar la mayor
      * parte de los atributos de la clase que tienen que ver con la interfaz de
      * usuario. Es un m�todo creado por NetBeans automaticamente.
@@ -221,157 +171,159 @@ public class JScenarioWindow extends JInternalFrame {
     private void initComponents() {
         this.translations = ResourceBundle.getBundle(AvailableBundles.SCENARIO_WINDOW.getPath());
         GridBagConstraints gridBagConstraints;
-        this.diseElementoPopUp = new JPopupMenu();
-        this.dEliminarMenuItem = new JMenuItem();
-        this.dVerNombreMenuItem = new JCheckBoxMenuItem();
-        this.jSeparator1 = new JSeparator();
-        this.dPropiedadesMenuItem = new JMenuItem();
-        this.diseFondoPopUp = new JPopupMenu();
-        this.dVerNombresNodosMenuItem = new JMenuItem();
-        this.dOcultarNombresNodosMenuItem = new JMenuItem();
-        this.dVerNombresEnlacesMenuItem = new JMenuItem();
-        this.dOcultarNombresEnlacesMenuItem = new JMenuItem();
+        this.popupMenuTopologyElement = new JPopupMenu();
+        this.menuItemDeleteElement = new JMenuItem();
+        this.chekBoxMenuItemShowElementName = new JCheckBoxMenuItem();
+        this.separatorPopupMenuTopologyElement = new JSeparator();
+        this.menuItemItemElementProperties = new JMenuItem();
+        this.popupMenuBackgroundDesignPanel = new JPopupMenu();
+        this.menuItemShowNodesNames = new JMenuItem();
+        this.menuItemHideNodesNames = new JMenuItem();
+        this.menuItemShowLinksNames = new JMenuItem();
+        this.menuItemHideLinksNames = new JMenuItem();
         this.jSeparator2 = new JSeparator();
-        this.dEliminarTodoMenuItem = new JMenuItem();
-        this.jTabbedPane1 = new JTabbedPane();
-        this.panelDisenioSuperior = new JPanel();
-        this.panelBotonesDisenio = new JPanel();
-        this.iconoEmisor = new JLabel();
-        this.iconoReceptor = new JLabel();
-        this.iconoLER = new JLabel();
-        this.iconoLERA = new JLabel();
-        this.iconoLSR = new JLabel();
-        this.iconoLSRA = new JLabel();
-        this.iconoEnlace = new JLabel();
-        this.jScrollPane1 = new JScrollPane();
-        this.panelDisenio = new JDesignPanel();
-        this.panelSimulacionSuperior = new JPanel();
-        this.panelBotonesSimulacion = new JPanel();
-        this.iconoComenzar = new JLabel();
-        this.iconoFinalizar = new JLabel();
-        this.iconoReanudar = new JLabel();
-        this.iconoPausar = new JLabel();
-        this.barraDeProgreso = new JProgressBar();
-        this.mlsPorTic = new JSlider();
-        this.etiquetaMlsPorTic = new JLabel();
-        this.crearTraza = new JCheckBox();
-        this.jScrollPane2 = new JScrollPane();
-        this.panelSimulacion = new JSimulationPanel();
-        this.panelAnalisisSuperior = new JPanel();
-        this.panelSeleccionElemento = new JPanel();
-        this.jLabel1 = new JLabel();
-        this.selectorElementoEstadisticas = new JComboBox();
-        this.jScrollPane4 = new JScrollPane();
-        this.panelAnalisis = new JPanel();
-        this.panelFijo = new JPanel();
-        this.etiquetaEstadisticasTituloEscenario = new JLabel();
-        this.etiquetaEstadisticasNombreAutor = new JLabel();
-        this.areaEstadisticasDescripcion = new JTextArea();
-        this.etiquetaNombreElementoEstadistica = new JLabel();
-        this.panelOpcionesSuperior = new JPanel();
-        this.jScrollPane3 = new JScrollPane();
-        this.panelOpciones = new JPanel();
-        this.jPanel3 = new JPanel();
-        this.jLabel5 = new JLabel();
-        this.nombreEscenario = new JTextField();
-        this.jLabel6 = new JLabel();
-        this.nombreAutor = new JTextField();
-        this.jLabel7 = new JLabel();
-        this.descripcionEscenario = new JTextField();
-        this.jPanel2 = new JPanel();
-        this.jLabel3 = new JLabel();
-        this.duracionMs = new JSlider();
-        this.etiquetaDuracionMs = new JLabel();
-        this.duracionNs = new JSlider();
-        this.etiquetaDuracionNs = new JLabel();
-        this.jLabel4 = new JLabel();
-        this.pasoNs = new JSlider();
-        this.etiquetaPasoNs = new JLabel();
-        this.diseElementoPopUp.setFont(new Font("Dialog", 0, 12));
-        this.dEliminarMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.dEliminarMenuItem.setMnemonic(this.translations.getString("VentanaHija.PopUpDisenio.mne.Delete").charAt(0));
-        this.dEliminarMenuItem.setText(this.translations.getString("VentanaHija.PopUpDisenio.Delete"));
-        this.dEliminarMenuItem.addActionListener(new ActionListener() {
+        this.menuItemDeleteAllItems = new JMenuItem();
+        this.tabsPanel = new JTabbedPane();
+        this.designMainContainerPanel = new JPanel();
+        this.designToolbarPanel = new JPanel();
+        this.iconContainerTrafficGeneratorNode = new JLabel();
+        this.iconContainerTrafficSink = new JLabel();
+        this.iconContainerLER = new JLabel();
+        this.iconContainerActiveLER = new JLabel();
+        this.iconContainerLSR = new JLabel();
+        this.iconContainerActiveLSR = new JLabel();
+        this.iconContainerLink = new JLabel();
+        this.scrollPaneDesign = new JScrollPane();
+        this.designPanel = new JDesignPanel();
+        this.simulationMainContainerPanel = new JPanel();
+        this.simulationToolbarPanel = new JPanel();
+        this.iconContainterStartSimulation = new JLabel();
+        this.iconContainerFinishSimulation = new JLabel();
+        this.iconContainerResumeSimulation = new JLabel();
+        this.iconContainerPauseSimulation = new JLabel();
+        this.progressBarSimulation = new JProgressBar();
+        this.sliderSimulationSpeedInMsPerTick = new JSlider();
+        this.labelSimulationSpeedFaster = new JLabel();
+        this.labelSimulationSpeedSlower = new JLabel();
+        this.scrollPaneSimulation = new JScrollPane();
+        this.simulationPanel = new JSimulationPanel();
+        this.analysisMainContainerPanel = new JPanel();
+        this.analysisToolbarPanel = new JPanel();
+        this.labelSelectANodeToAnalyze = new JLabel();
+        this.comboBoxNodeToAnalize = new JComboBox();
+        this.scrollPaneAnalysis = new JScrollPane();
+        this.analysisPanel = new JScrollablePanel();
+        this.labelScenarioTitle = new JLabel();
+        this.labelScenarioAuthorName = new JLabel();
+        this.textAreaScenarioDescription = new JTextArea();
+        this.labelElementToAnalize = new JLabel();
+        this.optionsPrimaryMainContainerPanel = new JPanel();
+        this.optionsSecondaryMainContainerPanel = new JPanel();
+        this.optionsScenarioInformationPanel = new JPanel();
+        this.labelOptionsScenarioTitle = new JLabel();
+        this.textFieldOptionsScenarioTitle = new JTextField();
+        this.labelOptionsScenarioAuthorName = new JLabel();
+        this.textFieldOptionsScenarioAuthorName = new JTextField();
+        this.labelOptionsScenarioDescription = new JLabel();
+        this.textAreaOptionsScenarioDescription = new JTextArea();
+        this.optionsSimulationTimingPanel = new JPanel();
+        this.labelOptionsSimulationLength = new JLabel();
+        this.sliderOptionsSimulationLengthMs = new JSlider();
+        this.labelOptionsSimulationLengthMs = new JLabel();
+        this.sliderOptionsSimulationLengthNs = new JSlider();
+        this.labelOptionsSimulationLengthNs = new JLabel();
+        this.labelOptionsTickLengthInNs = new JLabel();
+        this.sliderOptionsTickDurationInNs = new JSlider();
+        this.labelOptionsNsTick = new JLabel();
+        // Definition of popup menu showed when righ-click on an element in 
+        // design panel
+        this.popupMenuTopologyElement.setFont(new Font("Dialog", 0, 12));
+        this.menuItemDeleteElement.setFont(new Font("Dialog", 0, 12));
+        this.menuItemDeleteElement.setMnemonic(this.translations.getString("VentanaHija.PopUpDisenio.mne.Delete").charAt(0));
+        this.menuItemDeleteElement.setText(this.translations.getString("VentanaHija.PopUpDisenio.Delete"));
+        this.menuItemDeleteElement.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 clicEnPopUpDisenioEliminar(evt);
             }
         });
-        this.diseElementoPopUp.add(this.dEliminarMenuItem);
-
-        this.dVerNombreMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.dVerNombreMenuItem.setMnemonic(this.translations.getString("VentanaHija.PopUpDisenio.mne.verNombre").charAt(0));
-        this.dVerNombreMenuItem.setText(this.translations.getString("VentanaHija.PopUpDisenio.verNombre"));
-        this.dVerNombreMenuItem.addActionListener(new ActionListener() {
+        this.popupMenuTopologyElement.add(this.menuItemDeleteElement);
+        this.chekBoxMenuItemShowElementName.setFont(new Font("Dialog", 0, 12));
+        this.chekBoxMenuItemShowElementName.setMnemonic(this.translations.getString("VentanaHija.PopUpDisenio.mne.verNombre").charAt(0));
+        this.chekBoxMenuItemShowElementName.setText(this.translations.getString("VentanaHija.PopUpDisenio.verNombre"));
+        this.chekBoxMenuItemShowElementName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 clicEnPopUpDisenioVerNombre(evt);
             }
         });
-        this.diseElementoPopUp.add(this.dVerNombreMenuItem);
-        this.diseElementoPopUp.add(this.jSeparator1);
-        this.dPropiedadesMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.dPropiedadesMenuItem.setMnemonic(this.translations.getString("VentanaHija.PopUpDisenio.mne.Propiedades").charAt(0));
-        this.dPropiedadesMenuItem.setText(this.translations.getString("VentanaHija.PopUpDisenio.Propiedades"));
-        this.dPropiedadesMenuItem.addActionListener(new ActionListener() {
+        this.popupMenuTopologyElement.add(this.chekBoxMenuItemShowElementName);
+        this.popupMenuTopologyElement.add(this.separatorPopupMenuTopologyElement);
+        this.menuItemItemElementProperties.setFont(new Font("Dialog", 0, 12));
+        this.menuItemItemElementProperties.setMnemonic(this.translations.getString("VentanaHija.PopUpDisenio.mne.Propiedades").charAt(0));
+        this.menuItemItemElementProperties.setText(this.translations.getString("VentanaHija.PopUpDisenio.Propiedades"));
+        this.menuItemItemElementProperties.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 clicEnPropiedadesPopUpDisenioElemento(evt);
             }
         });
-        this.diseElementoPopUp.add(this.dPropiedadesMenuItem);
-        this.diseFondoPopUp.setFont(new Font("Dialog", 0, 12));
-        this.dVerNombresNodosMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.dVerNombresNodosMenuItem.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.verTodosNodos").charAt(0));
-        this.dVerNombresNodosMenuItem.setText(this.translations.getString("popUpDisenioFondo.verTodosNodos"));
-        this.dVerNombresNodosMenuItem.addActionListener(new ActionListener() {
+        this.popupMenuTopologyElement.add(this.menuItemItemElementProperties);
+        // Definition of opup menu showed when righ-click on background in 
+        // design panel
+        this.popupMenuBackgroundDesignPanel.setFont(new Font("Dialog", 0, 12));
+        this.menuItemShowNodesNames.setFont(new Font("Dialog", 0, 12));
+        this.menuItemShowNodesNames.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.verTodosNodos").charAt(0));
+        this.menuItemShowNodesNames.setText(this.translations.getString("popUpDisenioFondo.verTodosNodos"));
+        this.menuItemShowNodesNames.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 clicEnPopUpDisenioFondoVerNombreNodos(evt);
             }
         });
-        this.diseFondoPopUp.add(this.dVerNombresNodosMenuItem);
-        this.dOcultarNombresNodosMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.dOcultarNombresNodosMenuItem.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.ocultarTodosNodos").charAt(0));
-        this.dOcultarNombresNodosMenuItem.setText(this.translations.getString("popUpDisenioFondo.ocultarTodosNodos"));
-        this.dOcultarNombresNodosMenuItem.addActionListener(new ActionListener() {
+        this.popupMenuBackgroundDesignPanel.add(this.menuItemShowNodesNames);
+        this.menuItemHideNodesNames.setFont(new Font("Dialog", 0, 12));
+        this.menuItemHideNodesNames.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.ocultarTodosNodos").charAt(0));
+        this.menuItemHideNodesNames.setText(this.translations.getString("popUpDisenioFondo.ocultarTodosNodos"));
+        this.menuItemHideNodesNames.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 clicEnPopUpDisenioFondoOcultarNombreNodos(evt);
             }
         });
-        this.diseFondoPopUp.add(this.dOcultarNombresNodosMenuItem);
-        this.dVerNombresEnlacesMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.dVerNombresEnlacesMenuItem.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.verTodosEnlaces").charAt(0));
-        this.dVerNombresEnlacesMenuItem.setText(this.translations.getString("popUpDisenioFondo.verTodosEnlaces"));
-        this.dVerNombresEnlacesMenuItem.addActionListener(new ActionListener() {
+        this.popupMenuBackgroundDesignPanel.add(this.menuItemHideNodesNames);
+        this.menuItemShowLinksNames.setFont(new Font("Dialog", 0, 12));
+        this.menuItemShowLinksNames.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.verTodosEnlaces").charAt(0));
+        this.menuItemShowLinksNames.setText(this.translations.getString("popUpDisenioFondo.verTodosEnlaces"));
+        this.menuItemShowLinksNames.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 clicEnPopUpDisenioFondoVerNombreEnlaces(evt);
             }
         });
-        this.diseFondoPopUp.add(this.dVerNombresEnlacesMenuItem);
-        this.dOcultarNombresEnlacesMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.dOcultarNombresEnlacesMenuItem.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.ocultarTodosEnlaces").charAt(0));
-        this.dOcultarNombresEnlacesMenuItem.setText(this.translations.getString("popUpDisenioFondo.ocultarTodosEnlaces"));
-        this.dOcultarNombresEnlacesMenuItem.addActionListener(new ActionListener() {
+        this.popupMenuBackgroundDesignPanel.add(this.menuItemShowLinksNames);
+        this.menuItemHideLinksNames.setFont(new Font("Dialog", 0, 12));
+        this.menuItemHideLinksNames.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.ocultarTodosEnlaces").charAt(0));
+        this.menuItemHideLinksNames.setText(this.translations.getString("popUpDisenioFondo.ocultarTodosEnlaces"));
+        this.menuItemHideLinksNames.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 clicEnPopUpDisenioFondoOcultarNombreEnlaces(evt);
             }
         });
-        this.diseFondoPopUp.add(this.dOcultarNombresEnlacesMenuItem);
-        this.diseFondoPopUp.add(this.jSeparator2);
-        this.dEliminarTodoMenuItem.setFont(new Font("Dialog", 0, 12));
-        this.dEliminarTodoMenuItem.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.eliminarTodo").charAt(0));
-        this.dEliminarTodoMenuItem.setText(this.translations.getString("popUpDisenioFondo.borrarTodo"));
-        this.dEliminarTodoMenuItem.addActionListener(new ActionListener() {
+        this.popupMenuBackgroundDesignPanel.add(this.menuItemHideLinksNames);
+        this.popupMenuBackgroundDesignPanel.add(this.jSeparator2);
+        this.menuItemDeleteAllItems.setFont(new Font("Dialog", 0, 12));
+        this.menuItemDeleteAllItems.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.eliminarTodo").charAt(0));
+        this.menuItemDeleteAllItems.setText(this.translations.getString("popUpDisenioFondo.borrarTodo"));
+        this.menuItemDeleteAllItems.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 clicEnPopUpDisenioFondoEliminar(evt);
             }
         });
-        this.diseFondoPopUp.add(this.dEliminarTodoMenuItem);
+        this.popupMenuBackgroundDesignPanel.add(this.menuItemDeleteAllItems);
+        // Scenario window properties
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
@@ -382,14 +334,15 @@ public class JScenarioWindow extends JInternalFrame {
         setPreferredSize(new Dimension(100, 100));
         setVisible(true);
         setAutoscrolls(true);
-        this.jTabbedPane1.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-        this.jTabbedPane1.setFont(new Font("Dialog", 0, 12));
-        this.panelDisenioSuperior.setLayout(new BorderLayout());
-        this.panelBotonesDisenio.setLayout(new FlowLayout(FlowLayout.LEFT));
-        this.panelBotonesDisenio.setBorder(new EtchedBorder());
-        this.iconoEmisor.setIcon(this.imageBroker.getIcon(TImageBroker.EMISOR_MENU));
-        this.iconoEmisor.setToolTipText(this.translations.getString("VentanaHija.Topic.Emisor"));
-        this.iconoEmisor.addMouseListener(new MouseAdapter() {
+        this.tabsPanel.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        this.tabsPanel.setFont(new Font("Dialog", 0, 12));
+        // Definition of design tab content
+        this.designMainContainerPanel.setLayout(new BorderLayout());
+        this.designToolbarPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        this.designToolbarPanel.setBorder(new EtchedBorder());
+        this.iconContainerTrafficGeneratorNode.setIcon(this.imageBroker.getIcon(TImageBroker.EMISOR_MENU));
+        this.iconContainerTrafficGeneratorNode.setToolTipText(this.translations.getString("VentanaHija.Topic.Emisor"));
+        this.iconContainerTrafficGeneratorNode.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
                 ratonEntraEnIconoEmisor(evt);
@@ -405,10 +358,10 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnAniadirEmisorDeTrafico(evt);
             }
         });
-        this.panelBotonesDisenio.add(this.iconoEmisor);
-        this.iconoReceptor.setIcon(this.imageBroker.getIcon(TImageBroker.RECEPTOR_MENU));
-        this.iconoReceptor.setToolTipText(this.translations.getString("VentanaHija.Topic.Receptor"));
-        this.iconoReceptor.addMouseListener(new MouseAdapter() {
+        this.designToolbarPanel.add(this.iconContainerTrafficGeneratorNode);
+        this.iconContainerTrafficSink.setIcon(this.imageBroker.getIcon(TImageBroker.RECEPTOR_MENU));
+        this.iconContainerTrafficSink.setToolTipText(this.translations.getString("VentanaHija.Topic.Receptor"));
+        this.iconContainerTrafficSink.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
                 ratonEntraEnIconoReceptor(evt);
@@ -424,10 +377,10 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnAniadirReceptor(evt);
             }
         });
-        this.panelBotonesDisenio.add(this.iconoReceptor);
-        this.iconoLER.setIcon(this.imageBroker.getIcon(TImageBroker.LER_MENU));
-        this.iconoLER.setToolTipText(this.translations.getString("VentanaHija.Topic.LER"));
-        this.iconoLER.addMouseListener(new MouseAdapter() {
+        this.designToolbarPanel.add(this.iconContainerTrafficSink);
+        this.iconContainerLER.setIcon(this.imageBroker.getIcon(TImageBroker.LER_MENU));
+        this.iconContainerLER.setToolTipText(this.translations.getString("VentanaHija.Topic.LER"));
+        this.iconContainerLER.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
                 ratonEntraEnIconoLER(evt);
@@ -443,10 +396,10 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnAniadirLER(evt);
             }
         });
-        this.panelBotonesDisenio.add(this.iconoLER);
-        this.iconoLERA.setIcon(this.imageBroker.getIcon(TImageBroker.LERA_MENU));
-        this.iconoLERA.setToolTipText(this.translations.getString("VentanaHija.Topic.LERActivo"));
-        this.iconoLERA.addMouseListener(new MouseAdapter() {
+        this.designToolbarPanel.add(this.iconContainerLER);
+        this.iconContainerActiveLER.setIcon(this.imageBroker.getIcon(TImageBroker.LERA_MENU));
+        this.iconContainerActiveLER.setToolTipText(this.translations.getString("VentanaHija.Topic.LERActivo"));
+        this.iconContainerActiveLER.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
                 ratonEntraEnIconoLERA(evt);
@@ -462,10 +415,10 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnAniadirLERA(evt);
             }
         });
-        this.panelBotonesDisenio.add(this.iconoLERA);
-        this.iconoLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSR_MENU));
-        this.iconoLSR.setToolTipText(this.translations.getString("VentanaHija.Topic.LSR"));
-        this.iconoLSR.addMouseListener(new MouseAdapter() {
+        this.designToolbarPanel.add(this.iconContainerActiveLER);
+        this.iconContainerLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSR_MENU));
+        this.iconContainerLSR.setToolTipText(this.translations.getString("VentanaHija.Topic.LSR"));
+        this.iconContainerLSR.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
                 ratonEntraEnIconoLSR(evt);
@@ -481,10 +434,10 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnAniadirLSR(evt);
             }
         });
-        this.panelBotonesDisenio.add(iconoLSR);
-        this.iconoLSRA.setIcon(this.imageBroker.getIcon(TImageBroker.LSRA_MENU));
-        this.iconoLSRA.setToolTipText(this.translations.getString("VentanaHija.Topic.LSRActivo"));
-        this.iconoLSRA.addMouseListener(new MouseAdapter() {
+        this.designToolbarPanel.add(this.iconContainerLSR);
+        this.iconContainerActiveLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSRA_MENU));
+        this.iconContainerActiveLSR.setToolTipText(this.translations.getString("VentanaHija.Topic.LSRActivo"));
+        this.iconContainerActiveLSR.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
                 ratonEntraEnIconoLSRA(evt);
@@ -500,10 +453,10 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnAniadirLSRA(evt);
             }
         });
-        this.panelBotonesDisenio.add(this.iconoLSRA);
-        this.iconoEnlace.setIcon(this.imageBroker.getIcon(TImageBroker.ENLACE_MENU));
-        this.iconoEnlace.setToolTipText(this.translations.getString("VentanaHija.Topic.Enlace"));
-        this.iconoEnlace.addMouseListener(new MouseAdapter() {
+        this.designToolbarPanel.add(this.iconContainerActiveLSR);
+        this.iconContainerLink.setIcon(this.imageBroker.getIcon(TImageBroker.ENLACE_MENU));
+        this.iconContainerLink.setToolTipText(this.translations.getString("VentanaHija.Topic.Enlace"));
+        this.iconContainerLink.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
                 clicEnAniadirEnlace(evt);
@@ -519,13 +472,13 @@ public class JScenarioWindow extends JInternalFrame {
                 ratonSaleDeIconoEnlace(evt);
             }
         });
-        this.panelBotonesDisenio.add(this.iconoEnlace);
-        this.panelDisenioSuperior.add(this.panelBotonesDisenio, BorderLayout.NORTH);
-        this.jScrollPane1.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        this.panelDisenio.setLayout(null);
-        this.panelDisenio.setBackground(Color.white);
-        this.panelDisenio.setBorder(new EtchedBorder());
-        this.panelDisenio.addMouseListener(new MouseAdapter() {
+        this.designToolbarPanel.add(this.iconContainerLink);
+        this.designMainContainerPanel.add(this.designToolbarPanel, BorderLayout.NORTH);
+        this.scrollPaneDesign.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        this.designPanel.setLayout(null);
+        this.designPanel.setBackground(Color.white);
+        this.designPanel.setBorder(new EtchedBorder());
+        this.designPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
                 clicDerechoEnPanelDisenio(evt);
@@ -541,7 +494,7 @@ public class JScenarioWindow extends JInternalFrame {
                 clicSoltadoEnPanelDisenio(evt);
             }
         });
-        this.panelDisenio.addMouseMotionListener(new MouseMotionAdapter() {
+        this.designPanel.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent evt) {
                 arrastrandoEnPanelDisenio(evt);
@@ -552,15 +505,217 @@ public class JScenarioWindow extends JInternalFrame {
                 ratonSobrePanelDisenio(evt);
             }
         });
-        this.jScrollPane1.setViewportView(this.panelDisenio);
-        this.panelDisenioSuperior.add(this.jScrollPane1, BorderLayout.CENTER);
-        this.jTabbedPane1.addTab(this.translations.getString("VentanaHija.Tab.Disenio"), this.imageBroker.getIcon(TImageBroker.DISENIO), this.panelDisenioSuperior, this.translations.getString("VentanaHija.A_panel_to_design_network_topology"));
-        this.panelSimulacionSuperior.setLayout(new BorderLayout());
-        this.panelBotonesSimulacion.setLayout(new FlowLayout(FlowLayout.LEFT));
-        this.panelBotonesSimulacion.setBorder(new EtchedBorder());
-        this.iconoComenzar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_GENERAR));
-        this.iconoComenzar.setToolTipText(this.translations.getString("VentanaHija.Topic.Generar"));
-        this.iconoComenzar.addMouseListener(new MouseAdapter() {
+        this.scrollPaneDesign.setViewportView(this.designPanel);
+        this.designMainContainerPanel.add(this.scrollPaneDesign, BorderLayout.CENTER);
+        this.tabsPanel.addTab(this.translations.getString("VentanaHija.Tab.Disenio"), this.imageBroker.getIcon(TImageBroker.DISENIO), this.designMainContainerPanel, this.translations.getString("VentanaHija.A_panel_to_design_network_topology"));
+        // Definition of options panel content
+        this.optionsPrimaryMainContainerPanel.setLayout(new BorderLayout());
+        this.optionsPrimaryMainContainerPanel.setBorder(new EtchedBorder());
+        this.optionsSecondaryMainContainerPanel.setLayout(new GridBagLayout());
+        this.optionsScenarioInformationPanel.setLayout(new GridBagLayout());
+        this.optionsScenarioInformationPanel.setBorder(new TitledBorder(null, this.translations.getString("VentanaHija.GParameters"), TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", 0, 12)));
+        this.labelOptionsScenarioTitle.setFont(new Font("Dialog", 0, 12));
+        this.labelOptionsScenarioTitle.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelOptionsScenarioTitle.setText(this.translations.getString("VentanaHija.Scene_title"));
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 1;
+        gridBagConstraints.gridheight = 1;
+        gridBagConstraints.weightx = 0.0;
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        this.optionsScenarioInformationPanel.add(this.labelOptionsScenarioTitle, gridBagConstraints);
+        this.textFieldOptionsScenarioTitle.setToolTipText(this.translations.getString("VentanaHija.Type_a__title_of_the_scene"));
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+        gridBagConstraints.gridheight = 1;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        this.optionsScenarioInformationPanel.add(this.textFieldOptionsScenarioTitle, gridBagConstraints);
+        this.labelOptionsScenarioAuthorName.setFont(new Font("Dialog", 0, 12));
+        this.labelOptionsScenarioAuthorName.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelOptionsScenarioAuthorName.setText(this.translations.getString("VentanaHija.Scene_author"));
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 1;
+        gridBagConstraints.gridheight = 1;
+        gridBagConstraints.weightx = 0.0;
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        this.optionsScenarioInformationPanel.add(this.labelOptionsScenarioAuthorName, gridBagConstraints);
+        this.textFieldOptionsScenarioAuthorName.setToolTipText(this.translations.getString("VentanaHija.Type_de_name_of_the_author"));
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+        gridBagConstraints.gridheight = 1;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        this.optionsScenarioInformationPanel.add(this.textFieldOptionsScenarioAuthorName, gridBagConstraints);
+        this.labelOptionsScenarioDescription.setFont(new Font("Dialog", 0, 12));
+        this.labelOptionsScenarioDescription.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelOptionsScenarioDescription.setText(this.translations.getString("VentanaHija.Description"));
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 1;
+        gridBagConstraints.gridheight = 1;
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        this.optionsScenarioInformationPanel.add(this.labelOptionsScenarioDescription, gridBagConstraints);
+        this.textAreaOptionsScenarioDescription.setToolTipText(this.translations.getString("VentanaHija.Enter_a_short_description."));
+        this.textAreaOptionsScenarioDescription.setLineWrap(true);
+        this.textAreaOptionsScenarioDescription.setWrapStyleWord(true);
+        this.textAreaOptionsScenarioDescription.setRows(3);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+        gridBagConstraints.gridheight = 1;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        this.optionsScenarioInformationPanel.add(this.textAreaOptionsScenarioDescription, gridBagConstraints);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        this.optionsSecondaryMainContainerPanel.add(this.optionsScenarioInformationPanel, gridBagConstraints);
+        this.optionsSimulationTimingPanel.setLayout(new GridBagLayout());
+        this.optionsSimulationTimingPanel.setBorder(new TitledBorder(null, this.translations.getString("VentanaHija.TParameters"), TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", 0, 12)));
+        this.labelOptionsSimulationLength.setFont(new Font("Dialog", 0, 12));
+        this.labelOptionsSimulationLength.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelOptionsSimulationLength.setText(this.translations.getString("VentanaHija.Duration"));
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 100.0;
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        this.optionsSimulationTimingPanel.add(this.labelOptionsSimulationLength, gridBagConstraints);
+        this.sliderOptionsSimulationLengthMs.setMajorTickSpacing(2);
+        this.sliderOptionsSimulationLengthMs.setMaximum(2);
+        this.sliderOptionsSimulationLengthMs.setMinorTickSpacing(1);
+        this.sliderOptionsSimulationLengthMs.setToolTipText(this.translations.getString("VentanaHija.Slide_it_to_change_the_ms._component_of_simulation_duration."));
+        this.sliderOptionsSimulationLengthMs.setValue(0);
+        this.sliderOptionsSimulationLengthMs.setMaximumSize(new Dimension(30, 20));
+        this.sliderOptionsSimulationLengthMs.setMinimumSize(new Dimension(30, 24));
+        this.sliderOptionsSimulationLengthMs.setPreferredSize(new Dimension(30, 20));
+        this.sliderOptionsSimulationLengthMs.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent evt) {
+                clicEnDuracionMs(evt);
+            }
+        });
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 150.0;
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        this.optionsSimulationTimingPanel.add(this.sliderOptionsSimulationLengthMs, gridBagConstraints);
+        this.labelOptionsSimulationLengthMs.setFont(new Font("Dialog", 0, 10));
+        this.labelOptionsSimulationLengthMs.setForeground(new Color(102, 102, 102));
+        this.labelOptionsSimulationLengthMs.setText(this.translations.getString("VentanaHija.ms."));
+        this.labelOptionsSimulationLengthMs.setMaximumSize(new Dimension(30, 14));
+        this.labelOptionsSimulationLengthMs.setMinimumSize(new Dimension(30, 14));
+        this.labelOptionsSimulationLengthMs.setPreferredSize(new Dimension(30, 14));
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 40.0;
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        this.optionsSimulationTimingPanel.add(this.labelOptionsSimulationLengthMs, gridBagConstraints);
+        this.sliderOptionsSimulationLengthNs.setMajorTickSpacing(1000);
+        this.sliderOptionsSimulationLengthNs.setMaximum(999999);
+        this.sliderOptionsSimulationLengthNs.setMinorTickSpacing(100);
+        this.sliderOptionsSimulationLengthNs.setToolTipText(this.translations.getString("VentanaHija.Slide_it_to_change_the_ns._component_of_simulation_duration."));
+        this.sliderOptionsSimulationLengthNs.setValue(100000);
+        this.sliderOptionsSimulationLengthNs.setMaximumSize(new Dimension(32767, 20));
+        this.sliderOptionsSimulationLengthNs.setMinimumSize(new Dimension(36, 20));
+        this.sliderOptionsSimulationLengthNs.setPreferredSize(new Dimension(200, 20));
+        this.sliderOptionsSimulationLengthNs.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent evt) {
+                clicEnDuracionNs(evt);
+            }
+        });
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 150.0;
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        this.optionsSimulationTimingPanel.add(this.sliderOptionsSimulationLengthNs, gridBagConstraints);
+        this.labelOptionsSimulationLengthNs.setFont(new Font("Dialog", 0, 10));
+        this.labelOptionsSimulationLengthNs.setForeground(new Color(102, 102, 102));
+        this.labelOptionsSimulationLengthNs.setText(this.translations.getString("VentanaHija.ns."));
+        this.labelOptionsSimulationLengthNs.setMaximumSize(new Dimension(40, 14));
+        this.labelOptionsSimulationLengthNs.setMinimumSize(new Dimension(40, 14));
+        this.labelOptionsSimulationLengthNs.setPreferredSize(new Dimension(40, 14));
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 100.0;
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        this.optionsSimulationTimingPanel.add(this.labelOptionsSimulationLengthNs, gridBagConstraints);
+        this.labelOptionsTickLengthInNs.setFont(new Font("Dialog", 0, 12));
+        this.labelOptionsTickLengthInNs.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.labelOptionsTickLengthInNs.setText(this.translations.getString("VentanaHija.Step"));
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 100.0;
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        this.optionsSimulationTimingPanel.add(this.labelOptionsTickLengthInNs, gridBagConstraints);
+        this.sliderOptionsTickDurationInNs.setMajorTickSpacing(1000);
+        this.sliderOptionsTickDurationInNs.setMaximum(999999);
+        this.sliderOptionsTickDurationInNs.setMinimum(1);
+        this.sliderOptionsTickDurationInNs.setMinorTickSpacing(100);
+        this.sliderOptionsTickDurationInNs.setToolTipText(this.translations.getString("VentanaHija.Slide_it_to_change_the_step_duration_(ns).."));
+        this.sliderOptionsTickDurationInNs.setValue(10000);
+        this.sliderOptionsTickDurationInNs.setMaximumSize(new Dimension(32767, 20));
+        this.sliderOptionsTickDurationInNs.setPreferredSize(new Dimension(100, 20));
+        this.sliderOptionsTickDurationInNs.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent evt) {
+                clicEnPasoNs(evt);
+            }
+        });
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        this.optionsSimulationTimingPanel.add(this.sliderOptionsTickDurationInNs, gridBagConstraints);
+        this.labelOptionsNsTick.setFont(new Font("Dialog", 0, 10));
+        this.labelOptionsNsTick.setForeground(new Color(102, 102, 102));
+        this.labelOptionsNsTick.setText(this.translations.getString("VentanaHija.ns."));
+        this.labelOptionsNsTick.setMaximumSize(new Dimension(40, 14));
+        this.labelOptionsNsTick.setMinimumSize(new Dimension(40, 14));
+        this.labelOptionsNsTick.setPreferredSize(new Dimension(40, 14));
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        this.optionsSimulationTimingPanel.add(this.labelOptionsNsTick, gridBagConstraints);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        this.optionsSecondaryMainContainerPanel.add(this.optionsSimulationTimingPanel, gridBagConstraints);
+        this.optionsPrimaryMainContainerPanel.add(this.optionsSecondaryMainContainerPanel, BorderLayout.NORTH);
+        this.tabsPanel.addTab(this.translations.getString("VentanaHija.Options"), imageBroker.getIcon(TImageBroker.OPCIONES), this.optionsPrimaryMainContainerPanel, this.translations.getString("VentanaHija.Options_about_the_scene"));
+        // Definition of simulation panel content
+        this.simulationMainContainerPanel.setLayout(new BorderLayout());
+        this.simulationToolbarPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        this.simulationToolbarPanel.setBorder(new EtchedBorder());
+        this.iconContainterStartSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_GENERAR));
+        this.iconContainterStartSimulation.setToolTipText(this.translations.getString("VentanaHija.Topic.Generar"));
+        this.iconContainterStartSimulation.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
                 ratonEntraEnIconoComenzar(evt);
@@ -576,11 +731,11 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnComenzar(evt);
             }
         });
-        this.panelBotonesSimulacion.add(this.iconoComenzar);
-        this.iconoFinalizar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PARAR));
-        this.iconoFinalizar.setToolTipText(this.translations.getString("VentanaHija.Topic.Finalizar"));
-        this.iconoFinalizar.setEnabled(false);
-        this.iconoFinalizar.addMouseListener(new MouseAdapter() {
+        this.simulationToolbarPanel.add(this.iconContainterStartSimulation);
+        this.iconContainerFinishSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PARAR));
+        this.iconContainerFinishSimulation.setToolTipText(this.translations.getString("VentanaHija.Topic.Finalizar"));
+        this.iconContainerFinishSimulation.setEnabled(false);
+        this.iconContainerFinishSimulation.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
                 ratonEntraEnIconoFinalizar(evt);
@@ -596,11 +751,11 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnFinalizar(evt);
             }
         });
-        this.panelBotonesSimulacion.add(this.iconoFinalizar);
-        this.iconoReanudar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_COMENZAR));
-        this.iconoReanudar.setToolTipText(this.translations.getString("VentanaHija.Topic.Simulacion"));
-        this.iconoReanudar.setEnabled(false);
-        this.iconoReanudar.addMouseListener(new MouseAdapter() {
+        this.simulationToolbarPanel.add(this.iconContainerFinishSimulation);
+        this.iconContainerResumeSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_COMENZAR));
+        this.iconContainerResumeSimulation.setToolTipText(this.translations.getString("VentanaHija.Topic.Simulacion"));
+        this.iconContainerResumeSimulation.setEnabled(false);
+        this.iconContainerResumeSimulation.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
                 ratonEntraEnIconoReanudar(evt);
@@ -616,11 +771,11 @@ public class JScenarioWindow extends JInternalFrame {
                 clicEnReanudar(evt);
             }
         });
-        this.panelBotonesSimulacion.add(this.iconoReanudar);
-        this.iconoPausar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PAUSA));
-        this.iconoPausar.setToolTipText(this.translations.getString("VentanaHija.Topic.Detener"));
-        this.iconoPausar.setEnabled(false);
-        this.iconoPausar.addMouseListener(new MouseAdapter() {
+        this.simulationToolbarPanel.add(this.iconContainerResumeSimulation);
+        this.iconContainerPauseSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PAUSA));
+        this.iconContainerPauseSimulation.setToolTipText(this.translations.getString("VentanaHija.Topic.Detener"));
+        this.iconContainerPauseSimulation.setEnabled(false);
+        this.iconContainerPauseSimulation.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
                 ratonEntraEnIconoPausar(evt);
@@ -636,34 +791,37 @@ public class JScenarioWindow extends JInternalFrame {
                 clicAlPausar(evt);
             }
         });
-        this.panelBotonesSimulacion.add(this.iconoPausar);
-        this.barraDeProgreso.setFont(new Font("Dialog", 0, 12));
-        this.barraDeProgreso.setToolTipText(this.translations.getString("VentanaHija.BarraProgreso.tooltip"));
-        this.barraDeProgreso.setStringPainted(true);
-        this.panelBotonesSimulacion.add(this.barraDeProgreso);
-        this.mlsPorTic.setMajorTickSpacing(10);
-        this.mlsPorTic.setMaximum(500);
-        this.mlsPorTic.setMinimum(1);
-        this.mlsPorTic.setMinorTickSpacing(1);
-        this.mlsPorTic.setSnapToTicks(true);
-        this.mlsPorTic.setToolTipText(this.translations.getString("VentanaHija.Simulacion.SelectorDeVelocidad.tooltip"));
-        this.mlsPorTic.setPreferredSize(new Dimension(100, 20));
-        this.mlsPorTic.addChangeListener(new ChangeListener() {
+        this.simulationToolbarPanel.add(this.iconContainerPauseSimulation);
+        this.progressBarSimulation.setFont(new Font("Dialog", 0, 12));
+        this.progressBarSimulation.setToolTipText(this.translations.getString("VentanaHija.BarraProgreso.tooltip"));
+        this.progressBarSimulation.setStringPainted(true);
+        this.simulationToolbarPanel.add(this.progressBarSimulation);
+        this.labelSimulationSpeedFaster.setFont(new Font("Dialog", 0, 10));
+        this.labelSimulationSpeedFaster.setForeground(new Color(102, 102, 102));
+        this.labelSimulationSpeedFaster.setText(this.translations.getString("VentanaHija.Simulacion.EtiquetaMsTic"));
+        this.simulationToolbarPanel.add(this.labelSimulationSpeedFaster);
+        this.sliderSimulationSpeedInMsPerTick.setMajorTickSpacing(10);
+        this.sliderSimulationSpeedInMsPerTick.setMaximum(300);
+        this.sliderSimulationSpeedInMsPerTick.setMinimum(1);
+        this.sliderSimulationSpeedInMsPerTick.setMinorTickSpacing(1);
+        this.sliderSimulationSpeedInMsPerTick.setSnapToTicks(true);
+        this.sliderSimulationSpeedInMsPerTick.setToolTipText(this.translations.getString("VentanaHija.Simulacion.SelectorDeVelocidad.tooltip"));
+        this.sliderSimulationSpeedInMsPerTick.setPreferredSize(new Dimension(100, 20));
+        this.sliderSimulationSpeedInMsPerTick.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent evt) {
                 mlsPorTicCambiado(evt);
             }
         });
-        this.panelBotonesSimulacion.add(this.mlsPorTic);
-        this.etiquetaMlsPorTic.setFont(new Font("Dialog", 0, 10));
-        this.etiquetaMlsPorTic.setForeground(new Color(102, 102, 102));
-        this.panelBotonesSimulacion.add(this.etiquetaMlsPorTic);
-        this.crearTraza.setText(this.translations.getString("JVentanaHija.Create_trace_file"));
-        this.panelBotonesSimulacion.add(this.crearTraza);
-        this.panelSimulacionSuperior.add(this.panelBotonesSimulacion, BorderLayout.NORTH);
-        this.jScrollPane2.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        this.panelSimulacion.setBorder(new EtchedBorder());
-        this.panelSimulacion.addMouseListener(new MouseAdapter() {
+        this.simulationToolbarPanel.add(this.sliderSimulationSpeedInMsPerTick);
+        this.labelSimulationSpeedSlower.setFont(new Font("Dialog", 0, 10));
+        this.labelSimulationSpeedSlower.setForeground(new Color(102, 102, 102));
+        this.labelSimulationSpeedSlower.setText(this.translations.getString("VentanaHija.Simulacion.slower"));
+        this.simulationToolbarPanel.add(this.labelSimulationSpeedSlower);
+        this.simulationMainContainerPanel.add(this.simulationToolbarPanel, BorderLayout.NORTH);
+        this.scrollPaneSimulation.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        this.simulationPanel.setBorder(new EtchedBorder());
+        this.simulationPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
                 ratonPulsadoYSoltadoEnPanelSimulacion(evt);
@@ -679,7 +837,7 @@ public class JScenarioWindow extends JInternalFrame {
                 ratonSoltadoEnPanelSimulacion(evt);
             }
         });
-        this.panelSimulacion.addMouseMotionListener(new MouseMotionAdapter() {
+        this.simulationPanel.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent evt) {
                 ratonArrastradoEnPanelSimulacion(evt);
@@ -690,264 +848,156 @@ public class JScenarioWindow extends JInternalFrame {
                 ratonSobrePanelSimulacion(evt);
             }
         });
-        this.jScrollPane2.setViewportView(this.panelSimulacion);
-        this.panelSimulacionSuperior.add(this.jScrollPane2, BorderLayout.CENTER);
-        this.jTabbedPane1.addTab(this.translations.getString("VentanaHija.Tab.Simulacion"), this.imageBroker.getIcon(TImageBroker.SIMULACION), this.panelSimulacionSuperior, this.translations.getString("VentanaHija.A_panel_to_generate_and_play_simulation."));
-        this.panelAnalisisSuperior.setLayout(new BorderLayout());
-        this.panelSeleccionElemento.setLayout(new FlowLayout(FlowLayout.LEFT));
-        this.panelSeleccionElemento.setBorder(new EtchedBorder());
-        this.jLabel1.setText(this.translations.getString("JVentanaHija.SelcUnElemParaVerDatos"));
-        this.panelSeleccionElemento.add(this.jLabel1);
-        this.selectorElementoEstadisticas.setModel(new DefaultComboBoxModel(new String[]{""}));
-        this.selectorElementoEstadisticas.addActionListener(new ActionListener() {
+        this.scrollPaneSimulation.setViewportView(this.simulationPanel);
+        this.simulationMainContainerPanel.add(this.scrollPaneSimulation, BorderLayout.CENTER);
+        this.tabsPanel.addTab(this.translations.getString("VentanaHija.Tab.Simulacion"), this.imageBroker.getIcon(TImageBroker.SIMULACION), this.simulationMainContainerPanel, this.translations.getString("VentanaHija.A_panel_to_generate_and_play_simulation."));
+        // Definition of analysis panel content
+        this.analysisMainContainerPanel.setLayout(new BorderLayout());
+        this.analysisMainContainerPanel.setBackground(Color.WHITE);
+        this.analysisToolbarPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        this.analysisToolbarPanel.setBorder(new EtchedBorder());
+        this.labelSelectANodeToAnalyze.setText(this.translations.getString("JVentanaHija.SelcUnElemParaVerDatos"));
+        this.analysisToolbarPanel.add(this.labelSelectANodeToAnalyze);
+        this.comboBoxNodeToAnalize.setModel(new DefaultComboBoxModel(new String[]{""}));
+        this.comboBoxNodeToAnalize.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 clicEnSeleccionalElementoEstadistica(evt);
             }
         });
-        this.panelSeleccionElemento.add(this.selectorElementoEstadisticas);
-        this.panelAnalisisSuperior.add(this.panelSeleccionElemento, BorderLayout.NORTH);
-        this.jScrollPane4.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        this.panelAnalisis.setLayout(new GridBagLayout());
-        this.panelAnalisis.setBackground(new Color(252, 246, 226));
-        this.panelFijo.setLayout(new GridBagLayout());
-        this.panelFijo.setBackground(new Color(252, 246, 226));
-        this.etiquetaEstadisticasTituloEscenario.setBackground(new Color(252, 246, 226));
-        this.etiquetaEstadisticasTituloEscenario.setFont(new Font("Arial", 1, 18));
-        this.etiquetaEstadisticasTituloEscenario.setHorizontalAlignment(SwingConstants.CENTER);
-        this.etiquetaEstadisticasTituloEscenario.setText(this.translations.getString("JVentanaHija.TituloDelEscenario"));
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        this.panelFijo.add(this.etiquetaEstadisticasTituloEscenario, gridBagConstraints);
-        this.etiquetaEstadisticasNombreAutor.setBackground(new Color(252, 246, 226));
-        this.etiquetaEstadisticasNombreAutor.setFont(new Font("Arial", 1, 14));
-        this.etiquetaEstadisticasNombreAutor.setForeground(new Color(102, 0, 51));
-        this.etiquetaEstadisticasNombreAutor.setHorizontalAlignment(SwingConstants.CENTER);
-        this.etiquetaEstadisticasNombreAutor.setText(this.translations.getString("JVentanaHija.AutorDelEscenario"));
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        this.panelFijo.add(this.etiquetaEstadisticasNombreAutor, gridBagConstraints);
-        this.areaEstadisticasDescripcion.setBackground(new Color(252, 246, 226));
-        this.areaEstadisticasDescripcion.setEditable(false);
-        this.areaEstadisticasDescripcion.setFont(new Font("MonoSpaced", 0, 11));
-        this.areaEstadisticasDescripcion.setLineWrap(true);
-        this.areaEstadisticasDescripcion.setRows(3);
-        this.areaEstadisticasDescripcion.setText(this.translations.getString("JVentanaHija.DescripcionDelEscenario"));
-        this.areaEstadisticasDescripcion.setWrapStyleWord(true);
-        this.areaEstadisticasDescripcion.setMinimumSize(new Dimension(500, 16));
-        this.areaEstadisticasDescripcion.setPreferredSize(new Dimension(500, 48));
-        this.areaEstadisticasDescripcion.setAutoscrolls(false);
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        this.panelFijo.add(this.areaEstadisticasDescripcion, gridBagConstraints);
-        this.etiquetaNombreElementoEstadistica.setBackground(new Color(252, 246, 226));
-        this.etiquetaNombreElementoEstadistica.setFont(new Font("Arial", 1, 14));
-        this.etiquetaNombreElementoEstadistica.setHorizontalAlignment(SwingConstants.CENTER);
-        this.etiquetaNombreElementoEstadistica.setText(this.translations.getString("JVentanaHija.SeleccioneNodoAInspeccionar"));
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        this.panelFijo.add(this.etiquetaNombreElementoEstadistica, gridBagConstraints);
-        this.panelAnalisis.add(this.panelFijo, new GridBagConstraints());
-        this.jScrollPane4.setViewportView(this.panelAnalisis);
-        this.panelAnalisisSuperior.add(this.jScrollPane4, BorderLayout.CENTER);
-        this.jTabbedPane1.addTab(this.translations.getString("JVentanaHija.Analisis"), this.imageBroker.getIcon(TImageBroker.ANALISIS), this.panelAnalisisSuperior, this.translations.getString("JVentanaHija.Analisis.Tooltip"));
-        this.panelOpcionesSuperior.setLayout(new BorderLayout());
-        this.jScrollPane3.setBorder(null);
-        this.panelOpciones.setLayout(new GridBagLayout());
-        this.panelOpciones.setPreferredSize(new Dimension(380, 230));
-        this.jPanel3.setLayout(new GridBagLayout());
-        this.jPanel3.setBorder(new TitledBorder(null, this.translations.getString("VentanaHija.GParameters"), TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", 0, 12)));
-        this.jLabel5.setFont(new Font("Dialog", 0, 12));
-        this.jLabel5.setHorizontalAlignment(SwingConstants.RIGHT);
-        this.jLabel5.setText(this.translations.getString("VentanaHija.Scene_title"));
+        this.analysisToolbarPanel.add(this.comboBoxNodeToAnalize);
+        this.analysisMainContainerPanel.add(this.analysisToolbarPanel, BorderLayout.NORTH);
+        this.scrollPaneAnalysis.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        /*        
+        this.analysisPanel.setLayout(new GridBagLayout());
+        this.analysisPanel.setBackground(Color.WHITE);
+        this.analysisScenarioInformationPanel.setLayout(new GridLayout(4,1));
+        this.analysisScenarioInformationPanel.setBackground(Color.WHITE);
+        this.labelScenarioTitle.setBackground(Color.WHITE);
+        this.labelScenarioTitle.setFont(new Font("Serif", 1, 18));
+        this.labelScenarioTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        this.labelScenarioTitle.setText(this.translations.getString("JVentanaHija.TituloDelEscenario"));
+        this.analysisScenarioInformationPanel.add(this.labelScenarioTitle);
+        this.labelScenarioAuthorName.setBackground(Color.WHITE);
+        this.labelScenarioAuthorName.setFont(new Font("Serif", 1, 14));
+        this.labelScenarioAuthorName.setForeground(new Color(102, 0, 51));
+        this.labelScenarioAuthorName.setHorizontalAlignment(SwingConstants.CENTER);
+        this.labelScenarioAuthorName.setText(this.translations.getString("JVentanaHija.AutorDelEscenario"));
+        this.analysisScenarioInformationPanel.add(this.labelScenarioAuthorName);
+        this.textAreaScenarioDescription.setBackground(Color.WHITE);
+        this.textAreaScenarioDescription.setEditable(false);
+        this.textAreaScenarioDescription.setFont(new Font("MonoSpaced", 0, 11));
+        this.textAreaScenarioDescription.setLineWrap(true);
+        this.textAreaScenarioDescription.setText(this.translations.getString("JVentanaHija.DescripcionDelEscenario"));
+        this.textAreaScenarioDescription.setWrapStyleWord(true);
+        this.textAreaScenarioDescription.setBorder(null);
+        this.textAreaScenarioDescription.setAutoscrolls(false);
+        this.analysisScenarioInformationPanel.add(this.textAreaScenarioDescription);
+        this.labelElementToAnalize.setBackground(Color.WHITE);
+        this.labelElementToAnalize.setFont(new Font("Serif", 1, 14));
+        this.labelElementToAnalize.setHorizontalAlignment(SwingConstants.CENTER);
+        this.labelElementToAnalize.setText(this.translations.getString("JVentanaHija.SeleccioneNodoAInspeccionar"));
+        this.analysisScenarioInformationPanel.add(this.labelElementToAnalize);
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        this.jPanel3.add(this.jLabel5, gridBagConstraints);
-        this.nombreEscenario.setToolTipText(this.translations.getString("VentanaHija.Type_a__title_of_the_scene"));
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 200.0;
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        this.jPanel3.add(this.nombreEscenario, gridBagConstraints);
-        this.jLabel6.setFont(new Font("Dialog", 0, 12));
-        this.jLabel6.setHorizontalAlignment(SwingConstants.RIGHT);
-        this.jLabel6.setText(this.translations.getString("VentanaHija.Scene_author"));
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        this.jPanel3.add(this.jLabel6, gridBagConstraints);
-        this.nombreAutor.setToolTipText(this.translations.getString("VentanaHija.Type_de_name_of_the_author"));
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 200.0;
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        this.jPanel3.add(this.nombreAutor, gridBagConstraints);
-        this.jLabel7.setFont(new Font("Dialog", 0, 12));
-        this.jLabel7.setHorizontalAlignment(SwingConstants.RIGHT);
-        this.jLabel7.setText(this.translations.getString("VentanaHija.Description"));
+        gridBagConstraints.gridwidth = 1;
+        gridBagConstraints.gridheight = 1;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.fill = GridBagConstraints.CENTER;
+        this.analysisPanel.add(this.analysisScenarioInformationPanel, gridBagConstraints);
+        this.analysisChartsPanel.setLayout(new GridLayout(3,2));
+        this.analysisChartsPanel.setBackground(Color.WHITE);
+        this.analysisChartsPanel.setBorder(new EtchedBorder());
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        this.jPanel3.add(this.jLabel7, gridBagConstraints);
-        this.descripcionEscenario.setToolTipText(this.translations.getString("VentanaHija.Enter_a_short_description."));
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 200.0;
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        this.jPanel3.add(this.descripcionEscenario, gridBagConstraints);
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 350.0;
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        this.panelOpciones.add(this.jPanel3, gridBagConstraints);
-        this.jPanel2.setLayout(new GridBagLayout());
-        this.jPanel2.setBorder(new TitledBorder(null, this.translations.getString("VentanaHija.TParameters"), TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", 0, 12)));
-        this.jLabel3.setFont(new Font("Dialog", 0, 12));
-        this.jLabel3.setHorizontalAlignment(SwingConstants.RIGHT);
-        this.jLabel3.setText(this.translations.getString("VentanaHija.Duration"));
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 100.0;
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        this.jPanel2.add(this.jLabel3, gridBagConstraints);
-        this.duracionMs.setMajorTickSpacing(2);
-        this.duracionMs.setMaximum(2);
-        this.duracionMs.setMinorTickSpacing(1);
-        this.duracionMs.setToolTipText(this.translations.getString("VentanaHija.Slide_it_to_change_the_ms._component_of_simulation_duration."));
-        this.duracionMs.setValue(0);
-        this.duracionMs.setMaximumSize(new Dimension(30, 20));
-        this.duracionMs.setMinimumSize(new Dimension(30, 24));
-        this.duracionMs.setPreferredSize(new Dimension(30, 20));
-        this.duracionMs.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent evt) {
-                clicEnDuracionMs(evt);
-            }
-        });
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 150.0;
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        this.jPanel2.add(this.duracionMs, gridBagConstraints);
-        this.etiquetaDuracionMs.setFont(new Font("Dialog", 0, 10));
-        this.etiquetaDuracionMs.setForeground(new Color(102, 102, 102));
-        this.etiquetaDuracionMs.setText(this.translations.getString("VentanaHija.ms."));
-        this.etiquetaDuracionMs.setMaximumSize(new Dimension(30, 14));
-        this.etiquetaDuracionMs.setMinimumSize(new Dimension(30, 14));
-        this.etiquetaDuracionMs.setPreferredSize(new Dimension(30, 14));
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 40.0;
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        this.jPanel2.add(this.etiquetaDuracionMs, gridBagConstraints);
-        this.duracionNs.setMajorTickSpacing(1000);
-        this.duracionNs.setMaximum(999999);
-        this.duracionNs.setMinorTickSpacing(100);
-        this.duracionNs.setToolTipText(this.translations.getString("VentanaHija.Slide_it_to_change_the_ns._component_of_simulation_duration."));
-        this.duracionNs.setValue(100000);
-        this.duracionNs.setMaximumSize(new Dimension(32767, 20));
-        this.duracionNs.setMinimumSize(new Dimension(36, 20));
-        this.duracionNs.setPreferredSize(new Dimension(200, 20));
-        this.duracionNs.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent evt) {
-                clicEnDuracionNs(evt);
-            }
-        });
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 150.0;
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        this.jPanel2.add(this.duracionNs, gridBagConstraints);
-        this.etiquetaDuracionNs.setFont(new Font("Dialog", 0, 10));
-        this.etiquetaDuracionNs.setForeground(new Color(102, 102, 102));
-        this.etiquetaDuracionNs.setText(this.translations.getString("VentanaHija.ns."));
-        this.etiquetaDuracionNs.setMaximumSize(new Dimension(40, 14));
-        this.etiquetaDuracionNs.setMinimumSize(new Dimension(40, 14));
-        this.etiquetaDuracionNs.setPreferredSize(new Dimension(40, 14));
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 100.0;
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        this.jPanel2.add(this.etiquetaDuracionNs, gridBagConstraints);
-        this.jLabel4.setFont(new Font("Dialog", 0, 12));
-        this.jLabel4.setHorizontalAlignment(SwingConstants.RIGHT);
-        this.jLabel4.setText(this.translations.getString("VentanaHija.Step"));
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 100.0;
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        this.jPanel2.add(this.jLabel4, gridBagConstraints);
-        this.pasoNs.setMajorTickSpacing(1000);
-        this.pasoNs.setMaximum(999999);
-        this.pasoNs.setMinimum(1);
-        this.pasoNs.setMinorTickSpacing(100);
-        this.pasoNs.setToolTipText(this.translations.getString("VentanaHija.Slide_it_to_change_the_step_duration_(ns).."));
-        this.pasoNs.setValue(10000);
-        this.pasoNs.setMaximumSize(new Dimension(32767, 20));
-        this.pasoNs.setPreferredSize(new Dimension(100, 20));
-        this.pasoNs.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent evt) {
-                clicEnPasoNs(evt);
-            }
-        });
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        this.jPanel2.add(this.pasoNs, gridBagConstraints);
-        this.etiquetaPasoNs.setFont(new Font("Dialog", 0, 10));
-        this.etiquetaPasoNs.setForeground(new Color(102, 102, 102));
-        this.etiquetaPasoNs.setText(this.translations.getString("VentanaHija.ns."));
-        this.etiquetaPasoNs.setMaximumSize(new Dimension(40, 14));
-        this.etiquetaPasoNs.setMinimumSize(new Dimension(40, 14));
-        this.etiquetaPasoNs.setPreferredSize(new Dimension(40, 14));
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 100.0;
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        this.jPanel2.add(this.etiquetaPasoNs, gridBagConstraints);
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 350.0;
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        this.panelOpciones.add(this.jPanel2, gridBagConstraints);
-        this.jScrollPane3.setViewportView(this.panelOpciones);
-        this.panelOpcionesSuperior.add(this.jScrollPane3, BorderLayout.NORTH);
-        this.jTabbedPane1.addTab(this.translations.getString("VentanaHija.Options"), imageBroker.getIcon(TImageBroker.OPCIONES), this.panelOpcionesSuperior, this.translations.getString("VentanaHija.Options_about_the_scene"));
-        getContentPane().add(this.jTabbedPane1, BorderLayout.CENTER);
+        gridBagConstraints.gridwidth = 1;
+        gridBagConstraints.gridheight = 1;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.fill = GridBagConstraints.CENTER;
+        this.analysisPanel.add(this.analysisChartsPanel, gridBagConstraints);
+         */
+////////////////
+        this.analysisPanel.setBorder(new EtchedBorder());
+        this.analysisPanel.setLayout(new MigLayout());
+        this.analysisPanel.setBackground(Color.WHITE);
+        this.labelScenarioTitle.setBackground(Color.WHITE);
+        this.labelScenarioTitle.setFont(new Font("Serif", 1, 18));
+        this.labelScenarioTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        this.labelScenarioTitle.setText(this.translations.getString("JVentanaHija.TituloDelEscenario"));
+        this.analysisPanel.add(this.labelScenarioTitle, "span 2, grow, wrap");
+        this.labelScenarioAuthorName.setBackground(Color.WHITE);
+        this.labelScenarioAuthorName.setFont(new Font("Serif", 1, 14));
+        this.labelScenarioAuthorName.setForeground(new Color(102, 0, 51));
+        this.labelScenarioAuthorName.setHorizontalAlignment(SwingConstants.CENTER);
+        this.labelScenarioAuthorName.setText(this.translations.getString("JVentanaHija.AutorDelEscenario"));
+        this.analysisPanel.add(this.labelScenarioAuthorName, "span 2, grow, wrap");
+        this.textAreaScenarioDescription.setBackground(Color.WHITE);
+        this.textAreaScenarioDescription.setEditable(false);
+        this.textAreaScenarioDescription.setFont(new Font("MonoSpaced", 0, 11));
+        this.textAreaScenarioDescription.setLineWrap(true);
+        this.textAreaScenarioDescription.setText(this.translations.getString("JVentanaHija.DescripcionDelEscenario"));
+        this.textAreaScenarioDescription.setWrapStyleWord(true);
+        this.textAreaScenarioDescription.setBorder(null);
+        this.textAreaScenarioDescription.setAutoscrolls(false);
+        this.analysisPanel.add(this.textAreaScenarioDescription, "span 2, grow, wrap");
+        this.labelElementToAnalize.setBackground(Color.WHITE);
+        this.labelElementToAnalize.setFont(new Font("Serif", 1, 14));
+        this.labelElementToAnalize.setHorizontalAlignment(SwingConstants.CENTER);
+        this.labelElementToAnalize.setText(this.translations.getString("JVentanaHija.SeleccioneNodoAInspeccionar"));
+        this.analysisPanel.add(this.labelElementToAnalize, "span 2, grow, wrap");
+////////////////
+
+        this.scrollPaneAnalysis.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        this.scrollPaneAnalysis.setViewportView(this.analysisPanel);
+        this.analysisMainContainerPanel.add(this.scrollPaneAnalysis, BorderLayout.CENTER);
+        this.tabsPanel.addTab(this.translations.getString("JVentanaHija.Analisis"), this.imageBroker.getIcon(TImageBroker.ANALISIS), this.analysisMainContainerPanel, this.translations.getString("JVentanaHija.Analisis.Tooltip"));
+        this.tabsPanel.setBackground(Color.WHITE);
+        getContentPane().add(this.tabsPanel, BorderLayout.CENTER);
         pack();
+    }
+
+    /**
+     * Este m�todo se encarga de start los atributos de la clase que no hayan
+     * sido aun iniciados por NetBeans.
+     *
+     * @since 2.0
+     */
+    private void initComponents2() {
+        this.designPanel.setImageBroker(this.imageBroker);
+        this.simulationPanel.setImageBroker(this.imageBroker);
+        Dimension parentSize = this.parent.getSize();
+        // FIX: Do not use harcoded values. Use class constants instead
+        this.setSize((parentSize.width * 8 / 10), (parentSize.height * 8 / 10));
+        Dimension frameSize = this.getSize();
+        this.setLocation((parentSize.width - frameSize.width) / 2, (parentSize.height - frameSize.height) / 2);
+        this.scenario = new TScenario();
+        this.designPanel.setTopology(this.scenario.getTopology());
+        this.simulationPanel.ponerTopologia(this.scenario.getTopology());
+        this.selectedNode = null;
+        this.rightClickedElementInDesignPanel = null;
+        this.progressEventListener = new TProgressEventListener(this.progressBarSimulation);
+        try {
+            this.scenario.getTopology().getTimer().addProgressEventListener(this.progressEventListener);
+        } catch (EProgressEventGeneratorOnlyAllowASingleListener e) {
+            // FIX: This is ugly
+            e.printStackTrace();
+        }
+        // FIX: Do not use harcoded values. Use class constants instead
+        this.sliderSimulationSpeedInMsPerTick.setValue(150);
+        this.sliderOptionsTickDurationInNs.setMaximum(this.sliderOptionsSimulationLengthMs.getValue() * 1000000 + this.sliderOptionsSimulationLengthNs.getValue());
+        this.labelSimulationSpeedFaster.setText(this.translations.getString("VentanaHija.Simulacion.EtiquetaMsTic"));
+        this.labelOptionsSimulationLengthMs.setText(this.sliderOptionsSimulationLengthMs.getValue() + this.translations.getString("VentanaHija._ms."));
+        this.labelOptionsSimulationLengthNs.setText(this.sliderOptionsSimulationLengthNs.getValue() + this.translations.getString("VentanaHija._ns."));
+        this.labelOptionsNsTick.setText(this.sliderOptionsTickDurationInNs.getValue() + this.translations.getString("VentanaHija_ns."));
+        this.controlTemporizacionDesactivado = false;
+        this.scenario.getSimulation().setSimulationPanel(this.simulationPanel);
+        this.xyChart1 = null;
+        this.xyChart2 = null;
+        this.xyChart3 = null;
+        this.barChart1 = null;
+        this.barChart2 = null;
     }
 
     private void ratonPulsadoYSoltadoEnPanelSimulacion(MouseEvent evt) {
@@ -969,76 +1019,71 @@ public class JScenarioWindow extends JInternalFrame {
                         ent.setAsBrokenLink(true);
                     }
                 }
-            } else if (this.panelSimulacion.obtenerMostrarLeyenda()) {
-                this.panelSimulacion.ponerMostrarLeyenda(false);
+            } else if (this.simulationPanel.obtenerMostrarLeyenda()) {
+                this.simulationPanel.ponerMostrarLeyenda(false);
             } else {
-                this.panelSimulacion.ponerMostrarLeyenda(true);
+                this.simulationPanel.ponerMostrarLeyenda(true);
             }
         } else {
-            elementoDisenioClicDerecho = null;
-            panelDisenio.repaint();
+            rightClickedElementInDesignPanel = null;
+            designPanel.repaint();
         }
     }
 
     private void clicEnSeleccionalElementoEstadistica(ActionEvent evt) {
         GridBagConstraints gbc = null;
-        if (this.selectorElementoEstadisticas.getSelectedIndex() == 0) {
-            this.panelAnalisis.removeAll();
-            this.grafico1 = null;
-            this.grafico2 = null;
-            this.grafico3 = null;
-            this.grafico4 = null;
-            this.grafico5 = null;
-            this.grafico6 = null;
-            this.panelGrafico1 = null;
-            this.panelGrafico2 = null;
-            this.panelGrafico3 = null;
-            this.panelGrafico4 = null;
-            this.panelGrafico5 = null;
-            this.panelGrafico6 = null;
-            this.etiquetaEstadisticasTituloEscenario.setText(this.nombreEscenario.getText());
-            this.etiquetaEstadisticasNombreAutor.setText(this.nombreAutor.getText());
-            this.areaEstadisticasDescripcion.setText(this.descripcionEscenario.getText());
-            this.etiquetaNombreElementoEstadistica.setIcon(null);
-            this.etiquetaNombreElementoEstadistica.setText(this.translations.getString("JVentanaHija.SeleccioneElNodoAInspeccionar"));
+        if (this.comboBoxNodeToAnalize.getSelectedIndex() == 0) {
+            //this.analysisPanel.removeAll();
+            this.xyChart1 = null;
+            this.xyChart2 = null;
+            this.xyChart3 = null;
+            this.barChart1 = null;
+            this.barChart2 = null;
+            this.labelScenarioTitle.setText(this.textFieldOptionsScenarioTitle.getText());
+            this.labelScenarioAuthorName.setText(this.textFieldOptionsScenarioAuthorName.getText());
+            this.textAreaScenarioDescription.setText(this.textAreaOptionsScenarioDescription.getText());
+            this.labelElementToAnalize.setIcon(null);
+            this.labelElementToAnalize.setText(this.translations.getString("JVentanaHija.SeleccioneElNodoAInspeccionar"));
+            /*
             gbc = new GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 0;
             gbc.insets = new Insets(10, 10, 10, 5);
             gbc.fill = GridBagConstraints.HORIZONTAL;
             gbc.anchor = GridBagConstraints.NORTH;
-            this.panelFijo.add(this.etiquetaEstadisticasTituloEscenario, gbc);
+            this.analysisScenarioInformationPanel.add(this.labelScenarioTitle, gbc);
             gbc = new GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 1;
             gbc.insets = new Insets(10, 5, 10, 5);
             gbc.fill = GridBagConstraints.HORIZONTAL;
             gbc.anchor = GridBagConstraints.NORTH;
-            this.panelFijo.add(this.etiquetaEstadisticasNombreAutor, gbc);
+            this.analysisScenarioInformationPanel.add(this.labelScenarioAuthorName, gbc);
             gbc = new GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 2;
             gbc.insets = new Insets(10, 5, 10, 5);
             gbc.fill = GridBagConstraints.HORIZONTAL;
             gbc.anchor = GridBagConstraints.NORTH;
-            this.panelFijo.add(this.areaEstadisticasDescripcion, gbc);
+            this.analysisScenarioInformationPanel.add(this.textAreaScenarioDescription, gbc);
             gbc = new GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 3;
             gbc.insets = new Insets(10, 5, 10, 10);
             gbc.fill = GridBagConstraints.HORIZONTAL;
             gbc.anchor = GridBagConstraints.NORTH;
-            this.panelFijo.add(this.etiquetaNombreElementoEstadistica, gbc);
+            this.analysisScenarioInformationPanel.add(this.labelElementToAnalize, gbc);
             gbc = new GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 0;
             gbc.insets = new Insets(10, 10, 10, 5);
             gbc.anchor = GridBagConstraints.NORTH;
             gbc.fill = GridBagConstraints.HORIZONTAL;
-            this.panelAnalisis.add(this.panelFijo, gbc);
-            this.panelAnalisis.repaint();
+            this.analysisPanel.add(this.analysisScenarioInformationPanel, gbc);
+             */
+            this.analysisPanel.repaint();
         } else {
-            String nombreEltoSeleccionado = (String) this.selectorElementoEstadisticas.getSelectedItem();
+            String nombreEltoSeleccionado = (String) this.comboBoxNodeToAnalize.getSelectedItem();
             this.crearEInsertarGraficas(nombreEltoSeleccionado);
         }
     }
@@ -1053,23 +1098,23 @@ public class JScenarioWindow extends JInternalFrame {
      */
     private void ratonArrastradoEnPanelSimulacion(MouseEvent evt) {
         if (evt.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
-            if (this.nodoSeleccionado != null) {
+            if (this.selectedNode != null) {
                 TTopology topo = this.scenario.getTopology();
                 Point p2 = evt.getPoint();
                 if (p2.x < 0) {
                     p2.x = 0;
                 }
-                if (p2.x > panelDisenio.getSize().width) {
-                    p2.x = panelDisenio.getSize().width;
+                if (p2.x > designPanel.getSize().width) {
+                    p2.x = designPanel.getSize().width;
                 }
                 if (p2.y < 0) {
                     p2.y = 0;
                 }
-                if (p2.y > panelDisenio.getSize().height) {
-                    p2.y = panelDisenio.getSize().height;
+                if (p2.y > designPanel.getSize().height) {
+                    p2.y = designPanel.getSize().height;
                 }
-                this.nodoSeleccionado.setScreenPosition(new Point(p2.x, p2.y));
-                this.panelSimulacion.repaint();
+                this.selectedNode.setScreenPosition(new Point(p2.x, p2.y));
+                this.simulationPanel.repaint();
                 this.scenario.setModified(true);
             }
         }
@@ -1085,12 +1130,12 @@ public class JScenarioWindow extends JInternalFrame {
      */
     private void ratonSoltadoEnPanelSimulacion(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            if (this.nodoSeleccionado != null) {
-                this.nodoSeleccionado.setSelected(TNode.UNSELECTED);
-                this.nodoSeleccionado = null;
+            if (this.selectedNode != null) {
+                this.selectedNode.setSelected(TNode.UNSELECTED);
+                this.selectedNode = null;
                 this.scenario.setModified(true);
             }
-            this.panelSimulacion.repaint();
+            this.simulationPanel.repaint();
         }
     }
 
@@ -1110,9 +1155,9 @@ public class JScenarioWindow extends JInternalFrame {
                 this.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 if (et.getElementType() == TTopologyElement.NODE) {
                     TNode nt = (TNode) et;
-                    this.nodoSeleccionado = nt;
-                    if (this.nodoSeleccionado != null) {
-                        this.nodoSeleccionado.setSelected(TNode.SELECTED);
+                    this.selectedNode = nt;
+                    if (this.selectedNode != null) {
+                        this.selectedNode.setSelected(TNode.SELECTED);
                         this.scenario.setModified(true);
                     }
                 }
@@ -1120,7 +1165,7 @@ public class JScenarioWindow extends JInternalFrame {
                 this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                 this.setToolTipText(null);
             }
-            this.panelSimulacion.repaint();
+            this.simulationPanel.repaint();
         }
     }
 
@@ -1134,38 +1179,38 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que provoca la llamada.
      */
     private void clicEnPropiedadesPopUpDisenioElemento(ActionEvent evt) {
-        if (this.elementoDisenioClicDerecho != null) {
-            if (this.elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
-                TNode nt = (TNode) this.elementoDisenioClicDerecho;
+        if (this.rightClickedElementInDesignPanel != null) {
+            if (this.rightClickedElementInDesignPanel.getElementType() == TTopologyElement.NODE) {
+                TNode nt = (TNode) this.rightClickedElementInDesignPanel;
                 if (nt.getNodeType() == TNode.TRAFFIC_GENERATOR) {
-                    JTrafficGeneratorWindow ve = new JTrafficGeneratorWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
+                    JTrafficGeneratorWindow ve = new JTrafficGeneratorWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
                     ve.setConfiguration((TTrafficGeneratorNode) nt, true);
                     ve.show();
                 } else if (nt.getNodeType() == TNode.LER) {
-                    JLERWindow vler = new JLERWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
+                    JLERWindow vler = new JLERWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
                     vler.setConfiguration((TLERNode) nt, true);
                     vler.show();
                 } else if (nt.getNodeType() == TNode.ACTIVE_LER) {
-                    JActiveLERWindow vlera = new JActiveLERWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
+                    JActiveLERWindow vlera = new JActiveLERWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
                     vlera.setConfiguration((TActiveLERNode) nt, true);
                     vlera.show();
                 } else if (nt.getNodeType() == TNode.LSR) {
-                    JLSRWindow vlsr = new JLSRWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
+                    JLSRWindow vlsr = new JLSRWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
                     vlsr.setConfiguration((TLSRNode) nt, true);
                     vlsr.show();
                 } else if (nt.getNodeType() == TNode.ACTIVE_LSR) {
-                    JActiveLSRWindow vlsra = new JActiveLSRWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
+                    JActiveLSRWindow vlsra = new JActiveLSRWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
                     vlsra.setConfiguration((TActiveLSRNode) nt, true);
                     vlsra.show();
                 } else if (nt.getNodeType() == TNode.TRAFFIC_SINK) {
-                    JTrafficSinkWindow vr = new JTrafficSinkWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
+                    JTrafficSinkWindow vr = new JTrafficSinkWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
                     vr.setConfiguration((TTrafficSinkNode) nt, true);
                     vr.show();
                 }
-                this.elementoDisenioClicDerecho = null;
-                this.panelDisenio.repaint();
+                this.rightClickedElementInDesignPanel = null;
+                this.designPanel.repaint();
             } else {
-                TLink ent = (TLink) this.elementoDisenioClicDerecho;
+                TLink ent = (TLink) this.rightClickedElementInDesignPanel;
                 TLinkConfig tceAux = ent.getConfig();
                 JLinkWindow ve = new JLinkWindow(this.scenario.getTopology(), this.imageBroker, this.parent, true);
                 ve.setConfiguration(tceAux, true);
@@ -1177,12 +1222,12 @@ public class JScenarioWindow extends JInternalFrame {
                     TInternalLink inte = (TInternalLink) ent;
                     inte.configure(tceAux, this.scenario.getTopology(), true);
                 }
-                this.elementoDisenioClicDerecho = null;
-                this.panelDisenio.repaint();
+                this.rightClickedElementInDesignPanel = null;
+                this.designPanel.repaint();
                 int minimoDelay = this.scenario.getTopology().getMinimumDelay();
-                int pasoActual = this.pasoNs.getValue();
+                int pasoActual = this.sliderOptionsTickDurationInNs.getValue();
                 if (pasoActual > minimoDelay) {
-                    this.pasoNs.setValue(minimoDelay);
+                    this.sliderOptionsTickDurationInNs.setValue(minimoDelay);
                 }
             }
             this.scenario.setModified(true);
@@ -1198,23 +1243,25 @@ public class JScenarioWindow extends JInternalFrame {
      */
     public void controlarParametrosTemporales() {
         if (!this.controlTemporizacionDesactivado) {
-            if (this.duracionMs.getValue() == 0) {
-                this.duracionNs.setMinimum(1);
+            if (this.sliderOptionsSimulationLengthMs.getValue() == 0) {
+                this.sliderOptionsSimulationLengthNs.setMinimum(1);
             } else {
-                this.duracionNs.setMinimum(0);
+                this.sliderOptionsSimulationLengthNs.setMinimum(0);
             }
-            int duracionTotal = this.duracionMs.getValue() * 1000000 + this.duracionNs.getValue();
+            int duracionTotal = this.sliderOptionsSimulationLengthMs.getValue() * 1000000 + this.sliderOptionsSimulationLengthNs.getValue();
             int minDelay = this.scenario.getTopology().getMinimumDelay();
             if (minDelay < duracionTotal) {
-                this.pasoNs.setMaximum(minDelay);
+                this.sliderOptionsTickDurationInNs.setMaximum(minDelay);
+                // FIX: Change also current value of this slider
             } else {
-                this.pasoNs.setMaximum(duracionTotal);
+                this.sliderOptionsTickDurationInNs.setMaximum(duracionTotal);
+                // FIX: Change also current value of this slider
             }
-            this.etiquetaDuracionMs.setText(this.duracionMs.getValue() + this.translations.getString("VentanaHija._ms."));
-            this.etiquetaDuracionNs.setText(this.duracionNs.getValue() + this.translations.getString("VentanaHija._ns."));
-            this.etiquetaPasoNs.setText(this.pasoNs.getValue() + this.translations.getString("VentanaHija._ns."));
-            this.scenario.getSimulation().setSimulationLengthInNs(new TTimestamp(this.duracionMs.getValue(), this.duracionNs.getValue()).getTotalAsNanoseconds());
-            this.scenario.getSimulation().setSimulationStepLengthInNs(this.pasoNs.getValue());
+            this.labelOptionsSimulationLengthMs.setText(this.sliderOptionsSimulationLengthMs.getValue() + this.translations.getString("VentanaHija._ms."));
+            this.labelOptionsSimulationLengthNs.setText(this.sliderOptionsSimulationLengthNs.getValue() + this.translations.getString("VentanaHija._ns."));
+            this.labelOptionsNsTick.setText(this.sliderOptionsTickDurationInNs.getValue() + this.translations.getString("VentanaHija._ns."));
+            this.scenario.getSimulation().setSimulationLengthInNs(new TTimestamp(this.sliderOptionsSimulationLengthMs.getValue(), this.sliderOptionsSimulationLengthNs.getValue()).getTotalAsNanoseconds());
+            this.scenario.getSimulation().setSimulationStepLengthInNs(this.sliderOptionsTickDurationInNs.getValue());
         }
     }
 
@@ -1262,8 +1309,8 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void mlsPorTicCambiado(ChangeEvent evt) {
-        this.etiquetaMlsPorTic.setText(this.mlsPorTic.getValue() + this.translations.getString("VentanaHija.Simulacion.etiquetaMsTic"));
-        this.panelSimulacion.ponerMlsPorTic(this.mlsPorTic.getValue());
+        this.labelSimulationSpeedFaster.setText(this.translations.getString("VentanaHija.Simulacion.etiquetaMsTic"));
+        this.simulationPanel.ponerMlsPorTic(this.sliderSimulationSpeedInMsPerTick.getValue());
     }
 
     /**
@@ -1281,7 +1328,7 @@ public class JScenarioWindow extends JInternalFrame {
             enlaceAux = (TLink) it.next();
             enlaceAux.setShowName(false);
         }
-        this.panelDisenio.repaint();
+        this.designPanel.repaint();
         this.scenario.setModified(true);
     }
 
@@ -1299,7 +1346,7 @@ public class JScenarioWindow extends JInternalFrame {
             enlaceAux = (TLink) it.next();
             enlaceAux.setShowName(true);
         }
-        this.panelDisenio.repaint();
+        this.designPanel.repaint();
         this.scenario.setModified(true);
     }
 
@@ -1318,7 +1365,7 @@ public class JScenarioWindow extends JInternalFrame {
             nodoAux = (TNode) it.next();
             nodoAux.setShowName(false);
         }
-        this.panelDisenio.repaint();
+        this.designPanel.repaint();
         this.scenario.setModified(true);
     }
 
@@ -1336,7 +1383,7 @@ public class JScenarioWindow extends JInternalFrame {
             nodoAux = (TNode) it.next();
             nodoAux.setShowName(true);
         }
-        this.panelDisenio.repaint();
+        this.designPanel.repaint();
         this.scenario.setModified(true);
     }
 
@@ -1354,7 +1401,7 @@ public class JScenarioWindow extends JInternalFrame {
         boolean respuesta = vb.getUserAnswer();
         if (respuesta) {
             this.scenario.getTopology().removeAllElements();
-            this.panelDisenio.repaint();
+            this.designPanel.repaint();
         }
         this.scenario.setModified(true);
     }
@@ -1373,34 +1420,34 @@ public class JScenarioWindow extends JInternalFrame {
         long durac = esc.getSimulation().getSimulationLengthInNs();
         long pas = esc.getSimulation().getSimulationStepLengthInNs();
         this.scenario = esc;
-        this.panelDisenio.setTopology(esc.getTopology());
-        this.panelSimulacion.ponerTopologia(esc.getTopology());
-        this.nodoSeleccionado = null;
-        this.elementoDisenioClicDerecho = null;
-        this.aProgresoGeneracion = new TProgressEventListener(this.barraDeProgreso);
+        this.designPanel.setTopology(esc.getTopology());
+        this.simulationPanel.ponerTopologia(esc.getTopology());
+        this.selectedNode = null;
+        this.rightClickedElementInDesignPanel = null;
+        this.progressEventListener = new TProgressEventListener(this.progressBarSimulation);
         try {
-            esc.getTopology().getTimer().addProgressEventListener(this.aProgresoGeneracion);
+            esc.getTopology().getTimer().addProgressEventListener(this.progressEventListener);
         } catch (EProgressEventGeneratorOnlyAllowASingleListener e) {
             e.printStackTrace();
         }
-        this.duracionMs.setValue((int) (durac / 1000000));
-        this.duracionNs.setValue((int) (durac - (this.duracionMs.getValue() * 1000000)));
-        this.pasoNs.setMaximum((int) esc.getSimulation().getSimulationLengthInNs());
-        this.pasoNs.setValue((int) pas);
+        this.sliderOptionsSimulationLengthMs.setValue((int) (durac / 1000000));
+        this.sliderOptionsSimulationLengthNs.setValue((int) (durac - (this.sliderOptionsSimulationLengthMs.getValue() * 1000000)));
+        this.sliderOptionsTickDurationInNs.setMaximum((int) esc.getSimulation().getSimulationLengthInNs());
+        this.sliderOptionsTickDurationInNs.setValue((int) pas);
         esc.getSimulation().setSimulationLengthInNs(durac);
         esc.getSimulation().setSimulationStepLengthInNs(pas);
-        this.etiquetaMlsPorTic.setText(this.mlsPorTic.getValue() + this.translations.getString("VentanaHija.Simulacion.EtiquetaMsTic"));
-        this.etiquetaDuracionMs.setText(this.duracionMs.getValue() + this.translations.getString("VentanaHija._ms."));
-        this.etiquetaDuracionNs.setText(this.duracionNs.getValue() + this.translations.getString("VentanaHija._ns."));
-        this.etiquetaPasoNs.setText(this.pasoNs.getValue() + this.translations.getString("VentanaHija_ns."));
-        this.nombreAutor.setText(esc.getAuthor());
-        this.nombreAutor.setCaretPosition(1);
-        this.nombreEscenario.setText(esc.getTitle());
-        this.nombreEscenario.setCaretPosition(1);
-        this.descripcionEscenario.setText(esc.getDescription());
-        this.descripcionEscenario.setCaretPosition(1);
+        this.labelSimulationSpeedFaster.setText(this.translations.getString("VentanaHija.Simulacion.EtiquetaMsTic"));
+        this.labelOptionsSimulationLengthMs.setText(this.sliderOptionsSimulationLengthMs.getValue() + this.translations.getString("VentanaHija._ms."));
+        this.labelOptionsSimulationLengthNs.setText(this.sliderOptionsSimulationLengthNs.getValue() + this.translations.getString("VentanaHija._ns."));
+        this.labelOptionsNsTick.setText(this.sliderOptionsTickDurationInNs.getValue() + this.translations.getString("VentanaHija_ns."));
+        this.textFieldOptionsScenarioAuthorName.setText(esc.getAuthor());
+        this.textFieldOptionsScenarioAuthorName.setCaretPosition(1);
+        this.textFieldOptionsScenarioTitle.setText(esc.getTitle());
+        this.textFieldOptionsScenarioTitle.setCaretPosition(1);
+        this.textAreaOptionsScenarioDescription.setText(esc.getDescription());
+        this.textAreaOptionsScenarioDescription.setCaretPosition(1);
         this.controlTemporizacionDesactivado = false;
-        this.scenario.getSimulation().setSimulationPanel(this.panelSimulacion);
+        this.scenario.getSimulation().setSimulationPanel(this.simulationPanel);
         this.controlarParametrosTemporales();
     }
 
@@ -1433,7 +1480,7 @@ public class JScenarioWindow extends JInternalFrame {
                         enlaceExterno.configure(config, this.scenario.getTopology(), false);
                         this.scenario.getTopology().addLink(enlaceExterno);
                     }
-                    this.panelDisenio.repaint();
+                    this.designPanel.repaint();
                 } catch (Exception e) {
                     JErrorWindow err;
                     err = new JErrorWindow(this.parent, true, this.imageBroker);
@@ -1461,31 +1508,31 @@ public class JScenarioWindow extends JInternalFrame {
         vb.show();
         boolean respuesta = vb.getUserAnswer();
         if (respuesta) {
-            if (this.elementoDisenioClicDerecho != null) {
-                if (this.elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
-                    TNode nt = (TNode) this.elementoDisenioClicDerecho;
+            if (this.rightClickedElementInDesignPanel != null) {
+                if (this.rightClickedElementInDesignPanel.getElementType() == TTopologyElement.NODE) {
+                    TNode nt = (TNode) this.rightClickedElementInDesignPanel;
                     if (nt.getNodeType() == TNode.TRAFFIC_SINK) {
                         if (this.scenario.getTopology().isThereAnyNodeGeneratingTrafficFor((TTrafficSinkNode) nt)) {
                             JWarningWindow va;
                             va = new JWarningWindow(this.parent, true, this.imageBroker);
                             va.setWarningMessage(this.translations.getString("JVentanaHija.NoPuedoBorrarReceptor"));
                             va.show();
-                            this.elementoDisenioClicDerecho = null;
+                            this.rightClickedElementInDesignPanel = null;
                         } else {
                             this.scenario.getTopology().disconnectNodeAndRemove(nt);
-                            this.elementoDisenioClicDerecho = null;
-                            this.panelDisenio.repaint();
+                            this.rightClickedElementInDesignPanel = null;
+                            this.designPanel.repaint();
                         }
                     } else {
                         this.scenario.getTopology().disconnectNodeAndRemove(nt);
-                        this.elementoDisenioClicDerecho = null;
-                        this.panelDisenio.repaint();
+                        this.rightClickedElementInDesignPanel = null;
+                        this.designPanel.repaint();
                     }
                 } else {
-                    TLink ent = (TLink) this.elementoDisenioClicDerecho;
+                    TLink ent = (TLink) this.rightClickedElementInDesignPanel;
                     this.scenario.getTopology().removeLink(ent);
-                    this.elementoDisenioClicDerecho = null;
-                    this.panelDisenio.repaint();
+                    this.rightClickedElementInDesignPanel = null;
+                    this.designPanel.repaint();
                 }
                 this.scenario.setModified(true);
             }
@@ -1502,17 +1549,17 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void clicEnPopUpDisenioVerNombre(ActionEvent evt) {
-        if (this.elementoDisenioClicDerecho != null) {
-            if (this.elementoDisenioClicDerecho.getElementType() == TTopologyElement.NODE) {
-                TNode nt = (TNode) this.elementoDisenioClicDerecho;
-                nt.setShowName(this.dVerNombreMenuItem.isSelected());
-                this.elementoDisenioClicDerecho = null;
-                this.panelDisenio.repaint();
+        if (this.rightClickedElementInDesignPanel != null) {
+            if (this.rightClickedElementInDesignPanel.getElementType() == TTopologyElement.NODE) {
+                TNode nt = (TNode) this.rightClickedElementInDesignPanel;
+                nt.setShowName(this.chekBoxMenuItemShowElementName.isSelected());
+                this.rightClickedElementInDesignPanel = null;
+                this.designPanel.repaint();
             } else {
-                TLink ent = (TLink) this.elementoDisenioClicDerecho;
-                ent.setShowName(this.dVerNombreMenuItem.isSelected());
-                this.elementoDisenioClicDerecho = null;
-                this.panelDisenio.repaint();
+                TLink ent = (TLink) this.rightClickedElementInDesignPanel;
+                ent.setShowName(this.chekBoxMenuItemShowElementName.isSelected());
+                this.rightClickedElementInDesignPanel = null;
+                this.designPanel.repaint();
             }
             this.scenario.setModified(true);
         }
@@ -1529,21 +1576,21 @@ public class JScenarioWindow extends JInternalFrame {
         if (evt.getButton() == MouseEvent.BUTTON3) {
             TTopologyElement et = this.scenario.getTopology().getElementInScreenPosition(evt.getPoint());
             if (et == null) {
-                this.diseFondoPopUp.show(this, evt.getX() + 7, evt.getY() - 27);
+                this.popupMenuBackgroundDesignPanel.show(this, evt.getX() + 7, evt.getY() - 27);
             } else if (et.getElementType() == TTopologyElement.NODE) {
                 TNode nt = (TNode) et;
-                this.dVerNombreMenuItem.setSelected(nt.getShowName());
-                this.elementoDisenioClicDerecho = et;
-                this.diseElementoPopUp.show(this, evt.getX() + 7, evt.getY() + 15);
+                this.chekBoxMenuItemShowElementName.setSelected(nt.getShowName());
+                this.rightClickedElementInDesignPanel = et;
+                this.popupMenuTopologyElement.show(this, evt.getX() + 7, evt.getY() + 15);
             } else if (et.getElementType() == TTopologyElement.LINK) {
                 TLink ent = (TLink) et;
-                this.dVerNombreMenuItem.setSelected(ent.getShowName());
-                this.elementoDisenioClicDerecho = et;
-                this.diseElementoPopUp.show(this, evt.getX() + 7, evt.getY() + 15);
+                this.chekBoxMenuItemShowElementName.setSelected(ent.getShowName());
+                this.rightClickedElementInDesignPanel = et;
+                this.popupMenuTopologyElement.show(this, evt.getX() + 7, evt.getY() + 15);
             }
         } else {
-            this.elementoDisenioClicDerecho = null;
-            this.panelDisenio.repaint();
+            this.rightClickedElementInDesignPanel = null;
+            this.designPanel.repaint();
         }
     }
 
@@ -1564,13 +1611,13 @@ public class JScenarioWindow extends JInternalFrame {
             err.setErrorMessage(e.toString());
             err.show();
         }
-        JActiveLSRWindow vlsra = new JActiveLSRWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
+        JActiveLSRWindow vlsra = new JActiveLSRWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
         vlsra.setConfiguration(lsra, false);
         vlsra.show();
         if (lsra.isWellConfigured()) {
             try {
                 this.scenario.getTopology().addNode(lsra);
-                this.panelDisenio.repaint();
+                this.designPanel.repaint();
             } catch (Exception e) {
                 JErrorWindow err;
                 err = new JErrorWindow(this.parent, true, this.imageBroker);
@@ -1600,13 +1647,13 @@ public class JScenarioWindow extends JInternalFrame {
             err.setErrorMessage(e.toString());
             err.show();
         }
-        JLSRWindow vlsr = new JLSRWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
+        JLSRWindow vlsr = new JLSRWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
         vlsr.setConfiguration(lsr, false);
         vlsr.show();
         if (lsr.isWellConfigured()) {
             try {
                 this.scenario.getTopology().addNode(lsr);
-                this.panelDisenio.repaint();
+                this.designPanel.repaint();
             } catch (Exception e) {
                 JErrorWindow err;
                 err = new JErrorWindow(this.parent, true, this.imageBroker);
@@ -1618,6 +1665,7 @@ public class JScenarioWindow extends JInternalFrame {
             lsr = null;
         }
     }
+
     /**
      * Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LSRA
      * nuevo en la barra de herramientas de la pantalla de dise�o.
@@ -1635,13 +1683,13 @@ public class JScenarioWindow extends JInternalFrame {
             err.setErrorMessage(e.toString());
             err.show();
         }
-        JActiveLERWindow vlera = new JActiveLERWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
+        JActiveLERWindow vlera = new JActiveLERWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
         vlera.setConfiguration(lera, false);
         vlera.show();
         if (lera.isWellConfigured()) {
             try {
                 this.scenario.getTopology().addNode(lera);
-                this.panelDisenio.repaint();
+                this.designPanel.repaint();
             } catch (Exception e) {
                 JErrorWindow err;
                 err = new JErrorWindow(this.parent, true, this.imageBroker);
@@ -1672,25 +1720,25 @@ public class JScenarioWindow extends JInternalFrame {
             if (et.getElementType() == TTopologyElement.NODE) {
                 TNode nt = (TNode) et;
                 if (nt.getPorts().isArtificiallyCongested()) {
-                    this.panelSimulacion.setToolTipText(this.translations.getString("JVentanaHija.Congestion") + nt.getPorts().getCongestionLevel() + this.translations.getString("JVentanaHija.POrcentaje") + this.translations.getString("VentanaHija.paraDejarDeCongestionar"));
+                    this.simulationPanel.setToolTipText(this.translations.getString("JVentanaHija.Congestion") + nt.getPorts().getCongestionLevel() + this.translations.getString("JVentanaHija.POrcentaje") + this.translations.getString("VentanaHija.paraDejarDeCongestionar"));
                 } else {
-                    this.panelSimulacion.setToolTipText(this.translations.getString("JVentanaHija.Congestion") + nt.getPorts().getCongestionLevel() + this.translations.getString("JVentanaHija.POrcentaje") + this.translations.getString("VentanaHija.paraCongestionar"));
+                    this.simulationPanel.setToolTipText(this.translations.getString("JVentanaHija.Congestion") + nt.getPorts().getCongestionLevel() + this.translations.getString("JVentanaHija.POrcentaje") + this.translations.getString("VentanaHija.paraCongestionar"));
                 }
             } else if (et.getElementType() == TTopologyElement.LINK) {
                 TLink ent = (TLink) et;
                 if (ent.isBroken()) {
-                    this.panelSimulacion.setToolTipText(this.translations.getString("JVentanaHija.EnlaceRoto"));
+                    this.simulationPanel.setToolTipText(this.translations.getString("JVentanaHija.EnlaceRoto"));
                 } else {
-                    this.panelSimulacion.setToolTipText(this.translations.getString("JVentanaHija.EnlaceFuncionando"));
+                    this.simulationPanel.setToolTipText(this.translations.getString("JVentanaHija.EnlaceFuncionando"));
                 }
             }
         } else {
             this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            this.panelSimulacion.setToolTipText(null);
-            if (!this.panelSimulacion.obtenerMostrarLeyenda()) {
-                this.panelSimulacion.setToolTipText(this.translations.getString("JVentanaHija.VerLeyenda"));
+            this.simulationPanel.setToolTipText(null);
+            if (!this.simulationPanel.obtenerMostrarLeyenda()) {
+                this.simulationPanel.setToolTipText(this.translations.getString("JVentanaHija.VerLeyenda"));
             } else {
-                this.panelSimulacion.setToolTipText(this.translations.getString("JVentanaHija.OcultarLeyenda"));
+                this.simulationPanel.setToolTipText(this.translations.getString("JVentanaHija.OcultarLeyenda"));
             }
         }
     }
@@ -1711,14 +1759,14 @@ public class JScenarioWindow extends JInternalFrame {
             this.setCursor(new Cursor(Cursor.HAND_CURSOR));
             if (et.getElementType() == TTopologyElement.NODE) {
                 TNode nt = (TNode) et;
-                this.panelDisenio.setToolTipText(this.translations.getString("JVentanaHija.PanelDisenio.IP") + nt.getIPv4Address());
+                this.designPanel.setToolTipText(this.translations.getString("JVentanaHija.PanelDisenio.IP") + nt.getIPv4Address());
             } else if (et.getElementType() == TTopologyElement.LINK) {
                 TLink ent = (TLink) et;
-                this.panelDisenio.setToolTipText(this.translations.getString("JVentanaHija.panelDisenio.Retardo") + ent.getDelay() + this.translations.getString("JVentanaHija.panelDisenio.ns"));
+                this.designPanel.setToolTipText(this.translations.getString("JVentanaHija.panelDisenio.Retardo") + ent.getDelay() + this.translations.getString("JVentanaHija.panelDisenio.ns"));
             }
         } else {
             this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            this.panelDisenio.setToolTipText(null);
+            this.designPanel.setToolTipText(null);
         }
     }
 
@@ -1732,23 +1780,23 @@ public class JScenarioWindow extends JInternalFrame {
      */
     private void arrastrandoEnPanelDisenio(MouseEvent evt) {
         if (evt.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
-            if (this.nodoSeleccionado != null) {
+            if (this.selectedNode != null) {
                 TTopology topo = scenario.getTopology();
                 Point p2 = evt.getPoint();
                 if (p2.x < 0) {
                     p2.x = 0;
                 }
-                if (p2.x > this.panelDisenio.getSize().width) {
-                    p2.x = this.panelDisenio.getSize().width;
+                if (p2.x > this.designPanel.getSize().width) {
+                    p2.x = this.designPanel.getSize().width;
                 }
                 if (p2.y < 0) {
                     p2.y = 0;
                 }
-                if (p2.y > this.panelDisenio.getSize().height) {
-                    p2.y = this.panelDisenio.getSize().height;
+                if (p2.y > this.designPanel.getSize().height) {
+                    p2.y = this.designPanel.getSize().height;
                 }
-                this.nodoSeleccionado.setScreenPosition(new Point(p2.x, p2.y));
-                this.panelDisenio.repaint();
+                this.selectedNode.setScreenPosition(new Point(p2.x, p2.y));
+                this.designPanel.repaint();
                 this.scenario.setModified(true);
             }
         }
@@ -1764,12 +1812,12 @@ public class JScenarioWindow extends JInternalFrame {
      */
     private void clicSoltadoEnPanelDisenio(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            if (this.nodoSeleccionado != null) {
-                this.nodoSeleccionado.setSelected(TNode.UNSELECTED);
-                this.nodoSeleccionado = null;
+            if (this.selectedNode != null) {
+                this.selectedNode.setSelected(TNode.UNSELECTED);
+                this.selectedNode = null;
                 this.scenario.setModified(true);
             }
-            this.panelDisenio.repaint();
+            this.designPanel.repaint();
         }
     }
 
@@ -1783,12 +1831,12 @@ public class JScenarioWindow extends JInternalFrame {
     private void clicEnPanelDisenio(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
             TTopology topo = this.scenario.getTopology();
-            this.nodoSeleccionado = topo.getNodeInScreenPosition(evt.getPoint());
-            if (this.nodoSeleccionado != null) {
-                this.nodoSeleccionado.setSelected(TNode.SELECTED);
+            this.selectedNode = topo.getNodeInScreenPosition(evt.getPoint());
+            if (this.selectedNode != null) {
+                this.selectedNode.setSelected(TNode.SELECTED);
                 this.scenario.setModified(true);
             }
-            this.panelDisenio.repaint();
+            this.designPanel.repaint();
         }
     }
 
@@ -1800,7 +1848,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDelIconoPausar(MouseEvent evt) {
-        this.iconoPausar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PAUSA));
+        this.iconContainerPauseSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PAUSA));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -1812,7 +1860,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt Evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoPausar(MouseEvent evt) {
-        this.iconoPausar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PAUSA_BRILLO));
+        this.iconContainerPauseSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PAUSA_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -1824,7 +1872,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt Evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDelIconoFinalizar(MouseEvent evt) {
-        this.iconoFinalizar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PARAR));
+        this.iconContainerFinishSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PARAR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -1836,7 +1884,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt Evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoFinalizar(MouseEvent evt) {
-        this.iconoFinalizar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PARAR_BRILLO));
+        this.iconContainerFinishSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PARAR_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -1848,7 +1896,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt Evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDelIconoReanudar(MouseEvent evt) {
-        this.iconoReanudar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_COMENZAR));
+        this.iconContainerResumeSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_COMENZAR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -1860,7 +1908,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt Evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoReanudar(MouseEvent evt) {
-        this.iconoReanudar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_COMENZAR_BRILLO));
+        this.iconContainerResumeSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_COMENZAR_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -1872,7 +1920,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt Evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDelIconoComenzar(MouseEvent evt) {
-        this.iconoComenzar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_GENERAR));
+        this.iconContainterStartSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_GENERAR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -1884,7 +1932,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt Evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoComenzar(MouseEvent evt) {
-        this.iconoComenzar.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_GENERAR_BRILLO));
+        this.iconContainterStartSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_GENERAR_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -1905,13 +1953,13 @@ public class JScenarioWindow extends JInternalFrame {
             err.setErrorMessage(e.toString());
             err.show();
         }
-        JLERWindow vler = new JLERWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
+        JLERWindow vler = new JLERWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
         vler.setConfiguration(ler, false);
         vler.show();
         if (ler.isWellConfigured()) {
             try {
                 this.scenario.getTopology().addNode(ler);
-                this.panelDisenio.repaint();
+                this.designPanel.repaint();
             } catch (Exception e) {
                 JErrorWindow err;
                 err = new JErrorWindow(this.parent, true, this.imageBroker);
@@ -1932,7 +1980,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo
      */
     private void ratonSaleDeIconoEnlace(MouseEvent evt) {
-        this.iconoEnlace.setIcon(this.imageBroker.getIcon(TImageBroker.ENLACE_MENU));
+        this.iconContainerLink.setIcon(this.imageBroker.getIcon(TImageBroker.ENLACE_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -1944,7 +1992,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoEnlace(MouseEvent evt) {
-        this.iconoEnlace.setIcon(this.imageBroker.getIcon(TImageBroker.ENLACE_MENU_BRILLO));
+        this.iconContainerLink.setIcon(this.imageBroker.getIcon(TImageBroker.ENLACE_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -1956,7 +2004,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDeIconoLSRA(MouseEvent evt) {
-        this.iconoLSRA.setIcon(this.imageBroker.getIcon(TImageBroker.LSRA_MENU));
+        this.iconContainerActiveLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSRA_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -1968,7 +2016,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoLSRA(MouseEvent evt) {
-        this.iconoLSRA.setIcon(this.imageBroker.getIcon(TImageBroker.LSRA_MENU_BRILLO));
+        this.iconContainerActiveLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSRA_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -1980,7 +2028,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDeIconoLSR(MouseEvent evt) {
-        this.iconoLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSR_MENU));
+        this.iconContainerLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSR_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -1992,7 +2040,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoLSR(MouseEvent evt) {
-        this.iconoLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSR_MENU_BRILLO));
+        this.iconContainerLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSR_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -2004,7 +2052,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDeIconoLERA(MouseEvent evt) {
-        this.iconoLERA.setIcon(this.imageBroker.getIcon(TImageBroker.LERA_MENU));
+        this.iconContainerActiveLER.setIcon(this.imageBroker.getIcon(TImageBroker.LERA_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -2016,7 +2064,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoLERA(MouseEvent evt) {
-        this.iconoLERA.setIcon(this.imageBroker.getIcon(TImageBroker.LERA_MENU_BRILLO));
+        this.iconContainerActiveLER.setIcon(this.imageBroker.getIcon(TImageBroker.LERA_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -2028,7 +2076,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDeIconoLER(MouseEvent evt) {
-        this.iconoLER.setIcon(this.imageBroker.getIcon(TImageBroker.LER_MENU));
+        this.iconContainerLER.setIcon(this.imageBroker.getIcon(TImageBroker.LER_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -2040,7 +2088,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoLER(MouseEvent evt) {
-        this.iconoLER.setIcon(this.imageBroker.getIcon(TImageBroker.LER_MENU_BRILLO));
+        this.iconContainerLER.setIcon(this.imageBroker.getIcon(TImageBroker.LER_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -2052,7 +2100,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDeIconoReceptor(MouseEvent evt) {
-        this.iconoReceptor.setIcon(this.imageBroker.getIcon(TImageBroker.RECEPTOR_MENU));
+        this.iconContainerTrafficSink.setIcon(this.imageBroker.getIcon(TImageBroker.RECEPTOR_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -2064,7 +2112,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoReceptor(MouseEvent evt) {
-        this.iconoReceptor.setIcon(this.imageBroker.getIcon(TImageBroker.RECEPTOR_MENU_BRILLO));
+        this.iconContainerTrafficSink.setIcon(this.imageBroker.getIcon(TImageBroker.RECEPTOR_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -2076,7 +2124,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonSaleDeIconoEmisor(MouseEvent evt) {
-        this.iconoEmisor.setIcon(this.imageBroker.getIcon(TImageBroker.EMISOR_MENU));
+        this.iconContainerTrafficGeneratorNode.setIcon(this.imageBroker.getIcon(TImageBroker.EMISOR_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -2088,7 +2136,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que se dispare este m�todo.
      */
     private void ratonEntraEnIconoEmisor(MouseEvent evt) {
-        this.iconoEmisor.setIcon(this.imageBroker.getIcon(TImageBroker.EMISOR_MENU_BRILLO));
+        this.iconContainerTrafficGeneratorNode.setIcon(this.imageBroker.getIcon(TImageBroker.EMISOR_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -2109,13 +2157,13 @@ public class JScenarioWindow extends JInternalFrame {
             err.setErrorMessage(e.toString());
             err.show();
         }
-        JTrafficSinkWindow vr = new JTrafficSinkWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
+        JTrafficSinkWindow vr = new JTrafficSinkWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
         vr.setConfiguration(receptor, false);
         vr.show();
         if (receptor.isWellConfigured()) {
             try {
                 this.scenario.getTopology().addNode(receptor);
-                this.panelDisenio.repaint();
+                this.designPanel.repaint();
             } catch (Exception e) {
                 JErrorWindow err;
                 err = new JErrorWindow(this.parent, true, this.imageBroker);
@@ -2160,13 +2208,13 @@ public class JScenarioWindow extends JInternalFrame {
                 err.setErrorMessage(e.toString());
                 err.show();
             }
-            JTrafficGeneratorWindow ve = new JTrafficGeneratorWindow(this.scenario.getTopology(), this.panelDisenio, this.imageBroker, this.parent, true);
+            JTrafficGeneratorWindow ve = new JTrafficGeneratorWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
             ve.setConfiguration(emisor, false);
             ve.show();
             if (emisor.isWellConfigured()) {
                 try {
                     this.scenario.getTopology().addNode(emisor);
-                    this.panelDisenio.repaint();
+                    this.designPanel.repaint();
                 } catch (Exception e) {
                     JErrorWindow err;
                     err = new JErrorWindow(this.parent, true, this.imageBroker);
@@ -2189,7 +2237,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt Evento que hace que este m�todo se dispare.
      */
     private void clicAlPausar(MouseEvent evt) {
-        if (this.iconoPausar.isEnabled()) {
+        if (this.iconContainerPauseSimulation.isEnabled()) {
             this.scenario.getTopology().getTimer().setPaused(true);
             activarOpcionesAlDetener();
         }
@@ -2204,10 +2252,9 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que este m�todo se dispare.
      */
     private void clicEnFinalizar(MouseEvent evt) {
-        if (this.iconoFinalizar.isEnabled()) {
+        if (this.iconContainerFinishSimulation.isEnabled()) {
             this.scenario.getTopology().getTimer().reset();
-            this.crearTraza.setEnabled(true);
-            this.panelSimulacion.ponerFicheroTraza(null);
+            this.simulationPanel.ponerFicheroTraza(null);
             activarOpcionesAlFinalizar();
         }
     }
@@ -2220,7 +2267,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que este m�todo se dispare.
      */
     private void clicEnReanudar(MouseEvent evt) {
-        if (this.iconoReanudar.isEnabled()) {
+        if (this.iconContainerResumeSimulation.isEnabled()) {
             activarOpcionesAlComenzar();
             this.scenario.getTopology().getTimer().setPaused(false);
             this.scenario.getTopology().getTimer().restart();
@@ -2235,34 +2282,22 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que hace que este m�todo se dispare.
      */
     private void clicEnComenzar(MouseEvent evt) {
-        if (this.iconoComenzar.isEnabled()) {
+        if (this.iconContainterStartSimulation.isEnabled()) {
             this.scenario.reset();
             if (!this.scenario.getTopology().getTimer().isRunning()) {
-                this.scenario.getTopology().getTimer().setFinishTimestamp(new TTimestamp(this.duracionMs.getValue(), this.duracionNs.getValue()));
+                this.scenario.getTopology().getTimer().setFinishTimestamp(new TTimestamp(this.sliderOptionsSimulationLengthMs.getValue(), this.sliderOptionsSimulationLengthNs.getValue()));
             }
-            this.scenario.getTopology().getTimer().setTick(this.pasoNs.getValue());
+            this.scenario.getTopology().getTimer().setTick(this.sliderOptionsTickDurationInNs.getValue());
             crearListaElementosEstadistica();
             this.scenario.setModified(true);
             this.scenario.getTopology().getTimer().reset();
-            this.panelSimulacion.reset();
-            this.panelSimulacion.repaint();
+            this.simulationPanel.reset();
+            this.simulationPanel.repaint();
             this.scenario.simulate();
             int minimoDelay = this.scenario.getTopology().getMinimumDelay();
-            int pasoActual = this.pasoNs.getValue();
+            int pasoActual = this.sliderOptionsTickDurationInNs.getValue();
             if (pasoActual > minimoDelay) {
-                this.pasoNs.setValue(minimoDelay);
-            }
-            this.crearTraza.setEnabled(false);
-            this.panelSimulacion.ponerFicheroTraza(null);
-            if (this.crearTraza.isSelected()) {
-                if (this.scenario.getScenarioFile() != null) {
-                    File fAux = new File(this.scenario.getScenarioFile().getPath() + ".txt");
-                    this.panelSimulacion.ponerFicheroTraza(fAux);
-                } else {
-                    this.panelSimulacion.ponerFicheroTraza(new File(this.getTitle() + ".txt"));
-                }
-            } else {
-                this.panelSimulacion.ponerFicheroTraza(null);
+                this.sliderOptionsTickDurationInNs.setValue(minimoDelay);
             }
             activarOpcionesTrasGenerar();
         }
@@ -2280,16 +2315,16 @@ public class JScenarioWindow extends JInternalFrame {
         Iterator it = null;
         TNode nt = null;
         TLink et = null;
-        this.selectorElementoEstadisticas.removeAllItems();
-        this.selectorElementoEstadisticas.addItem("");
+        this.comboBoxNodeToAnalize.removeAllItems();
+        this.comboBoxNodeToAnalize.addItem("");
         it = this.scenario.getTopology().getNodesIterator();
         while (it.hasNext()) {
             nt = (TNode) it.next();
             if (nt.isGeneratingStats()) {
-                this.selectorElementoEstadisticas.addItem(nt.getName());
+                this.comboBoxNodeToAnalize.addItem(nt.getName());
             }
         }
-        this.selectorElementoEstadisticas.setSelectedIndex(0);
+        this.comboBoxNodeToAnalize.setSelectedIndex(0);
     }
 
     /**
@@ -2299,10 +2334,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void activarOpcionesAlDetener() {
-        this.iconoComenzar.setEnabled(false);
-        this.iconoReanudar.setEnabled(true);
-        this.iconoFinalizar.setEnabled(true);
-        this.iconoPausar.setEnabled(false);
+        this.iconContainterStartSimulation.setEnabled(false);
+        this.iconContainerResumeSimulation.setEnabled(true);
+        this.iconContainerFinishSimulation.setEnabled(true);
+        this.iconContainerPauseSimulation.setEnabled(false);
     }
 
     /**
@@ -2312,10 +2347,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void activarOpcionesAlFinalizar() {
-        this.iconoComenzar.setEnabled(true);
-        this.iconoReanudar.setEnabled(false);
-        this.iconoFinalizar.setEnabled(false);
-        this.iconoPausar.setEnabled(false);
+        this.iconContainterStartSimulation.setEnabled(true);
+        this.iconContainerResumeSimulation.setEnabled(false);
+        this.iconContainerFinishSimulation.setEnabled(false);
+        this.iconContainerPauseSimulation.setEnabled(false);
     }
 
     /**
@@ -2325,10 +2360,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void activarOpcionesTrasGenerar() {
-        this.iconoComenzar.setEnabled(false);
-        this.iconoReanudar.setEnabled(false);
-        this.iconoFinalizar.setEnabled(true);
-        this.iconoPausar.setEnabled(true);
+        this.iconContainterStartSimulation.setEnabled(false);
+        this.iconContainerResumeSimulation.setEnabled(false);
+        this.iconContainerFinishSimulation.setEnabled(true);
+        this.iconContainerPauseSimulation.setEnabled(true);
     }
 
     /**
@@ -2338,10 +2373,10 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void activarOpcionesAlComenzar() {
-        this.iconoComenzar.setEnabled(false);
-        this.iconoReanudar.setEnabled(false);
-        this.iconoFinalizar.setEnabled(true);
-        this.iconoPausar.setEnabled(true);
+        this.iconContainterStartSimulation.setEnabled(false);
+        this.iconContainerResumeSimulation.setEnabled(false);
+        this.iconContainerFinishSimulation.setEnabled(true);
+        this.iconContainerPauseSimulation.setEnabled(true);
     }
 
     /**
@@ -2419,13 +2454,13 @@ public class JScenarioWindow extends JInternalFrame {
 
         // Detengo la simulaci�n antes de cerrar, si es necesario.
         if (this.scenario.getTopology().getTimer().isRunning()) {
-            this.panelSimulacion.reset();
-            this.panelSimulacion.repaint();
+            this.simulationPanel.reset();
+            this.simulationPanel.repaint();
             this.scenario.reset();
             if (!this.scenario.getTopology().getTimer().isRunning()) {
-                this.scenario.getTopology().getTimer().setFinishTimestamp(new TTimestamp(this.duracionMs.getValue(), this.duracionNs.getValue()));
+                this.scenario.getTopology().getTimer().setFinishTimestamp(new TTimestamp(this.sliderOptionsSimulationLengthMs.getValue(), this.sliderOptionsSimulationLengthNs.getValue()));
             }
-            this.scenario.getTopology().getTimer().setTick(this.pasoNs.getValue());
+            this.scenario.getTopology().getTimer().setTick(this.sliderOptionsTickDurationInNs.getValue());
             this.scenario.getTopology().getTimer().setPaused(false);
             activarOpcionesAlFinalizar();
         }
@@ -2492,242 +2527,109 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     private void crearEInsertarGraficas(String nombre) {
-        GridBagConstraints gbc = null;
-        this.panelAnalisis.removeAll();
-        this.etiquetaEstadisticasTituloEscenario.setText(this.nombreEscenario.getText());
-        this.etiquetaEstadisticasNombreAutor.setText(this.nombreAutor.getText());
-        this.areaEstadisticasDescripcion.setText(this.descripcionEscenario.getText());
-        this.etiquetaNombreElementoEstadistica.setText(nombre);
+        this.analysisPanel.removeAll();
+        this.analysisPanel.setLayout(new MigLayout("align center, fillx"));
+        JScrollablePanel scenarioTitle = new JScrollablePanel();
+        JScrollablePanel author = new JScrollablePanel();
+        JScrollablePanel description = new JScrollablePanel();
+        JScrollablePanel element = new JScrollablePanel();
+        scenarioTitle.setMinimumSize(new Dimension());
+        author.setMinimumSize(new Dimension());
+        description.setMinimumSize(new Dimension());
+        element.setMinimumSize(new Dimension());
+        scenarioTitle.add(labelScenarioTitle);
+        labelScenarioAuthorName.setMinimumSize(new Dimension());
+        textAreaScenarioDescription.setMinimumSize(new Dimension());
+        labelElementToAnalize.setMinimumSize(new Dimension());
+        labelScenarioTitle.setMinimumSize(new Dimension());
+        author.add(labelScenarioAuthorName);
+        description.add(textAreaScenarioDescription);
+        element.add(labelElementToAnalize);
+        scenarioTitle.setBackground(Color.WHITE);
+        author.setBackground(Color.WHITE);
+        description.setBackground(Color.WHITE);
+        element.setBackground(Color.WHITE);
+        this.analysisPanel.add(scenarioTitle, "span 2, grow, wrap");
+        this.analysisPanel.add(author, "span 2, grow, wrap");
+        this.analysisPanel.add(textAreaScenarioDescription, "span 2, grow, gapleft 10%, gapright 10%, wrap");
+        this.analysisPanel.add(element, "span 2, grow, wrap");
+        this.labelScenarioTitle.setText(this.textFieldOptionsScenarioTitle.getText());
+        this.labelScenarioAuthorName.setText(this.textFieldOptionsScenarioAuthorName.getText());
+        this.textAreaScenarioDescription.setText(this.textAreaOptionsScenarioDescription.getText());
+        this.labelElementToAnalize.setText(nombre);
         TNode nt = this.scenario.getTopology().getFirstNodeNamed(nombre);
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.insets = new Insets(10, 10, 10, 5);
-        gbc.anchor = GridBagConstraints.NORTH;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        this.panelFijo.add(this.etiquetaEstadisticasTituloEscenario, gbc);
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.insets = new Insets(10, 5, 10, 5);
-        gbc.anchor = GridBagConstraints.NORTH;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        this.panelFijo.add(this.etiquetaEstadisticasNombreAutor, gbc);
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.insets = new Insets(10, 5, 10, 5);
-        gbc.anchor = GridBagConstraints.NORTH;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        this.panelFijo.add(this.areaEstadisticasDescripcion, gbc);
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.insets = new Insets(10, 5, 10, 5);
-        gbc.anchor = GridBagConstraints.NORTH;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        this.panelFijo.add(this.etiquetaNombreElementoEstadistica, gbc);
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.insets = new Insets(10, 10, 10, 5);
-        gbc.anchor = GridBagConstraints.NORTH;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        this.panelAnalisis.add(this.panelFijo, gbc);
         if (nt != null) {
             if (nt.getNodeType() == TNode.TRAFFIC_GENERATOR) {
-                this.etiquetaNombreElementoEstadistica.setIcon(this.imageBroker.getIcon(TImageBroker.EMISOR));
+                this.labelElementToAnalize.setIcon(this.imageBroker.getIcon(TImageBroker.EMISOR));
             } else if (nt.getNodeType() == TNode.TRAFFIC_SINK) {
-                this.etiquetaNombreElementoEstadistica.setIcon(this.imageBroker.getIcon(TImageBroker.RECEPTOR));
+                this.labelElementToAnalize.setIcon(this.imageBroker.getIcon(TImageBroker.RECEPTOR));
             } else if (nt.getNodeType() == TNode.LER) {
-                this.etiquetaNombreElementoEstadistica.setIcon(this.imageBroker.getIcon(TImageBroker.LER));
+                this.labelElementToAnalize.setIcon(this.imageBroker.getIcon(TImageBroker.LER));
             } else if (nt.getNodeType() == TNode.ACTIVE_LER) {
-                this.etiquetaNombreElementoEstadistica.setIcon(this.imageBroker.getIcon(TImageBroker.LERA));
+                this.labelElementToAnalize.setIcon(this.imageBroker.getIcon(TImageBroker.LERA));
             } else if (nt.getNodeType() == TNode.LSR) {
-                this.etiquetaNombreElementoEstadistica.setIcon(this.imageBroker.getIcon(TImageBroker.LSR));
+                this.labelElementToAnalize.setIcon(this.imageBroker.getIcon(TImageBroker.LSR));
             } else if (nt.getNodeType() == TNode.ACTIVE_LSR) {
-                this.etiquetaNombreElementoEstadistica.setIcon(this.imageBroker.getIcon(TImageBroker.LSRA));
+                this.labelElementToAnalize.setIcon(this.imageBroker.getIcon(TImageBroker.LSRA));
             }
-
             int numeroGraficos = nt.getStats().getNumberOfAvailableDatasets();
 
-            if (numeroGraficos > 0) {       
-                
-                this.grafico1 = new JXYChart(nt.getStats().getTitleOfDataset1(),
+            if (numeroGraficos > 0) {
+                this.xyChart1 = new JXYChart(nt.getStats().getTitleOfDataset1(),
                         TStats.TIME,
                         TStats.NUMBER_OF_PACKETS,
                         (XYSeriesCollection) nt.getStats().getDataset1());
-                /*
-                this.grafico1 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset1(),
-                        TStats.TIME,
-                        TStats.NUMBER_OF_PACKETS,
-                        (XYSeriesCollection) nt.getStats().getDataset1(),
-                        PlotOrientation.VERTICAL,
-                        true, true, true);
-                this.grafico1.getPlot().setBackgroundPaint(Color.WHITE);
-                this.grafico1.getPlot().setForegroundAlpha((float) 0.5);
-                this.grafico1.getPlot().setOutlinePaint(new Color(14, 69, 125));
-//                this.grafico1.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
-                this.grafico1.setBackgroundPaint(new Color(210, 226, 242));
-                this.grafico1.setBorderPaint(Color.BLACK);
-                this.grafico1.getTitle().setPaint(new Color(79, 138, 198));
-                this.panelGrafico1 = new ChartPanel(this.grafico1);
-                this.panelGrafico1.setBorder(new LineBorder(Color.BLACK));
-                this.panelGrafico1.setPreferredSize(new Dimension(600, 300));
-                */
-                gbc = new GridBagConstraints();
-                gbc.gridx = 0;
-                gbc.gridy = 1;
-                gbc.insets = new Insets(10, 5, 10, 5);
-                gbc.anchor = GridBagConstraints.NORTH;
-                gbc.fill = GridBagConstraints.HORIZONTAL;
-//                this.panelAnalisis.add(this.panelGrafico1, gbc);
-                this.panelAnalisis.add(this.grafico1.getChartPanel(), gbc);
+                this.analysisPanel.add(this.xyChart1.getChartPanel(), "grow");
             }
             if (numeroGraficos > 1) {
-                
-                this.grafico2 = new JXYChart(nt.getStats().getTitleOfDataset2(),
+
+                this.xyChart2 = new JXYChart(nt.getStats().getTitleOfDataset2(),
                         TStats.TIME,
                         TStats.NUMBER_OF_PACKETS,
                         (XYSeriesCollection) nt.getStats().getDataset2());
-                
-/*                
-                this.grafico2 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset2(),
-                        TStats.TIME,
-                        TStats.NUMBER_OF_PACKETS,
-                        (XYSeriesCollection) nt.getStats().getDataset2(),
-                        PlotOrientation.VERTICAL,
-                        true, true, true);
-                this.grafico2.getPlot().setBackgroundPaint(Color.WHITE);
-                this.grafico2.getPlot().setForegroundAlpha((float) 0.5);
-                this.grafico2.getPlot().setOutlinePaint(new Color(14, 69, 125));
-//                this.grafico2.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
-                this.grafico2.setBackgroundPaint(new Color(210, 226, 242));
-                this.grafico2.setBorderPaint(Color.BLACK);
-                this.grafico2.getTitle().setPaint(new Color(79, 138, 198));
-                this.panelGrafico2 = new ChartPanel(this.grafico2);
-                this.panelGrafico2.setPreferredSize(new Dimension(600, 300));
-                this.panelGrafico2.setBorder(new LineBorder(Color.BLACK));
-                gbc = new GridBagConstraints();
-                */
-                gbc.gridx = 0;
-                gbc.gridy = 2;
-                gbc.insets = new Insets(10, 5, 10, 5);
-                gbc.anchor = GridBagConstraints.NORTH;
-                gbc.fill = GridBagConstraints.HORIZONTAL;
-//                this.panelAnalisis.add(panelGrafico2, gbc);
-                this.panelAnalisis.add(this.grafico2.getChartPanel(), gbc);
+                this.analysisPanel.add(this.xyChart2.getChartPanel(), "grow, wrap");
             }
             if (numeroGraficos > 2) {
-                this.grafico3 = new JXYChart(nt.getStats().getTitleOfDataset3(),
+                this.xyChart3 = new JXYChart(nt.getStats().getTitleOfDataset3(),
                         TStats.TIME,
                         TStats.NUMBER_OF_PACKETS,
                         (XYSeriesCollection) nt.getStats().getDataset3());
-                
-/*                
-                this.grafico3 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset3(),
-                        TStats.TIME,
-                        TStats.NUMBER_OF_PACKETS,
-                        (XYSeriesCollection) nt.getStats().getDataset3(),
-                        PlotOrientation.VERTICAL,
-                        true, true, true);
-                this.grafico3.getPlot().setBackgroundPaint(Color.WHITE);
-                this.grafico3.getPlot().setForegroundAlpha((float) 0.5);
-                this.grafico3.getPlot().setOutlinePaint(new Color(14, 69, 125));
-//                this.grafico3.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
-                this.grafico3.setBackgroundPaint(new Color(210, 226, 242));
-                this.grafico3.setBorderPaint(Color.BLACK);
-                this.grafico3.getTitle().setPaint(new Color(79, 138, 198));
-                this.panelGrafico3 = new ChartPanel(this.grafico3);
-                this.panelGrafico3.setBorder(new LineBorder(Color.BLACK));
-                this.panelGrafico3.setPreferredSize(new Dimension(600, 300));
-                */
-                gbc = new GridBagConstraints();
-                gbc.gridx = 0;
-                gbc.gridy = 3;
-                gbc.insets = new Insets(10, 5, 10, 5);
-                gbc.anchor = GridBagConstraints.NORTH;
-                gbc.fill = GridBagConstraints.HORIZONTAL;
-//                this.panelAnalisis.add(this.panelGrafico3, gbc);
-                this.panelAnalisis.add(this.grafico3.getChartPanel(), gbc);
+                this.analysisPanel.add(this.xyChart3.getChartPanel(), "grow");
             }
             if (numeroGraficos > 3) {
-                this.grafico4 = ChartFactory.createBarChart(nt.getStats().getTitleOfDataset4(),
-                        TStats.DESCRIPTION,
-                        TStats.NUMBER,
-                        (DefaultCategoryDataset) nt.getStats().getDataset4(),
-                        PlotOrientation.VERTICAL,
-                        true, true, true);
-                this.grafico4.getPlot().setBackgroundPaint(Color.WHITE);
-                this.grafico4.getPlot().setForegroundAlpha((float) 0.5);
-                this.grafico4.getPlot().setOutlinePaint(new Color(14, 69, 125));
-                this.grafico4.setBackgroundPaint(new Color(210, 226, 242));
-                this.grafico4.setBorderPaint(Color.BLACK);
-                this.grafico4.getTitle().setPaint(new Color(79, 138, 198));
-                this.panelGrafico4 = new ChartPanel(this.grafico4);
-                this.panelGrafico4.setBorder(new LineBorder(Color.BLACK));
-                this.panelGrafico4.setPreferredSize(new Dimension(600, 300));
-                gbc = new GridBagConstraints();
-                gbc.gridx = 0;
-                gbc.gridy = 4;
-                gbc.insets = new Insets(10, 5, 10, 5);
-                gbc.anchor = GridBagConstraints.NORTH;
-                gbc.fill = GridBagConstraints.HORIZONTAL;
-                this.panelAnalisis.add(this.panelGrafico4, gbc);
+                this.barChart1 = new JBarChart(nt.getStats().getTitleOfDataset4(), TStats.DESCRIPTION, TStats.NUMBER, (DefaultCategoryDataset) nt.getStats().getDataset4());
+                this.analysisPanel.add(this.barChart1.getChartPanel(), "grow, wrap");
             }
             if (numeroGraficos > 4) {
-                this.grafico5 = ChartFactory.createBarChart(nt.getStats().getTitleOfDataset5(),
-                        TStats.DESCRIPTION,
-                        TStats.NUMBER,
-                        (DefaultCategoryDataset) nt.getStats().getDataset5(),
-                        PlotOrientation.VERTICAL,
-                        true, true, true);
-                this.grafico5.getPlot().setBackgroundPaint(Color.WHITE);
-                this.grafico5.getPlot().setForegroundAlpha((float) 0.5);
-                this.grafico5.getPlot().setOutlinePaint(new Color(14, 69, 125));
-                this.grafico5.setBackgroundPaint(new Color(210, 226, 242));
-                this.grafico5.setBorderPaint(Color.BLACK);
-                this.grafico5.getTitle().setPaint(new Color(79, 138, 198));
-                this.panelGrafico5 = new ChartPanel(this.grafico5);
-                this.panelGrafico5.setBorder(new LineBorder(Color.BLACK));
-                this.panelGrafico5.setPreferredSize(new Dimension(600, 300));
-                gbc = new GridBagConstraints();
-                gbc.gridx = 0;
-                gbc.gridy = 5;
-                gbc.insets = new Insets(10, 5, 10, 5);
-                gbc.anchor = GridBagConstraints.NORTH;
-                gbc.fill = GridBagConstraints.HORIZONTAL;
-                this.panelAnalisis.add(this.panelGrafico5, gbc);
+                this.barChart2 = new JBarChart(nt.getStats().getTitleOfDataset5(), TStats.DESCRIPTION, TStats.NUMBER, (DefaultCategoryDataset) nt.getStats().getDataset5());
+                this.analysisPanel.add(this.barChart2.getChartPanel(), "grow");
             }
             if (numeroGraficos > 5) {
-                this.grafico6 = ChartFactory.createXYLineChart(nt.getStats().getTitleOfDataset6(),
-                        TStats.TIME,
-                        TStats.NUMBER_OF_PACKETS,
-                        (XYSeriesCollection) nt.getStats().getDataset6(),
-                        PlotOrientation.VERTICAL,
-                        true, true, true);
-                this.grafico6.getPlot().setBackgroundPaint(Color.WHITE);
-                this.grafico6.getPlot().setForegroundAlpha((float) 0.5);
-                this.grafico6.getPlot().setOutlinePaint(new Color(14, 69, 125));
-//                this.grafico6.getXYPlot().setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5, 5, 5, 5));
-                this.grafico6.setBackgroundPaint(new Color(210, 226, 242));
-                this.grafico6.setBorderPaint(Color.BLACK);
-                this.grafico6.getTitle().setPaint(new Color(79, 138, 198));
-                this.panelGrafico6 = new ChartPanel(this.grafico6);
-                this.panelGrafico6.setBorder(new LineBorder(Color.BLACK));
-                this.panelGrafico6.setPreferredSize(new Dimension(600, 300));
-                gbc = new GridBagConstraints();
-                gbc.gridx = 0;
-                gbc.gridy = 6;
-                gbc.insets = new Insets(10, 5, 10, 10);
-                gbc.anchor = GridBagConstraints.NORTH;
-                gbc.fill = GridBagConstraints.HORIZONTAL;
-                this.panelAnalisis.add(this.panelGrafico6, gbc);
             }
         }
-        this.panelAnalisis.repaint();
+
+        AnalysisPanelComponentAdapter componentAdapter = new AnalysisPanelComponentAdapter();
+        if (this.xyChart1 != null) {
+            componentAdapter.addChartPanel(this.xyChart1.getChartPanel());
+        }
+        if (this.xyChart2 != null) {
+            componentAdapter.addChartPanel(this.xyChart2.getChartPanel());
+        }
+        if (this.xyChart3 != null) {
+            componentAdapter.addChartPanel(this.xyChart3.getChartPanel());
+        }
+        if (this.barChart1 != null) {
+            componentAdapter.addChartPanel(this.barChart1.getChartPanel());
+        }
+        if (this.barChart2 != null) {
+            componentAdapter.addChartPanel(this.barChart2.getChartPanel());
+        }
+        this.analysisPanel.addComponentListener(componentAdapter);
+        this.analysisPanel.revalidate();
+        componentAdapter.setInitialChartsSize(analysisPanel.getSize());
+        this.analysisPanel.repaint();
     }
-    
+
     /**
      * Este m�todo se encarga de anotar los datos del escenario desde la
      * interfaz de usuario hasta los correspondientes atributos del objeto que
@@ -2736,102 +2638,86 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void anotarDatosDeEscenario() {
-        this.scenario.setTitle(this.nombreEscenario.getText());
-        this.scenario.setAuthor(this.nombreAutor.getText());
-        this.scenario.setDescription(this.descripcionEscenario.getText());
+        this.scenario.setTitle(this.textFieldOptionsScenarioTitle.getText());
+        this.scenario.setAuthor(this.textFieldOptionsScenarioAuthorName.getText());
+        this.scenario.setDescription(this.textAreaOptionsScenarioDescription.getText());
     }
 
-    private TProgressEventListener aProgresoGeneracion;
+    private TProgressEventListener progressEventListener;
     private TScenario scenario;
-    private TNode nodoSeleccionado;
+    private TNode selectedNode;
     private TImageBroker imageBroker;
     private JOpenSimMPLS parent;
-    private TTopologyElement elementoDisenioClicDerecho;
+    private TTopologyElement rightClickedElementInDesignPanel;
     private boolean controlTemporizacionDesactivado;
-    private ChartPanel panelGrafico1;
-    private ChartPanel panelGrafico2;
-    private ChartPanel panelGrafico3;
-    private ChartPanel panelGrafico4;
-    private ChartPanel panelGrafico5;
-    private ChartPanel panelGrafico6;
-    /*
-    private JFreeChart grafico1;
-    private JFreeChart grafico2;
-    private JFreeChart grafico3;
-*/
-    private JXYChart grafico1;
-    private JXYChart grafico2;
-    private JXYChart grafico3;
-
-
-    private JFreeChart grafico4;
-    private JFreeChart grafico5;
-    private JFreeChart grafico6;
-    private JTextArea areaEstadisticasDescripcion;
-    private JProgressBar barraDeProgreso;
-    private JCheckBox crearTraza;
-    private JMenuItem dEliminarMenuItem;
-    private JMenuItem dEliminarTodoMenuItem;
-    private JMenuItem dOcultarNombresEnlacesMenuItem;
-    private JMenuItem dOcultarNombresNodosMenuItem;
-    private JMenuItem dPropiedadesMenuItem;
-    private JCheckBoxMenuItem dVerNombreMenuItem;
-    private JMenuItem dVerNombresEnlacesMenuItem;
-    private JMenuItem dVerNombresNodosMenuItem;
-    private JTextField descripcionEscenario;
-    private JPopupMenu diseElementoPopUp;
-    private JPopupMenu diseFondoPopUp;
-    private JSlider duracionMs;
-    private JSlider duracionNs;
-    private JLabel etiquetaDuracionMs;
-    private JLabel etiquetaDuracionNs;
-    private JLabel etiquetaEstadisticasNombreAutor;
-    private JLabel etiquetaEstadisticasTituloEscenario;
-    private JLabel etiquetaMlsPorTic;
-    private JLabel etiquetaNombreElementoEstadistica;
-    private JLabel etiquetaPasoNs;
-    private JLabel iconoComenzar;
-    private JLabel iconoEmisor;
-    private JLabel iconoEnlace;
-    private JLabel iconoFinalizar;
-    private JLabel iconoLER;
-    private JLabel iconoLERA;
-    private JLabel iconoLSR;
-    private JLabel iconoLSRA;
-    private JLabel iconoPausar;
-    private JLabel iconoReanudar;
-    private JLabel iconoReceptor;
-    private JLabel jLabel1;
-    private JLabel jLabel3;
-    private JLabel jLabel4;
-    private JLabel jLabel5;
-    private JLabel jLabel6;
-    private JLabel jLabel7;
-    private JPanel jPanel2;
-    private JPanel jPanel3;
-    private JScrollPane jScrollPane1;
-    private JScrollPane jScrollPane2;
-    private JScrollPane jScrollPane3;
-    private JScrollPane jScrollPane4;
-    private JSeparator jSeparator1;
+    private JXYChart xyChart1;
+    private JXYChart xyChart2;
+    private JXYChart xyChart3;
+    private JBarChart barChart1;
+    private JBarChart barChart2;
+    private JTextArea textAreaScenarioDescription;
+    private JProgressBar progressBarSimulation;
+    private JMenuItem menuItemDeleteElement;
+    private JMenuItem menuItemDeleteAllItems;
+    private JMenuItem menuItemHideLinksNames;
+    private JMenuItem menuItemHideNodesNames;
+    private JMenuItem menuItemItemElementProperties;
+    private JCheckBoxMenuItem chekBoxMenuItemShowElementName;
+    private JMenuItem menuItemShowLinksNames;
+    private JMenuItem menuItemShowNodesNames;
+    private JTextArea textAreaOptionsScenarioDescription;
+    private JPopupMenu popupMenuTopologyElement;
+    private JPopupMenu popupMenuBackgroundDesignPanel;
+    private JSlider sliderOptionsSimulationLengthMs;
+    private JSlider sliderOptionsSimulationLengthNs;
+    private JLabel labelOptionsSimulationLengthMs;
+    private JLabel labelOptionsSimulationLengthNs;
+    private JLabel labelScenarioAuthorName;
+    private JLabel labelScenarioTitle;
+    private JLabel labelSimulationSpeedFaster;
+    private JLabel labelSimulationSpeedSlower;
+    private JLabel labelElementToAnalize;
+    private JLabel labelOptionsNsTick;
+    private JLabel iconContainterStartSimulation;
+    private JLabel iconContainerTrafficGeneratorNode;
+    private JLabel iconContainerLink;
+    private JLabel iconContainerFinishSimulation;
+    private JLabel iconContainerLER;
+    private JLabel iconContainerActiveLER;
+    private JLabel iconContainerLSR;
+    private JLabel iconContainerActiveLSR;
+    private JLabel iconContainerPauseSimulation;
+    private JLabel iconContainerResumeSimulation;
+    private JLabel iconContainerTrafficSink;
+    private JLabel labelSelectANodeToAnalyze;
+    private JLabel labelOptionsSimulationLength;
+    private JLabel labelOptionsTickLengthInNs;
+    private JLabel labelOptionsScenarioTitle;
+    private JLabel labelOptionsScenarioAuthorName;
+    private JLabel labelOptionsScenarioDescription;
+    private JPanel optionsSimulationTimingPanel;
+    private JPanel optionsScenarioInformationPanel;
+    private JScrollPane scrollPaneDesign;
+    private JScrollPane scrollPaneSimulation;
+    private JScrollPane scrollPaneAnalysis;
+    private JSeparator separatorPopupMenuTopologyElement;
     private JSeparator jSeparator2;
-    private JTabbedPane jTabbedPane1;
-    private JSlider mlsPorTic;
-    private JTextField nombreAutor;
-    private JTextField nombreEscenario;
-    private JPanel panelAnalisis;
-    private JPanel panelAnalisisSuperior;
-    private JPanel panelBotonesDisenio;
-    private JPanel panelBotonesSimulacion;
-    private JDesignPanel panelDisenio;
-    private JPanel panelDisenioSuperior;
-    private JPanel panelFijo;
-    private JPanel panelOpciones;
-    private JPanel panelOpcionesSuperior;
-    private JPanel panelSeleccionElemento;
-    private JSimulationPanel panelSimulacion;
-    private JPanel panelSimulacionSuperior;
-    private JSlider pasoNs;
-    private JComboBox selectorElementoEstadisticas;
+    private JTabbedPane tabsPanel;
+    private JSlider sliderSimulationSpeedInMsPerTick;
+    private JTextField textFieldOptionsScenarioAuthorName;
+    private JTextField textFieldOptionsScenarioTitle;
+    private JScrollablePanel analysisPanel;
+    private JPanel analysisMainContainerPanel;
+    private JPanel designToolbarPanel;
+    private JPanel simulationToolbarPanel;
+    private JDesignPanel designPanel;
+    private JPanel designMainContainerPanel;
+    private JPanel optionsSecondaryMainContainerPanel;
+    private JPanel optionsPrimaryMainContainerPanel;
+    private JPanel analysisToolbarPanel;
+    private JSimulationPanel simulationPanel;
+    private JPanel simulationMainContainerPanel;
+    private JSlider sliderOptionsTickDurationInNs;
+    private JComboBox comboBoxNodeToAnalize;
     private ResourceBundle translations;
 }

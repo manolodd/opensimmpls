@@ -17,7 +17,7 @@
 #Titulo#RLPRP Justification. Benefits of pre-computing LSP segments to the receiver.#
 #Autor#Manuel Domínguez Dorado#
 #Descripcion#IPv4 Sender send traffic requiring GoS and backup LSP. This scenario shows how active nodes always pre-computes backup LSP segements from themselves to the exit LER. Click on links to make it fail and see how RLPRP computes an alternate LSP segment again.#
-#Temporizacion#2000000#75#
+#Temporizacion#2000001#75#
 
 @!Escenario
 

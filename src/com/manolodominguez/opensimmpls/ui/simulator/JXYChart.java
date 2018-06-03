@@ -36,6 +36,14 @@ public class JXYChart {
         renderer.setSeriesStroke(0, new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         renderer.setSeriesPaint(1, Color.BLUE);
         renderer.setSeriesStroke(1, new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        renderer.setSeriesPaint(2, Color.GREEN);
+        renderer.setSeriesStroke(1, new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        renderer.setSeriesPaint(3, Color.MAGENTA);
+        renderer.setSeriesStroke(1, new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        renderer.setSeriesPaint(4, Color.ORANGE);
+        renderer.setSeriesStroke(1, new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        renderer.setSeriesPaint(5, Color.BLACK);
+        renderer.setSeriesStroke(1, new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         this.plot.setRenderer(renderer);
         this.plot.setBackgroundPaint(Color.white);
         this.plot.setRangeGridlinesVisible(true);
@@ -51,6 +59,10 @@ public class JXYChart {
         this.chartPanel.setRangeZoomable(false);
     }
 
+    public JFreeChart getChart() {
+        return this.chart;
+    }
+    
     public ChartPanel getChartPanel() {
         return this.chartPanel;
     }

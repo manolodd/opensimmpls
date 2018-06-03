@@ -187,7 +187,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
      * @since 2.0
      * @param di El dispensador de im�genes.
      */    
-    public void ponerDispensadorDeImagenes(TImageBroker di) {
+    public void setImageBroker(TImageBroker di) {
         dispensadorDeImagenes = di;
     }
 
