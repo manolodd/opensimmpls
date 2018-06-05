@@ -109,23 +109,6 @@ public class JScenarioWindow extends JInternalFrame {
      * JVentanaHija.
      *
      * @since 2.0
-     * @param parent Ventana padre dentro de la cual se va a ubicar este ventana
-     * hija.
-     * @param imageBroker Dispensador de im�genes de donde se obtendr�n todas
-     * las im�genes que se necesiten.
-     */
-    public JScenarioWindow(JOpenSimMPLS parent, TImageBroker imageBroker) {
-        this.imageBroker = imageBroker;
-        this.parent = parent;
-        initComponents();
-        initComponents2();
-    }
-
-    /**
-     * Este m�todo es el constructor de la clase. Crea una nueva instancia de
-     * JVentanaHija.
-     *
-     * @since 2.0
      * @param title T�tulo que deseamos que tenga la ventana hija. Se usar�
      * tambi�n para save el escenario en disco.
      * @param parent Ventana padre dentro de la cual se va a ubicar este ventana
@@ -139,26 +122,6 @@ public class JScenarioWindow extends JInternalFrame {
         initComponents();
         initComponents2();
         this.title = title;
-    }
-
-    /**
-     * Este m�todo es el constructor de la clase. Crea una nueva instancia de
-     * JVentanaHija y la inicializa con los valores de un nodo existente.
-     *
-     * @param parent Ventana padre dentro de la cual se va a ubicar este ventana
-     * hija.
-     * @param imageBroker Dispensador de im�genes de donde se obtendr�n todas
-     * las im�genes que se necesiten.
-     * @param scenario Escenario ya creado al que se va a asociar esta ventana
-     * hija y que contendr� un escenario y todos sus datos.
-     * @since 2.0
-     */
-    public JScenarioWindow(JOpenSimMPLS parent, TImageBroker imageBroker, TScenario scenario) {
-        this.imageBroker = imageBroker;
-        this.parent = parent;
-        initComponents();
-        initComponents2();
-        this.scenario = scenario;
     }
 
     /**
@@ -181,7 +144,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.menuItemHideNodesNames = new JMenuItem();
         this.menuItemShowLinksNames = new JMenuItem();
         this.menuItemHideLinksNames = new JMenuItem();
-        this.jSeparator2 = new JSeparator();
+        this.separatorPopupMenuBackgroundDesignPanel = new JSeparator();
         this.menuItemDeleteAllItems = new JMenuItem();
         this.tabsPanel = new JTabbedPane();
         this.designMainContainerPanel = new JPanel();
@@ -244,7 +207,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.menuItemDeleteElement.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnPopUpDisenioEliminar(evt);
+                handleClickOnPupupDesignPanelRemove(evt);
             }
         });
         this.popupMenuTopologyElement.add(this.menuItemDeleteElement);
@@ -254,7 +217,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.chekBoxMenuItemShowElementName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnPopUpDisenioVerNombre(evt);
+                handleClickOnPupupDesignPanelShowName(evt);
             }
         });
         this.popupMenuTopologyElement.add(this.chekBoxMenuItemShowElementName);
@@ -265,7 +228,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.menuItemItemElementProperties.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnPropiedadesPopUpDisenioElemento(evt);
+                handleClickOnPupupElementProperties(evt);
             }
         });
         this.popupMenuTopologyElement.add(this.menuItemItemElementProperties);
@@ -278,7 +241,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.menuItemShowNodesNames.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnPopUpDisenioFondoVerNombreNodos(evt);
+                handleClickOnPupupDesignPanelShowNodeNames(evt);
             }
         });
         this.popupMenuBackgroundDesignPanel.add(this.menuItemShowNodesNames);
@@ -288,7 +251,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.menuItemHideNodesNames.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnPopUpDisenioFondoOcultarNombreNodos(evt);
+                handleClickOnPupupDesignPanelHideNodeNames(evt);
             }
         });
         this.popupMenuBackgroundDesignPanel.add(this.menuItemHideNodesNames);
@@ -298,7 +261,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.menuItemShowLinksNames.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnPopUpDisenioFondoVerNombreEnlaces(evt);
+                handleClickOnPupupDesignPanelShowLinksNames(evt);
             }
         });
         this.popupMenuBackgroundDesignPanel.add(this.menuItemShowLinksNames);
@@ -308,18 +271,18 @@ public class JScenarioWindow extends JInternalFrame {
         this.menuItemHideLinksNames.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnPopUpDisenioFondoOcultarNombreEnlaces(evt);
+                handleClickOnPupupDesignPanelHideLinksNames(evt);
             }
         });
         this.popupMenuBackgroundDesignPanel.add(this.menuItemHideLinksNames);
-        this.popupMenuBackgroundDesignPanel.add(this.jSeparator2);
+        this.popupMenuBackgroundDesignPanel.add(this.separatorPopupMenuBackgroundDesignPanel);
         this.menuItemDeleteAllItems.setFont(new Font("Dialog", 0, 12));
         this.menuItemDeleteAllItems.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.eliminarTodo").charAt(0));
         this.menuItemDeleteAllItems.setText(this.translations.getString("popUpDisenioFondo.borrarTodo"));
         this.menuItemDeleteAllItems.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnPopUpDisenioFondoEliminar(evt);
+                handleClickOnBackgroundDesignPanelRemove(evt);
             }
         });
         this.popupMenuBackgroundDesignPanel.add(this.menuItemDeleteAllItems);
@@ -345,17 +308,17 @@ public class JScenarioWindow extends JInternalFrame {
         this.iconContainerTrafficGeneratorNode.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
-                ratonEntraEnIconoEmisor(evt);
+                handleMouseEnteringTrafficGeneratorNodeIcon(evt);
             }
 
             @Override
             public void mouseExited(MouseEvent evt) {
-                ratonSaleDeIconoEmisor(evt);
+                handleMouseExitingTrafficGeneratorNodeIcon(evt);
             }
 
             @Override
             public void mousePressed(MouseEvent evt) {
-                clicEnAniadirEmisorDeTrafico(evt);
+                handleClickOnTrafficGeneratorNodeIcon(evt);
             }
         });
         this.designToolbarPanel.add(this.iconContainerTrafficGeneratorNode);
@@ -364,17 +327,17 @@ public class JScenarioWindow extends JInternalFrame {
         this.iconContainerTrafficSink.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
-                ratonEntraEnIconoReceptor(evt);
+                handleMouseEnteringTrafficSinkNodeIcon(evt);
             }
 
             @Override
             public void mouseExited(MouseEvent evt) {
-                ratonSaleDeIconoReceptor(evt);
+                handleMouseExitingTrafficSinkNodeIcon(evt);
             }
 
             @Override
             public void mousePressed(MouseEvent evt) {
-                clicEnAniadirReceptor(evt);
+                handleClickOnTrafficSinkNodeIcon(evt);
             }
         });
         this.designToolbarPanel.add(this.iconContainerTrafficSink);
@@ -383,17 +346,17 @@ public class JScenarioWindow extends JInternalFrame {
         this.iconContainerLER.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
-                ratonEntraEnIconoLER(evt);
+                handleMouseEnteringLERNodeIcon(evt);
             }
 
             @Override
             public void mouseExited(MouseEvent evt) {
-                ratonSaleDeIconoLER(evt);
+                handleMouseExitingLERNodeIcon(evt);
             }
 
             @Override
             public void mousePressed(MouseEvent evt) {
-                clicEnAniadirLER(evt);
+                handleClickOnLERNodeIcon(evt);
             }
         });
         this.designToolbarPanel.add(this.iconContainerLER);
@@ -402,17 +365,17 @@ public class JScenarioWindow extends JInternalFrame {
         this.iconContainerActiveLER.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
-                ratonEntraEnIconoLERA(evt);
+                handleMouseEnteringActiveLERNodeIcon(evt);
             }
 
             @Override
             public void mouseExited(MouseEvent evt) {
-                ratonSaleDeIconoLERA(evt);
+                handleMouseExitingActiveLERNodeIcon(evt);
             }
 
             @Override
             public void mousePressed(MouseEvent evt) {
-                clicEnAniadirLERA(evt);
+                handleClickOnActiveLERNodeIcon(evt);
             }
         });
         this.designToolbarPanel.add(this.iconContainerActiveLER);
@@ -421,17 +384,17 @@ public class JScenarioWindow extends JInternalFrame {
         this.iconContainerLSR.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
-                ratonEntraEnIconoLSR(evt);
+                handleMouseEnteringLSRNodeIcon(evt);
             }
 
             @Override
             public void mouseExited(MouseEvent evt) {
-                ratonSaleDeIconoLSR(evt);
+                handleMouseExitingLSRNodeIcon(evt);
             }
 
             @Override
             public void mousePressed(MouseEvent evt) {
-                clicEnAniadirLSR(evt);
+                handleClickOnLSRNodeIcon(evt);
             }
         });
         this.designToolbarPanel.add(this.iconContainerLSR);
@@ -440,17 +403,17 @@ public class JScenarioWindow extends JInternalFrame {
         this.iconContainerActiveLSR.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
-                ratonEntraEnIconoLSRA(evt);
+                handleMouseEnteringActiveLSRNodeIcon(evt);
             }
 
             @Override
             public void mouseExited(MouseEvent evt) {
-                ratonSaleDeIconoLSRA(evt);
+                handleMouseExitingActiveLSRNodeIcon(evt);
             }
 
             @Override
             public void mousePressed(MouseEvent evt) {
-                clicEnAniadirLSRA(evt);
+                handleClickOnActiveLSRNodeIcon(evt);
             }
         });
         this.designToolbarPanel.add(this.iconContainerActiveLSR);
@@ -459,17 +422,17 @@ public class JScenarioWindow extends JInternalFrame {
         this.iconContainerLink.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
-                clicEnAniadirEnlace(evt);
+                handleClickOnLinkIcon(evt);
             }
 
             @Override
             public void mouseEntered(MouseEvent evt) {
-                ratonEntraEnIconoEnlace(evt);
+                handleMouseEnteringLinkIcon(evt);
             }
 
             @Override
             public void mouseExited(MouseEvent evt) {
-                ratonSaleDeIconoEnlace(evt);
+                handleMouseExitingLinkIcon(evt);
             }
         });
         this.designToolbarPanel.add(this.iconContainerLink);
@@ -481,28 +444,28 @@ public class JScenarioWindow extends JInternalFrame {
         this.designPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
-                clicDerechoEnPanelDisenio(evt);
+                handleRightClickOnDesignPanel(evt);
             }
 
             @Override
             public void mousePressed(MouseEvent evt) {
-                clicEnPanelDisenio(evt);
+                handleMousePressedOnDesignPanel(evt);
             }
 
             @Override
             public void mouseReleased(MouseEvent evt) {
-                clicSoltadoEnPanelDisenio(evt);
+                handleMouseReleasedOnDesignPanel(evt);
             }
         });
         this.designPanel.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent evt) {
-                arrastrandoEnPanelDisenio(evt);
+                handleDragOnDesignPanel(evt);
             }
 
             @Override
             public void mouseMoved(MouseEvent evt) {
-                ratonSobrePanelDisenio(evt);
+                handleMouseMovedOnDesignPanel(evt);
             }
         });
         this.scrollPaneDesign.setViewportView(this.designPanel);
@@ -606,7 +569,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.sliderOptionsSimulationLengthMs.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent evt) {
-                clicEnDuracionMs(evt);
+                handleChangeOnSimulationLengthMs(evt);
             }
         });
         gridBagConstraints = new GridBagConstraints();
@@ -636,7 +599,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.sliderOptionsSimulationLengthNs.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent evt) {
-                clicEnDuracionNs(evt);
+                handleChangeOnSimulationLengthNs(evt);
             }
         });
         gridBagConstraints = new GridBagConstraints();
@@ -676,7 +639,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.sliderOptionsTickDurationInNs.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent evt) {
-                clicEnPasoNs(evt);
+                handleChangeOnTickDurationInNs(evt);
             }
         });
         gridBagConstraints = new GridBagConstraints();
@@ -718,17 +681,17 @@ public class JScenarioWindow extends JInternalFrame {
         this.iconContainterStartSimulation.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
-                ratonEntraEnIconoComenzar(evt);
+                handleMouseEnteringStartIcon(evt);
             }
 
             @Override
             public void mouseExited(MouseEvent evt) {
-                ratonSaleDelIconoComenzar(evt);
+                handleMouseExitingStartIcon(evt);
             }
 
             @Override
             public void mousePressed(MouseEvent evt) {
-                clicEnComenzar(evt);
+                handleClickOnStartIcon(evt);
             }
         });
         this.simulationToolbarPanel.add(this.iconContainterStartSimulation);
@@ -738,17 +701,17 @@ public class JScenarioWindow extends JInternalFrame {
         this.iconContainerFinishSimulation.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
-                ratonEntraEnIconoFinalizar(evt);
+                handleMouseEnteringStopIcon(evt);
             }
 
             @Override
             public void mouseExited(MouseEvent evt) {
-                ratonSaleDelIconoFinalizar(evt);
+                handleMouseExitingStopIcon(evt);
             }
 
             @Override
             public void mousePressed(MouseEvent evt) {
-                clicEnFinalizar(evt);
+                handleClickOnStopIcon(evt);
             }
         });
         this.simulationToolbarPanel.add(this.iconContainerFinishSimulation);
@@ -758,17 +721,17 @@ public class JScenarioWindow extends JInternalFrame {
         this.iconContainerResumeSimulation.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
-                ratonEntraEnIconoReanudar(evt);
+                handleMouseEnteringResumeIcon(evt);
             }
 
             @Override
             public void mouseExited(MouseEvent evt) {
-                ratonSaleDelIconoReanudar(evt);
+                handleMouseExitingResumeIcon(evt);
             }
 
             @Override
             public void mousePressed(MouseEvent evt) {
-                clicEnReanudar(evt);
+                handleClickOnResumeIcon(evt);
             }
         });
         this.simulationToolbarPanel.add(this.iconContainerResumeSimulation);
@@ -778,17 +741,17 @@ public class JScenarioWindow extends JInternalFrame {
         this.iconContainerPauseSimulation.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
-                ratonEntraEnIconoPausar(evt);
+                handleMouseEnteringPauseIcon(evt);
             }
 
             @Override
             public void mouseExited(MouseEvent evt) {
-                ratonSaleDelIconoPausar(evt);
+                handleMouseExitingPauseIcon(evt);
             }
 
             @Override
             public void mousePressed(MouseEvent evt) {
-                clicAlPausar(evt);
+                handleClickOnPauseIcon(evt);
             }
         });
         this.simulationToolbarPanel.add(this.iconContainerPauseSimulation);
@@ -810,7 +773,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.sliderSimulationSpeedInMsPerTick.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent evt) {
-                mlsPorTicCambiado(evt);
+                handelChangeInSimulationSpeedInMsPerTick(evt);
             }
         });
         this.simulationToolbarPanel.add(this.sliderSimulationSpeedInMsPerTick);
@@ -824,28 +787,28 @@ public class JScenarioWindow extends JInternalFrame {
         this.simulationPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
-                ratonPulsadoYSoltadoEnPanelSimulacion(evt);
+                handleClickOnSimulationPanel(evt);
             }
 
             @Override
             public void mousePressed(MouseEvent evt) {
-                clicEnPanelSimulacion(evt);
+                handleMousePressedOnSimulationPanel(evt);
             }
 
             @Override
             public void mouseReleased(MouseEvent evt) {
-                ratonSoltadoEnPanelSimulacion(evt);
+                handleMouseReleasedOnSimulationPanel(evt);
             }
         });
         this.simulationPanel.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent evt) {
-                ratonArrastradoEnPanelSimulacion(evt);
+                handleDragOnSimulationPanel(evt);
             }
 
             @Override
             public void mouseMoved(MouseEvent evt) {
-                ratonSobrePanelSimulacion(evt);
+                handleMouseMovedOnSimulationPanel(evt);
             }
         });
         this.scrollPaneSimulation.setViewportView(this.simulationPanel);
@@ -862,63 +825,12 @@ public class JScenarioWindow extends JInternalFrame {
         this.comboBoxNodeToAnalize.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                clicEnSeleccionalElementoEstadistica(evt);
+                handleClickOnNodeToBeAnalized(evt);
             }
         });
         this.analysisToolbarPanel.add(this.comboBoxNodeToAnalize);
-        this.analysisMainContainerPanel.add(this.analysisToolbarPanel, BorderLayout.NORTH);
+        this.analysisMainContainerPanel.add(this.analysisToolbarPanel, BorderLayout.PAGE_START);
         this.scrollPaneAnalysis.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        /*        
-        this.analysisPanel.setLayout(new GridBagLayout());
-        this.analysisPanel.setBackground(Color.WHITE);
-        this.analysisScenarioInformationPanel.setLayout(new GridLayout(4,1));
-        this.analysisScenarioInformationPanel.setBackground(Color.WHITE);
-        this.labelScenarioTitle.setBackground(Color.WHITE);
-        this.labelScenarioTitle.setFont(new Font("Serif", 1, 18));
-        this.labelScenarioTitle.setHorizontalAlignment(SwingConstants.CENTER);
-        this.labelScenarioTitle.setText(this.translations.getString("JVentanaHija.TituloDelEscenario"));
-        this.analysisScenarioInformationPanel.add(this.labelScenarioTitle);
-        this.labelScenarioAuthorName.setBackground(Color.WHITE);
-        this.labelScenarioAuthorName.setFont(new Font("Serif", 1, 14));
-        this.labelScenarioAuthorName.setForeground(new Color(102, 0, 51));
-        this.labelScenarioAuthorName.setHorizontalAlignment(SwingConstants.CENTER);
-        this.labelScenarioAuthorName.setText(this.translations.getString("JVentanaHija.AutorDelEscenario"));
-        this.analysisScenarioInformationPanel.add(this.labelScenarioAuthorName);
-        this.textAreaScenarioDescription.setBackground(Color.WHITE);
-        this.textAreaScenarioDescription.setEditable(false);
-        this.textAreaScenarioDescription.setFont(new Font("MonoSpaced", 0, 11));
-        this.textAreaScenarioDescription.setLineWrap(true);
-        this.textAreaScenarioDescription.setText(this.translations.getString("JVentanaHija.DescripcionDelEscenario"));
-        this.textAreaScenarioDescription.setWrapStyleWord(true);
-        this.textAreaScenarioDescription.setBorder(null);
-        this.textAreaScenarioDescription.setAutoscrolls(false);
-        this.analysisScenarioInformationPanel.add(this.textAreaScenarioDescription);
-        this.labelElementToAnalize.setBackground(Color.WHITE);
-        this.labelElementToAnalize.setFont(new Font("Serif", 1, 14));
-        this.labelElementToAnalize.setHorizontalAlignment(SwingConstants.CENTER);
-        this.labelElementToAnalize.setText(this.translations.getString("JVentanaHija.SeleccioneNodoAInspeccionar"));
-        this.analysisScenarioInformationPanel.add(this.labelElementToAnalize);
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 1;
-        gridBagConstraints.gridheight = 1;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.fill = GridBagConstraints.CENTER;
-        this.analysisPanel.add(this.analysisScenarioInformationPanel, gridBagConstraints);
-        this.analysisChartsPanel.setLayout(new GridLayout(3,2));
-        this.analysisChartsPanel.setBackground(Color.WHITE);
-        this.analysisChartsPanel.setBorder(new EtchedBorder());
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 1;
-        gridBagConstraints.gridheight = 1;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.fill = GridBagConstraints.CENTER;
-        this.analysisPanel.add(this.analysisChartsPanel, gridBagConstraints);
-         */
-////////////////
         this.analysisPanel.setBorder(new EtchedBorder());
         this.analysisPanel.setLayout(new MigLayout());
         this.analysisPanel.setBackground(Color.WHITE);
@@ -947,8 +859,6 @@ public class JScenarioWindow extends JInternalFrame {
         this.labelElementToAnalize.setHorizontalAlignment(SwingConstants.CENTER);
         this.labelElementToAnalize.setText(this.translations.getString("JVentanaHija.SeleccioneNodoAInspeccionar"));
         this.analysisPanel.add(this.labelElementToAnalize, "span 2, grow, wrap");
-////////////////
-
         this.scrollPaneAnalysis.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         this.scrollPaneAnalysis.setViewportView(this.analysisPanel);
         this.analysisMainContainerPanel.add(this.scrollPaneAnalysis, BorderLayout.CENTER);
@@ -991,32 +901,33 @@ public class JScenarioWindow extends JInternalFrame {
         this.labelOptionsSimulationLengthMs.setText(this.sliderOptionsSimulationLengthMs.getValue() + this.translations.getString("VentanaHija._ms."));
         this.labelOptionsSimulationLengthNs.setText(this.sliderOptionsSimulationLengthNs.getValue() + this.translations.getString("VentanaHija._ns."));
         this.labelOptionsNsTick.setText(this.sliderOptionsTickDurationInNs.getValue() + this.translations.getString("VentanaHija_ns."));
-        this.controlTemporizacionDesactivado = false;
+        this.timingControlDisabled = false;
         this.scenario.getSimulation().setSimulationPanel(this.simulationPanel);
         this.xyChart1 = null;
         this.xyChart2 = null;
         this.xyChart3 = null;
         this.barChart1 = null;
         this.barChart2 = null;
+        this.fillAnalysisInformation();
     }
 
-    private void ratonPulsadoYSoltadoEnPanelSimulacion(MouseEvent evt) {
+    private void handleClickOnSimulationPanel(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            TTopologyElement et = this.scenario.getTopology().getElementInScreenPosition(evt.getPoint());
-            if (et != null) {
-                if (et.getElementType() == TTopologyElement.NODE) {
-                    TNode nt = (TNode) et;
-                    if (nt.getPorts().isArtificiallyCongested()) {
-                        nt.getPorts().setArtificiallyCongested(false);
+            TTopologyElement topologyElement = this.scenario.getTopology().getElementInScreenPosition(evt.getPoint());
+            if (topologyElement != null) {
+                if (topologyElement.getElementType() == TTopologyElement.NODE) {
+                    TNode node = (TNode) topologyElement;
+                    if (node.getPorts().isArtificiallyCongested()) {
+                        node.getPorts().setArtificiallyCongested(false);
                     } else {
-                        nt.getPorts().setArtificiallyCongested(true);
+                        node.getPorts().setArtificiallyCongested(true);
                     }
-                } else if (et.getElementType() == TTopologyElement.LINK) {
-                    TLink ent = (TLink) et;
-                    if (ent.isBroken()) {
-                        ent.setAsBrokenLink(false);
+                } else if (topologyElement.getElementType() == TTopologyElement.LINK) {
+                    TLink link = (TLink) topologyElement;
+                    if (link.isBroken()) {
+                        link.setAsBrokenLink(false);
                     } else {
-                        ent.setAsBrokenLink(true);
+                        link.setAsBrokenLink(true);
                     }
                 }
             } else if (this.simulationPanel.obtenerMostrarLeyenda()) {
@@ -1025,66 +936,17 @@ public class JScenarioWindow extends JInternalFrame {
                 this.simulationPanel.ponerMostrarLeyenda(true);
             }
         } else {
-            rightClickedElementInDesignPanel = null;
-            designPanel.repaint();
+            this.rightClickedElementInDesignPanel = null;
+            this.designPanel.repaint();
         }
     }
 
-    private void clicEnSeleccionalElementoEstadistica(ActionEvent evt) {
-        GridBagConstraints gbc = null;
+    private void handleClickOnNodeToBeAnalized(ActionEvent evt) {
         if (this.comboBoxNodeToAnalize.getSelectedIndex() == 0) {
-            //this.analysisPanel.removeAll();
-            this.xyChart1 = null;
-            this.xyChart2 = null;
-            this.xyChart3 = null;
-            this.barChart1 = null;
-            this.barChart2 = null;
-            this.labelScenarioTitle.setText(this.textFieldOptionsScenarioTitle.getText());
-            this.labelScenarioAuthorName.setText(this.textFieldOptionsScenarioAuthorName.getText());
-            this.textAreaScenarioDescription.setText(this.textAreaOptionsScenarioDescription.getText());
-            this.labelElementToAnalize.setIcon(null);
-            this.labelElementToAnalize.setText(this.translations.getString("JVentanaHija.SeleccioneElNodoAInspeccionar"));
-            /*
-            gbc = new GridBagConstraints();
-            gbc.gridx = 0;
-            gbc.gridy = 0;
-            gbc.insets = new Insets(10, 10, 10, 5);
-            gbc.fill = GridBagConstraints.HORIZONTAL;
-            gbc.anchor = GridBagConstraints.NORTH;
-            this.analysisScenarioInformationPanel.add(this.labelScenarioTitle, gbc);
-            gbc = new GridBagConstraints();
-            gbc.gridx = 0;
-            gbc.gridy = 1;
-            gbc.insets = new Insets(10, 5, 10, 5);
-            gbc.fill = GridBagConstraints.HORIZONTAL;
-            gbc.anchor = GridBagConstraints.NORTH;
-            this.analysisScenarioInformationPanel.add(this.labelScenarioAuthorName, gbc);
-            gbc = new GridBagConstraints();
-            gbc.gridx = 0;
-            gbc.gridy = 2;
-            gbc.insets = new Insets(10, 5, 10, 5);
-            gbc.fill = GridBagConstraints.HORIZONTAL;
-            gbc.anchor = GridBagConstraints.NORTH;
-            this.analysisScenarioInformationPanel.add(this.textAreaScenarioDescription, gbc);
-            gbc = new GridBagConstraints();
-            gbc.gridx = 0;
-            gbc.gridy = 3;
-            gbc.insets = new Insets(10, 5, 10, 10);
-            gbc.fill = GridBagConstraints.HORIZONTAL;
-            gbc.anchor = GridBagConstraints.NORTH;
-            this.analysisScenarioInformationPanel.add(this.labelElementToAnalize, gbc);
-            gbc = new GridBagConstraints();
-            gbc.gridx = 0;
-            gbc.gridy = 0;
-            gbc.insets = new Insets(10, 10, 10, 5);
-            gbc.anchor = GridBagConstraints.NORTH;
-            gbc.fill = GridBagConstraints.HORIZONTAL;
-            this.analysisPanel.add(this.analysisScenarioInformationPanel, gbc);
-             */
-            this.analysisPanel.repaint();
+            this.fillAnalysisInformation();
         } else {
-            String nombreEltoSeleccionado = (String) this.comboBoxNodeToAnalize.getSelectedItem();
-            this.crearEInsertarGraficas(nombreEltoSeleccionado);
+            String nameOfSelectedNode = (String) this.comboBoxNodeToAnalize.getSelectedItem();
+            this.fillAnalysisInformation(nameOfSelectedNode);
         }
     }
 
@@ -1096,24 +958,23 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que provoca la llamada.
      * @since 2.0
      */
-    private void ratonArrastradoEnPanelSimulacion(MouseEvent evt) {
+    private void handleDragOnSimulationPanel(MouseEvent evt) {
         if (evt.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
             if (this.selectedNode != null) {
-                TTopology topo = this.scenario.getTopology();
-                Point p2 = evt.getPoint();
-                if (p2.x < 0) {
-                    p2.x = 0;
+                Point mousePosition = evt.getPoint();
+                if (mousePosition.x < 0) {
+                    mousePosition.x = 0;
                 }
-                if (p2.x > designPanel.getSize().width) {
-                    p2.x = designPanel.getSize().width;
+                if (mousePosition.x > this.designPanel.getSize().width) {
+                    mousePosition.x = this.designPanel.getSize().width;
                 }
-                if (p2.y < 0) {
-                    p2.y = 0;
+                if (mousePosition.y < 0) {
+                    mousePosition.y = 0;
                 }
-                if (p2.y > designPanel.getSize().height) {
-                    p2.y = designPanel.getSize().height;
+                if (mousePosition.y > this.designPanel.getSize().height) {
+                    mousePosition.y = this.designPanel.getSize().height;
                 }
-                this.selectedNode.setScreenPosition(new Point(p2.x, p2.y));
+                this.selectedNode.setScreenPosition(new Point(mousePosition.x, mousePosition.y));
                 this.simulationPanel.repaint();
                 this.scenario.setModified(true);
             }
@@ -1128,7 +989,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param evt El evento que genera la llamada.
      * @since 2.0
      */
-    private void ratonSoltadoEnPanelSimulacion(MouseEvent evt) {
+    private void handleMouseReleasedOnSimulationPanel(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
             if (this.selectedNode != null) {
                 this.selectedNode.setSelected(TNode.UNSELECTED);
@@ -1147,7 +1008,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que provoca la llamada.
      */
-    private void clicEnPanelSimulacion(MouseEvent evt) {
+    private void handleMousePressedOnSimulationPanel(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
             TTopology topo = this.scenario.getTopology();
             TTopologyElement et = topo.getElementInScreenPosition(evt.getPoint());
@@ -1178,7 +1039,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que provoca la llamada.
      */
-    private void clicEnPropiedadesPopUpDisenioElemento(ActionEvent evt) {
+    private void handleClickOnPupupElementProperties(ActionEvent evt) {
         if (this.rightClickedElementInDesignPanel != null) {
             if (this.rightClickedElementInDesignPanel.getElementType() == TTopologyElement.NODE) {
                 TNode nt = (TNode) this.rightClickedElementInDesignPanel;
@@ -1242,7 +1103,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     public void controlarParametrosTemporales() {
-        if (!this.controlTemporizacionDesactivado) {
+        if (!this.timingControlDisabled) {
             if (this.sliderOptionsSimulationLengthMs.getValue() == 0) {
                 this.sliderOptionsSimulationLengthNs.setMinimum(1);
             } else {
@@ -1272,7 +1133,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que el m�todo salte.
      */
-    private void clicEnPasoNs(ChangeEvent evt) {
+    private void handleChangeOnTickDurationInNs(ChangeEvent evt) {
         controlarParametrosTemporales();
         this.scenario.setModified(true);
     }
@@ -1284,7 +1145,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se ejecute este m�todo.
      */
-    private void clicEnDuracionNs(ChangeEvent evt) {
+    private void handleChangeOnSimulationLengthNs(ChangeEvent evt) {
         controlarParametrosTemporales();
         this.scenario.setModified(true);
     }
@@ -1296,7 +1157,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que produce que se ejecute este m�todo.
      */
-    private void clicEnDuracionMs(ChangeEvent evt) {
+    private void handleChangeOnSimulationLengthMs(ChangeEvent evt) {
         controlarParametrosTemporales();
         this.scenario.setModified(true);
     }
@@ -1308,7 +1169,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void mlsPorTicCambiado(ChangeEvent evt) {
+    private void handelChangeInSimulationSpeedInMsPerTick(ChangeEvent evt) {
         this.labelSimulationSpeedFaster.setText(this.translations.getString("VentanaHija.Simulacion.etiquetaMsTic"));
         this.simulationPanel.ponerMlsPorTic(this.sliderSimulationSpeedInMsPerTick.getValue());
     }
@@ -1321,7 +1182,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void clicEnPopUpDisenioFondoOcultarNombreEnlaces(ActionEvent evt) {
+    private void handleClickOnPupupDesignPanelHideLinksNames(ActionEvent evt) {
         Iterator it = this.scenario.getTopology().getLinksIterator();
         TLink enlaceAux;
         while (it.hasNext()) {
@@ -1339,7 +1200,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void clicEnPopUpDisenioFondoVerNombreEnlaces(ActionEvent evt) {
+    private void handleClickOnPupupDesignPanelShowLinksNames(ActionEvent evt) {
         Iterator it = this.scenario.getTopology().getLinksIterator();
         TLink enlaceAux;
         while (it.hasNext()) {
@@ -1358,7 +1219,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void clicEnPopUpDisenioFondoOcultarNombreNodos(ActionEvent evt) {
+    private void handleClickOnPupupDesignPanelHideNodeNames(ActionEvent evt) {
         Iterator it = this.scenario.getTopology().getNodesIterator();
         TNode nodoAux;
         while (it.hasNext()) {
@@ -1376,7 +1237,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void clicEnPopUpDisenioFondoVerNombreNodos(ActionEvent evt) {
+    private void handleClickOnPupupDesignPanelShowNodeNames(ActionEvent evt) {
         Iterator it = this.scenario.getTopology().getNodesIterator();
         TNode nodoAux;
         while (it.hasNext()) {
@@ -1394,7 +1255,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void clicEnPopUpDisenioFondoEliminar(ActionEvent evt) {
+    private void handleClickOnBackgroundDesignPanelRemove(ActionEvent evt) {
         JDecissionWindow vb = new JDecissionWindow(this.parent, true, this.imageBroker);
         vb.setQuestion(this.translations.getString("JVentanaHija.PreguntaBorrarTodo"));
         vb.show();
@@ -1416,7 +1277,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     public void setScenario(TScenario esc) {
-        this.controlTemporizacionDesactivado = true;
+        this.timingControlDisabled = true;
         long durac = esc.getSimulation().getSimulationLengthInNs();
         long pas = esc.getSimulation().getSimulationStepLengthInNs();
         this.scenario = esc;
@@ -1446,7 +1307,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.textFieldOptionsScenarioTitle.setCaretPosition(1);
         this.textAreaOptionsScenarioDescription.setText(esc.getDescription());
         this.textAreaOptionsScenarioDescription.setCaretPosition(1);
-        this.controlTemporizacionDesactivado = false;
+        this.timingControlDisabled = false;
         this.scenario.getSimulation().setSimulationPanel(this.simulationPanel);
         this.controlarParametrosTemporales();
     }
@@ -1458,7 +1319,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void clicEnAniadirEnlace(MouseEvent evt) {
+    private void handleClickOnLinkIcon(MouseEvent evt) {
         if (this.scenario.getTopology().getNumberOfNodes() < 2) {
             JWarningWindow va = new JWarningWindow(this.parent, true, this.imageBroker);
             va.setWarningMessage(this.translations.getString("VentanaHija.ErrorAlMenosDosNodos"));
@@ -1502,7 +1363,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void clicEnPopUpDisenioEliminar(ActionEvent evt) {
+    private void handleClickOnPupupDesignPanelRemove(ActionEvent evt) {
         JDecissionWindow vb = new JDecissionWindow(this.parent, true, this.imageBroker);
         vb.setQuestion(this.translations.getString("JVentanaHija.preguntaAlEliminar"));
         vb.show();
@@ -1548,7 +1409,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void clicEnPopUpDisenioVerNombre(ActionEvent evt) {
+    private void handleClickOnPupupDesignPanelShowName(ActionEvent evt) {
         if (this.rightClickedElementInDesignPanel != null) {
             if (this.rightClickedElementInDesignPanel.getElementType() == TTopologyElement.NODE) {
                 TNode nt = (TNode) this.rightClickedElementInDesignPanel;
@@ -1572,7 +1433,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que este m�todo se dispare.
      */
-    private void clicDerechoEnPanelDisenio(MouseEvent evt) {
+    private void handleRightClickOnDesignPanel(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON3) {
             TTopologyElement et = this.scenario.getTopology().getElementInScreenPosition(evt.getPoint());
             if (et == null) {
@@ -1601,7 +1462,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void clicEnAniadirLSRA(MouseEvent evt) {
+    private void handleClickOnActiveLSRNodeIcon(MouseEvent evt) {
         TActiveLSRNode lsra = null;
         try {
             lsra = new TActiveLSRNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
@@ -1637,7 +1498,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que este m�todo se dispare.
      */
-    private void clicEnAniadirLSR(MouseEvent evt) {
+    private void handleClickOnLSRNodeIcon(MouseEvent evt) {
         TLSRNode lsr = null;
         try {
             lsr = new TLSRNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
@@ -1673,7 +1534,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void clicEnAniadirLERA(MouseEvent evt) {
+    private void handleClickOnActiveLERNodeIcon(MouseEvent evt) {
         TActiveLERNode lera = null;
         try {
             lera = new TActiveLERNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
@@ -1712,7 +1573,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonSobrePanelSimulacion(MouseEvent evt) {
+    private void handleMouseMovedOnSimulationPanel(MouseEvent evt) {
         TTopology topo = this.scenario.getTopology();
         TTopologyElement et = topo.getElementInScreenPosition(evt.getPoint());
         if (et != null) {
@@ -1752,7 +1613,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void ratonSobrePanelDisenio(MouseEvent evt) {
+    private void handleMouseMovedOnDesignPanel(MouseEvent evt) {
         TTopology topo = this.scenario.getTopology();
         TTopologyElement et = topo.getElementInScreenPosition(evt.getPoint());
         if (et != null) {
@@ -1778,7 +1639,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void arrastrandoEnPanelDisenio(MouseEvent evt) {
+    private void handleDragOnDesignPanel(MouseEvent evt) {
         if (evt.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
             if (this.selectedNode != null) {
                 TTopology topo = scenario.getTopology();
@@ -1810,7 +1671,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void clicSoltadoEnPanelDisenio(MouseEvent evt) {
+    private void handleMouseReleasedOnDesignPanel(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
             if (this.selectedNode != null) {
                 this.selectedNode.setSelected(TNode.UNSELECTED);
@@ -1828,7 +1689,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void clicEnPanelDisenio(MouseEvent evt) {
+    private void handleMousePressedOnDesignPanel(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
             TTopology topo = this.scenario.getTopology();
             this.selectedNode = topo.getNodeInScreenPosition(evt.getPoint());
@@ -1847,7 +1708,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDelIconoPausar(MouseEvent evt) {
+    private void handleMouseExitingPauseIcon(MouseEvent evt) {
         this.iconContainerPauseSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PAUSA));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
@@ -1859,7 +1720,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoPausar(MouseEvent evt) {
+    private void handleMouseEnteringPauseIcon(MouseEvent evt) {
         this.iconContainerPauseSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PAUSA_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
@@ -1871,7 +1732,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDelIconoFinalizar(MouseEvent evt) {
+    private void handleMouseExitingStopIcon(MouseEvent evt) {
         this.iconContainerFinishSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PARAR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
@@ -1883,7 +1744,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoFinalizar(MouseEvent evt) {
+    private void handleMouseEnteringStopIcon(MouseEvent evt) {
         this.iconContainerFinishSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PARAR_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
@@ -1895,7 +1756,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDelIconoReanudar(MouseEvent evt) {
+    private void handleMouseExitingResumeIcon(MouseEvent evt) {
         this.iconContainerResumeSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_COMENZAR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
@@ -1907,7 +1768,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoReanudar(MouseEvent evt) {
+    private void handleMouseEnteringResumeIcon(MouseEvent evt) {
         this.iconContainerResumeSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_COMENZAR_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
@@ -1919,7 +1780,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDelIconoComenzar(MouseEvent evt) {
+    private void handleMouseExitingStartIcon(MouseEvent evt) {
         this.iconContainterStartSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_GENERAR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
@@ -1931,7 +1792,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoComenzar(MouseEvent evt) {
+    private void handleMouseEnteringStartIcon(MouseEvent evt) {
         this.iconContainterStartSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_GENERAR_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
@@ -1943,7 +1804,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void clicEnAniadirLER(MouseEvent evt) {
+    private void handleClickOnLERNodeIcon(MouseEvent evt) {
         TLERNode ler = null;
         try {
             ler = new TLERNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
@@ -1979,7 +1840,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo
      */
-    private void ratonSaleDeIconoEnlace(MouseEvent evt) {
+    private void handleMouseExitingLinkIcon(MouseEvent evt) {
         this.iconContainerLink.setIcon(this.imageBroker.getIcon(TImageBroker.ENLACE_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
@@ -1991,7 +1852,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoEnlace(MouseEvent evt) {
+    private void handleMouseEnteringLinkIcon(MouseEvent evt) {
         this.iconContainerLink.setIcon(this.imageBroker.getIcon(TImageBroker.ENLACE_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
@@ -2003,7 +1864,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDeIconoLSRA(MouseEvent evt) {
+    private void handleMouseExitingActiveLSRNodeIcon(MouseEvent evt) {
         this.iconContainerActiveLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSRA_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
@@ -2015,7 +1876,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoLSRA(MouseEvent evt) {
+    private void handleMouseEnteringActiveLSRNodeIcon(MouseEvent evt) {
         this.iconContainerActiveLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSRA_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
@@ -2027,7 +1888,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDeIconoLSR(MouseEvent evt) {
+    private void handleMouseExitingLSRNodeIcon(MouseEvent evt) {
         this.iconContainerLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSR_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
@@ -2039,7 +1900,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoLSR(MouseEvent evt) {
+    private void handleMouseEnteringLSRNodeIcon(MouseEvent evt) {
         this.iconContainerLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSR_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
@@ -2051,7 +1912,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDeIconoLERA(MouseEvent evt) {
+    private void handleMouseExitingActiveLERNodeIcon(MouseEvent evt) {
         this.iconContainerActiveLER.setIcon(this.imageBroker.getIcon(TImageBroker.LERA_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
@@ -2063,7 +1924,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoLERA(MouseEvent evt) {
+    private void handleMouseEnteringActiveLERNodeIcon(MouseEvent evt) {
         this.iconContainerActiveLER.setIcon(this.imageBroker.getIcon(TImageBroker.LERA_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
@@ -2075,7 +1936,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDeIconoLER(MouseEvent evt) {
+    private void handleMouseExitingLERNodeIcon(MouseEvent evt) {
         this.iconContainerLER.setIcon(this.imageBroker.getIcon(TImageBroker.LER_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
@@ -2087,7 +1948,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoLER(MouseEvent evt) {
+    private void handleMouseEnteringLERNodeIcon(MouseEvent evt) {
         this.iconContainerLER.setIcon(this.imageBroker.getIcon(TImageBroker.LER_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
@@ -2099,7 +1960,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDeIconoReceptor(MouseEvent evt) {
+    private void handleMouseExitingTrafficSinkNodeIcon(MouseEvent evt) {
         this.iconContainerTrafficSink.setIcon(this.imageBroker.getIcon(TImageBroker.RECEPTOR_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
@@ -2111,7 +1972,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoReceptor(MouseEvent evt) {
+    private void handleMouseEnteringTrafficSinkNodeIcon(MouseEvent evt) {
         this.iconContainerTrafficSink.setIcon(this.imageBroker.getIcon(TImageBroker.RECEPTOR_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
@@ -2123,7 +1984,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonSaleDeIconoEmisor(MouseEvent evt) {
+    private void handleMouseExitingTrafficGeneratorNodeIcon(MouseEvent evt) {
         this.iconContainerTrafficGeneratorNode.setIcon(this.imageBroker.getIcon(TImageBroker.EMISOR_MENU));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
@@ -2135,7 +1996,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void ratonEntraEnIconoEmisor(MouseEvent evt) {
+    private void handleMouseEnteringTrafficGeneratorNodeIcon(MouseEvent evt) {
         this.iconContainerTrafficGeneratorNode.setIcon(this.imageBroker.getIcon(TImageBroker.EMISOR_MENU_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
@@ -2147,7 +2008,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void clicEnAniadirReceptor(MouseEvent evt) {
+    private void handleClickOnTrafficSinkNodeIcon(MouseEvent evt) {
         TTrafficSinkNode receptor = null;
         try {
             receptor = new TTrafficSinkNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
@@ -2183,7 +2044,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que se dispare este m�todo.
      */
-    private void clicEnAniadirEmisorDeTrafico(MouseEvent evt) {
+    private void handleClickOnTrafficGeneratorNodeIcon(MouseEvent evt) {
         TTopology t = this.scenario.getTopology();
         Iterator it = t.getNodesIterator();
         TNode nt;
@@ -2236,7 +2097,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt Evento que hace que este m�todo se dispare.
      */
-    private void clicAlPausar(MouseEvent evt) {
+    private void handleClickOnPauseIcon(MouseEvent evt) {
         if (this.iconContainerPauseSimulation.isEnabled()) {
             this.scenario.getTopology().getTimer().setPaused(true);
             activarOpcionesAlDetener();
@@ -2251,7 +2112,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que este m�todo se dispare.
      */
-    private void clicEnFinalizar(MouseEvent evt) {
+    private void handleClickOnStopIcon(MouseEvent evt) {
         if (this.iconContainerFinishSimulation.isEnabled()) {
             this.scenario.getTopology().getTimer().reset();
             this.simulationPanel.ponerFicheroTraza(null);
@@ -2266,7 +2127,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que este m�todo se dispare.
      */
-    private void clicEnReanudar(MouseEvent evt) {
+    private void handleClickOnResumeIcon(MouseEvent evt) {
         if (this.iconContainerResumeSimulation.isEnabled()) {
             activarOpcionesAlComenzar();
             this.scenario.getTopology().getTimer().setPaused(false);
@@ -2281,7 +2142,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      * @param evt El evento que hace que este m�todo se dispare.
      */
-    private void clicEnComenzar(MouseEvent evt) {
+    private void handleClickOnStartIcon(MouseEvent evt) {
         if (this.iconContainterStartSimulation.isEnabled()) {
             this.scenario.reset();
             if (!this.scenario.getTopology().getTimer().isRunning()) {
@@ -2526,7 +2387,11 @@ public class JScenarioWindow extends JInternalFrame {
         }
     }
 
-    private void crearEInsertarGraficas(String nombre) {
+    private void fillAnalysisInformation() {
+        this.fillAnalysisInformation("");
+    }
+
+    private void fillAnalysisInformation(String nombre) {
         this.analysisPanel.removeAll();
         this.analysisPanel.setLayout(new MigLayout("align center, fillx"));
         JScrollablePanel scenarioTitle = new JScrollablePanel();
@@ -2557,6 +2422,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.labelScenarioAuthorName.setText(this.textFieldOptionsScenarioAuthorName.getText());
         this.textAreaScenarioDescription.setText(this.textAreaOptionsScenarioDescription.getText());
         this.labelElementToAnalize.setText(nombre);
+        this.labelElementToAnalize.setIcon(null);
         TNode nt = this.scenario.getTopology().getFirstNodeNamed(nombre);
         if (nt != null) {
             if (nt.getNodeType() == TNode.TRAFFIC_GENERATOR) {
@@ -2579,7 +2445,11 @@ public class JScenarioWindow extends JInternalFrame {
                         TStats.TIME,
                         TStats.NUMBER_OF_PACKETS,
                         (XYSeriesCollection) nt.getStats().getDataset1());
-                this.analysisPanel.add(this.xyChart1.getChartPanel(), "grow");
+                if (numeroGraficos == 1) {
+                    this.analysisPanel.add(this.xyChart1.getChartPanel());
+                } else {
+                    this.analysisPanel.add(this.xyChart1.getChartPanel(), "grow");
+                }
             }
             if (numeroGraficos > 1) {
 
@@ -2649,7 +2519,7 @@ public class JScenarioWindow extends JInternalFrame {
     private TImageBroker imageBroker;
     private JOpenSimMPLS parent;
     private TTopologyElement rightClickedElementInDesignPanel;
-    private boolean controlTemporizacionDesactivado;
+    private boolean timingControlDisabled;
     private JXYChart xyChart1;
     private JXYChart xyChart2;
     private JXYChart xyChart3;
@@ -2701,7 +2571,7 @@ public class JScenarioWindow extends JInternalFrame {
     private JScrollPane scrollPaneSimulation;
     private JScrollPane scrollPaneAnalysis;
     private JSeparator separatorPopupMenuTopologyElement;
-    private JSeparator jSeparator2;
+    private JSeparator separatorPopupMenuBackgroundDesignPanel;
     private JTabbedPane tabsPanel;
     private JSlider sliderSimulationSpeedInMsPerTick;
     private JTextField textFieldOptionsScenarioAuthorName;
