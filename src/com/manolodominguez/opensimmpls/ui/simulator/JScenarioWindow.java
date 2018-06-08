@@ -198,7 +198,9 @@ public class JScenarioWindow extends JInternalFrame {
         this.labelOptionsNsTick = new JLabel();
         // Definition of popup menu showed when righ-click on an element in 
         // design panel
+        // FIX: Do not use harcoded values. Use class constants instead
         this.popupMenuTopologyElement.setFont(new Font("Dialog", 0, 12));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.menuItemDeleteElement.setFont(new Font("Dialog", 0, 12));
         this.menuItemDeleteElement.setMnemonic(this.translations.getString("VentanaHija.PopUpDisenio.mne.Delete").charAt(0));
         this.menuItemDeleteElement.setText(this.translations.getString("VentanaHija.PopUpDisenio.Delete"));
@@ -209,6 +211,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
         });
         this.popupMenuTopologyElement.add(this.menuItemDeleteElement);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.chekBoxMenuItemShowElementName.setFont(new Font("Dialog", 0, 12));
         this.chekBoxMenuItemShowElementName.setMnemonic(this.translations.getString("VentanaHija.PopUpDisenio.mne.verNombre").charAt(0));
         this.chekBoxMenuItemShowElementName.setText(this.translations.getString("VentanaHija.PopUpDisenio.verNombre"));
@@ -220,6 +223,7 @@ public class JScenarioWindow extends JInternalFrame {
         });
         this.popupMenuTopologyElement.add(this.chekBoxMenuItemShowElementName);
         this.popupMenuTopologyElement.add(this.separatorPopupMenuTopologyElement);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.menuItemItemElementProperties.setFont(new Font("Dialog", 0, 12));
         this.menuItemItemElementProperties.setMnemonic(this.translations.getString("VentanaHija.PopUpDisenio.mne.Propiedades").charAt(0));
         this.menuItemItemElementProperties.setText(this.translations.getString("VentanaHija.PopUpDisenio.Propiedades"));
@@ -232,7 +236,9 @@ public class JScenarioWindow extends JInternalFrame {
         this.popupMenuTopologyElement.add(this.menuItemItemElementProperties);
         // Definition of opup menu showed when righ-click on background in 
         // design panel
+        // FIX: Do not use harcoded values. Use class constants instead
         this.popupMenuBackgroundDesignPanel.setFont(new Font("Dialog", 0, 12));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.menuItemShowNodesNames.setFont(new Font("Dialog", 0, 12));
         this.menuItemShowNodesNames.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.verTodosNodos").charAt(0));
         this.menuItemShowNodesNames.setText(this.translations.getString("popUpDisenioFondo.verTodosNodos"));
@@ -243,6 +249,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
         });
         this.popupMenuBackgroundDesignPanel.add(this.menuItemShowNodesNames);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.menuItemHideNodesNames.setFont(new Font("Dialog", 0, 12));
         this.menuItemHideNodesNames.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.ocultarTodosNodos").charAt(0));
         this.menuItemHideNodesNames.setText(this.translations.getString("popUpDisenioFondo.ocultarTodosNodos"));
@@ -253,6 +260,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
         });
         this.popupMenuBackgroundDesignPanel.add(this.menuItemHideNodesNames);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.menuItemShowLinksNames.setFont(new Font("Dialog", 0, 12));
         this.menuItemShowLinksNames.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.verTodosEnlaces").charAt(0));
         this.menuItemShowLinksNames.setText(this.translations.getString("popUpDisenioFondo.verTodosEnlaces"));
@@ -263,6 +271,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
         });
         this.popupMenuBackgroundDesignPanel.add(this.menuItemShowLinksNames);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.menuItemHideLinksNames.setFont(new Font("Dialog", 0, 12));
         this.menuItemHideLinksNames.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.ocultarTodosEnlaces").charAt(0));
         this.menuItemHideLinksNames.setText(this.translations.getString("popUpDisenioFondo.ocultarTodosEnlaces"));
@@ -274,6 +283,7 @@ public class JScenarioWindow extends JInternalFrame {
         });
         this.popupMenuBackgroundDesignPanel.add(this.menuItemHideLinksNames);
         this.popupMenuBackgroundDesignPanel.add(this.separatorPopupMenuBackgroundDesignPanel);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.menuItemDeleteAllItems.setFont(new Font("Dialog", 0, 12));
         this.menuItemDeleteAllItems.setMnemonic(this.translations.getString("popUpDisenioFondo.mne.eliminarTodo").charAt(0));
         this.menuItemDeleteAllItems.setText(this.translations.getString("popUpDisenioFondo.borrarTodo"));
@@ -289,13 +299,17 @@ public class JScenarioWindow extends JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle(this.translations.getString("VentanaHija.Titulo"));
+        // FIX: Do not use harcoded values. Use class constants instead
         setFont(new Font("Dialog", 0, 12));
         setFrameIcon(this.imageBroker.getIcon(TImageBroker.ICONO_VENTANA_INTERNA_MENU));
+        // FIX: Do not use harcoded values. Use class constants instead
         setNormalBounds(new Rectangle(10, 10, 100, 100));
+        // FIX: Do not use harcoded values. Use class constants instead
         setPreferredSize(new Dimension(100, 100));
         setVisible(true);
         setAutoscrolls(true);
         this.tabsPanel.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.tabsPanel.setFont(new Font("Dialog", 0, 12));
         // Definition of design tab content
         this.designMainContainerPanel.setLayout(new BorderLayout());
@@ -475,94 +489,143 @@ public class JScenarioWindow extends JInternalFrame {
         this.optionsSecondaryMainContainerPanel.setLayout(new GridBagLayout());
         this.optionsScenarioInformationPanel.setLayout(new GridBagLayout());
         this.optionsScenarioInformationPanel.setBorder(new TitledBorder(null, this.translations.getString("VentanaHija.GParameters"), TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", 0, 12)));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsScenarioTitle.setFont(new Font("Dialog", 0, 12));
         this.labelOptionsScenarioTitle.setHorizontalAlignment(SwingConstants.RIGHT);
         this.labelOptionsScenarioTitle.setText(this.translations.getString("VentanaHija.Scene_title"));
         gridBagConstraints = new GridBagConstraints();
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridx = 0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridy = 0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridwidth = 1;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridheight = 1;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.weightx = 0.0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.optionsScenarioInformationPanel.add(this.labelOptionsScenarioTitle, gridBagConstraints);
         this.textFieldOptionsScenarioTitle.setToolTipText(this.translations.getString("VentanaHija.Type_a__title_of_the_scene"));
         gridBagConstraints = new GridBagConstraints();
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridx = 1;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridheight = 1;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.weightx = 1.0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.optionsScenarioInformationPanel.add(this.textFieldOptionsScenarioTitle, gridBagConstraints);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsScenarioAuthorName.setFont(new Font("Dialog", 0, 12));
         this.labelOptionsScenarioAuthorName.setHorizontalAlignment(SwingConstants.RIGHT);
         this.labelOptionsScenarioAuthorName.setText(this.translations.getString("VentanaHija.Scene_author"));
         gridBagConstraints = new GridBagConstraints();
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridx = 0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridy = 1;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridwidth = 1;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridheight = 1;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.weightx = 0.0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.optionsScenarioInformationPanel.add(this.labelOptionsScenarioAuthorName, gridBagConstraints);
         this.textFieldOptionsScenarioAuthorName.setToolTipText(this.translations.getString("VentanaHija.Type_de_name_of_the_author"));
         gridBagConstraints = new GridBagConstraints();
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridx = 1;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridheight = 1;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.weightx = 1.0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.optionsScenarioInformationPanel.add(this.textFieldOptionsScenarioAuthorName, gridBagConstraints);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsScenarioDescription.setFont(new Font("Dialog", 0, 12));
         this.labelOptionsScenarioDescription.setHorizontalAlignment(SwingConstants.RIGHT);
         this.labelOptionsScenarioDescription.setText(this.translations.getString("VentanaHija.Description"));
         gridBagConstraints = new GridBagConstraints();
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridx = 0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridy = 2;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridwidth = 1;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridheight = 1;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.optionsScenarioInformationPanel.add(this.labelOptionsScenarioDescription, gridBagConstraints);
         this.textAreaOptionsScenarioDescription.setToolTipText(this.translations.getString("VentanaHija.Enter_a_short_description."));
         this.textAreaOptionsScenarioDescription.setLineWrap(true);
         this.textAreaOptionsScenarioDescription.setWrapStyleWord(true);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.textAreaOptionsScenarioDescription.setRows(3);
         gridBagConstraints = new GridBagConstraints();
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridx = 1;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridheight = 1;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.weightx = 1.0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.optionsScenarioInformationPanel.add(this.textAreaOptionsScenarioDescription, gridBagConstraints);
         gridBagConstraints = new GridBagConstraints();
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridx = 0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.optionsSecondaryMainContainerPanel.add(this.optionsScenarioInformationPanel, gridBagConstraints);
         this.optionsSimulationTimingPanel.setLayout(new GridBagLayout());
         this.optionsSimulationTimingPanel.setBorder(new TitledBorder(null, this.translations.getString("VentanaHija.TParameters"), TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", 0, 12)));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsSimulationLength.setFont(new Font("Dialog", 0, 12));
         this.labelOptionsSimulationLength.setHorizontalAlignment(SwingConstants.RIGHT);
         this.labelOptionsSimulationLength.setText(this.translations.getString("VentanaHija.Duration"));
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.weightx = 100.0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.optionsSimulationTimingPanel.add(this.labelOptionsSimulationLength, gridBagConstraints);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsSimulationLengthMs.setMajorTickSpacing(2);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsSimulationLengthMs.setMaximum(2);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsSimulationLengthMs.setMinorTickSpacing(1);
         this.sliderOptionsSimulationLengthMs.setToolTipText(this.translations.getString("VentanaHija.Slide_it_to_change_the_ms._component_of_simulation_duration."));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsSimulationLengthMs.setValue(0);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsSimulationLengthMs.setMaximumSize(new Dimension(30, 20));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsSimulationLengthMs.setMinimumSize(new Dimension(30, 24));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsSimulationLengthMs.setPreferredSize(new Dimension(30, 20));
         this.sliderOptionsSimulationLengthMs.addChangeListener(new ChangeListener() {
             @Override
@@ -572,27 +635,43 @@ public class JScenarioWindow extends JInternalFrame {
         });
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.weightx = 150.0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.optionsSimulationTimingPanel.add(this.sliderOptionsSimulationLengthMs, gridBagConstraints);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsSimulationLengthMs.setFont(new Font("Dialog", 0, 10));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsSimulationLengthMs.setForeground(new Color(102, 102, 102));
         this.labelOptionsSimulationLengthMs.setText(this.translations.getString("VentanaHija.ms."));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsSimulationLengthMs.setMaximumSize(new Dimension(30, 14));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsSimulationLengthMs.setMinimumSize(new Dimension(30, 14));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsSimulationLengthMs.setPreferredSize(new Dimension(30, 14));
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.weightx = 40.0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.optionsSimulationTimingPanel.add(this.labelOptionsSimulationLengthMs, gridBagConstraints);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsSimulationLengthNs.setMajorTickSpacing(1000);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsSimulationLengthNs.setMaximum(999999);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsSimulationLengthNs.setMinorTickSpacing(100);
         this.sliderOptionsSimulationLengthNs.setToolTipText(this.translations.getString("VentanaHija.Slide_it_to_change_the_ns._component_of_simulation_duration."));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsSimulationLengthNs.setValue(100000);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsSimulationLengthNs.setMaximumSize(new Dimension(32767, 20));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsSimulationLengthNs.setMinimumSize(new Dimension(36, 20));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsSimulationLengthNs.setPreferredSize(new Dimension(200, 20));
         this.sliderOptionsSimulationLengthNs.addChangeListener(new ChangeListener() {
             @Override
@@ -602,37 +681,58 @@ public class JScenarioWindow extends JInternalFrame {
         });
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.weightx = 150.0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.optionsSimulationTimingPanel.add(this.sliderOptionsSimulationLengthNs, gridBagConstraints);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsSimulationLengthNs.setFont(new Font("Dialog", 0, 10));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsSimulationLengthNs.setForeground(new Color(102, 102, 102));
         this.labelOptionsSimulationLengthNs.setText(this.translations.getString("VentanaHija.ns."));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsSimulationLengthNs.setMaximumSize(new Dimension(40, 14));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsSimulationLengthNs.setMinimumSize(new Dimension(40, 14));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsSimulationLengthNs.setPreferredSize(new Dimension(40, 14));
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.weightx = 100.0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.optionsSimulationTimingPanel.add(this.labelOptionsSimulationLengthNs, gridBagConstraints);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsTickLengthInNs.setFont(new Font("Dialog", 0, 12));
         this.labelOptionsTickLengthInNs.setHorizontalAlignment(SwingConstants.RIGHT);
         this.labelOptionsTickLengthInNs.setText(this.translations.getString("VentanaHija.Step"));
         gridBagConstraints = new GridBagConstraints();
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridx = 0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.weightx = 100.0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.optionsSimulationTimingPanel.add(this.labelOptionsTickLengthInNs, gridBagConstraints);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsTickDurationInNs.setMajorTickSpacing(1000);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsTickDurationInNs.setMaximum(999999);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsTickDurationInNs.setMinimum(1);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsTickDurationInNs.setMinorTickSpacing(100);
         this.sliderOptionsTickDurationInNs.setToolTipText(this.translations.getString("VentanaHija.Slide_it_to_change_the_step_duration_(ns).."));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsTickDurationInNs.setValue(10000);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsTickDurationInNs.setMaximumSize(new Dimension(32767, 20));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsTickDurationInNs.setPreferredSize(new Dimension(100, 20));
         this.sliderOptionsTickDurationInNs.addChangeListener(new ChangeListener() {
             @Override
@@ -641,31 +741,48 @@ public class JScenarioWindow extends JInternalFrame {
             }
         });
         gridBagConstraints = new GridBagConstraints();
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridx = 1;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridy = 1;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.optionsSimulationTimingPanel.add(this.sliderOptionsTickDurationInNs, gridBagConstraints);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsNsTick.setFont(new Font("Dialog", 0, 10));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsNsTick.setForeground(new Color(102, 102, 102));
         this.labelOptionsNsTick.setText(this.translations.getString("VentanaHija.ns."));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsNsTick.setMaximumSize(new Dimension(40, 14));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsNsTick.setMinimumSize(new Dimension(40, 14));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelOptionsNsTick.setPreferredSize(new Dimension(40, 14));
         gridBagConstraints = new GridBagConstraints();
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridx = 4;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.weightx = 1.0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.optionsSimulationTimingPanel.add(this.labelOptionsNsTick, gridBagConstraints);
         gridBagConstraints = new GridBagConstraints();
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridx = 0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.weightx = 1.0;
+        // FIX: Do not use harcoded values. Use class constants instead
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.optionsSecondaryMainContainerPanel.add(this.optionsSimulationTimingPanel, gridBagConstraints);
         this.optionsPrimaryMainContainerPanel.add(this.optionsSecondaryMainContainerPanel, BorderLayout.NORTH);
@@ -753,20 +870,28 @@ public class JScenarioWindow extends JInternalFrame {
             }
         });
         this.simulationToolbarPanel.add(this.iconContainerPauseSimulation);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.progressBarSimulation.setFont(new Font("Dialog", 0, 12));
         this.progressBarSimulation.setToolTipText(this.translations.getString("VentanaHija.BarraProgreso.tooltip"));
         this.progressBarSimulation.setStringPainted(true);
         this.simulationToolbarPanel.add(this.progressBarSimulation);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelSimulationSpeedFaster.setFont(new Font("Dialog", 0, 10));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelSimulationSpeedFaster.setForeground(new Color(102, 102, 102));
         this.labelSimulationSpeedFaster.setText(this.translations.getString("VentanaHija.Simulacion.EtiquetaMsTic"));
         this.simulationToolbarPanel.add(this.labelSimulationSpeedFaster);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderSimulationSpeedInMsPerTick.setMajorTickSpacing(10);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderSimulationSpeedInMsPerTick.setMaximum(300);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderSimulationSpeedInMsPerTick.setMinimum(1);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderSimulationSpeedInMsPerTick.setMinorTickSpacing(1);
         this.sliderSimulationSpeedInMsPerTick.setSnapToTicks(true);
         this.sliderSimulationSpeedInMsPerTick.setToolTipText(this.translations.getString("VentanaHija.Simulacion.SelectorDeVelocidad.tooltip"));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderSimulationSpeedInMsPerTick.setPreferredSize(new Dimension(100, 20));
         this.sliderSimulationSpeedInMsPerTick.addChangeListener(new ChangeListener() {
             @Override
@@ -775,7 +900,9 @@ public class JScenarioWindow extends JInternalFrame {
             }
         });
         this.simulationToolbarPanel.add(this.sliderSimulationSpeedInMsPerTick);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelSimulationSpeedSlower.setFont(new Font("Dialog", 0, 10));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelSimulationSpeedSlower.setForeground(new Color(102, 102, 102));
         this.labelSimulationSpeedSlower.setText(this.translations.getString("VentanaHija.Simulacion.slower"));
         this.simulationToolbarPanel.add(this.labelSimulationSpeedSlower);
@@ -833,18 +960,22 @@ public class JScenarioWindow extends JInternalFrame {
         this.analysisPanel.setLayout(new MigLayout());
         this.analysisPanel.setBackground(Color.WHITE);
         this.labelScenarioTitle.setBackground(Color.WHITE);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelScenarioTitle.setFont(new Font("Serif", 1, 18));
         this.labelScenarioTitle.setHorizontalAlignment(SwingConstants.CENTER);
         this.labelScenarioTitle.setText(this.translations.getString("JVentanaHija.TituloDelEscenario"));
         this.analysisPanel.add(this.labelScenarioTitle, "span 2, grow, wrap");
         this.labelScenarioAuthorName.setBackground(Color.WHITE);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelScenarioAuthorName.setFont(new Font("Serif", 1, 14));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelScenarioAuthorName.setForeground(new Color(102, 0, 51));
         this.labelScenarioAuthorName.setHorizontalAlignment(SwingConstants.CENTER);
         this.labelScenarioAuthorName.setText(this.translations.getString("JVentanaHija.AutorDelEscenario"));
         this.analysisPanel.add(this.labelScenarioAuthorName, "span 2, grow, wrap");
         this.textAreaScenarioDescription.setBackground(Color.WHITE);
         this.textAreaScenarioDescription.setEditable(false);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.textAreaScenarioDescription.setFont(new Font("MonoSpaced", 0, 11));
         this.textAreaScenarioDescription.setLineWrap(true);
         this.textAreaScenarioDescription.setText(this.translations.getString("JVentanaHija.DescripcionDelEscenario"));
@@ -853,6 +984,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.textAreaScenarioDescription.setAutoscrolls(false);
         this.analysisPanel.add(this.textAreaScenarioDescription, "span 2, grow, wrap");
         this.labelElementToAnalize.setBackground(Color.WHITE);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.labelElementToAnalize.setFont(new Font("Serif", 1, 14));
         this.labelElementToAnalize.setHorizontalAlignment(SwingConstants.CENTER);
         this.labelElementToAnalize.setText(this.translations.getString("JVentanaHija.SeleccioneNodoAInspeccionar"));
@@ -895,6 +1027,7 @@ public class JScenarioWindow extends JInternalFrame {
         }
         // FIX: Do not use harcoded values. Use class constants instead
         this.sliderSimulationSpeedInMsPerTick.setValue(150);
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsTickDurationInNs.setMaximum(this.sliderOptionsSimulationLengthMs.getValue() * 1000000 + this.sliderOptionsSimulationLengthNs.getValue());
         this.labelSimulationSpeedFaster.setText(this.translations.getString("VentanaHija.Simulacion.EtiquetaMsTic"));
         this.labelOptionsSimulationLengthMs.setText(this.sliderOptionsSimulationLengthMs.getValue() + this.translations.getString("VentanaHija._ms."));
@@ -979,12 +1112,14 @@ public class JScenarioWindow extends JInternalFrame {
             if (this.selectedNode != null) {
                 Point mousePosition = evt.getPoint();
                 if (mousePosition.x < 0) {
+                    // FIX: Do not use harcoded values. Use class constants instead
                     mousePosition.x = 0;
                 }
                 if (mousePosition.x > this.designPanel.getSize().width) {
                     mousePosition.x = this.designPanel.getSize().width;
                 }
                 if (mousePosition.y < 0) {
+                    // FIX: Do not use harcoded values. Use class constants instead
                     mousePosition.y = 0;
                 }
                 if (mousePosition.y > this.designPanel.getSize().height) {
@@ -1129,6 +1264,7 @@ public class JScenarioWindow extends JInternalFrame {
             } else {
                 this.sliderOptionsSimulationLengthNs.setMinimum(0);
             }
+            // FIX: Do not use harcoded values. Use class constants instead
             int totalSimulationLength = this.sliderOptionsSimulationLengthMs.getValue() * 1000000 + this.sliderOptionsSimulationLengthNs.getValue();
             int minDelay = this.scenario.getTopology().getMinimumDelay();
             if (minDelay < totalSimulationLength) {
@@ -1321,7 +1457,9 @@ public class JScenarioWindow extends JInternalFrame {
             // FIX: this is ugly
             e.printStackTrace();
         }
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsSimulationLengthMs.setValue((int) (simulationLength / 1000000));
+        // FIX: Do not use harcoded values. Use class constants instead
         this.sliderOptionsSimulationLengthNs.setValue((int) (simulationLength - (this.sliderOptionsSimulationLengthMs.getValue() * 1000000)));
         this.sliderOptionsTickDurationInNs.setMaximum((int) scenario.getSimulation().getSimulationLengthInNs());
         this.sliderOptionsTickDurationInNs.setValue((int) simulationTickDurationInNs);
@@ -1471,16 +1609,19 @@ public class JScenarioWindow extends JInternalFrame {
         if (evt.getButton() == MouseEvent.BUTTON3) {
             TTopologyElement topologyElement = this.scenario.getTopology().getElementInScreenPosition(evt.getPoint());
             if (topologyElement == null) {
+        // FIX: Do not use harcoded values. Use class constants instead
                 this.popupMenuBackgroundDesignPanel.show(this, evt.getX() + 7, evt.getY() - 27);
             } else if (topologyElement.getElementType() == TTopologyElement.NODE) {
                 TNode nt = (TNode) topologyElement;
                 this.chekBoxMenuItemShowElementName.setSelected(nt.getShowName());
                 this.rightClickedElementInDesignPanel = topologyElement;
+        // FIX: Do not use harcoded values. Use class constants instead
                 this.popupMenuTopologyElement.show(this, evt.getX() + 7, evt.getY() + 15);
             } else if (topologyElement.getElementType() == TTopologyElement.LINK) {
                 TLink ent = (TLink) topologyElement;
                 this.chekBoxMenuItemShowElementName.setSelected(ent.getShowName());
                 this.rightClickedElementInDesignPanel = topologyElement;
+        // FIX: Do not use harcoded values. Use class constants instead
                 this.popupMenuTopologyElement.show(this, evt.getX() + 7, evt.getY() + 15);
             }
         } else {
@@ -1681,12 +1822,14 @@ public class JScenarioWindow extends JInternalFrame {
             if (this.selectedNode != null) {
                 Point p2 = evt.getPoint();
                 if (p2.x < 0) {
+                    // FIX: Do not use harcoded values. Use class constants instead
                     p2.x = 0;
                 }
                 if (p2.x > this.designPanel.getSize().width) {
                     p2.x = this.designPanel.getSize().width;
                 }
                 if (p2.y < 0) {
+                    // FIX: Do not use harcoded values. Use class constants instead
                     p2.y = 0;
                 }
                 if (p2.y > this.designPanel.getSize().height) {
@@ -2532,6 +2675,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
             int numeroGraficos = nt.getStats().getNumberOfAvailableDatasets();
 
+            // FIX: Do not use harcoded values. Use class constants instead
             if (numeroGraficos > 0) {
                 this.xyChart1 = new JXYChart(nt.getStats().getTitleOfDataset1(),
                         TStats.TIME,
@@ -2543,6 +2687,7 @@ public class JScenarioWindow extends JInternalFrame {
                     this.analysisPanel.add(this.xyChart1.getChartPanel(), "grow");
                 }
             }
+            // FIX: Do not use harcoded values. Use class constants instead
             if (numeroGraficos > 1) {
 
                 this.xyChart2 = new JXYChart(nt.getStats().getTitleOfDataset2(),
@@ -2551,6 +2696,7 @@ public class JScenarioWindow extends JInternalFrame {
                         (XYSeriesCollection) nt.getStats().getDataset2());
                 this.analysisPanel.add(this.xyChart2.getChartPanel(), "grow, wrap");
             }
+            // FIX: Do not use harcoded values. Use class constants instead
             if (numeroGraficos > 2) {
                 this.xyChart3 = new JXYChart(nt.getStats().getTitleOfDataset3(),
                         TStats.TIME,
@@ -2558,6 +2704,7 @@ public class JScenarioWindow extends JInternalFrame {
                         (XYSeriesCollection) nt.getStats().getDataset3());
                 this.analysisPanel.add(this.xyChart3.getChartPanel(), "grow");
             }
+            // FIX: Do not use harcoded values. Use class constants instead
             if (numeroGraficos > 3) {
                 this.barChart1 = new JBarChart(nt.getStats().getTitleOfDataset4(), TStats.DESCRIPTION, TStats.NUMBER, (DefaultCategoryDataset) nt.getStats().getDataset4());
                 this.analysisPanel.add(this.barChart1.getChartPanel(), "grow, wrap");
