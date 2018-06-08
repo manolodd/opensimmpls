@@ -1439,6 +1439,7 @@ public class JScenarioWindow extends JInternalFrame {
      * This method sets the scenario of this JScenarioWindow.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param scenario The scenario
      * @since 2.0
      */
     public void setScenario(TScenario scenario) {
@@ -1651,6 +1652,7 @@ public class JScenarioWindow extends JInternalFrame {
         JActiveLSRWindow activeLSRWindow = new JActiveLSRWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
         activeLSRWindow.setConfiguration(activeLSRNode, false);
         activeLSRWindow.setVisible(true);
+        // FIX: the node could not be initilized yet
         if (activeLSRNode.isWellConfigured()) {
             try {
                 this.scenario.getTopology().addNode(activeLSRNode);
@@ -1688,6 +1690,7 @@ public class JScenarioWindow extends JInternalFrame {
         JLSRWindow lsrWindow = new JLSRWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
         lsrWindow.setConfiguration(lsrNode, false);
         lsrWindow.setVisible(true);
+        // FIX: the node could not be initilized yet
         if (lsrNode.isWellConfigured()) {
             try {
                 this.scenario.getTopology().addNode(lsrNode);
@@ -1725,6 +1728,7 @@ public class JScenarioWindow extends JInternalFrame {
         JActiveLERWindow activeLERWindow = new JActiveLERWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
         activeLERWindow.setConfiguration(activeLERNode, false);
         activeLERWindow.setVisible(true);
+        // FIX: the node could not be initilized yet
         if (activeLERNode.isWellConfigured()) {
             try {
                 this.scenario.getTopology().addNode(activeLERNode);
@@ -2008,6 +2012,7 @@ public class JScenarioWindow extends JInternalFrame {
         JLERWindow lerWindow = new JLERWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
         lerWindow.setConfiguration(lerNode, false);
         lerWindow.setVisible(true);
+        // FIX: the node could not be initilized yet
         if (lerNode.isWellConfigured()) {
             try {
                 this.scenario.getTopology().addNode(lerNode);
@@ -2231,6 +2236,7 @@ public class JScenarioWindow extends JInternalFrame {
         JTrafficSinkWindow trafficSinkWindow = new JTrafficSinkWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
         trafficSinkWindow.setConfiguration(trafficSinkNode, false);
         trafficSinkWindow.setVisible(true);
+        // FIX: the node could not be initilized yet
         if (trafficSinkNode.isWellConfigured()) {
             try {
                 this.scenario.getTopology().addNode(trafficSinkNode);
@@ -2284,6 +2290,7 @@ public class JScenarioWindow extends JInternalFrame {
             JTrafficGeneratorWindow trafficGeneratorWindow = new JTrafficGeneratorWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
             trafficGeneratorWindow.setConfiguration(trafficGeneratorNode, false);
             trafficGeneratorWindow.setVisible(true);
+            // FIX: the node could not be initilized yet
             if (trafficGeneratorNode.isWellConfigured()) {
                 try {
                     this.scenario.getTopology().addNode(trafficGeneratorNode);
