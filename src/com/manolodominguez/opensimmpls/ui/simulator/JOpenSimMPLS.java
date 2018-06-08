@@ -681,8 +681,8 @@ public class JOpenSimMPLS extends JFrame {
     private void handleClickOnCloseScenario(ActionEvent evt) {
         JScenarioWindow activeScenario = (JScenarioWindow) desktopPane.getSelectedFrame();
         if (activeScenario != null) {
-            activeScenario.gestionarGuardarParaCerrar();
-            activeScenario.cerrar();
+            activeScenario.saveBeforeClosing();
+            activeScenario.close();
             this.numOpenScenarios--;
         }
         if (this.numOpenScenarios == 0) {
@@ -773,8 +773,8 @@ public class JOpenSimMPLS extends JFrame {
         while (this.numOpenScenarios > 0) {
             JScenarioWindow activeScenario = (JScenarioWindow) this.desktopPane.getSelectedFrame();
             if (activeScenario != null) {
-                activeScenario.gestionarGuardarParaCerrar();
-                activeScenario.cerrar();
+                activeScenario.saveBeforeClosing();
+                activeScenario.close();
                 this.numOpenScenarios--;
             }
             if (this.numOpenScenarios > 0) {

@@ -177,7 +177,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
      * @since 2.0
      * @param t Topolog�a que se debe representar en el panel de simulaci�n.
      */    
-    public void ponerTopologia(TTopology t) {
+    public void setTopology(TTopology t) {
         topologia = t;
     }
 

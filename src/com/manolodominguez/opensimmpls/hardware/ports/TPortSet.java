@@ -99,7 +99,7 @@ public abstract class TPortSet {
      * @return TRUE, if hte parent node is congested artificially. Otherwise,
      * FALSE.
      */
-    public boolean isArtificiallyCongested() {
+    public boolean isCongestedArtificially() {
         return this.artificiallyCongested;
     }
 

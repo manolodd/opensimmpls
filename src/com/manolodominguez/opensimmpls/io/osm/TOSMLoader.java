@@ -197,7 +197,7 @@ public class TOSMLoader {
         } else if (scenarioString.startsWith("#Temporizacion#")) {
             if (!this.scenario.getSimulation().unmarshallTimeParameters(scenarioString)) {
                 this.scenario.getSimulation().setSimulationLengthInNs(500);
-                this.scenario.getSimulation().setSimulationStepLengthInNs(1);
+                this.scenario.getSimulation().setSimulationTickDurationInNs(1);
             }
         }
     }

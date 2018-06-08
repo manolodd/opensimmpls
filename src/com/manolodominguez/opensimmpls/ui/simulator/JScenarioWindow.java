@@ -95,26 +95,24 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeriesCollection;
 
 /**
- * Esta clase implementa una ventana que save� un escenario completo y dar�
- * soporte a la simulaci�n, an�lisis y dise�o de la topology.
+ * This class implements a window that contains all needed to design, simulate
+ * an analyse a simulation scenario.
  *
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class JScenarioWindow extends JInternalFrame {
 
     /**
-     * Este m�todo es el constructor de la clase. Crea una nueva instancia de
-     * JVentanaHija.
+     * This is the constructor of the class and creates a new instance of
+     * JScenarioWindow.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param parent Parent window over wich this JScenarioWindow is shown.
+     * @param imageBroker An object that supply the needed images to be inserted
+     * in the UI.
+     * @param title The initial title of the window
      * @since 2.0
-     * @param title T�tulo que deseamos que tenga la ventana hija. Se usar�
-     * tambi�n para save el escenario en disco.
-     * @param parent Ventana padre dentro de la cual se va a ubicar este ventana
-     * hija.
-     * @param imageBroker Dispensador de im�genes de donde se obtendr�n todas
-     * las im�genes que se necesiten.
      */
     public JScenarioWindow(JOpenSimMPLS parent, TImageBroker imageBroker, String title) {
         this.imageBroker = imageBroker;
@@ -125,10 +123,10 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo es llamado desde el constructor para actualizar la mayor
-     * parte de los atributos de la clase que tienen que ver con la interfaz de
-     * usuario. Es un m�todo creado por NetBeans automaticamente.
+     * This method is called from within the constructor to initialize the
+     * window components.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     private void initComponents() {
@@ -161,7 +159,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.simulationMainContainerPanel = new JPanel();
         this.simulationToolbarPanel = new JPanel();
         this.iconContainterStartSimulation = new JLabel();
-        this.iconContainerFinishSimulation = new JLabel();
+        this.iconContainerStopSimulation = new JLabel();
         this.iconContainerResumeSimulation = new JLabel();
         this.iconContainerPauseSimulation = new JLabel();
         this.progressBarSimulation = new JProgressBar();
@@ -282,7 +280,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.menuItemDeleteAllItems.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                handleClickOnBackgroundDesignPanelRemove(evt);
+                handleClickOnBackgroundDesignPanelRemoveAll(evt);
             }
         });
         this.popupMenuBackgroundDesignPanel.add(this.menuItemDeleteAllItems);
@@ -695,10 +693,10 @@ public class JScenarioWindow extends JInternalFrame {
             }
         });
         this.simulationToolbarPanel.add(this.iconContainterStartSimulation);
-        this.iconContainerFinishSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PARAR));
-        this.iconContainerFinishSimulation.setToolTipText(this.translations.getString("VentanaHija.Topic.Finalizar"));
-        this.iconContainerFinishSimulation.setEnabled(false);
-        this.iconContainerFinishSimulation.addMouseListener(new MouseAdapter() {
+        this.iconContainerStopSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PARAR));
+        this.iconContainerStopSimulation.setToolTipText(this.translations.getString("VentanaHija.Topic.Finalizar"));
+        this.iconContainerStopSimulation.setEnabled(false);
+        this.iconContainerStopSimulation.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
                 handleMouseEnteringStopIcon(evt);
@@ -714,7 +712,7 @@ public class JScenarioWindow extends JInternalFrame {
                 handleClickOnStopIcon(evt);
             }
         });
-        this.simulationToolbarPanel.add(this.iconContainerFinishSimulation);
+        this.simulationToolbarPanel.add(this.iconContainerStopSimulation);
         this.iconContainerResumeSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_COMENZAR));
         this.iconContainerResumeSimulation.setToolTipText(this.translations.getString("VentanaHija.Topic.Simulacion"));
         this.iconContainerResumeSimulation.setEnabled(false);
@@ -869,9 +867,10 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se encarga de start los atributos de la clase que no hayan
-     * sido aun iniciados por NetBeans.
+     * This method is called from within the constructor to do additional
+     * configurations of window components.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     private void initComponents2() {
@@ -884,7 +883,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.setLocation((parentSize.width - frameSize.width) / 2, (parentSize.height - frameSize.height) / 2);
         this.scenario = new TScenario();
         this.designPanel.setTopology(this.scenario.getTopology());
-        this.simulationPanel.ponerTopologia(this.scenario.getTopology());
+        this.simulationPanel.setTopology(this.scenario.getTopology());
         this.selectedNode = null;
         this.rightClickedElementInDesignPanel = null;
         this.progressEventListener = new TProgressEventListener(this.progressBarSimulation);
@@ -911,13 +910,21 @@ public class JScenarioWindow extends JInternalFrame {
         this.fillAnalysisInformation();
     }
 
+    /**
+     * This method is called when the user clic on the simulation panel.
+     * Everything that can be done with a clic on simulation panel is here.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
+     * @since 2.0
+     */
     private void handleClickOnSimulationPanel(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
             TTopologyElement topologyElement = this.scenario.getTopology().getElementInScreenPosition(evt.getPoint());
             if (topologyElement != null) {
                 if (topologyElement.getElementType() == TTopologyElement.NODE) {
                     TNode node = (TNode) topologyElement;
-                    if (node.getPorts().isArtificiallyCongested()) {
+                    if (node.getPorts().isCongestedArtificially()) {
                         node.getPorts().setArtificiallyCongested(false);
                     } else {
                         node.getPorts().setArtificiallyCongested(true);
@@ -941,6 +948,14 @@ public class JScenarioWindow extends JInternalFrame {
         }
     }
 
+    /**
+     * This method is called when the user clic on the list of elements to be
+     * analyzed, in the analysis panel.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
+     * @since 2.0
+     */
     private void handleClickOnNodeToBeAnalized(ActionEvent evt) {
         if (this.comboBoxNodeToAnalize.getSelectedIndex() == 0) {
             this.fillAnalysisInformation();
@@ -951,11 +966,12 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama cuando se arrastra el rat�n sobre el panel de
-     * dise�o. Si se hace sobre un elemento que estaba seleccionado, el
-     * resultado es que ese elemento se mueve donde vaya el cursor del rat�n.
+     * This method is called when the user drag the mouse on the simulation
+     * panel. Everything that can be done dragging the mouse in the simulation
+     * panel is here.
      *
-     * @param evt El evento que provoca la llamada.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
      */
     private void handleDragOnSimulationPanel(MouseEvent evt) {
@@ -982,11 +998,12 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama cuando se libera un bot�n del rat�n estando en el
-     * panel de simulaci�n. Si se hace sobre un elemento que estaba
-     * seleccionado, deja de estarlo.
+     * This method is called when a mouse button is released on the simulation
+     * panel. Everything that can be done releasing a mouse button in the
+     * simulation panel is here (usually, the en of a drag action).
      *
-     * @param evt El evento que genera la llamada.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
      */
     private void handleMouseReleasedOnSimulationPanel(MouseEvent evt) {
@@ -1001,22 +1018,23 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama cuando se presiona un bot�n del rat�n en el panel de
-     * simulaci�n. Si se hace sobre un elemento de la topolog�a, lo marca como
-     * seleccionado.
+     * This method is called when a mouse button is pressed on the simulation
+     * panel. Everything that can be done pressing a mouse button in the
+     * simulation panel is here (pressing, without releasing).
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que provoca la llamada.
      */
     private void handleMousePressedOnSimulationPanel(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            TTopology topo = this.scenario.getTopology();
-            TTopologyElement et = topo.getElementInScreenPosition(evt.getPoint());
-            if (et != null) {
+            TTopology topology = this.scenario.getTopology();
+            TTopologyElement topologyElement = topology.getElementInScreenPosition(evt.getPoint());
+            if (topologyElement != null) {
                 this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                if (et.getElementType() == TTopologyElement.NODE) {
-                    TNode nt = (TNode) et;
-                    this.selectedNode = nt;
+                if (topologyElement.getElementType() == TTopologyElement.NODE) {
+                    TNode node = (TNode) topologyElement;
+                    this.selectedNode = node;
                     if (this.selectedNode != null) {
                         this.selectedNode.setSelected(TNode.SELECTED);
                         this.scenario.setModified(true);
@@ -1031,64 +1049,64 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama cuando se hace clic derecho sobre un elemento en la
-     * ventana de dise�o y se selecciona la opci�n "Propiedades" del men�
-     * emergente. Se encarga de mostrar en pantalla la ventana de configuraci�n
-     * del elemento en cuesti�n.
+     * This method is called when the user does click on "Properties" option
+     * that is shown when a right click on a element is done in design panel.
+     * This opens the window to configure the topology element.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que provoca la llamada.
      */
     private void handleClickOnPupupElementProperties(ActionEvent evt) {
         if (this.rightClickedElementInDesignPanel != null) {
             if (this.rightClickedElementInDesignPanel.getElementType() == TTopologyElement.NODE) {
-                TNode nt = (TNode) this.rightClickedElementInDesignPanel;
-                if (nt.getNodeType() == TNode.TRAFFIC_GENERATOR) {
-                    JTrafficGeneratorWindow ve = new JTrafficGeneratorWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
-                    ve.setConfiguration((TTrafficGeneratorNode) nt, true);
-                    ve.show();
-                } else if (nt.getNodeType() == TNode.LER) {
-                    JLERWindow vler = new JLERWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
-                    vler.setConfiguration((TLERNode) nt, true);
-                    vler.show();
-                } else if (nt.getNodeType() == TNode.ACTIVE_LER) {
-                    JActiveLERWindow vlera = new JActiveLERWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
-                    vlera.setConfiguration((TActiveLERNode) nt, true);
-                    vlera.show();
-                } else if (nt.getNodeType() == TNode.LSR) {
-                    JLSRWindow vlsr = new JLSRWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
-                    vlsr.setConfiguration((TLSRNode) nt, true);
-                    vlsr.show();
-                } else if (nt.getNodeType() == TNode.ACTIVE_LSR) {
-                    JActiveLSRWindow vlsra = new JActiveLSRWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
-                    vlsra.setConfiguration((TActiveLSRNode) nt, true);
-                    vlsra.show();
-                } else if (nt.getNodeType() == TNode.TRAFFIC_SINK) {
-                    JTrafficSinkWindow vr = new JTrafficSinkWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
-                    vr.setConfiguration((TTrafficSinkNode) nt, true);
-                    vr.show();
+                TNode node = (TNode) this.rightClickedElementInDesignPanel;
+                if (node.getNodeType() == TNode.TRAFFIC_GENERATOR) {
+                    JTrafficGeneratorWindow trafficGeneratorWindow = new JTrafficGeneratorWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
+                    trafficGeneratorWindow.setConfiguration((TTrafficGeneratorNode) node, true);
+                    trafficGeneratorWindow.setVisible(true);
+                } else if (node.getNodeType() == TNode.LER) {
+                    JLERWindow lerWindow = new JLERWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
+                    lerWindow.setConfiguration((TLERNode) node, true);
+                    lerWindow.setVisible(true);
+                } else if (node.getNodeType() == TNode.ACTIVE_LER) {
+                    JActiveLERWindow activeLERWindow = new JActiveLERWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
+                    activeLERWindow.setConfiguration((TActiveLERNode) node, true);
+                    activeLERWindow.setVisible(true);
+                } else if (node.getNodeType() == TNode.LSR) {
+                    JLSRWindow lsrWindow = new JLSRWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
+                    lsrWindow.setConfiguration((TLSRNode) node, true);
+                    lsrWindow.setVisible(true);
+                } else if (node.getNodeType() == TNode.ACTIVE_LSR) {
+                    JActiveLSRWindow activeLSRWindow = new JActiveLSRWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
+                    activeLSRWindow.setConfiguration((TActiveLSRNode) node, true);
+                    activeLSRWindow.setVisible(true);
+                } else if (node.getNodeType() == TNode.TRAFFIC_SINK) {
+                    JTrafficSinkWindow trafficSinkWindow = new JTrafficSinkWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
+                    trafficSinkWindow.setConfiguration((TTrafficSinkNode) node, true);
+                    trafficSinkWindow.setVisible(true);
                 }
                 this.rightClickedElementInDesignPanel = null;
                 this.designPanel.repaint();
             } else {
-                TLink ent = (TLink) this.rightClickedElementInDesignPanel;
-                TLinkConfig tceAux = ent.getConfig();
-                JLinkWindow ve = new JLinkWindow(this.scenario.getTopology(), this.imageBroker, this.parent, true);
-                ve.setConfiguration(tceAux, true);
-                ve.show();
-                if (ent.getLinkType() == TLink.EXTERNAL_LINK) {
-                    TExternalLink ext = (TExternalLink) ent;
-                    ext.configure(tceAux, this.scenario.getTopology(), true);
-                } else if (ent.getLinkType() == TLink.INTERNAL_LINK) {
-                    TInternalLink inte = (TInternalLink) ent;
-                    inte.configure(tceAux, this.scenario.getTopology(), true);
+                TLink link = (TLink) this.rightClickedElementInDesignPanel;
+                TLinkConfig linkConfig = link.getConfig();
+                JLinkWindow linkWindow = new JLinkWindow(this.scenario.getTopology(), this.imageBroker, this.parent, true);
+                linkWindow.setConfiguration(linkConfig, true);
+                linkWindow.setVisible(true);
+                if (link.getLinkType() == TLink.EXTERNAL_LINK) {
+                    TExternalLink externalLink = (TExternalLink) link;
+                    externalLink.configure(linkConfig, this.scenario.getTopology(), true);
+                } else if (link.getLinkType() == TLink.INTERNAL_LINK) {
+                    TInternalLink internalLink = (TInternalLink) link;
+                    internalLink.configure(linkConfig, this.scenario.getTopology(), true);
                 }
                 this.rightClickedElementInDesignPanel = null;
                 this.designPanel.repaint();
-                int minimoDelay = this.scenario.getTopology().getMinimumDelay();
-                int pasoActual = this.sliderOptionsTickDurationInNs.getValue();
-                if (pasoActual > minimoDelay) {
-                    this.sliderOptionsTickDurationInNs.setValue(minimoDelay);
+                int minDelay = this.scenario.getTopology().getMinimumDelay();
+                int tickDurationInNs = this.sliderOptionsTickDurationInNs.getValue();
+                if (tickDurationInNs > minDelay) {
+                    this.sliderOptionsTickDurationInNs.setValue(minDelay);
                 }
             }
             this.scenario.setModified(true);
@@ -1096,78 +1114,84 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se encarga de controlar que la duraci�n de la simulaci�on y
-     * del paso de la misma sea acorde con los delays de los enlaces. Adem�s se
-     * encarga de la actualizaci�n de la interfaz en esos lugares.
+     * This method takes cares of timming options. By default the minimum tick
+     * duration has to be equal or greater thant the minimum delay of all links
+     * in the topology. As the link delay can be changed after establishing the
+     * tick duration, this method adjust the tick duration to assure this fact.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void controlarParametrosTemporales() {
+    public void controlTimingOptions() {
         if (!this.timingControlDisabled) {
             if (this.sliderOptionsSimulationLengthMs.getValue() == 0) {
                 this.sliderOptionsSimulationLengthNs.setMinimum(1);
             } else {
                 this.sliderOptionsSimulationLengthNs.setMinimum(0);
             }
-            int duracionTotal = this.sliderOptionsSimulationLengthMs.getValue() * 1000000 + this.sliderOptionsSimulationLengthNs.getValue();
+            int totalSimulationLength = this.sliderOptionsSimulationLengthMs.getValue() * 1000000 + this.sliderOptionsSimulationLengthNs.getValue();
             int minDelay = this.scenario.getTopology().getMinimumDelay();
-            if (minDelay < duracionTotal) {
+            if (minDelay < totalSimulationLength) {
                 this.sliderOptionsTickDurationInNs.setMaximum(minDelay);
                 // FIX: Change also current value of this slider
             } else {
-                this.sliderOptionsTickDurationInNs.setMaximum(duracionTotal);
+                this.sliderOptionsTickDurationInNs.setMaximum(totalSimulationLength);
                 // FIX: Change also current value of this slider
             }
             this.labelOptionsSimulationLengthMs.setText(this.sliderOptionsSimulationLengthMs.getValue() + this.translations.getString("VentanaHija._ms."));
             this.labelOptionsSimulationLengthNs.setText(this.sliderOptionsSimulationLengthNs.getValue() + this.translations.getString("VentanaHija._ns."));
             this.labelOptionsNsTick.setText(this.sliderOptionsTickDurationInNs.getValue() + this.translations.getString("VentanaHija._ns."));
             this.scenario.getSimulation().setSimulationLengthInNs(new TTimestamp(this.sliderOptionsSimulationLengthMs.getValue(), this.sliderOptionsSimulationLengthNs.getValue()).getTotalAsNanoseconds());
-            this.scenario.getSimulation().setSimulationStepLengthInNs(this.sliderOptionsTickDurationInNs.getValue());
+            this.scenario.getSimulation().setSimulationTickDurationInNs(this.sliderOptionsTickDurationInNs.getValue());
         }
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando se cambia la duraci�n en
-     * nanosegundos del paso de simulaci�n.
+     * This method is called when the user changes the tick duration of the
+     * simulation in the timming options panel.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que hace que el m�todo salte.
      */
     private void handleChangeOnTickDurationInNs(ChangeEvent evt) {
-        controlarParametrosTemporales();
+        controlTimingOptions();
         this.scenario.setModified(true);
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando se cambia la duraci�n de la
-     * simulaci�n en nanosegundos.
+     * This method is called when the user changes the Ns components of the
+     * simulation length in the timming options panel.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que hace que se ejecute este m�todo.
      */
     private void handleChangeOnSimulationLengthNs(ChangeEvent evt) {
-        controlarParametrosTemporales();
+        controlTimingOptions();
         this.scenario.setModified(true);
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando se cambia la duraci�n de la
-     * simulaci�n en milisegundos.
+     * This method is called when the user changes the Ms components of the
+     * simulation length in the timming options panel.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que produce que se ejecute este m�todo.
      */
     private void handleChangeOnSimulationLengthMs(ChangeEvent evt) {
-        controlarParametrosTemporales();
+        controlTimingOptions();
         this.scenario.setModified(true);
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando se cambia el tiempo que se
-     * detendr� la simulaci�n entre un paso de simulaci�n y otro.
+     * This method is called when the user changes the simulation speed in the
+     * simulation panel.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handelChangeInSimulationSpeedInMsPerTick(ChangeEvent evt) {
         this.labelSimulationSpeedFaster.setText(this.translations.getString("VentanaHija.Simulacion.etiquetaMsTic"));
@@ -1175,92 +1199,100 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se ejecuta cuando se hace clic en la opci�n de ocultar el
-     * nombre de todos los enlaces, en el men� emergente de la pantalla de
-     * Disenio.
+     * This method is called when the user does click on "Hide link names"
+     * option that is shown when a right click on the background of design panel
+     * is done. This hides the name of all links.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleClickOnPupupDesignPanelHideLinksNames(ActionEvent evt) {
-        Iterator it = this.scenario.getTopology().getLinksIterator();
-        TLink enlaceAux;
-        while (it.hasNext()) {
-            enlaceAux = (TLink) it.next();
-            enlaceAux.setShowName(false);
+        Iterator linksIterator = this.scenario.getTopology().getLinksIterator();
+        TLink link;
+        while (linksIterator.hasNext()) {
+            link = (TLink) linksIterator.next();
+            link.setShowName(false);
         }
         this.designPanel.repaint();
         this.scenario.setModified(true);
     }
 
     /**
-     * Este m�todo se ejecuta cuando se hace clic en la opci�n de ver el nombre
-     * de todos los enlaces, en el men� emergente de la pantalla de Disenio.
+     * This method is called when the user does click on "Show link names"
+     * option that is shown when a right click on the background of design panel
+     * is done. This shows the name of all links.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleClickOnPupupDesignPanelShowLinksNames(ActionEvent evt) {
-        Iterator it = this.scenario.getTopology().getLinksIterator();
-        TLink enlaceAux;
-        while (it.hasNext()) {
-            enlaceAux = (TLink) it.next();
-            enlaceAux.setShowName(true);
+        Iterator linksIterator = this.scenario.getTopology().getLinksIterator();
+        TLink link;
+        while (linksIterator.hasNext()) {
+            link = (TLink) linksIterator.next();
+            link.setShowName(true);
         }
         this.designPanel.repaint();
         this.scenario.setModified(true);
     }
 
     /**
-     * Este m�todo se ejecuta cuando se hace clic en la opci�n de ocultar el
-     * nombre de todos los nodos, en el men� emergente de la pantalla de
-     * Disenio.
+     * This method is called when the user does click on "Hide nodes names"
+     * option that is shown when a right click on the background of design panel
+     * is done. This hides the name of all nodes.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleClickOnPupupDesignPanelHideNodeNames(ActionEvent evt) {
-        Iterator it = this.scenario.getTopology().getNodesIterator();
-        TNode nodoAux;
-        while (it.hasNext()) {
-            nodoAux = (TNode) it.next();
-            nodoAux.setShowName(false);
+        Iterator nodesIterator = this.scenario.getTopology().getNodesIterator();
+        TNode node;
+        while (nodesIterator.hasNext()) {
+            node = (TNode) nodesIterator.next();
+            node.setShowName(false);
         }
         this.designPanel.repaint();
         this.scenario.setModified(true);
     }
 
     /**
-     * Este m�todo se ejecuta cuando se hace clic en la opci�n de ver el nombre
-     * de todos los nodos, en el men� emergente de la pantalla de Disenio.
+     * This method is called when the user does click on "Show nodes names"
+     * option that is shown when a right click on the background of design panel
+     * is done. This shows the name of all nodes.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleClickOnPupupDesignPanelShowNodeNames(ActionEvent evt) {
-        Iterator it = this.scenario.getTopology().getNodesIterator();
-        TNode nodoAux;
-        while (it.hasNext()) {
-            nodoAux = (TNode) it.next();
-            nodoAux.setShowName(true);
+        Iterator nodesIterator = this.scenario.getTopology().getNodesIterator();
+        TNode node;
+        while (nodesIterator.hasNext()) {
+            node = (TNode) nodesIterator.next();
+            node.setShowName(true);
         }
         this.designPanel.repaint();
         this.scenario.setModified(true);
     }
 
     /**
-     * Este m�todo se ejecuta cuando se hace clic en la opci�n de eliminar todo
-     * el escenario completo, en el men� emergente de la pantalla de Disenio.
+     * This method is called when the user does click on "Remove all" option
+     * that is shown when a right click on the background of design panel is
+     * done. This removes all nodes and links of the topology.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que hace que se dispare este m�todo.
      */
-    private void handleClickOnBackgroundDesignPanelRemove(ActionEvent evt) {
-        JDecissionWindow vb = new JDecissionWindow(this.parent, true, this.imageBroker);
-        vb.setQuestion(this.translations.getString("JVentanaHija.PreguntaBorrarTodo"));
-        vb.show();
-        boolean respuesta = vb.getUserAnswer();
-        if (respuesta) {
+    private void handleClickOnBackgroundDesignPanelRemoveAll(ActionEvent evt) {
+        JDecissionWindow decissionWindow = new JDecissionWindow(this.parent, true, this.imageBroker);
+        decissionWindow.setQuestion(this.translations.getString("JVentanaHija.PreguntaBorrarTodo"));
+        decissionWindow.setVisible(true);
+        boolean userAnswer = decissionWindow.getUserAnswer();
+        if (userAnswer) {
             this.scenario.getTopology().removeAllElements();
             this.designPanel.repaint();
         }
@@ -1268,130 +1300,129 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo asigna un escenario ya creado a la ventana hija. A partir de
-     * ese momento todo lo que se haga en la ventana tendr� su repercusi�n en el
-     * escenario.
+     * This method sets the scenario of this JScenarioWindow.
      *
-     * @param esc Escenario ya creado al que se va a asociar esta ventana hija y
-     * que contendr� un escenario y todos sus datos.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void setScenario(TScenario esc) {
+    public void setScenario(TScenario scenario) {
         this.timingControlDisabled = true;
-        long durac = esc.getSimulation().getSimulationLengthInNs();
-        long pas = esc.getSimulation().getSimulationStepLengthInNs();
-        this.scenario = esc;
-        this.designPanel.setTopology(esc.getTopology());
-        this.simulationPanel.ponerTopologia(esc.getTopology());
+        long simulationLength = scenario.getSimulation().getSimulationLengthInNs();
+        long simulationTickDurationInNs = scenario.getSimulation().getSimulationTickDurationInNs();
+        this.scenario = scenario;
+        this.designPanel.setTopology(scenario.getTopology());
+        this.simulationPanel.setTopology(scenario.getTopology());
         this.selectedNode = null;
         this.rightClickedElementInDesignPanel = null;
         this.progressEventListener = new TProgressEventListener(this.progressBarSimulation);
         try {
-            esc.getTopology().getTimer().addProgressEventListener(this.progressEventListener);
+            scenario.getTopology().getTimer().addProgressEventListener(this.progressEventListener);
         } catch (EProgressEventGeneratorOnlyAllowASingleListener e) {
+            // FIX: this is ugly
             e.printStackTrace();
         }
-        this.sliderOptionsSimulationLengthMs.setValue((int) (durac / 1000000));
-        this.sliderOptionsSimulationLengthNs.setValue((int) (durac - (this.sliderOptionsSimulationLengthMs.getValue() * 1000000)));
-        this.sliderOptionsTickDurationInNs.setMaximum((int) esc.getSimulation().getSimulationLengthInNs());
-        this.sliderOptionsTickDurationInNs.setValue((int) pas);
-        esc.getSimulation().setSimulationLengthInNs(durac);
-        esc.getSimulation().setSimulationStepLengthInNs(pas);
+        this.sliderOptionsSimulationLengthMs.setValue((int) (simulationLength / 1000000));
+        this.sliderOptionsSimulationLengthNs.setValue((int) (simulationLength - (this.sliderOptionsSimulationLengthMs.getValue() * 1000000)));
+        this.sliderOptionsTickDurationInNs.setMaximum((int) scenario.getSimulation().getSimulationLengthInNs());
+        this.sliderOptionsTickDurationInNs.setValue((int) simulationTickDurationInNs);
+        scenario.getSimulation().setSimulationLengthInNs(simulationLength);
+        scenario.getSimulation().setSimulationTickDurationInNs(simulationTickDurationInNs);
         this.labelSimulationSpeedFaster.setText(this.translations.getString("VentanaHija.Simulacion.EtiquetaMsTic"));
         this.labelOptionsSimulationLengthMs.setText(this.sliderOptionsSimulationLengthMs.getValue() + this.translations.getString("VentanaHija._ms."));
         this.labelOptionsSimulationLengthNs.setText(this.sliderOptionsSimulationLengthNs.getValue() + this.translations.getString("VentanaHija._ns."));
         this.labelOptionsNsTick.setText(this.sliderOptionsTickDurationInNs.getValue() + this.translations.getString("VentanaHija_ns."));
-        this.textFieldOptionsScenarioAuthorName.setText(esc.getAuthor());
+        this.textFieldOptionsScenarioAuthorName.setText(scenario.getAuthor());
         this.textFieldOptionsScenarioAuthorName.setCaretPosition(1);
-        this.textFieldOptionsScenarioTitle.setText(esc.getTitle());
+        this.textFieldOptionsScenarioTitle.setText(scenario.getTitle());
         this.textFieldOptionsScenarioTitle.setCaretPosition(1);
-        this.textAreaOptionsScenarioDescription.setText(esc.getDescription());
+        this.textAreaOptionsScenarioDescription.setText(scenario.getDescription());
         this.textAreaOptionsScenarioDescription.setCaretPosition(1);
         this.timingControlDisabled = false;
         this.scenario.getSimulation().setSimulationPanel(this.simulationPanel);
-        this.controlarParametrosTemporales();
+        this.controlTimingOptions();
     }
 
     /**
-     * Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un
-     * enlace nuevo en la barra de herramientas de la pantalla de dise�o.
+     * This method is called when the user does click on "link icon" in the
+     * design panel. It's used to adda new link.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que hace que se dispare este m�todo.
      */
     private void handleClickOnLinkIcon(MouseEvent evt) {
         if (this.scenario.getTopology().getNumberOfNodes() < 2) {
-            JWarningWindow va = new JWarningWindow(this.parent, true, this.imageBroker);
-            va.setWarningMessage(this.translations.getString("VentanaHija.ErrorAlMenosDosNodos"));
-            va.show();
+            JWarningWindow warningWindow = new JWarningWindow(this.parent, true, this.imageBroker);
+            warningWindow.setWarningMessage(this.translations.getString("VentanaHija.ErrorAlMenosDosNodos"));
+            warningWindow.setVisible(true);
         } else {
-            TLinkConfig config = new TLinkConfig();
-            JLinkWindow venlace = new JLinkWindow(this.scenario.getTopology(), this.imageBroker, this.parent, true);
-            venlace.setConfiguration(config, false);
-            //venlace.loadAllNodesThatHaveAvailablePorts();
-            venlace.show();
-            if (config.isWellConfigured()) {
+            TLinkConfig linkConfig = new TLinkConfig();
+            JLinkWindow linkWindow = new JLinkWindow(this.scenario.getTopology(), this.imageBroker, this.parent, true);
+            linkWindow.setConfiguration(linkConfig, false);
+            linkWindow.setVisible(true);
+            if (linkConfig.isWellConfigured()) {
                 try {
-                    if (config.getLinkType() == TLink.INTERNAL_LINK) {
-                        TInternalLink enlaceInterno = new TInternalLink(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
-                        enlaceInterno.configure(config, scenario.getTopology(), false);
-                        this.scenario.getTopology().addLink(enlaceInterno);
+                    if (linkConfig.getLinkType() == TLink.INTERNAL_LINK) {
+                        TInternalLink internalLink = new TInternalLink(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+                        internalLink.configure(linkConfig, scenario.getTopology(), false);
+                        this.scenario.getTopology().addLink(internalLink);
                     } else {
-                        TExternalLink enlaceExterno = new TExternalLink(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
-                        enlaceExterno.configure(config, this.scenario.getTopology(), false);
-                        this.scenario.getTopology().addLink(enlaceExterno);
+                        TExternalLink externalLink = new TExternalLink(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+                        externalLink.configure(linkConfig, this.scenario.getTopology(), false);
+                        this.scenario.getTopology().addLink(externalLink);
                     }
                     this.designPanel.repaint();
                 } catch (Exception e) {
-                    JErrorWindow err;
-                    err = new JErrorWindow(this.parent, true, this.imageBroker);
-                    err.setErrorMessage(e.toString());
-                    err.show();
+                    JErrorWindow errorWindow;
+                    errorWindow = new JErrorWindow(this.parent, true, this.imageBroker);
+                    errorWindow.setErrorMessage(e.toString());
+                    errorWindow.setVisible(true);
                 }
                 this.scenario.setModified(true);
             } else {
-                config = null;
+                linkConfig = null;
             }
         }
     }
 
     /**
-     * Este m�todo se ejecuta cuando se hace clic en la opci�n eliminar que
-     * aparece en el men� emergente al pulsar con el bot�n derecho sobre un
-     * elemento de la topolog�a. En la pantalla de dise�o.
+     * This method is called when the user does click on "Remove" option that is
+     * shown when a right click on an element (node or link) is the done in the
+     * design panel. This removes the selected element.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que hace que se dispare este m�todo.
      */
     private void handleClickOnPupupDesignPanelRemove(ActionEvent evt) {
-        JDecissionWindow vb = new JDecissionWindow(this.parent, true, this.imageBroker);
-        vb.setQuestion(this.translations.getString("JVentanaHija.preguntaAlEliminar"));
-        vb.show();
-        boolean respuesta = vb.getUserAnswer();
-        if (respuesta) {
+        JDecissionWindow decissionWindow = new JDecissionWindow(this.parent, true, this.imageBroker);
+        decissionWindow.setQuestion(this.translations.getString("JVentanaHija.preguntaAlEliminar"));
+        decissionWindow.setVisible(true);
+        boolean userAnswer = decissionWindow.getUserAnswer();
+        if (userAnswer) {
             if (this.rightClickedElementInDesignPanel != null) {
                 if (this.rightClickedElementInDesignPanel.getElementType() == TTopologyElement.NODE) {
-                    TNode nt = (TNode) this.rightClickedElementInDesignPanel;
-                    if (nt.getNodeType() == TNode.TRAFFIC_SINK) {
-                        if (this.scenario.getTopology().isThereAnyNodeGeneratingTrafficFor((TTrafficSinkNode) nt)) {
-                            JWarningWindow va;
-                            va = new JWarningWindow(this.parent, true, this.imageBroker);
-                            va.setWarningMessage(this.translations.getString("JVentanaHija.NoPuedoBorrarReceptor"));
-                            va.show();
+                    TNode node = (TNode) this.rightClickedElementInDesignPanel;
+                    if (node.getNodeType() == TNode.TRAFFIC_SINK) {
+                        if (this.scenario.getTopology().isThereAnyNodeGeneratingTrafficFor((TTrafficSinkNode) node)) {
+                            JWarningWindow warningWindow;
+                            warningWindow = new JWarningWindow(this.parent, true, this.imageBroker);
+                            warningWindow.setWarningMessage(this.translations.getString("JVentanaHija.NoPuedoBorrarReceptor"));
+                            warningWindow.setVisible(true);
                             this.rightClickedElementInDesignPanel = null;
                         } else {
-                            this.scenario.getTopology().disconnectNodeAndRemove(nt);
+                            this.scenario.getTopology().disconnectNodeAndRemove(node);
                             this.rightClickedElementInDesignPanel = null;
                             this.designPanel.repaint();
                         }
                     } else {
-                        this.scenario.getTopology().disconnectNodeAndRemove(nt);
+                        this.scenario.getTopology().disconnectNodeAndRemove(node);
                         this.rightClickedElementInDesignPanel = null;
                         this.designPanel.repaint();
                     }
                 } else {
-                    TLink ent = (TLink) this.rightClickedElementInDesignPanel;
-                    this.scenario.getTopology().removeLink(ent);
+                    TLink link = (TLink) this.rightClickedElementInDesignPanel;
+                    this.scenario.getTopology().removeLink(link);
                     this.rightClickedElementInDesignPanel = null;
                     this.designPanel.repaint();
                 }
@@ -1402,23 +1433,24 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se ejecuta cuando se hace clic en la opci�n de ver/ocultar
-     * nombre que aparece en el men� emergente al pulsar con el bot�n derecho
-     * sobre un elemento de la topolog�a. En la pantalla de dise�o.
+     * This method is called when the user does click on "Show name" option that
+     * is shown when a right click on an element (node or link) is the done in
+     * the design panel. This makes visible the name of this element.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleClickOnPupupDesignPanelShowName(ActionEvent evt) {
         if (this.rightClickedElementInDesignPanel != null) {
             if (this.rightClickedElementInDesignPanel.getElementType() == TTopologyElement.NODE) {
-                TNode nt = (TNode) this.rightClickedElementInDesignPanel;
-                nt.setShowName(this.chekBoxMenuItemShowElementName.isSelected());
+                TNode node = (TNode) this.rightClickedElementInDesignPanel;
+                node.setShowName(this.chekBoxMenuItemShowElementName.isSelected());
                 this.rightClickedElementInDesignPanel = null;
                 this.designPanel.repaint();
             } else {
-                TLink ent = (TLink) this.rightClickedElementInDesignPanel;
-                ent.setShowName(this.chekBoxMenuItemShowElementName.isSelected());
+                TLink link = (TLink) this.rightClickedElementInDesignPanel;
+                link.setShowName(this.chekBoxMenuItemShowElementName.isSelected());
                 this.rightClickedElementInDesignPanel = null;
                 this.designPanel.repaint();
             }
@@ -1427,26 +1459,28 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se ejecuta cuando se hace clic con el bot�n derecho en la
-     * pantalla de dise�o.
+     * This method is called, at a first stage, when the user does right click
+     * on the background of the design panel. This makes visible the
+     * corresponding popup menu.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que hace que este m�todo se dispare.
      */
     private void handleRightClickOnDesignPanel(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON3) {
-            TTopologyElement et = this.scenario.getTopology().getElementInScreenPosition(evt.getPoint());
-            if (et == null) {
+            TTopologyElement topologyElement = this.scenario.getTopology().getElementInScreenPosition(evt.getPoint());
+            if (topologyElement == null) {
                 this.popupMenuBackgroundDesignPanel.show(this, evt.getX() + 7, evt.getY() - 27);
-            } else if (et.getElementType() == TTopologyElement.NODE) {
-                TNode nt = (TNode) et;
+            } else if (topologyElement.getElementType() == TTopologyElement.NODE) {
+                TNode nt = (TNode) topologyElement;
                 this.chekBoxMenuItemShowElementName.setSelected(nt.getShowName());
-                this.rightClickedElementInDesignPanel = et;
+                this.rightClickedElementInDesignPanel = topologyElement;
                 this.popupMenuTopologyElement.show(this, evt.getX() + 7, evt.getY() + 15);
-            } else if (et.getElementType() == TTopologyElement.LINK) {
-                TLink ent = (TLink) et;
+            } else if (topologyElement.getElementType() == TTopologyElement.LINK) {
+                TLink ent = (TLink) topologyElement;
                 this.chekBoxMenuItemShowElementName.setSelected(ent.getShowName());
-                this.rightClickedElementInDesignPanel = et;
+                this.rightClickedElementInDesignPanel = topologyElement;
                 this.popupMenuTopologyElement.show(this, evt.getX() + 7, evt.getY() + 15);
             }
         } else {
@@ -1456,138 +1490,140 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LSRA
-     * nuevo en la barra de herramientas de la pantalla de dise�o.
+     * This method is called when the user does click on "Active LSR node icon"
+     * in the design panel. It's used to add a new Active LSR node.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleClickOnActiveLSRNodeIcon(MouseEvent evt) {
-        TActiveLSRNode lsra = null;
+        TActiveLSRNode activeLSRNode = null;
         try {
-            lsra = new TActiveLSRNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            activeLSRNode = new TActiveLSRNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
         } catch (Exception e) {
-            JErrorWindow err;
-            err = new JErrorWindow(this.parent, true, this.imageBroker);
-            err.setErrorMessage(e.toString());
-            err.show();
+            JErrorWindow errorWindow;
+            errorWindow = new JErrorWindow(this.parent, true, this.imageBroker);
+            errorWindow.setErrorMessage(e.toString());
+            errorWindow.setVisible(true);
         }
-        JActiveLSRWindow vlsra = new JActiveLSRWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
-        vlsra.setConfiguration(lsra, false);
-        vlsra.show();
-        if (lsra.isWellConfigured()) {
+        JActiveLSRWindow activeLSRWindow = new JActiveLSRWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
+        activeLSRWindow.setConfiguration(activeLSRNode, false);
+        activeLSRWindow.setVisible(true);
+        if (activeLSRNode.isWellConfigured()) {
             try {
-                this.scenario.getTopology().addNode(lsra);
+                this.scenario.getTopology().addNode(activeLSRNode);
                 this.designPanel.repaint();
             } catch (Exception e) {
-                JErrorWindow err;
-                err = new JErrorWindow(this.parent, true, this.imageBroker);
-                err.setErrorMessage(e.toString());
-                err.show();
+                JErrorWindow errorWindow;
+                errorWindow = new JErrorWindow(this.parent, true, this.imageBroker);
+                errorWindow.setErrorMessage(e.toString());
+                errorWindow.setVisible(true);
             };
             this.scenario.setModified(true);
         } else {
-            lsra = null;
+            activeLSRNode = null;
         }
     }
 
     /**
-     * Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LSR
-     * nuevo en la barra de herramientas de la pantalla de dise�o.
+     * This method is called when the user does click on "LSR node icon" in the
+     * design panel. It's used to add a new LSR node.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que hace que este m�todo se dispare.
      */
     private void handleClickOnLSRNodeIcon(MouseEvent evt) {
-        TLSRNode lsr = null;
+        TLSRNode lsrNode = null;
         try {
-            lsr = new TLSRNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            lsrNode = new TLSRNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
         } catch (Exception e) {
-            JErrorWindow err;
-            err = new JErrorWindow(this.parent, true, this.imageBroker);
-            err.setErrorMessage(e.toString());
-            err.show();
+            JErrorWindow errorWindow;
+            errorWindow = new JErrorWindow(this.parent, true, this.imageBroker);
+            errorWindow.setErrorMessage(e.toString());
+            errorWindow.setVisible(true);
         }
-        JLSRWindow vlsr = new JLSRWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
-        vlsr.setConfiguration(lsr, false);
-        vlsr.show();
-        if (lsr.isWellConfigured()) {
+        JLSRWindow lsrWindow = new JLSRWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
+        lsrWindow.setConfiguration(lsrNode, false);
+        lsrWindow.setVisible(true);
+        if (lsrNode.isWellConfigured()) {
             try {
-                this.scenario.getTopology().addNode(lsr);
+                this.scenario.getTopology().addNode(lsrNode);
                 this.designPanel.repaint();
             } catch (Exception e) {
-                JErrorWindow err;
-                err = new JErrorWindow(this.parent, true, this.imageBroker);
-                err.setErrorMessage(e.toString());
-                err.show();
+                JErrorWindow errorWindow;
+                errorWindow = new JErrorWindow(this.parent, true, this.imageBroker);
+                errorWindow.setErrorMessage(e.toString());
+                errorWindow.setVisible(true);
             }
             this.scenario.setModified(true);
         } else {
-            lsr = null;
+            lsrNode = null;
         }
     }
 
     /**
-     * Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LSRA
-     * nuevo en la barra de herramientas de la pantalla de dise�o.
+     * This method is called when the user does click on "Active LER node icon"
+     * in the design panel. It's used to add a new Active LER node.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que hace que se dispare este m�todo.
      */
     private void handleClickOnActiveLERNodeIcon(MouseEvent evt) {
-        TActiveLERNode lera = null;
+        TActiveLERNode activeLERNode = null;
         try {
-            lera = new TActiveLERNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            activeLERNode = new TActiveLERNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
         } catch (Exception e) {
-            JErrorWindow err;
-            err = new JErrorWindow(this.parent, true, this.imageBroker);
-            err.setErrorMessage(e.toString());
-            err.show();
+            JErrorWindow errorWindow;
+            errorWindow = new JErrorWindow(this.parent, true, this.imageBroker);
+            errorWindow.setErrorMessage(e.toString());
+            errorWindow.setVisible(true);
         }
-        JActiveLERWindow vlera = new JActiveLERWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
-        vlera.setConfiguration(lera, false);
-        vlera.show();
-        if (lera.isWellConfigured()) {
+        JActiveLERWindow activeLERWindow = new JActiveLERWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
+        activeLERWindow.setConfiguration(activeLERNode, false);
+        activeLERWindow.setVisible(true);
+        if (activeLERNode.isWellConfigured()) {
             try {
-                this.scenario.getTopology().addNode(lera);
+                this.scenario.getTopology().addNode(activeLERNode);
                 this.designPanel.repaint();
             } catch (Exception e) {
-                JErrorWindow err;
-                err = new JErrorWindow(this.parent, true, this.imageBroker);
-                err.setErrorMessage(e.toString());
-                err.show();
+                JErrorWindow errorWindow;
+                errorWindow = new JErrorWindow(this.parent, true, this.imageBroker);
+                errorWindow.setErrorMessage(e.toString());
+                errorWindow.setVisible(true);
             }
             this.scenario.setModified(true);
         } else {
-            lera = null;
+            activeLERNode = null;
         }
     }
 
     /**
-     * Este m�todo se ejecuta cuando se mueve el rat�n dentro del �rea de
-     * simulaci�n , en la pantalla de simulaci�n. Entre otras cosas, cambia el
-     * cursor del rat�n al pasar sobre un elemento, permite mostrar men�s
-     * emergentes coherentes con el contexto de donde se encuentra el rat�n,
-     * etc�tera.
+     * This method is called when the user moves the mouse over the simulation
+     * panel. It is used to show different mouse cursor depending on the element
+     * the mouse is on and also to see information about the existing elements.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleMouseMovedOnSimulationPanel(MouseEvent evt) {
-        TTopology topo = this.scenario.getTopology();
-        TTopologyElement et = topo.getElementInScreenPosition(evt.getPoint());
-        if (et != null) {
+        TTopology topology = this.scenario.getTopology();
+        TTopologyElement topologyElement = topology.getElementInScreenPosition(evt.getPoint());
+        if (topologyElement != null) {
             this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-            if (et.getElementType() == TTopologyElement.NODE) {
-                TNode nt = (TNode) et;
-                if (nt.getPorts().isArtificiallyCongested()) {
-                    this.simulationPanel.setToolTipText(this.translations.getString("JVentanaHija.Congestion") + nt.getPorts().getCongestionLevel() + this.translations.getString("JVentanaHija.POrcentaje") + this.translations.getString("VentanaHija.paraDejarDeCongestionar"));
+            if (topologyElement.getElementType() == TTopologyElement.NODE) {
+                TNode node = (TNode) topologyElement;
+                if (node.getPorts().isCongestedArtificially()) {
+                    this.simulationPanel.setToolTipText(this.translations.getString("JVentanaHija.Congestion") + node.getPorts().getCongestionLevel() + this.translations.getString("JVentanaHija.POrcentaje") + this.translations.getString("VentanaHija.paraDejarDeCongestionar"));
                 } else {
-                    this.simulationPanel.setToolTipText(this.translations.getString("JVentanaHija.Congestion") + nt.getPorts().getCongestionLevel() + this.translations.getString("JVentanaHija.POrcentaje") + this.translations.getString("VentanaHija.paraCongestionar"));
+                    this.simulationPanel.setToolTipText(this.translations.getString("JVentanaHija.Congestion") + node.getPorts().getCongestionLevel() + this.translations.getString("JVentanaHija.POrcentaje") + this.translations.getString("VentanaHija.paraCongestionar"));
                 }
-            } else if (et.getElementType() == TTopologyElement.LINK) {
-                TLink ent = (TLink) et;
-                if (ent.isBroken()) {
+            } else if (topologyElement.getElementType() == TTopologyElement.LINK) {
+                TLink link = (TLink) topologyElement;
+                if (link.isBroken()) {
                     this.simulationPanel.setToolTipText(this.translations.getString("JVentanaHija.EnlaceRoto"));
                 } else {
                     this.simulationPanel.setToolTipText(this.translations.getString("JVentanaHija.EnlaceFuncionando"));
@@ -1605,25 +1641,25 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se ejecuta cuando se mueve el rat�n dentro del �rea de
-     * dise�o, en la pantalla de Dise�o. Entre otras cosas, cambia el cursor del
-     * rat�n al pasar sobre un elemento, permite mostrar men�s emergentes
-     * coherentes con el contexto de donde se encuentra el rat�n, etc�tera.
+     * This method is called when the user moves the mouse over the design
+     * panel. It is used to show different mouse cursor depending on the element
+     * the mouse is on and also to see information about the existing elements.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que hace que se dispare este m�todo.
      */
     private void handleMouseMovedOnDesignPanel(MouseEvent evt) {
-        TTopology topo = this.scenario.getTopology();
-        TTopologyElement et = topo.getElementInScreenPosition(evt.getPoint());
-        if (et != null) {
+        TTopology topology = this.scenario.getTopology();
+        TTopologyElement topologyElement = topology.getElementInScreenPosition(evt.getPoint());
+        if (topologyElement != null) {
             this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-            if (et.getElementType() == TTopologyElement.NODE) {
-                TNode nt = (TNode) et;
-                this.designPanel.setToolTipText(this.translations.getString("JVentanaHija.PanelDisenio.IP") + nt.getIPv4Address());
-            } else if (et.getElementType() == TTopologyElement.LINK) {
-                TLink ent = (TLink) et;
-                this.designPanel.setToolTipText(this.translations.getString("JVentanaHija.panelDisenio.Retardo") + ent.getDelay() + this.translations.getString("JVentanaHija.panelDisenio.ns"));
+            if (topologyElement.getElementType() == TTopologyElement.NODE) {
+                TNode node = (TNode) topologyElement;
+                this.designPanel.setToolTipText(this.translations.getString("JVentanaHija.PanelDisenio.IP") + node.getIPv4Address());
+            } else if (topologyElement.getElementType() == TTopologyElement.LINK) {
+                TLink link = (TLink) topologyElement;
+                this.designPanel.setToolTipText(this.translations.getString("JVentanaHija.panelDisenio.Retardo") + link.getDelay() + this.translations.getString("JVentanaHija.panelDisenio.ns"));
             }
         } else {
             this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -1632,17 +1668,17 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando se est� arrastrando el rat�n
-     * en la pantalla de dise�o. Se encarga de mover los elementos de un lugar a
-     * otro para dise�ar la topolog�a.
+     * This method is called when the user drag the mouse on the design panel.
+     * Everything that can be done dragging the mouse in the design panel is
+     * here.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleDragOnDesignPanel(MouseEvent evt) {
         if (evt.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
             if (this.selectedNode != null) {
-                TTopology topo = scenario.getTopology();
                 Point p2 = evt.getPoint();
                 if (p2.x < 0) {
                     p2.x = 0;
@@ -1664,12 +1700,13 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando soltamos el bot�n del raton a
-     * la rrastrar o al hacer clic. Si el rat�n estaba sobre un elemento de la
-     * topology, se marca �ste como no seleccionado.
+     * This method is called when a mouse button is released on the design
+     * panel. Everything that can be done releasing a mouse button in the design
+     * panel is here (usually, the en of a drag action).
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleMouseReleasedOnDesignPanel(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
@@ -1683,16 +1720,18 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando se hace un clic con el bot�n
-     * izquierdo sobre la pantalla de dise�o.
+     * This method is called when a mouse button is pressed on the design panel.
+     * Everything that can be done pressing a mouse button in the design panel
+     * is here (pressing, without releasing).
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que hace que se dispare este m�todo.
      */
     private void handleMousePressedOnDesignPanel(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            TTopology topo = this.scenario.getTopology();
-            this.selectedNode = topo.getNodeInScreenPosition(evt.getPoint());
+            TTopology topology = this.scenario.getTopology();
+            this.selectedNode = topology.getNodeInScreenPosition(evt.getPoint());
             if (this.selectedNode != null) {
                 this.selectedNode.setSelected(TNode.SELECTED);
                 this.scenario.setModified(true);
@@ -1702,11 +1741,12 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono de
-     * detener en la pantalla de simulaci�n.
+     * This method is called when the mouse exits the "Pause" icon in the
+     * simulation panel. It is used to restore the default pause icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleMouseExitingPauseIcon(MouseEvent evt) {
         this.iconContainerPauseSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PAUSA));
@@ -1714,11 +1754,12 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono de
-     * detener en la pantalla de simulaci�n.
+     * This method is called when the mouse enters the "Pause" icon in the
+     * simulation panel. It is used to show a highlighted pause icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que hace que se dispare este m�todo.
      */
     private void handleMouseEnteringPauseIcon(MouseEvent evt) {
         this.iconContainerPauseSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PAUSA_BRILLO));
@@ -1726,35 +1767,38 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono de
-     * finalizar en la pantalla de simulaci�n.
+     * This method is called when the mouse exits the "Stop" icon in the
+     * simulation panel. It is used to restore the default stop icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que hace que se dispare este m�todo.
      */
     private void handleMouseExitingStopIcon(MouseEvent evt) {
-        this.iconContainerFinishSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PARAR));
+        this.iconContainerStopSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PARAR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono de
-     * finalizar en la pantalla de simulaci�n.
+     * This method is called when the mouse enters the "Stop" icon in the
+     * simulation panel. It is used to show a highlighted stop icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que hace que se dispare este m�todo.
      */
     private void handleMouseEnteringStopIcon(MouseEvent evt) {
-        this.iconContainerFinishSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PARAR_BRILLO));
+        this.iconContainerStopSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_PARAR_BRILLO));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono de
-     * comenzar en la pantalla de simulaci�n.
+     * This method is called when the mouse exits the "Resume" icon in the
+     * simulation panel. It is used to restore the default resume icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que hace que se dispare este m�todo.
      */
     private void handleMouseExitingResumeIcon(MouseEvent evt) {
         this.iconContainerResumeSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_COMENZAR));
@@ -1762,11 +1806,12 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono de
-     * comenzar en la pantalla de simulaci�n.
+     * This method is called when the mouse enters the "Resume" icon in the
+     * simulation panel. It is used to show a highlighted resume icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que hace que se dispare este m�todo.
      */
     private void handleMouseEnteringResumeIcon(MouseEvent evt) {
         this.iconContainerResumeSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_COMENZAR_BRILLO));
@@ -1774,11 +1819,12 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono
-     * generar en la pantalla de simulaci�n.
+     * This method is called when the mouse exits the "Start" icon in the
+     * simulation panel. It is used to restore the default start icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que hace que se dispare este m�todo.
      */
     private void handleMouseExitingStartIcon(MouseEvent evt) {
         this.iconContainterStartSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_GENERAR));
@@ -1786,11 +1832,12 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
-     * generar en la pantalla de simulaci�n.
+     * This method is called when the mouse enters the "Start" icon in the
+     * simulation panel. It is used to show a highlighted start icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que hace que se dispare este m�todo.
      */
     private void handleMouseEnteringStartIcon(MouseEvent evt) {
         this.iconContainterStartSimulation.setIcon(this.imageBroker.getIcon(TImageBroker.BOTON_GENERAR_BRILLO));
@@ -1798,47 +1845,49 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se ejecuta cuando se hace clic en la opci�n de a�adir un LER
-     * nuevo en la barra de herramientas de la pantalla de dise�o.
+     * This method is called when the user does click on "LER node icon" in the
+     * design panel. It's used to add a new LER node.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que hace que se dispare este m�todo.
      */
     private void handleClickOnLERNodeIcon(MouseEvent evt) {
-        TLERNode ler = null;
+        TLERNode lerNode = null;
         try {
-            ler = new TLERNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            lerNode = new TLERNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
         } catch (Exception e) {
-            JErrorWindow err;
-            err = new JErrorWindow(this.parent, true, this.imageBroker);
-            err.setErrorMessage(e.toString());
-            err.show();
+            JErrorWindow errorWindow;
+            errorWindow = new JErrorWindow(this.parent, true, this.imageBroker);
+            errorWindow.setErrorMessage(e.toString());
+            errorWindow.setVisible(true);
         }
-        JLERWindow vler = new JLERWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
-        vler.setConfiguration(ler, false);
-        vler.show();
-        if (ler.isWellConfigured()) {
+        JLERWindow lerWindow = new JLERWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
+        lerWindow.setConfiguration(lerNode, false);
+        lerWindow.setVisible(true);
+        if (lerNode.isWellConfigured()) {
             try {
-                this.scenario.getTopology().addNode(ler);
+                this.scenario.getTopology().addNode(lerNode);
                 this.designPanel.repaint();
             } catch (Exception e) {
-                JErrorWindow err;
-                err = new JErrorWindow(this.parent, true, this.imageBroker);
-                err.setErrorMessage(e.toString());
-                err.show();
+                JErrorWindow errorWindow;
+                errorWindow = new JErrorWindow(this.parent, true, this.imageBroker);
+                errorWindow.setErrorMessage(e.toString());
+                errorWindow.setVisible(true);
             }
             this.scenario.setModified(true);
         } else {
-            ler = null;
+            lerNode = null;
         }
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono
-     * enlace en la pantalla de dise�o.
+     * This method is called when the mouse exits the "Link" icon in the design
+     * panel. It is used to restore the default link icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo
      */
     private void handleMouseExitingLinkIcon(MouseEvent evt) {
         this.iconContainerLink.setIcon(this.imageBroker.getIcon(TImageBroker.ENLACE_MENU));
@@ -1846,11 +1895,12 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
-     * enlace en la pantalla de dise�o.
+     * This method is called when the mouse enters the "Link" icon in the design
+     * panel. It is used to show a highlighted link icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleMouseEnteringLinkIcon(MouseEvent evt) {
         this.iconContainerLink.setIcon(this.imageBroker.getIcon(TImageBroker.ENLACE_MENU_BRILLO));
@@ -1858,11 +1908,12 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LSRA
-     * en la pantalla de dise�o.
+     * This method is called when the mouse exits the "Active LSR node" icon in
+     * the design panel. It is used to restore the default Active LSR node icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleMouseExitingActiveLSRNodeIcon(MouseEvent evt) {
         this.iconContainerActiveLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSRA_MENU));
@@ -1870,11 +1921,12 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
-     * LSRA en la pantalla de dise�o.
+     * This method is called when the mouse enters the "Active LSR node" icon in
+     * the design panel. It is used to show a highlighted Active LSR node icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleMouseEnteringActiveLSRNodeIcon(MouseEvent evt) {
         this.iconContainerActiveLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSRA_MENU_BRILLO));
@@ -1882,11 +1934,12 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LSR
-     * en la pantalla de dise�o.
+     * This method is called when the mouse exits the "LSR node" icon in the
+     * design panel. It is used to restore the default LSR node icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleMouseExitingLSRNodeIcon(MouseEvent evt) {
         this.iconContainerLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSR_MENU));
@@ -1894,11 +1947,12 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
-     * LSR en la pantalla de dise�o.
+     * This method is called when the mouse enters the "LSR node" icon in the
+     * design panel. It is used to show a highlighted LSR node icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleMouseEnteringLSRNodeIcon(MouseEvent evt) {
         this.iconContainerLSR.setIcon(this.imageBroker.getIcon(TImageBroker.LSR_MENU_BRILLO));
@@ -1906,11 +1960,12 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LERA
-     * en la pantalla de dise�o.
+     * This method is called when the mouse exits the "Active LER node" icon in
+     * the design panel. It is used to restore the default active LER node icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleMouseExitingActiveLERNodeIcon(MouseEvent evt) {
         this.iconContainerActiveLER.setIcon(this.imageBroker.getIcon(TImageBroker.LERA_MENU));
@@ -1918,11 +1973,12 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
-     * LERA en la pantalla de dise�o.
+     * This method is called when the mouse enters the "Active LER node" icon in
+     * the design panel. It is used to show a highlighted active LER node icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleMouseEnteringActiveLERNodeIcon(MouseEvent evt) {
         this.iconContainerActiveLER.setIcon(this.imageBroker.getIcon(TImageBroker.LERA_MENU_BRILLO));
@@ -1930,11 +1986,12 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono LER
-     * en la pantalla de dise�o.
+     * This method is called when the mouse exits the "LER node" icon in the
+     * design panel. It is used to restore the default LER node icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleMouseExitingLERNodeIcon(MouseEvent evt) {
         this.iconContainerLER.setIcon(this.imageBroker.getIcon(TImageBroker.LER_MENU));
@@ -1942,11 +1999,12 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
-     * LER en la pantalla de dise�o.
+     * This method is called when the mouse enters the "LER node" icon in the
+     * design panel. It is used to show a highlighted LER node icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleMouseEnteringLERNodeIcon(MouseEvent evt) {
         this.iconContainerLER.setIcon(this.imageBroker.getIcon(TImageBroker.LER_MENU_BRILLO));
@@ -1954,11 +2012,13 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono
-     * receptor en la pantalla de dise�o.
+     * This method is called when the mouse exits the "Traffic sink node" icon
+     * in the design panel. It is used to restore the default traffic sink node
+     * icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleMouseExitingTrafficSinkNodeIcon(MouseEvent evt) {
         this.iconContainerTrafficSink.setIcon(this.imageBroker.getIcon(TImageBroker.RECEPTOR_MENU));
@@ -1966,11 +2026,13 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
-     * receptor en la pantalla de dise�o.
+     * This method is called when the mouse enters the "traffic sink node" icon
+     * in the design panel. It is used to show a highlighted traffic sink node
+     * icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleMouseEnteringTrafficSinkNodeIcon(MouseEvent evt) {
         this.iconContainerTrafficSink.setIcon(this.imageBroker.getIcon(TImageBroker.RECEPTOR_MENU_BRILLO));
@@ -1978,11 +2040,13 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n sale del icono
-     * emisor en la pantalla de dise�o.
+     * This method is called when the mouse exits the "Traffic generator node"
+     * icon in the design panel. It is used to restore the default traffic
+     * generator node icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleMouseExitingTrafficGeneratorNodeIcon(MouseEvent evt) {
         this.iconContainerTrafficGeneratorNode.setIcon(this.imageBroker.getIcon(TImageBroker.EMISOR_MENU));
@@ -1990,11 +2054,13 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando el rat�n pasa por el icono
-     * emisor en la pantalla de dise�o.
+     * This method is called when the mouse enters the "traffic generator node"
+     * icon in the design panel. It is used to show a highlighted traffic
+     * generator node icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleMouseEnteringTrafficGeneratorNodeIcon(MouseEvent evt) {
         this.iconContainerTrafficGeneratorNode.setIcon(this.imageBroker.getIcon(TImageBroker.EMISOR_MENU_BRILLO));
@@ -2002,145 +2068,150 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
-     * receptor en la ventana de dise�o. A�ade un receptor nuevo en la topology.
+     * This method is called when the user does click on the "traffic sink node"
+     * icon in the design panel. It is used to add a new traffic sink node.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleClickOnTrafficSinkNodeIcon(MouseEvent evt) {
-        TTrafficSinkNode receptor = null;
+        TTrafficSinkNode trafficSinkNode = null;
         try {
-            receptor = new TTrafficSinkNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            trafficSinkNode = new TTrafficSinkNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
         } catch (Exception e) {
-            JErrorWindow err;
-            err = new JErrorWindow(this.parent, true, this.imageBroker);
-            err.setErrorMessage(e.toString());
-            err.show();
+            JErrorWindow errorWindow;
+            errorWindow = new JErrorWindow(this.parent, true, this.imageBroker);
+            errorWindow.setErrorMessage(e.toString());
+            errorWindow.setVisible(true);
         }
-        JTrafficSinkWindow vr = new JTrafficSinkWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
-        vr.setConfiguration(receptor, false);
-        vr.show();
-        if (receptor.isWellConfigured()) {
+        JTrafficSinkWindow trafficSinkWindow = new JTrafficSinkWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
+        trafficSinkWindow.setConfiguration(trafficSinkNode, false);
+        trafficSinkWindow.setVisible(true);
+        if (trafficSinkNode.isWellConfigured()) {
             try {
-                this.scenario.getTopology().addNode(receptor);
+                this.scenario.getTopology().addNode(trafficSinkNode);
                 this.designPanel.repaint();
             } catch (Exception e) {
-                JErrorWindow err;
-                err = new JErrorWindow(this.parent, true, this.imageBroker);
-                err.setErrorMessage(e.toString());
-                err.show();
+                JErrorWindow errorWindow;
+                errorWindow = new JErrorWindow(this.parent, true, this.imageBroker);
+                errorWindow.setErrorMessage(e.toString());
+                errorWindow.setVisible(true);
             }
             this.scenario.setModified(true);
         } else {
-            receptor = null;
+            trafficSinkNode = null;
         }
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
-     * emisor en la ventana de dise�o. A�ade un emisor nuevo en la topology.
+     * This method is called when the user does click on the "traffic generator
+     * node" icon in the design panel. It is used to add a new traffic generator
+     * node.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que se dispare este m�todo.
      */
     private void handleClickOnTrafficGeneratorNodeIcon(MouseEvent evt) {
-        TTopology t = this.scenario.getTopology();
-        Iterator it = t.getNodesIterator();
-        TNode nt;
-        boolean hayDestino = false;
-        while (it.hasNext()) {
-            nt = (TNode) it.next();
-            if (nt.getNodeType() == TNode.TRAFFIC_SINK) {
-                hayDestino = true;
+        TTopology topology = this.scenario.getTopology();
+        Iterator nodesIterator = topology.getNodesIterator();
+        TNode node;
+        boolean isThereTrafficSinks = false;
+        while (nodesIterator.hasNext()) {
+            node = (TNode) nodesIterator.next();
+            if (node.getNodeType() == TNode.TRAFFIC_SINK) {
+                isThereTrafficSinks = true;
             }
         }
-        if (!hayDestino) {
-            JWarningWindow va = new JWarningWindow(this.parent, true, this.imageBroker);
-            va.setWarningMessage(this.translations.getString("JVentanaHija.NecesitaHaberUnReceptor"));
-            va.show();
+        if (!isThereTrafficSinks) {
+            JWarningWindow warningWindow = new JWarningWindow(this.parent, true, this.imageBroker);
+            warningWindow.setWarningMessage(this.translations.getString("JVentanaHija.NecesitaHaberUnReceptor"));
+            warningWindow.setVisible(true);
         } else {
-            TTrafficGeneratorNode emisor = null;
+            TTrafficGeneratorNode trafficGeneratorNode = null;
             try {
-                emisor = new TTrafficGeneratorNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+                trafficGeneratorNode = new TTrafficGeneratorNode(this.scenario.getTopology().getElementsIDGenerator().getNew(), this.scenario.getTopology().getIPv4AddressGenerator().obtenerIP(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             } catch (Exception e) {
-                JErrorWindow err;
-                err = new JErrorWindow(this.parent, true, this.imageBroker);
-                err.setErrorMessage(e.toString());
-                err.show();
+                JErrorWindow errorWindow;
+                errorWindow = new JErrorWindow(this.parent, true, this.imageBroker);
+                errorWindow.setErrorMessage(e.toString());
+                errorWindow.setVisible(true);
             }
-            JTrafficGeneratorWindow ve = new JTrafficGeneratorWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
-            ve.setConfiguration(emisor, false);
-            ve.show();
-            if (emisor.isWellConfigured()) {
+            JTrafficGeneratorWindow trafficGeneratorWindow = new JTrafficGeneratorWindow(this.scenario.getTopology(), this.designPanel, this.imageBroker, this.parent, true);
+            trafficGeneratorWindow.setConfiguration(trafficGeneratorNode, false);
+            trafficGeneratorWindow.setVisible(true);
+            if (trafficGeneratorNode.isWellConfigured()) {
                 try {
-                    this.scenario.getTopology().addNode(emisor);
+                    this.scenario.getTopology().addNode(trafficGeneratorNode);
                     this.designPanel.repaint();
                 } catch (Exception e) {
-                    JErrorWindow err;
-                    err = new JErrorWindow(this.parent, true, this.imageBroker);
-                    err.setErrorMessage(e.toString());
-                    err.show();
+                    JErrorWindow errorWindow;
+                    errorWindow = new JErrorWindow(this.parent, true, this.imageBroker);
+                    errorWindow.setErrorMessage(e.toString());
+                    errorWindow.setVisible(true);
                 }
                 this.scenario.setModified(true);
             } else {
-                emisor = null;
+                trafficGeneratorNode = null;
             }
         }
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
-     * detener en la ventana de simulaci�n. Detiene la simulaci�n o su
-     * generaci�n.
+     * This method is called when the user does click on the "Pause" icon in the
+     * simulation panel. It pauses the simulation.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt Evento que hace que este m�todo se dispare.
      */
     private void handleClickOnPauseIcon(MouseEvent evt) {
         if (this.iconContainerPauseSimulation.isEnabled()) {
             this.scenario.getTopology().getTimer().setPaused(true);
-            activarOpcionesAlDetener();
+            activeOptionsAfterPause();
         }
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
-     * finalizar en la ventana de simulaci�n. Detiene la simulaci�n por
-     * completo.
+     * This method is called when the user does click on the "Stop" icon in the
+     * simulation panel. It stops the simulation.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que este m�todo se dispare.
      */
     private void handleClickOnStopIcon(MouseEvent evt) {
-        if (this.iconContainerFinishSimulation.isEnabled()) {
+        if (this.iconContainerStopSimulation.isEnabled()) {
             this.scenario.getTopology().getTimer().reset();
             this.simulationPanel.ponerFicheroTraza(null);
-            activarOpcionesAlFinalizar();
+            activeOptionsAfterStop();
         }
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
-     * comenzar en la ventana de simulaci�n. Inicia la simulaci�n.
+     * This method is called when the user does click on the "Resume" icon in
+     * the simulation panel. It resume the simulation after a pause.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que este m�todo se dispare.
      */
     private void handleClickOnResumeIcon(MouseEvent evt) {
         if (this.iconContainerResumeSimulation.isEnabled()) {
-            activarOpcionesAlComenzar();
+            activeOptionsAfterResume();
             this.scenario.getTopology().getTimer().setPaused(false);
             this.scenario.getTopology().getTimer().restart();
         }
     }
 
     /**
-     * Este m�todo se llama autom�ticamente cuando se hace clic sobre el icono
-     * generar en la ventana de simulaci�n. Crea la simulaci�n.
+     * This method is called when the user does click on the "Start" icon in the
+     * simulation panel. It starts the simulation.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return evt The event that triggers this method
      * @since 2.0
-     * @param evt El evento que hace que este m�todo se dispare.
      */
     private void handleClickOnStartIcon(MouseEvent evt) {
         if (this.iconContainterStartSimulation.isEnabled()) {
@@ -2149,151 +2220,155 @@ public class JScenarioWindow extends JInternalFrame {
                 this.scenario.getTopology().getTimer().setFinishTimestamp(new TTimestamp(this.sliderOptionsSimulationLengthMs.getValue(), this.sliderOptionsSimulationLengthNs.getValue()));
             }
             this.scenario.getTopology().getTimer().setTick(this.sliderOptionsTickDurationInNs.getValue());
-            crearListaElementosEstadistica();
+            createListOfElementsToAnalize();
             this.scenario.setModified(true);
             this.scenario.getTopology().getTimer().reset();
             this.simulationPanel.reset();
             this.simulationPanel.repaint();
             this.scenario.simulate();
-            int minimoDelay = this.scenario.getTopology().getMinimumDelay();
-            int pasoActual = this.sliderOptionsTickDurationInNs.getValue();
-            if (pasoActual > minimoDelay) {
-                this.sliderOptionsTickDurationInNs.setValue(minimoDelay);
+            int minimumDelay = this.scenario.getTopology().getMinimumDelay();
+            int currentTickDurationInNs = this.sliderOptionsTickDurationInNs.getValue();
+            if (currentTickDurationInNs > minimumDelay) {
+                this.sliderOptionsTickDurationInNs.setValue(minimumDelay);
             }
-            activarOpcionesTrasGenerar();
+            activeOptionsAfterStart();
         }
     }
 
     /**
-     * Este m�todo se llama cuando comienza la simulaci�n del escenario. Crea
-     * una lista de todos los nodos que tienen activa la generaci�n de
-     * estad�sticas para posteriormente poder elegir uno de ellos y ver sus
-     * gr�ficas.
+     * This method creates a list of all elements that are configured to
+     * generate statistics. It will be shown in the combo box of the analysis
+     * panel to be selected by the user for further analysis.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void crearListaElementosEstadistica() {
-        Iterator it = null;
-        TNode nt = null;
-        TLink et = null;
+    public void createListOfElementsToAnalize() {
+        Iterator nodesIterator = null;
+        TNode node = null;
         this.comboBoxNodeToAnalize.removeAllItems();
         this.comboBoxNodeToAnalize.addItem("");
-        it = this.scenario.getTopology().getNodesIterator();
-        while (it.hasNext()) {
-            nt = (TNode) it.next();
-            if (nt.isGeneratingStats()) {
-                this.comboBoxNodeToAnalize.addItem(nt.getName());
+        nodesIterator = this.scenario.getTopology().getNodesIterator();
+        while (nodesIterator.hasNext()) {
+            node = (TNode) nodesIterator.next();
+            if (node.isGeneratingStats()) {
+                this.comboBoxNodeToAnalize.addItem(node.getName());
             }
         }
         this.comboBoxNodeToAnalize.setSelectedIndex(0);
     }
 
     /**
-     * Este m�todo modifica la interfaz para que las opciones que se muestran
-     * sean acordes al momento en que la simulaci�n est� detenida.
+     * This method enables/disables some icons in the simulation panel after the
+     * user does click in the Pause icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    private void activarOpcionesAlDetener() {
+    private void activeOptionsAfterPause() {
         this.iconContainterStartSimulation.setEnabled(false);
         this.iconContainerResumeSimulation.setEnabled(true);
-        this.iconContainerFinishSimulation.setEnabled(true);
+        this.iconContainerStopSimulation.setEnabled(true);
         this.iconContainerPauseSimulation.setEnabled(false);
     }
 
     /**
-     * Este m�todo modifica la interfaz para que las opciones que se muestran
-     * sean acordes al momento en que la simulaci�n ha finalizado.
+     * This method enables/disables some icons in the simulation panel after the
+     * user does click in the Stop icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    private void activarOpcionesAlFinalizar() {
+    private void activeOptionsAfterStop() {
         this.iconContainterStartSimulation.setEnabled(true);
         this.iconContainerResumeSimulation.setEnabled(false);
-        this.iconContainerFinishSimulation.setEnabled(false);
+        this.iconContainerStopSimulation.setEnabled(false);
         this.iconContainerPauseSimulation.setEnabled(false);
     }
 
     /**
-     * Este m�todo modifica la interfaz para que las opciones que se muestran
-     * sean acordes al momento en que la simulaci�n se acaba de generar.
+     * This method enables/disables some icons in the simulation panel after the
+     * user does click in the Start icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    private void activarOpcionesTrasGenerar() {
+    private void activeOptionsAfterStart() {
         this.iconContainterStartSimulation.setEnabled(false);
         this.iconContainerResumeSimulation.setEnabled(false);
-        this.iconContainerFinishSimulation.setEnabled(true);
+        this.iconContainerStopSimulation.setEnabled(true);
         this.iconContainerPauseSimulation.setEnabled(true);
     }
 
     /**
-     * Este m�todo modifica la interfaz para que las opciones que se muestran
-     * sean acordes al momento en que la simulaci�n comienza.
+     * This method enables/disables some icons in the simulation panel after the
+     * user does click in the Resume icon.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    private void activarOpcionesAlComenzar() {
+    private void activeOptionsAfterResume() {
         this.iconContainterStartSimulation.setEnabled(false);
         this.iconContainerResumeSimulation.setEnabled(false);
-        this.iconContainerFinishSimulation.setEnabled(true);
+        this.iconContainerStopSimulation.setEnabled(true);
         this.iconContainerPauseSimulation.setEnabled(true);
     }
 
     /**
-     * Cierra la ventana hija y pierde o almacena su contenido en funci�n de la
-     * elecci�n del usuario.
+     * This method closes the JScenarioWindow.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void cerrar() {
+    public void close() {
         this.setVisible(false);
         this.dispose();
     }
 
     /**
-     * Este m�todo se encarga de controlar que todo ocurre como debe con
-     * respecto al escenario, cuando se pulsa en el men� principal la opci�n de
-     * "Guardar como..."
+     * This method is called when the user does click on "Save as" option in the
+     * scenario menu of this JScenarioWindow. Is allow the user to save the
+     * scenario to a file using a specific file name.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void handleSaveAs() {
-        anotarDatosDeEscenario();
-        JFileChooser dialogoGuardar = new JFileChooser();
-        dialogoGuardar.setFileFilter(new JOSMFilter());
-        dialogoGuardar.setDialogType(JFileChooser.CUSTOM_DIALOG);
+        updateScenarioInformation();
+        JFileChooser saveAsDialog = new JFileChooser();
+        saveAsDialog.setFileFilter(new JOSMFilter());
+        saveAsDialog.setDialogType(JFileChooser.CUSTOM_DIALOG);
         // FIX: i18N required
-        dialogoGuardar.setApproveButtonMnemonic('A');
-        dialogoGuardar.setApproveButtonText(this.translations.getString("JVentanaHija.DialogoGuardar.OK"));
-        dialogoGuardar.setDialogTitle(this.translations.getString("JVentanaHija.DialogoGuardar.Almacenar") + this.getTitle() + this.translations.getString("-"));
-        dialogoGuardar.setAcceptAllFileFilterUsed(false);
-        dialogoGuardar.setSelectedFile(new File(this.getTitle()));
-        dialogoGuardar.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        int resultado = dialogoGuardar.showSaveDialog(parent);
-        if (resultado == JFileChooser.APPROVE_OPTION) {
-            String ext = null;
-            String nombreFich = dialogoGuardar.getSelectedFile().getPath();
-            int i = nombreFich.lastIndexOf('.');
-            if (i > 0 && i < nombreFich.length() - 1) {
-                ext = nombreFich.substring(i + 1).toLowerCase();
+        saveAsDialog.setApproveButtonMnemonic('A');
+        saveAsDialog.setApproveButtonText(this.translations.getString("JVentanaHija.DialogoGuardar.OK"));
+        saveAsDialog.setDialogTitle(this.translations.getString("JVentanaHija.DialogoGuardar.Almacenar") + this.getTitle() + this.translations.getString("-"));
+        saveAsDialog.setAcceptAllFileFilterUsed(false);
+        saveAsDialog.setSelectedFile(new File(this.getTitle()));
+        saveAsDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int result = saveAsDialog.showSaveDialog(parent);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String extension = null;
+            String fileName = saveAsDialog.getSelectedFile().getPath();
+            int i = fileName.lastIndexOf('.');
+            if (i > 0 && i < fileName.length() - 1) {
+                extension = fileName.substring(i + 1).toLowerCase();
             }
-            if (ext == null) {
-                nombreFich += this.translations.getString(".osm");
-            } else if (!ext.equals(this.translations.getString("osm"))) {
-                nombreFich += this.translations.getString(".osm");
+            if (extension == null) {
+                fileName += this.translations.getString(".osm");
+            } else if (!extension.equals(this.translations.getString("osm"))) {
+                fileName += this.translations.getString(".osm");
             }
-            dialogoGuardar.setSelectedFile(new File(nombreFich));
-            this.scenario.setScenarioFile(dialogoGuardar.getSelectedFile());
+            saveAsDialog.setSelectedFile(new File(fileName));
+            this.scenario.setScenarioFile(saveAsDialog.getSelectedFile());
             this.scenario.setSaved(true);
             this.setTitle(this.scenario.getScenarioFile().getName());
-            TOSMSaver almacenador = new TOSMSaver(this.scenario);
-            JDecissionWindow vb = new JDecissionWindow(this.parent, true, this.imageBroker);
-            vb.setQuestion(this.translations.getString("JVentanaHija.PreguntaEmpotrarCRC"));
-            vb.show();
-            boolean conCRC = vb.getUserAnswer();
-            boolean correcto = almacenador.save(this.scenario.getScenarioFile(), conCRC);
-            if (correcto) {
+            TOSMSaver osmSaver = new TOSMSaver(this.scenario);
+            JDecissionWindow decissionWindow = new JDecissionWindow(this.parent, true, this.imageBroker);
+            decissionWindow.setQuestion(this.translations.getString("JVentanaHija.PreguntaEmpotrarCRC"));
+            decissionWindow.setVisible(true);
+            boolean addCRCToFile = decissionWindow.getUserAnswer();
+            boolean savedCorrectly = osmSaver.save(this.scenario.getScenarioFile(), addCRCToFile);
+            if (savedCorrectly) {
                 this.scenario.setModified(false);
                 this.scenario.setSaved(true);
             }
@@ -2301,19 +2376,19 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se encarga de controlar que todo ocurre como debe con
-     * respecto al escenario, cuando se pulsa en el men� principal la opci�n de
-     * "Cerrar" o "Salir" y el escenario actual no est� a�n guardado o est�
-     * modificado.
+     * This method is called when the user closes a given scenario or exits the
+     * simulator and the scenario is not saved. Is allow the user to save the
+     * scenario to a file before closing.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void gestionarGuardarParaCerrar() {
-        boolean guardado = this.scenario.isSaved();
-        boolean modificado = this.scenario.isModified();
-        anotarDatosDeEscenario();
+    public void saveBeforeClosing() {
+        boolean isAlreadySaved = this.scenario.isSaved();
+        boolean isModified = this.scenario.isModified();
+        updateScenarioInformation();
 
-        // Detengo la simulaci�n antes de cerrar, si es necesario.
+        // Stop simulation before close, if necessary.
         if (this.scenario.getTopology().getTimer().isRunning()) {
             this.simulationPanel.reset();
             this.simulationPanel.repaint();
@@ -2323,34 +2398,34 @@ public class JScenarioWindow extends JInternalFrame {
             }
             this.scenario.getTopology().getTimer().setTick(this.sliderOptionsTickDurationInNs.getValue());
             this.scenario.getTopology().getTimer().setPaused(false);
-            activarOpcionesAlFinalizar();
+            activeOptionsAfterStop();
         }
 
-        if (!guardado) {
-            JDecissionWindow vb = new JDecissionWindow(this.parent, true, this.imageBroker);
-            vb.setQuestion(this.getTitle() + this.translations.getString("JVentanaHija.DialogoGuardar.GuardarPrimeraVez"));
-            vb.show();
-            boolean respuesta = vb.getUserAnswer();
-            vb.dispose();
-            if (respuesta) {
+        if (!isAlreadySaved) {
+            JDecissionWindow decissionWindow = new JDecissionWindow(this.parent, true, this.imageBroker);
+            decissionWindow.setQuestion(this.getTitle() + this.translations.getString("JVentanaHija.DialogoGuardar.GuardarPrimeraVez"));
+            decissionWindow.setVisible(true);
+            boolean userAnswer = decissionWindow.getUserAnswer();
+            decissionWindow.dispose();
+            if (userAnswer) {
                 this.handleSaveAs();
             }
-        } else if ((guardado) && (!modificado)) {
-            // No se hace nada, ya est� todo guardado correctamente.
-        } else if ((guardado) && (modificado)) {
-            JDecissionWindow vb = new JDecissionWindow(this.parent, true, this.imageBroker);
-            vb.setQuestion(this.translations.getString("JVentanaHija.DialogoGuardar.CambiosSinguardar1") + " " + this.getTitle() + " " + this.translations.getString("JVentanaHija.DialogoGuardar.CambiosSinguardar2"));
-            vb.show();
-            boolean respuesta = vb.getUserAnswer();
-            vb.dispose();
-            if (respuesta) {
-                TOSMSaver almacenador = new TOSMSaver(this.scenario);
-                JDecissionWindow vb2 = new JDecissionWindow(this.parent, true, this.imageBroker);
-                vb2.setQuestion(this.translations.getString("JVentanaHija.PreguntaEmpotrarCRC"));
-                vb2.show();
-                boolean conCRC = vb2.getUserAnswer();
-                boolean correcto = almacenador.save(this.scenario.getScenarioFile(), conCRC);
-                if (correcto) {
+        } else if ((isAlreadySaved) && (!isModified)) {
+            // Nothing to do. All is already saved.
+        } else if ((isAlreadySaved) && (isModified)) {
+            JDecissionWindow decissionWindow = new JDecissionWindow(this.parent, true, this.imageBroker);
+            decissionWindow.setQuestion(this.translations.getString("JVentanaHija.DialogoGuardar.CambiosSinguardar1") + " " + this.getTitle() + " " + this.translations.getString("JVentanaHija.DialogoGuardar.CambiosSinguardar2"));
+            decissionWindow.setVisible(true);
+            boolean userAnswer = decissionWindow.getUserAnswer();
+            decissionWindow.dispose();
+            if (userAnswer) {
+                TOSMSaver osmSaver = new TOSMSaver(this.scenario);
+                JDecissionWindow decissionWindow2 = new JDecissionWindow(this.parent, true, this.imageBroker);
+                decissionWindow2.setQuestion(this.translations.getString("JVentanaHija.PreguntaEmpotrarCRC"));
+                decissionWindow2.setVisible(true);
+                boolean addCRCToFile = decissionWindow2.getUserAnswer();
+                boolean savedCorrectly = osmSaver.save(this.scenario.getScenarioFile(), addCRCToFile);
+                if (savedCorrectly) {
                     this.scenario.setModified(false);
                     this.scenario.setSaved(true);
                 }
@@ -2359,26 +2434,29 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se encarga de controlar que todo ocurre como debe con
-     * respecto al escenario, cuando se pulsa en el men� principal la opci�n de
-     * "Guardar".
+     * This method is called when the user does click on "Save" option in the
+     * scenario menu of this JScenarioWindow. Is allow the user to save the
+     * scenario to a file using a specific file name (if never saved before) or
+     * the current one (on the contrary).
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void handleSave() {
-        boolean guardado = this.scenario.isSaved();
-        boolean modificado = this.scenario.isModified();
-        anotarDatosDeEscenario();
-        if (!guardado) {
+        boolean isAlreadySaved = this.scenario.isSaved();
+        // FIX: Use next line so "Save" dialog is nos always used.
+        boolean isModified = this.scenario.isModified();
+        updateScenarioInformation();
+        if (!isAlreadySaved) {
             this.handleSaveAs();
         } else {
-            TOSMSaver almacenador = new TOSMSaver(this.scenario);
-            JDecissionWindow vb = new JDecissionWindow(this.parent, true, this.imageBroker);
-            vb.setQuestion(this.translations.getString("JVentanaHija.PreguntaEmpotrarCRC"));
-            vb.show();
-            boolean conCRC = vb.getUserAnswer();
-            boolean correcto = almacenador.save(this.scenario.getScenarioFile(), conCRC);
-            if (correcto) {
+            TOSMSaver osmSaver = new TOSMSaver(this.scenario);
+            JDecissionWindow decissionWindow = new JDecissionWindow(this.parent, true, this.imageBroker);
+            decissionWindow.setQuestion(this.translations.getString("JVentanaHija.PreguntaEmpotrarCRC"));
+            decissionWindow.setVisible(true);
+            boolean addCRCToFile = decissionWindow.getUserAnswer();
+            boolean savedCorrectly = osmSaver.save(this.scenario.getScenarioFile(), addCRCToFile);
+            if (savedCorrectly) {
                 this.scenario.setModified(false);
                 this.scenario.setSaved(true);
             }
@@ -2387,11 +2465,25 @@ public class JScenarioWindow extends JInternalFrame {
         }
     }
 
+    /**
+     * This method is a wrapper of fillAnalysisInformation(String) to be used
+     * the first time that ther ins not information to show.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
     private void fillAnalysisInformation() {
         this.fillAnalysisInformation("");
     }
 
-    private void fillAnalysisInformation(String nombre) {
+    /**
+     * This method fill the analysis panel with statistics information and some
+     * charts related to the node whose name is specified as an argument.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
+    private void fillAnalysisInformation(String nodeName) {
         this.analysisPanel.removeAll();
         this.analysisPanel.setLayout(new MigLayout("align center, fillx"));
         JScrollablePanel scenarioTitle = new JScrollablePanel();
@@ -2421,9 +2513,9 @@ public class JScenarioWindow extends JInternalFrame {
         this.labelScenarioTitle.setText(this.textFieldOptionsScenarioTitle.getText());
         this.labelScenarioAuthorName.setText(this.textFieldOptionsScenarioAuthorName.getText());
         this.textAreaScenarioDescription.setText(this.textAreaOptionsScenarioDescription.getText());
-        this.labelElementToAnalize.setText(nombre);
+        this.labelElementToAnalize.setText(nodeName);
         this.labelElementToAnalize.setIcon(null);
-        TNode nt = this.scenario.getTopology().getFirstNodeNamed(nombre);
+        TNode nt = this.scenario.getTopology().getFirstNodeNamed(nodeName);
         if (nt != null) {
             if (nt.getNodeType() == TNode.TRAFFIC_GENERATOR) {
                 this.labelElementToAnalize.setIcon(this.imageBroker.getIcon(TImageBroker.EMISOR));
@@ -2474,8 +2566,6 @@ public class JScenarioWindow extends JInternalFrame {
                 this.barChart2 = new JBarChart(nt.getStats().getTitleOfDataset5(), TStats.DESCRIPTION, TStats.NUMBER, (DefaultCategoryDataset) nt.getStats().getDataset5());
                 this.analysisPanel.add(this.barChart2.getChartPanel(), "grow");
             }
-            if (numeroGraficos > 5) {
-            }
         }
 
         AnalysisPanelComponentAdapter componentAdapter = new AnalysisPanelComponentAdapter();
@@ -2501,13 +2591,13 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     /**
-     * Este m�todo se encarga de anotar los datos del escenario desde la
-     * interfaz de usuario hasta los correspondientes atributos del objeto que
-     * almacena el escenario.
+     * This method saves the latest information about the simulation to the
+     * associated scenario object.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    private void anotarDatosDeEscenario() {
+    private void updateScenarioInformation() {
         this.scenario.setTitle(this.textFieldOptionsScenarioTitle.getText());
         this.scenario.setAuthor(this.textFieldOptionsScenarioAuthorName.getText());
         this.scenario.setDescription(this.textAreaOptionsScenarioDescription.getText());
@@ -2551,7 +2641,7 @@ public class JScenarioWindow extends JInternalFrame {
     private JLabel iconContainterStartSimulation;
     private JLabel iconContainerTrafficGeneratorNode;
     private JLabel iconContainerLink;
-    private JLabel iconContainerFinishSimulation;
+    private JLabel iconContainerStopSimulation;
     private JLabel iconContainerLER;
     private JLabel iconContainerActiveLER;
     private JLabel iconContainerLSR;

@@ -31,7 +31,6 @@ It supports standard MPLS operation as well as GoS/MPLS operation. See "Guarante
    
 ## Other collaborators (only for release 1.0):
 
- - José Luis González Sánchez - <jlgs@unex.es>
  - Javier Carmona Murillo - <jcarmur@unex.es>
     
     

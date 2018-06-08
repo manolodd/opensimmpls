@@ -42,7 +42,7 @@ public class TSimulation {
         this.simulationEventListener = new TSimulationEventListener();
         // FIX: Use class constants instead of harcoded values.
         this.simulationLengthInNs = 500;
-        this.simulationStepLengthInNs = 1;
+        this.simulationTickDurationInNs = 1;
     }
 
     /**
@@ -88,8 +88,8 @@ public class TSimulation {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void setSimulationStepLengthInNs(long simulationStepLengthInNs) {
-        this.simulationStepLengthInNs = simulationStepLengthInNs;
+    public void setSimulationTickDurationInNs(long simulationStepLengthInNs) {
+        this.simulationTickDurationInNs = simulationStepLengthInNs;
     }
 
     /**
@@ -110,8 +110,8 @@ public class TSimulation {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public long getSimulationStepLengthInNs() {
-        return this.simulationStepLengthInNs;
+    public long getSimulationTickDurationInNs() {
+        return this.simulationTickDurationInNs;
     }
 
     /**
@@ -126,7 +126,7 @@ public class TSimulation {
     public String marshallTimeParameters() {
         String serializedTimeParameters = "#Temporizacion#";
         serializedTimeParameters += this.simulationLengthInNs + "#";
-        serializedTimeParameters += this.simulationStepLengthInNs + "#";
+        serializedTimeParameters += this.simulationTickDurationInNs + "#";
         return serializedTimeParameters;
     }
 
@@ -147,7 +147,7 @@ public class TSimulation {
             return false;
         }
         this.simulationLengthInNs = Integer.valueOf(timeParametersFields[2]).longValue();
-        this.simulationStepLengthInNs = Integer.valueOf(timeParametersFields[3]).longValue();
+        this.simulationTickDurationInNs = Integer.valueOf(timeParametersFields[3]).longValue();
         return true;
     }
 
@@ -165,7 +165,7 @@ public class TSimulation {
     }
 
     private long simulationLengthInNs;
-    private long simulationStepLengthInNs;
+    private long simulationTickDurationInNs;
 
     private TScenario parentScenario;
     private TSimulationEventListener simulationEventListener;
