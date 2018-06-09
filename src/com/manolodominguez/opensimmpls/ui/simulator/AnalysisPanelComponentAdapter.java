@@ -22,17 +22,34 @@ import java.util.LinkedList;
 import org.jfree.chart.ChartPanel;
 
 /**
+ * This class implements a component adapter that is used to keep aspect ratio
+ * for charts of analysis panel after a window resizing.
  *
- * @author manolodd
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class AnalysisPanelComponentAdapter extends ComponentAdapter {
 
+    /**
+     * This method is the constructor of the class. It is create a new instance
+     * of AnalysisPanelComponentAdapter.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
     public AnalysisPanelComponentAdapter() {
         this.chartPanels = new LinkedList<>();
-        this.analysisPanelsize = new Dimension(320, 240);
+        this.analysisPanelsize = new Dimension(DEFAULT_CHART_WIDTH, DEFAULT_CHART_HEIGHT);
         resizeCharts();
     }
 
+    /**
+     * This method is called when the component is hidden.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param e The event of the effected component that triggers this method.
+     * @since 2.0
+     */
     @Override
     public void componentHidden(ComponentEvent e) {
         super.componentHidden(e);
@@ -40,6 +57,13 @@ public class AnalysisPanelComponentAdapter extends ComponentAdapter {
         resizeCharts();
     }
 
+    /**
+     * This method is called when the component is shown.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param e The event of the effected component that triggers this method.
+     * @since 2.0
+     */
     @Override
     public void componentShown(ComponentEvent e) {
         super.componentShown(e);
@@ -47,6 +71,13 @@ public class AnalysisPanelComponentAdapter extends ComponentAdapter {
         resizeCharts();
     }
 
+    /**
+     * This method is called when the component is moved.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param e The event of the effected component that triggers this method.
+     * @since 2.0
+     */
     @Override
     public void componentMoved(ComponentEvent e) {
         super.componentMoved(e);
@@ -54,6 +85,13 @@ public class AnalysisPanelComponentAdapter extends ComponentAdapter {
         resizeCharts();
     }
 
+    /**
+     * This method is called when the component is resized.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param e The event of the effected component that triggers this method.
+     * @since 2.0
+     */
     @Override
     public void componentResized(ComponentEvent e) {
         super.componentResized(e);
@@ -61,22 +99,55 @@ public class AnalysisPanelComponentAdapter extends ComponentAdapter {
         resizeCharts();
     }
 
+    /**
+     * This method adds a new ChartPanel to keep its aspect ration after a
+     * resizing.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param chartPanel a new ChartPanel to keep its aspect ration after a
+     * resizing.
+     * @since 2.0
+     */
     public void addChartPanel(ChartPanel chartPanel) {
         if (chartPanel != null) {
             this.chartPanels.add(chartPanel);
         }
     }
 
+    /**
+     * This method sets the initial size of the charts in the analysis panel
+     * taking into account the size of the analysis panel.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param analysisPanelsize the size of the analysis panel.
+     * @since 2.0
+     */
     public void setInitialChartsSize(Dimension analysisPanelsize) {
         this.analysisPanelsize = analysisPanelsize;
         resizeCharts();
     }
 
+    /**
+     * This method sets the size of every charts in the analysis panel to keep
+     * the predefined aspect ratio.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param analysisPanelsize the size of the analysis panel.
+     * @since 2.0
+     */
     private void resizeCharts() {
         for (ChartPanel cp : this.chartPanels) {
-            cp.setPreferredSize(new Dimension((int) this.analysisPanelsize.getWidth() / 2, (int) this.analysisPanelsize.getWidth() / 2 * 3 / 4));
+            if (cp != null) {
+                cp.setPreferredSize(new Dimension((int) this.analysisPanelsize.getWidth() / CHARTS_PER_ROW, (int) this.analysisPanelsize.getWidth() / CHARTS_PER_ROW * ASPECT_RATIO_HEIGHT / ASPECT_RATIO_WIDTH));
+            }
         }
     }
+
+    private static final int DEFAULT_CHART_WIDTH = 320;
+    private static final int DEFAULT_CHART_HEIGHT = 240;
+    private static final int CHARTS_PER_ROW = 2;
+    private static final int ASPECT_RATIO_WIDTH = 4;
+    private static final int ASPECT_RATIO_HEIGHT = 3;
 
     private LinkedList<ChartPanel> chartPanels;
     private Dimension analysisPanelsize;
