@@ -21,12 +21,25 @@ import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
+ * This class implements a bar chart customized for OpenSimMPLS.
  *
- * @author manolodd
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class JBarChart {
 
-    public JBarChart(String chartTitle, String xAxisTitle, String yAxisTitle, DefaultCategoryDataset series) {
+    /**
+     * This method is the constructor of the class. It is create a new instance
+     * of JXYChart.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param chartTitle The title of the chart
+     * @param categoriesAxisTitle The title of categories axis
+     * @param yAxisTitle The title of Y axis
+     * @param series
+     * @since 2.0
+     */
+    public JBarChart(String chartTitle, String categoriesAxisTitle, String yAxisTitle, DefaultCategoryDataset series) {
         this.categories = series;
         this.chart = ChartFactory.createBarChart(chartTitle, null, yAxisTitle, this.categories, PlotOrientation.VERTICAL, true, true, false);
         this.plot = this.chart.getCategoryPlot();
@@ -59,6 +72,13 @@ public class JBarChart {
         this.chartPanel.setRangeZoomable(false);
     }
 
+    /**
+     * This method gets the bar chart as a ChartPanel object.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the bar chart as a ChartPanel object.
+     * @since 2.0
+     */
     public ChartPanel getChartPanel() {
         return this.chartPanel;
     }

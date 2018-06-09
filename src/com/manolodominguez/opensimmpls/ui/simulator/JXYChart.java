@@ -21,11 +21,24 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeriesCollection;
 
 /**
+ * This class implements a XY chart customized for OpenSimMPLS.
  *
- * @author manolodd
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class JXYChart {
 
+    /**
+     * This method is the constructor of the class. It is create a new instance
+     * of JXYChart.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param chartTitle The title of the chart
+     * @param xAxisTitle The title of X axis
+     * @param yAxisTitle The title of Y axis
+     * @param series
+     * @since 2.0
+     */
     public JXYChart(String chartTitle, String xAxisTitle, String yAxisTitle, XYSeriesCollection series) {
         this.series = series;
         this.chart = ChartFactory.createScatterPlot(chartTitle, xAxisTitle, yAxisTitle, this.series, PlotOrientation.VERTICAL, true, true, false);
@@ -59,6 +72,13 @@ public class JXYChart {
         this.chartPanel.setRangeZoomable(false);
     }
 
+    /**
+     * This method gets the XY chart as a ChartPanel object.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the XY chart as a ChartPanel object.
+     * @since 2.0
+     */
     public ChartPanel getChartPanel() {
         return this.chartPanel;
     }
