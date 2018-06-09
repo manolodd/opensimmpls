@@ -47,7 +47,7 @@ public class AnalysisPanelComponentAdapter extends ComponentAdapter {
      * This method is called when the component is hidden.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param e The event of the effected component that triggers this method.
+     * @param e The event of the affected component that triggers this method.
      * @since 2.0
      */
     @Override
@@ -61,7 +61,7 @@ public class AnalysisPanelComponentAdapter extends ComponentAdapter {
      * This method is called when the component is shown.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param e The event of the effected component that triggers this method.
+     * @param e The event of the affected component that triggers this method.
      * @since 2.0
      */
     @Override
@@ -75,7 +75,7 @@ public class AnalysisPanelComponentAdapter extends ComponentAdapter {
      * This method is called when the component is moved.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param e The event of the effected component that triggers this method.
+     * @param e The event of the affected component that triggers this method.
      * @since 2.0
      */
     @Override
@@ -89,7 +89,7 @@ public class AnalysisPanelComponentAdapter extends ComponentAdapter {
      * This method is called when the component is resized.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param e The event of the effected component that triggers this method.
+     * @param e The event of the affected component that triggers this method.
      * @since 2.0
      */
     @Override
