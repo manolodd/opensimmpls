@@ -16,12 +16,7 @@
 package com.manolodominguez.opensimmpls.ui.simulator;
 
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
-import java.awt.*;
-import java.awt.Toolkit.*;
-import java.awt.image.*;
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.scenario.TInternalLink;
 import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventNodeCongested;
 import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventPacketDiscarded;
@@ -38,6 +33,25 @@ import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
 import com.manolodominguez.opensimmpls.scenario.simulationevents.TOpenSimMPLSEvent;
 import com.manolodominguez.opensimmpls.utils.TLock;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.RenderingHints;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.util.Iterator;
+import java.util.ResourceBundle;
+import java.util.TreeSet;
+import javax.swing.JPanel;
 
 /**
  * Esta clase implementa un panel que recibir� eventos de simulaci�n y los
@@ -47,7 +61,7 @@ import com.manolodominguez.opensimmpls.utils.TLock;
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
-public class JSimulationPanel extends javax.swing.JPanel {
+public class JSimulationPanel extends JPanel {
 
     /**
      * Crea una nueva instancia de JPanelSimulacion
@@ -72,8 +86,8 @@ public class JSimulationPanel extends javax.swing.JPanel {
      * @since 2.0
      */    
     private void initComponents () {
+        this.translations = ResourceBundle.getBundle(AvailableBundles.SIMULATION_PANEL.getPath());
         tamPantalla=Toolkit.getDefaultToolkit().getScreenSize();
-	buffer = null;
 	imagenbuf = null;
         g2Dbuf = null;
         topologia=null;
@@ -84,13 +98,8 @@ public class JSimulationPanel extends javax.swing.JPanel {
         ticActual = 0;
         mlsPorTic = 0;
         mostrarLeyenda = false;
-        COLOR_LEYENDA = new Color(255, 255, 230);
-        COLOR_NOMBRE_ENLACE = new Color(255, 255, 230);
-        COLOR_BORDE_DOMINIO = new Color(232, 212, 197);
-        COLOR_FONDO_DOMINIO = new Color(239, 222, 209);
-        COLOR_LSP = new Color(0, 0, 200);
         cerrojo = new TLock();
-        ficheroTraza = null;;
+        ficheroTraza = null;
         streamFicheroTraza = null;
         streamTraza = null;
     }
@@ -230,9 +239,9 @@ public class JSimulationPanel extends javax.swing.JPanel {
                }
         };
         if (vertices > 2) {
-            g2Dbuf.setColor(this.COLOR_FONDO_DOMINIO);
+            g2Dbuf.setColor(this.DOMAIN_BACKGROUND_COLOR);
             g2Dbuf.fillPolygon(pol);
-            g2Dbuf.setColor(this.COLOR_BORDE_DOMINIO);
+            g2Dbuf.setColor(this.DOMAIN_BORDER_COLOR);
             g2Dbuf.drawPolygon(pol);
         } else if (vertices == 2) {
             int x1 = Math.min(pol.xpoints[0], pol.xpoints[1]);
@@ -241,14 +250,14 @@ public class JSimulationPanel extends javax.swing.JPanel {
             int y2 = Math.max(pol.ypoints[0], pol.ypoints[1]);
             int ancho = x2-x1;
             int alto = y2-y1;
-            g2Dbuf.setColor(this.COLOR_FONDO_DOMINIO);
+            g2Dbuf.setColor(this.DOMAIN_BACKGROUND_COLOR);
             g2Dbuf.fillRect(x1, y1, ancho, alto);
-            g2Dbuf.setColor(this.COLOR_BORDE_DOMINIO);
+            g2Dbuf.setColor(this.DOMAIN_BORDER_COLOR);
             g2Dbuf.drawRect(x1, y1, ancho, alto);
         } else if (vertices == 1) {
-            g2Dbuf.setColor(this.COLOR_FONDO_DOMINIO);
+            g2Dbuf.setColor(this.DOMAIN_BACKGROUND_COLOR);
             g2Dbuf.fillOval(pol.xpoints[0]-50, pol.ypoints[0]-40, 100, 80);
-            g2Dbuf.setColor(this.COLOR_BORDE_DOMINIO);
+            g2Dbuf.setColor(this.DOMAIN_BORDER_COLOR);
             g2Dbuf.drawOval(pol.xpoints[0]-50, pol.ypoints[0]-40, 100, 80);
         }
     }
@@ -278,14 +287,14 @@ public class JSimulationPanel extends javax.swing.JPanel {
             }
             g2Dbuf.drawLine(inicio.x+24, inicio.y+24, fin.x+24, fin.y+24);
             g2Dbuf.setStroke(new BasicStroke((float) 1));
-//
+
             if (!enlace.isBroken()) {
                 if (enlace.getLinkType() == TLink.INTERNAL_LINK) {
                     TInternalLink ei = (TInternalLink) enlace;
                     if (ei.isBeingUsedByAnyLSP()) {
                         float dash1[] = {5.0f};
                         BasicStroke dashed = new BasicStroke(0.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash1, 0.0f);
-                        g2Dbuf.setColor(this.COLOR_LSP);
+                        g2Dbuf.setColor(this.LSP_COLOR);
                         g2Dbuf.setStroke(dashed);
                         if (inicio.x == fin.x) {
                             g2Dbuf.drawLine(inicio.x+20, inicio.y+24, fin.x+20, fin.y+24);
@@ -303,8 +312,8 @@ public class JSimulationPanel extends javax.swing.JPanel {
                     }
                 }
             }
-//
-//
+
+
             if (!enlace.isBroken()) {
                 if (enlace.getLinkType() == TLink.INTERNAL_LINK) {
                     TInternalLink ei = (TInternalLink) enlace;
@@ -339,7 +348,7 @@ public class JSimulationPanel extends javax.swing.JPanel {
                 int posY2 = enlace.getTailEndNode().getScreenPosition().y+24;
                 int posX = Math.min(posX1, posX2) + ((Math.max(posX1, posX2) - Math.min(posX1, posX2)) / 2) - (anchoTexto / 2);
                 int posY = Math.min(posY1, posY2) + ((Math.max(posY1, posY2) - Math.min(posY1, posY2)) / 2) + 5;
-                g2Dbuf.setColor(this.COLOR_NOMBRE_ENLACE);
+                g2Dbuf.setColor(this.LINK_NAME_COLOR);
                 g2Dbuf.fillRoundRect(posX-3, posY-13, anchoTexto+5, 17, 10, 10);
                 g2Dbuf.setColor(Color.GRAY);
                 g2Dbuf.drawString(enlace.getName(), posX, posY);
@@ -703,41 +712,41 @@ public class JSimulationPanel extends javax.swing.JPanel {
             int xInicio = 0;
             int yInicio = 0;
             FontMetrics fm = this.getFontMetrics(this.getFont());
-            if ((fm.charsWidth(PAQUETE_IPV4.toCharArray(), 0, PAQUETE_IPV4.length())) > ancho) {
-                ancho = fm.charsWidth(PAQUETE_IPV4.toCharArray(), 0, PAQUETE_IPV4.length());
+            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_IPv4").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_IPv4").length())) > ancho) {
+                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_IPv4").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_IPv4").length());
             }
-            if ((fm.charsWidth(PAQUETE_IPV4_GOS.toCharArray(), 0, PAQUETE_IPV4_GOS.length())) > ancho) {
-                ancho = fm.charsWidth(PAQUETE_IPV4_GOS.toCharArray(), 0, PAQUETE_IPV4_GOS.length());
+            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_IPv4_GOS").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_IPv4_GOS").length())) > ancho) {
+                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_IPv4_GOS").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_IPv4_GOS").length());
             }
-            if ((fm.charsWidth(PAQUETE_MPLS.toCharArray(), 0, PAQUETE_MPLS.length())) > ancho) {
-                ancho = fm.charsWidth(PAQUETE_MPLS.toCharArray(), 0, PAQUETE_MPLS.length());
+            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_MPLS").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_MPLS").length())) > ancho) {
+                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_MPLS").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_MPLS").length());
             }
-            if ((fm.charsWidth(PAQUETE_MPLS_GOS.toCharArray(), 0, PAQUETE_MPLS_GOS.length())) > ancho) {
-                ancho = fm.charsWidth(PAQUETE_MPLS_GOS.toCharArray(), 0, PAQUETE_MPLS_GOS.length());
+            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_MPLS_GOS").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_MPLS_GOS").length())) > ancho) {
+                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_MPLS_GOS").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_MPLS_GOS").length());
             }
-            if ((fm.charsWidth(PAQUETE_TLDP.toCharArray(), 0, PAQUETE_TLDP.length())) > ancho) {
-                ancho = fm.charsWidth(PAQUETE_TLDP.toCharArray(), 0, PAQUETE_TLDP.length());
+            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_TLDP").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_TLDP").length())) > ancho) {
+                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_TLDP").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_TLDP").length());
             }
-            if ((fm.charsWidth(PAQUETE_GPSRP.toCharArray(), 0, PAQUETE_GPSRP.length())) > ancho) {
-                ancho = fm.charsWidth(PAQUETE_GPSRP.toCharArray(), 0, PAQUETE_GPSRP.length());
+            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_GPSRP").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_GPSRP").length())) > ancho) {
+                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_GPSRP").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_GPSRP").length());
             }
-            if ((fm.charsWidth(LSP_NORMAL.toCharArray(), 0, LSP_NORMAL.length())) > ancho) {
-                ancho = fm.charsWidth(LSP_NORMAL.toCharArray(), 0, LSP_NORMAL.length());
+            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.LSP").toCharArray(), 0, this.translations.getString("JPanelSimulacion.LSP").length())) > ancho) {
+                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.LSP").toCharArray(), 0, this.translations.getString("JPanelSimulacion.LSP").length());
             }
-            if ((fm.charsWidth(LSP_BACKUP.toCharArray(), 0, LSP_BACKUP.length())) > ancho) {
-                ancho = fm.charsWidth(LSP_BACKUP.toCharArray(), 0, LSP_BACKUP.length());
+            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.LSP_de_respaldo").toCharArray(), 0, this.translations.getString("JPanelSimulacion.LSP_de_respaldo").length())) > ancho) {
+                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.LSP_de_respaldo").toCharArray(), 0, this.translations.getString("JPanelSimulacion.LSP_de_respaldo").length());
             }
-            if ((fm.charsWidth(PAQUETE_RECIBIDO.toCharArray(), 0, PAQUETE_RECIBIDO.length())) > ancho) {
-                ancho = fm.charsWidth(PAQUETE_RECIBIDO.toCharArray(), 0, PAQUETE_RECIBIDO.length());
+            if ((fm.charsWidth(this.translations.getString("Paquete_recibido").toCharArray(), 0, this.translations.getString("Paquete_recibido").length())) > ancho) {
+                ancho = fm.charsWidth(this.translations.getString("Paquete_recibido").toCharArray(), 0, this.translations.getString("Paquete_recibido").length());
             }
-            if ((fm.charsWidth(PAQUETE_ENVIADO.toCharArray(), 0, PAQUETE_ENVIADO.length())) > ancho) {
-                ancho = fm.charsWidth(PAQUETE_ENVIADO.toCharArray(), 0, PAQUETE_ENVIADO.length());
+            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_enviado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_enviado").length())) > ancho) {
+                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_enviado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_enviado").length());
             }
-            if ((fm.charsWidth(PAQUETE_CONMUTADO.toCharArray(), 0, PAQUETE_CONMUTADO.length())) > ancho) {
-                ancho = fm.charsWidth(PAQUETE_CONMUTADO.toCharArray(), 0, PAQUETE_CONMUTADO.length());
+            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_conmutado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_conmutado").length())) > ancho) {
+                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_conmutado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_conmutado").length());
             }
-            if ((fm.charsWidth(PAQUETE_GENERADO.toCharArray(), 0, PAQUETE_GENERADO.length())) > ancho) {
-                ancho = fm.charsWidth(PAQUETE_GENERADO.toCharArray(), 0, PAQUETE_GENERADO.length());
+            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_generado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_generado").length())) > ancho) {
+                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_generado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_generado").length());
             }
             anchoTotal = 5+13+5+ancho+20+13+5+ancho+5;
             alto = 113;
@@ -745,20 +754,20 @@ public class JSimulationPanel extends javax.swing.JPanel {
             yInicio = this.getHeight()-alto-6;
             g2D.setColor(Color.LIGHT_GRAY);
             g2D.fillRect(xInicio+2, yInicio+2, anchoTotal, alto);
-            g2D.setColor(COLOR_LEYENDA);
+            g2D.setColor(LEGEND_BACKGROUND_COLOR);
             g2D.fillRect(xInicio, yInicio, anchoTotal, alto);
             g2D.setColor(Color.BLACK);
             g2D.drawRect(xInicio, yInicio, anchoTotal, alto);
             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_IPV4), xInicio+5, yInicio+5, null);
-            g2D.drawString(this.PAQUETE_IPV4, xInicio+23, yInicio+18);
+            g2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_IPv4"), xInicio+23, yInicio+18);
             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_IPV4_GOS), xInicio+5, yInicio+23, null);
-            g2D.drawString(this.PAQUETE_IPV4_GOS, xInicio+23, yInicio+36);
+            g2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_IPv4_GOS"), xInicio+23, yInicio+36);
             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_MPLS), xInicio+5, yInicio+41, null);
-            g2D.drawString(this.PAQUETE_MPLS, xInicio+23, yInicio+54);
+            g2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_MPLS"), xInicio+23, yInicio+54);
             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_MPLS_GOS), xInicio+5, yInicio+59, null);
-            g2D.drawString(this.PAQUETE_MPLS_GOS, xInicio+23, yInicio+72);
+            g2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_MPLS_GOS"), xInicio+23, yInicio+72);
             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_LDP), xInicio+5, yInicio+77, null);
-            g2D.drawString(this.PAQUETE_TLDP, xInicio+23, yInicio+90);
+            g2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_TLDP"), xInicio+23, yInicio+90);
             g2D.setColor(Color.LIGHT_GRAY);
             g2D.drawOval(xInicio+5, yInicio+95, 13, 13);
             g2D.setColor(Color.BLACK);
@@ -770,31 +779,31 @@ public class JSimulationPanel extends javax.swing.JPanel {
             g2D.setColor(Color.BLACK);
             g2D.fillOval(xInicio+11, yInicio+101, 1, 1);
             g2D.setColor(Color.BLACK);
-            g2D.drawString(this.PAQUETE_GPSRP, xInicio+23, yInicio+108);
+            g2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_GPSRP"), xInicio+23, yInicio+108);
             xInicio = xInicio + 5 + 13 + 5 + ancho + 20 - 5;
 
             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PAQUETE_RECIBIDO), xInicio+5, yInicio+5, null);
-            g2D.drawString(this.PAQUETE_RECIBIDO, xInicio+23, yInicio+18);
+            g2D.drawString(this.translations.getString("Paquete_recibido"), xInicio+23, yInicio+18);
             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PAQUETE_GENERADO), xInicio+5, yInicio+23, null);
-            g2D.drawString(this.PAQUETE_GENERADO, xInicio+23, yInicio+36);
+            g2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_generado"), xInicio+23, yInicio+36);
             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PAQUETE_EMITIDO), xInicio+5, yInicio+41, null);
-            g2D.drawString(this.PAQUETE_ENVIADO, xInicio+23, yInicio+54);
+            g2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_enviado"), xInicio+23, yInicio+54);
             g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PAQUETE_CONMUTADO), xInicio+5, yInicio+59, null);
-            g2D.drawString(this.PAQUETE_CONMUTADO, xInicio+23, yInicio+72);
+            g2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_conmutado"), xInicio+23, yInicio+72);
             float dash1[] = {5.0f};
             BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash1, 0.0f);
-            g2Dbuf.setColor(this.COLOR_LSP);
+            g2Dbuf.setColor(this.LSP_COLOR);
             g2Dbuf.setStroke(dashed);
             g2D.drawLine(xInicio-5, yInicio+84, xInicio-5+30, yInicio+84);
             g2Dbuf.setColor(Color.BLACK);
-            g2D.drawString(this.LSP_NORMAL, xInicio+35, yInicio+90);
+            g2D.drawString(this.translations.getString("JPanelSimulacion.LSP"), xInicio+35, yInicio+90);
             float dash2[] = {10.0f, 5.0f, 0.2f, 5.0f};
             BasicStroke dashed2 = new BasicStroke(0.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash2, 0.0f);
             g2Dbuf.setColor(Color.BLACK);
             g2Dbuf.setStroke(dashed2);
             g2D.drawLine(xInicio-5, yInicio+102, xInicio-5+30, yInicio+102);
             g2Dbuf.setColor(Color.BLACK);
-            g2D.drawString(this.LSP_BACKUP, xInicio+35, yInicio+108);
+            g2D.drawString(this.translations.getString("JPanelSimulacion.LSP_de_respaldo"), xInicio+35, yInicio+108);
             g2Dbuf.setStroke(new BasicStroke(1.0f));
         }
     }
@@ -829,7 +838,8 @@ public class JSimulationPanel extends javax.swing.JPanel {
      * @since 2.0
      * @param g El lienzo donde se debe redibujar el panel de simulaci�n.
      */    
-    public void paint(java.awt.Graphics g) {
+    @Override
+    public void paint(Graphics g) {
         BufferedImage ima = this.capturaDeDisenio();
         g.drawImage(ima, 0, 0, null);
     }
@@ -852,66 +862,33 @@ public class JSimulationPanel extends javax.swing.JPanel {
         this.mostrarLeyenda = ml;
     }
     
-    /**
-     * @since 2.0
-     */    
     private TImageBroker dispensadorDeImagenes;
-    /**
-     * @since 2.0
-     */    
-    private Image buffer;
-    /**
-     * @since 2.0
-     */    
     private BufferedImage imagenbuf;
-    /**
-     * @since 2.0
-     */    
     private Graphics2D g2Dbuf;
-    /**
-     * @since 2.0
-     */    
     private TTopology topologia;
-    /**
-     * @since 2.0
-     */    
     private Dimension tamPantalla;  
-    /**
-     * @since 2.0
-     */    
     private int maxX;
-    /**
-     * @since 2.0
-     */    
     private int maxY;
-    
     private File ficheroTraza;
     private FileOutputStream streamFicheroTraza;
     private PrintStream streamTraza;
-    
     private TreeSet bufferEventos;
     private TreeSet bufferParaSimular;
     private long ticActual;
     private TLock cerrojo;
     private int mlsPorTic;
     private boolean mostrarLeyenda;
-    
-    private static Color COLOR_LEYENDA;
-    private static Color COLOR_NOMBRE_ENLACE;
-    private static Color COLOR_BORDE_DOMINIO;
-    private static Color COLOR_FONDO_DOMINIO;
-    private static Color COLOR_LSP;
-    
-    private static final String PAQUETE_IPV4 = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JPanelSimulacion.Paquete_IPv4");
-    private static final String PAQUETE_IPV4_GOS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JPanelSimulacion.Paquete_IPv4_GOS");
-    private static final String PAQUETE_MPLS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JPanelSimulacion.Paquete_MPLS");
-    private static final String PAQUETE_MPLS_GOS = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JPanelSimulacion.Paquete_MPLS_GOS");
-    private static final String PAQUETE_TLDP = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JPanelSimulacion.Paquete_TLDP");
-    private static final String PAQUETE_GPSRP = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JPanelSimulacion.Paquete_GPSRP");
-    private static final String LSP_NORMAL = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JPanelSimulacion.LSP");
-    private static final String LSP_BACKUP = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JPanelSimulacion.LSP_de_respaldo");
-    private static final String PAQUETE_RECIBIDO = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("Paquete_recibido");
-    private static final String PAQUETE_ENVIADO = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JPanelSimulacion.Paquete_enviado");
-    private static final String PAQUETE_CONMUTADO = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JPanelSimulacion.Paquete_conmutado");
-    private static final String PAQUETE_GENERADO = java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JPanelSimulacion.Paquete_generado");
+    private ResourceBundle translations;
+/*
+    private static Color LEGEND_BACKGROUND_COLOR = new Color(255, 255, 255);
+    private static Color LINK_NAME_COLOR = new Color(255, 255, 230);
+    private static Color DOMAIN_BORDER_COLOR = new Color(128, 193, 255);
+    private static Color DOMAIN_BACKGROUND_COLOR = new Color(204, 230, 255);
+    private static Color LSP_COLOR = new Color(0, 0, 200);
+*/
+    private static Color LEGEND_BACKGROUND_COLOR = new Color(255, 255, 255);
+    private static Color LINK_NAME_COLOR = new Color(255, 255, 230);
+    private static Color DOMAIN_BORDER_COLOR = new Color(232, 212, 197);
+    private static Color DOMAIN_BACKGROUND_COLOR = new Color(239, 222, 209);
+    private static Color LSP_COLOR = new Color(0, 0, 200);
 }
