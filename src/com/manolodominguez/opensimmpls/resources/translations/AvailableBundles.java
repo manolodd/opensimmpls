@@ -39,7 +39,8 @@ public enum AvailableBundles {
     COMMENT_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     OPENSIMMPLS_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     SIMULATION_PANEL("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    SCENARIO_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations");
+    SCENARIO_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    SPLASH("com/manolodominguez/opensimmpls/resources/translations/translations");
 
     private final String bundlePath;
 

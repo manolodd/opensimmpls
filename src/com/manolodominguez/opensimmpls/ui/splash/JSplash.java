@@ -15,75 +15,108 @@
  */
 package com.manolodominguez.opensimmpls.ui.splash;
 
-/** Esta clase implementa una ventana con la imagen de Open SimMPLS de fondo donde
- * se puede mostrar texto arbitrario.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.WindowConstants;
+import net.miginfocom.swing.MigLayout;
+
+/**
+ * This class implements a splash window that is shown before the simulator is
+ * completely loaded and generated.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class JSplash extends javax.swing.JFrame {
 
-    /** Este m�todo es el constructor de la clase; crea una nueva instancia de JSplash.
+    /**
+     * This method is the constructor of the class. It is create a new instance
+     * of JSplash.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public JSplash() {
+        this.message = new JLabel();
+        this.splashImageContainer = new JLabel();
         initComponents();
-        setIconImage(new javax.swing.ImageIcon(this.getClass().getResource(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("/imagenes/splash_menu.png"))).getImage());
     }
 
-    /** Este m�todo se llama desde el constructor para dar los valores por defecto a los
-     * atributos de la ventana.
+    /**
+     * This method is called from within the constructor to initialize the
+     * window components.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    private void initComponents() {//GEN-BEGIN:initComponents
-        Texto = new javax.swing.JLabel();
-        Imagen = new javax.swing.JLabel();
-
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
-        setName(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JSplash"));
+    private void initComponents() {
+        this.translations = ResourceBundle.getBundle(AvailableBundles.SPLASH.getPath());
+        getContentPane().setLayout(new MigLayout("fillx, filly"));
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setCursor(new Cursor(Cursor.WAIT_CURSOR));
+        setName(this.translations.getString("JSplash"));
         setResizable(false);
         setUndecorated(true);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent evt) {
                 exitForm(evt);
             }
         });
-
-        Texto.setFont(new java.awt.Font(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("Arial"), 0, 12));
-        Texto.setText(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("Starting..."));
-        getContentPane().add(Texto, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 16, 260, 20));
-
-        Imagen.setIcon(new javax.swing.ImageIcon(getClass().getResource(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("/imagenes/splash_inicio.png"))));
-        getContentPane().add(Imagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
-
+        this.splashImageContainer.setIcon(new ImageIcon(getClass().getResource(this.translations.getString("/imagenes/splash_inicio.png"))));
+        getContentPane().add(this.splashImageContainer, "wrap");
+        this.message.setFont(new Font("Arial", 0, 12));
+        this.message.setText(this.translations.getString("Starting..."));
+        getContentPane().add(this.message, "align center");
+        getContentPane().setBackground(Color.WHITE);
         pack();
-
-        java.awt.Dimension tamFrame=this.getSize();
-        java.awt.Dimension tamPantalla=java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((tamPantalla.width-tamFrame.width)/2, (tamPantalla.height-tamFrame.height)/2);
-
-    }//GEN-END:initComponents
-    /** Este m�todo cierra la ventana.
-     * @param evt Evento indicando que se debe cerrar la ventana.
-     * @since 2.0
-     */
-    private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
-        this.dispose();
-    }//GEN-LAST:event_exitForm
-
-    /** Este m�todo muestra en la ventana de inicio el texto que se especifique.
-     * @param txt Texto que se mostrar� en el recuadro blanco de la ventana.
-     * @since 2.0
-     */
-    public void ponerTexto(String txt) {
-        Texto.setText(txt);
+        Dimension frameSize = this.getSize();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
+        setIconImage(new ImageIcon(this.getClass().getResource(this.translations.getString("/imagenes/splash_menu.png"))).getImage());
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Imagen;
-    private javax.swing.JLabel Texto;
-    // End of variables declaration//GEN-END:variables
+    /**
+     * This method is called when the splash window is closed.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param evt The event that triggers this method.
+     * @since 2.0
+     */
+    private void exitForm(WindowEvent evt) {
+        this.dispose();
+    }
+
+    /**
+     * This method set the text message that is going to be shown in the splash
+     * window.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param message the text message that is going to be shown in the splash
+     * window.
+     * @since 2.0
+     */
+    public void setMessage(String message) {
+        this.message.setText(message);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(JSplash.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private JLabel splashImageContainer;
+    private JLabel message;
+    private ResourceBundle translations;
 }

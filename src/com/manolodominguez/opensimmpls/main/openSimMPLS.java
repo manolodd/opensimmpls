@@ -21,8 +21,11 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import com.manolodominguez.opensimmpls.ui.simulator.JOpenSimMPLS;
 import com.manolodominguez.opensimmpls.ui.splash.JSplash;
+import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 
 /**
@@ -81,34 +84,34 @@ public class openSimMPLS {
         if (args.length > 0) {
             mostrarGPL();
         }
-        SwingUtilities.invokeLater(() -> {
 
-            try {
-                boolean nimbusSet = false;
-                for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                    if ("Nimbus".equals(info.getName())) {
-                        UIManager.setLookAndFeel(info.getClassName());
-                        nimbusSet = true;
-                        break;
-                    }
+        try {
+            boolean nimbusSet = false;
+            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    nimbusSet = true;
+                    break;
                 }
-                if (!nimbusSet) {
-                    UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
-                }
-            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
-                System.out.println("An error happened when starting OpenSimMPLS");
             }
-            splash = new JSplash();
+            if (!nimbusSet) {
+                UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            System.out.println("An error happened when starting OpenSimMPLS");
+        }
+        splash = new JSplash();
+        SwingUtilities.invokeLater(() -> {
             splash.setVisible(true);
-            splash.ponerTexto(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("Loading_icons..."));
-            imagesBroker = new TImageBroker();
-            splash.ponerTexto(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("openSimMPLS.generandoInterfaz"));
-            simulator = new JOpenSimMPLS(imagesBroker);
-            java.awt.Dimension tamPantalla = Toolkit.getDefaultToolkit().getScreenSize();
-            simulator.setBounds(0, 0, tamPantalla.width, tamPantalla.height);
-            simulator.setVisible(true);
-            splash.dispose();
         });
+        splash.setMessage(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("Loading_icons..."));
+        imagesBroker = new TImageBroker();
+        splash.setMessage(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("openSimMPLS.generandoInterfaz"));
+        simulator = new JOpenSimMPLS(imagesBroker);
+        Dimension tamPantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        simulator.setBounds(0, 0, tamPantalla.width, tamPantalla.height);
+        simulator.setVisible(true);
+        splash.dispose();
     }
 
     // Variables declaration - do not modify
