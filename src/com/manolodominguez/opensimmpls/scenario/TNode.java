@@ -542,7 +542,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     public static final int DEFAULT_NUM_PORTS_LSR = 8;
     public static final int DEFAULT_NUM_PORTS_ACTIVE_LSR = 8;
 
-    public static final int MAX_STEP_WITHOUT_EMITTING_BEFORE_ALERTING = 25;
+    public static final int MAX_TICKS_WITHOUT_EMITTING_BEFORE_ALERTING = 25;
 
     private int nodeID;
     private int selected;

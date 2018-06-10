@@ -1070,10 +1070,10 @@ public class JScenarioWindow extends JInternalFrame {
                         link.setAsBrokenLink(true);
                     }
                 }
-            } else if (this.simulationPanel.obtenerMostrarLeyenda()) {
-                this.simulationPanel.ponerMostrarLeyenda(false);
+            } else if (this.simulationPanel.getShowLegend()) {
+                this.simulationPanel.setShowLegend(false);
             } else {
-                this.simulationPanel.ponerMostrarLeyenda(true);
+                this.simulationPanel.setShowLegend(true);
             }
         } else {
             this.rightClickedElementInDesignPanel = null;
@@ -1331,7 +1331,7 @@ public class JScenarioWindow extends JInternalFrame {
      */
     private void handelChangeInSimulationSpeedInMsPerTick(ChangeEvent evt) {
         this.labelSimulationSpeedFaster.setText(this.translations.getString("VentanaHija.Simulacion.etiquetaMsTic"));
-        this.simulationPanel.ponerMlsPorTic(this.sliderSimulationSpeedInMsPerTick.getValue());
+        this.simulationPanel.setSimulationSpeedInMsPerTick(this.sliderSimulationSpeedInMsPerTick.getValue());
     }
 
     /**
@@ -1777,7 +1777,7 @@ public class JScenarioWindow extends JInternalFrame {
         } else {
             this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             this.simulationPanel.setToolTipText(null);
-            if (!this.simulationPanel.obtenerMostrarLeyenda()) {
+            if (!this.simulationPanel.getShowLegend()) {
                 this.simulationPanel.setToolTipText(this.translations.getString("JVentanaHija.VerLeyenda"));
             } else {
                 this.simulationPanel.setToolTipText(this.translations.getString("JVentanaHija.OcultarLeyenda"));
@@ -2334,7 +2334,6 @@ public class JScenarioWindow extends JInternalFrame {
     private void handleClickOnStopIcon(MouseEvent evt) {
         if (this.iconContainerStopSimulation.isEnabled()) {
             this.scenario.getTopology().getTimer().reset();
-            this.simulationPanel.ponerFicheroTraza(null);
             activeOptionsAfterStop();
         }
     }

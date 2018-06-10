@@ -109,11 +109,11 @@ public class JDesignPanel extends JPanel {
 
     /**
      * This method gets the thickness that has to be used when painting the
-     * links specified as an argument.
+     * link whose delay is specified as an argument.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param linkDelay the thickness that has to be used when painting the
-     * links specified as an argument.
+     * link whose delay is specified as an argument.
      * @since 2.0
      */
     private double getLinkThickness(double linkDelay) {
@@ -159,9 +159,9 @@ public class JDesignPanel extends JPanel {
         // FIX: Do not use harcoded values. Use class constants instead.
         if (vertexes > 2) {
             // FIX: Do not use harcoded values. Use class constants instead.
-            graphics2D.setColor(new Color(239, 222, 209));
+            graphics2D.setColor(DOMAIN_BACKGROUND_COLOR);
             graphics2D.fillPolygon(polygon);
-            graphics2D.setColor(new Color(232, 212, 197));
+            graphics2D.setColor(DOMAIN_BORDER_COLOR);
             graphics2D.drawPolygon(polygon);
             // FIX: Do not use harcoded values. Use class constants instead.
         } else if (vertexes == 2) {
@@ -172,16 +172,16 @@ public class JDesignPanel extends JPanel {
             int width = x2 - x1;
             int height = y2 - y1;
             // FIX: Do not use harcoded values. Use class constants instead.
-            graphics2D.setColor(new Color(239, 222, 209));
+            graphics2D.setColor(DOMAIN_BACKGROUND_COLOR);
             graphics2D.fillRect(x1, y1, width, height);
-            graphics2D.setColor(new Color(232, 212, 197));
+            graphics2D.setColor(DOMAIN_BORDER_COLOR);
             graphics2D.drawRect(x1, y1, width, height);
             // FIX: Do not use harcoded values. Use class constants instead.
         } else if (vertexes == 1) {
             // FIX: Do not use harcoded values. Use class constants instead.
-            graphics2D.setColor(new Color(239, 222, 209));
+            graphics2D.setColor(DOMAIN_BACKGROUND_COLOR);
             graphics2D.fillOval(polygon.xpoints[0] - 50, polygon.ypoints[0] - 40, 100, 80);
-            graphics2D.setColor(new Color(232, 212, 197));
+            graphics2D.setColor(DOMAIN_BORDER_COLOR);
             graphics2D.drawOval(polygon.xpoints[0] - 50, polygon.ypoints[0] - 40, 100, 80);
         }
     }
@@ -202,9 +202,9 @@ public class JDesignPanel extends JPanel {
             int linkDelay = link.getDelay();
             graphics2D.setStroke(new BasicStroke((float) getLinkThickness(linkDelay)));
             if (link.getLinkType() == TLink.EXTERNAL_LINK) {
-                graphics2D.setColor(Color.GRAY);
+                graphics2D.setColor(EXTERNAL_LINK_COLOR);
             } else {
-                graphics2D.setColor(Color.BLUE);
+                graphics2D.setColor(INTERNAL_LINK_COLOR);
             }
             // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawLine(headEnd.x + 24, headEnd.y + 24, tailEnd.x + 24, tailEnd.y + 24);
@@ -219,7 +219,7 @@ public class JDesignPanel extends JPanel {
                 int posY2 = link.getTailEndNode().getScreenPosition().y + 24;
                 int posX = Math.min(posX1, posX2) + ((Math.max(posX1, posX2) - Math.min(posX1, posX2)) / 2) - (textWidth / 2);
                 int posY = Math.min(posY1, posY2) + ((Math.max(posY1, posY2) - Math.min(posY1, posY2)) / 2) + 5;
-                graphics2D.setColor(new Color(255, 254, 226));
+                graphics2D.setColor(LINK_NAME_COLOR);
                 graphics2D.fillRoundRect(posX - 3, posY - 13, textWidth + 5, 17, 10, 10);
                 graphics2D.setColor(Color.GRAY);
                 graphics2D.drawString(link.getName(), posX, posY);
@@ -357,6 +357,13 @@ public class JDesignPanel extends JPanel {
         graphics.drawImage(bufferedImageAux, 0, 0, null);
     }
 
+    private static Color LINK_NAME_COLOR = new Color(255, 255, 230);
+    private static Color DOMAIN_BORDER_COLOR = new Color(128, 193, 255);
+    private static Color DOMAIN_BACKGROUND_COLOR = new Color(204, 230, 255);
+    private static Color EXTERNAL_LINK_COLOR = Color.GRAY;
+    private static Color INTERNAL_LINK_COLOR = Color.BLUE;
+
+    
     private TImageBroker imageBroker;
     private BufferedImage bufferedImage;
     private Graphics2D bufferedG2D;

@@ -31,7 +31,6 @@ import com.manolodominguez.opensimmpls.scenario.TTopology;
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
-import com.manolodominguez.opensimmpls.scenario.simulationevents.TOpenSimMPLSEvent;
 import com.manolodominguez.opensimmpls.utils.TLock;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -39,32 +38,29 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 import java.util.TreeSet;
 import javax.swing.JPanel;
 
 /**
- * Esta clase implementa un panel que recibir� eventos de simulaci�n y los
- * representar� en pantalla dando la sensaci�n de continuidad a una simulaci�n
- * visual.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements a panel that shows the simulation of a given scenario.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class JSimulationPanel extends JPanel {
 
     /**
-     * Crea una nueva instancia de JPanelSimulacion
+     * This is the constructor of the class and creates a new instance of
+     * JSimulationPanel.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public JSimulationPanel() {
@@ -72,823 +68,810 @@ public class JSimulationPanel extends JPanel {
     }
 
     /**
-     * Crea una nueva instancia de JPanelSimulacion
+     * This is the constructor of the class and creates a new instance of
+     * JSimulationPanel.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param imageBroker The image broker that will provide the needed images
+     * to paint the topology.
      * @since 2.0
-     * @param di Dispensador de im�genes de donde el panel tomar� las im�genes que necesite
-     * mostrar en pantalla.
-     */    
-    public JSimulationPanel(TImageBroker di) {
-        dispensadorDeImagenes = di;
+     */
+    public JSimulationPanel(TImageBroker imageBroker) {
+        this.imageBroker = imageBroker;
         initComponents();
     }
 
     /**
+     * This method initialize some attributes.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
-    private void initComponents () {
+     */
+    private void initComponents() {
         this.translations = ResourceBundle.getBundle(AvailableBundles.SIMULATION_PANEL.getPath());
-        tamPantalla=Toolkit.getDefaultToolkit().getScreenSize();
-	imagenbuf = null;
-        g2Dbuf = null;
-        topologia=null;
-        maxX = 10;
-        maxY = 10;
-        bufferEventos = new TreeSet();
-        bufferParaSimular = new TreeSet();
-        ticActual = 0;
-        mlsPorTic = 0;
-        mostrarLeyenda = false;
-        cerrojo = new TLock();
-        ficheroTraza = null;
-        streamFicheroTraza = null;
-        streamTraza = null;
+        this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.bufferedImage = null;
+        this.bufferedG2D = null;
+        this.topology = null;
+        this.maxX = 10;
+        this.maxY = 10;
+        this.eventsBuffer = new TreeSet();
+        this.simulationBuffer = new TreeSet();
+        this.currentTick = 0;
+        this.simulationSpeedInMsPerTick = 0;
+        this.showLegend = false;
+        this.eventsBuffersLock = new TLock();
     }
 
     /**
-     * Reincia todos los atributos de la clase a su valor de creaci�n.
+     * This method reset all attributes as in the moment of the instantiation.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     */    
+     */
     public void reset() {
-        cerrojo.lock();
-        Iterator it = null;
-        it = bufferEventos.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
+        this.eventsBuffersLock.lock();
+        Iterator eventsIterator = null;
+        eventsIterator = this.eventsBuffer.iterator();
+        while (eventsIterator.hasNext()) {
+            eventsIterator.next();
+            eventsIterator.remove();
         }
-        it = bufferParaSimular.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
+        eventsIterator = this.simulationBuffer.iterator();
+        while (eventsIterator.hasNext()) {
+            eventsIterator.next();
+            eventsIterator.remove();
         }
-        mostrarLeyenda = false;
-        cerrojo.unLock();
-        ticActual = 0;
-        ficheroTraza = null;;
-        streamFicheroTraza = null;
-        streamTraza = null;
-    }
-    
-    /**
-     * Este m�todo env�a un evento al fichero de traza, para que quede registrado.
-     * @param es Evento de simulaci�n que se desea tracear.
-     * @since 2.0
-     */    
-    public void enviarATraza(TSimulationEvent es) {
-        String texto = "";
-        texto += this.ticActual + ": ";
-        if (this.streamTraza != null) {
-            if (es.getType() == TOpenSimMPLSEvent.SIMULATION) {
-                texto += es.toString();
-                this.streamTraza.println(texto);
-            }
-        }
-    }
-    
-    /**
-     * Este m�todo establece el fichero de traza.
-     * @param ft Fichero de traza.
-     * @since 2.0
-     */    
-    public void ponerFicheroTraza(File ft) {
-        if (this.ficheroTraza != null) {
-            if (this.streamFicheroTraza != null) {
-                try {
-                    this.streamFicheroTraza.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            if (this.streamTraza != null) {
-                this.streamTraza.close();
-            }
-        }
-        this.ficheroTraza = ft;
-        if (this.ficheroTraza != null) {
-            if (this.ficheroTraza.exists()) {
-                this.ficheroTraza.delete();
-            }
-            try {
-                this.streamFicheroTraza = new FileOutputStream(ficheroTraza);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            this.streamTraza = new PrintStream(streamFicheroTraza, true);
-        } else {
-            this.streamFicheroTraza = null;
-            this.streamTraza = null;
-            this.ficheroTraza = null;
-        }
-    }
-    
-    /**
-     * Este m�todo asocia al panel de simulaci�n una topology concreta.
-     * @since 2.0
-     * @param t Topolog�a que se debe representar en el panel de simulaci�n.
-     */    
-    public void setTopology(TTopology t) {
-        topologia = t;
+        this.showLegend = false;
+        this.eventsBuffersLock.unLock();
+        this.currentTick = 0;
     }
 
     /**
-     * Este m�todo asigna un dispensador de im�genes al panel de forma que de ah�
-     * tomar� todas las im�genes que deba mostrar en la pantalla.
+     * This method sets the topology that has to be painted in the panel.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param topology the topology that has to be painted in the panel.
      * @since 2.0
-     * @param di El dispensador de im�genes.
-     */    
-    public void setImageBroker(TImageBroker di) {
-        dispensadorDeImagenes = di;
+     */
+    public void setTopology(TTopology topology) {
+        this.topology = topology;
     }
 
     /**
-     * Este m�todo determina que grosor en p�xeles debe tener un enlace de la topolog�a
-     * al ser mostrado, segun su delay.
+     * This method sets the image broker that will provide the needed images to
+     * paint the topology.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param imageBroker The image broker that will provide the needed images
+     * to paint the topology and its simulation.
      * @since 2.0
-     * @param delay Retardo del enlace.
-     * @return Grosor en p�xeles que se debe usar para mostrar el enlace.
-     */    
-    public double obtenerGrosorEnlace(double delay) {
-        return (16/Math.log(delay+100));
-    }
-    
-    /**
-     * @param g2Dbuf
-     * @since 2.0
-     */    
-    private void prepararImagen(Graphics2D g2Dbuf) {
-        g2Dbuf.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2Dbuf.setColor(Color.WHITE);
-        g2Dbuf.fillRect(0,0, tamPantalla.width, tamPantalla.height);
+     */
+    public void setImageBroker(TImageBroker imageBroker) {
+        this.imageBroker = imageBroker;
     }
 
     /**
-     * @param g2Dbuf
+     * This method gets the thickness that has to be used when painting the link
+     * whose delay is specified as an argument.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param linkDelay the thickness that has to be used when painting the link
+     * whose delay is specified as an argument.
      * @since 2.0
-     */    
-    private void dibujarDominio(Graphics2D g2Dbuf) {
-        Iterator itd = topologia.getNodesIterator();
-        TNode nd;
-        Polygon pol = new Polygon();
-        int vertices = 0;
-        while (itd.hasNext()) {
-            nd = (TNode) itd.next();
-            if ((nd.getNodeType() == TNode.LER) ||
-               (nd.getNodeType() == TNode.ACTIVE_LER)) {
-                   pol.addPoint(nd.getScreenPosition().x+24, nd.getScreenPosition().y+24);
-                   vertices ++;
-               }
-        };
-        if (vertices > 2) {
-            g2Dbuf.setColor(this.DOMAIN_BACKGROUND_COLOR);
-            g2Dbuf.fillPolygon(pol);
-            g2Dbuf.setColor(this.DOMAIN_BORDER_COLOR);
-            g2Dbuf.drawPolygon(pol);
-        } else if (vertices == 2) {
-            int x1 = Math.min(pol.xpoints[0], pol.xpoints[1]);
-            int y1 = Math.min(pol.ypoints[0], pol.ypoints[1]);
-            int x2 = Math.max(pol.xpoints[0], pol.xpoints[1]);
-            int y2 = Math.max(pol.ypoints[0], pol.ypoints[1]);
-            int ancho = x2-x1;
-            int alto = y2-y1;
-            g2Dbuf.setColor(this.DOMAIN_BACKGROUND_COLOR);
-            g2Dbuf.fillRect(x1, y1, ancho, alto);
-            g2Dbuf.setColor(this.DOMAIN_BORDER_COLOR);
-            g2Dbuf.drawRect(x1, y1, ancho, alto);
-        } else if (vertices == 1) {
-            g2Dbuf.setColor(this.DOMAIN_BACKGROUND_COLOR);
-            g2Dbuf.fillOval(pol.xpoints[0]-50, pol.ypoints[0]-40, 100, 80);
-            g2Dbuf.setColor(this.DOMAIN_BORDER_COLOR);
-            g2Dbuf.drawOval(pol.xpoints[0]-50, pol.ypoints[0]-40, 100, 80);
+     */
+    private double getLinkThickness(double linkDelay) {
+        // FIX: Do not use harcoded values. Use class constants instead.
+        return (16 / Math.log(linkDelay + 100));
+    }
+
+    /**
+     * This method prepares the place where the simulation is going to be
+     * painted setting attributes as the size, antialias, and so on..
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param graphics2D the place where the topology is going to be painted.
+     * @since 2.0
+     */
+    private void prepareImage(Graphics2D graphics2D) {
+        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics2D.setColor(Color.WHITE);
+        graphics2D.fillRect(0, 0, this.screenSize.width, this.screenSize.height);
+    }
+
+    /**
+     * This method paints the MPLS domain corresponding to the topology being
+     * painted.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param graphics2D the place where the topology is going to be painted.
+     * @since 2.0
+     */
+    private void paintDomain(Graphics2D graphics2D) {
+        Iterator nodesIterator = this.topology.getNodesIterator();
+        TNode node;
+        Polygon polygon = new Polygon();
+        int vertexes = 0;
+        while (nodesIterator.hasNext()) {
+            node = (TNode) nodesIterator.next();
+            if ((node.getNodeType() == TNode.LER)
+                    || (node.getNodeType() == TNode.ACTIVE_LER)) {
+                polygon.addPoint(node.getScreenPosition().x + 24, node.getScreenPosition().y + 24);
+                vertexes++;
+            }
+        }
+        if (vertexes > 2) {
+            graphics2D.setColor(DOMAIN_BACKGROUND_COLOR);
+            graphics2D.fillPolygon(polygon);
+            graphics2D.setColor(DOMAIN_BORDER_COLOR);
+            graphics2D.drawPolygon(polygon);
+        } else if (vertexes == 2) {
+            int x1 = Math.min(polygon.xpoints[0], polygon.xpoints[1]);
+            int y1 = Math.min(polygon.ypoints[0], polygon.ypoints[1]);
+            int x2 = Math.max(polygon.xpoints[0], polygon.xpoints[1]);
+            int y2 = Math.max(polygon.ypoints[0], polygon.ypoints[1]);
+            int width = x2 - x1;
+            int height = y2 - y1;
+            graphics2D.setColor(DOMAIN_BACKGROUND_COLOR);
+            graphics2D.fillRect(x1, y1, width, height);
+            graphics2D.setColor(DOMAIN_BORDER_COLOR);
+            graphics2D.drawRect(x1, y1, width, height);
+        } else if (vertexes == 1) {
+            graphics2D.setColor(DOMAIN_BACKGROUND_COLOR);
+            graphics2D.fillOval(polygon.xpoints[0] - 50, polygon.ypoints[0] - 40, 100, 80);
+            graphics2D.setColor(DOMAIN_BORDER_COLOR);
+            graphics2D.drawOval(polygon.xpoints[0] - 50, polygon.ypoints[0] - 40, 100, 80);
         }
     }
 
     /**
-     * @param g2Dbuf
+     * This method paints links corresponding to the topology being painted.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param graphics2D the place where the topology is going to be painted.
      * @since 2.0
-     */    
-    private void dibujarEnlaces(Graphics2D g2Dbuf) {
-        Iterator ite = topologia.getLinksIterator();
-        while (ite.hasNext()) {
-            TLink enlace = (TLink) ite.next();
-            Point inicio = enlace.getHeadEndNode().getScreenPosition();
-            Point fin = enlace.getTailEndNode().getScreenPosition();
-            int del = enlace.getDelay();
-            g2Dbuf.setStroke(new BasicStroke((float) obtenerGrosorEnlace(del)));
-            if (enlace.getLinkType() == TLink.EXTERNAL_LINK) {
-                g2Dbuf.setColor(Color.GRAY);
+     */
+    private void paintLinks(Graphics2D graphics2D) {
+        Iterator linksIterator = this.topology.getLinksIterator();
+        while (linksIterator.hasNext()) {
+            TLink link = (TLink) linksIterator.next();
+            Point headEnd = link.getHeadEndNode().getScreenPosition();
+            Point tailEnd = link.getTailEndNode().getScreenPosition();
+            int linkDelay = link.getDelay();
+            graphics2D.setStroke(new BasicStroke((float) getLinkThickness(linkDelay)));
+            if (link.getLinkType() == TLink.EXTERNAL_LINK) {
+                graphics2D.setColor(EXTERNAL_LINK_COLOR);
             } else {
-                g2Dbuf.setColor(Color.BLUE);
+                graphics2D.setColor(INTERNAL_LINK_COLOR);
             }
-            if (enlace.isBroken()) {
-                    float dash1[] = {5.0f};
-                    BasicStroke dashed = new BasicStroke(2.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash1, 0.0f);
-                    g2Dbuf.setColor(Color.RED);
-                    g2Dbuf.setStroke(dashed);
+            if (link.isBroken()) {
+                float dash1[] = {5.0f};
+                BasicStroke dashed = new BasicStroke(2.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash1, 0.0f);
+                graphics2D.setColor(BROKEN_LINK_COLOR);
+                graphics2D.setStroke(dashed);
             }
-            g2Dbuf.drawLine(inicio.x+24, inicio.y+24, fin.x+24, fin.y+24);
-            g2Dbuf.setStroke(new BasicStroke((float) 1));
+            graphics2D.drawLine(headEnd.x + 24, headEnd.y + 24, tailEnd.x + 24, tailEnd.y + 24);
+            graphics2D.setStroke(new BasicStroke((float) 1));
 
-            if (!enlace.isBroken()) {
-                if (enlace.getLinkType() == TLink.INTERNAL_LINK) {
-                    TInternalLink ei = (TInternalLink) enlace;
-                    if (ei.isBeingUsedByAnyLSP()) {
+            if (!link.isBroken()) {
+                if (link.getLinkType() == TLink.INTERNAL_LINK) {
+                    TInternalLink internalLink = (TInternalLink) link;
+                    if (internalLink.isBeingUsedByAnyLSP()) {
                         float dash1[] = {5.0f};
                         BasicStroke dashed = new BasicStroke(0.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash1, 0.0f);
-                        g2Dbuf.setColor(this.LSP_COLOR);
-                        g2Dbuf.setStroke(dashed);
-                        if (inicio.x == fin.x) {
-                            g2Dbuf.drawLine(inicio.x+20, inicio.y+24, fin.x+20, fin.y+24);
+                        graphics2D.setColor(this.LSP_COLOR);
+                        graphics2D.setStroke(dashed);
+                        if (headEnd.x == tailEnd.x) {
+                            graphics2D.drawLine(headEnd.x + 20, headEnd.y + 24, tailEnd.x + 20, tailEnd.y + 24);
+                        } else if (headEnd.y == tailEnd.y) {
+                            graphics2D.drawLine(headEnd.x + 24, headEnd.y + 20, tailEnd.x + 24, tailEnd.y + 20);
+                        } else if (((headEnd.x < tailEnd.x) && (headEnd.y > tailEnd.y)) || ((headEnd.x > tailEnd.x) && (headEnd.y < tailEnd.y))) {
+                            graphics2D.drawLine(headEnd.x + 20, headEnd.y + 20, tailEnd.x + 20, tailEnd.y + 20);
+                        } else if (((headEnd.x < tailEnd.x) && (headEnd.y < tailEnd.y)) || ((headEnd.x > tailEnd.x) && (headEnd.y > tailEnd.y))) {
+                            graphics2D.drawLine(headEnd.x + 28, headEnd.y + 20, tailEnd.x + 28, tailEnd.y + 20);
                         }
-                        else if (inicio.y == fin.y) {
-                            g2Dbuf.drawLine(inicio.x+24, inicio.y+20, fin.x+24, fin.y+20);
-                        }
-                        else if (((inicio.x < fin.x) && (inicio.y > fin.y)) || ((inicio.x > fin.x) && (inicio.y < fin.y))) {
-                            g2Dbuf.drawLine(inicio.x+20, inicio.y+20, fin.x+20, fin.y+20);
-                        }
-                        else if (((inicio.x < fin.x) && (inicio.y < fin.y)) || ((inicio.x > fin.x) && (inicio.y > fin.y))) {
-                            g2Dbuf.drawLine(inicio.x+28, inicio.y+20, fin.x+28, fin.y+20);
-                        }
-                        g2Dbuf.setStroke(new BasicStroke(1));
+                        graphics2D.setStroke(new BasicStroke(1));
                     }
                 }
             }
-
-
-            if (!enlace.isBroken()) {
-                if (enlace.getLinkType() == TLink.INTERNAL_LINK) {
-                    TInternalLink ei = (TInternalLink) enlace;
-                    if (ei.isBeingUsedByAnyBackupLSP()) {
+            if (!link.isBroken()) {
+                if (link.getLinkType() == TLink.INTERNAL_LINK) {
+                    TInternalLink internalLink = (TInternalLink) link;
+                    if (internalLink.isBeingUsedByAnyBackupLSP()) {
                         float dash1[] = {10.0f, 5.0f, 0.2f, 5.0f};
                         BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash1, 0.0f);
-                        g2Dbuf.setColor(Color.BLACK);
-                        g2Dbuf.setStroke(dashed);
-                        if (inicio.x == fin.x) {
-                            g2Dbuf.drawLine(inicio.x+28, inicio.y+24, fin.x+28, fin.y+24);
+                        graphics2D.setColor(LSP_COLOR);
+                        graphics2D.setStroke(dashed);
+                        if (headEnd.x == tailEnd.x) {
+                            graphics2D.drawLine(headEnd.x + 28, headEnd.y + 24, tailEnd.x + 28, tailEnd.y + 24);
+                        } else if (headEnd.y == tailEnd.y) {
+                            graphics2D.drawLine(headEnd.x + 24, headEnd.y + 28, tailEnd.x + 24, tailEnd.y + 28);
+                        } else if (((headEnd.x < tailEnd.x) && (headEnd.y > tailEnd.y)) || ((headEnd.x > tailEnd.x) && (headEnd.y < tailEnd.y))) {
+                            graphics2D.drawLine(headEnd.x + 28, headEnd.y + 28, tailEnd.x + 28, tailEnd.y + 28);
+                        } else if (((headEnd.x < tailEnd.x) && (headEnd.y < tailEnd.y)) || ((headEnd.x > tailEnd.x) && (headEnd.y > tailEnd.y))) {
+                            graphics2D.drawLine(headEnd.x + 20, headEnd.y + 28, tailEnd.x + 20, tailEnd.y + 28);
                         }
-                        else if (inicio.y == fin.y) {
-                            g2Dbuf.drawLine(inicio.x+24, inicio.y+28, fin.x+24, fin.y+28);
-                        }
-                        else if (((inicio.x < fin.x) && (inicio.y > fin.y)) || ((inicio.x > fin.x) && (inicio.y < fin.y))) {
-                            g2Dbuf.drawLine(inicio.x+28, inicio.y+28, fin.x+28, fin.y+28);
-                        }
-                        else if (((inicio.x < fin.x) && (inicio.y < fin.y)) || ((inicio.x > fin.x) && (inicio.y > fin.y))) {
-                            g2Dbuf.drawLine(inicio.x+20, inicio.y+28, fin.x+20, fin.y+28);
-                        }
-                        g2Dbuf.setStroke(new BasicStroke(1));
+                        graphics2D.setStroke(new BasicStroke(1));
                     }
                 }
             }
-//
-            if (enlace.getShowName()) {
+            if (link.getShowName()) {
                 FontMetrics fm = this.getFontMetrics(this.getFont());
-                int anchoTexto = fm.charsWidth(enlace.getName().toCharArray(), 0, enlace.getName().length());
-                int posX1 = enlace.getHeadEndNode().getScreenPosition().x+24;
-                int posY1 = enlace.getHeadEndNode().getScreenPosition().y+24;
-                int posX2 = enlace.getTailEndNode().getScreenPosition().x+24;
-                int posY2 = enlace.getTailEndNode().getScreenPosition().y+24;
+                int anchoTexto = fm.charsWidth(link.getName().toCharArray(), 0, link.getName().length());
+                int posX1 = link.getHeadEndNode().getScreenPosition().x + 24;
+                int posY1 = link.getHeadEndNode().getScreenPosition().y + 24;
+                int posX2 = link.getTailEndNode().getScreenPosition().x + 24;
+                int posY2 = link.getTailEndNode().getScreenPosition().y + 24;
                 int posX = Math.min(posX1, posX2) + ((Math.max(posX1, posX2) - Math.min(posX1, posX2)) / 2) - (anchoTexto / 2);
                 int posY = Math.min(posY1, posY2) + ((Math.max(posY1, posY2) - Math.min(posY1, posY2)) / 2) + 5;
-                g2Dbuf.setColor(this.LINK_NAME_COLOR);
-                g2Dbuf.fillRoundRect(posX-3, posY-13, anchoTexto+5, 17, 10, 10);
-                g2Dbuf.setColor(Color.GRAY);
-                g2Dbuf.drawString(enlace.getName(), posX, posY);
-                g2Dbuf.drawRoundRect(posX-3, posY-13, anchoTexto+5, 17, 10, 10);
+                graphics2D.setColor(LINK_NAME_COLOR);
+                graphics2D.fillRoundRect(posX - 3, posY - 13, anchoTexto + 5, 17, 10, 10);
+                graphics2D.setColor(Color.GRAY);
+                graphics2D.drawString(link.getName(), posX, posY);
+                graphics2D.drawRoundRect(posX - 3, posY - 13, anchoTexto + 5, 17, 10, 10);
             }
         }
     }
 
     /**
-     * @param g2Dbuf
+     * This method paints nodes corresponding to the topology being painted.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param graphics2D the place where the topology is going to be painted.
      * @since 2.0
-     */    
-    private void dibujarNodos(Graphics2D g2Dbuf) {
-        maxX = 10;
-        maxY = 10;
-        Iterator ite = topologia.getNodesIterator();
-        while (ite.hasNext()) {
-            TNode nodo = (TNode) ite.next();
-            Point posicion = nodo.getScreenPosition();
+     */
+    private void paintNodes(Graphics2D graphics2D) {
+        this.maxX = 10;
+        this.maxY = 10;
+        Iterator nodesIterator = this.topology.getNodesIterator();
+        while (nodesIterator.hasNext()) {
+            TNode node = (TNode) nodesIterator.next();
+            Point nodePosition = node.getScreenPosition();
 
-            if ((posicion.x+48) > maxX)
-                maxX = posicion.x+48;
-            if ((posicion.y+48) > maxY)
-                maxY = posicion.y+48;
-            this.setPreferredSize(new Dimension(maxX, maxY));
+            if ((nodePosition.x + 48) > this.maxX) {
+                this.maxX = nodePosition.x + 48;
+            }
+            if ((nodePosition.y + 48) > this.maxY) {
+                this.maxY = nodePosition.y + 48;
+            }
+            this.setPreferredSize(new Dimension(this.maxX, this.maxY));
             this.revalidate();
-            
-            int tipo = nodo.getNodeType();
-            switch (tipo) {
+
+            int nodeType = node.getNodeType();
+            switch (nodeType) {
                 case TNode.TRAFFIC_GENERATOR: {
-                    if (nodo.isSelected() == TNode.UNSELECTED)
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImageBroker.EMISOR), posicion.x, posicion.y, null);
-                    else
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImageBroker.EMISOR_MOVIENDOSE), posicion.x, posicion.y, null);
+                    if (node.isSelected() == TNode.UNSELECTED) {
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.EMISOR), nodePosition.x, nodePosition.y, null);
+                    } else {
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.EMISOR_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
+                    }
                     break;
                 }
                 case TNode.TRAFFIC_SINK: {
-                    if (nodo.isSelected() == TNode.UNSELECTED)
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImageBroker.RECEPTOR), posicion.x, posicion.y, null);
-                    else
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImageBroker.RECEPTOR_MOVIENDOSE), posicion.x, posicion.y, null);
+                    if (node.isSelected() == TNode.UNSELECTED) {
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.RECEPTOR), nodePosition.x, nodePosition.y, null);
+                    } else {
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.RECEPTOR_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
+                    }
                     break;
                 }
                 case TNode.LER: {
-                    if (nodo.isSelected() == TNode.UNSELECTED)
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImageBroker.LER), posicion.x, posicion.y, null);
-                    else
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImageBroker.LER_MOVIENDOSE), posicion.x, posicion.y, null);
+                    if (node.isSelected() == TNode.UNSELECTED) {
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LER), nodePosition.x, nodePosition.y, null);
+                    } else {
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LER_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
+                    }
                     break;
                 }
                 case TNode.ACTIVE_LER: {
-                    if (nodo.isSelected() == TNode.UNSELECTED)
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImageBroker.LERA), posicion.x, posicion.y, null);
-                    else
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImageBroker.LERA_MOVIENDOSE), posicion.x, posicion.y, null);
+                    if (node.isSelected() == TNode.UNSELECTED) {
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LERA), nodePosition.x, nodePosition.y, null);
+                    } else {
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LERA_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
+                    }
                     break;
                 }
                 case TNode.LSR: {
-                    if (nodo.isSelected() == TNode.UNSELECTED)
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImageBroker.LSR), posicion.x, posicion.y, null);
-                    else
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImageBroker.LSR_MOVIENDOSE), posicion.x, posicion.y, null);
+                    if (node.isSelected() == TNode.UNSELECTED) {
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSR), nodePosition.x, nodePosition.y, null);
+                    } else {
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSR_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
+                    }
                     break;
                 }
                 case TNode.ACTIVE_LSR: {
-                    if (nodo.isSelected() == TNode.UNSELECTED)
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImageBroker.LSRA), posicion.x, posicion.y, null);
-                    else
-                        g2Dbuf.drawImage(dispensadorDeImagenes.obtenerImagen(TImageBroker.LSRA_MOVIENDOSE), posicion.x, posicion.y, null);
+                    if (node.isSelected() == TNode.UNSELECTED) {
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSRA), nodePosition.x, nodePosition.y, null);
+                    } else {
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSRA_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
+                    }
                     break;
                 }
             }
-            if (nodo.getShowName()) {
-                FontMetrics fm = this.getFontMetrics(this.getFont());
-                int anchoTexto = fm.charsWidth(nodo.getName().toCharArray(), 0, nodo.getName().length());
-                int posX = (nodo.getScreenPosition().x + 24) - ((anchoTexto/2));
-                int posY = nodo.getScreenPosition().y+60;
-                g2Dbuf.setColor(Color.WHITE);
-                g2Dbuf.fillRoundRect(posX-3, posY-13, anchoTexto+5, 17, 10, 10);
-                g2Dbuf.setColor(Color.GRAY);
-                g2Dbuf.drawString(nodo.getName(), posX, posY);
-                g2Dbuf.drawRoundRect(posX-3, posY-13, anchoTexto+5, 17, 10, 10);
+            if (node.getShowName()) {
+                FontMetrics fontMetrics = this.getFontMetrics(this.getFont());
+                int textWidth = fontMetrics.charsWidth(node.getName().toCharArray(), 0, node.getName().length());
+                int posX = (node.getScreenPosition().x + 24) - ((textWidth / 2));
+                int posY = node.getScreenPosition().y + 60;
+                graphics2D.setColor(Color.WHITE);
+                graphics2D.fillRoundRect(posX - 3, posY - 13, textWidth + 5, 17, 10, 10);
+                graphics2D.setColor(Color.GRAY);
+                graphics2D.drawString(node.getName(), posX, posY);
+                graphics2D.drawRoundRect(posX - 3, posY - 13, textWidth + 5, 17, 10, 10);
             }
         }
     }
 
     /**
-     * Este m�todo permite establecer cuantos milisegundos de espera va a haber entre
-     * que se muestra un tic en la simulaci�n, y se meustra el siguiente. A efectos
-     * pr�cticos permite ralentizar la simulaci�n en tiempo real.
-     * @param mls N�mero de milisegundos de retardo entre frames de una misma simulaci�n.
+     * This method set the number of Ms between subsequents repaints of the
+     * simulation. In fact this allow the user to set the simulation speed that,
+     * by default is too fast as to see something clearly in the simulation
+     * panel.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param simulationSpeedInMsPerTick The number of Ms that the simulation
+     * will wait until next tick is painted in the panel.
      * @since 2.0
-     */    
-    public void ponerMlsPorTic(int mls) {
-        this.mlsPorTic = mls;
+     */
+    public void setSimulationSpeedInMsPerTick(int simulationSpeedInMsPerTick) {
+        this.simulationSpeedInMsPerTick = simulationSpeedInMsPerTick;
     }
-    
+
     /**
-     * Este m�todo permite a�adir un evento a la lista de eventos que se deben mostrar
-     * en la ventana del simulador.
-     * @param evt El nuevo evento que se debe mostrar en la simulaci�n.
+     * This method queues a new simulation event to be painted in the simulation
+     * panel when needed.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param simulationEvent a new simulation event to be painted in the
+     * simulation panel when needed.
      * @since 2.0
-     */    
-    public void addEvent(TSimulationEvent evt) {
-        cerrojo.lock();
-        this.enviarATraza(evt);
-        if (evt.getInstant() <= ticActual) {
-            bufferEventos.add(evt);
-            cerrojo.unLock();
+     */
+    public void addEvent(TSimulationEvent simulationEvent) {
+        this.eventsBuffersLock.lock();
+        if (simulationEvent.getInstant() <= this.currentTick) {
+            this.eventsBuffer.add(simulationEvent);
+            this.eventsBuffersLock.unLock();
         } else {
-            ticActual = evt.getInstant();
-            Iterator it = this.bufferParaSimular.iterator();
+            this.currentTick = simulationEvent.getInstant();
+            Iterator simulationEventsBufferIterator = this.simulationBuffer.iterator();
             TSimulationEvent evento = null;
-            while (it.hasNext()) {
-                it.next();
-                it.remove();
+            while (simulationEventsBufferIterator.hasNext()) {
+                simulationEventsBufferIterator.next();
+                simulationEventsBufferIterator.remove();
             }
-            it = bufferEventos.iterator();
+            simulationEventsBufferIterator = this.eventsBuffer.iterator();
             evento = null;
-            while (it.hasNext()) {
-                evento = (TSimulationEvent) it.next();
-                bufferParaSimular.add(evento);
-                it.remove();
+            while (simulationEventsBufferIterator.hasNext()) {
+                evento = (TSimulationEvent) simulationEventsBufferIterator.next();
+                this.simulationBuffer.add(evento);
+                simulationEventsBufferIterator.remove();
             }
-            cerrojo.unLock();
+            this.eventsBuffersLock.unLock();
             repaint();
-            bufferEventos.add(evt);
+            this.eventsBuffer.add(simulationEvent);
             try {
-                Thread.currentThread().sleep(this.mlsPorTic);
+                Thread.currentThread().sleep(this.simulationSpeedInMsPerTick);
             } catch (Exception e) {
-                e.printStackTrace(); 
+                e.printStackTrace();
             }
         }
     }
-    
+
     /**
-     * Este m�todo permite dibujar los eventos relacionados con las PDU's que circulan
-     * por la red.
+     * This method paints events related to the packets circulating through the
+     * topology.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param graphics2D the place where the topology is going to be painted.
      * @since 2.0
-     * @param g2D El lienzo donde se mostrar� el evento.
-     */    
-    public void dibujarEventosPaquete(Graphics2D g2D) {
-        cerrojo.lock();
+     */
+    private void paintPacketsEvents(Graphics2D graphics2D) {
+        this.eventsBuffersLock.lock();
         try {
-            Iterator it = bufferParaSimular.iterator();
-            TSimulationEvent evento = null;
-            while (it.hasNext()) {
-                evento = (TSimulationEvent) it.next();
-                if (evento != null) {
-                    if (evento.getSubtype() == TSimulationEvent.PACKET_ON_FLY) {
-                        TSimulationEventPacketOnFly ept = (TSimulationEventPacketOnFly) evento;
-                        TLink et = (TLink) ept.getSource();
-                        Point p = et.getScreenPacketPosition(ept.getTransitPercentage());
-                        if (ept.getPacketType() == TAbstractPDU.GPSRP) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_GOS), p.x-14, p.y-14, null);
-                        } else if (ept.getPacketType() == TAbstractPDU.TLDP) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_LDP), p.x-8, p.y-8, null);
-                        } else if (ept.getPacketType() == TAbstractPDU.IPV4) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_IPV4), p.x-8, p.y-8, null);
-                        } else if (ept.getPacketType() == TAbstractPDU.IPV4_GOS) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_IPV4_GOS), p.x-8, p.y-8, null);
-                        } else if (ept.getPacketType() == TAbstractPDU.MPLS) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_MPLS), p.x-8, p.y-8, null);
-                        } else if (ept.getPacketType() == TAbstractPDU.MPLS_GOS) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_MPLS_GOS), p.x-8, p.y-8, null);
+            Iterator simulationEventsIterator = this.simulationBuffer.iterator();
+            TSimulationEvent event = null;
+            while (simulationEventsIterator.hasNext()) {
+                event = (TSimulationEvent) simulationEventsIterator.next();
+                if (event != null) {
+                    if (event.getSubtype() == TSimulationEvent.PACKET_ON_FLY) {
+                        TSimulationEventPacketOnFly simulationEventPacketOnFly = (TSimulationEventPacketOnFly) event;
+                        TLink link = (TLink) simulationEventPacketOnFly.getSource();
+                        Point packetPosition = link.getScreenPacketPosition(simulationEventPacketOnFly.getTransitPercentage());
+                        if (simulationEventPacketOnFly.getPacketType() == TAbstractPDU.GPSRP) {
+                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_GOS), packetPosition.x - 14, packetPosition.y - 14, null);
+                        } else if (simulationEventPacketOnFly.getPacketType() == TAbstractPDU.TLDP) {
+                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_LDP), packetPosition.x - 8, packetPosition.y - 8, null);
+                        } else if (simulationEventPacketOnFly.getPacketType() == TAbstractPDU.IPV4) {
+                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_IPV4), packetPosition.x - 8, packetPosition.y - 8, null);
+                        } else if (simulationEventPacketOnFly.getPacketType() == TAbstractPDU.IPV4_GOS) {
+                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_IPV4_GOS), packetPosition.x - 8, packetPosition.y - 8, null);
+                        } else if (simulationEventPacketOnFly.getPacketType() == TAbstractPDU.MPLS) {
+                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_MPLS), packetPosition.x - 8, packetPosition.y - 8, null);
+                        } else if (simulationEventPacketOnFly.getPacketType() == TAbstractPDU.MPLS_GOS) {
+                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_MPLS_GOS), packetPosition.x - 8, packetPosition.y - 8, null);
                         }
-                    } else if (evento.getSubtype() == TSimulationEvent.PACKET_DISCARDED) {
-                        TSimulationEventPacketDiscarded epd = (TSimulationEventPacketDiscarded) evento;
-                        TNode nt = (TNode) epd.getSource();
-                        Point p = nt.getScreenPosition();
-                        if (epd.getPacketType() == TAbstractPDU.GPSRP) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_GOS_CAE), p.x, p.y+24, null);
-                        } else if (epd.getPacketType() == TAbstractPDU.TLDP) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_LDP_CAE), p.x, p.y+24, null);
-                        } else if (epd.getPacketType() == TAbstractPDU.IPV4) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_IPV4_CAE), p.x, p.y+24, null);
-                        } else if (epd.getPacketType() == TAbstractPDU.IPV4_GOS) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_IPV4_GOS_CAE), p.x, p.y+24, null);
-                        } else if (epd.getPacketType() == TAbstractPDU.MPLS) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_MPLS_CAE), p.x, p.y+24, null);
-                        } else if (epd.getPacketType() == TAbstractPDU.MPLS_GOS) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_MPLS_GOS_CAE), p.x, p.y+24, null);
+                    } else if (event.getSubtype() == TSimulationEvent.PACKET_DISCARDED) {
+                        TSimulationEventPacketDiscarded simulationEventPacketDiscarded = (TSimulationEventPacketDiscarded) event;
+                        TNode node = (TNode) simulationEventPacketDiscarded.getSource();
+                        Point nodePosition = node.getScreenPosition();
+                        if (simulationEventPacketDiscarded.getPacketType() == TAbstractPDU.GPSRP) {
+                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_GOS_CAE), nodePosition.x, nodePosition.y + 24, null);
+                        } else if (simulationEventPacketDiscarded.getPacketType() == TAbstractPDU.TLDP) {
+                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_LDP_CAE), nodePosition.x, nodePosition.y + 24, null);
+                        } else if (simulationEventPacketDiscarded.getPacketType() == TAbstractPDU.IPV4) {
+                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_IPV4_CAE), nodePosition.x, nodePosition.y + 24, null);
+                        } else if (simulationEventPacketDiscarded.getPacketType() == TAbstractPDU.IPV4_GOS) {
+                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_IPV4_GOS_CAE), nodePosition.x, nodePosition.y + 24, null);
+                        } else if (simulationEventPacketDiscarded.getPacketType() == TAbstractPDU.MPLS) {
+                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_MPLS_CAE), nodePosition.x, nodePosition.y + 24, null);
+                        } else if (simulationEventPacketDiscarded.getPacketType() == TAbstractPDU.MPLS_GOS) {
+                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_MPLS_GOS_CAE), nodePosition.x, nodePosition.y + 24, null);
                         }
-                    } else if (evento.getSubtype() == TSimulationEvent.LSP_ESTABLISHED) {
-                        // Algo se har�.
-                    } else if (evento.getSubtype() == TSimulationEvent.PACKET_GENERATED) {
-                        TSimulationEventPacketGenerated epg = (TSimulationEventPacketGenerated) evento;
-                        TNode nt = (TNode) epg.getSource();
-                        Point p = nt.getScreenPosition();
-                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PAQUETE_GENERADO), p.x+8, p.y-16, null);
-                    } else if (evento.getSubtype() == TSimulationEvent.PACKET_SENT) {
-                        TSimulationEventPacketSent epe = (TSimulationEventPacketSent) evento;
-                        TNode nt = (TNode) epe.getSource();
-                        Point p = nt.getScreenPosition();
-                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PAQUETE_EMITIDO), p.x+24, p.y-16, null);
-                    } else if (evento.getSubtype() == TSimulationEvent.PACKET_RECEIVED) {
-                        TSimulationEventPacketReceived epr = (TSimulationEventPacketReceived) evento;
-                        TNode nt = (TNode) epr.getSource();
-                        Point p = nt.getScreenPosition();
-                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PAQUETE_RECIBIDO), p.x-8, p.y-16, null);
-                    } else if (evento.getSubtype() == TSimulationEvent.PACKET_SWITCHED) {
-                        TSimulationEventPacketSwitched epr = (TSimulationEventPacketSwitched) evento;
-                        TNode nt = (TNode) epr.getSource();
-                        Point p = nt.getScreenPosition();
-                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PAQUETE_CONMUTADO), p.x+40, p.y-16, null);
-                    } else if (evento.getSubtype() == TSimulationEvent.PACKET_ROUTED) {
-                        TSimulationEventPacketRouted epr = (TSimulationEventPacketRouted) evento;
-                        TNode nt = (TNode) epr.getSource();
-                        Point p = nt.getScreenPosition();
-                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PAQUETE_CONMUTADO), p.x+40, p.y-16, null);
+                    } else if (event.getSubtype() == TSimulationEvent.LSP_ESTABLISHED) {
+                        // I've to think in something to show when this happens :-)
+                    } else if (event.getSubtype() == TSimulationEvent.PACKET_GENERATED) {
+                        TSimulationEventPacketGenerated simulationEventPacketGenerated = (TSimulationEventPacketGenerated) event;
+                        TNode node = (TNode) simulationEventPacketGenerated.getSource();
+                        Point nodePosition = node.getScreenPosition();
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PAQUETE_GENERADO), nodePosition.x + 8, nodePosition.y - 16, null);
+                    } else if (event.getSubtype() == TSimulationEvent.PACKET_SENT) {
+                        TSimulationEventPacketSent simulationEventPacketSent = (TSimulationEventPacketSent) event;
+                        TNode node = (TNode) simulationEventPacketSent.getSource();
+                        Point nodePosition = node.getScreenPosition();
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PAQUETE_EMITIDO), nodePosition.x + 24, nodePosition.y - 16, null);
+                    } else if (event.getSubtype() == TSimulationEvent.PACKET_RECEIVED) {
+                        TSimulationEventPacketReceived simulationEventPacketReceived = (TSimulationEventPacketReceived) event;
+                        TNode node = (TNode) simulationEventPacketReceived.getSource();
+                        Point nodePosition = node.getScreenPosition();
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PAQUETE_RECIBIDO), nodePosition.x - 8, nodePosition.y - 16, null);
+                    } else if (event.getSubtype() == TSimulationEvent.PACKET_SWITCHED) {
+                        TSimulationEventPacketSwitched simulationEventPacketSwitched = (TSimulationEventPacketSwitched) event;
+                        TNode node = (TNode) simulationEventPacketSwitched.getSource();
+                        Point nodePosition = node.getScreenPosition();
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PAQUETE_CONMUTADO), nodePosition.x + 40, nodePosition.y - 16, null);
+                    } else if (event.getSubtype() == TSimulationEvent.PACKET_ROUTED) {
+                        TSimulationEventPacketRouted simulationEventPacketRouted = (TSimulationEventPacketRouted) event;
+                        TNode node = (TNode) simulationEventPacketRouted.getSource();
+                        Point nodePosition = node.getScreenPosition();
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PAQUETE_CONMUTADO), nodePosition.x + 40, nodePosition.y - 16, null);
                     }
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
-        cerrojo.unLock();
+        this.eventsBuffersLock.unLock();
     }
 
-    
     /**
-     * Este m�todo permite representar los eventos que tengan que ver con los nodos.
+     * This method paints events related to the nodes of the topology.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param graphics2D the place where the topology is going to be painted.
      * @since 2.0
-     * @param g2D El lienzo donde se mostrar� el evento.
-     */    
-    public void dibujarEventosNodo(Graphics2D g2D) {
-        cerrojo.lock();
+     */
+    private void paintNodesEvents(Graphics2D graphics2D) {
+        this.eventsBuffersLock.lock();
         try {
-            TSimulationEvent evento = null;
-            Iterator it = bufferParaSimular.iterator();
-            while (it.hasNext()) {
-                evento = (TSimulationEvent) it.next();
-                if (evento != null) {
-                    if (evento.getSubtype() == TSimulationEvent.NODE_CONGESTED) {
-                        TSimulationEventNodeCongested enc = (TSimulationEventNodeCongested) evento;
-                        TNode nt = (TNode) enc.getSource();
-                        Point p = nt.getScreenPosition();
-                        int tipo = nt.getNodeType();
-                        long cong = enc.getCongestionLevel();
-                        if ((cong >= 50) && (cong < 75)) {
-                            if (tipo == TNode.TRAFFIC_GENERATOR) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.EMISOR_CONGESTIONADO_20), p.x, p.y, null);
-                            } else if (tipo == TNode.TRAFFIC_SINK) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.RECEPTOR_CONGESTIONADO_20), p.x, p.y, null);
-                            } else if (tipo == TNode.LER) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.LER_CONGESTIONADO_20), p.x, p.y, null);
-                            } else if (tipo == TNode.ACTIVE_LER) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.LERA_CONGESTIONADO_20), p.x, p.y, null);
-                            } else if (tipo == TNode.LSR) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.LSR_CONGESTIONADO_20), p.x, p.y, null);
-                            } else if (tipo == TNode.ACTIVE_LSR) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.LSRA_CONGESTIONADO_20), p.x, p.y, null);
+            TSimulationEvent event = null;
+            Iterator simulationEventsIterator = this.simulationBuffer.iterator();
+            while (simulationEventsIterator.hasNext()) {
+                event = (TSimulationEvent) simulationEventsIterator.next();
+                if (event != null) {
+                    if (event.getSubtype() == TSimulationEvent.NODE_CONGESTED) {
+                        TSimulationEventNodeCongested simulationEventNodeCongested = (TSimulationEventNodeCongested) event;
+                        TNode node = (TNode) simulationEventNodeCongested.getSource();
+                        Point nodePosition = node.getScreenPosition();
+                        int nodeType = node.getNodeType();
+                        long congestionLevel = simulationEventNodeCongested.getCongestionLevel();
+                        if ((congestionLevel >= 50) && (congestionLevel < 75)) {
+                            if (nodeType == TNode.TRAFFIC_GENERATOR) {
+                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.EMISOR_CONGESTIONADO_20), nodePosition.x, nodePosition.y, null);
+                            } else if (nodeType == TNode.TRAFFIC_SINK) {
+                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.RECEPTOR_CONGESTIONADO_20), nodePosition.x, nodePosition.y, null);
+                            } else if (nodeType == TNode.LER) {
+                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LER_CONGESTIONADO_20), nodePosition.x, nodePosition.y, null);
+                            } else if (nodeType == TNode.ACTIVE_LER) {
+                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LERA_CONGESTIONADO_20), nodePosition.x, nodePosition.y, null);
+                            } else if (nodeType == TNode.LSR) {
+                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSR_CONGESTIONADO_20), nodePosition.x, nodePosition.y, null);
+                            } else if (nodeType == TNode.ACTIVE_LSR) {
+                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSRA_CONGESTIONADO_20), nodePosition.x, nodePosition.y, null);
                             }
-                        } else if ((cong >= 75) && (cong < 95)) {
-                            if (tipo == TNode.TRAFFIC_GENERATOR) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.EMISOR_CONGESTIONADO_60), p.x, p.y, null);
-                            } else if (tipo == TNode.TRAFFIC_SINK) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.RECEPTOR_CONGESTIONADO_60), p.x, p.y, null);
-                            } else if (tipo == TNode.LER) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.LER_CONGESTIONADO_60), p.x, p.y, null);
-                            } else if (tipo == TNode.ACTIVE_LER) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.LERA_CONGESTIONADO_60), p.x, p.y, null);
-                            } else if (tipo == TNode.LSR) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.LSR_CONGESTIONADO_60), p.x, p.y, null);
-                            } else if (tipo == TNode.ACTIVE_LSR) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.LSRA_CONGESTIONADO_60), p.x, p.y, null);
+                        } else if ((congestionLevel >= 75) && (congestionLevel < 95)) {
+                            if (nodeType == TNode.TRAFFIC_GENERATOR) {
+                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.EMISOR_CONGESTIONADO_60), nodePosition.x, nodePosition.y, null);
+                            } else if (nodeType == TNode.TRAFFIC_SINK) {
+                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.RECEPTOR_CONGESTIONADO_60), nodePosition.x, nodePosition.y, null);
+                            } else if (nodeType == TNode.LER) {
+                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LER_CONGESTIONADO_60), nodePosition.x, nodePosition.y, null);
+                            } else if (nodeType == TNode.ACTIVE_LER) {
+                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LERA_CONGESTIONADO_60), nodePosition.x, nodePosition.y, null);
+                            } else if (nodeType == TNode.LSR) {
+                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSR_CONGESTIONADO_60), nodePosition.x, nodePosition.y, null);
+                            } else if (nodeType == TNode.ACTIVE_LSR) {
+                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSRA_CONGESTIONADO_60), nodePosition.x, nodePosition.y, null);
                             }
-                        } else if (cong >= 95) {
-                            if (tipo == TNode.TRAFFIC_GENERATOR) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.EMISOR_CONGESTIONADO), p.x, p.y, null);
-                            } else if (tipo == TNode.TRAFFIC_SINK) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.RECEPTOR_CONGESTIONADO), p.x, p.y, null);
-                            } else if (tipo == TNode.LER) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.LER_CONGESTIONADO), p.x, p.y, null);
-                            } else if (tipo == TNode.ACTIVE_LER) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.LERA_CONGESTIONADO), p.x, p.y, null);
-                            } else if (tipo == TNode.LSR) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.LSR_CONGESTIONADO), p.x, p.y, null);
-                            } else if (tipo == TNode.ACTIVE_LSR) {
-                                g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.LSRA_CONGESTIONADO), p.x, p.y, null);
+                        } else if (congestionLevel >= 95) {
+                            if (nodeType == TNode.TRAFFIC_GENERATOR) {
+                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.EMISOR_CONGESTIONADO), nodePosition.x, nodePosition.y, null);
+                            } else if (nodeType == TNode.TRAFFIC_SINK) {
+                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.RECEPTOR_CONGESTIONADO), nodePosition.x, nodePosition.y, null);
+                            } else if (nodeType == TNode.LER) {
+                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LER_CONGESTIONADO), nodePosition.x, nodePosition.y, null);
+                            } else if (nodeType == TNode.ACTIVE_LER) {
+                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LERA_CONGESTIONADO), nodePosition.x, nodePosition.y, null);
+                            } else if (nodeType == TNode.LSR) {
+                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSR_CONGESTIONADO), nodePosition.x, nodePosition.y, null);
+                            } else if (nodeType == TNode.ACTIVE_LSR) {
+                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSRA_CONGESTIONADO), nodePosition.x, nodePosition.y, null);
                             }
                         }
-                        if (nt.getTicksWithoutEmitting() > TNode.MAX_STEP_WITHOUT_EMITTING_BEFORE_ALERTING) {
-                            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.TRABAJANDO), p.x, p.y, null);
+                        if (node.getTicksWithoutEmitting() > TNode.MAX_TICKS_WITHOUT_EMITTING_BEFORE_ALERTING) {
+                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.TRABAJANDO), nodePosition.x, nodePosition.y, null);
                         }
                     }
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
-        cerrojo.unLock();
+        this.eventsBuffersLock.unLock();
     }
 
-    
     /**
-     * Este m�todo permite tratar los eventos que tienen que ver con los enlaces de
-     * comunicaciones.
+     * This method paints events related to the links of the topology.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param graphics2D the place where the topology is going to be painted.
      * @since 2.0
-     * @param g2D El lienzo donde se mostrar� el evento.
-     */    
-    public void dibujarEventosEnlace(Graphics2D g2D) {
-        cerrojo.lock();
+     */
+    private void paintLinksEvents(Graphics2D graphics2D) {
+        this.eventsBuffersLock.lock();
         try {
-            TSimulationEvent evento = null;
-            Iterator it = bufferParaSimular.iterator();
-            while (it.hasNext()) {
-                evento = (TSimulationEvent) it.next();
-                if (evento != null) {
-                    if (evento.getSubtype() == TSimulationEvent.LINK_BROKEN) {
-                        TLink ent = (TLink) evento.getSource();
-                        Point p = ent.getScreenPacketPosition(50);
-                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.ENLACE_CAIDO), p.x-41, p.y-41, null);
-                    } else if (evento.getSubtype() == TSimulationEvent.LINK_RECOVERED) {
-                        TLink ent = (TLink) evento.getSource();
-                        Point p = ent.getScreenPacketPosition(50);
-                        g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.ENLACE_RECUPERADO), p.x-41, p.y-41, null);
+            TSimulationEvent event = null;
+            Iterator simulationEventsIterator = this.simulationBuffer.iterator();
+            while (simulationEventsIterator.hasNext()) {
+                event = (TSimulationEvent) simulationEventsIterator.next();
+                if (event != null) {
+                    if (event.getSubtype() == TSimulationEvent.LINK_BROKEN) {
+                        TLink link = (TLink) event.getSource();
+                        Point packetPosition = link.getScreenPacketPosition(50);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.ENLACE_CAIDO), packetPosition.x - 41, packetPosition.y - 41, null);
+                    } else if (event.getSubtype() == TSimulationEvent.LINK_RECOVERED) {
+                        TLink link = (TLink) event.getSource();
+                        Point packetPosition = link.getScreenPacketPosition(50);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.ENLACE_RECUPERADO), packetPosition.x - 41, packetPosition.y - 41, null);
                     }
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
-        cerrojo.unLock();
+        this.eventsBuffersLock.unLock();
     }
-    
-    
-    /**
-     * Este m�todo muestra un contador en la ventana de simulaci�n que indica el
-     * nanosegundo de simulaci�n que por el que se va.
-     * @since 2.0
-     * @param g2D El lienzo donde se mostrar� el contador.
-     */    
-    public void dibujarTicActual(Graphics2D g2D) {
-        int posX = 8;
-        int posY = 18;
-        String textoTic = this.ticActual+ " " +java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JPanelSimulacion.Ns");
-        FontMetrics fm = this.getFontMetrics(this.getFont());
-        int anchoTexto = fm.charsWidth(textoTic.toCharArray(), 0, textoTic.length());
-        g2Dbuf.setColor(Color.LIGHT_GRAY);
-        g2Dbuf.fillRect(posX-2, posY-12, anchoTexto+6, 18);
-        g2Dbuf.setColor(Color.WHITE);
-        g2Dbuf.fillRect(posX-3, posY-13, anchoTexto+5, 17);
-        g2Dbuf.setColor(Color.BLACK);
-        g2Dbuf.drawString(textoTic, posX, posY);
-        g2Dbuf.drawRect(posX-3, posY-13, anchoTexto+5, 17);
-    }
-    
-    /**
-     * Este m�todo dibuja en el panel de simulaci�n una leyenda con los objetos que
-     * aparecer�n en la simulaci�n. Siempre, por supuesto, que la leyenda est�
-     * configurada para aparecer.
-     * @param g2D Lienzo del panel de simulaci�n, donde se dibujar� la leyenda.
-     * @since 2.0
-     */    
-    public void dibujarLeyenda(Graphics2D g2D) {
-        if (this.mostrarLeyenda) {
-            int ancho = 0;
-            int anchoTotal = 0;
-            int alto = 0; 
-            int xInicio = 0;
-            int yInicio = 0;
-            FontMetrics fm = this.getFontMetrics(this.getFont());
-            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_IPv4").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_IPv4").length())) > ancho) {
-                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_IPv4").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_IPv4").length());
-            }
-            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_IPv4_GOS").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_IPv4_GOS").length())) > ancho) {
-                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_IPv4_GOS").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_IPv4_GOS").length());
-            }
-            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_MPLS").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_MPLS").length())) > ancho) {
-                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_MPLS").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_MPLS").length());
-            }
-            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_MPLS_GOS").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_MPLS_GOS").length())) > ancho) {
-                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_MPLS_GOS").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_MPLS_GOS").length());
-            }
-            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_TLDP").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_TLDP").length())) > ancho) {
-                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_TLDP").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_TLDP").length());
-            }
-            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_GPSRP").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_GPSRP").length())) > ancho) {
-                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_GPSRP").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_GPSRP").length());
-            }
-            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.LSP").toCharArray(), 0, this.translations.getString("JPanelSimulacion.LSP").length())) > ancho) {
-                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.LSP").toCharArray(), 0, this.translations.getString("JPanelSimulacion.LSP").length());
-            }
-            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.LSP_de_respaldo").toCharArray(), 0, this.translations.getString("JPanelSimulacion.LSP_de_respaldo").length())) > ancho) {
-                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.LSP_de_respaldo").toCharArray(), 0, this.translations.getString("JPanelSimulacion.LSP_de_respaldo").length());
-            }
-            if ((fm.charsWidth(this.translations.getString("Paquete_recibido").toCharArray(), 0, this.translations.getString("Paquete_recibido").length())) > ancho) {
-                ancho = fm.charsWidth(this.translations.getString("Paquete_recibido").toCharArray(), 0, this.translations.getString("Paquete_recibido").length());
-            }
-            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_enviado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_enviado").length())) > ancho) {
-                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_enviado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_enviado").length());
-            }
-            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_conmutado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_conmutado").length())) > ancho) {
-                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_conmutado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_conmutado").length());
-            }
-            if ((fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_generado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_generado").length())) > ancho) {
-                ancho = fm.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_generado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_generado").length());
-            }
-            anchoTotal = 5+13+5+ancho+20+13+5+ancho+5;
-            alto = 113;
-            xInicio = this.getWidth()-anchoTotal-6;
-            yInicio = this.getHeight()-alto-6;
-            g2D.setColor(Color.LIGHT_GRAY);
-            g2D.fillRect(xInicio+2, yInicio+2, anchoTotal, alto);
-            g2D.setColor(LEGEND_BACKGROUND_COLOR);
-            g2D.fillRect(xInicio, yInicio, anchoTotal, alto);
-            g2D.setColor(Color.BLACK);
-            g2D.drawRect(xInicio, yInicio, anchoTotal, alto);
-            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_IPV4), xInicio+5, yInicio+5, null);
-            g2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_IPv4"), xInicio+23, yInicio+18);
-            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_IPV4_GOS), xInicio+5, yInicio+23, null);
-            g2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_IPv4_GOS"), xInicio+23, yInicio+36);
-            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_MPLS), xInicio+5, yInicio+41, null);
-            g2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_MPLS"), xInicio+23, yInicio+54);
-            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_MPLS_GOS), xInicio+5, yInicio+59, null);
-            g2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_MPLS_GOS"), xInicio+23, yInicio+72);
-            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PDU_LDP), xInicio+5, yInicio+77, null);
-            g2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_TLDP"), xInicio+23, yInicio+90);
-            g2D.setColor(Color.LIGHT_GRAY);
-            g2D.drawOval(xInicio+5, yInicio+95, 13, 13);
-            g2D.setColor(Color.BLACK);
-            g2D.fillOval(xInicio+8, yInicio+98, 7, 7);
-            g2D.setColor(Color.RED);
-            g2D.fillOval(xInicio+9, yInicio+99, 5, 5);
-            g2D.setColor(Color.YELLOW);
-            g2D.fillOval(xInicio+10, yInicio+100, 3, 3);
-            g2D.setColor(Color.BLACK);
-            g2D.fillOval(xInicio+11, yInicio+101, 1, 1);
-            g2D.setColor(Color.BLACK);
-            g2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_GPSRP"), xInicio+23, yInicio+108);
-            xInicio = xInicio + 5 + 13 + 5 + ancho + 20 - 5;
 
-            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PAQUETE_RECIBIDO), xInicio+5, yInicio+5, null);
-            g2D.drawString(this.translations.getString("Paquete_recibido"), xInicio+23, yInicio+18);
-            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PAQUETE_GENERADO), xInicio+5, yInicio+23, null);
-            g2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_generado"), xInicio+23, yInicio+36);
-            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PAQUETE_EMITIDO), xInicio+5, yInicio+41, null);
-            g2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_enviado"), xInicio+23, yInicio+54);
-            g2D.drawImage(this.dispensadorDeImagenes.obtenerImagen(TImageBroker.PAQUETE_CONMUTADO), xInicio+5, yInicio+59, null);
-            g2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_conmutado"), xInicio+23, yInicio+72);
+    /**
+     * This method paints the tick number whose events are being painted.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param graphics2D the place where the topology is going to be painted.
+     * @since 2.0
+     */
+    private void paintCurrentTick(Graphics2D graphics2D) {
+        int xPosition = 8;
+        int yPosition = 18;
+        String tickText = this.currentTick + " " + translations.getString("JPanelSimulacion.Ns");
+        FontMetrics fontMetrics = this.getFontMetrics(this.getFont());
+        int textWidth = fontMetrics.charsWidth(tickText.toCharArray(), 0, tickText.length());
+        this.bufferedG2D.setColor(Color.LIGHT_GRAY);
+        this.bufferedG2D.fillRect(xPosition - 2, yPosition - 12, textWidth + 6, 18);
+        this.bufferedG2D.setColor(Color.WHITE);
+        this.bufferedG2D.fillRect(xPosition - 3, yPosition - 13, textWidth + 5, 17);
+        this.bufferedG2D.setColor(Color.BLACK);
+        this.bufferedG2D.drawString(tickText, xPosition, yPosition);
+        this.bufferedG2D.drawRect(xPosition - 3, yPosition - 13, textWidth + 5, 17);
+    }
+
+    /**
+     * This method paints the legend of the topology.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param graphics2D the place where the topology is going to be painted.
+     * @since 2.0
+     */
+    private void paintLegend(Graphics2D graphics2D) {
+        if (this.showLegend) {
+            int width = 0;
+            int totalWidth = 0;
+            int height = 0;
+            int upperLeftX = 0;
+            int upperLeftY = 0;
+            FontMetrics fontMetrics = this.getFontMetrics(this.getFont());
+            if ((fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_IPv4").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_IPv4").length())) > width) {
+                width = fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_IPv4").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_IPv4").length());
+            }
+            if ((fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_IPv4_GOS").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_IPv4_GOS").length())) > width) {
+                width = fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_IPv4_GOS").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_IPv4_GOS").length());
+            }
+            if ((fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_MPLS").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_MPLS").length())) > width) {
+                width = fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_MPLS").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_MPLS").length());
+            }
+            if ((fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_MPLS_GOS").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_MPLS_GOS").length())) > width) {
+                width = fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_MPLS_GOS").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_MPLS_GOS").length());
+            }
+            if ((fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_TLDP").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_TLDP").length())) > width) {
+                width = fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_TLDP").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_TLDP").length());
+            }
+            if ((fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_GPSRP").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_GPSRP").length())) > width) {
+                width = fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_GPSRP").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_GPSRP").length());
+            }
+            if ((fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.LSP").toCharArray(), 0, this.translations.getString("JPanelSimulacion.LSP").length())) > width) {
+                width = fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.LSP").toCharArray(), 0, this.translations.getString("JPanelSimulacion.LSP").length());
+            }
+            if ((fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.LSP_de_respaldo").toCharArray(), 0, this.translations.getString("JPanelSimulacion.LSP_de_respaldo").length())) > width) {
+                width = fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.LSP_de_respaldo").toCharArray(), 0, this.translations.getString("JPanelSimulacion.LSP_de_respaldo").length());
+            }
+            if ((fontMetrics.charsWidth(this.translations.getString("Paquete_recibido").toCharArray(), 0, this.translations.getString("Paquete_recibido").length())) > width) {
+                width = fontMetrics.charsWidth(this.translations.getString("Paquete_recibido").toCharArray(), 0, this.translations.getString("Paquete_recibido").length());
+            }
+            if ((fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_enviado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_enviado").length())) > width) {
+                width = fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_enviado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_enviado").length());
+            }
+            if ((fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_conmutado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_conmutado").length())) > width) {
+                width = fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_conmutado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_conmutado").length());
+            }
+            if ((fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_generado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_generado").length())) > width) {
+                width = fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_generado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_generado").length());
+            }
+            totalWidth = 5 + 13 + 5 + width + 20 + 13 + 5 + width + 5;
+            height = 113;
+            upperLeftX = this.getWidth() - totalWidth - 6;
+            upperLeftY = this.getHeight() - height - 6;
+            graphics2D.setColor(Color.LIGHT_GRAY);
+            graphics2D.fillRect(upperLeftX + 2, upperLeftY + 2, totalWidth, height);
+            graphics2D.setColor(LEGEND_BACKGROUND_COLOR);
+            graphics2D.fillRect(upperLeftX, upperLeftY, totalWidth, height);
+            graphics2D.setColor(Color.BLACK);
+            graphics2D.drawRect(upperLeftX, upperLeftY, totalWidth, height);
+            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_IPV4), upperLeftX + 5, upperLeftY + 5, null);
+            graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_IPv4"), upperLeftX + 23, upperLeftY + 18);
+            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_IPV4_GOS), upperLeftX + 5, upperLeftY + 23, null);
+            graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_IPv4_GOS"), upperLeftX + 23, upperLeftY + 36);
+            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_MPLS), upperLeftX + 5, upperLeftY + 41, null);
+            graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_MPLS"), upperLeftX + 23, upperLeftY + 54);
+            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_MPLS_GOS), upperLeftX + 5, upperLeftY + 59, null);
+            graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_MPLS_GOS"), upperLeftX + 23, upperLeftY + 72);
+            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_LDP), upperLeftX + 5, upperLeftY + 77, null);
+            graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_TLDP"), upperLeftX + 23, upperLeftY + 90);
+            graphics2D.setColor(Color.LIGHT_GRAY);
+            graphics2D.drawOval(upperLeftX + 5, upperLeftY + 95, 13, 13);
+            graphics2D.setColor(Color.BLACK);
+            graphics2D.fillOval(upperLeftX + 8, upperLeftY + 98, 7, 7);
+            graphics2D.setColor(Color.RED);
+            graphics2D.fillOval(upperLeftX + 9, upperLeftY + 99, 5, 5);
+            graphics2D.setColor(Color.YELLOW);
+            graphics2D.fillOval(upperLeftX + 10, upperLeftY + 100, 3, 3);
+            graphics2D.setColor(Color.BLACK);
+            graphics2D.fillOval(upperLeftX + 11, upperLeftY + 101, 1, 1);
+            graphics2D.setColor(Color.BLACK);
+            graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_GPSRP"), upperLeftX + 23, upperLeftY + 108);
+            upperLeftX = upperLeftX + 5 + 13 + 5 + width + 20 - 5;
+
+            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PAQUETE_RECIBIDO), upperLeftX + 5, upperLeftY + 5, null);
+            graphics2D.drawString(this.translations.getString("Paquete_recibido"), upperLeftX + 23, upperLeftY + 18);
+            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PAQUETE_GENERADO), upperLeftX + 5, upperLeftY + 23, null);
+            graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_generado"), upperLeftX + 23, upperLeftY + 36);
+            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PAQUETE_EMITIDO), upperLeftX + 5, upperLeftY + 41, null);
+            graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_enviado"), upperLeftX + 23, upperLeftY + 54);
+            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PAQUETE_CONMUTADO), upperLeftX + 5, upperLeftY + 59, null);
+            graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_conmutado"), upperLeftX + 23, upperLeftY + 72);
             float dash1[] = {5.0f};
             BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash1, 0.0f);
-            g2Dbuf.setColor(this.LSP_COLOR);
-            g2Dbuf.setStroke(dashed);
-            g2D.drawLine(xInicio-5, yInicio+84, xInicio-5+30, yInicio+84);
-            g2Dbuf.setColor(Color.BLACK);
-            g2D.drawString(this.translations.getString("JPanelSimulacion.LSP"), xInicio+35, yInicio+90);
+            this.bufferedG2D.setColor(this.LSP_COLOR);
+            this.bufferedG2D.setStroke(dashed);
+            graphics2D.drawLine(upperLeftX - 5, upperLeftY + 84, upperLeftX - 5 + 30, upperLeftY + 84);
+            this.bufferedG2D.setColor(Color.BLACK);
+            graphics2D.drawString(this.translations.getString("JPanelSimulacion.LSP"), upperLeftX + 35, upperLeftY + 90);
             float dash2[] = {10.0f, 5.0f, 0.2f, 5.0f};
             BasicStroke dashed2 = new BasicStroke(0.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash2, 0.0f);
-            g2Dbuf.setColor(Color.BLACK);
-            g2Dbuf.setStroke(dashed2);
-            g2D.drawLine(xInicio-5, yInicio+102, xInicio-5+30, yInicio+102);
-            g2Dbuf.setColor(Color.BLACK);
-            g2D.drawString(this.translations.getString("JPanelSimulacion.LSP_de_respaldo"), xInicio+35, yInicio+108);
-            g2Dbuf.setStroke(new BasicStroke(1.0f));
+            this.bufferedG2D.setColor(Color.BLACK);
+            this.bufferedG2D.setStroke(dashed2);
+            graphics2D.drawLine(upperLeftX - 5, upperLeftY + 102, upperLeftX - 5 + 30, upperLeftY + 102);
+            this.bufferedG2D.setColor(Color.BLACK);
+            graphics2D.drawString(this.translations.getString("JPanelSimulacion.LSP_de_respaldo"), upperLeftX + 35, upperLeftY + 108);
+            this.bufferedG2D.setStroke(new BasicStroke(1.0f));
         }
-    }
-    
-    /**
-     * Este m�todo permite obtener una representaci�n de la simulaci�n en un momento,
-     * en forma de imagen bitmap.
-     * @since 2.0
-     * @return Una imagen accesible, cuyo contenido es una captura de la simulaci�n.
-     */    
-    public BufferedImage capturaDeDisenio() {
-        if (imagenbuf == null) {
-            imagenbuf = new BufferedImage(tamPantalla.width, tamPantalla.height, BufferedImage.TYPE_4BYTE_ABGR);
-            g2Dbuf = imagenbuf.createGraphics();
-        }
-        prepararImagen(g2Dbuf);
-        if (topologia != null) {
-            dibujarDominio(g2Dbuf);
-            dibujarEnlaces(g2Dbuf);
-            dibujarEventosPaquete(g2Dbuf);
-            dibujarNodos(g2Dbuf);
-            dibujarEventosNodo(g2Dbuf);
-            dibujarEventosEnlace(g2Dbuf);
-            dibujarTicActual(g2Dbuf);
-            dibujarLeyenda(g2Dbuf);
-        }
-        return imagenbuf;
     }
 
     /**
-     * Este m�todo redibuja el panel de simulaci�n cada vez que es necesario.
+     * This method gets a screeenshot corresponding to the current topology
+     * simulation.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a screeenshot corresponding to the current topology simulation.
      * @since 2.0
-     * @param g El lienzo donde se debe redibujar el panel de simulaci�n.
-     */    
+     */
+    private BufferedImage getSimulationScreenshot() {
+        if (this.bufferedImage == null) {
+            this.bufferedImage = new BufferedImage(this.screenSize.width, this.screenSize.height, BufferedImage.TYPE_4BYTE_ABGR);
+            this.bufferedG2D = this.bufferedImage.createGraphics();
+        }
+        prepareImage(this.bufferedG2D);
+        if (this.topology != null) {
+            paintDomain(this.bufferedG2D);
+            paintLinks(this.bufferedG2D);
+            paintPacketsEvents(this.bufferedG2D);
+            paintNodes(this.bufferedG2D);
+            paintNodesEvents(this.bufferedG2D);
+            paintLinksEvents(this.bufferedG2D);
+            paintCurrentTick(this.bufferedG2D);
+            paintLegend(this.bufferedG2D);
+        }
+        return this.bufferedImage;
+    }
+
+    /**
+     * This method paints the topology simulation whenever necessary,
+     * automatically.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param graphics the place where the topology simulation has to be
+     * painted.
+     * @since 2.0
+     */
     @Override
-    public void paint(Graphics g) {
-        BufferedImage ima = this.capturaDeDisenio();
-        g.drawImage(ima, 0, 0, null);
+    public void paint(Graphics graphics) {
+        BufferedImage bufferedImageAux = this.getSimulationScreenshot();
+        graphics.drawImage(bufferedImageAux, 0, 0, null);
     }
 
     /**
-     * Este m�todo permite averiguar si el simulador est� mostrando la leyenda o no.
-     * @return TRUE, si se est� mostrando la leyenda. FALSE en caso contrario.
+     * This gets wheteher the legend is being shown in the simulation panel or
+     * not.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return TRUE if the topology is being shown in the simulation panel.
+     * Otherwise, FALSE.
      * @since 2.0
-     */    
-    public boolean obtenerMostrarLeyenda() {
-        return this.mostrarLeyenda;
+     */
+    public boolean getShowLegend() {
+        return this.showLegend;
     }
-    
+
     /**
-     * Este m�todo permite establecer si el simulador mostrar� la leyenda o no.
-     * @param ml TRUE, si el simulador debe mostrar la leyenda. FALSE en caso contrario.
+     * This methods sets/hides the legend in the simulation panel.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param showLegend TRUE, to show the legend in the simulation panel.
+     * FALSE, to hide it.
      * @since 2.0
-     */    
-    public void ponerMostrarLeyenda(boolean ml) {
-        this.mostrarLeyenda = ml;
+     */
+    public void setShowLegend(boolean showLegend) {
+        this.showLegend = showLegend;
     }
-    
-    private TImageBroker dispensadorDeImagenes;
-    private BufferedImage imagenbuf;
-    private Graphics2D g2Dbuf;
-    private TTopology topologia;
-    private Dimension tamPantalla;  
+
+    private TImageBroker imageBroker;
+    private BufferedImage bufferedImage;
+    private Graphics2D bufferedG2D;
+    private TTopology topology;
+    private Dimension screenSize;
     private int maxX;
     private int maxY;
-    private File ficheroTraza;
-    private FileOutputStream streamFicheroTraza;
-    private PrintStream streamTraza;
-    private TreeSet bufferEventos;
-    private TreeSet bufferParaSimular;
-    private long ticActual;
-    private TLock cerrojo;
-    private int mlsPorTic;
-    private boolean mostrarLeyenda;
+    private TreeSet eventsBuffer;
+    private TreeSet simulationBuffer;
+    private long currentTick;
+    private TLock eventsBuffersLock;
+    private int simulationSpeedInMsPerTick;
+    private boolean showLegend;
     private ResourceBundle translations;
-/*
+
     private static Color LEGEND_BACKGROUND_COLOR = new Color(255, 255, 255);
     private static Color LINK_NAME_COLOR = new Color(255, 255, 230);
     private static Color DOMAIN_BORDER_COLOR = new Color(128, 193, 255);
     private static Color DOMAIN_BACKGROUND_COLOR = new Color(204, 230, 255);
     private static Color LSP_COLOR = new Color(0, 0, 200);
-*/
-    private static Color LEGEND_BACKGROUND_COLOR = new Color(255, 255, 255);
-    private static Color LINK_NAME_COLOR = new Color(255, 255, 230);
-    private static Color DOMAIN_BORDER_COLOR = new Color(232, 212, 197);
-    private static Color DOMAIN_BACKGROUND_COLOR = new Color(239, 222, 209);
-    private static Color LSP_COLOR = new Color(0, 0, 200);
+    private static Color EXTERNAL_LINK_COLOR = Color.GRAY;
+    private static Color INTERNAL_LINK_COLOR = Color.BLUE;
+    private static Color BROKEN_LINK_COLOR = Color.RED;
 }
