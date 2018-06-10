@@ -93,11 +93,15 @@ public class JSimulationPanel extends JPanel {
         this.bufferedImage = null;
         this.bufferedG2D = null;
         this.topology = null;
+        // FIX: Do not use harcoded values. Use class constants instead.
         this.maxX = 10;
+        // FIX: Do not use harcoded values. Use class constants instead.
         this.maxY = 10;
         this.eventsBuffer = new TreeSet();
         this.simulationBuffer = new TreeSet();
+        // FIX: Do not use harcoded values. Use class constants instead.
         this.currentTick = 0;
+        // FIX: Do not use harcoded values. Use class constants instead.
         this.simulationSpeedInMsPerTick = 0;
         this.showLegend = false;
         this.eventsBuffersLock = new TLock();
@@ -124,6 +128,7 @@ public class JSimulationPanel extends JPanel {
         }
         this.showLegend = false;
         this.eventsBuffersLock.unLock();
+        // FIX: Do not use harcoded values. Use class constants instead.
         this.currentTick = 0;
     }
 
@@ -176,6 +181,7 @@ public class JSimulationPanel extends JPanel {
     private void prepareImage(Graphics2D graphics2D) {
         graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         graphics2D.setColor(Color.WHITE);
+        // FIX: Do not use harcoded values. Use class constants instead.
         graphics2D.fillRect(0, 0, this.screenSize.width, this.screenSize.height);
     }
 
@@ -196,15 +202,18 @@ public class JSimulationPanel extends JPanel {
             node = (TNode) nodesIterator.next();
             if ((node.getNodeType() == TNode.LER)
                     || (node.getNodeType() == TNode.ACTIVE_LER)) {
+                // FIX: Do not use harcoded values. Use class constants instead.
                 polygon.addPoint(node.getScreenPosition().x + 24, node.getScreenPosition().y + 24);
                 vertexes++;
             }
         }
+        // FIX: Do not use harcoded values. Use class constants instead.
         if (vertexes > 2) {
             graphics2D.setColor(DOMAIN_BACKGROUND_COLOR);
             graphics2D.fillPolygon(polygon);
             graphics2D.setColor(DOMAIN_BORDER_COLOR);
             graphics2D.drawPolygon(polygon);
+            // FIX: Do not use harcoded values. Use class constants instead.
         } else if (vertexes == 2) {
             int x1 = Math.min(polygon.xpoints[0], polygon.xpoints[1]);
             int y1 = Math.min(polygon.ypoints[0], polygon.ypoints[1]);
@@ -216,10 +225,13 @@ public class JSimulationPanel extends JPanel {
             graphics2D.fillRect(x1, y1, width, height);
             graphics2D.setColor(DOMAIN_BORDER_COLOR);
             graphics2D.drawRect(x1, y1, width, height);
+            // FIX: Do not use harcoded values. Use class constants instead.
         } else if (vertexes == 1) {
             graphics2D.setColor(DOMAIN_BACKGROUND_COLOR);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.fillOval(polygon.xpoints[0] - 50, polygon.ypoints[0] - 40, 100, 80);
             graphics2D.setColor(DOMAIN_BORDER_COLOR);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawOval(polygon.xpoints[0] - 50, polygon.ypoints[0] - 40, 100, 80);
         }
     }
@@ -246,10 +258,12 @@ public class JSimulationPanel extends JPanel {
             }
             if (link.isBroken()) {
                 float dash1[] = {5.0f};
+                // FIX: Do not use harcoded values. Use class constants instead.
                 BasicStroke dashed = new BasicStroke(2.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash1, 0.0f);
                 graphics2D.setColor(BROKEN_LINK_COLOR);
                 graphics2D.setStroke(dashed);
             }
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawLine(headEnd.x + 24, headEnd.y + 24, tailEnd.x + 24, tailEnd.y + 24);
             graphics2D.setStroke(new BasicStroke((float) 1));
 
@@ -258,16 +272,21 @@ public class JSimulationPanel extends JPanel {
                     TInternalLink internalLink = (TInternalLink) link;
                     if (internalLink.isBeingUsedByAnyLSP()) {
                         float dash1[] = {5.0f};
+                        // FIX: Do not use harcoded values. Use class constants instead.
                         BasicStroke dashed = new BasicStroke(0.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash1, 0.0f);
                         graphics2D.setColor(this.LSP_COLOR);
                         graphics2D.setStroke(dashed);
                         if (headEnd.x == tailEnd.x) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawLine(headEnd.x + 20, headEnd.y + 24, tailEnd.x + 20, tailEnd.y + 24);
                         } else if (headEnd.y == tailEnd.y) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawLine(headEnd.x + 24, headEnd.y + 20, tailEnd.x + 24, tailEnd.y + 20);
                         } else if (((headEnd.x < tailEnd.x) && (headEnd.y > tailEnd.y)) || ((headEnd.x > tailEnd.x) && (headEnd.y < tailEnd.y))) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawLine(headEnd.x + 20, headEnd.y + 20, tailEnd.x + 20, tailEnd.y + 20);
                         } else if (((headEnd.x < tailEnd.x) && (headEnd.y < tailEnd.y)) || ((headEnd.x > tailEnd.x) && (headEnd.y > tailEnd.y))) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawLine(headEnd.x + 28, headEnd.y + 20, tailEnd.x + 28, tailEnd.y + 20);
                         }
                         graphics2D.setStroke(new BasicStroke(1));
@@ -278,17 +297,23 @@ public class JSimulationPanel extends JPanel {
                 if (link.getLinkType() == TLink.INTERNAL_LINK) {
                     TInternalLink internalLink = (TInternalLink) link;
                     if (internalLink.isBeingUsedByAnyBackupLSP()) {
+                        // FIX: Do not use harcoded values. Use class constants instead.
                         float dash1[] = {10.0f, 5.0f, 0.2f, 5.0f};
+                        // FIX: Do not use harcoded values. Use class constants instead.
                         BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash1, 0.0f);
                         graphics2D.setColor(LSP_COLOR);
                         graphics2D.setStroke(dashed);
                         if (headEnd.x == tailEnd.x) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawLine(headEnd.x + 28, headEnd.y + 24, tailEnd.x + 28, tailEnd.y + 24);
                         } else if (headEnd.y == tailEnd.y) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawLine(headEnd.x + 24, headEnd.y + 28, tailEnd.x + 24, tailEnd.y + 28);
                         } else if (((headEnd.x < tailEnd.x) && (headEnd.y > tailEnd.y)) || ((headEnd.x > tailEnd.x) && (headEnd.y < tailEnd.y))) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawLine(headEnd.x + 28, headEnd.y + 28, tailEnd.x + 28, tailEnd.y + 28);
                         } else if (((headEnd.x < tailEnd.x) && (headEnd.y < tailEnd.y)) || ((headEnd.x > tailEnd.x) && (headEnd.y > tailEnd.y))) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawLine(headEnd.x + 20, headEnd.y + 28, tailEnd.x + 20, tailEnd.y + 28);
                         }
                         graphics2D.setStroke(new BasicStroke(1));
@@ -298,16 +323,24 @@ public class JSimulationPanel extends JPanel {
             if (link.getShowName()) {
                 FontMetrics fm = this.getFontMetrics(this.getFont());
                 int anchoTexto = fm.charsWidth(link.getName().toCharArray(), 0, link.getName().length());
+                // FIX: Do not use harcoded values. Use class constants instead.
                 int posX1 = link.getHeadEndNode().getScreenPosition().x + 24;
+                // FIX: Do not use harcoded values. Use class constants instead.
                 int posY1 = link.getHeadEndNode().getScreenPosition().y + 24;
+                // FIX: Do not use harcoded values. Use class constants instead.
                 int posX2 = link.getTailEndNode().getScreenPosition().x + 24;
+                // FIX: Do not use harcoded values. Use class constants instead.
                 int posY2 = link.getTailEndNode().getScreenPosition().y + 24;
+                // FIX: Do not use harcoded values. Use class constants instead.
                 int posX = Math.min(posX1, posX2) + ((Math.max(posX1, posX2) - Math.min(posX1, posX2)) / 2) - (anchoTexto / 2);
+                // FIX: Do not use harcoded values. Use class constants instead.
                 int posY = Math.min(posY1, posY2) + ((Math.max(posY1, posY2) - Math.min(posY1, posY2)) / 2) + 5;
                 graphics2D.setColor(LINK_NAME_COLOR);
+                // FIX: Do not use harcoded values. Use class constants instead.
                 graphics2D.fillRoundRect(posX - 3, posY - 13, anchoTexto + 5, 17, 10, 10);
                 graphics2D.setColor(Color.GRAY);
                 graphics2D.drawString(link.getName(), posX, posY);
+                // FIX: Do not use harcoded values. Use class constants instead.
                 graphics2D.drawRoundRect(posX - 3, posY - 13, anchoTexto + 5, 17, 10, 10);
             }
         }
@@ -321,17 +354,23 @@ public class JSimulationPanel extends JPanel {
      * @since 2.0
      */
     private void paintNodes(Graphics2D graphics2D) {
+        // FIX: Do not use harcoded values. Use class constants instead.
         this.maxX = 10;
+        // FIX: Do not use harcoded values. Use class constants instead.
         this.maxY = 10;
         Iterator nodesIterator = this.topology.getNodesIterator();
         while (nodesIterator.hasNext()) {
             TNode node = (TNode) nodesIterator.next();
             Point nodePosition = node.getScreenPosition();
 
+            // FIX: Do not use harcoded values. Use class constants instead.
             if ((nodePosition.x + 48) > this.maxX) {
+                // FIX: Do not use harcoded values. Use class constants instead.
                 this.maxX = nodePosition.x + 48;
             }
+            // FIX: Do not use harcoded values. Use class constants instead.
             if ((nodePosition.y + 48) > this.maxY) {
+                // FIX: Do not use harcoded values. Use class constants instead.
                 this.maxY = nodePosition.y + 48;
             }
             this.setPreferredSize(new Dimension(this.maxX, this.maxY));
@@ -391,12 +430,16 @@ public class JSimulationPanel extends JPanel {
             if (node.getShowName()) {
                 FontMetrics fontMetrics = this.getFontMetrics(this.getFont());
                 int textWidth = fontMetrics.charsWidth(node.getName().toCharArray(), 0, node.getName().length());
+                // FIX: Do not use harcoded values. Use class constants instead.
                 int posX = (node.getScreenPosition().x + 24) - ((textWidth / 2));
+                // FIX: Do not use harcoded values. Use class constants instead.
                 int posY = node.getScreenPosition().y + 60;
                 graphics2D.setColor(Color.WHITE);
+                // FIX: Do not use harcoded values. Use class constants instead.
                 graphics2D.fillRoundRect(posX - 3, posY - 13, textWidth + 5, 17, 10, 10);
                 graphics2D.setColor(Color.GRAY);
                 graphics2D.drawString(node.getName(), posX, posY);
+                // FIX: Do not use harcoded values. Use class constants instead.
                 graphics2D.drawRoundRect(posX - 3, posY - 13, textWidth + 5, 17, 10, 10);
             }
         }
@@ -450,8 +493,10 @@ public class JSimulationPanel extends JPanel {
             repaint();
             this.eventsBuffer.add(simulationEvent);
             try {
+                // FIX: Do not use static access to sleep() method
                 Thread.currentThread().sleep(this.simulationSpeedInMsPerTick);
             } catch (Exception e) {
+                // FIX: This is ugly.
                 e.printStackTrace();
             }
         }
@@ -478,16 +523,22 @@ public class JSimulationPanel extends JPanel {
                         TLink link = (TLink) simulationEventPacketOnFly.getSource();
                         Point packetPosition = link.getScreenPacketPosition(simulationEventPacketOnFly.getTransitPercentage());
                         if (simulationEventPacketOnFly.getPacketType() == TAbstractPDU.GPSRP) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_GOS), packetPosition.x - 14, packetPosition.y - 14, null);
                         } else if (simulationEventPacketOnFly.getPacketType() == TAbstractPDU.TLDP) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_LDP), packetPosition.x - 8, packetPosition.y - 8, null);
                         } else if (simulationEventPacketOnFly.getPacketType() == TAbstractPDU.IPV4) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_IPV4), packetPosition.x - 8, packetPosition.y - 8, null);
                         } else if (simulationEventPacketOnFly.getPacketType() == TAbstractPDU.IPV4_GOS) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_IPV4_GOS), packetPosition.x - 8, packetPosition.y - 8, null);
                         } else if (simulationEventPacketOnFly.getPacketType() == TAbstractPDU.MPLS) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_MPLS), packetPosition.x - 8, packetPosition.y - 8, null);
                         } else if (simulationEventPacketOnFly.getPacketType() == TAbstractPDU.MPLS_GOS) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_MPLS_GOS), packetPosition.x - 8, packetPosition.y - 8, null);
                         }
                     } else if (event.getSubtype() == TSimulationEvent.PACKET_DISCARDED) {
@@ -495,16 +546,22 @@ public class JSimulationPanel extends JPanel {
                         TNode node = (TNode) simulationEventPacketDiscarded.getSource();
                         Point nodePosition = node.getScreenPosition();
                         if (simulationEventPacketDiscarded.getPacketType() == TAbstractPDU.GPSRP) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_GOS_CAE), nodePosition.x, nodePosition.y + 24, null);
                         } else if (simulationEventPacketDiscarded.getPacketType() == TAbstractPDU.TLDP) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_LDP_CAE), nodePosition.x, nodePosition.y + 24, null);
                         } else if (simulationEventPacketDiscarded.getPacketType() == TAbstractPDU.IPV4) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_IPV4_CAE), nodePosition.x, nodePosition.y + 24, null);
                         } else if (simulationEventPacketDiscarded.getPacketType() == TAbstractPDU.IPV4_GOS) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_IPV4_GOS_CAE), nodePosition.x, nodePosition.y + 24, null);
                         } else if (simulationEventPacketDiscarded.getPacketType() == TAbstractPDU.MPLS) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_MPLS_CAE), nodePosition.x, nodePosition.y + 24, null);
                         } else if (simulationEventPacketDiscarded.getPacketType() == TAbstractPDU.MPLS_GOS) {
+                            // FIX: Do not use harcoded values. Use class constants instead.
                             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_MPLS_GOS_CAE), nodePosition.x, nodePosition.y + 24, null);
                         }
                     } else if (event.getSubtype() == TSimulationEvent.LSP_ESTABLISHED) {
@@ -513,31 +570,37 @@ public class JSimulationPanel extends JPanel {
                         TSimulationEventPacketGenerated simulationEventPacketGenerated = (TSimulationEventPacketGenerated) event;
                         TNode node = (TNode) simulationEventPacketGenerated.getSource();
                         Point nodePosition = node.getScreenPosition();
+                        // FIX: Do not use harcoded values. Use class constants instead.
                         graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PAQUETE_GENERADO), nodePosition.x + 8, nodePosition.y - 16, null);
                     } else if (event.getSubtype() == TSimulationEvent.PACKET_SENT) {
                         TSimulationEventPacketSent simulationEventPacketSent = (TSimulationEventPacketSent) event;
                         TNode node = (TNode) simulationEventPacketSent.getSource();
                         Point nodePosition = node.getScreenPosition();
+                        // FIX: Do not use harcoded values. Use class constants instead.
                         graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PAQUETE_EMITIDO), nodePosition.x + 24, nodePosition.y - 16, null);
                     } else if (event.getSubtype() == TSimulationEvent.PACKET_RECEIVED) {
                         TSimulationEventPacketReceived simulationEventPacketReceived = (TSimulationEventPacketReceived) event;
                         TNode node = (TNode) simulationEventPacketReceived.getSource();
                         Point nodePosition = node.getScreenPosition();
+                        // FIX: Do not use harcoded values. Use class constants instead.
                         graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PAQUETE_RECIBIDO), nodePosition.x - 8, nodePosition.y - 16, null);
                     } else if (event.getSubtype() == TSimulationEvent.PACKET_SWITCHED) {
                         TSimulationEventPacketSwitched simulationEventPacketSwitched = (TSimulationEventPacketSwitched) event;
                         TNode node = (TNode) simulationEventPacketSwitched.getSource();
                         Point nodePosition = node.getScreenPosition();
+                        // FIX: Do not use harcoded values. Use class constants instead.
                         graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PAQUETE_CONMUTADO), nodePosition.x + 40, nodePosition.y - 16, null);
                     } else if (event.getSubtype() == TSimulationEvent.PACKET_ROUTED) {
                         TSimulationEventPacketRouted simulationEventPacketRouted = (TSimulationEventPacketRouted) event;
                         TNode node = (TNode) simulationEventPacketRouted.getSource();
                         Point nodePosition = node.getScreenPosition();
+                        // FIX: Do not use harcoded values. Use class constants instead.
                         graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PAQUETE_CONMUTADO), nodePosition.x + 40, nodePosition.y - 16, null);
                     }
                 }
             }
         } catch (Exception e) {
+            // FIX: This is ugly.
             e.printStackTrace();
         }
         this.eventsBuffersLock.unLock();
@@ -564,6 +627,7 @@ public class JSimulationPanel extends JPanel {
                         Point nodePosition = node.getScreenPosition();
                         int nodeType = node.getNodeType();
                         long congestionLevel = simulationEventNodeCongested.getCongestionLevel();
+                        // FIX: Do not use harcoded values. Use class constants instead.
                         if ((congestionLevel >= 50) && (congestionLevel < 75)) {
                             if (nodeType == TNode.TRAFFIC_GENERATOR) {
                                 graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.EMISOR_CONGESTIONADO_20), nodePosition.x, nodePosition.y, null);
@@ -578,6 +642,7 @@ public class JSimulationPanel extends JPanel {
                             } else if (nodeType == TNode.ACTIVE_LSR) {
                                 graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSRA_CONGESTIONADO_20), nodePosition.x, nodePosition.y, null);
                             }
+                            // FIX: Do not use harcoded values. Use class constants instead.
                         } else if ((congestionLevel >= 75) && (congestionLevel < 95)) {
                             if (nodeType == TNode.TRAFFIC_GENERATOR) {
                                 graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.EMISOR_CONGESTIONADO_60), nodePosition.x, nodePosition.y, null);
@@ -592,6 +657,7 @@ public class JSimulationPanel extends JPanel {
                             } else if (nodeType == TNode.ACTIVE_LSR) {
                                 graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSRA_CONGESTIONADO_60), nodePosition.x, nodePosition.y, null);
                             }
+                            // FIX: Do not use harcoded values. Use class constants instead.
                         } else if (congestionLevel >= 95) {
                             if (nodeType == TNode.TRAFFIC_GENERATOR) {
                                 graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.EMISOR_CONGESTIONADO), nodePosition.x, nodePosition.y, null);
@@ -614,6 +680,7 @@ public class JSimulationPanel extends JPanel {
                 }
             }
         } catch (Exception e) {
+            // FIX: This is ugly.
             e.printStackTrace();
         }
         this.eventsBuffersLock.unLock();
@@ -637,15 +704,18 @@ public class JSimulationPanel extends JPanel {
                     if (event.getSubtype() == TSimulationEvent.LINK_BROKEN) {
                         TLink link = (TLink) event.getSource();
                         Point packetPosition = link.getScreenPacketPosition(50);
+                        // FIX: Do not use harcoded values. Use class constants instead.
                         graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.ENLACE_CAIDO), packetPosition.x - 41, packetPosition.y - 41, null);
                     } else if (event.getSubtype() == TSimulationEvent.LINK_RECOVERED) {
                         TLink link = (TLink) event.getSource();
                         Point packetPosition = link.getScreenPacketPosition(50);
+                        // FIX: Do not use harcoded values. Use class constants instead.
                         graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.ENLACE_RECUPERADO), packetPosition.x - 41, packetPosition.y - 41, null);
                     }
                 }
             }
         } catch (Exception e) {
+            // FIX: This is ugly.
             e.printStackTrace();
         }
         this.eventsBuffersLock.unLock();
@@ -659,17 +729,23 @@ public class JSimulationPanel extends JPanel {
      * @since 2.0
      */
     private void paintCurrentTick(Graphics2D graphics2D) {
+        // FIX: Do not use harcoded values. Use class constants instead.
         int xPosition = 8;
+        // FIX: Do not use harcoded values. Use class constants instead.
         int yPosition = 18;
         String tickText = this.currentTick + " " + translations.getString("JPanelSimulacion.Ns");
         FontMetrics fontMetrics = this.getFontMetrics(this.getFont());
         int textWidth = fontMetrics.charsWidth(tickText.toCharArray(), 0, tickText.length());
         this.bufferedG2D.setColor(Color.LIGHT_GRAY);
+        // FIX: Do not use harcoded values. Use class constants instead.
         this.bufferedG2D.fillRect(xPosition - 2, yPosition - 12, textWidth + 6, 18);
         this.bufferedG2D.setColor(Color.WHITE);
+        // FIX: Do not use harcoded values. Use class constants instead.
         this.bufferedG2D.fillRect(xPosition - 3, yPosition - 13, textWidth + 5, 17);
         this.bufferedG2D.setColor(Color.BLACK);
+        // FIX: Do not use harcoded values. Use class constants instead.
         this.bufferedG2D.drawString(tickText, xPosition, yPosition);
+        // FIX: Do not use harcoded values. Use class constants instead.
         this.bufferedG2D.drawRect(xPosition - 3, yPosition - 13, textWidth + 5, 17);
     }
 
@@ -724,61 +800,98 @@ public class JSimulationPanel extends JPanel {
             if ((fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_generado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_generado").length())) > width) {
                 width = fontMetrics.charsWidth(this.translations.getString("JPanelSimulacion.Paquete_generado").toCharArray(), 0, this.translations.getString("JPanelSimulacion.Paquete_generado").length());
             }
+            // FIX: Do not use harcoded values. Use class constants instead.
             totalWidth = 5 + 13 + 5 + width + 20 + 13 + 5 + width + 5;
+            // FIX: Do not use harcoded values. Use class constants instead.
             height = 113;
+            // FIX: Do not use harcoded values. Use class constants instead.
             upperLeftX = this.getWidth() - totalWidth - 6;
+            // FIX: Do not use harcoded values. Use class constants instead.
             upperLeftY = this.getHeight() - height - 6;
             graphics2D.setColor(Color.LIGHT_GRAY);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.fillRect(upperLeftX + 2, upperLeftY + 2, totalWidth, height);
             graphics2D.setColor(LEGEND_BACKGROUND_COLOR);
             graphics2D.fillRect(upperLeftX, upperLeftY, totalWidth, height);
             graphics2D.setColor(Color.BLACK);
             graphics2D.drawRect(upperLeftX, upperLeftY, totalWidth, height);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_IPV4), upperLeftX + 5, upperLeftY + 5, null);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_IPv4"), upperLeftX + 23, upperLeftY + 18);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_IPV4_GOS), upperLeftX + 5, upperLeftY + 23, null);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_IPv4_GOS"), upperLeftX + 23, upperLeftY + 36);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_MPLS), upperLeftX + 5, upperLeftY + 41, null);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_MPLS"), upperLeftX + 23, upperLeftY + 54);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_MPLS_GOS), upperLeftX + 5, upperLeftY + 59, null);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_MPLS_GOS"), upperLeftX + 23, upperLeftY + 72);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_LDP), upperLeftX + 5, upperLeftY + 77, null);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_TLDP"), upperLeftX + 23, upperLeftY + 90);
             graphics2D.setColor(Color.LIGHT_GRAY);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawOval(upperLeftX + 5, upperLeftY + 95, 13, 13);
             graphics2D.setColor(Color.BLACK);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.fillOval(upperLeftX + 8, upperLeftY + 98, 7, 7);
             graphics2D.setColor(Color.RED);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.fillOval(upperLeftX + 9, upperLeftY + 99, 5, 5);
             graphics2D.setColor(Color.YELLOW);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.fillOval(upperLeftX + 10, upperLeftY + 100, 3, 3);
             graphics2D.setColor(Color.BLACK);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.fillOval(upperLeftX + 11, upperLeftY + 101, 1, 1);
             graphics2D.setColor(Color.BLACK);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_GPSRP"), upperLeftX + 23, upperLeftY + 108);
+            // FIX: Do not use harcoded values. Use class constants instead.
             upperLeftX = upperLeftX + 5 + 13 + 5 + width + 20 - 5;
-
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PAQUETE_RECIBIDO), upperLeftX + 5, upperLeftY + 5, null);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("Paquete_recibido"), upperLeftX + 23, upperLeftY + 18);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PAQUETE_GENERADO), upperLeftX + 5, upperLeftY + 23, null);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_generado"), upperLeftX + 23, upperLeftY + 36);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PAQUETE_EMITIDO), upperLeftX + 5, upperLeftY + 41, null);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_enviado"), upperLeftX + 23, upperLeftY + 54);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PAQUETE_CONMUTADO), upperLeftX + 5, upperLeftY + 59, null);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_conmutado"), upperLeftX + 23, upperLeftY + 72);
+            // FIX: Do not use harcoded values. Use class constants instead.
             float dash1[] = {5.0f};
+            // FIX: Do not use harcoded values. Use class constants instead.
             BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash1, 0.0f);
             this.bufferedG2D.setColor(this.LSP_COLOR);
             this.bufferedG2D.setStroke(dashed);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawLine(upperLeftX - 5, upperLeftY + 84, upperLeftX - 5 + 30, upperLeftY + 84);
             this.bufferedG2D.setColor(Color.BLACK);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("JPanelSimulacion.LSP"), upperLeftX + 35, upperLeftY + 90);
+            // FIX: Do not use harcoded values. Use class constants instead.
             float dash2[] = {10.0f, 5.0f, 0.2f, 5.0f};
+            // FIX: Do not use harcoded values. Use class constants instead.
             BasicStroke dashed2 = new BasicStroke(0.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 5.0f, dash2, 0.0f);
             this.bufferedG2D.setColor(Color.BLACK);
             this.bufferedG2D.setStroke(dashed2);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawLine(upperLeftX - 5, upperLeftY + 102, upperLeftX - 5 + 30, upperLeftY + 102);
             this.bufferedG2D.setColor(Color.BLACK);
+            // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("JPanelSimulacion.LSP_de_respaldo"), upperLeftX + 35, upperLeftY + 108);
             this.bufferedG2D.setStroke(new BasicStroke(1.0f));
         }
@@ -823,6 +936,7 @@ public class JSimulationPanel extends JPanel {
     @Override
     public void paint(Graphics graphics) {
         BufferedImage bufferedImageAux = this.getSimulationScreenshot();
+        // FIX: Do not use harcoded values. Use class constants instead.
         graphics.drawImage(bufferedImageAux, 0, 0, null);
     }
 
