@@ -17,7 +17,7 @@ package com.manolodominguez.opensimmpls.ui.utils;
 
 import com.manolodominguez.opensimmpls.hardware.timer.IProgressEventListener;
 import com.manolodominguez.opensimmpls.hardware.timer.TProgressEvent;
-import javax.swing.*;
+import javax.swing.JProgressBar;
 
 /**
  * Esta clase genera instancias capaces de actualizar una barra de progreso cuando
@@ -31,23 +31,24 @@ public class TProgressEventListener implements IProgressEventListener {
     /** Este es el constructor de la clase, que permite crear instancias de
      * TActualizadorDeProgreso.
      * @since 2.0
-     * @param bp Barra de progreso swing que debe actualizar este actualizador.
+     * @param progressBar Barra de progreso swing que debe actualizar este actualizador.
      */
-    public TProgressEventListener(JProgressBar bp) {
-        barraDeProgreso = bp;
+    public TProgressEventListener(JProgressBar progressBar) {
+        this.progressBar = progressBar;
     }
     
     /** Este m�todo captura un evento de progresi�n y seg�n lo que dicho evento indique,
      * actualiza la barra de progreso asociada de una manera u otra.
      * @since 2.0
-     * @param evt El evento de progresi�n capturado.
+     * @param progressEvent El evento de progresi�n capturado.
      */
-    public void receiveProgressEvent(TProgressEvent evt) {
-        barraDeProgreso.setValue(evt.getProgressPercentage());
+    @Override
+    public void receiveProgressEvent(TProgressEvent progressEvent) {
+        this.progressBar.setValue(progressEvent.getProgressPercentage());
     }
     
     /** Barra de progreso que debe ir actualizando el actualizador de progreso.
      * @since 2.0
      */
-    private JProgressBar barraDeProgreso;
+    private JProgressBar progressBar;
 }
