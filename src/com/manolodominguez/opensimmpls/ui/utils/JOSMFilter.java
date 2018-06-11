@@ -15,70 +15,88 @@
  */
 package com.manolodominguez.opensimmpls.ui.utils;
 
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import java.io.File;
-import javax.swing.*;
-import javax.swing.filechooser.*;
+import java.util.ResourceBundle;
+import javax.swing.filechooser.FileFilter;
 
 /**
- * Esta clase implementa un filtro de ficheros que se usar� en los cuadros de
- * di�logo de abrir y guardar archivos. Corresponde a los archivos *.OSM de
- * escenario de Open SimMPLS 1.0.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements a filter to be used togueteher with an open/save dialog
+ * in order to see only files that match this filter. This filter is for
+ * OpenSimMPLS files in OSM format.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class JOSMFilter extends FileFilter {
-    
+
     /**
-     * Este m�todo es el constructor de la clase. Implementa un nuevo filtro para los
-     * fichero *.OSM.
+     * This method is the constructor of the class. It is create a new instance
+     * of JOSMFilter.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public JOSMFilter() {
+        this.translations = ResourceBundle.getBundle(AvailableBundles.OSMFILTER.getPath());
     }
-    
+
     /**
-     * Este m�todo acepta un fichero que debe ser analizado para saber si se debe
-     * mostrar en los di�logos o no.
-     * @param f Fichero (enviado por el di�logo abrir/cerrar).
-     * @return true, si el fichero se debe mostrar (pasa el filtro). false en caso contrario.
+     * This method accepts a file that has to be analyzed to know if a given
+     * open/save dialog should show it or not.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param file The file sent by a open/save dialog.
+     * @return TRUE, if the file should be shown in the dialog. Otherwise,
+     * FALSE.
      * @since 2.0
      */
-    public boolean accept(File f) {
-        if (!f.isDirectory()) {
-            String extension = this.getExtension(f);
+    @Override
+    public boolean accept(File file) {
+        if (!file.isDirectory()) {
+            String extension = this.getExtension(file);
             if (extension != null) {
-                if (extension.equals(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JSelectorFicheros.ExtensionOsm"))) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return extension.equals(JOSMFilter.OSM_EXTENSION);
             }
         } else {
             return true;
         }
         return false;
     }
-    
-    private String getExtension(File f) {
-        String ext = null;
-        String s = f.getName();
-        int i = s.lastIndexOf('.');
-        
-        if (i > 0 &&  i < s.length() - 1) {
-            ext = s.substring(i+1).toLowerCase();
-        }
-        return ext;
-    }
-    
+
     /**
-     * Este m�todo permite obtener una descripci�n detallada del fichero que pase el
-     * filtro.
-     * @return Descripci�n detallada del fichero que pasa el filtro. Se mostrar� en el di�logo
-     * abrir/cerrar.
+     * This method gets the extension of the file specified as an argument.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param file The file whose extension is going to be returned.
+     * @return the extension of the file specified as an argument. Null, if the
+     * file des not have extension.
      * @since 2.0
      */
-    public String getDescription() {
-        return java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("JSelectorFicheros.DescripcionOSM");
+    private String getExtension(File file) {
+        String extension = null;
+        String s = file.getName();
+        int i = s.lastIndexOf('.');
+        if (i > 0 && i < s.length() - 1) {
+            extension = s.substring(i + 1).toLowerCase();
+        }
+        return extension;
     }
+
+    /**
+     * This method gets a descriptions for files that match this filter.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return A description of files that mach this filter, to be shwon in
+     * open/save dialogs.
+     * @since 2.0
+     */
+    @Override
+    public String getDescription() {
+        return this.translations.getString("JSelectorFicheros.DescripcionOSM");
+    }
+
+    private ResourceBundle translations;
+
+    public static final String OSM_EXTENSION = "osm";
 }
