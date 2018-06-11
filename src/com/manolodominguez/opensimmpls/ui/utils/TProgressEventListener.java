@@ -21,7 +21,7 @@ import javax.swing.JProgressBar;
 
 /**
  * Esta clase genera instancias capaces de actualizar una barra de progreso cuando
- * recibe un evento de progresi�n.
+ * recibe un evento de progresin.
  * @version 1.0
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
