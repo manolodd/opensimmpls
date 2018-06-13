@@ -20,35 +20,40 @@ import com.manolodominguez.opensimmpls.hardware.timer.TProgressEvent;
 import javax.swing.JProgressBar;
 
 /**
- * Esta clase genera instancias capaces de actualizar una barra de progreso cuando
- * recibe un evento de progresin.
- * @version 1.0
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
+ * This class implements an event listener that receives progress events and
+ * updates a given JProgressBar.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class TProgressEventListener implements IProgressEventListener {
-    
-    /** Este es el constructor de la clase, que permite crear instancias de
-     * TActualizadorDeProgreso.
+
+    /**
+     * This method is the constructor of the class. It is create a new instance
+     * of TProgressEventListener.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param progressBar the progress bar that has to be updated by this
+     * TProgressListener.
      * @since 2.0
-     * @param progressBar Barra de progreso swing que debe actualizar este actualizador.
      */
     public TProgressEventListener(JProgressBar progressBar) {
         this.progressBar = progressBar;
     }
-    
-    /** Este m�todo captura un evento de progresi�n y seg�n lo que dicho evento indique,
-     * actualiza la barra de progreso asociada de una manera u otra.
+
+    /**
+     * This method receives a progress event and updates the corresponding
+     * progress bar using the value included in that event.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param progressEvent the event that triggers this method and includes a
+     * value used to update the progress bar current value.
      * @since 2.0
-     * @param progressEvent El evento de progresi�n capturado.
      */
     @Override
     public void receiveProgressEvent(TProgressEvent progressEvent) {
         this.progressBar.setValue(progressEvent.getProgressPercentage());
     }
-    
-    /** Barra de progreso que debe ir actualizando el actualizador de progreso.
-     * @since 2.0
-     */
+
     private JProgressBar progressBar;
 }
