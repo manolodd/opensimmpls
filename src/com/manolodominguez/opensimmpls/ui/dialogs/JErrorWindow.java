@@ -83,10 +83,10 @@ public class JErrorWindow extends JDialog {
             }
         });
         getContentPane().setLayout(new AbsoluteLayout());
-        this.iconContainerError.setIcon(this.imageBroker.getIcon(TImageBroker.ERROR));
+        this.iconContainerError.setIcon(this.imageBroker.getImageIcon(TImageBroker.ERROR));
         getContentPane().add(this.iconContainerError, new AbsoluteConstraints(10, 15, -1, -1));
         this.buttonOk.setFont(new Font("Dialog", 0, 12));
-        this.buttonOk.setIcon(this.imageBroker.getIcon(TImageBroker.ACEPTAR));
+        this.buttonOk.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACCEPT));
         this.buttonOk.setMnemonic(this.translations.getString("VentanaError.ResaltadoBoton").charAt(0));
         this.buttonOk.setText(this.translations.getString("OK"));
         this.buttonOk.addActionListener(new ActionListener() {

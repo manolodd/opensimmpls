@@ -100,7 +100,7 @@ public class JCommentWindow extends JDialog {
         this.mainPanel.setLayout(new AbsoluteLayout());
         this.panelButtons.setLayout(new AbsoluteLayout());
         this.buttonSend.setFont(new Font("Dialog", 0, 12));
-        this.buttonSend.setIcon(this.imageBroker.getIcon(TImageBroker.SOBRE_EMAIL));
+        this.buttonSend.setIcon(this.imageBroker.getImageIcon(TImageBroker.EMAIL));
         this.buttonSend.setMnemonic(this.translations.getString("JVentanaComentario.mnemonico.enviar").charAt(0));
         this.buttonSend.setText(this.translations.getString("JVentanaComentario.Send"));
         this.buttonSend.addActionListener(new ActionListener() {
@@ -111,7 +111,7 @@ public class JCommentWindow extends JDialog {
         });
         this.panelButtons.add(this.buttonSend, new AbsoluteConstraints(15, 15, 110, -1));
         this.buttonCancel.setFont(new Font("Dialog", 0, 12));
-        this.buttonCancel.setIcon(imageBroker.getIcon(TImageBroker.CANCELAR));
+        this.buttonCancel.setIcon(imageBroker.getImageIcon(TImageBroker.CANCEL));
         this.buttonCancel.setMnemonic(this.translations.getString("JVentanaComentario.mnemonico.cancelar").charAt(0));
         this.buttonCancel.setText(this.translations.getString("JVentanaComentario.Cancel"));
         this.buttonCancel.addActionListener(new ActionListener() {
@@ -122,7 +122,7 @@ public class JCommentWindow extends JDialog {
         });
         this.panelButtons.add(this.buttonCancel, new AbsoluteConstraints(140, 15, 110, -1));
         this.mainPanel.add(this.panelButtons, new AbsoluteConstraints(0, 255, 400, 55));
-        this.iconContainerComment.setIcon(this.imageBroker.getIcon(TImageBroker.COMENTARIO));
+        this.iconContainerComment.setIcon(this.imageBroker.getImageIcon(TImageBroker.COMMENT));
         this.iconContainerComment.setText(this.translations.getString("JVentanaComentario.tooltip.send"));
         this.mainPanel.add(this.iconContainerComment, new AbsoluteConstraints(15, 15, -1, -1));
         this.textAreaComment.setLineWrap(true);

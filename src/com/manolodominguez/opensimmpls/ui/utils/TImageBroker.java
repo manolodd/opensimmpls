@@ -15,959 +15,372 @@
  */
 package com.manolodominguez.opensimmpls.ui.utils;
 
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import java.awt.Image;
+import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 
-
-/** Esta clase se encarga de cargar en memoria todas las im�genes que se usar�n en
- * la aplicaci�n y posteriormente devolver referencias a las mismas, con lo que la
- * carga de elementos gr�ficos se realiza mucho m�s r�pido y no hace falta cargar
- * m�s de una vez una misma imagen.
+/**
+ * Esta clase se encarga de cargar en memoria todas las im�genes que se usar�n
+ * en la aplicaci�n y posteriormente devolver referencias a las mismas, con lo
+ * que la carga de elementos gr�ficos se realiza mucho m�s r�pido y no hace
+ * falta cargar m�s de una vez una misma imagen.
+ *
  * @author <B>Manuel Dom�nguez Dorado</B><br><A
  * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
  * @version 1.0
  */
 public class TImageBroker {
 
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un s�mbolo de "abrir".
-     * @since 2.0
-     */    
-    public static final int ABRIR =                          0;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un s�mbolo de "abrir" peque�o y gris.
-     * @since 2.0
-     */    
-    public static final int ABRIR_MENU_GRIS =                1;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un s�mbolo de "abrir" peque�o.
-     * @since 2.0
-     */    
-    public static final int ABRIR_MENU =                     2;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un s�mbolo de "advertencia".
-     * @since 2.0
-     */    
-    public static final int ADVERTENCIA =                    3;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un mago.
-     * @since 2.0
-     */    
-    public static final int ASISTENTE =                      4;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa un
-     * boton de "play".
-     * @since 2.0
-     */    
-    public static final int BOTON_COMENZAR =                 5;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa un
-     * boton de "play" en gris.
-     * @since 2.0
-     */    
-    public static final int BOTON_COMENZAR_GRIS =            6;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * engranaje.
-     * @since 2.0
-     */    
-    public static final int BOTON_GENERAR =                  7;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * engranaje en gris.
-     * @since 2.0
-     */    
-    public static final int BOTON_GENERAR_GRIS =             8;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa un
-     * boton de "stop".
-     * @since 2.0
-     */    
-    public static final int BOTON_PARAR =                    9;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa un
-     * boton de "stop" en gris.
-     * @since 2.0
-     */    
-    public static final int BOTON_PARAR_GRIS =              10;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa un
-     * boton de "pausa".
-     * @since 2.0
-     */    
-    public static final int BOTON_PAUSA =                   11;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa un
-     * boton de "pausa" en gris.
-     * @since 2.0
-     */    
-    public static final int BOTON_PAUSA_GRIS =              12;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una imagen de "cerrar".
-     * @since 2.0
-     */    
-    public static final int CERRAR =                        13;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una imagen de "cerrar" peque�a y gris.
-     * @since 2.0
-     */    
-    public static final int CERRAR_MENU_GRIS=               14;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una imagen de "cerrar" peque�a.
-     * @since 2.0
-     */    
-    public static final int CERRAR_MENU =                   15;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una imagen de un mensaje con un globo planetario.
-     * @since 2.0
-     */    
-    public static final int COMENTARIO =                    16;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una imagen de un mensaje con un globo planetario peque�o y gris.
-     * @since 2.0
-     */    
-    public static final int COMENTARIO_MENU_GRIS =          17;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una imagen de un mensaje con un globo planetario peque�o.
-     * @since 2.0
-     */    
-    public static final int COMENTARIO_MENU =               18;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa un
-     * nodo emisor.
-     * @since 2.0
-     */    
-    public static final int EMISOR =                        19;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa un
-     * nodo emisor peque�o y gris.
-     * @since 2.0
-     */    
-    public static final int EMISOR_MENU_GRIS =              20;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa un
-     * nodo emisor peque�o.
-     * @since 2.0
-     */    
-    public static final int EMISOR_MENU =                   21;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa un
-     * nodo emisor cuando se est� arrastrando.
-     * @since 2.0
-     */    
-    public static final int EMISOR_MOVIENDOSE =             22;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa un
-     * enlace.
-     * @since 2.0
-     */    
-    public static final int ENLACE =                        23;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa un
-     * enlace peque�o y gris.
-     * @since 2.0
-     */    
-    public static final int ENLACE_MENU_GRIS =              24;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa un
-     * enlace peque�o.
-     * @since 2.0
-     */    
-    public static final int ENLACE_MENU =                   25;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una imagen que indica error (direcci�n prohibida).
-     * @since 2.0
-     */    
-    public static final int ERROR =                         26;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una imagen de "guardar".
-     * @since 2.0
-     */    
-    public static final int GUARDAR =                       27;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una imagen de "guardar" con nombre.
-     * @since 2.0
-     */    
-    public static final int GUARDAR_COMO =                  28;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una imagen de "guardar" con nombre, peque�o y gris.
-     * @since 2.0
-     */    
-    public static final int GUARDAR_COMO_MENU_GRIS =        29;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una imagen de "guardar" con nombre, peque�o.
-     * @since 2.0
-     */    
-    public static final int GUARDAR_COMO_MENU =             30;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una imagen de "guardar" peque�o y gris.
-     * @since 2.0
-     */    
-    public static final int GUARDAR_MENU_GRIS =             31;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una imagen de "guardar" peque�o.
-     * @since 2.0
-     */    
-    public static final int GUARDAR_MENU =                  32;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una rede en miniatura.
-     * @since 2.0
-     */    
-    public static final int ICONO_VENTANA_INTERNA =         33;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una rede en miniatura, peque�a.
-     * @since 2.0
-     */    
-    public static final int ICONO_VENTANA_INTERNA_MENU =    34;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa el
-     * logo de Open SimMPLS.
-     * @since 2.0
-     */    
-    public static final int ICONO_SIMMPLS =                 35;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una impresora.
-     * @since 2.0
-     */    
-    public static final int IMPRIMIR =                      36;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una impresora peque�a y gris.
-     * @since 2.0
-     */    
-    public static final int IMPRIMIR_MENU_GRIS =            37;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una impresora peque�a.
-     * @since 2.0
-     */    
-    public static final int IMPRIMIR_MENU =                 38;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Edge Router (LER).
-     * @since 2.0
-     */    
-    public static final int LER =                           39;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Edge Router (LER) peque�o y gris.
-     * @since 2.0
-     */    
-    public static final int LER_MENU_GRIS =                 40;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Edge Router (LER) peque�o.
-     * @since 2.0
-     */    
-    public static final int LER_MENU =                      41;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Edge Router (LER) cuando est� siendo arrastrado.
-     * @since 2.0
-     */    
-    public static final int LER_MOVIENDOSE =                42;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Edge Router Activo (LERA).
-     * @since 2.0
-     */    
-    public static final int LERA =                          43;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Edge Router Activo (LERA), peque�o y gris.
-     * @since 2.0
-     */    
-    public static final int LERA_MENU_GRIS =                44;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Edge Router Activo (LERA), peque�o.
-     * @since 2.0
-     */    
-    public static final int LERA_MENU =                     45;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Edge Router Activo (LERA), cuando est� siendo arrastrado.
-     * @since 2.0
-     */    
-    public static final int LERA_MOVIENDOSE =               46;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa un
-     * documento escrito.
-     * @since 2.0
-     */    
-    public static final int LICENCIA =                      47;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa un
-     * documento escrito, peque�o y gris.
-     * @since 2.0
-     */    
-    public static final int LICENCIA_MENU_GRIS =            48;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa un
-     * documento escrito peque�o.
-     * @since 2.0
-     */    
-    public static final int LICENCIA_MENU =                 49;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Switch Router (LSR).
-     * @since 2.0
-     */    
-    public static final int LSR =                           50;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Switch Router (LSR), peque�o y gris.
-     * @since 2.0
-     */    
-    public static final int LSR_MENU_GRIS =                 51;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Switch Router (LSR), peque�o.
-     * @since 2.0
-     */    
-    public static final int LSR_MENU =                      52;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Switch Router (LSR) cuando est� siendo arrastrado.
-     * @since 2.0
-     */    
-    public static final int LSR_MOVIENDOSE =                53;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Switch Router Activo (LSRA).
-     * @since 2.0
-     */    
-    public static final int LSRA =                          54;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Switch Router Activo (LSRA), peque�o y gris.
-     * @since 2.0
-     */    
-    public static final int LSRA_MENU_GRIS =                55;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Switch Router Activo (LSRA), peque�o.
-     * @since 2.0
-     */    
-    public static final int LSRA_MENU =                     56;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Switch Router Activo (LSRA), cuando est� siendo arrastrado.
-     * @since 2.0
-     */    
-    public static final int LSRA_MOVIENDOSE =               57;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una nube.
-     * @since 2.0
-     */    
-    public static final int NUBE =                          58;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un documento en blanco.
-     * @since 2.0
-     */    
-    public static final int NUEVO =                         59;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un documento en blanco, peque�o y gris
-     * @since 2.0
-     */    
-    public static final int NUEVO_MENU_GRIS =               60;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un documento en blanco, peque�o.
-     * @since 2.0
-     */    
-    public static final int NUEVO_MENU =                    61;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * el logo de la certificaci�n OSI.
-     * @since 2.0
-     */    
-    public static final int OSI_CERTIFIED =                 62;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un nodo receptor.
-     * @since 2.0
-     */    
-    public static final int RECEPTOR =                      63;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un nodo receptor, peque�o y gris.
-     * @since 2.0
-     */    
-    public static final int RECEPTOR_MENU_GRIS =            64;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un nodo receptor, peque�o.
-     * @since 2.0
-     */    
-    public static final int RECEPTOR_MENU =                 65;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un nodo receptor, cuando est� siendo arrastrado.
-     * @since 2.0
-     */    
-    public static final int RECEPTOR_MOVIENDOSE =           66;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un bot�n como el de apagar los aparatos el�ctricos.
-     * @since 2.0
-     */    
-    public static final int SALIR =                         67;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un bot�n como el de apagar los aparatos el�ctricos, pqeue�o.
-     * @since 2.0
-     */    
-    public static final int SALIR_MENU =                    68;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * la imagen inicial del programa.
-     * @since 2.0
-     */    
-    public static final int SPLASH =                        69;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * la imagen inicial del programa, con espacio para texto.
-     * @since 2.0
-     */    
-    public static final int SPLASH_INICIO =                 70;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * la imagen inicial del programa, peque�o y gris.
-     * @since 2.0
-     */    
-    public static final int SPLASH_MENU_GRIS =              71;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * la imagen inicial del programa, peque�o.
-     * @since 2.0
-     */    
-    public static final int SPLASH_MENU =                   72;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * la imagen de una manual.
-     * @since 2.0
-     */    
-    public static final int TUTORIAL =                      73;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * la imagen de una manual, peque�o y gris.
-     * @since 2.0
-     */    
-    public static final int TUTORIAL_MENU_GRIS =            74;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * la imagen de una manual, peque�o.
-     * @since 2.0
-     */    
-    public static final int TUTORIAL_MENU =                 75;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una aspa indicando que la imagen no existe. Es un atributo privado.
-     * @since 2.0
-     */    
-    private static final int IMAGEN_NO_ENCONTRADA =         76;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un nodo emisor, resaltado.
-     * @since 2.0
-     */    
-    public static final int EMISOR_MENU_BRILLO =            77;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un nodo receptor, resaltado.
-     * @since 2.0
-     */    
-    public static final int RECEPTOR_MENU_BRILLO =          78;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Edge Router (LER), resaltado.
-     * @since 2.0
-     */    
-    public static final int LER_MENU_BRILLO =               79;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Switch Router (LSR), resaltado.
-     * @since 2.0
-     */    
-    public static final int LSR_MENU_BRILLO =               80;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Edge Router Activo (LERA), resaltado.
-     * @since 2.0
-     */    
-    public static final int LERA_MENU_BRILLO =              81;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un LAbel Switch Router Activo (LSRA), resaltado.
-     * @since 2.0
-     */    
-    public static final int LSRA_MENU_BRILLO =              82;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un enlace, resaltado.
-     * @since 2.0
-     */    
-    public static final int ENLACE_MENU_BRILLO =            83;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un bot�n del "Play", resaltado.
-     * @since 2.0
-     */    
-    public static final int BOTON_COMENZAR_BRILLO =         84;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un engranaje, resaltado.
-     * @since 2.0
-     */    
-    public static final int BOTON_GENERAR_BRILLO =          85;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un bot�n del "Stop", resaltado.
-     * @since 2.0
-     */    
-    public static final int BOTON_PARAR_BRILLO =            86;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un bot�n del "Pausa", resaltado.
-     * @since 2.0
-     */    
-    public static final int BOTON_PAUSA_BRILLO =            87;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una imagen indicando disposici�n en forma de iconos.
-     * @since 2.0
-     */    
-    public static final int VISTA_ICONOS =                  88;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una imagen indicando disposici�n de ventanas en cascada.
-     * @since 2.0
-     */    
-    public static final int VISTA_CASCADA =                 89;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una imagen indicando disposici�n de ventanas en mosaico horizontal.
-     * @since 2.0
-     */    
-    public static final int VISTA_HORIZONTAL =              90;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una imagen indicando disposici�n de ventanas en mosaico vertical.
-     * @since 2.0
-     */    
-    public static final int VISTA_VERTICAL =                91;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una topo indicando una PDU de tipo TLDP.
-     * @since 2.0
-     */    
-    public static final int PDU_LDP =                       92;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una topo indicando una PDU de tipo GoS.
-     * @since 2.0
-     */    
-    public static final int PDU_GOS =                       93;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una topo indicando una PDU de tipo IPV4.
-     * @since 2.0
-     */    
-    public static final int PDU_IPV4 =                      94;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una topo indicando una PDU de tipo MPLS.
-     * @since 2.0
-     */    
-    public static final int PDU_MPLS =                      95;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un nodo emisor congestionado.
-     * @since 2.0
-     */    
-    public static final int EMISOR_CONGESTIONADO =          96;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un nodo receptor congestionado.
-     * @since 2.0
-     */    
-    public static final int RECEPTOR_CONGESTIONADO =        97;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Edge Router (LER) congestionado.
-     * @since 2.0
-     */    
-    public static final int LER_CONGESTIONADO =             98;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Edge Router Activo (LERA) congestionado.
-     * @since 2.0
-     */    
-    public static final int LERA_CONGESTIONADO =            99;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Switch Router (LSR) congestionado.
-     * @since 2.0
-     */    
-    public static final int LSR_CONGESTIONADO =            100;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un Label Switch Router Activo (LSRA) congestionado.
-     * @since 2.0
-     */    
-    public static final int LSRA_CONGESTIONADO =           101;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un topo indicando una PDU de tipo IPV4 marcada con GoS.
-     * @since 2.0
-     */    
-    public static final int PDU_IPV4_GOS =                 102;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un topo indicando una PDU de tipo MPLS marcada con GoS.
-     * @since 2.0
-     */    
-    public static final int PDU_MPLS_GOS =                 103;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un reloj.
-     * @since 2.0
-     */    
-    public static final int SIMULACION =                   104;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un PC.
-     * @since 2.0
-     */    
-    public static final int OPCIONES =                     105;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una paleta de pintor.
-     * @since 2.0
-     */    
-    public static final int DISENIO =                      106;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una gr�fica de queso.
-     * @since 2.0
-     */    
-    public static final int ANALISIS =                     107;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un sobre a enviar por email.
-     * @since 2.0
-     */    
-    public static final int SOBRE_EMAIL =                  108;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una varca de validaci�n, verde.
-     * @since 2.0
-     */    
-    public static final int ACEPTAR =                      109;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un aspa roja de denegaci�n.
-     * @since 2.0
-     */    
-    public static final int CANCELAR =                     110;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una caja de herramientas.
-     * @since 2.0
-     */    
-    public static final int AVANZADA =                     111;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un topo gris.
-     * @since 2.0
-     */    
-    public static final int TOPO_GRIS =                    112;
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un topo verde.
-     * @since 2.0
-     */    
-    public static final int TOPO_VERDE =                   113;
-    
-    /** Esta constante indica al dispensador que le devuelva la imagen que representa
-     * uan interrogaci�n circunscrita en cun c�rculo amarillo.
-     * @since 2.0
-     */    
-    public static final int INTERROGACION =                114;
 
     /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * el icono MIME para los ficheros *.OSM de escenarios de Open SimMPLS 1.0.
-     * @since 2.0
-     */    
-    public static final int MIME_OSM =                     115;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un paquete TLDP siendo descartado.
-     * @since 2.0
-     */    
-    public static final int PDU_LDP_CAE =                  116;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un paquete GPSRP siendo descartado.
-     * @since 2.0
-     */    
-    public static final int PDU_GOS_CAE =                  117;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un paquete IPv4 siendo descartado.
-     * @since 2.0
-     */    
-    public static final int PDU_IPV4_CAE =                 118;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un paquete IPv4, marcado con Garant�a de Servicio, siendo descartado.
-     * @since 2.0
-     */    
-    public static final int PDU_IPV4_GOS_CAE =             119;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un paquete MPLS, marcado con Garant�a de Servicio, siendo descartado.
-     * @since 2.0
-     */    
-    public static final int PDU_MPLS_GOS_CAE =             120;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un paquete MPLS siendo descartado.
-     * @since 2.0
-     */    
-    public static final int PDU_MPLS_CAE =                 121;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un paquete que est� siendfo generado.
-     * @since 2.0
-     */    
-    public static final int PAQUETE_GENERADO =             122;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un paquete que est� siendo emitido.
-     * @since 2.0
-     */    
-    public static final int PAQUETE_EMITIDO =              123;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un paquete que est� siendo recibido.
-     * @since 2.0
-     */    
-    public static final int PAQUETE_RECIBIDO =             124;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un paquete que est� siendo conmutado.
-     * @since 2.0
-     */    
-    public static final int PAQUETE_CONMUTADO =            125;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un nodo emisor congestionado al 50%.
-     * @since 2.0
-     */    
-    public static final int EMISOR_CONGESTIONADO_20 =      126;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un nodo receptor congestionado al 50%.
-     * @since 2.0
-     */    
-    public static final int RECEPTOR_CONGESTIONADO_20 =    127;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un nodo LER congestionado al 50%.
-     * @since 2.0
-     */    
-    public static final int LER_CONGESTIONADO_20 =         128;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un nodo LERA congestionado al 50%.
-     * @since 2.0
-     */    
-    public static final int LERA_CONGESTIONADO_20 =        129;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un nodo LSR congestionado al 50%.
-     * @since 2.0
-     */    
-    public static final int LSR_CONGESTIONADO_20 =         130;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un nodo LSRA congestionado al 50%.
-     * @since 2.0
-     */    
-    public static final int LSRA_CONGESTIONADO_20 =        131;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un nodo emisor congestionado al 75%.
-     * @since 2.0
-     */    
-    public static final int EMISOR_CONGESTIONADO_60 =      132;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un nodo receptor congestionado al 75%.
-     * @since 2.0
-     */    
-    public static final int RECEPTOR_CONGESTIONADO_60 =    133;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un nodo LER congestionado al 75%.
-     * @since 2.0
-     */    
-    public static final int LER_CONGESTIONADO_60 =         134;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un nodo LERA congestionado al 75%.
-     * @since 2.0
-     */    
-    public static final int LERA_CONGESTIONADO_60 =        135;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un nodo LSR congestionado al 75%.
-     * @since 2.0
-     */    
-    public static final int LSR_CONGESTIONADO_60 =         136;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * a un nodo LSRA congestionado al 75%.
-     * @since 2.0
-     */    
-    public static final int LSRA_CONGESTIONADO_60 =        137;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un enlace de comunicaciones que cae.
-     * @since 2.0
-     */    
-    public static final int ENLACE_CAIDO =                 138;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un enlace de comunicaciones que se recupera tras una ca�da.
-     * @since 2.0
-     */    
-    public static final int ENLACE_RECUPERADO =            139;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * un reloj de arena.
-     * @since 2.0
-     */    
-    public static final int TRABAJANDO =                   140;
-    /**
-     * Esta constante indica al dispensador que le devuelva la imagen que representa
-     * una cptura de la web del proyecto.
-     * @since 2.0
-     */    
-    public static final int CAPTURAWEB =                   141;
-    
-    /** Esta constante indica cuantas im�genes debe cargar en memoria el dispensador de
-     * im�genes.
-     * @since 2.0
-     */    
-    private static final int NUMERO_DE_IMAGENES =          142;
-
-    /** Este m�todo es el constructor de la clase; crea una nueva instancia de
+     * Este m�todo es el constructor de la clase; crea una nueva instancia de
      * TDispensadorDeImagenes.
+     *
      * @since 2.0
      */
     public TImageBroker() {
-        imagen = new ImageIcon[NUMERO_DE_IMAGENES];
+        this.imageIcons = new ImageIcon[NUMERO_DE_IMAGENES];
+        this.translations = ResourceBundle.getBundle(AvailableBundles.IMAGE_BROKER.getPath());
         try {
-            cargarImagenes();
+            preloadImages();
         } catch (Exception e) {
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TDispensadorDeImagenes.error"));
+            System.out.println(this.translations.getString("TDispensadorDeImagenes.error"));
         }
     }
 
-    /** Este m�todo carga en memoria todas las im�genes que se van a utilizar en la
-     * aplicaci�n.
+    /**
+     * Este m�todo carga en memoria todas las im�genes que se van a utilizar en
+     * la aplicaci�n.
+     *
      * @since 2.0
-     */    
-    private void cargarImagenes() {
-        imagen[ABRIR] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/abrir.png"));
-        imagen[ABRIR_MENU_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/abrir_menu_gris.png"));
-        imagen[ABRIR_MENU] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/abrir_menu.png"));
-        imagen[ADVERTENCIA] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/advertencia.png"));
-        imagen[ASISTENTE] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/asistente.png"));
-        imagen[BOTON_COMENZAR] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/boton_comenzar.png"));
-        imagen[BOTON_COMENZAR_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/boton_comenzar_gris.png"));
-        imagen[BOTON_GENERAR] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/boton_generar.png"));
-        imagen[BOTON_GENERAR_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/boton_generar_gris.png"));
-        imagen[BOTON_PARAR] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/boton_parar.png"));
-        imagen[BOTON_PARAR_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/boton_parar_gris.png"));
-        imagen[BOTON_PAUSA] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/boton_pausa.png"));
-        imagen[BOTON_PAUSA_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/boton_pausa_gris.png"));
-        imagen[CERRAR] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/cerrar.png"));
-        imagen[CERRAR_MENU_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/cerrar_menu_gris.png"));
-        imagen[CERRAR_MENU] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/cerrar_menu.png"));
-        imagen[COMENTARIO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/comentario.png"));
-        imagen[COMENTARIO_MENU_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/comentario_menu_gris.png"));
-        imagen[COMENTARIO_MENU] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/comentario_menu.png"));
-        imagen[EMISOR] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/emisor.png"));
-        imagen[EMISOR_MENU_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/emisor_menu_gris.png"));
-        imagen[EMISOR_MENU] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/emisor_menu.png"));
-        imagen[EMISOR_MOVIENDOSE] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/emisor_moviendose.png"));
-        imagen[ENLACE] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/enlace.png"));
-        imagen[ENLACE_MENU_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/enlace_menu_gris.png"));
-        imagen[ENLACE_MENU] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/enlace_menu.png"));
-        imagen[ERROR] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/error.png"));
-        imagen[GUARDAR] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/guardar.png"));
-        imagen[GUARDAR_COMO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/guardar_como.png"));
-        imagen[GUARDAR_COMO_MENU_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/guardar_como_menu_gris.png"));
-        imagen[GUARDAR_COMO_MENU] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/guardar_como_menu.png"));
-        imagen[GUARDAR_MENU_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/guardar_menu_gris.png"));
-        imagen[GUARDAR_MENU] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/guardar_menu.png"));
-        imagen[ICONO_VENTANA_INTERNA] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/icono_ventana_interna.png"));
-        imagen[ICONO_VENTANA_INTERNA_MENU] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/icono_ventana_interna_menu.png"));
-        imagen[ICONO_SIMMPLS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/iconosimMPLS.png"));
-        imagen[IMPRIMIR] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/imprimir.png"));
-        imagen[IMPRIMIR_MENU_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/imprimir_menu_gris.png"));
-        imagen[IMPRIMIR_MENU] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/imprimir_menu.png"));
-        imagen[LER] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/ler.png"));
-        imagen[LER_MENU_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/ler_menu_gris.png"));
-        imagen[LER_MENU] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/ler_menu.png"));
-        imagen[LER_MOVIENDOSE] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/ler_moviendose.png"));
-        imagen[LERA] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lera.png"));
-        imagen[LERA_MENU_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lera_menu_gris.png"));
-        imagen[LERA_MENU] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lera_menu.png"));
-        imagen[LERA_MOVIENDOSE] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lera_moviendose.png"));
-        imagen[LICENCIA] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/licencia.png"));
-        imagen[LICENCIA_MENU_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/licencia_menu_gris.png"));
-        imagen[LICENCIA_MENU] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/licencia_menu.png"));
-        imagen[LSR] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lsr.png"));
-        imagen[LSR_MENU_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lsr_menu_gris.png"));
-        imagen[LSR_MENU] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lsr_menu.png"));
-        imagen[LSR_MOVIENDOSE] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lsr_moviendose.png"));
-        imagen[LSRA] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lsra.png"));
-        imagen[LSRA_MENU_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lsra_menu_gris.png"));
-        imagen[LSRA_MENU] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lsra_menu.png"));
-        imagen[LSRA_MOVIENDOSE] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lsra_moviendose.png"));
-        imagen[NUBE] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/nube.png"));
-        imagen[NUEVO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/nuevo.png"));
-        imagen[NUEVO_MENU_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/nuevo_menu_gris.png"));
-        imagen[NUEVO_MENU] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/nuevo_menu.png"));
-        imagen[OSI_CERTIFIED] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/osi_certified.png"));
-        imagen[RECEPTOR] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/receptor.png"));
-        imagen[RECEPTOR_MENU_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/receptor_menu_gris.png"));
-        imagen[RECEPTOR_MENU] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/receptor_menu.png"));
-        imagen[RECEPTOR_MOVIENDOSE] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/receptor_moviendose.png"));
-        imagen[SALIR] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/salir.png"));
-        imagen[SALIR_MENU] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/salir_menu.png"));
-        imagen[SPLASH] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/splash.png"));
-        imagen[SPLASH_INICIO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/splash_inicio.png"));
-        imagen[SPLASH_MENU_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/splash_menu_gris.png"));
-        imagen[SPLASH_MENU] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/splash_menu.png"));
-        imagen[TUTORIAL] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/tutorial.png"));
-        imagen[TUTORIAL_MENU_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/tutorial_menu_gris.png"));
-        imagen[TUTORIAL_MENU] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/tutorial_menu.png"));
-        imagen[IMAGEN_NO_ENCONTRADA] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/imagen_no_encontrada.png"));
-        imagen[EMISOR_MENU_BRILLO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/emisor_menu_brillo.png"));
-        imagen[RECEPTOR_MENU_BRILLO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/receptor_menu_brillo.png"));
-        imagen[LER_MENU_BRILLO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/ler_menu_brillo.png"));
-        imagen[LSR_MENU_BRILLO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lsr_menu_brillo.png"));
-        imagen[LERA_MENU_BRILLO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lera_menu_brillo.png"));
-        imagen[LSRA_MENU_BRILLO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lsra_menu_brillo.png"));
-        imagen[ENLACE_MENU_BRILLO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/enlace_menu_brillo.png"));
-        imagen[BOTON_COMENZAR_BRILLO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/boton_comenzar_brillo.png"));
-        imagen[BOTON_GENERAR_BRILLO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/boton_generar_brillo.png"));
-        imagen[BOTON_PARAR_BRILLO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/boton_parar_brillo.png"));
-        imagen[BOTON_PAUSA_BRILLO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/boton_pausa_brillo.png"));
-        imagen[VISTA_ICONOS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/vista_iconos_menu.png"));
-        imagen[VISTA_CASCADA] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/vista_cascada_menu.png"));
-        imagen[VISTA_HORIZONTAL] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/vista_horizontal_menu.png"));
-        imagen[VISTA_VERTICAL] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/vista_vertical_menu.png"));
-        imagen[PDU_LDP] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/pdu_ldp.png"));
-        imagen[PDU_GOS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/pdu_gos.png"));
-        imagen[PDU_IPV4] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/pdu_ipv4.png"));
-        imagen[PDU_MPLS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/pdu_mpls.png"));
-        imagen[EMISOR_CONGESTIONADO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/emisor_congestionado.png"));
-        imagen[RECEPTOR_CONGESTIONADO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/receptor_congestionado.png"));
-        imagen[LER_CONGESTIONADO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/ler_congestionado.png"));
-        imagen[LERA_CONGESTIONADO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lera_congestionado.png"));
-        imagen[LSR_CONGESTIONADO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lsr_congestionado.png"));
-        imagen[LSRA_CONGESTIONADO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lsra_congestionado.png"));
-        imagen[PDU_IPV4_GOS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/pdu_ipv4_gos.png"));
-        imagen[PDU_MPLS_GOS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/pdu_mpls_gos.png"));
-        imagen[SIMULACION] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/simulacion.png"));
-        imagen[OPCIONES] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/opciones.png"));
-        imagen[DISENIO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/disenio.png"));
-        imagen[ANALISIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/analisis.png"));
-        imagen[SOBRE_EMAIL] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/sobre_email.png"));
-        imagen[ACEPTAR] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/aceptar.png"));
-        imagen[CANCELAR] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/cancelar.png"));
-        imagen[AVANZADA] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/avanzada.png"));
-        imagen[TOPO_GRIS] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/topo_gris.png"));
-        imagen[TOPO_VERDE] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/topo_verde.png"));
-        imagen[INTERROGACION] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/interrogacion.png"));
-        imagen[MIME_OSM] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/mime_osm.png"));
-        imagen[PDU_IPV4_GOS_CAE] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/pdu_ipv4_gos_cae.png"));
-        imagen[PDU_MPLS_GOS_CAE] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/pdu_mpls_gos_cae.png"));
-        imagen[PDU_LDP_CAE] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/pdu_ldp_cae.png"));
-        imagen[PDU_GOS_CAE] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/pdu_gos_cae.png"));
-        imagen[PDU_IPV4_CAE] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/pdu_ipv4_cae.png"));
-        imagen[PDU_MPLS_CAE] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/pdu_mpls_cae.png"));
-        imagen[PAQUETE_GENERADO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/paquete_generado.png"));
-        imagen[PAQUETE_EMITIDO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/paquete_emitido.png"));
-        imagen[PAQUETE_RECIBIDO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/paquete_recibido.png"));
-        imagen[PAQUETE_CONMUTADO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/paquete_conmutado.png"));
-        imagen[EMISOR_CONGESTIONADO_20] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/emisor_congestionado_20.png"));
-        imagen[RECEPTOR_CONGESTIONADO_20] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/receptor_congestionado_20.png"));
-        imagen[LER_CONGESTIONADO_20] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/ler_congestionado_20.png"));
-        imagen[LERA_CONGESTIONADO_20] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lera_congestionado_20.png"));
-        imagen[LSR_CONGESTIONADO_20] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lsr_congestionado_20.png"));
-        imagen[LSRA_CONGESTIONADO_20] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lsra_congestionado_20.png"));
-        imagen[EMISOR_CONGESTIONADO_60] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/emisor_congestionado_60.png"));
-        imagen[RECEPTOR_CONGESTIONADO_60] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/receptor_congestionado_60.png"));
-        imagen[LER_CONGESTIONADO_60] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/ler_congestionado_60.png"));
-        imagen[LERA_CONGESTIONADO_60] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lera_congestionado_60.png"));
-        imagen[LSR_CONGESTIONADO_60] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lsr_congestionado_60.png"));
-        imagen[LSRA_CONGESTIONADO_60] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/lsra_congestionado_60.png"));
-        imagen[ENLACE_CAIDO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/enlace_caido.png"));
-        imagen[ENLACE_RECUPERADO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/enlace_recuperado.png"));
-        imagen[TRABAJANDO] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/reloj_arena.png"));
-        imagen[CAPTURAWEB] = new javax.swing.ImageIcon(getClass().getResource("/com/manolodominguez/opensimmpls/resources/images/capturaweb.png"));
+     */
+    private void preloadImages() {
+        imageIcons[OPEN] = new ImageIcon(getClass().getResource(IMAGES_PATH + "abrir.png"));
+        imageIcons[OPEN_MENU_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "abrir_menu_gris.png"));
+        imageIcons[OPEN_MENU_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "abrir_menu.png"));
+        imageIcons[WARNING] = new ImageIcon(getClass().getResource(IMAGES_PATH + "advertencia.png"));
+        imageIcons[WIZARD] = new ImageIcon(getClass().getResource(IMAGES_PATH + "asistente.png"));
+        imageIcons[START_SIMULATION_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "boton_comenzar.png"));
+        imageIcons[START_SIMULATION_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "boton_comenzar_gris.png"));
+        imageIcons[GENERATE_SIMULATION_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "boton_generar.png"));
+        imageIcons[GENERATE_SIMULATION_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "boton_generar_gris.png"));
+        imageIcons[STOP_SIMULATION_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "boton_parar.png"));
+        imageIcons[STOP_SIMULATION_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "boton_parar_gris.png"));
+        imageIcons[PAUSE_SIMULATION_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "boton_pausa.png"));
+        imageIcons[PAUSE_SIMULATION_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "boton_pausa_gris.png"));
+        imageIcons[CLOSE] = new ImageIcon(getClass().getResource(IMAGES_PATH + "cerrar.png"));
+        imageIcons[CLOSE_MENU_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "cerrar_menu_gris.png"));
+        imageIcons[CLOSE_MENU_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "cerrar_menu.png"));
+        imageIcons[COMMENT] = new ImageIcon(getClass().getResource(IMAGES_PATH + "comentario.png"));
+        imageIcons[COMMENT_MENU_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "comentario_menu_gris.png"));
+        imageIcons[COMMENT_MENU_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "comentario_menu.png"));
+        imageIcons[TRAFFIC_GENERATOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "emisor.png"));
+        imageIcons[TRAFFIC_GENERATOR_MENU_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "emisor_menu_gris.png"));
+        imageIcons[TRAFFIC_GENERATOR_MENU_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "emisor_menu.png"));
+        imageIcons[TRAFFIC_GENERATOR_MOVING] = new ImageIcon(getClass().getResource(IMAGES_PATH + "emisor_moviendose.png"));
+        imageIcons[LINK] = new ImageIcon(getClass().getResource(IMAGES_PATH + "enlace.png"));
+        imageIcons[LINK_MENU_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "enlace_menu_gris.png"));
+        imageIcons[LINK_MENU_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "enlace_menu.png"));
+        imageIcons[ERROR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "error.png"));
+        imageIcons[SAVE] = new ImageIcon(getClass().getResource(IMAGES_PATH + "guardar.png"));
+        imageIcons[SAVE_AS] = new ImageIcon(getClass().getResource(IMAGES_PATH + "guardar_como.png"));
+        imageIcons[SAVE_AS_MENU_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "guardar_como_menu_gris.png"));
+        imageIcons[SAVE_AS_MENU_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "guardar_como_menu.png"));
+        imageIcons[SAVE_MENU_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "guardar_menu_gris.png"));
+        imageIcons[SAVE_MENU_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "guardar_menu.png"));
+        imageIcons[SCENARIO_WINDOW_ICON] = new ImageIcon(getClass().getResource(IMAGES_PATH + "icono_ventana_interna.png"));
+        imageIcons[SCENARIO_WINDOW_ICON_MENU] = new ImageIcon(getClass().getResource(IMAGES_PATH + "icono_ventana_interna_menu.png"));
+        imageIcons[OSM_ICON] = new ImageIcon(getClass().getResource(IMAGES_PATH + "iconosimMPLS.png"));
+        imageIcons[PRINT] = new ImageIcon(getClass().getResource(IMAGES_PATH + "imprimir.png"));
+        imageIcons[PRINT_MENU_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "imprimir_menu_gris.png"));
+        imageIcons[PRINT_MENU_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "imprimir_menu.png"));
+        imageIcons[LER] = new ImageIcon(getClass().getResource(IMAGES_PATH + "ler.png"));
+        imageIcons[LER_MENU_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "ler_menu_gris.png"));
+        imageIcons[LER_MENU_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "ler_menu.png"));
+        imageIcons[LER_MOVING] = new ImageIcon(getClass().getResource(IMAGES_PATH + "ler_moviendose.png"));
+        imageIcons[ACTIVE_LER] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lera.png"));
+        imageIcons[ACTIVE_LER_MENU_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lera_menu_gris.png"));
+        imageIcons[ACTIVE_LER_MENU_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lera_menu.png"));
+        imageIcons[ACTIVE_LER_MOVING] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lera_moviendose.png"));
+        imageIcons[LICENSE] = new ImageIcon(getClass().getResource(IMAGES_PATH + "licencia.png"));
+        imageIcons[LICENSE_MENU_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "licencia_menu_gris.png"));
+        imageIcons[LICENSE_MENU_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "licencia_menu.png"));
+        imageIcons[LSR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lsr.png"));
+        imageIcons[LSR_MENU_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lsr_menu_gris.png"));
+        imageIcons[LSR_MENU_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lsr_menu.png"));
+        imageIcons[LSR_MOVING] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lsr_moviendose.png"));
+        imageIcons[ACTIVE_LSR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lsra.png"));
+        imageIcons[ACTIVE_LSR_MENU_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lsra_menu_gris.png"));
+        imageIcons[ACTIVE_LSR_MENU_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lsra_menu.png"));
+        imageIcons[ACTIVE_LSR_MOVING] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lsra_moviendose.png"));
+        imageIcons[CLOUD] = new ImageIcon(getClass().getResource(IMAGES_PATH + "nube.png"));
+        imageIcons[NEW] = new ImageIcon(getClass().getResource(IMAGES_PATH + "nuevo.png"));
+        imageIcons[NEW_MENU_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "nuevo_menu_gris.png"));
+        imageIcons[NEW_MENU_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "nuevo_menu.png"));
+        imageIcons[LICENSE_LOGO] = new ImageIcon(getClass().getResource(IMAGES_PATH + "osi_certified.png"));
+        imageIcons[TRAFFIC_SINK] = new ImageIcon(getClass().getResource(IMAGES_PATH + "receptor.png"));
+        imageIcons[TRAFFIC_SINK_MENU_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "receptor_menu_gris.png"));
+        imageIcons[TRAFFIC_SINK_MENU_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "receptor_menu.png"));
+        imageIcons[TRAFFIC_SINK_MOVING] = new ImageIcon(getClass().getResource(IMAGES_PATH + "receptor_moviendose.png"));
+        imageIcons[EXIT] = new ImageIcon(getClass().getResource(IMAGES_PATH + "salir.png"));
+        imageIcons[EXIT_MENU_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "salir_menu.png"));
+        imageIcons[SPLASH_ABOUT] = new ImageIcon(getClass().getResource(IMAGES_PATH + "splash.png"));
+        imageIcons[SPLASH] = new ImageIcon(getClass().getResource(IMAGES_PATH + "splash_inicio.png"));
+        imageIcons[ABOUT_MENU_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "splash_menu_gris.png"));
+        imageIcons[ABOUT_MENU_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "splash_menu.png"));
+        imageIcons[TUTORIAL] = new ImageIcon(getClass().getResource(IMAGES_PATH + "tutorial.png"));
+        imageIcons[TUTORIAL_MENU_GRIS] = new ImageIcon(getClass().getResource(IMAGES_PATH + "tutorial_menu_gris.png"));
+        imageIcons[TUTORIAL_MENU_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "tutorial_menu.png"));
+        imageIcons[IMAGE_NOT_FOUND] = new ImageIcon(getClass().getResource(IMAGES_PATH + "imagen_no_encontrada.png"));
+        imageIcons[TRAFFIC_GENERATOR_MENU_HIGHLIGHTED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "emisor_menu_brillo.png"));
+        imageIcons[TRAFFIC_SINK_MENU_HIGHLIGHTED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "receptor_menu_brillo.png"));
+        imageIcons[LER_MENU_HIGHLIGHTED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "ler_menu_brillo.png"));
+        imageIcons[LSR_MENU_HIGHLIGHTED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lsr_menu_brillo.png"));
+        imageIcons[ACTIVE_LER_MENU_HIGHLIGHTED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lera_menu_brillo.png"));
+        imageIcons[ACTIVE_LSR_MENU_HIGHLIGHTED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lsra_menu_brillo.png"));
+        imageIcons[LINK_MENU_HIGHLIGHTED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "enlace_menu_brillo.png"));
+        imageIcons[START_HIGHLIGHTED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "boton_comenzar_brillo.png"));
+        imageIcons[GENERATE_HIGHLIGHTED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "boton_generar_brillo.png"));
+        imageIcons[STOP_HIGHLIGHTED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "boton_parar_brillo.png"));
+        imageIcons[PAUSE_HIGHLIGHTED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "boton_pausa_brillo.png"));
+        imageIcons[ICONS_VIEW_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "vista_iconos_menu.png"));
+        imageIcons[CASCADE_VIEW_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "vista_cascada_menu.png"));
+        imageIcons[HORIZONTAL_MOSAIC_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "vista_horizontal_menu.png"));
+        imageIcons[VERTICAL_MOSAIC_COLOR] = new ImageIcon(getClass().getResource(IMAGES_PATH + "vista_vertical_menu.png"));
+        imageIcons[PDU_LDP] = new ImageIcon(getClass().getResource(IMAGES_PATH + "pdu_ldp.png"));
+        imageIcons[PDU_GOS] = new ImageIcon(getClass().getResource(IMAGES_PATH + "pdu_gos.png"));
+        imageIcons[PDU_IPV4] = new ImageIcon(getClass().getResource(IMAGES_PATH + "pdu_ipv4.png"));
+        imageIcons[PDU_MPLS] = new ImageIcon(getClass().getResource(IMAGES_PATH + "pdu_mpls.png"));
+        imageIcons[TRAFFIC_GENERATOR_CONGESTED3] = new ImageIcon(getClass().getResource(IMAGES_PATH + "emisor_congestionado.png"));
+        imageIcons[TRAFFIC_SINK_CONGESTED3] = new ImageIcon(getClass().getResource(IMAGES_PATH + "receptor_congestionado.png"));
+        imageIcons[LER_CONGESTED3] = new ImageIcon(getClass().getResource(IMAGES_PATH + "ler_congestionado.png"));
+        imageIcons[ACTIVE_LER_CONGESTED3] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lera_congestionado.png"));
+        imageIcons[LSR_CONGESTED3] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lsr_congestionado.png"));
+        imageIcons[ACTIVE_LSR_CONGESTED3] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lsra_congestionado.png"));
+        imageIcons[PDU_IPV4_GOS] = new ImageIcon(getClass().getResource(IMAGES_PATH + "pdu_ipv4_gos.png"));
+        imageIcons[PDU_MPLS_GOS] = new ImageIcon(getClass().getResource(IMAGES_PATH + "pdu_mpls_gos.png"));
+        imageIcons[SIMULATION] = new ImageIcon(getClass().getResource(IMAGES_PATH + "simulacion.png"));
+        imageIcons[OPTIONS] = new ImageIcon(getClass().getResource(IMAGES_PATH + "opciones.png"));
+        imageIcons[DESIGN] = new ImageIcon(getClass().getResource(IMAGES_PATH + "disenio.png"));
+        imageIcons[ANALYSIS] = new ImageIcon(getClass().getResource(IMAGES_PATH + "analisis.png"));
+        imageIcons[EMAIL] = new ImageIcon(getClass().getResource(IMAGES_PATH + "sobre_email.png"));
+        imageIcons[ACCEPT] = new ImageIcon(getClass().getResource(IMAGES_PATH + "aceptar.png"));
+        imageIcons[CANCEL] = new ImageIcon(getClass().getResource(IMAGES_PATH + "cancelar.png"));
+        imageIcons[ADVANCED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "avanzada.png"));
+        imageIcons[BULLET_GRAY] = new ImageIcon(getClass().getResource(IMAGES_PATH + "topo_gris.png"));
+        imageIcons[BULLET_GREEN] = new ImageIcon(getClass().getResource(IMAGES_PATH + "topo_verde.png"));
+        imageIcons[QUESTION_MARK] = new ImageIcon(getClass().getResource(IMAGES_PATH + "interrogacion.png"));
+        imageIcons[OSM_MIME] = new ImageIcon(getClass().getResource(IMAGES_PATH + "mime_osm.png"));
+        imageIcons[PDU_IPV4_GOS_DISCARDED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "pdu_ipv4_gos_cae.png"));
+        imageIcons[PDU_MPLS_GOS_DISCARDED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "pdu_mpls_gos_cae.png"));
+        imageIcons[PDU_LDP_DISCARDED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "pdu_ldp_cae.png"));
+        imageIcons[PDU_GOS_DISCARDED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "pdu_gos_cae.png"));
+        imageIcons[PDU_IPV4_DISCARDED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "pdu_ipv4_cae.png"));
+        imageIcons[PDU_MPLS_DISCARDED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "pdu_mpls_cae.png"));
+        imageIcons[PACKET_GENERATED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "paquete_generado.png"));
+        imageIcons[PACKET_SENT] = new ImageIcon(getClass().getResource(IMAGES_PATH + "paquete_emitido.png"));
+        imageIcons[PACKET_RECEIVED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "paquete_recibido.png"));
+        imageIcons[PACKET_SWITCHED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "paquete_conmutado.png"));
+        imageIcons[TRAFFIC_GENERATOR_CONGESTED1] = new ImageIcon(getClass().getResource(IMAGES_PATH + "emisor_congestionado_20.png"));
+        imageIcons[TRAFFIC_SINK_CONGESTED1] = new ImageIcon(getClass().getResource(IMAGES_PATH + "receptor_congestionado_20.png"));
+        imageIcons[LER_CONGESTED1] = new ImageIcon(getClass().getResource(IMAGES_PATH + "ler_congestionado_20.png"));
+        imageIcons[ACTIVE_LER_CONGESTED1] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lera_congestionado_20.png"));
+        imageIcons[LSR_CONGESTED1] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lsr_congestionado_20.png"));
+        imageIcons[ACTIVE_LSR_CONGESTED1] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lsra_congestionado_20.png"));
+        imageIcons[TRAFFIC_GENERATOR_CONGESTED2] = new ImageIcon(getClass().getResource(IMAGES_PATH + "emisor_congestionado_60.png"));
+        imageIcons[TRAFFIC_SINK_CONGESTED2] = new ImageIcon(getClass().getResource(IMAGES_PATH + "receptor_congestionado_60.png"));
+        imageIcons[LER_CONGESTED2] = new ImageIcon(getClass().getResource(IMAGES_PATH + "ler_congestionado_60.png"));
+        imageIcons[ACTIVE_LER_CONGESTED2] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lera_congestionado_60.png"));
+        imageIcons[LSR_CONGESTED2] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lsr_congestionado_60.png"));
+        imageIcons[ACTIVE_LSR_CONGESTED2] = new ImageIcon(getClass().getResource(IMAGES_PATH + "lsra_congestionado_60.png"));
+        imageIcons[LINK_BROKEN] = new ImageIcon(getClass().getResource(IMAGES_PATH + "enlace_caido.png"));
+        imageIcons[LINK_RECOVERED] = new ImageIcon(getClass().getResource(IMAGES_PATH + "enlace_recuperado.png"));
+        imageIcons[WORKING] = new ImageIcon(getClass().getResource(IMAGES_PATH + "reloj_arena.png"));
+        imageIcons[WEB_SCREENSHOT] = new ImageIcon(getClass().getResource(IMAGES_PATH + "capturaweb.png"));
     }
 
-    /** Obtiene una de las im�genes del dispensador de im�genes como un onjeto Image.
-     * @param queImagen Constante que identifica la imagen que se desea obtener. Es una de las
-     * constantes definidas en la clase.
+    /**
+     * Obtiene una de las im�genes del dispensador de im�genes como un onjeto
+     * Image.
+     *
+     * @param queImagen Constante que identifica la imagen que se desea obtener.
+     * Es una de las constantes definidas en la clase.
      * @return Un objeto Image con la imagen que se ha solicitado.
      * @since 2.0
-     */    
+     */
     public Image obtenerImagen(int queImagen) {
-        ImageIcon imagenBuscada = imagen[queImagen];
+        ImageIcon imagenBuscada = imageIcons[queImagen];
         if (imagenBuscada == null) {
-            imagenBuscada = imagen[IMAGEN_NO_ENCONTRADA];
+            imagenBuscada = imageIcons[IMAGE_NOT_FOUND];
         }
         return imagenBuscada.getImage();
     }
 
-    /** Obtiene una de las im�genes del dispensador de im�genes como un onjeto ImageIcon.
-     * @param queImagen Constante que identifica la imagen que se desea obtener. Es una de las
-     * constantes definidas en la clase.
+    /**
+     * Obtiene una de las im�genes del dispensador de im�genes como un onjeto
+     * ImageIcon.
+     *
+     * @param imageID Constante que identifica la imagen que se desea obtener.
+     * Es una de las constantes definidas en la clase.
      * @return Un objeto ImageIcon con la imagen que se ha solicitado.
      * @since 2.0
-     */    
-    public ImageIcon getIcon(int queImagen) {
-        ImageIcon imagenBuscada = imagen[queImagen];
-        if (imagenBuscada == null) {
-            imagenBuscada = imagen[IMAGEN_NO_ENCONTRADA];
+     */
+    public ImageIcon getImageIcon(int imageID) {
+        ImageIcon desiredImage = this.imageIcons[imageID];
+        if (desiredImage == null) {
+            desiredImage = this.imageIcons[IMAGE_NOT_FOUND];
         }
-        return imagenBuscada;
+        return desiredImage;
     }
 
-    /** Este atributo es el array din�mico de im�genes que almacenar� las referencias a
-     * las im�genes cargadas.
-     * @since 2.0
-     */    
-    private ImageIcon imagen[];
+    private ImageIcon[] imageIcons;
+    private ResourceBundle translations;
+
+    private static final String IMAGES_PATH = "/com/manolodominguez/opensimmpls/resources/images/";
+
+    public static final int OPEN = 0;
+    public static final int OPEN_MENU_GRAY = 1;
+    public static final int OPEN_MENU_COLOR = 2;
+    public static final int WARNING = 3;
+    public static final int WIZARD = 4;
+    public static final int START_SIMULATION_COLOR = 5;
+    public static final int START_SIMULATION_GRAY = 6;
+    public static final int GENERATE_SIMULATION_COLOR = 7;
+    public static final int GENERATE_SIMULATION_GRAY = 8;
+    public static final int STOP_SIMULATION_COLOR = 9;
+    public static final int STOP_SIMULATION_GRAY = 10;
+    public static final int PAUSE_SIMULATION_COLOR = 11;
+    public static final int PAUSE_SIMULATION_GRAY = 12;
+    public static final int CLOSE = 13;
+    public static final int CLOSE_MENU_GRAY = 14;
+    public static final int CLOSE_MENU_COLOR = 15;
+    public static final int COMMENT = 16;
+    public static final int COMMENT_MENU_GRAY = 17;
+    public static final int COMMENT_MENU_COLOR = 18;
+    public static final int TRAFFIC_GENERATOR = 19;
+    public static final int TRAFFIC_GENERATOR_MENU_GRAY = 20;
+    public static final int TRAFFIC_GENERATOR_MENU_COLOR = 21;
+    public static final int TRAFFIC_GENERATOR_MOVING = 22;
+    public static final int LINK = 23;
+    public static final int LINK_MENU_GRAY = 24;
+    public static final int LINK_MENU_COLOR = 25;
+    public static final int ERROR = 26;
+    public static final int SAVE = 27;
+    public static final int SAVE_AS = 28;
+    public static final int SAVE_AS_MENU_GRAY = 29;
+    public static final int SAVE_AS_MENU_COLOR = 30;
+    public static final int SAVE_MENU_GRAY = 31;
+    public static final int SAVE_MENU_COLOR = 32;
+    public static final int SCENARIO_WINDOW_ICON = 33;
+    public static final int SCENARIO_WINDOW_ICON_MENU = 34;
+    public static final int OSM_ICON = 35;
+    public static final int PRINT = 36;
+    public static final int PRINT_MENU_GRAY = 37;
+    public static final int PRINT_MENU_COLOR = 38;
+    public static final int LER = 39;
+    public static final int LER_MENU_GRAY = 40;
+    public static final int LER_MENU_COLOR = 41;
+    public static final int LER_MOVING = 42;
+    public static final int ACTIVE_LER = 43;
+    public static final int ACTIVE_LER_MENU_GRAY = 44;
+    public static final int ACTIVE_LER_MENU_COLOR = 45;
+    public static final int ACTIVE_LER_MOVING = 46;
+    public static final int LICENSE = 47;
+    public static final int LICENSE_MENU_GRAY = 48;
+    public static final int LICENSE_MENU_COLOR = 49;
+    public static final int LSR = 50;
+    public static final int LSR_MENU_GRAY = 51;
+    public static final int LSR_MENU_COLOR = 52;
+    public static final int LSR_MOVING = 53;
+    public static final int ACTIVE_LSR = 54;
+    public static final int ACTIVE_LSR_MENU_GRAY = 55;
+    public static final int ACTIVE_LSR_MENU_COLOR = 56;
+    public static final int ACTIVE_LSR_MOVING = 57;
+    public static final int CLOUD = 58;
+    public static final int NEW = 59;
+    public static final int NEW_MENU_GRAY = 60;
+    public static final int NEW_MENU_COLOR = 61;
+    public static final int LICENSE_LOGO = 62;
+    public static final int TRAFFIC_SINK = 63;
+    public static final int TRAFFIC_SINK_MENU_GRAY = 64;
+    public static final int TRAFFIC_SINK_MENU_COLOR = 65;
+    public static final int TRAFFIC_SINK_MOVING = 66;
+    public static final int EXIT = 67;
+    public static final int EXIT_MENU_COLOR = 68;
+    public static final int SPLASH_ABOUT = 69;
+    public static final int SPLASH = 70;
+    public static final int ABOUT_MENU_GRAY = 71;
+    public static final int ABOUT_MENU_COLOR = 72;
+    public static final int TUTORIAL = 73;
+    public static final int TUTORIAL_MENU_GRIS = 74;
+    public static final int TUTORIAL_MENU_COLOR = 75;
+    private static final int IMAGE_NOT_FOUND = 76;
+    public static final int TRAFFIC_GENERATOR_MENU_HIGHLIGHTED = 77;
+    public static final int TRAFFIC_SINK_MENU_HIGHLIGHTED = 78;
+    public static final int LER_MENU_HIGHLIGHTED = 79;
+    public static final int LSR_MENU_HIGHLIGHTED = 80;
+    public static final int ACTIVE_LER_MENU_HIGHLIGHTED = 81;
+    public static final int ACTIVE_LSR_MENU_HIGHLIGHTED = 82;
+    public static final int LINK_MENU_HIGHLIGHTED = 83;
+    public static final int START_HIGHLIGHTED = 84;
+    public static final int GENERATE_HIGHLIGHTED = 85;
+    public static final int STOP_HIGHLIGHTED = 86;
+    public static final int PAUSE_HIGHLIGHTED = 87;
+    public static final int ICONS_VIEW_COLOR = 88;
+    public static final int CASCADE_VIEW_COLOR = 89;
+    public static final int HORIZONTAL_MOSAIC_COLOR = 90;
+    public static final int VERTICAL_MOSAIC_COLOR = 91;
+    public static final int PDU_LDP = 92;
+    public static final int PDU_GOS = 93;
+    public static final int PDU_IPV4 = 94;
+    public static final int PDU_MPLS = 95;
+    public static final int TRAFFIC_GENERATOR_CONGESTED3 = 96;
+    public static final int TRAFFIC_SINK_CONGESTED3 = 97;
+    public static final int LER_CONGESTED3 = 98;
+    public static final int ACTIVE_LER_CONGESTED3 = 99;
+    public static final int LSR_CONGESTED3 = 100;
+    public static final int ACTIVE_LSR_CONGESTED3 = 101;
+    public static final int PDU_IPV4_GOS = 102;
+    public static final int PDU_MPLS_GOS = 103;
+    public static final int SIMULATION = 104;
+    public static final int OPTIONS = 105;
+    public static final int DESIGN = 106;
+    public static final int ANALYSIS = 107;
+    public static final int EMAIL = 108;
+    public static final int ACCEPT = 109;
+    public static final int CANCEL = 110;
+    public static final int ADVANCED = 111;
+    public static final int BULLET_GRAY = 112;
+    public static final int BULLET_GREEN = 113;
+    public static final int QUESTION_MARK = 114;
+    public static final int OSM_MIME = 115;
+    public static final int PDU_LDP_DISCARDED = 116;
+    public static final int PDU_GOS_DISCARDED = 117;
+    public static final int PDU_IPV4_DISCARDED = 118;
+    public static final int PDU_IPV4_GOS_DISCARDED = 119;
+    public static final int PDU_MPLS_GOS_DISCARDED = 120;
+    public static final int PDU_MPLS_DISCARDED = 121;
+    public static final int PACKET_GENERATED = 122;
+    public static final int PACKET_SENT = 123;
+    public static final int PACKET_RECEIVED = 124;
+    public static final int PACKET_SWITCHED = 125;
+    public static final int TRAFFIC_GENERATOR_CONGESTED1 = 126;
+    public static final int TRAFFIC_SINK_CONGESTED1 = 127;
+    public static final int LER_CONGESTED1 = 128;
+    public static final int ACTIVE_LER_CONGESTED1 = 129;
+    public static final int LSR_CONGESTED1 = 130;
+    public static final int ACTIVE_LSR_CONGESTED1 = 131;
+    public static final int TRAFFIC_GENERATOR_CONGESTED2 = 132;
+    public static final int TRAFFIC_SINK_CONGESTED2 = 133;
+    public static final int LER_CONGESTED2 = 134;
+    public static final int ACTIVE_LER_CONGESTED2 = 135;
+    public static final int LSR_CONGESTED2 = 136;
+    public static final int ACTIVE_LSR_CONGESTED2 = 137;
+    public static final int LINK_BROKEN = 138;
+    public static final int LINK_RECOVERED = 139;
+    public static final int WORKING = 140;
+    public static final int WEB_SCREENSHOT = 141;
+
+    private static final int NUMERO_DE_IMAGENES = 142;    
 }

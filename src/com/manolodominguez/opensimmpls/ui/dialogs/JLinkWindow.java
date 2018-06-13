@@ -128,7 +128,7 @@ public class JLinkWindow extends JDialog {
         this.mainPanel.setLayout(new AbsoluteLayout());
         this.panelTabs.setFont(new Font("Dialog", 0, 12));
         this.panelGeneralConfiguration.setLayout(new AbsoluteLayout());
-        this.labelLink.setIcon(this.imageBroker.getIcon(TImageBroker.ENLACE));
+        this.labelLink.setIcon(this.imageBroker.getImageIcon(TImageBroker.LINK));
         this.labelLink.setText(this.translations.getString("VentanaEnlace.descripcion"));
         this.panelGeneralConfiguration.add(this.labelLink, new AbsoluteConstraints(15, 20, 335, -1));
         this.labelName.setFont(new Font("Dialog", 0, 12));
@@ -141,7 +141,7 @@ public class JLinkWindow extends JDialog {
         this.checkBoxShowName.setText(this.translations.getString("VentanaEnlace.verNombre"));
         this.checkBoxShowName.setToolTipText(this.translations.getString("JVentanaEnlace.tooltip.VerNombre"));
         this.panelGeneralConfiguration.add(this.checkBoxShowName, new AbsoluteConstraints(255, 80, -1, -1));
-        this.iconContainerLink.setIcon(this.imageBroker.getIcon(TImageBroker.ENLACE));
+        this.iconContainerLink.setIcon(this.imageBroker.getImageIcon(TImageBroker.LINK));
         this.panelGeneralConfiguration.add(this.iconContainerLink, new AbsoluteConstraints(158, 120, 50, -1));
         this.labelHeadEnd.setFont(new Font("Dialog", 0, 12));
         this.labelHeadEnd.setHorizontalAlignment(SwingConstants.CENTER);
@@ -185,7 +185,7 @@ public class JLinkWindow extends JDialog {
         this.panelGeneralConfiguration.add(this.labelTailEndColons, new AbsoluteConstraints(310, 165, 10, -1));
         this.panelTabs.addTab(this.translations.getString("VentanaEnlace.tabs.General"), panelGeneralConfiguration);
         this.panelQuickConfiguration.setLayout(new AbsoluteLayout());
-        this.iconContainerWizard.setIcon(this.imageBroker.getIcon(TImageBroker.ASISTENTE));
+        this.iconContainerWizard.setIcon(this.imageBroker.getImageIcon(TImageBroker.WIZARD));
         this.iconContainerWizard.setText(this.translations.getString("JVentanaEnlace.Rapida.Descripcion"));
         this.panelQuickConfiguration.add(this.iconContainerWizard, new AbsoluteConstraints(15, 20, 335, -1));
         this.labelSpeed.setFont(new Font("Dialog", 0, 12));
@@ -206,7 +206,7 @@ public class JLinkWindow extends JDialog {
         this.panelQuickConfiguration.add(this.comboBoxPredefinedOptions, new AbsoluteConstraints(140, 100, 180, -1));
         this.panelTabs.addTab(this.translations.getString("VentanaEnlace.tabs.Fast"), this.panelQuickConfiguration);
         this.panelAdvancedConfiguration.setLayout(new AbsoluteLayout());
-        this.iconContainerToolbox.setIcon(this.imageBroker.getIcon(TImageBroker.AVANZADA));
+        this.iconContainerToolbox.setIcon(this.imageBroker.getImageIcon(TImageBroker.ADVANCED));
         this.iconContainerToolbox.setText(this.translations.getString("JVentanaEnlace.Advanced_and_complete_link_configuration."));
         this.panelAdvancedConfiguration.add(this.iconContainerToolbox, new AbsoluteConstraints(15, 20, 335, -1));
         this.labelDelay.setFont(new Font("Dialog", 0, 12));
@@ -234,7 +234,7 @@ public class JLinkWindow extends JDialog {
         this.mainPanel.add(this.panelTabs, new AbsoluteConstraints(15, 15, 370, 240));
         this.panelButtons.setLayout(new AbsoluteLayout());
         this.buttonOK.setFont(new Font("Dialog", 0, 12));
-        this.buttonOK.setIcon(this.imageBroker.getIcon(TImageBroker.ACEPTAR));
+        this.buttonOK.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACCEPT));
         this.buttonOK.setMnemonic(this.translations.getString("VentanaEnlace.botones.mne.Aceptar").charAt(0));
         this.buttonOK.setText(this.translations.getString("VentanaEnlace.boton.Ok"));
         this.buttonOK.setToolTipText(this.translations.getString("JVentanaEnlace.Adds_the_link_to_the_topology."));
@@ -246,7 +246,7 @@ public class JLinkWindow extends JDialog {
         });
         this.panelButtons.add(this.buttonOK, new AbsoluteConstraints(15, 15, 115, -1));
         this.buttonCancel.setFont(new Font("Dialog", 0, 12));
-        this.buttonCancel.setIcon(this.imageBroker.getIcon(TImageBroker.CANCELAR));
+        this.buttonCancel.setIcon(this.imageBroker.getImageIcon(TImageBroker.CANCEL));
         this.buttonCancel.setMnemonic(this.translations.getString("VentanaEnlace.botones.mne.Cancelar").charAt(0));
         this.buttonCancel.setText(this.translations.getString("VentanaEnlace.boton.Cancel"));
         this.buttonCancel.setToolTipText(this.translations.getString("JVentanaEnlace.Cancel_the_operation"));

@@ -260,17 +260,17 @@ public class JDesignPanel extends JPanel {
             switch (nodeType) {
                 case TNode.TRAFFIC_GENERATOR: {
                     if (node.isSelected() == TNode.UNSELECTED) {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.EMISOR), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.TRAFFIC_GENERATOR), nodePosition.x, nodePosition.y, null);
                     } else {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.EMISOR_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.TRAFFIC_GENERATOR_MOVING), nodePosition.x, nodePosition.y, null);
                     }
                     break;
                 }
                 case TNode.TRAFFIC_SINK: {
                     if (node.isSelected() == TNode.UNSELECTED) {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.RECEPTOR), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.TRAFFIC_SINK), nodePosition.x, nodePosition.y, null);
                     } else {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.RECEPTOR_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.TRAFFIC_SINK_MOVING), nodePosition.x, nodePosition.y, null);
                     }
                     break;
                 }
@@ -278,15 +278,15 @@ public class JDesignPanel extends JPanel {
                     if (node.isSelected() == TNode.UNSELECTED) {
                         graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LER), nodePosition.x, nodePosition.y, null);
                     } else {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LER_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LER_MOVING), nodePosition.x, nodePosition.y, null);
                     }
                     break;
                 }
                 case TNode.ACTIVE_LER: {
                     if (node.isSelected() == TNode.UNSELECTED) {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LERA), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.ACTIVE_LER), nodePosition.x, nodePosition.y, null);
                     } else {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LERA_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.ACTIVE_LER_MOVING), nodePosition.x, nodePosition.y, null);
                     }
                     break;
                 }
@@ -294,15 +294,15 @@ public class JDesignPanel extends JPanel {
                     if (node.isSelected() == TNode.UNSELECTED) {
                         graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSR), nodePosition.x, nodePosition.y, null);
                     } else {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSR_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSR_MOVING), nodePosition.x, nodePosition.y, null);
                     }
                     break;
                 }
                 case TNode.ACTIVE_LSR: {
                     if (node.isSelected() == TNode.UNSELECTED) {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSRA), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.ACTIVE_LSR), nodePosition.x, nodePosition.y, null);
                     } else {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSRA_MOVIENDOSE), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.ACTIVE_LSR_MOVING), nodePosition.x, nodePosition.y, null);
                     }
                     break;
                 }

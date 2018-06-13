@@ -75,7 +75,7 @@ public class JAboutWindow extends JDialog {
         });
 
         this.iconContainer.setHorizontalAlignment(SwingConstants.CENTER);
-        this.iconContainer.setIcon(this.imageBroker.getIcon(TImageBroker.SPLASH));
+        this.iconContainer.setIcon(this.imageBroker.getImageIcon(TImageBroker.SPLASH_ABOUT));
         getContentPane().add(this.iconContainer, new AbsoluteConstraints(0, 0, -1, 300));
         pack();
         Dimension frameSize = this.getSize();

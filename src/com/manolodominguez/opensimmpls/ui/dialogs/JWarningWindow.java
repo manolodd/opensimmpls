@@ -84,10 +84,10 @@ public class JWarningWindow extends JDialog {
             }
         });
         getContentPane().setLayout(new AbsoluteLayout());
-        this.iconContainerWarningMark.setIcon(this.imageBroker.getIcon(TImageBroker.ADVERTENCIA));
+        this.iconContainerWarningMark.setIcon(this.imageBroker.getImageIcon(TImageBroker.WARNING));
         getContentPane().add(this.iconContainerWarningMark, new AbsoluteConstraints(10, 15, -1, -1));
         this.buttonOK.setFont(new Font("Dialog", 0, 12));
-        this.buttonOK.setIcon(this.imageBroker.getIcon(TImageBroker.ACEPTAR));
+        this.buttonOK.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACCEPT));
         this.buttonOK.setMnemonic(this.translations.getString("VentanaAdvertencia.ResaltadoBoton").charAt(0));
         this.buttonOK.setText(this.translations.getString("OK"));
         this.buttonOK.addActionListener(new ActionListener() {
