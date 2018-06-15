@@ -204,17 +204,17 @@ public class TImageBroker {
      * Obtiene una de las im�genes del dispensador de im�genes como un onjeto
      * Image.
      *
-     * @param queImagen Constante que identifica la imagen que se desea obtener.
+     * @param imageID Constante que identifica la imagen que se desea obtener.
      * Es una de las constantes definidas en la clase.
      * @return Un objeto Image con la imagen que se ha solicitado.
      * @since 2.0
      */
-    public Image obtenerImagen(int queImagen) {
-        ImageIcon imagenBuscada = imageIcons[queImagen];
-        if (imagenBuscada == null) {
-            imagenBuscada = imageIcons[IMAGE_NOT_FOUND];
+    public Image getImage(int imageID) {
+        ImageIcon imageIcon = this.imageIcons[imageID];
+        if (imageIcon == null) {
+            imageIcon = this.imageIcons[IMAGE_NOT_FOUND];
         }
-        return imagenBuscada.getImage();
+        return imageIcon.getImage();
     }
 
     /**
@@ -227,11 +227,11 @@ public class TImageBroker {
      * @since 2.0
      */
     public ImageIcon getImageIcon(int imageID) {
-        ImageIcon desiredImage = this.imageIcons[imageID];
-        if (desiredImage == null) {
-            desiredImage = this.imageIcons[IMAGE_NOT_FOUND];
+        ImageIcon imageIcon = this.imageIcons[imageID];
+        if (imageIcon == null) {
+            imageIcon = this.imageIcons[IMAGE_NOT_FOUND];
         }
-        return desiredImage;
+        return imageIcon;
     }
 
     private ImageIcon[] imageIcons;

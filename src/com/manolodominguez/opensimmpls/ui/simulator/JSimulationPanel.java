@@ -380,49 +380,49 @@ public class JSimulationPanel extends JPanel {
             switch (nodeType) {
                 case TNode.TRAFFIC_GENERATOR: {
                     if (node.isSelected() == TNode.UNSELECTED) {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.TRAFFIC_GENERATOR), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.TRAFFIC_GENERATOR), nodePosition.x, nodePosition.y, null);
                     } else {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.TRAFFIC_GENERATOR_MOVING), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.TRAFFIC_GENERATOR_MOVING), nodePosition.x, nodePosition.y, null);
                     }
                     break;
                 }
                 case TNode.TRAFFIC_SINK: {
                     if (node.isSelected() == TNode.UNSELECTED) {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.TRAFFIC_SINK), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.TRAFFIC_SINK), nodePosition.x, nodePosition.y, null);
                     } else {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.TRAFFIC_SINK_MOVING), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.TRAFFIC_SINK_MOVING), nodePosition.x, nodePosition.y, null);
                     }
                     break;
                 }
                 case TNode.LER: {
                     if (node.isSelected() == TNode.UNSELECTED) {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LER), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.LER), nodePosition.x, nodePosition.y, null);
                     } else {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LER_MOVING), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.LER_MOVING), nodePosition.x, nodePosition.y, null);
                     }
                     break;
                 }
                 case TNode.ACTIVE_LER: {
                     if (node.isSelected() == TNode.UNSELECTED) {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.ACTIVE_LER), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.ACTIVE_LER), nodePosition.x, nodePosition.y, null);
                     } else {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.ACTIVE_LER_MOVING), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.ACTIVE_LER_MOVING), nodePosition.x, nodePosition.y, null);
                     }
                     break;
                 }
                 case TNode.LSR: {
                     if (node.isSelected() == TNode.UNSELECTED) {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSR), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.LSR), nodePosition.x, nodePosition.y, null);
                     } else {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSR_MOVING), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.LSR_MOVING), nodePosition.x, nodePosition.y, null);
                     }
                     break;
                 }
                 case TNode.ACTIVE_LSR: {
                     if (node.isSelected() == TNode.UNSELECTED) {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.ACTIVE_LSR), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.ACTIVE_LSR), nodePosition.x, nodePosition.y, null);
                     } else {
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.ACTIVE_LSR_MOVING), nodePosition.x, nodePosition.y, null);
+                        graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.ACTIVE_LSR_MOVING), nodePosition.x, nodePosition.y, null);
                     }
                     break;
                 }
@@ -524,22 +524,22 @@ public class JSimulationPanel extends JPanel {
                         Point packetPosition = link.getScreenPacketPosition(simulationEventPacketOnFly.getTransitPercentage());
                         if (simulationEventPacketOnFly.getPacketType() == TAbstractPDU.GPSRP) {
                             // FIX: Do not use harcoded values. Use class constants instead.
-                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_GOS), packetPosition.x - 14, packetPosition.y - 14, null);
+                            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PDU_GOS), packetPosition.x - 14, packetPosition.y - 14, null);
                         } else if (simulationEventPacketOnFly.getPacketType() == TAbstractPDU.TLDP) {
                             // FIX: Do not use harcoded values. Use class constants instead.
-                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_LDP), packetPosition.x - 8, packetPosition.y - 8, null);
+                            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PDU_LDP), packetPosition.x - 8, packetPosition.y - 8, null);
                         } else if (simulationEventPacketOnFly.getPacketType() == TAbstractPDU.IPV4) {
                             // FIX: Do not use harcoded values. Use class constants instead.
-                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_IPV4), packetPosition.x - 8, packetPosition.y - 8, null);
+                            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PDU_IPV4), packetPosition.x - 8, packetPosition.y - 8, null);
                         } else if (simulationEventPacketOnFly.getPacketType() == TAbstractPDU.IPV4_GOS) {
                             // FIX: Do not use harcoded values. Use class constants instead.
-                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_IPV4_GOS), packetPosition.x - 8, packetPosition.y - 8, null);
+                            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PDU_IPV4_GOS), packetPosition.x - 8, packetPosition.y - 8, null);
                         } else if (simulationEventPacketOnFly.getPacketType() == TAbstractPDU.MPLS) {
                             // FIX: Do not use harcoded values. Use class constants instead.
-                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_MPLS), packetPosition.x - 8, packetPosition.y - 8, null);
+                            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PDU_MPLS), packetPosition.x - 8, packetPosition.y - 8, null);
                         } else if (simulationEventPacketOnFly.getPacketType() == TAbstractPDU.MPLS_GOS) {
                             // FIX: Do not use harcoded values. Use class constants instead.
-                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_MPLS_GOS), packetPosition.x - 8, packetPosition.y - 8, null);
+                            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PDU_MPLS_GOS), packetPosition.x - 8, packetPosition.y - 8, null);
                         }
                     } else if (event.getSubtype() == TSimulationEvent.PACKET_DISCARDED) {
                         TSimulationEventPacketDiscarded simulationEventPacketDiscarded = (TSimulationEventPacketDiscarded) event;
@@ -547,22 +547,22 @@ public class JSimulationPanel extends JPanel {
                         Point nodePosition = node.getScreenPosition();
                         if (simulationEventPacketDiscarded.getPacketType() == TAbstractPDU.GPSRP) {
                             // FIX: Do not use harcoded values. Use class constants instead.
-                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_GOS_DISCARDED), nodePosition.x, nodePosition.y + 24, null);
+                            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PDU_GOS_DISCARDED), nodePosition.x, nodePosition.y + 24, null);
                         } else if (simulationEventPacketDiscarded.getPacketType() == TAbstractPDU.TLDP) {
                             // FIX: Do not use harcoded values. Use class constants instead.
-                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_LDP_DISCARDED), nodePosition.x, nodePosition.y + 24, null);
+                            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PDU_LDP_DISCARDED), nodePosition.x, nodePosition.y + 24, null);
                         } else if (simulationEventPacketDiscarded.getPacketType() == TAbstractPDU.IPV4) {
                             // FIX: Do not use harcoded values. Use class constants instead.
-                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_IPV4_DISCARDED), nodePosition.x, nodePosition.y + 24, null);
+                            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PDU_IPV4_DISCARDED), nodePosition.x, nodePosition.y + 24, null);
                         } else if (simulationEventPacketDiscarded.getPacketType() == TAbstractPDU.IPV4_GOS) {
                             // FIX: Do not use harcoded values. Use class constants instead.
-                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_IPV4_GOS_DISCARDED), nodePosition.x, nodePosition.y + 24, null);
+                            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PDU_IPV4_GOS_DISCARDED), nodePosition.x, nodePosition.y + 24, null);
                         } else if (simulationEventPacketDiscarded.getPacketType() == TAbstractPDU.MPLS) {
                             // FIX: Do not use harcoded values. Use class constants instead.
-                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_MPLS_DISCARDED), nodePosition.x, nodePosition.y + 24, null);
+                            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PDU_MPLS_DISCARDED), nodePosition.x, nodePosition.y + 24, null);
                         } else if (simulationEventPacketDiscarded.getPacketType() == TAbstractPDU.MPLS_GOS) {
                             // FIX: Do not use harcoded values. Use class constants instead.
-                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_MPLS_GOS_DISCARDED), nodePosition.x, nodePosition.y + 24, null);
+                            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PDU_MPLS_GOS_DISCARDED), nodePosition.x, nodePosition.y + 24, null);
                         }
                     } else if (event.getSubtype() == TSimulationEvent.LSP_ESTABLISHED) {
                         // I've to think in something to show when this happens :-)
@@ -571,31 +571,31 @@ public class JSimulationPanel extends JPanel {
                         TNode node = (TNode) simulationEventPacketGenerated.getSource();
                         Point nodePosition = node.getScreenPosition();
                         // FIX: Do not use harcoded values. Use class constants instead.
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PACKET_GENERATED), nodePosition.x + 8, nodePosition.y - 16, null);
+                        graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PACKET_GENERATED), nodePosition.x + 8, nodePosition.y - 16, null);
                     } else if (event.getSubtype() == TSimulationEvent.PACKET_SENT) {
                         TSimulationEventPacketSent simulationEventPacketSent = (TSimulationEventPacketSent) event;
                         TNode node = (TNode) simulationEventPacketSent.getSource();
                         Point nodePosition = node.getScreenPosition();
                         // FIX: Do not use harcoded values. Use class constants instead.
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PACKET_SENT), nodePosition.x + 24, nodePosition.y - 16, null);
+                        graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PACKET_SENT), nodePosition.x + 24, nodePosition.y - 16, null);
                     } else if (event.getSubtype() == TSimulationEvent.PACKET_RECEIVED) {
                         TSimulationEventPacketReceived simulationEventPacketReceived = (TSimulationEventPacketReceived) event;
                         TNode node = (TNode) simulationEventPacketReceived.getSource();
                         Point nodePosition = node.getScreenPosition();
                         // FIX: Do not use harcoded values. Use class constants instead.
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PACKET_RECEIVED), nodePosition.x - 8, nodePosition.y - 16, null);
+                        graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PACKET_RECEIVED), nodePosition.x - 8, nodePosition.y - 16, null);
                     } else if (event.getSubtype() == TSimulationEvent.PACKET_SWITCHED) {
                         TSimulationEventPacketSwitched simulationEventPacketSwitched = (TSimulationEventPacketSwitched) event;
                         TNode node = (TNode) simulationEventPacketSwitched.getSource();
                         Point nodePosition = node.getScreenPosition();
                         // FIX: Do not use harcoded values. Use class constants instead.
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PACKET_SWITCHED), nodePosition.x + 40, nodePosition.y - 16, null);
+                        graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PACKET_SWITCHED), nodePosition.x + 40, nodePosition.y - 16, null);
                     } else if (event.getSubtype() == TSimulationEvent.PACKET_ROUTED) {
                         TSimulationEventPacketRouted simulationEventPacketRouted = (TSimulationEventPacketRouted) event;
                         TNode node = (TNode) simulationEventPacketRouted.getSource();
                         Point nodePosition = node.getScreenPosition();
                         // FIX: Do not use harcoded values. Use class constants instead.
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PACKET_SWITCHED), nodePosition.x + 40, nodePosition.y - 16, null);
+                        graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PACKET_SWITCHED), nodePosition.x + 40, nodePosition.y - 16, null);
                     }
                 }
             }
@@ -630,51 +630,51 @@ public class JSimulationPanel extends JPanel {
                         // FIX: Do not use harcoded values. Use class constants instead.
                         if ((congestionLevel >= 50) && (congestionLevel < 75)) {
                             if (nodeType == TNode.TRAFFIC_GENERATOR) {
-                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.TRAFFIC_GENERATOR_CONGESTED1), nodePosition.x, nodePosition.y, null);
+                                graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.TRAFFIC_GENERATOR_CONGESTED1), nodePosition.x, nodePosition.y, null);
                             } else if (nodeType == TNode.TRAFFIC_SINK) {
-                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.TRAFFIC_SINK_CONGESTED1), nodePosition.x, nodePosition.y, null);
+                                graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.TRAFFIC_SINK_CONGESTED1), nodePosition.x, nodePosition.y, null);
                             } else if (nodeType == TNode.LER) {
-                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LER_CONGESTED1), nodePosition.x, nodePosition.y, null);
+                                graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.LER_CONGESTED1), nodePosition.x, nodePosition.y, null);
                             } else if (nodeType == TNode.ACTIVE_LER) {
-                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.ACTIVE_LER_CONGESTED1), nodePosition.x, nodePosition.y, null);
+                                graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.ACTIVE_LER_CONGESTED1), nodePosition.x, nodePosition.y, null);
                             } else if (nodeType == TNode.LSR) {
-                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSR_CONGESTED1), nodePosition.x, nodePosition.y, null);
+                                graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.LSR_CONGESTED1), nodePosition.x, nodePosition.y, null);
                             } else if (nodeType == TNode.ACTIVE_LSR) {
-                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.ACTIVE_LSR_CONGESTED1), nodePosition.x, nodePosition.y, null);
+                                graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.ACTIVE_LSR_CONGESTED1), nodePosition.x, nodePosition.y, null);
                             }
                             // FIX: Do not use harcoded values. Use class constants instead.
                         } else if ((congestionLevel >= 75) && (congestionLevel < 95)) {
                             if (nodeType == TNode.TRAFFIC_GENERATOR) {
-                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.TRAFFIC_GENERATOR_CONGESTED2), nodePosition.x, nodePosition.y, null);
+                                graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.TRAFFIC_GENERATOR_CONGESTED2), nodePosition.x, nodePosition.y, null);
                             } else if (nodeType == TNode.TRAFFIC_SINK) {
-                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.TRAFFIC_SINK_CONGESTED2), nodePosition.x, nodePosition.y, null);
+                                graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.TRAFFIC_SINK_CONGESTED2), nodePosition.x, nodePosition.y, null);
                             } else if (nodeType == TNode.LER) {
-                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LER_CONGESTED2), nodePosition.x, nodePosition.y, null);
+                                graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.LER_CONGESTED2), nodePosition.x, nodePosition.y, null);
                             } else if (nodeType == TNode.ACTIVE_LER) {
-                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.ACTIVE_LER_CONGESTED2), nodePosition.x, nodePosition.y, null);
+                                graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.ACTIVE_LER_CONGESTED2), nodePosition.x, nodePosition.y, null);
                             } else if (nodeType == TNode.LSR) {
-                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSR_CONGESTED2), nodePosition.x, nodePosition.y, null);
+                                graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.LSR_CONGESTED2), nodePosition.x, nodePosition.y, null);
                             } else if (nodeType == TNode.ACTIVE_LSR) {
-                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.ACTIVE_LSR_CONGESTED2), nodePosition.x, nodePosition.y, null);
+                                graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.ACTIVE_LSR_CONGESTED2), nodePosition.x, nodePosition.y, null);
                             }
                             // FIX: Do not use harcoded values. Use class constants instead.
                         } else if (congestionLevel >= 95) {
                             if (nodeType == TNode.TRAFFIC_GENERATOR) {
-                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.TRAFFIC_GENERATOR_CONGESTED3), nodePosition.x, nodePosition.y, null);
+                                graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.TRAFFIC_GENERATOR_CONGESTED3), nodePosition.x, nodePosition.y, null);
                             } else if (nodeType == TNode.TRAFFIC_SINK) {
-                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.TRAFFIC_SINK_CONGESTED3), nodePosition.x, nodePosition.y, null);
+                                graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.TRAFFIC_SINK_CONGESTED3), nodePosition.x, nodePosition.y, null);
                             } else if (nodeType == TNode.LER) {
-                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LER_CONGESTED3), nodePosition.x, nodePosition.y, null);
+                                graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.LER_CONGESTED3), nodePosition.x, nodePosition.y, null);
                             } else if (nodeType == TNode.ACTIVE_LER) {
-                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.ACTIVE_LER_CONGESTED3), nodePosition.x, nodePosition.y, null);
+                                graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.ACTIVE_LER_CONGESTED3), nodePosition.x, nodePosition.y, null);
                             } else if (nodeType == TNode.LSR) {
-                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LSR_CONGESTED3), nodePosition.x, nodePosition.y, null);
+                                graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.LSR_CONGESTED3), nodePosition.x, nodePosition.y, null);
                             } else if (nodeType == TNode.ACTIVE_LSR) {
-                                graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.ACTIVE_LSR_CONGESTED3), nodePosition.x, nodePosition.y, null);
+                                graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.ACTIVE_LSR_CONGESTED3), nodePosition.x, nodePosition.y, null);
                             }
                         }
                         if (node.getTicksWithoutEmitting() > TNode.MAX_TICKS_WITHOUT_EMITTING_BEFORE_ALERTING) {
-                            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.WORKING), nodePosition.x, nodePosition.y, null);
+                            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.WORKING), nodePosition.x, nodePosition.y, null);
                         }
                     }
                 }
@@ -705,12 +705,12 @@ public class JSimulationPanel extends JPanel {
                         TLink link = (TLink) event.getSource();
                         Point packetPosition = link.getScreenPacketPosition(50);
                         // FIX: Do not use harcoded values. Use class constants instead.
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LINK_BROKEN), packetPosition.x - 41, packetPosition.y - 41, null);
+                        graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.LINK_BROKEN), packetPosition.x - 41, packetPosition.y - 41, null);
                     } else if (event.getSubtype() == TSimulationEvent.LINK_RECOVERED) {
                         TLink link = (TLink) event.getSource();
                         Point packetPosition = link.getScreenPacketPosition(50);
                         // FIX: Do not use harcoded values. Use class constants instead.
-                        graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.LINK_RECOVERED), packetPosition.x - 41, packetPosition.y - 41, null);
+                        graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.LINK_RECOVERED), packetPosition.x - 41, packetPosition.y - 41, null);
                     }
                 }
             }
@@ -816,23 +816,23 @@ public class JSimulationPanel extends JPanel {
             graphics2D.setColor(Color.BLACK);
             graphics2D.drawRect(upperLeftX, upperLeftY, totalWidth, height);
             // FIX: Do not use harcoded values. Use class constants instead.
-            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_IPV4), upperLeftX + 5, upperLeftY + 5, null);
+            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PDU_IPV4), upperLeftX + 5, upperLeftY + 5, null);
             // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_IPv4"), upperLeftX + 23, upperLeftY + 18);
             // FIX: Do not use harcoded values. Use class constants instead.
-            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_IPV4_GOS), upperLeftX + 5, upperLeftY + 23, null);
+            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PDU_IPV4_GOS), upperLeftX + 5, upperLeftY + 23, null);
             // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_IPv4_GOS"), upperLeftX + 23, upperLeftY + 36);
             // FIX: Do not use harcoded values. Use class constants instead.
-            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_MPLS), upperLeftX + 5, upperLeftY + 41, null);
+            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PDU_MPLS), upperLeftX + 5, upperLeftY + 41, null);
             // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_MPLS"), upperLeftX + 23, upperLeftY + 54);
             // FIX: Do not use harcoded values. Use class constants instead.
-            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_MPLS_GOS), upperLeftX + 5, upperLeftY + 59, null);
+            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PDU_MPLS_GOS), upperLeftX + 5, upperLeftY + 59, null);
             // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_MPLS_GOS"), upperLeftX + 23, upperLeftY + 72);
             // FIX: Do not use harcoded values. Use class constants instead.
-            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PDU_LDP), upperLeftX + 5, upperLeftY + 77, null);
+            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PDU_LDP), upperLeftX + 5, upperLeftY + 77, null);
             // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_TLDP"), upperLeftX + 23, upperLeftY + 90);
             graphics2D.setColor(Color.LIGHT_GRAY);
@@ -856,19 +856,19 @@ public class JSimulationPanel extends JPanel {
             // FIX: Do not use harcoded values. Use class constants instead.
             upperLeftX = upperLeftX + 5 + 13 + 5 + width + 20 - 5;
             // FIX: Do not use harcoded values. Use class constants instead.
-            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PACKET_RECEIVED), upperLeftX + 5, upperLeftY + 5, null);
+            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PACKET_RECEIVED), upperLeftX + 5, upperLeftY + 5, null);
             // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("Paquete_recibido"), upperLeftX + 23, upperLeftY + 18);
             // FIX: Do not use harcoded values. Use class constants instead.
-            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PACKET_GENERATED), upperLeftX + 5, upperLeftY + 23, null);
+            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PACKET_GENERATED), upperLeftX + 5, upperLeftY + 23, null);
             // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_generado"), upperLeftX + 23, upperLeftY + 36);
             // FIX: Do not use harcoded values. Use class constants instead.
-            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PACKET_SENT), upperLeftX + 5, upperLeftY + 41, null);
+            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PACKET_SENT), upperLeftX + 5, upperLeftY + 41, null);
             // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_enviado"), upperLeftX + 23, upperLeftY + 54);
             // FIX: Do not use harcoded values. Use class constants instead.
-            graphics2D.drawImage(this.imageBroker.obtenerImagen(TImageBroker.PACKET_SWITCHED), upperLeftX + 5, upperLeftY + 59, null);
+            graphics2D.drawImage(this.imageBroker.getImage(TImageBroker.PACKET_SWITCHED), upperLeftX + 5, upperLeftY + 59, null);
             // FIX: Do not use harcoded values. Use class constants instead.
             graphics2D.drawString(this.translations.getString("JPanelSimulacion.Paquete_conmutado"), upperLeftX + 23, upperLeftY + 72);
             // FIX: Do not use harcoded values. Use class constants instead.
