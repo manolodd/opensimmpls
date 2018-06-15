@@ -36,42 +36,6 @@ import javax.swing.SwingUtilities;
 public class openSimMPLS {
 
     /**
-     * This method shows licensing information of OpenSimMPLS on console.
-     *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @since 2.0
-     */
-    // FIX: Remo this and replace by Apache 2.0 software license
-    public static void mostrarGPL() {
-        try {
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("Open_SimMPLS_1.0_"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("Guarantee_of_Service_(GoS)_support_over_MPLS_using_active_techniques."));
-            System.out.println();
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("(C)_Copyright_2004"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("Manuel_Dom�nguez_Dorado"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("manolodd@eresmas.com"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("http://manolodd.virtualave.net"));
-            System.out.println();
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("This_program_is_free_software;_you_can_redistribute_it_and/or_modify"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("it_under_the_terms_of_the_GNU_General_Public_License_as_published_by"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("the_Free_Software_Foundation;_either_version_2_of_the_License,_or"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("(at_your_option)_any_later_version."));
-            System.out.println();
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("This_program_is_distributed_in_the_hope_that_it_will_be_useful,"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("but_WITHOUT_ANY_WARRANTY;_without_even_the_implied_warranty_of"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("MERCHANTABILITY_or_FITNESS_FOR_A_PARTICULAR_PURPOSE.__See_the"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("GNU_General_Public_License_for_more_details."));
-            System.out.println();
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("You_should_have_received_a_copy_of_the_GNU_General_Public_License"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("along_with_this_program;_if_not,_write_to_the_Free_Software"));
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("Foundation,_Inc.,_59_Temple_Place,_Suite_330,_Boston,_MA__02111-1307__USA"));
-            System.exit(0);
-        } catch (Exception e) {
-            System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("Error_trying_to_translate."));
-        }
-    }
-
-    /**
      * This method start OpenSimMPLS.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
@@ -79,10 +43,6 @@ public class openSimMPLS {
      * @since 2.0
      */
     public static void main(String args[]) {
-        if (args.length > 0) {
-            mostrarGPL();
-        }
-
         try {
             boolean nimbusSet = false;
             for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -93,7 +53,7 @@ public class openSimMPLS {
                 }
             }
             if (!nimbusSet) {
-                UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             System.out.println("An error happened when starting OpenSimMPLS");
