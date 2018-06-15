@@ -23,7 +23,7 @@ import com.manolodominguez.opensimmpls.hardware.timer.ITimerEventListener;
 import com.manolodominguez.opensimmpls.hardware.ports.TFIFOPortSet;
 import com.manolodominguez.opensimmpls.hardware.ports.TPort;
 import com.manolodominguez.opensimmpls.hardware.ports.TPortSet;
-import com.manolodominguez.opensimmpls.utils.TLongIDGenerator;
+import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
 import java.awt.Point;
 
 /**

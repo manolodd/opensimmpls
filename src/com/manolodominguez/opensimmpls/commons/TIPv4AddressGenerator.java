@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.utils;
+package com.manolodominguez.opensimmpls.commons;
 
 /**
  * This class implements a IPv4 address generator. It generates consecutive IPv4

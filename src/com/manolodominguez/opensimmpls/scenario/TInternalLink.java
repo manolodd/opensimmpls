@@ -24,8 +24,8 @@ import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEven
 import java.util.Iterator;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 import com.manolodominguez.opensimmpls.hardware.timer.ITimerEventListener;
-import com.manolodominguez.opensimmpls.utils.EIDGeneratorOverflow;
-import com.manolodominguez.opensimmpls.utils.TLongIDGenerator;
+import com.manolodominguez.opensimmpls.commons.EIDGeneratorOverflow;
+import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
 
 /**
  * This class implements a link of the topology (a link that is within the MPLS

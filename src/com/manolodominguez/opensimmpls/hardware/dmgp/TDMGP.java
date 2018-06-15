@@ -19,8 +19,8 @@ import java.util.Iterator;
 import java.util.TreeSet;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
-import com.manolodominguez.opensimmpls.utils.TRotaryIDGenerator;
-import com.manolodominguez.opensimmpls.utils.TLock;
+import com.manolodominguez.opensimmpls.commons.TRotaryIDGenerator;
+import com.manolodominguez.opensimmpls.commons.TLock;
 
 /**
  * This class implements a DMGP memory to save GoS-aware PDUs temporarily.

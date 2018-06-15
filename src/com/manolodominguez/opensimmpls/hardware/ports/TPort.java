@@ -18,7 +18,7 @@ package com.manolodominguez.opensimmpls.hardware.ports;
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TStats;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
-import com.manolodominguez.opensimmpls.utils.TLock;
+import com.manolodominguez.opensimmpls.commons.TLock;
 
 /**
  * This abstract class will be implemented to have an I/O port of a port set.

@@ -18,7 +18,7 @@ package com.manolodominguez.opensimmpls.scenario.simulationevents;
 import java.util.Iterator;
 import java.util.TreeSet;
 import com.manolodominguez.opensimmpls.ui.simulator.JSimulationPanel;
-import com.manolodominguez.opensimmpls.utils.TLock;
+import com.manolodominguez.opensimmpls.commons.TLock;
 
 /**
  * This class implements a simulation event listener that will receive

@@ -13,25 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.utils;
+package com.manolodominguez.opensimmpls.commons;
 
 /**
- * This class implements a ID generator that generates consecutive numeric IDs,
- * in a cycle that never ends.
+ * This class implements a ID generator that generates consecutive numeric IDs.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class TRotaryIDGenerator {
+public class TLongIDGenerator {
 
     /**
      * This method is the constructor of the class. It is create a new instance
-     * of TIDGenerator.
+     * of TLongIDGenerator.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TRotaryIDGenerator() {
+    public TLongIDGenerator() {
         // FIX: Do not use harcoded values. Use class constants instead.
         this.identifier = 0;
     }
@@ -51,29 +50,19 @@ public class TRotaryIDGenerator {
      * This method generates a new ID.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return an integer value that is unique.
+     * @return a long value that is unique.
+     * @throws EIDGeneratorOverflow when the ID generator reaches its maximum
+     * value.
      * @since 2.0
      */
-    synchronized public int getNextIdentifier() {
-        if (this.identifier >= Integer.MAX_VALUE) {
-            // FIX: Do not use harcoded values. Use class constants instead.
-            this.identifier = 0;
+    synchronized public long getNextIdentifier() throws EIDGeneratorOverflow {
+        if (this.identifier >= Long.MAX_VALUE) {
+            throw new EIDGeneratorOverflow();
         } else {
             this.identifier++;
         }
         return (this.identifier);
     }
 
-    /**
-     * This method sets the ID generator new internal value.
-     *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param newInternalIDValue the ID generator new internal value.
-     * @since 2.0
-     */
-    synchronized public void setIdentifier(int newInternalIDValue) {
-        this.identifier = newInternalIDValue;
-    }
-
-    private int identifier;
+    private long identifier;
 }

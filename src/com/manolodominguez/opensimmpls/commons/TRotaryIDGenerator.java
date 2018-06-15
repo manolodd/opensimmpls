@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.utils;
+package com.manolodominguez.opensimmpls.commons;
 
 /**
- * This class implements a ID generator that generates consecutive numeric IDs.
+ * This class implements a ID generator that generates consecutive numeric IDs,
+ * in a cycle that never ends.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class TIDGenerator {
+public class TRotaryIDGenerator {
 
     /**
      * This method is the constructor of the class. It is create a new instance
@@ -30,7 +31,7 @@ public class TIDGenerator {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TIDGenerator() {
+    public TRotaryIDGenerator() {
         // FIX: Do not use harcoded values. Use class constants instead.
         this.identifier = 0;
     }
@@ -51,33 +52,16 @@ public class TIDGenerator {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return an integer value that is unique.
-     * @throws EIDGeneratorOverflow when the ID generator reaches its maximum
-     * value.
      * @since 2.0
      */
-    synchronized public int getNextIdentifier() throws EIDGeneratorOverflow {
+    synchronized public int getNextIdentifier() {
         if (this.identifier >= Integer.MAX_VALUE) {
-            throw new EIDGeneratorOverflow();
+            // FIX: Do not use harcoded values. Use class constants instead.
+            this.identifier = 0;
         } else {
             this.identifier++;
         }
         return (this.identifier);
-    }
-
-    /**
-     * This method sets the ID generator internal value to the one specified as
-     * an argument, only if the specified value is greater than the one the ID
-     * generator has.
-     *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param newInternalIDValue the new internal ID value to set the ID
-     * generator.
-     * @since 2.0
-     */
-    synchronized public void setIdentifierIfGreater(int newInternalIDValue) {
-        if (newInternalIDValue > this.identifier) {
-            this.identifier = newInternalIDValue;
-        }
     }
 
     /**

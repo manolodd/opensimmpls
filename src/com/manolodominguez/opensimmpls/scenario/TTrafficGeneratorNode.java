@@ -28,9 +28,9 @@ import com.manolodominguez.opensimmpls.hardware.timer.ITimerEventListener;
 import com.manolodominguez.opensimmpls.hardware.ports.TFIFOPortSet;
 import com.manolodominguez.opensimmpls.hardware.ports.TPort;
 import com.manolodominguez.opensimmpls.hardware.ports.TPortSet;
-import com.manolodominguez.opensimmpls.utils.EIDGeneratorOverflow;
-import com.manolodominguez.opensimmpls.utils.TLongIDGenerator;
-import com.manolodominguez.opensimmpls.utils.TRotaryIDGenerator;
+import com.manolodominguez.opensimmpls.commons.EIDGeneratorOverflow;
+import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
+import com.manolodominguez.opensimmpls.commons.TRotaryIDGenerator;
 import java.awt.Point;
 import java.util.Random;
 

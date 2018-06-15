@@ -18,8 +18,8 @@ package com.manolodominguez.opensimmpls.hardware.dmgp;
 import java.util.Iterator;
 import java.util.TreeSet;
 import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
-import com.manolodominguez.opensimmpls.utils.TRotaryIDGenerator;
-import com.manolodominguez.opensimmpls.utils.TLock;
+import com.manolodominguez.opensimmpls.commons.TRotaryIDGenerator;
+import com.manolodominguez.opensimmpls.commons.TLock;
 
 /**
  * This class implements a flow entry for the DMGP memory.

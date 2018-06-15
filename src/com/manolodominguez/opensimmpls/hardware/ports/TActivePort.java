@@ -22,8 +22,8 @@ import com.manolodominguez.opensimmpls.scenario.TStats;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
-import com.manolodominguez.opensimmpls.utils.TRotaryIDGenerator;
-import com.manolodominguez.opensimmpls.utils.TLock;
+import com.manolodominguez.opensimmpls.commons.TRotaryIDGenerator;
+import com.manolodominguez.opensimmpls.commons.TLock;
 
 /**
  * This class implements an active port. Active ports will be available in

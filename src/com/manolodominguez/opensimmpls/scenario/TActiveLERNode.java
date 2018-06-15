@@ -42,9 +42,9 @@ import com.manolodominguez.opensimmpls.hardware.dmgp.TGPSRPRequestsMatrix;
 import com.manolodominguez.opensimmpls.hardware.dmgp.TGPSRPRequestEntry;
 import com.manolodominguez.opensimmpls.hardware.ports.TPort;
 import com.manolodominguez.opensimmpls.hardware.ports.TPortSet;
-import com.manolodominguez.opensimmpls.utils.EIDGeneratorOverflow;
-import com.manolodominguez.opensimmpls.utils.TIDGenerator;
-import com.manolodominguez.opensimmpls.utils.TLongIDGenerator;
+import com.manolodominguez.opensimmpls.commons.EIDGeneratorOverflow;
+import com.manolodominguez.opensimmpls.commons.TIDGenerator;
+import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
 
 /**
  * This class implements an active Label Edge Router (LER) node that will allow

@@ -35,8 +35,8 @@ import com.manolodominguez.opensimmpls.hardware.tldp.TSwitchingMatrixEntry;
 import com.manolodominguez.opensimmpls.hardware.ports.TFIFOPortSet;
 import com.manolodominguez.opensimmpls.hardware.ports.TPort;
 import com.manolodominguez.opensimmpls.hardware.ports.TPortSet;
-import com.manolodominguez.opensimmpls.utils.TIDGenerator;
-import com.manolodominguez.opensimmpls.utils.TLongIDGenerator;
+import com.manolodominguez.opensimmpls.commons.TIDGenerator;
+import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
 import java.awt.Point;
 import java.util.Iterator;
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.utils;
+package com.manolodominguez.opensimmpls.commons;
 
 import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import java.util.ResourceBundle;

@@ -23,8 +23,8 @@ import java.util.Iterator;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 import com.manolodominguez.opensimmpls.hardware.timer.TTimerEvent;
 import com.manolodominguez.opensimmpls.hardware.timer.ITimerEventListener;
-import com.manolodominguez.opensimmpls.utils.EIDGeneratorOverflow;
-import com.manolodominguez.opensimmpls.utils.TLongIDGenerator;
+import com.manolodominguez.opensimmpls.commons.EIDGeneratorOverflow;
+import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
 
 /**
  * This class implements an external link of the topology (a link that is

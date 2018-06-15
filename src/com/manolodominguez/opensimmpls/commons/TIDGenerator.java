@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.utils;
+package com.manolodominguez.opensimmpls.commons;
 
 /**
  * This class implements a ID generator that generates consecutive numeric IDs.
@@ -21,16 +21,16 @@ package com.manolodominguez.opensimmpls.utils;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class TLongIDGenerator {
+public class TIDGenerator {
 
     /**
      * This method is the constructor of the class. It is create a new instance
-     * of TLongIDGenerator.
+     * of TIDGenerator.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TLongIDGenerator() {
+    public TIDGenerator() {
         // FIX: Do not use harcoded values. Use class constants instead.
         this.identifier = 0;
     }
@@ -50,13 +50,13 @@ public class TLongIDGenerator {
      * This method generates a new ID.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return a long value that is unique.
+     * @return an integer value that is unique.
      * @throws EIDGeneratorOverflow when the ID generator reaches its maximum
      * value.
      * @since 2.0
      */
-    synchronized public long getNextIdentifier() throws EIDGeneratorOverflow {
-        if (this.identifier >= Long.MAX_VALUE) {
+    synchronized public int getNextIdentifier() throws EIDGeneratorOverflow {
+        if (this.identifier >= Integer.MAX_VALUE) {
             throw new EIDGeneratorOverflow();
         } else {
             this.identifier++;
@@ -64,5 +64,32 @@ public class TLongIDGenerator {
         return (this.identifier);
     }
 
-    private long identifier;
+    /**
+     * This method sets the ID generator internal value to the one specified as
+     * an argument, only if the specified value is greater than the one the ID
+     * generator has.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param newInternalIDValue the new internal ID value to set the ID
+     * generator.
+     * @since 2.0
+     */
+    synchronized public void setIdentifierIfGreater(int newInternalIDValue) {
+        if (newInternalIDValue > this.identifier) {
+            this.identifier = newInternalIDValue;
+        }
+    }
+
+    /**
+     * This method sets the ID generator new internal value.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param newInternalIDValue the ID generator new internal value.
+     * @since 2.0
+     */
+    synchronized public void setIdentifier(int newInternalIDValue) {
+        this.identifier = newInternalIDValue;
+    }
+
+    private int identifier;
 }

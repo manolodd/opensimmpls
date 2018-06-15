@@ -20,7 +20,7 @@ import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEven
 import com.manolodominguez.opensimmpls.hardware.timer.TTimerEvent;
 import com.manolodominguez.opensimmpls.hardware.timer.ITimerEventListener;
 import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventListener;
-import com.manolodominguez.opensimmpls.utils.TLongIDGenerator;
+import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
 
 /**
  * This is an abstract class that is the super class of all elements of a

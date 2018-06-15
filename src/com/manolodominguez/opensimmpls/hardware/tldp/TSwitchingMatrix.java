@@ -17,7 +17,7 @@ package com.manolodominguez.opensimmpls.hardware.tldp;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import com.manolodominguez.opensimmpls.utils.TLock;
+import com.manolodominguez.opensimmpls.commons.TLock;
 
 /**
  * This class implements a switching matrix to be used within each node of the

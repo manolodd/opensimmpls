@@ -28,9 +28,9 @@ import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.scenario.TTrafficSinkNode;
 import com.manolodominguez.opensimmpls.scenario.TTrafficGeneratorNode;
 import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
-import com.manolodominguez.opensimmpls.utils.EIDGeneratorOverflow;
+import com.manolodominguez.opensimmpls.commons.EIDGeneratorOverflow;
 import com.manolodominguez.opensimmpls.ui.utils.TProgressEventListener;
-import com.manolodominguez.opensimmpls.utils.TLongIDGenerator;
+import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
 
 /**
  * This class implements a timer that will govern the operation and

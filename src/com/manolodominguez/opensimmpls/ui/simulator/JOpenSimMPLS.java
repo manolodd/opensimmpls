@@ -26,7 +26,7 @@ import com.manolodominguez.opensimmpls.ui.dialogs.JDecissionWindow;
 import com.manolodominguez.opensimmpls.ui.dialogs.JErrorWindow;
 import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
 import com.manolodominguez.opensimmpls.ui.utils.JOSMFilter;
-import com.manolodominguez.opensimmpls.utils.TIDGenerator;
+import com.manolodominguez.opensimmpls.commons.TIDGenerator;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.Dimension;

@@ -17,10 +17,10 @@ package com.manolodominguez.opensimmpls.scenario;
 
 import com.manolodominguez.opensimmpls.scenario.simulationevents.ESimulationSingleSubscriber;
 import com.manolodominguez.opensimmpls.hardware.timer.TTimer;
-import com.manolodominguez.opensimmpls.utils.TIPv4AddressGenerator;
-import com.manolodominguez.opensimmpls.utils.TLock;
-import com.manolodominguez.opensimmpls.utils.TIDGenerator;
-import com.manolodominguez.opensimmpls.utils.TLongIDGenerator;
+import com.manolodominguez.opensimmpls.commons.TIPv4AddressGenerator;
+import com.manolodominguez.opensimmpls.commons.TLock;
+import com.manolodominguez.opensimmpls.commons.TIDGenerator;
+import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
 import java.awt.Point;
 import java.util.Iterator;
 import java.util.TreeSet;

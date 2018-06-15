@@ -17,8 +17,8 @@ package com.manolodominguez.opensimmpls.protocols;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import com.manolodominguez.opensimmpls.utils.EIDGeneratorOverflow;
-import com.manolodominguez.opensimmpls.utils.TIDGenerator;
+import com.manolodominguez.opensimmpls.commons.EIDGeneratorOverflow;
+import com.manolodominguez.opensimmpls.commons.TIDGenerator;
 
 /**
  * This class implements the MPLS label stack of a MPLS packet.
