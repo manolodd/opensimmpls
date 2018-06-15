@@ -25,16 +25,16 @@ import java.util.ResourceBundle;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class EIPv4Overflow extends Exception {
+public class EIPv4GeneratorOverflow extends Exception {
 
     /**
      * This method is the constructor of the class. It is create a new instance
-     * of EIPv4Overflow.
+     * of EIPv4GeneratorOverflow.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public EIPv4Overflow() {
+    public EIPv4GeneratorOverflow() {
         this.translations = ResourceBundle.getBundle(AvailableBundles.E_IPV4_OVERFLOW.getPath());
     }
 
