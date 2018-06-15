@@ -35,7 +35,7 @@ public class EIPv4AddressGeneratorOverflow extends Exception {
      * @since 2.0
      */
     public EIPv4AddressGeneratorOverflow() {
-        this.translations = ResourceBundle.getBundle(AvailableBundles.E_IPV4_OVERFLOW.getPath());
+        this.translations = ResourceBundle.getBundle(AvailableBundles.E_IPV4_ADDRESS_GENERATOR_OVERFLOW.getPath());
     }
 
     /**
