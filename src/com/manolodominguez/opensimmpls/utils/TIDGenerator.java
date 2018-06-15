@@ -56,7 +56,7 @@ public class TIDGenerator {
      * value.
      * @since 2.0
      */
-    synchronized public int getNew() throws EIDGeneratorOverflow {
+    synchronized public int getNewIdentifier() throws EIDGeneratorOverflow {
         if (this.identifier >= Integer.MAX_VALUE) {
             throw new EIDGeneratorOverflow();
         } else {
@@ -75,7 +75,7 @@ public class TIDGenerator {
      * generator.
      * @since 2.0
      */
-    synchronized public void setIDIfGreater(int newInternalIDValue) {
+    synchronized public void setIdentifierIfGreater(int newInternalIDValue) {
         if (newInternalIDValue > this.identifier) {
             this.identifier = newInternalIDValue;
         }
@@ -88,7 +88,7 @@ public class TIDGenerator {
      * @param newInternalIDValue the ID generator new internal value.
      * @since 2.0
      */
-    synchronized public void ponerIdentificador(int newInternalIDValue) {
+    synchronized public void setIdentifier(int newInternalIDValue) {
         this.identifier = newInternalIDValue;
     }
 
