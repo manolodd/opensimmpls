@@ -15,155 +15,160 @@
  */
 package com.manolodominguez.opensimmpls.utils;
 
-/** Esta clase permite crear un objeto que genera direcciones IP consecutivas y sin
- * repetici�n dentro del rango 10.0.0.1 - 10.255.255.254
- * @version 1.0
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
+/**
+ * This class implements a IPv4 address generator. It generates consecutive IPv4
+ * addressess from 10.0.0.1 to 10.255.255.254 without repetitions.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class TIPv4AddressGenerator {
-    
-    /** Este m�todo es el constructor de la clase. Permite generar instancias de
-     * TGeneradorDeIP.
+
+    /**
+     * This method is the constructor of the class. It is create a new instance
+     * of TIPv4AddressGenerator.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TIPv4AddressGenerator() {
-        octeto2 = 0;
-        octeto3 = 0;
-        octeto4 = 0;
+        // FIX: Do not use harcoded values. Use class constants instead.
+        this.octect1 = 10;
+        this.octect2 = 0;
+        this.octect3 = 0;
+        this.octect4 = 0;
     }
-    
-    /** Este m�todo permite iniciar el generador de direcciones IP con una direcci�n
-     * que, obligatoriamente debe pertenecer al dominio manejado por el generador, es
-     * decir 10.0.0.1 - 10.255.255.254 y que debe venir dada en forma de cadena de
-     * texto, por ejemplo "10.23.144.56".
-     * @param IPStr La representaci�n textual de la direcci�n IP.
-     * @return TRUE, si la direcci�n IP es v�lida y se inicia con ella el generador; FALSE en
-     * caso contrario.
+
+    /**
+     * This method sets the IPv4 address generator new internal value.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param newInternalIPv4Address the ID generator new internal value.
      * @since 2.0
      */
-    public boolean ponerValor(String IPStr) {
-        if (esIPValida(IPStr)) {
-            String octetos[] = IPStr.split("[.]");
-            octeto2 = Integer.valueOf(octetos[1]).intValue();
-            octeto3 = Integer.valueOf(octetos[2]).intValue();
-            octeto4 = Integer.valueOf(octetos[3]).intValue();
+    private boolean setIPv4Address(String newInternalIPv4Address) {
+        if (isAValidIPv4Address(newInternalIPv4Address)) {
+            String[] octects = newInternalIPv4Address.split("[.]");
+            this.octect2 = Integer.parseInt(octects[1]);
+            this.octect3 = Integer.parseInt(octects[2]);
+            this.octect4 = Integer.parseInt(octects[3]);
             return true;
         }
         return false;
     }
-    
+
     /**
-     * Este m�todo comprueba si una direcci�n IP pasada por par�metro es una direcci�n
-     * v�lida y perteneciente al rango 10.0.0.1 - 10.255.255.254
+     * This method check whether the IPv4 specified as an argument is a valid
+     * IPv4 address (in the context of this TIPV4AddressGenerator) os not. An
+     * IPv4 address is valid in the context of this TIPV4AddressGenerator if it
+     * is in the range of 10.0.0.1 - 10.255.255.254
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param ipv4Address the IPv4 address to check.
+     * @return TRUE, if the specified IPv4 address is valid. Otherwise, FALSE.
      * @since 2.0
-     * @param IPStr La direcci�n IP a comprobar.
-     * @return true, si la direcci�n IP es v�lida y adem�s pertenece al rango 10.0.0.1 -
-     * 10.255.255.254. false en caso contrario.
      */
-    public boolean esIPValida(String IPStr) {
-        if (IPStr.matches("[1][0][.][0-2]{0,1}[0-9]{0,1}[0-9][.][0-2]{0,1}[0-9]{0,1}[0-9][.][0-2]{0,1}[0-9]{0,1}[0-9]")) {
-            int oAux2 = 0;
-            int oAux3 = 0;
-            int oAux4 = 0;
-            String octetos[] = IPStr.split("[.]");
-            oAux2 = Integer.valueOf(octetos[1]).intValue();
-            oAux3 = Integer.valueOf(octetos[2]).intValue();
-            oAux4 = Integer.valueOf(octetos[3]).intValue();
-            if ((oAux2 == 0) && (oAux3 == 0) && (oAux4 == 0)) {
+    private boolean isAValidIPv4Address(String ipv4Address) {
+        if (ipv4Address.matches("[1][0][.][0-2]{0,1}[0-9]{0,1}[0-9][.][0-2]{0,1}[0-9]{0,1}[0-9][.][0-2]{0,1}[0-9]{0,1}[0-9]")) {
+            int auxOctect2 = 0;
+            int auxOctect3 = 0;
+            int auxOctect4 = 0;
+            String[] octects = ipv4Address.split("[.]");
+            auxOctect2 = Integer.parseInt(octects[1]);
+            auxOctect3 = Integer.parseInt(octects[2]);
+            auxOctect4 = Integer.parseInt(octects[3]);
+            // FIX: Do not use harcoded values. Use class constants instead.
+            if ((auxOctect2 == 0) && (auxOctect3 == 0) && (auxOctect4 == 0)) {
                 return false;
             }
-            if ((oAux2 > 255) || (oAux3 > 255) || (oAux4 > 255)) {
+            // FIX: Do not use harcoded values. Use class constants instead.
+            if ((auxOctect2 > 255) || (auxOctect3 > 255) || (auxOctect4 > 255)) {
                 return false;
             }
-            if ((oAux2 > 255) && (oAux3 > 255) && (oAux4 > 255)) {
+            // FIX: Do not use harcoded values. Use class constants instead.
+            if ((auxOctect2 > 255) && (auxOctect3 > 255) && (auxOctect4 > 255)) {
                 return false;
             }
         }
         return true;
     }
-    
-    /** Este m�todo reinicia el generador a su valor inicial "10.0.0.0" de forma que la
-     * siguiente direcci�n IP que generar� ser� 10.0.0.1.
+
+    /**
+     * This method resets the IPv4 address generator to its initial internal
+     * value.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void reset() {
-        octeto2 = 0;
-        octeto3 = 0;
-        octeto4 = 0;
+        // FIX: Do not use harcoded values. Use class constants instead.
+        this.octect2 = 0;
+        this.octect3 = 0;
+        this.octect4 = 0;
     }
-    
+
     /**
-     * Este m�todo permite establecer la IP a partir de la cual comenzar� a generar
-     * direcciones IP el generador. Siempre y cuando la IP que especifiquemos sea mayor
-     * que la que el propio generador tenga internamente.
-     * @param IPStr Direcci�n IP a partir de la cual queremos que siga generando el generador.
+     * This method sets the IPv4 address generator internal value to the one
+     * specified as an argument, only if the specified IPv4 address is greater
+     * than the one the IPv4 address generator has.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param newInternalIPv4Address the new internal IPv4 address to set the
+     * IPv4 address generator.
      * @since 2.0
      */
-    public void setValueIfGreater(String IPStr) {
-        if (esIPValida(IPStr)) {
-            String octetos[] = IPStr.split("[.]");
-            int octetoAux2 = Integer.valueOf(octetos[1]).intValue();
-            int octetoAux3 = Integer.valueOf(octetos[2]).intValue();
-            int octetoAux4 = Integer.valueOf(octetos[3]).intValue();
-            if (octetoAux2 > octeto2) {
-                this.ponerValor(IPStr);
-            } else if (octetoAux2 == octeto2) {
-                if (octetoAux3 > octeto3) {
-                    this.ponerValor(IPStr);
-                } else if (octetoAux3 == octeto3) {
-                    if (octetoAux4 > octeto4) {
-                        this.ponerValor(IPStr);
+    public void setIPv4AddressIfGreater(String newInternalIPv4Address) {
+        if (isAValidIPv4Address(newInternalIPv4Address)) {
+            String[] octects = newInternalIPv4Address.split("[.]");
+            int auxOctect2 = Integer.parseInt(octects[1]);
+            int auxOctect3 = Integer.parseInt(octects[2]);
+            int auxOctect4 = Integer.parseInt(octects[3]);
+            if (auxOctect2 > this.octect2) {
+                this.setIPv4Address(newInternalIPv4Address);
+            } else if (auxOctect2 == this.octect2) {
+                if (auxOctect3 > this.octect3) {
+                    this.setIPv4Address(newInternalIPv4Address);
+                } else if (auxOctect3 == this.octect3) {
+                    if (auxOctect4 > this.octect4) {
+                        this.setIPv4Address(newInternalIPv4Address);
                     }
                 }
             }
         }
     }
-    
-    /** Este m�todo obtiene una direcci�n IP que ser� distinta a todas las ya generadas
-     * por el mismo y distinta a todas las que les queda por generar. La IP pertenecer�
-     * al rango 10.0.0.1 - 10.255.255.254.
-     * @throws EIPv4AddressGeneratorOverflow Cuando el generador sobrepasa el rango de direcciones IP para el que est�
- preparado, se genera un excepci�n EIPOverflow cada vez que se llama a este
- m�todo, indicando que el generador no puede cumplir sus funci�n.
-     * @return Devuelve una representaci�n textual de la direcci�n IP generada, por ejemplo
-     * "10.32.125.254".
+
+    /**
+     * This method generates a new IPv4 address.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return A new IPv4 addres in in the range of 10.0.0.1 - 10.255.255.254.
+     * @throws EIPv4AddressGeneratorOverflow when the IPv4 address generator
+     * reaches its maximum value (10.255.255.254).
      * @since 2.0
      */
-    public String obtenerIP() throws EIPv4AddressGeneratorOverflow {
-        if (octeto4 < 255) {
-            octeto4++;
+    public String getIPv4Address() throws EIPv4AddressGeneratorOverflow {
+        // FIX: Do not use harcoded values. Use class constants instead.
+        if (this.octect4 < 255) {
+            this.octect4++;
         } else {
-            if (octeto3 < 255) {
-                octeto4 = 0;
-                octeto3++;
+            if (this.octect3 < 255) {
+                this.octect4 = 0;
+                this.octect3++;
             } else {
-                if (octeto2 < 254) {
-                    octeto4 = 0;
-                    octeto3 = 0;
-                    octeto2++;
+                if (this.octect2 < 254) {
+                    this.octect4 = 0;
+                    this.octect3 = 0;
+                    this.octect2++;
                 } else {
                     throw new EIPv4AddressGeneratorOverflow();
                 }
             }
         }
-        return (octeto1 + "." + octeto2 + "." + octeto3 + "." + octeto4);
+        return (this.octect1 + "." + this.octect2 + "." + this.octect3 + "." + this.octect4);
     }
-    
-    /** Constante "10" que ser� el componente fijo de las direcciones IP generadas.
-     * @since 2.0
-     */
-    private static final int octeto1 = 10;
-    /** Segundo octeto de las direcciones IP generadas.
-     * @since 2.0
-     */
-    private int octeto2;
-    /** Tercer octeto de las direcciones IP generadas.
-     * @since 2.0
-     */
-    private int octeto3;
-    /** Cuartoocteto de las direcciones IP generadas.
-     * @since 2.0
-     */
-    private int octeto4;
+
+    private final int octect1;
+    private int octect2;
+    private int octect3;
+    private int octect4;
 }
