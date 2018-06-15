@@ -37,7 +37,7 @@ public class TIDGenerator {
     }
 
     /**
-     * This method resets the ID generator to is initial internal value.
+     * This method resets the ID generator to its initial internal value.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
