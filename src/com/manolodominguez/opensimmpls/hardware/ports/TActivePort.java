@@ -438,8 +438,8 @@ public class TActivePort extends TPort {
         int packetOrder = 0;
         int priority = this.loadPacketPriority(packet);
         try {
-            eventID = parentNode.eventIdentifierGenerator.getNextID();
-            packetOrder = this.rotaryIdentifierGenerator.getNextID();
+            eventID = parentNode.eventIdentifierGenerator.getNextIdentifier();
+            packetOrder = this.rotaryIdentifierGenerator.getNextIdentifier();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -492,8 +492,8 @@ public class TActivePort extends TPort {
         int packetPriority = this.loadPacketPriority(packet);
         TNode parentNode = this.parentPortSet.getParentNode();
         try {
-            eventID = parentNode.eventIdentifierGenerator.getNextID();
-            packetOrder = this.rotaryIdentifierGenerator.getNextID();
+            eventID = parentNode.eventIdentifierGenerator.getNextIdentifier();
+            packetOrder = this.rotaryIdentifierGenerator.getNextIdentifier();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -660,8 +660,8 @@ public class TActivePort extends TPort {
         int packetOrder = 0;
         int packetPriority = this.loadPacketPriority(packet);
         try {
-            eventID = parentNode.eventIdentifierGenerator.getNextID();
-            packetOrder = this.rotaryIdentifierGenerator.getNextID();
+            eventID = parentNode.eventIdentifierGenerator.getNextIdentifier();
+            packetOrder = this.rotaryIdentifierGenerator.getNextIdentifier();
         } catch (Exception e) {
             e.printStackTrace();
         }

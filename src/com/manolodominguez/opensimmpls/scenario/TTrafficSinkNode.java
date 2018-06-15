@@ -129,7 +129,7 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
             while (incomingPort.thereIsAPacketWaiting()) {
                 incomingPacket = incomingPort.getPacket();
                 try {
-                    eventID = this.eventIdentifierGenerator.getNextID();
+                    eventID = this.eventIdentifierGenerator.getNextIdentifier();
                 } catch (Exception e) {
                     // FIX: This is ugly
                     e.printStackTrace();

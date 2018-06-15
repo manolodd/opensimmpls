@@ -714,7 +714,7 @@ public class JOpenSimMPLS extends JFrame {
      */
     private void handleClickOnNew(ActionEvent evt) {
         try {
-            int scenarioWindowID = this.scenarioWindowIDGenerator.getNew();
+            int scenarioWindowID = this.scenarioWindowIDGenerator.getNextIdentifier();
             String scenarioWindowTitle = this.translations.getString("TextoUntitled-") + scenarioWindowID;
             this.numOpenScenarios++;
             enableMenuOptions();

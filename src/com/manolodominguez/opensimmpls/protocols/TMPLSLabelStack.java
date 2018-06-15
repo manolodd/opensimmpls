@@ -61,7 +61,7 @@ public class TMPLSLabelStack {
      */
     public void pushTop(TMPLSLabel mplsLabel) {
         try {
-            mplsLabel.setID(this.idGenerator.getNew());
+            mplsLabel.setID(this.idGenerator.getNextIdentifier());
         } catch (EIDGeneratorOverflow e) {
             e.printStackTrace();
         }
@@ -102,7 +102,7 @@ public class TMPLSLabelStack {
     public void swapTop(TMPLSLabel mplsLabel) {
         this.popTop();
         try {
-            mplsLabel.setID(this.idGenerator.getNew());
+            mplsLabel.setID(this.idGenerator.getNextIdentifier());
         } catch (EIDGeneratorOverflow e) {
             e.printStackTrace();
         }

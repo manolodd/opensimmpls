@@ -104,7 +104,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
                 // FIX: Use class contants instead of harcoded values
                 this.numberOfLSPs = 0;
                 this.numberOfBackupLSPs = 0;
-                this.generateSimulationEvent(new TSimulationEventLinkBroken(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant()));
+                this.generateSimulationEvent(new TSimulationEventLinkBroken(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant()));
                 this.packetsInTransitEntriesLock.lock();
                 TAbstractPDU packet = null;
                 TLinkBufferEntry bufferedPacketEntry = null;
@@ -116,11 +116,11 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
                         // FIX: do not use harcoded values. Use class constants
                         // instead
                         if (bufferedPacketEntry.getPacketEnd() == 1) {
-                            this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this.getTailEndNode(), this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), packet.getSubtype()));
+                            this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this.getTailEndNode(), this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant(), packet.getSubtype()));
                             // FIX: do not use harcoded values. Use class
                             // constants instead
                         } else if (bufferedPacketEntry.getPacketEnd() == 2) {
-                            this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this.getHeadEndNode(), this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), packet.getSubtype()));
+                            this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this.getHeadEndNode(), this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant(), packet.getSubtype()));
                         }
                     }
                     bufferedPacketEntriesIterator.remove();
@@ -132,7 +132,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
             }
         } else {
             try {
-                this.generateSimulationEvent(new TSimulationEventLinkRecovered(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant()));
+                this.generateSimulationEvent(new TSimulationEventLinkRecovered(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant()));
             } catch (EIDGeneratorOverflow e) {
                 // FIX: this is not a good practice
                 e.printStackTrace();
@@ -178,7 +178,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
     public void setAsUsedByALSP() {
         this.numberOfLSPs++;
         try {
-            this.generateSimulationEvent(new TSimulationEventLSPEstablished(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant()));
+            this.generateSimulationEvent(new TSimulationEventLSPEstablished(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant()));
         } catch (Exception e) {
             // FIX: this is not a good practice
             e.printStackTrace();
@@ -197,7 +197,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
         if (this.numberOfLSPs > 0) {
             this.numberOfLSPs--;
             try {
-                this.generateSimulationEvent(new TSimulationEventLSPRemoved(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant()));
+                this.generateSimulationEvent(new TSimulationEventLSPRemoved(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant()));
             } catch (Exception e) {
                 // FIX: this is not a good practice
                 e.printStackTrace();
@@ -264,11 +264,11 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
             }
             try {
                 if (bufferedPacketEntry.getPacket().getType() == TAbstractPDU.TLDP) {
-                    this.generateSimulationEvent(new TSimulationEventPacketOnFly(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.TLDP, transitPercentage));
+                    this.generateSimulationEvent(new TSimulationEventPacketOnFly(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant(), TAbstractPDU.TLDP, transitPercentage));
                 } else if (bufferedPacketEntry.getPacket().getType() == TAbstractPDU.MPLS) {
-                    this.generateSimulationEvent(new TSimulationEventPacketOnFly(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), bufferedPacketEntry.getPacket().getSubtype(), transitPercentage));
+                    this.generateSimulationEvent(new TSimulationEventPacketOnFly(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant(), bufferedPacketEntry.getPacket().getSubtype(), transitPercentage));
                 } else if (bufferedPacketEntry.getPacket().getType() == TAbstractPDU.GPSRP) {
-                    this.generateSimulationEvent(new TSimulationEventPacketOnFly(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), TAbstractPDU.GPSRP, transitPercentage));
+                    this.generateSimulationEvent(new TSimulationEventPacketOnFly(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant(), TAbstractPDU.GPSRP, transitPercentage));
                 }
             } catch (EIDGeneratorOverflow e) {
                 // FIX: this is not a good practice

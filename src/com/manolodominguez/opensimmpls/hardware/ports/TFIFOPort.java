@@ -89,7 +89,7 @@ public class TFIFOPort extends TPort {
         TNode parentNode = this.parentPortSet.getParentNode();
         long eventID = 0;
         try {
-            eventID = parentNode.eventIdentifierGenerator.getNextID();
+            eventID = parentNode.eventIdentifierGenerator.getNextIdentifier();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -136,7 +136,7 @@ public class TFIFOPort extends TPort {
         TNode parentNode = this.parentPortSet.getParentNode();
         long eventID = 0;
         try {
-            eventID = parentNode.eventIdentifierGenerator.getNextID();
+            eventID = parentNode.eventIdentifierGenerator.getNextIdentifier();
         } catch (Exception e) {
             e.printStackTrace();
         }

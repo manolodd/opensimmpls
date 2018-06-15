@@ -116,7 +116,7 @@ public class TGPSRPRequestsMatrix {
      */
     public TGPSRPRequestEntry addEntry(TMPLSPDU mplsPacket, int incomingPort) {
         this.monitor.lock();
-        TGPSRPRequestEntry gpsrpRequestEntry = new TGPSRPRequestEntry(this.idGenerator.getNextID());
+        TGPSRPRequestEntry gpsrpRequestEntry = new TGPSRPRequestEntry(this.idGenerator.getNextIdentifier());
         gpsrpRequestEntry.setOutgoingPort(incomingPort);
         gpsrpRequestEntry.setFlowID(mplsPacket.getIPv4Header().getOriginIPv4Address().hashCode());
         gpsrpRequestEntry.setPacketID(mplsPacket.getIPv4Header().getGoSGlobalUniqueIdentifier());

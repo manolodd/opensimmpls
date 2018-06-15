@@ -339,7 +339,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
     public void run() {
         // Actions to be done during the timer tick.
         try {
-            this.generateSimulationEvent(new TSimulationEventNodeCongested(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), 0));
+            this.generateSimulationEvent(new TSimulationEventNodeCongested(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant(), 0));
         } catch (Exception e) {
             // FIX: this is not a good practice. Avoid.
             e.printStackTrace();
@@ -444,8 +444,8 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
                             TIPv4PDU ipv4Packet = (TIPv4PDU) packetWithPayload;
                             packetType = ipv4Packet.getSubtype();
                         }
-                        this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), packetType, packetWithPayload.getSize()));
-                        this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), packetType));
+                        this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant(), packetType, packetWithPayload.getSize()));
+                        this.generateSimulationEvent(new TSimulationEventPacketSent(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant(), packetType));
                     } catch (Exception e) {
                         // FIX: this is not a good practice. Avoid.
                         e.printStackTrace();
@@ -647,7 +647,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
         try {
             if (this.encapsulateOverMPLS) {
                 if (requiredEXPValue == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
-                    TMPLSPDU mplsPacket = new TMPLSPDU(this.packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
+                    TMPLSPDU mplsPacket = new TMPLSPDU(this.packetIdentifierGenerator.getNextIdentifier(), getIPv4Address(), this.targetIPv4Address, 0);
                     TMPLSLabel outgoingMPLSLabel = new TMPLSLabel();
                     // FIX: Use class constants instead of harcoded values
                     outgoingMPLSLabel.setBoS(true);
@@ -658,10 +658,10 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
                     mplsPacket.getLabelStack().pushTop(outgoingMPLSLabel);
                     return mplsPacket;
                 } else {
-                    TMPLSPDU mplsPacket = new TMPLSPDU(packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
+                    TMPLSPDU mplsPacket = new TMPLSPDU(packetIdentifierGenerator.getNextIdentifier(), getIPv4Address(), this.targetIPv4Address, 0);
                     mplsPacket.setSubtype(TAbstractPDU.MPLS_GOS);
                     mplsPacket.getIPv4Header().getOptionsField().setRequestedGoSLevel(requiredEXPValue);
-                    mplsPacket.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(this.packetGoSdentifierGenerator.getNextID());
+                    mplsPacket.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(this.packetGoSdentifierGenerator.getNextIdentifier());
                     TMPLSLabel bottomOutgoingMPLSLabel = new TMPLSLabel();
                     // FIX: Use class constants instead of harcoded values
                     bottomOutgoingMPLSLabel.setBoS(true);
@@ -681,13 +681,13 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
                     return mplsPacket;
                 }
             } else if (requiredEXPValue == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
-                TIPv4PDU ipv4Packet = new TIPv4PDU(packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
+                TIPv4PDU ipv4Packet = new TIPv4PDU(packetIdentifierGenerator.getNextIdentifier(), getIPv4Address(), this.targetIPv4Address, 0);
                 return ipv4Packet;
             } else {
-                TIPv4PDU ipv4Packet = new TIPv4PDU(packetIdentifierGenerator.getNextID(), getIPv4Address(), this.targetIPv4Address, 0);
+                TIPv4PDU ipv4Packet = new TIPv4PDU(packetIdentifierGenerator.getNextIdentifier(), getIPv4Address(), this.targetIPv4Address, 0);
                 ipv4Packet.setSubtype(TAbstractPDU.IPV4_GOS);
                 ipv4Packet.getIPv4Header().getOptionsField().setRequestedGoSLevel(requiredEXPValue);
-                ipv4Packet.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(this.packetGoSdentifierGenerator.getNextID());
+                ipv4Packet.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(this.packetGoSdentifierGenerator.getNextIdentifier());
                 return ipv4Packet;
             }
         } catch (EIDGeneratorOverflow e) {
@@ -707,7 +707,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
     @Override
     public void discardPacket(TAbstractPDU packet) {
         try {
-            this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this, this.eventIdentifierGenerator.getNextID(), this.getCurrentTimeInstant(), packet.getSubtype()));
+            this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant(), packet.getSubtype()));
             this.stats.addStatEntry(packet, TStats.BEING_DISCARDED);
         } catch (Exception e) {
             // FIX: This is ugly. Avoid.

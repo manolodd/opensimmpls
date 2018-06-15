@@ -118,62 +118,62 @@ public class TOSMLoader {
             TTrafficSinkNode receiver = new TTrafficSinkNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (receiver.unMarshall(topologyString)) {
                 this.scenario.getTopology().addNode(receiver);
-                this.scenario.getTopology().getElementsIDGenerator().setIDIfGreater(receiver.getNodeID());
-                this.scenario.getTopology().getIPv4AddressGenerator().setValueIfGreater(receiver.getIPv4Address());
+                this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(receiver.getNodeID());
+                this.scenario.getTopology().getIPv4AddressGenerator().setIPv4AddressIfGreater(receiver.getIPv4Address());
             }
             receiver = null;
         } else if (topologyString.startsWith("#Emisor#")) {
             TTrafficGeneratorNode sender = new TTrafficGeneratorNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (sender.unMarshall(topologyString)) {
                 this.scenario.getTopology().addNode(sender);
-                this.scenario.getTopology().getElementsIDGenerator().setIDIfGreater(sender.getNodeID());
-                this.scenario.getTopology().getIPv4AddressGenerator().setValueIfGreater(sender.getIPv4Address());
+                this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(sender.getNodeID());
+                this.scenario.getTopology().getIPv4AddressGenerator().setIPv4AddressIfGreater(sender.getIPv4Address());
             }
             sender = null;
         } else if (topologyString.startsWith("#LER#")) {
             TLERNode ler = new TLERNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (ler.unMarshall(topologyString)) {
                 this.scenario.getTopology().addNode(ler);
-                this.scenario.getTopology().getElementsIDGenerator().setIDIfGreater(ler.getNodeID());
-                this.scenario.getTopology().getIPv4AddressGenerator().setValueIfGreater(ler.getIPv4Address());
+                this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(ler.getNodeID());
+                this.scenario.getTopology().getIPv4AddressGenerator().setIPv4AddressIfGreater(ler.getIPv4Address());
             }
             ler = null;
         } else if (topologyString.startsWith("#LERA#")) {
             TActiveLERNode activeLER = new TActiveLERNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (activeLER.unMarshall(topologyString)) {
                 this.scenario.getTopology().addNode(activeLER);
-                this.scenario.getTopology().getElementsIDGenerator().setIDIfGreater(activeLER.getNodeID());
-                this.scenario.getTopology().getIPv4AddressGenerator().setValueIfGreater(activeLER.getIPv4Address());
+                this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(activeLER.getNodeID());
+                this.scenario.getTopology().getIPv4AddressGenerator().setIPv4AddressIfGreater(activeLER.getIPv4Address());
             }
             activeLER = null;
         } else if (topologyString.startsWith("#LSR#")) {
             TLSRNode lsr = new TLSRNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (lsr.unMarshall(topologyString)) {
                 this.scenario.getTopology().addNode(lsr);
-                this.scenario.getTopology().getElementsIDGenerator().setIDIfGreater(lsr.getNodeID());
-                this.scenario.getTopology().getIPv4AddressGenerator().setValueIfGreater(lsr.getIPv4Address());
+                this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(lsr.getNodeID());
+                this.scenario.getTopology().getIPv4AddressGenerator().setIPv4AddressIfGreater(lsr.getIPv4Address());
             }
             lsr = null;
         } else if (topologyString.startsWith("#LSRA#")) {
             TActiveLSRNode activeLSR = new TActiveLSRNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (activeLSR.unMarshall(topologyString)) {
                 this.scenario.getTopology().addNode(activeLSR);
-                this.scenario.getTopology().getElementsIDGenerator().setIDIfGreater(activeLSR.getNodeID());
-                this.scenario.getTopology().getIPv4AddressGenerator().setValueIfGreater(activeLSR.getIPv4Address());
+                this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(activeLSR.getNodeID());
+                this.scenario.getTopology().getIPv4AddressGenerator().setIPv4AddressIfGreater(activeLSR.getIPv4Address());
             }
             activeLSR = null;
         } else if (topologyString.startsWith("#EnlaceExterno#")) {
             TExternalLink externalLink = new TExternalLink(0, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (externalLink.unMarshall(topologyString)) {
                 this.scenario.getTopology().addLink(externalLink);
-                this.scenario.getTopology().getElementsIDGenerator().setIDIfGreater(externalLink.getID());
+                this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(externalLink.getID());
             }
             externalLink = null;
         } else if (topologyString.startsWith("#EnlaceInterno#")) {
             TInternalLink internalLink = new TInternalLink(0, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (internalLink.unMarshall(topologyString)) {
                 this.scenario.getTopology().addLink(internalLink);
-                this.scenario.getTopology().getElementsIDGenerator().setIDIfGreater(internalLink.getID());
+                this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(internalLink.getID());
             }
             internalLink = null;
         }

@@ -173,7 +173,7 @@ public class TDMGP {
             if (octectsToBeAssigned > 0) {
                 this.totalAssignedOctects += octectsToBeAssigned;
                 this.totalAvailablePercentage -= percentageToBeAssigned;
-                dmgpFlowEntry = new TDMGPFlowEntry(this.idGenerator.getNextID());
+                dmgpFlowEntry = new TDMGPFlowEntry(this.idGenerator.getNextIdentifier());
                 dmgpFlowEntry.setFlowID(flowID);
                 dmgpFlowEntry.setAssignedPercentage(percentageToBeAssigned);
                 dmgpFlowEntry.setAssignedOctects(octectsToBeAssigned);

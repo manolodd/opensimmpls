@@ -263,7 +263,7 @@ public class TTimer implements Runnable {
                 }
             }
             try {
-                TTimerEvent timerEvent = new TTimerEvent(this, this.longIdentifierGenerator.getNextID(), startOfSimulationInterval, endOfSimulationInterval);
+                TTimerEvent timerEvent = new TTimerEvent(this, this.longIdentifierGenerator.getNextIdentifier(), startOfSimulationInterval, endOfSimulationInterval);
                 nodeAux.receiveTimerEvent(timerEvent);
             } catch (EIDGeneratorOverflow e) {
                 e.printStackTrace();
@@ -282,7 +282,7 @@ public class TTimer implements Runnable {
                 }
             }
             try {
-                linkAux.receiveTimerEvent(new TTimerEvent(this, this.longIdentifierGenerator.getNextID(), startOfSimulationInterval, endOfSimulationInterval));
+                linkAux.receiveTimerEvent(new TTimerEvent(this, this.longIdentifierGenerator.getNextIdentifier(), startOfSimulationInterval, endOfSimulationInterval));
             } catch (EIDGeneratorOverflow e) {
                 e.printStackTrace();
             }
@@ -305,7 +305,7 @@ public class TTimer implements Runnable {
         }
         try {
             if (this.progressEventListener != null) {
-                this.progressEventListener.receiveProgressEvent(new TProgressEvent(this, this.longIdentifierGenerator.getNextID(), computedProgress));
+                this.progressEventListener.receiveProgressEvent(new TProgressEvent(this, this.longIdentifierGenerator.getNextIdentifier(), computedProgress));
             }
         } catch (EIDGeneratorOverflow e) {
             e.printStackTrace();
