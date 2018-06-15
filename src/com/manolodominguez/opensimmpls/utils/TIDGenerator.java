@@ -15,71 +15,82 @@
  */
 package com.manolodominguez.opensimmpls.utils;
 
-/** Esta es la implementaci�n de un generador de identificadores num�ricos que no se
- * repiten y que se van incrementando hasta llegar a su l�mite m�ximo.
- * @version 1.0
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
+/**
+ * This class implements a ID generator that generates numeric IDs that are
+ * always different, in a cycle.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class TIDGenerator {
-    
-    /** Atributo que contendr� el valor interno del generador de identificadores
-     * num�ticos.
-     */
-    private int identificador;
-    
-    /** Crea un nuevo generador de identificadores con el valor inicial 0.
+
+    /**
+     * This method is the constructor of the class. It is create a new instance
+     * of TIDGenerator.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TIDGenerator() {
-        identificador = 0;
+        // FIX: Do not use harcoded values. Use class constants instead.
+        this.identifier = 0;
     }
-    
+
     /**
-     * Este m�todo reinicia el generador de identificadores a su valor original, como
-     * si acabase de ser instanciado.
+     * This method resets the ID generator to is initial internal value.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public synchronized void reset() {
-        identificador = 0;
+        // FIX: Do not use harcoded values. Use class constants instead.
+        this.identifier = 0;
     }
-    
-    /** M�todo que devuelve un identificador generado por el generador. Adem�s se
-     * modifica el contador interno para que el siguiente generador sea distinto. El
-     * m�todo est� <B>sincronizado</B>.
-     * @return Un numero entero que ser� un identificador: no estar� repetido.
-     * @throws EIDGeneratorOverflow Esta excepci�n se lanza cuando el contador interno del generador de
-     * identificadores se desborda. Es alto por lo que ngeneralmente no ocurrir�, pero
-     * hay que capturar la excepci�n por si acaso.
+
+    /**
+     * This method generates a new ID.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return an integer value that is unique.
+     * @throws EIDGeneratorOverflow when the ID generator reaches its maximum
+     * value.
      * @since 2.0
      */
     synchronized public int getNew() throws EIDGeneratorOverflow {
-        if (identificador > 2147483646) {
+        if (this.identifier >= Integer.MAX_VALUE) {
             throw new EIDGeneratorOverflow();
         } else {
-            identificador++;
+            this.identifier++;
         }
-        return (identificador);
+        return (this.identifier);
     }
-    
+
     /**
-     * Este m�todo establece el valor de partida del generador de identificadores,
-     * siempre que el valor que deseamos sea mayor que el que ya tiene el propio
-     * generador.
+     * This method sets the ID generator internal value to the one specified as
+     * an argument, only if the specified value is greater than the one the ID
+     * generator has.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param newInternalIDValue the new internal ID value to set the ID
+     * generator.
      * @since 2.0
-     * @param i El valor de partida con el cual deseamos iniciar el contador.
      */
-    synchronized public void setIDIfGreater(int i) {
-        if (i > identificador)
-            identificador = i;
+    synchronized public void setIDIfGreater(int newInternalIDValue) {
+        if (newInternalIDValue > this.identifier) {
+            this.identifier = newInternalIDValue;
+        }
     }
-    
+
     /**
-     * Este m�todo permite poner el valor de partida del generador de identificadores.
+     * This method sets the ID generator new internal value.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param newInternalIDValue the ID generator new internal value.
      * @since 2.0
-     * @param i El valor que deseamos poner como valor de partida para el generador.
      */
-    synchronized public void ponerIdentificador(int i) {
-        identificador = i;
+    synchronized public void ponerIdentificador(int newInternalIDValue) {
+        this.identifier = newInternalIDValue;
     }
+
+    private int identifier;
 }
