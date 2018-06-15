@@ -16,51 +16,59 @@
 package com.manolodominguez.opensimmpls.utils;
 
 /**
- * Esta clase es un monitor gen�rico que se utilizar� para sincronizar hilos en el
- * acceso concurrente a datos. Se utilizar� frecuentemente para crear regiones
- * cr�titcas.
- * @version 1.0
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
+ * This class implements a generic monitor that can be used to limit the number
+ * of threads that can acces a piece of code simultaneously. That's useful in
+ * multithreading environments.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class TLock {
-    
-    /** Crea una nueva instancia de TMonitor para sincronizar hilos.
+
+    /**
+     * This method is the constructor of the class. It is create a new instance
+     * of TLock.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TLock() {
-        bloqueado = false;
+        this.lock = false;
     }
-    
-    /** Cuando un hilo llama a este m�todo del monitor queda bloqueado en �l si hay otro
-     * hilo que a�n no lo ha liberado y si no, es �l el que bloquea este monitor para
-     * parar a otros hilos. El m�todo est� <B>sincronizado</B>.
+
+    /**
+     * When this method is called from a thread, the thread is blocked if there
+     * is a thread that has previously called the method, until that thread
+     * releases the lock. If no thread has the monitor locked, then the calling
+     * thread takes control and blocks the rest until it releases the monitor.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public synchronized void lock() {
-        while (bloqueado) {
+        while (this.lock) {
             try {
                 wait();
             } catch (InterruptedException e) {
+                // FIX: This is ugly
                 e.printStackTrace();
             }
         }
-        bloqueado = true;
+        this.lock = true;
     }
-    
-    /** Cuando un hilo llama a este m�todo, hace que uno de los hilos que estar�n
-     * esperando que se libere el monitor, pueda acceder al mismo. El m�todo est�
-     * <B>sincronizado</B>.
+
+    /**
+     * When a thread calls this method, it releases the monitor. In this way,
+     * the next thread that would have called the lock() method and was blocked,
+     * will be unlocked.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public synchronized void unLock() {
-        bloqueado = false;
+        this.lock = false;
         notify();
     }
-    
-    /** Atributo interno que especifica en qu� estado se encontrar� el hilo que llame a
-     * este monitor.
-     * @since 2.0
-     */
-    private boolean bloqueado;
+
+    private boolean lock;
 }
