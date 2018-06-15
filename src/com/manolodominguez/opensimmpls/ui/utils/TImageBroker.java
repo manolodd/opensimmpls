@@ -23,21 +23,19 @@ import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 
 /**
- * Esta clase se encarga de cargar en memoria todas las im�genes que se usar�n
- * en la aplicaci�n y posteriormente devolver referencias a las mismas, con lo
- * que la carga de elementos gr�ficos se realiza mucho m�s r�pido y no hace
- * falta cargar m�s de una vez una misma imagen.
+ * This class implements a image broker that preloads all images needed by
+ * OpenSimMPLS to give each GUI component the required image faster.
  *
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class TImageBroker {
 
     /**
-     * Este m�todo es el constructor de la clase; crea una nueva instancia de
-     * TDispensadorDeImagenes.
+     * This method is the constructor of the class. It is create a new instance
+     * of TImageBroker.
      *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     private TImageBroker() {
@@ -52,7 +50,15 @@ public class TImageBroker {
         }
     }
 
-    // Singleton
+    /**
+     * This method returns a instance of this class. As this class implements
+     * the singleton pattern, this checks whether a new instance has to be
+     * created or the existing one has to be returned.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return An instance of TImageBroker
+     * @since 2.0
+     */
     public static TImageBroker getInstance() {
         TImageBroker localInstance = TImageBroker.instance;
         if (localInstance == null) {
@@ -67,12 +73,12 @@ public class TImageBroker {
     }
 
     /**
-     * Obtiene una de las im�genes del dispensador de im�genes como un onjeto
-     * Image.
+     * This method request a given image from the ImageBroker.
      *
-     * @param imageID Constante que identifica la imagen que se desea obtener.
-     * Es una de las constantes definidas en la clase.
-     * @return Un objeto Image con la imagen que se ha solicitado.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param imageID The image ID the is requested.
+     * @return The requested image or a default one if the requested image is
+     * not found.
      * @since 2.0
      */
     public Image getImage(AvailableImages imageID) {
@@ -84,12 +90,12 @@ public class TImageBroker {
     }
 
     /**
-     * Obtiene una de las im�genes del dispensador de im�genes como un onjeto
-     * ImageIcon.
+     * This method request a given image icon from the ImageBroker.
      *
-     * @param imageID Constante que identifica la imagen que se desea obtener.
-     * Es una de las constantes definidas en la clase.
-     * @return Un objeto ImageIcon con la imagen que se ha solicitado.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param imageID The image ID the is requested.
+     * @return The requested image icon or a default one if the requested image
+     * icon is not found.
      * @since 2.0
      */
     public ImageIcon getImageIcon(AvailableImages imageID) {
