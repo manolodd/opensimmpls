@@ -16,56 +16,64 @@
 package com.manolodominguez.opensimmpls.utils;
 
 /**
- * Esta clase implementa un generador de identificadores largos, c�clico (vuelve a
- * empezar). Se utiliza para identificar los paquetes con GoS de un emisor.
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
- * @version 1.0
+ * This class implements a ID generator that generates consecutive numeric IDs,
+ * in a cycle that never ends.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class TRotaryIDGenerator {
-    
+
     /**
-     * Este m�todo es el constructor de la clase. Crea una nueva instancia de
-     * TIdentificadorRotativo y lo inicia a cero.
+     * This method is the constructor of the class. It is create a new instance
+     * of TIDGenerator.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TRotaryIDGenerator() {
-        identificador = 0;
+        // FIX: Do not use harcoded values. Use class constants instead.
+        this.identifier = 0;
     }
-    
+
     /**
-     * Este m�todo coloca a cero el generador de identificadores. Como si acabase de
-     * ser instanciado.
+     * This method resets the ID generator to its initial internal value.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public synchronized void reset() {
-        identificador = 0;
+        // FIX: Do not use harcoded values. Use class constants instead.
+        this.identifier = 0;
     }
-    
+
     /**
-     * Este m�todo obtiene un nuevo identificador del generador e incrementa su
-     * contador interno para la siguiente llamada.
-     * @return Un identificador nuevo y �nico (en este ciclo del generador).
+     * This method generates a new ID.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return an integer value that is unique.
      * @since 2.0
      */
-    synchronized public int getNextID() {
-        if (identificador > 2147483646) {
-            identificador = 0;
+    synchronized public int getNextIdentifier() {
+        if (this.identifier >= Integer.MAX_VALUE) {
+            // FIX: Do not use harcoded values. Use class constants instead.
+            this.identifier = 0;
         } else {
-            identificador++;
+            this.identifier++;
         }
-        return (identificador);
+        return (this.identifier);
     }
-    
+
     /**
-     * Este m�todo permite establecer el valor a partir del cu�l el generador de
-     * identificadores comenzar� a generar.
-     * @param i El valor con el que se desea iniciar el generador.
+     * This method sets the ID generator new internal value.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param newInternalIDValue the ID generator new internal value.
      * @since 2.0
      */
-    synchronized public void ponerIdentificador(int i) {
-        identificador = i;
+    synchronized public void setIdentifier(int newInternalIDValue) {
+        this.identifier = newInternalIDValue;
     }
-    
-    private int identificador;
+
+    private int identifier;
 }
