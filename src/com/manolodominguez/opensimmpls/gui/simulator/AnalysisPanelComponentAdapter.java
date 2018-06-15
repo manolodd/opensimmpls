@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.ui.simulator;
+package com.manolodominguez.opensimmpls.gui.simulator;
 
 import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;

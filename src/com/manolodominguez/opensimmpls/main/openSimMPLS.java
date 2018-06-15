@@ -15,12 +15,12 @@
  */
 package com.manolodominguez.opensimmpls.main;
 
-import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
+import com.manolodominguez.opensimmpls.gui.utils.TImageBroker;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
-import com.manolodominguez.opensimmpls.ui.simulator.JOpenSimMPLS;
-import com.manolodominguez.opensimmpls.ui.splash.JSplash;
+import com.manolodominguez.opensimmpls.gui.simulator.JOpenSimMPLS;
+import com.manolodominguez.opensimmpls.gui.splash.JSplash;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ResourceBundle;

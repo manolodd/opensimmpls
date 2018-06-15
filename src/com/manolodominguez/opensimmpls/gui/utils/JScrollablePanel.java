@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.ui.utils;
+package com.manolodominguez.opensimmpls.gui.utils;
 
 import java.awt.Dimension;
 import java.awt.LayoutManager;

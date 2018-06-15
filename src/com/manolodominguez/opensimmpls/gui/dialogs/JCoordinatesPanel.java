@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.ui.dialogs;
+package com.manolodominguez.opensimmpls.gui.dialogs;
 
-import com.manolodominguez.opensimmpls.ui.simulator.JDesignPanel;
+import com.manolodominguez.opensimmpls.gui.simulator.JDesignPanel;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;

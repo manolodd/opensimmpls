@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.ui.simulator;
+package com.manolodominguez.opensimmpls.gui.simulator;
 
 import com.manolodominguez.opensimmpls.io.osm.TOSMLoader;
 import com.manolodominguez.opensimmpls.resources.images.AvailableImages;
 import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.scenario.TScenario;
-import com.manolodominguez.opensimmpls.ui.dialogs.JLicenseWindow;
-import com.manolodominguez.opensimmpls.ui.dialogs.JAboutWindow;
-import com.manolodominguez.opensimmpls.ui.dialogs.JWarningWindow;
-import com.manolodominguez.opensimmpls.ui.dialogs.JDecissionWindow;
-import com.manolodominguez.opensimmpls.ui.dialogs.JErrorWindow;
-import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
-import com.manolodominguez.opensimmpls.ui.utils.JOSMFilter;
+import com.manolodominguez.opensimmpls.gui.dialogs.JLicenseWindow;
+import com.manolodominguez.opensimmpls.gui.dialogs.JAboutWindow;
+import com.manolodominguez.opensimmpls.gui.dialogs.JWarningWindow;
+import com.manolodominguez.opensimmpls.gui.dialogs.JDecissionWindow;
+import com.manolodominguez.opensimmpls.gui.dialogs.JErrorWindow;
+import com.manolodominguez.opensimmpls.gui.utils.TImageBroker;
+import com.manolodominguez.opensimmpls.gui.utils.JOSMFilter;
 import com.manolodominguez.opensimmpls.commons.TIDGenerator;
 import java.awt.BorderLayout;
 import java.awt.Desktop;

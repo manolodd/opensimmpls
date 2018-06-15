@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the license.
  */
-package com.manolodominguez.opensimmpls.ui.simulator;
+package com.manolodominguez.opensimmpls.gui.simulator;
 
 import com.manolodominguez.opensimmpls.hardware.timer.EProgressEventGeneratorOnlyAllowASingleListener;
 import com.manolodominguez.opensimmpls.hardware.timer.TTimestamp;
@@ -35,20 +35,20 @@ import com.manolodominguez.opensimmpls.scenario.TTopology;
 import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TNode;
-import com.manolodominguez.opensimmpls.ui.dialogs.JWarningWindow;
-import com.manolodominguez.opensimmpls.ui.dialogs.JDecissionWindow;
-import com.manolodominguez.opensimmpls.ui.dialogs.JTrafficGeneratorWindow;
-import com.manolodominguez.opensimmpls.ui.dialogs.JLinkWindow;
-import com.manolodominguez.opensimmpls.ui.dialogs.JErrorWindow;
-import com.manolodominguez.opensimmpls.ui.dialogs.JLERWindow;
-import com.manolodominguez.opensimmpls.ui.dialogs.JActiveLERWindow;
-import com.manolodominguez.opensimmpls.ui.dialogs.JLSRWindow;
-import com.manolodominguez.opensimmpls.ui.dialogs.JActiveLSRWindow;
-import com.manolodominguez.opensimmpls.ui.dialogs.JTrafficSinkWindow;
-import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
-import com.manolodominguez.opensimmpls.ui.utils.JOSMFilter;
-import com.manolodominguez.opensimmpls.ui.utils.TProgressEventListener;
-import com.manolodominguez.opensimmpls.ui.utils.JScrollablePanel;
+import com.manolodominguez.opensimmpls.gui.dialogs.JWarningWindow;
+import com.manolodominguez.opensimmpls.gui.dialogs.JDecissionWindow;
+import com.manolodominguez.opensimmpls.gui.dialogs.JTrafficGeneratorWindow;
+import com.manolodominguez.opensimmpls.gui.dialogs.JLinkWindow;
+import com.manolodominguez.opensimmpls.gui.dialogs.JErrorWindow;
+import com.manolodominguez.opensimmpls.gui.dialogs.JLERWindow;
+import com.manolodominguez.opensimmpls.gui.dialogs.JActiveLERWindow;
+import com.manolodominguez.opensimmpls.gui.dialogs.JLSRWindow;
+import com.manolodominguez.opensimmpls.gui.dialogs.JActiveLSRWindow;
+import com.manolodominguez.opensimmpls.gui.dialogs.JTrafficSinkWindow;
+import com.manolodominguez.opensimmpls.gui.utils.TImageBroker;
+import com.manolodominguez.opensimmpls.gui.utils.JOSMFilter;
+import com.manolodominguez.opensimmpls.gui.utils.TProgressEventListener;
+import com.manolodominguez.opensimmpls.gui.utils.JScrollablePanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;

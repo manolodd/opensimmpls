@@ -15,7 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.scenario;
 
-import com.manolodominguez.opensimmpls.ui.simulator.JSimulationPanel;
+import com.manolodominguez.opensimmpls.gui.simulator.JSimulationPanel;
 import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventListener;
 
 /**

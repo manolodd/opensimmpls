@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.ui.simulator;
+package com.manolodominguez.opensimmpls.gui.simulator;
 
 import com.manolodominguez.opensimmpls.resources.images.AvailableImages;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TNode;
-import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
+import com.manolodominguez.opensimmpls.gui.utils.TImageBroker;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;

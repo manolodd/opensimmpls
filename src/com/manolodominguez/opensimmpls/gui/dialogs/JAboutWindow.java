@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.ui.dialogs;
+package com.manolodominguez.opensimmpls.gui.dialogs;
 
 import com.manolodominguez.opensimmpls.resources.images.AvailableImages;
-import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
+import com.manolodominguez.opensimmpls.gui.utils.TImageBroker;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;

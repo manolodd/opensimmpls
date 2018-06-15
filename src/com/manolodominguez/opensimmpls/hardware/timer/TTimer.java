@@ -29,7 +29,7 @@ import com.manolodominguez.opensimmpls.scenario.TTrafficSinkNode;
 import com.manolodominguez.opensimmpls.scenario.TTrafficGeneratorNode;
 import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
 import com.manolodominguez.opensimmpls.commons.EIDGeneratorOverflow;
-import com.manolodominguez.opensimmpls.ui.utils.TProgressEventListener;
+import com.manolodominguez.opensimmpls.gui.utils.TProgressEventListener;
 import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
 
 /**
