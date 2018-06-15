@@ -51,5 +51,4 @@ public class EIDGeneratorOverflow extends Exception {
     }
 
     private ResourceBundle translations;
-    
 }

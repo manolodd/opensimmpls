@@ -15,26 +15,40 @@
  */
 package com.manolodominguez.opensimmpls.utils;
 
-/** Esta clase implementa una excepci�n que se usar� cuando se hayan usado todas las
- * direcciones IP que es capaz de generar el generador autom�tico de direcciones
- * IP.
- * @version 1.0
- * @author <B>Manuel Dom�nguez Dorado</B><br><A
- * href="mailto:ingeniero@ManoloDominguez.com">ingeniero@ManoloDominguez.com</A><br><A href="http://www.ManoloDominguez.com" target="_blank">http://www.ManoloDominguez.com</A>
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.ResourceBundle;
+
+/**
+ * This class implements an exceptions that is thown when a IPv4 generator
+ * reaches its maximum IPv4 value.
+ *
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
 public class EIPv4Overflow extends Exception {
-    
-    /** Este es el constructor de la clase. Crea una nueva instancia de EDesbordeDeIP.
+
+    /**
+     * This method is the constructor of the class. It is create a new instance
+     * of EIPv4Overflow.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public EIPv4Overflow() {
+        this.translations = ResourceBundle.getBundle(AvailableBundles.E_IPV4_OVERFLOW.getPath());
     }
-    
-    /** Devuelve una cadena de texto explicando el motivo de la excepci�n.
-     * @return Descripci�n textual del error que ha ocurrido
+
+    /**
+     * This method gets a textual representation of this exception.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return a textual representation of this exception.
      * @since 2.0
      */
+    @Override
     public String toString() {
-        return(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("GeneradorIP.LlegoAlLimite"));
+        return (this.translations.getString("GeneradorIP.LlegoAlLimite"));
     }
+
+    private ResourceBundle translations;
 }

@@ -43,7 +43,8 @@ public enum AvailableBundles {
     SPLASH("com/manolodominguez/opensimmpls/resources/translations/translations"),
     OSMFILTER("com/manolodominguez/opensimmpls/resources/translations/translations"),
     IMAGE_BROKER("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    E_ID_GENERATOR_OVERFLOW("com/manolodominguez/opensimmpls/resources/translations/translations");
+    E_ID_GENERATOR_OVERFLOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    E_IPV4_OVERFLOW("com/manolodominguez/opensimmpls/resources/translations/translations");
 
     private final String bundlePath;
 
