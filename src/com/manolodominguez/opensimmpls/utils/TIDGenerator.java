@@ -56,7 +56,7 @@ public class TIDGenerator {
      * value.
      * @since 2.0
      */
-    synchronized public int getNewIdentifier() throws EIDGeneratorOverflow {
+    synchronized public int getNextIdentifier() throws EIDGeneratorOverflow {
         if (this.identifier >= Integer.MAX_VALUE) {
             throw new EIDGeneratorOverflow();
         } else {
