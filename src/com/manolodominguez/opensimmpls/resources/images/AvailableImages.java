@@ -16,10 +16,12 @@
 package com.manolodominguez.opensimmpls.resources.images;
 
 /**
+ * This is an enum implementation to identify all available images that can be
+ * used in OpenSimMPLS.
  *
- * @author manolodd
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+ * @version 2.0
  */
-// FIX: Change TImageBroker to use this enum items.
 public enum AvailableImages {
     OPEN_MENU_GRAY("abrir_menu_gris.png"),
     OPEN_MENU_COLOR("abrir_menu.png"),
@@ -165,10 +167,27 @@ public enum AvailableImages {
 
     private final String imageFileName;
 
+    /**
+     * This is the constructor of the enum. It creates a new enum item and
+     * associates a filename to it.
+     *
+     * @param imageFilename the filename that corresponds to the new available
+     * image created.
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @since 2.0
+     */
     private AvailableImages(String imageFileName) {
         this.imageFileName = imageFileName;
     }
 
+    /**
+     * This methods gets the complete file path to the image associated to the
+     * enum item.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the complete file path to the image associated to the enum item.
+     * @since 2.0
+     */
     public String getPath() {
         return AvailableImages.IMAGES_PATH + this.imageFileName;
     }
