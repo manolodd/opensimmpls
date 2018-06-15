@@ -16,8 +16,7 @@
 package com.manolodominguez.opensimmpls.utils;
 
 /**
- * This class implements a ID generator that generates numeric IDs that are
- * always different, in a cycle.
+ * This class implements a ID generator that generates consecutive numeric IDs.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
