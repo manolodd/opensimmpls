@@ -18,6 +18,7 @@ package com.manolodominguez.opensimmpls.ui.simulator;
 import com.manolodominguez.opensimmpls.hardware.timer.EProgressEventGeneratorOnlyAllowASingleListener;
 import com.manolodominguez.opensimmpls.hardware.timer.TTimestamp;
 import com.manolodominguez.opensimmpls.io.osm.TOSMSaver;
+import com.manolodominguez.opensimmpls.resources.images.AvailableImages;
 import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.scenario.TExternalLink;
 import com.manolodominguez.opensimmpls.scenario.TInternalLink;
@@ -301,7 +302,7 @@ public class JScenarioWindow extends JInternalFrame {
         setTitle(this.translations.getString("VentanaHija.Titulo"));
         // FIX: Do not use harcoded values. Use class constants instead
         setFont(new Font("Dialog", 0, 12));
-        setFrameIcon(this.imageBroker.getImageIcon(TImageBroker.SCENARIO_WINDOW_ICON_MENU));
+        setFrameIcon(this.imageBroker.getImageIcon(AvailableImages.SCENARIO_WINDOW_ICON_MENU));
         // FIX: Do not use harcoded values. Use class constants instead
         setNormalBounds(new Rectangle(10, 10, 100, 100));
         // FIX: Do not use harcoded values. Use class constants instead
@@ -315,7 +316,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.designMainContainerPanel.setLayout(new BorderLayout());
         this.designToolbarPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.designToolbarPanel.setBorder(new EtchedBorder());
-        this.iconContainerTrafficGeneratorNode.setIcon(this.imageBroker.getImageIcon(TImageBroker.TRAFFIC_GENERATOR_MENU_COLOR));
+        this.iconContainerTrafficGeneratorNode.setIcon(this.imageBroker.getImageIcon(AvailableImages.TRAFFIC_GENERATOR_MENU_COLOR));
         this.iconContainerTrafficGeneratorNode.setToolTipText(this.translations.getString("VentanaHija.Topic.Emisor"));
         this.iconContainerTrafficGeneratorNode.addMouseListener(new MouseAdapter() {
             @Override
@@ -334,7 +335,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
         });
         this.designToolbarPanel.add(this.iconContainerTrafficGeneratorNode);
-        this.iconContainerTrafficSink.setIcon(this.imageBroker.getImageIcon(TImageBroker.TRAFFIC_SINK_MENU_COLOR));
+        this.iconContainerTrafficSink.setIcon(this.imageBroker.getImageIcon(AvailableImages.TRAFFIC_SINK_MENU_COLOR));
         this.iconContainerTrafficSink.setToolTipText(this.translations.getString("VentanaHija.Topic.Receptor"));
         this.iconContainerTrafficSink.addMouseListener(new MouseAdapter() {
             @Override
@@ -353,7 +354,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
         });
         this.designToolbarPanel.add(this.iconContainerTrafficSink);
-        this.iconContainerLER.setIcon(this.imageBroker.getImageIcon(TImageBroker.LER_MENU_COLOR));
+        this.iconContainerLER.setIcon(this.imageBroker.getImageIcon(AvailableImages.LER_MENU_COLOR));
         this.iconContainerLER.setToolTipText(this.translations.getString("VentanaHija.Topic.LER"));
         this.iconContainerLER.addMouseListener(new MouseAdapter() {
             @Override
@@ -372,7 +373,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
         });
         this.designToolbarPanel.add(this.iconContainerLER);
-        this.iconContainerActiveLER.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACTIVE_LER_MENU_COLOR));
+        this.iconContainerActiveLER.setIcon(this.imageBroker.getImageIcon(AvailableImages.ACTIVE_LER_MENU_COLOR));
         this.iconContainerActiveLER.setToolTipText(this.translations.getString("VentanaHija.Topic.LERActivo"));
         this.iconContainerActiveLER.addMouseListener(new MouseAdapter() {
             @Override
@@ -391,7 +392,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
         });
         this.designToolbarPanel.add(this.iconContainerActiveLER);
-        this.iconContainerLSR.setIcon(this.imageBroker.getImageIcon(TImageBroker.LSR_MENU_COLOR));
+        this.iconContainerLSR.setIcon(this.imageBroker.getImageIcon(AvailableImages.LSR_MENU_COLOR));
         this.iconContainerLSR.setToolTipText(this.translations.getString("VentanaHija.Topic.LSR"));
         this.iconContainerLSR.addMouseListener(new MouseAdapter() {
             @Override
@@ -410,7 +411,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
         });
         this.designToolbarPanel.add(this.iconContainerLSR);
-        this.iconContainerActiveLSR.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACTIVE_LSR_MENU_COLOR));
+        this.iconContainerActiveLSR.setIcon(this.imageBroker.getImageIcon(AvailableImages.ACTIVE_LSR_MENU_COLOR));
         this.iconContainerActiveLSR.setToolTipText(this.translations.getString("VentanaHija.Topic.LSRActivo"));
         this.iconContainerActiveLSR.addMouseListener(new MouseAdapter() {
             @Override
@@ -429,7 +430,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
         });
         this.designToolbarPanel.add(this.iconContainerActiveLSR);
-        this.iconContainerLink.setIcon(this.imageBroker.getImageIcon(TImageBroker.LINK_MENU_COLOR));
+        this.iconContainerLink.setIcon(this.imageBroker.getImageIcon(AvailableImages.LINK_MENU_COLOR));
         this.iconContainerLink.setToolTipText(this.translations.getString("VentanaHija.Topic.Enlace"));
         this.iconContainerLink.addMouseListener(new MouseAdapter() {
             @Override
@@ -482,7 +483,7 @@ public class JScenarioWindow extends JInternalFrame {
         });
         this.scrollPaneDesign.setViewportView(this.designPanel);
         this.designMainContainerPanel.add(this.scrollPaneDesign, BorderLayout.CENTER);
-        this.tabsPanel.addTab(this.translations.getString("VentanaHija.Tab.Disenio"), this.imageBroker.getImageIcon(TImageBroker.DESIGN), this.designMainContainerPanel, this.translations.getString("VentanaHija.A_panel_to_design_network_topology"));
+        this.tabsPanel.addTab(this.translations.getString("VentanaHija.Tab.Disenio"), this.imageBroker.getImageIcon(AvailableImages.DESIGN), this.designMainContainerPanel, this.translations.getString("VentanaHija.A_panel_to_design_network_topology"));
         // Definition of options panel content
         this.optionsPrimaryMainContainerPanel.setLayout(new BorderLayout());
         this.optionsPrimaryMainContainerPanel.setBorder(new EtchedBorder());
@@ -786,12 +787,12 @@ public class JScenarioWindow extends JInternalFrame {
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         this.optionsSecondaryMainContainerPanel.add(this.optionsSimulationTimingPanel, gridBagConstraints);
         this.optionsPrimaryMainContainerPanel.add(this.optionsSecondaryMainContainerPanel, BorderLayout.NORTH);
-        this.tabsPanel.addTab(this.translations.getString("VentanaHija.Options"), imageBroker.getImageIcon(TImageBroker.OPTIONS), this.optionsPrimaryMainContainerPanel, this.translations.getString("VentanaHija.Options_about_the_scene"));
+        this.tabsPanel.addTab(this.translations.getString("VentanaHija.Options"), imageBroker.getImageIcon(AvailableImages.OPTIONS), this.optionsPrimaryMainContainerPanel, this.translations.getString("VentanaHija.Options_about_the_scene"));
         // Definition of simulation panel content
         this.simulationMainContainerPanel.setLayout(new BorderLayout());
         this.simulationToolbarPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.simulationToolbarPanel.setBorder(new EtchedBorder());
-        this.iconContainterStartSimulation.setIcon(this.imageBroker.getImageIcon(TImageBroker.GENERATE_SIMULATION_COLOR));
+        this.iconContainterStartSimulation.setIcon(this.imageBroker.getImageIcon(AvailableImages.GENERATE_SIMULATION_COLOR));
         this.iconContainterStartSimulation.setToolTipText(this.translations.getString("VentanaHija.Topic.Generar"));
         this.iconContainterStartSimulation.addMouseListener(new MouseAdapter() {
             @Override
@@ -810,7 +811,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
         });
         this.simulationToolbarPanel.add(this.iconContainterStartSimulation);
-        this.iconContainerStopSimulation.setIcon(this.imageBroker.getImageIcon(TImageBroker.STOP_SIMULATION_COLOR));
+        this.iconContainerStopSimulation.setIcon(this.imageBroker.getImageIcon(AvailableImages.STOP_SIMULATION_COLOR));
         this.iconContainerStopSimulation.setToolTipText(this.translations.getString("VentanaHija.Topic.Finalizar"));
         this.iconContainerStopSimulation.setEnabled(false);
         this.iconContainerStopSimulation.addMouseListener(new MouseAdapter() {
@@ -830,7 +831,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
         });
         this.simulationToolbarPanel.add(this.iconContainerStopSimulation);
-        this.iconContainerResumeSimulation.setIcon(this.imageBroker.getImageIcon(TImageBroker.START_SIMULATION_COLOR));
+        this.iconContainerResumeSimulation.setIcon(this.imageBroker.getImageIcon(AvailableImages.START_SIMULATION_COLOR));
         this.iconContainerResumeSimulation.setToolTipText(this.translations.getString("VentanaHija.Topic.Simulacion"));
         this.iconContainerResumeSimulation.setEnabled(false);
         this.iconContainerResumeSimulation.addMouseListener(new MouseAdapter() {
@@ -850,7 +851,7 @@ public class JScenarioWindow extends JInternalFrame {
             }
         });
         this.simulationToolbarPanel.add(this.iconContainerResumeSimulation);
-        this.iconContainerPauseSimulation.setIcon(this.imageBroker.getImageIcon(TImageBroker.PAUSE_SIMULATION_COLOR));
+        this.iconContainerPauseSimulation.setIcon(this.imageBroker.getImageIcon(AvailableImages.PAUSE_SIMULATION_COLOR));
         this.iconContainerPauseSimulation.setToolTipText(this.translations.getString("VentanaHija.Topic.Detener"));
         this.iconContainerPauseSimulation.setEnabled(false);
         this.iconContainerPauseSimulation.addMouseListener(new MouseAdapter() {
@@ -938,7 +939,7 @@ public class JScenarioWindow extends JInternalFrame {
         });
         this.scrollPaneSimulation.setViewportView(this.simulationPanel);
         this.simulationMainContainerPanel.add(this.scrollPaneSimulation, BorderLayout.CENTER);
-        this.tabsPanel.addTab(this.translations.getString("VentanaHija.Tab.Simulacion"), this.imageBroker.getImageIcon(TImageBroker.SIMULATION), this.simulationMainContainerPanel, this.translations.getString("VentanaHija.A_panel_to_generate_and_play_simulation."));
+        this.tabsPanel.addTab(this.translations.getString("VentanaHija.Tab.Simulacion"), this.imageBroker.getImageIcon(AvailableImages.SIMULATION), this.simulationMainContainerPanel, this.translations.getString("VentanaHija.A_panel_to_generate_and_play_simulation."));
         // Definition of analysis panel content
         this.analysisMainContainerPanel.setLayout(new BorderLayout());
         this.analysisMainContainerPanel.setBackground(Color.WHITE);
@@ -992,7 +993,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.scrollPaneAnalysis.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         this.scrollPaneAnalysis.setViewportView(this.analysisPanel);
         this.analysisMainContainerPanel.add(this.scrollPaneAnalysis, BorderLayout.CENTER);
-        this.tabsPanel.addTab(this.translations.getString("JVentanaHija.Analisis"), this.imageBroker.getImageIcon(TImageBroker.ANALYSIS), this.analysisMainContainerPanel, this.translations.getString("JVentanaHija.Analisis.Tooltip"));
+        this.tabsPanel.addTab(this.translations.getString("JVentanaHija.Analisis"), this.imageBroker.getImageIcon(AvailableImages.ANALYSIS), this.analysisMainContainerPanel, this.translations.getString("JVentanaHija.Analisis.Tooltip"));
         this.tabsPanel.setBackground(Color.WHITE);
         getContentPane().add(this.tabsPanel, BorderLayout.CENTER);
         pack();
@@ -1896,7 +1897,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseExitingPauseIcon(MouseEvent evt) {
-        this.iconContainerPauseSimulation.setIcon(this.imageBroker.getImageIcon(TImageBroker.PAUSE_SIMULATION_COLOR));
+        this.iconContainerPauseSimulation.setIcon(this.imageBroker.getImageIcon(AvailableImages.PAUSE_SIMULATION_COLOR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -1909,7 +1910,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseEnteringPauseIcon(MouseEvent evt) {
-        this.iconContainerPauseSimulation.setIcon(this.imageBroker.getImageIcon(TImageBroker.PAUSE_HIGHLIGHTED));
+        this.iconContainerPauseSimulation.setIcon(this.imageBroker.getImageIcon(AvailableImages.PAUSE_HIGHLIGHTED));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -1922,7 +1923,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseExitingStopIcon(MouseEvent evt) {
-        this.iconContainerStopSimulation.setIcon(this.imageBroker.getImageIcon(TImageBroker.STOP_SIMULATION_COLOR));
+        this.iconContainerStopSimulation.setIcon(this.imageBroker.getImageIcon(AvailableImages.STOP_SIMULATION_COLOR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -1935,7 +1936,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseEnteringStopIcon(MouseEvent evt) {
-        this.iconContainerStopSimulation.setIcon(this.imageBroker.getImageIcon(TImageBroker.STOP_HIGHLIGHTED));
+        this.iconContainerStopSimulation.setIcon(this.imageBroker.getImageIcon(AvailableImages.STOP_HIGHLIGHTED));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -1948,7 +1949,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseExitingResumeIcon(MouseEvent evt) {
-        this.iconContainerResumeSimulation.setIcon(this.imageBroker.getImageIcon(TImageBroker.START_SIMULATION_COLOR));
+        this.iconContainerResumeSimulation.setIcon(this.imageBroker.getImageIcon(AvailableImages.START_SIMULATION_COLOR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -1961,7 +1962,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseEnteringResumeIcon(MouseEvent evt) {
-        this.iconContainerResumeSimulation.setIcon(this.imageBroker.getImageIcon(TImageBroker.START_HIGHLIGHTED));
+        this.iconContainerResumeSimulation.setIcon(this.imageBroker.getImageIcon(AvailableImages.START_HIGHLIGHTED));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -1974,7 +1975,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseExitingStartIcon(MouseEvent evt) {
-        this.iconContainterStartSimulation.setIcon(this.imageBroker.getImageIcon(TImageBroker.GENERATE_SIMULATION_COLOR));
+        this.iconContainterStartSimulation.setIcon(this.imageBroker.getImageIcon(AvailableImages.GENERATE_SIMULATION_COLOR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -1987,7 +1988,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseEnteringStartIcon(MouseEvent evt) {
-        this.iconContainterStartSimulation.setIcon(this.imageBroker.getImageIcon(TImageBroker.GENERATE_HIGHLIGHTED));
+        this.iconContainterStartSimulation.setIcon(this.imageBroker.getImageIcon(AvailableImages.GENERATE_HIGHLIGHTED));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -2038,7 +2039,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseExitingLinkIcon(MouseEvent evt) {
-        this.iconContainerLink.setIcon(this.imageBroker.getImageIcon(TImageBroker.LINK_MENU_COLOR));
+        this.iconContainerLink.setIcon(this.imageBroker.getImageIcon(AvailableImages.LINK_MENU_COLOR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -2051,7 +2052,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseEnteringLinkIcon(MouseEvent evt) {
-        this.iconContainerLink.setIcon(this.imageBroker.getImageIcon(TImageBroker.LINK_MENU_HIGHLIGHTED));
+        this.iconContainerLink.setIcon(this.imageBroker.getImageIcon(AvailableImages.LINK_MENU_HIGHLIGHTED));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -2064,7 +2065,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseExitingActiveLSRNodeIcon(MouseEvent evt) {
-        this.iconContainerActiveLSR.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACTIVE_LSR_MENU_COLOR));
+        this.iconContainerActiveLSR.setIcon(this.imageBroker.getImageIcon(AvailableImages.ACTIVE_LSR_MENU_COLOR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -2077,7 +2078,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseEnteringActiveLSRNodeIcon(MouseEvent evt) {
-        this.iconContainerActiveLSR.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACTIVE_LSR_MENU_HIGHLIGHTED));
+        this.iconContainerActiveLSR.setIcon(this.imageBroker.getImageIcon(AvailableImages.ACTIVE_LSR_MENU_HIGHLIGHTED));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -2090,7 +2091,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseExitingLSRNodeIcon(MouseEvent evt) {
-        this.iconContainerLSR.setIcon(this.imageBroker.getImageIcon(TImageBroker.LSR_MENU_COLOR));
+        this.iconContainerLSR.setIcon(this.imageBroker.getImageIcon(AvailableImages.LSR_MENU_COLOR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -2103,7 +2104,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseEnteringLSRNodeIcon(MouseEvent evt) {
-        this.iconContainerLSR.setIcon(this.imageBroker.getImageIcon(TImageBroker.LSR_MENU_HIGHLIGHTED));
+        this.iconContainerLSR.setIcon(this.imageBroker.getImageIcon(AvailableImages.LSR_MENU_HIGHLIGHTED));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -2116,7 +2117,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseExitingActiveLERNodeIcon(MouseEvent evt) {
-        this.iconContainerActiveLER.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACTIVE_LER_MENU_COLOR));
+        this.iconContainerActiveLER.setIcon(this.imageBroker.getImageIcon(AvailableImages.ACTIVE_LER_MENU_COLOR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -2129,7 +2130,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseEnteringActiveLERNodeIcon(MouseEvent evt) {
-        this.iconContainerActiveLER.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACTIVE_LER_MENU_HIGHLIGHTED));
+        this.iconContainerActiveLER.setIcon(this.imageBroker.getImageIcon(AvailableImages.ACTIVE_LER_MENU_HIGHLIGHTED));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -2142,7 +2143,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseExitingLERNodeIcon(MouseEvent evt) {
-        this.iconContainerLER.setIcon(this.imageBroker.getImageIcon(TImageBroker.LER_MENU_COLOR));
+        this.iconContainerLER.setIcon(this.imageBroker.getImageIcon(AvailableImages.LER_MENU_COLOR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -2155,7 +2156,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseEnteringLERNodeIcon(MouseEvent evt) {
-        this.iconContainerLER.setIcon(this.imageBroker.getImageIcon(TImageBroker.LER_MENU_HIGHLIGHTED));
+        this.iconContainerLER.setIcon(this.imageBroker.getImageIcon(AvailableImages.LER_MENU_HIGHLIGHTED));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -2169,7 +2170,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseExitingTrafficSinkNodeIcon(MouseEvent evt) {
-        this.iconContainerTrafficSink.setIcon(this.imageBroker.getImageIcon(TImageBroker.TRAFFIC_SINK_MENU_COLOR));
+        this.iconContainerTrafficSink.setIcon(this.imageBroker.getImageIcon(AvailableImages.TRAFFIC_SINK_MENU_COLOR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -2183,7 +2184,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseEnteringTrafficSinkNodeIcon(MouseEvent evt) {
-        this.iconContainerTrafficSink.setIcon(this.imageBroker.getImageIcon(TImageBroker.TRAFFIC_SINK_MENU_HIGHLIGHTED));
+        this.iconContainerTrafficSink.setIcon(this.imageBroker.getImageIcon(AvailableImages.TRAFFIC_SINK_MENU_HIGHLIGHTED));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -2197,7 +2198,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseExitingTrafficGeneratorNodeIcon(MouseEvent evt) {
-        this.iconContainerTrafficGeneratorNode.setIcon(this.imageBroker.getImageIcon(TImageBroker.TRAFFIC_GENERATOR_MENU_COLOR));
+        this.iconContainerTrafficGeneratorNode.setIcon(this.imageBroker.getImageIcon(AvailableImages.TRAFFIC_GENERATOR_MENU_COLOR));
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -2211,7 +2212,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void handleMouseEnteringTrafficGeneratorNodeIcon(MouseEvent evt) {
-        this.iconContainerTrafficGeneratorNode.setIcon(this.imageBroker.getImageIcon(TImageBroker.TRAFFIC_GENERATOR_MENU_HIGHLIGHTED));
+        this.iconContainerTrafficGeneratorNode.setIcon(this.imageBroker.getImageIcon(AvailableImages.TRAFFIC_GENERATOR_MENU_HIGHLIGHTED));
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -2667,17 +2668,17 @@ public class JScenarioWindow extends JInternalFrame {
         TNode nt = this.scenario.getTopology().getFirstNodeNamed(nodeName);
         if (nt != null) {
             if (nt.getNodeType() == TNode.TRAFFIC_GENERATOR) {
-                this.labelElementToAnalize.setIcon(this.imageBroker.getImageIcon(TImageBroker.TRAFFIC_GENERATOR));
+                this.labelElementToAnalize.setIcon(this.imageBroker.getImageIcon(AvailableImages.TRAFFIC_GENERATOR));
             } else if (nt.getNodeType() == TNode.TRAFFIC_SINK) {
-                this.labelElementToAnalize.setIcon(this.imageBroker.getImageIcon(TImageBroker.TRAFFIC_SINK));
+                this.labelElementToAnalize.setIcon(this.imageBroker.getImageIcon(AvailableImages.TRAFFIC_SINK));
             } else if (nt.getNodeType() == TNode.LER) {
-                this.labelElementToAnalize.setIcon(this.imageBroker.getImageIcon(TImageBroker.LER));
+                this.labelElementToAnalize.setIcon(this.imageBroker.getImageIcon(AvailableImages.LER));
             } else if (nt.getNodeType() == TNode.ACTIVE_LER) {
-                this.labelElementToAnalize.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACTIVE_LER));
+                this.labelElementToAnalize.setIcon(this.imageBroker.getImageIcon(AvailableImages.ACTIVE_LER));
             } else if (nt.getNodeType() == TNode.LSR) {
-                this.labelElementToAnalize.setIcon(this.imageBroker.getImageIcon(TImageBroker.LSR));
+                this.labelElementToAnalize.setIcon(this.imageBroker.getImageIcon(AvailableImages.LSR));
             } else if (nt.getNodeType() == TNode.ACTIVE_LSR) {
-                this.labelElementToAnalize.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACTIVE_LSR));
+                this.labelElementToAnalize.setIcon(this.imageBroker.getImageIcon(AvailableImages.ACTIVE_LSR));
             }
             int numeroGraficos = nt.getStats().getNumberOfAvailableDatasets();
 

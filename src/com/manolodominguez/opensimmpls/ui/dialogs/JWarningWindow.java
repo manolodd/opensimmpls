@@ -15,6 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
+import com.manolodominguez.opensimmpls.resources.images.AvailableImages;
 import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
 import java.awt.Color;
@@ -84,10 +85,10 @@ public class JWarningWindow extends JDialog {
             }
         });
         getContentPane().setLayout(new AbsoluteLayout());
-        this.iconContainerWarningMark.setIcon(this.imageBroker.getImageIcon(TImageBroker.WARNING));
+        this.iconContainerWarningMark.setIcon(this.imageBroker.getImageIcon(AvailableImages.WARNING));
         getContentPane().add(this.iconContainerWarningMark, new AbsoluteConstraints(10, 15, -1, -1));
         this.buttonOK.setFont(new Font("Dialog", 0, 12));
-        this.buttonOK.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACCEPT));
+        this.buttonOK.setIcon(this.imageBroker.getImageIcon(AvailableImages.ACCEPT));
         this.buttonOK.setMnemonic(this.translations.getString("VentanaAdvertencia.ResaltadoBoton").charAt(0));
         this.buttonOK.setText(this.translations.getString("OK"));
         this.buttonOK.addActionListener(new ActionListener() {

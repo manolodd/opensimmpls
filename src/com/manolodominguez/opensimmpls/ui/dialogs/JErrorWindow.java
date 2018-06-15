@@ -15,6 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
+import com.manolodominguez.opensimmpls.resources.images.AvailableImages;
 import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
 import java.awt.Color;
@@ -83,10 +84,10 @@ public class JErrorWindow extends JDialog {
             }
         });
         getContentPane().setLayout(new AbsoluteLayout());
-        this.iconContainerError.setIcon(this.imageBroker.getImageIcon(TImageBroker.ERROR));
+        this.iconContainerError.setIcon(this.imageBroker.getImageIcon(AvailableImages.ERROR));
         getContentPane().add(this.iconContainerError, new AbsoluteConstraints(10, 15, -1, -1));
         this.buttonOk.setFont(new Font("Dialog", 0, 12));
-        this.buttonOk.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACCEPT));
+        this.buttonOk.setIcon(this.imageBroker.getImageIcon(AvailableImages.ACCEPT));
         this.buttonOk.setMnemonic(this.translations.getString("VentanaError.ResaltadoBoton").charAt(0));
         this.buttonOk.setText(this.translations.getString("OK"));
         this.buttonOk.addActionListener(new ActionListener() {

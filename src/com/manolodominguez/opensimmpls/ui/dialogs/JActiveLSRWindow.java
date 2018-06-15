@@ -15,6 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
+import com.manolodominguez.opensimmpls.resources.images.AvailableImages;
 import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.scenario.TActiveLSRNode;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
@@ -136,7 +137,7 @@ public class JActiveLSRWindow extends JDialog {
         this.mainPanel.setLayout(new AbsoluteLayout());
         this.panelTabs.setFont(new Font("Dialog", 0, 12));
         this.panelGeneralConfiguration.setLayout(new AbsoluteLayout());
-        this.iconContainerActiveLSR.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACTIVE_LSR));
+        this.iconContainerActiveLSR.setIcon(this.imageBroker.getImageIcon(AvailableImages.ACTIVE_LSR));
         this.iconContainerActiveLSR.setText(this.translations.getString("VentanaLSRA.descripcion"));
         this.panelGeneralConfiguration.add(this.iconContainerActiveLSR, new AbsoluteConstraints(15, 20, 335, -1));
         this.labelName.setFont(new Font("Dialog", 0, 12));
@@ -176,7 +177,7 @@ public class JActiveLSRWindow extends JDialog {
         this.panelGeneralConfiguration.add(this.checkBoxShowName, new AbsoluteConstraints(215, 135, -1, -1));
         this.panelTabs.addTab(this.translations.getString("VentanaLSR.tabs.General"), this.panelGeneralConfiguration);
         this.panelQuickConfiguration.setLayout(new AbsoluteLayout());
-        this.labelQuickConfiguration.setIcon(this.imageBroker.getImageIcon(TImageBroker.WIZARD));
+        this.labelQuickConfiguration.setIcon(this.imageBroker.getImageIcon(AvailableImages.WIZARD));
         this.labelQuickConfiguration.setText(this.translations.getString("VentanaLSRA.ConfiguracionSencilla"));
         this.panelQuickConfiguration.add(this.labelQuickConfiguration, new AbsoluteConstraints(15, 20, 335, -1));
         this.checkBoxQuickGenerateStatistics.setFont(new Font("Dialog", 0, 12));
@@ -204,7 +205,7 @@ public class JActiveLSRWindow extends JDialog {
         this.panelQuickConfiguration.add(this.comboBoxPredefinedOptions, new AbsoluteConstraints(190, 110, -1, -1));
         this.panelTabs.addTab(this.translations.getString("VentanaLSR.tabs.Fast"), this.panelQuickConfiguration);
         this.panelAdvancedConfiguration.setLayout(new AbsoluteLayout());
-        this.labelAdvancedConfiguration.setIcon(this.imageBroker.getImageIcon(TImageBroker.ADVANCED));
+        this.labelAdvancedConfiguration.setIcon(this.imageBroker.getImageIcon(AvailableImages.ADVANCED));
         this.labelAdvancedConfiguration.setText(this.translations.getString("VentanaLSRA.ConfiguracionAvanzada"));
         this.panelAdvancedConfiguration.add(this.labelAdvancedConfiguration, new AbsoluteConstraints(15, 20, 335, -1));
         this.checkBoxAdvancedGenerateStatistics.setFont(new Font("Dialog", 0, 12));
@@ -283,7 +284,7 @@ public class JActiveLSRWindow extends JDialog {
         this.mainPanel.add(this.panelTabs, new AbsoluteConstraints(15, 15, 370, 240));
         this.panelButtons.setLayout(new AbsoluteLayout());
         this.buttonOK.setFont(new Font("Dialog", 0, 12));
-        this.buttonOK.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACCEPT));
+        this.buttonOK.setIcon(this.imageBroker.getImageIcon(AvailableImages.ACCEPT));
         this.buttonOK.setMnemonic(this.translations.getString("VentanaLSR.botones.mne.Aceptar").charAt(0));
         this.buttonOK.setText(this.translations.getString("VentanaLSR.boton.Ok"));
         this.buttonOK.addActionListener(new ActionListener() {
@@ -294,7 +295,7 @@ public class JActiveLSRWindow extends JDialog {
         });
         this.panelButtons.add(this.buttonOK, new AbsoluteConstraints(20, 10, 105, -1));
         this.buttonCancel.setFont(new Font("Dialog", 0, 12));
-        this.buttonCancel.setIcon(this.imageBroker.getImageIcon(TImageBroker.CANCEL));
+        this.buttonCancel.setIcon(this.imageBroker.getImageIcon(AvailableImages.CANCEL));
         this.buttonCancel.setMnemonic(this.translations.getString("VentanaLSR.botones.mne.Cancelar").charAt(0));
         this.buttonCancel.setText(this.translations.getString("VentanaLSR.boton.Cancel"));
         this.buttonCancel.addActionListener(new ActionListener() {

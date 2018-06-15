@@ -15,6 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
+import com.manolodominguez.opensimmpls.resources.images.AvailableImages;
 import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.scenario.TActiveLERNode;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
@@ -136,7 +137,7 @@ public class JActiveLERWindow extends JDialog {
         this.mainPanel.setLayout(new AbsoluteLayout());
         this.panelTabs.setFont(new Font("Dialog", 0, 12));
         this.panelGeneralConfiguration.setLayout(new AbsoluteLayout());
-        this.iconContainerActiveLER.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACTIVE_LER));
+        this.iconContainerActiveLER.setIcon(this.imageBroker.getImageIcon(AvailableImages.ACTIVE_LER));
         this.iconContainerActiveLER.setText(translations.getString("LERA.Descripcion"));
         this.panelGeneralConfiguration.add(this.iconContainerActiveLER, new AbsoluteConstraints(15, 20, 335, -1));
         this.labelName.setFont(new Font("Dialog", 0, 12));
@@ -185,7 +186,7 @@ public class JActiveLERWindow extends JDialog {
             }
         });
         this.panelQuickConfiguration.add(this.checkBoxQuickGenerateStatistics, new AbsoluteConstraints(70, 160, -1, -1));
-        this.labelQuickConfiguration.setIcon(this.imageBroker.getImageIcon(TImageBroker.WIZARD));
+        this.labelQuickConfiguration.setIcon(this.imageBroker.getImageIcon(AvailableImages.WIZARD));
         this.labelQuickConfiguration.setText(translations.getString("VentanaLERA.ConfiguracionRapida"));
         this.panelQuickConfiguration.add(this.labelQuickConfiguration, new AbsoluteConstraints(15, 20, 335, -1));
         this.labelActiveLERFeatures.setFont(new Font("Dialog", 0, 12));
@@ -213,7 +214,7 @@ public class JActiveLERWindow extends JDialog {
             }
         });
         this.panelAdvancedConfiguration.add(this.checkBoxAdvancedGenerateStatistics, new AbsoluteConstraints(70, 180, -1, -1));
-        this.labelAdvancedConfiguration.setIcon(this.imageBroker.getImageIcon(TImageBroker.ADVANCED));
+        this.labelAdvancedConfiguration.setIcon(this.imageBroker.getImageIcon(AvailableImages.ADVANCED));
         this.labelAdvancedConfiguration.setText(translations.getString("VentanaLERA.ConfiguracionAvanzada"));
         this.panelAdvancedConfiguration.add(this.labelAdvancedConfiguration, new AbsoluteConstraints(15, 20, 335, -1));
         this.labelRoutingPower.setFont(new Font("Dialog", 0, 12));
@@ -283,7 +284,7 @@ public class JActiveLERWindow extends JDialog {
         this.mainPanel.add(this.panelTabs, new AbsoluteConstraints(15, 15, 370, 240));
         this.panelButtons.setLayout(new AbsoluteLayout());
         this.buttonOK.setFont(new Font("Dialog", 0, 12));
-        this.buttonOK.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACCEPT));
+        this.buttonOK.setIcon(this.imageBroker.getImageIcon(AvailableImages.ACCEPT));
         this.buttonOK.setMnemonic(translations.getString("VentanaLER.botones.mne.Aceptar").charAt(0));
         this.buttonOK.setText(translations.getString("VentanaLER.boton.Ok"));
         this.buttonOK.addActionListener(new ActionListener() {
@@ -294,7 +295,7 @@ public class JActiveLERWindow extends JDialog {
         });
         this.panelButtons.add(this.buttonOK, new AbsoluteConstraints(15, 15, 115, -1));
         this.buttonCancel.setFont(new Font("Dialog", 0, 12));
-        this.buttonCancel.setIcon(this.imageBroker.getImageIcon(TImageBroker.CANCEL));
+        this.buttonCancel.setIcon(this.imageBroker.getImageIcon(AvailableImages.CANCEL));
         this.buttonCancel.setMnemonic(translations.getString("VentanaLER.botones.mne.Cancelar").charAt(0));
         this.buttonCancel.setText(translations.getString("VentanaLER.boton.Cancel"));
         this.buttonCancel.addActionListener(new ActionListener() {

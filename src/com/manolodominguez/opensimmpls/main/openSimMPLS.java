@@ -24,8 +24,6 @@ import com.manolodominguez.opensimmpls.ui.splash.JSplash;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 
 /**
@@ -105,7 +103,7 @@ public class openSimMPLS {
             splash.setVisible(true);
         });
         splash.setMessage(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("Loading_icons..."));
-        imagesBroker = new TImageBroker();
+        imagesBroker = TImageBroker.getInstance();
         splash.setMessage(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("openSimMPLS.generandoInterfaz"));
         simulator = new JOpenSimMPLS(imagesBroker);
         Dimension tamPantalla = Toolkit.getDefaultToolkit().getScreenSize();

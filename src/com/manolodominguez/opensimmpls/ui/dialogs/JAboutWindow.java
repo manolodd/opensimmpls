@@ -15,6 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
+import com.manolodominguez.opensimmpls.resources.images.AvailableImages;
 import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -75,7 +76,7 @@ public class JAboutWindow extends JDialog {
         });
 
         this.iconContainer.setHorizontalAlignment(SwingConstants.CENTER);
-        this.iconContainer.setIcon(this.imageBroker.getImageIcon(TImageBroker.SPLASH_ABOUT));
+        this.iconContainer.setIcon(this.imageBroker.getImageIcon(AvailableImages.SPLASH_ABOUT));
         getContentPane().add(this.iconContainer, new AbsoluteConstraints(0, 0, -1, 300));
         pack();
         Dimension frameSize = this.getSize();

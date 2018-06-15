@@ -15,6 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
+import com.manolodominguez.opensimmpls.resources.images.AvailableImages;
 import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
 import java.awt.Color;
@@ -87,10 +88,10 @@ public class JDecissionWindow extends JDialog {
             }
         });
         getContentPane().setLayout(new AbsoluteLayout());
-        this.iconContainerQuestionMark.setIcon(this.imageBroker.getImageIcon(TImageBroker.QUESTION_MARK));
+        this.iconContainerQuestionMark.setIcon(this.imageBroker.getImageIcon(AvailableImages.QUESTION_MARK));
         getContentPane().add(this.iconContainerQuestionMark, new AbsoluteConstraints(10, 15, -1, -1));
         this.buttonYes.setFont(new Font("Dialog", 0, 12));
-        this.buttonYes.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACCEPT));
+        this.buttonYes.setIcon(this.imageBroker.getImageIcon(AvailableImages.ACCEPT));
         this.buttonYes.setMnemonic(this.translations.getString("JVentanaBooleana.mnemonico.si").charAt(0));
         this.buttonYes.setText(this.translations.getString("JVentanaBooleana.Si"));
         this.buttonYes.addActionListener(new ActionListener() {
@@ -101,7 +102,7 @@ public class JDecissionWindow extends JDialog {
         });
         getContentPane().add(this.buttonYes, new AbsoluteConstraints(60, 80, 105, -1));
         this.buttonNo.setFont(new Font("Dialog", 0, 12));
-        this.buttonNo.setIcon(this.imageBroker.getImageIcon(TImageBroker.CANCEL));
+        this.buttonNo.setIcon(this.imageBroker.getImageIcon(AvailableImages.CANCEL));
         this.buttonNo.setMnemonic(this.translations.getString("JVentanaBooleana.mnemonico.no").charAt(0));
         this.buttonNo.setText(this.translations.getString("JVentanaBooleana.No"));
         this.buttonNo.addActionListener(new ActionListener() {

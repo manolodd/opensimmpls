@@ -15,6 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
+import com.manolodominguez.opensimmpls.resources.images.AvailableImages;
 import com.manolodominguez.opensimmpls.resources.license.AvailableLicenseFiles;
 import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.ui.utils.TImageBroker;
@@ -106,7 +107,7 @@ public class JLicenseWindow extends JDialog {
         this.scrollPaneLicense.setViewportView(this.textPaneLicenseText);
         getContentPane().add(this.scrollPaneLicense, new AbsoluteConstraints(15, 130, 535, 210));
         this.buttonOK.setFont(new Font("Dialog", 0, 12));
-        this.buttonOK.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACCEPT));
+        this.buttonOK.setIcon(this.imageBroker.getImageIcon(AvailableImages.ACCEPT));
         this.buttonOK.setMnemonic(this.translations.getString("VentanaLicencia.ResaltadoBoton").charAt(0));
         this.buttonOK.setText(this.translations.getString("OK"));
         this.buttonOK.addActionListener(new ActionListener() {
@@ -116,7 +117,7 @@ public class JLicenseWindow extends JDialog {
             }
         });
         getContentPane().add(this.buttonOK, new AbsoluteConstraints(15, 360, 100, -1));
-        this.iconContainerLicense.setIcon(imageBroker.getImageIcon(TImageBroker.LICENSE_LOGO)
+        this.iconContainerLicense.setIcon(imageBroker.getImageIcon(AvailableImages.LICENSE_LOGO)
         );
         this.iconContainerLicense.setFocusable(false);
         this.iconContainerLicense.setBackground(new Color(0, 0, 0, 0));

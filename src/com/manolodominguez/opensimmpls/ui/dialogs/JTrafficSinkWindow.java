@@ -15,6 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.ui.dialogs;
 
+import com.manolodominguez.opensimmpls.resources.images.AvailableImages;
 import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.scenario.TTrafficSinkNode;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
@@ -119,7 +120,7 @@ public class JTrafficSinkWindow extends JDialog {
         this.mainPanel.setLayout(new AbsoluteLayout());
         this.panelTabs.setFont(new Font("Dialog", 0, 12));
         this.panelGeneralConfiguration.setLayout(new AbsoluteLayout());
-        this.iconContainerTrafficSink.setIcon(this.imageBroker.getImageIcon(TImageBroker.TRAFFIC_SINK));
+        this.iconContainerTrafficSink.setIcon(this.imageBroker.getImageIcon(AvailableImages.TRAFFIC_SINK));
         this.iconContainerTrafficSink.setText(this.translations.getString("VentanaReceptor.descripcion"));
         this.panelGeneralConfiguration.add(this.iconContainerTrafficSink, new AbsoluteConstraints(15, 20, 335, -1));
         this.labelName.setFont(new Font("Dialog", 0, 12));
@@ -159,7 +160,7 @@ public class JTrafficSinkWindow extends JDialog {
         this.panelGeneralConfiguration.add(this.checkBoxShowName, new AbsoluteConstraints(215, 135, -1, -1));
         this.panelTabs.addTab(this.translations.getString("VentanaReceptor.tab.General"), this.panelGeneralConfiguration);
         this.panelQuickConfiguration.setLayout(new AbsoluteLayout());
-        this.labelQuickConfiguration.setIcon(this.imageBroker.getImageIcon(TImageBroker.WIZARD));
+        this.labelQuickConfiguration.setIcon(this.imageBroker.getImageIcon(AvailableImages.WIZARD));
         this.labelQuickConfiguration.setText(this.translations.getString("JVentanaReceptor.configuracionSencilla"));
         this.panelQuickConfiguration.add(this.labelQuickConfiguration, new AbsoluteConstraints(15, 20, 335, -1));
         this.checkBoxQuickGenerateStatistics.setFont(new Font("Dialog", 0, 12));
@@ -173,7 +174,7 @@ public class JTrafficSinkWindow extends JDialog {
         this.panelQuickConfiguration.add(this.checkBoxQuickGenerateStatistics, new AbsoluteConstraints(60, 125, -1, -1));
         this.panelTabs.addTab(this.translations.getString("VentanaReceptor.tab.Fast"), this.panelQuickConfiguration);
         this.panelAdvancedConfiguration.setLayout(new AbsoluteLayout());
-        this.labelAdvancedConfiguration.setIcon(this.imageBroker.getImageIcon(TImageBroker.ADVANCED));
+        this.labelAdvancedConfiguration.setIcon(this.imageBroker.getImageIcon(AvailableImages.ADVANCED));
         this.labelAdvancedConfiguration.setText(this.translations.getString("JVentanaReceptor.configuracionAvanzada"));
         this.panelAdvancedConfiguration.add(this.labelAdvancedConfiguration, new AbsoluteConstraints(15, 20, 335, -1));
         this.checkBoxAdvancedGenerateStatistics.setFont(new Font("Dialog", 0, 12));
@@ -189,7 +190,7 @@ public class JTrafficSinkWindow extends JDialog {
         this.mainPanel.add(this.panelTabs, new AbsoluteConstraints(15, 15, 370, 240));
         this.panelButtons.setLayout(new AbsoluteLayout());
         this.buttonOK.setFont(new Font("Dialog", 0, 12));
-        this.buttonOK.setIcon(this.imageBroker.getImageIcon(TImageBroker.ACCEPT));
+        this.buttonOK.setIcon(this.imageBroker.getImageIcon(AvailableImages.ACCEPT));
         this.buttonOK.setMnemonic(this.translations.getString("VentanaReceptor.botones.mne.Aceptar").charAt(0));
         this.buttonOK.setText(this.translations.getString("VentanaReceptor.boton.Ok"));
         this.buttonOK.addActionListener(new ActionListener() {
@@ -200,7 +201,7 @@ public class JTrafficSinkWindow extends JDialog {
         });
         this.panelButtons.add(this.buttonOK, new AbsoluteConstraints(15, 15, 105, -1));
         this.buttonCancel.setFont(new Font("Dialog", 0, 12));
-        this.buttonCancel.setIcon(this.imageBroker.getImageIcon(TImageBroker.CANCEL));
+        this.buttonCancel.setIcon(this.imageBroker.getImageIcon(AvailableImages.CANCEL));
         this.buttonCancel.setMnemonic(this.translations.getString("VentanaReceptor.botones.mne.Cancelar").charAt(0));
         this.buttonCancel.setText(this.translations.getString("VentanaReceptor.boton.Cancel"));
         this.buttonCancel.addActionListener(new ActionListener() {

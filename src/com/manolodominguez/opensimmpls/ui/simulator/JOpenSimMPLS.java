@@ -16,6 +16,7 @@
 package com.manolodominguez.opensimmpls.ui.simulator;
 
 import com.manolodominguez.opensimmpls.io.osm.TOSMLoader;
+import com.manolodominguez.opensimmpls.resources.images.AvailableImages;
 import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import com.manolodominguez.opensimmpls.scenario.TScenario;
 import com.manolodominguez.opensimmpls.ui.dialogs.JLicenseWindow;
@@ -109,7 +110,7 @@ public class JOpenSimMPLS extends JFrame {
         this.menuItemAbout = new JMenuItem();
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle(this.translations.getString("Open_SimMPLS"));
-        setIconImage(this.imageBroker.getImage(TImageBroker.ABOUT_MENU_COLOR));
+        setIconImage(this.imageBroker.getImage(AvailableImages.ABOUT_MENU_COLOR));
         setName(this.translations.getString("simulator"));
         addWindowListener(new WindowAdapter() {
             @Override
@@ -127,7 +128,7 @@ public class JOpenSimMPLS extends JFrame {
         this.menuScenario.setFont(new Font("Dialog", 0, 12));
         this.menuItemNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
         this.menuItemNew.setFont(new Font("Dialog", 0, 12));
-        this.menuItemNew.setIcon(this.imageBroker.getImageIcon(TImageBroker.NEW_MENU_COLOR));
+        this.menuItemNew.setIcon(this.imageBroker.getImageIcon(AvailableImages.NEW_MENU_COLOR));
         this.menuItemNew.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Nuevo").charAt(0));
         this.menuItemNew.setText(this.translations.getString("New"));
         this.menuItemNew.setDoubleBuffered(true);
@@ -139,7 +140,7 @@ public class JOpenSimMPLS extends JFrame {
         });
         this.menuScenario.add(this.menuItemNew);
         this.menuItemOpen.setFont(new Font("Dialog", 0, 12));
-        this.menuItemOpen.setIcon(this.imageBroker.getImageIcon(TImageBroker.OPEN_MENU_COLOR));
+        this.menuItemOpen.setIcon(this.imageBroker.getImageIcon(AvailableImages.OPEN_MENU_COLOR));
         this.menuItemOpen.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Abrir").charAt(0));
         this.menuItemOpen.setText(this.translations.getString("Open"));
         this.menuItemOpen.setDoubleBuffered(true);
@@ -152,7 +153,7 @@ public class JOpenSimMPLS extends JFrame {
         this.menuScenario.add(this.menuItemOpen);
         this.menuItemClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
         this.menuItemClose.setFont(new Font("Dialog", 0, 12));
-        this.menuItemClose.setIcon(this.imageBroker.getImageIcon(TImageBroker.CLOSE_MENU_COLOR));
+        this.menuItemClose.setIcon(this.imageBroker.getImageIcon(AvailableImages.CLOSE_MENU_COLOR));
         this.menuItemClose.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Cerrar").charAt(0));
         this.menuItemClose.setText(this.translations.getString("Close"));
         this.menuItemClose.setDoubleBuffered(true);
@@ -165,7 +166,7 @@ public class JOpenSimMPLS extends JFrame {
         });
         this.menuScenario.add(this.menuItemClose);
         this.menuItemSave.setFont(new Font("Dialog", 0, 12));
-        this.menuItemSave.setIcon(this.imageBroker.getImageIcon(TImageBroker.SAVE_MENU_COLOR));
+        this.menuItemSave.setIcon(this.imageBroker.getImageIcon(AvailableImages.SAVE_MENU_COLOR));
         this.menuItemSave.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Guardar").charAt(0));
         this.menuItemSave.setText(this.translations.getString("Save"));
         this.menuItemSave.setDoubleBuffered(true);
@@ -178,7 +179,7 @@ public class JOpenSimMPLS extends JFrame {
         });
         this.menuScenario.add(menuItemSave);
         this.menuItemSaveAs.setFont(new Font("Dialog", 0, 12));
-        this.menuItemSaveAs.setIcon(this.imageBroker.getImageIcon(TImageBroker.SAVE_AS_MENU_COLOR));
+        this.menuItemSaveAs.setIcon(this.imageBroker.getImageIcon(AvailableImages.SAVE_AS_MENU_COLOR));
         this.menuItemSaveAs.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Guardar_como").charAt(0));
         this.menuItemSaveAs.setText(this.translations.getString("Save_as..."));
         this.menuItemSaveAs.setDoubleBuffered(true);
@@ -193,7 +194,7 @@ public class JOpenSimMPLS extends JFrame {
         this.menuScenario.add(this.separatorMenuScenario);
         this.menuItemExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_MASK));
         this.menuItemExit.setFont(new Font("Dialog", 0, 12));
-        this.menuItemExit.setIcon(this.imageBroker.getImageIcon(TImageBroker.EXIT_MENU_COLOR));
+        this.menuItemExit.setIcon(this.imageBroker.getImageIcon(AvailableImages.EXIT_MENU_COLOR));
         this.menuItemExit.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Salir").charAt(0));
         this.menuItemExit.setText(this.translations.getString("Exit"));
         this.menuItemExit.setDoubleBuffered(true);
@@ -210,7 +211,7 @@ public class JOpenSimMPLS extends JFrame {
         this.menuView.setDoubleBuffered(true);
         this.menuView.setFont(new Font("Dialog", 0, 12));
         this.menuItemHorizontalMosaic.setFont(new Font("Dialog", 0, 12));
-        this.menuItemHorizontalMosaic.setIcon(this.imageBroker.getImageIcon(TImageBroker.HORIZONTAL_MOSAIC_COLOR));
+        this.menuItemHorizontalMosaic.setIcon(this.imageBroker.getImageIcon(AvailableImages.HORIZONTAL_MOSAIC_COLOR));
         this.menuItemHorizontalMosaic.setMnemonic(this.translations.getString("SubmenuVista.MosaicoHorixontal.Resaltado").charAt(0));
         this.menuItemHorizontalMosaic.setText(this.translations.getString("SubmenuVista.MosaicoHorizontal"));
         this.menuItemHorizontalMosaic.setDoubleBuffered(true);
@@ -223,7 +224,7 @@ public class JOpenSimMPLS extends JFrame {
         });
         this.menuView.add(this.menuItemHorizontalMosaic);
         this.menuItemVerticalMosaic.setFont(new Font("Dialog", 0, 12));
-        this.menuItemVerticalMosaic.setIcon(this.imageBroker.getImageIcon(TImageBroker.VERTICAL_MOSAIC_COLOR));
+        this.menuItemVerticalMosaic.setIcon(this.imageBroker.getImageIcon(AvailableImages.VERTICAL_MOSAIC_COLOR));
         this.menuItemVerticalMosaic.setMnemonic(this.translations.getString("SubmenuVista.MosaicoVertical.Resaltado").charAt(0));
         this.menuItemVerticalMosaic.setText(this.translations.getString("SubmenuVista.MosaicoVertical"));
         this.menuItemVerticalMosaic.setDoubleBuffered(true);
@@ -236,7 +237,7 @@ public class JOpenSimMPLS extends JFrame {
         });
         this.menuView.add(this.menuItemVerticalMosaic);
         this.menuItemCascade.setFont(new Font("Dialog", 0, 12));
-        this.menuItemCascade.setIcon(this.imageBroker.getImageIcon(TImageBroker.CASCADE_VIEW_COLOR));
+        this.menuItemCascade.setIcon(this.imageBroker.getImageIcon(AvailableImages.CASCADE_VIEW_COLOR));
         this.menuItemCascade.setMnemonic(this.translations.getString("SubmenuVista.Cascadal.Resaltado").charAt(0));
         this.menuItemCascade.setText(this.translations.getString("SubmenuVista.Cascada"));
         this.menuItemCascade.setDoubleBuffered(true);
@@ -249,7 +250,7 @@ public class JOpenSimMPLS extends JFrame {
         });
         this.menuView.add(this.menuItemCascade);
         this.menuItemIcons.setFont(new Font("Dialog", 0, 12));
-        this.menuItemIcons.setIcon(this.imageBroker.getImageIcon(TImageBroker.ICONS_VIEW_COLOR));
+        this.menuItemIcons.setIcon(this.imageBroker.getImageIcon(AvailableImages.ICONS_VIEW_COLOR));
         this.menuItemIcons.setMnemonic(this.translations.getString("SubmenuVista.Iconos.Resaltado").charAt(0));
         this.menuItemIcons.setText(this.translations.getString("SubmenuVista.Iconos"));
         this.menuItemIcons.setDoubleBuffered(true);
@@ -268,7 +269,7 @@ public class JOpenSimMPLS extends JFrame {
         this.menuHelp.setFont(new Font("Dialog", 0, 12));
         this.menuItemQuickGuide.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
         this.menuItemQuickGuide.setFont(new Font("Dialog", 0, 12));
-        this.menuItemQuickGuide.setIcon(this.imageBroker.getImageIcon(TImageBroker.TUTORIAL_MENU_COLOR));
+        this.menuItemQuickGuide.setIcon(this.imageBroker.getImageIcon(AvailableImages.TUTORIAL_MENU_COLOR));
         this.menuItemQuickGuide.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Contenidos").charAt(0));
         this.menuItemQuickGuide.setText(this.translations.getString("Contents"));
         this.menuItemQuickGuide.setDoubleBuffered(true);
@@ -281,7 +282,7 @@ public class JOpenSimMPLS extends JFrame {
         this.menuHelp.add(this.menuItemQuickGuide);
         this.menuHelp.add(this.separatorMenuHelp);
         this.menuItemLicense.setFont(new Font("Dialog", 0, 12));
-        this.menuItemLicense.setIcon(this.imageBroker.getImageIcon(TImageBroker.LICENSE_MENU_COLOR));
+        this.menuItemLicense.setIcon(this.imageBroker.getImageIcon(AvailableImages.LICENSE_MENU_COLOR));
         this.menuItemLicense.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Licencia").charAt(0));
         this.menuItemLicense.setText(this.translations.getString("License"));
         this.menuItemLicense.setToolTipText(this.translations.getString("License"));
@@ -294,7 +295,7 @@ public class JOpenSimMPLS extends JFrame {
         });
         this.menuHelp.add(this.menuItemLicense);
         this.menuItemAskTheCommunity.setFont(new Font("Dialog", 0, 12));
-        this.menuItemAskTheCommunity.setIcon(this.imageBroker.getImageIcon(TImageBroker.COMMENT_MENU_COLOR));
+        this.menuItemAskTheCommunity.setIcon(this.imageBroker.getImageIcon(AvailableImages.COMMENT_MENU_COLOR));
         this.menuItemAskTheCommunity.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Comentario").charAt(0));
         this.menuItemAskTheCommunity.setText(this.translations.getString("Contact_the_authors"));
         this.menuItemAskTheCommunity.setToolTipText(this.translations.getString("License"));
@@ -307,7 +308,7 @@ public class JOpenSimMPLS extends JFrame {
         });
         this.menuHelp.add(this.menuItemAskTheCommunity);
         this.menuItemContribute.setFont(new Font("Dialog", 0, 12));
-        this.menuItemContribute.setIcon(this.imageBroker.getImageIcon(TImageBroker.COMMENT_MENU_COLOR));
+        this.menuItemContribute.setIcon(this.imageBroker.getImageIcon(AvailableImages.COMMENT_MENU_COLOR));
         this.menuItemContribute.setMnemonic(this.translations.getString("Menu.LetraResaltada.Contribuye").charAt(0));
         this.menuItemContribute.setText(this.translations.getString("Contribute"));
         this.menuItemContribute.setToolTipText(this.translations.getString("Contribute"));
@@ -320,7 +321,7 @@ public class JOpenSimMPLS extends JFrame {
         });
         this.menuHelp.add(this.menuItemContribute);
         this.menuItemAbout.setFont(new Font("Dialog", 0, 12));
-        this.menuItemAbout.setIcon(this.imageBroker.getImageIcon(TImageBroker.ABOUT_MENU_COLOR));
+        this.menuItemAbout.setIcon(this.imageBroker.getImageIcon(AvailableImages.ABOUT_MENU_COLOR));
         this.menuItemAbout.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Sobre").charAt(0));
         this.menuItemAbout.setText(this.translations.getString("About"));
         this.menuItemAbout.setDoubleBuffered(true);
