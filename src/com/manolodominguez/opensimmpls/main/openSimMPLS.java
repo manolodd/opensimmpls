@@ -56,7 +56,8 @@ public class openSimMPLS {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
-            System.out.println("An error happened when starting OpenSimMPLS");
+            // FIX: I189N required
+            System.out.println("An error happened when starting OpenSimMPLS. Cannot set LaF.");
         }
         splash = new JSplash();
         SwingUtilities.invokeLater(() -> {
