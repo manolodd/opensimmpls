@@ -40,15 +40,16 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * subclasses to create a new instance.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param identifier
-     * @param longIDGenerator
-     * @param topology
+     * @param linlkID The link identifier that is unique in the topology.
+     * @param identifierGenerator An identifier generator that will be used to
+     * generate unique identifiers for events.
+     * @param topology Topology the link belongs to.
      * @since 2.0
      */
-    public TLink(int identifier, TLongIDGenerator longIDGenerator, TTopology topology) {
-        super(TTopologyElement.LINK, longIDGenerator);
+    public TLink(int linlkID, TLongIDGenerator identifierGenerator, TTopology topology) {
+        super(TTopologyElement.LINK, identifierGenerator);
         // FIX: Use class constants instead of harcoded values in every case.
-        this.identifier = identifier;
+        this.identifier = linlkID;
         this.headEndNode = null;
         this.tailEndNode = null;
         this.showName = false;

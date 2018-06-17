@@ -433,6 +433,7 @@ public class TTopology {
      *
      * @param linkID link ID of the linlk to be returned.
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return the link that match the link ID specified as an argument.
      * @since 2.0
      */
     public TLink getLink(int linkID) {

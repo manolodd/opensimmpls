@@ -217,7 +217,7 @@ public abstract class TPort {
      * moment. Otherwise, FALSE.
      * @since 2.0
      */
-    public abstract boolean canSwitchPacket(int octetos);
+    public abstract boolean canSwitchPacket(int octets);
 
     /**
      * This method, when implemented, will compute the congestion level of the
