@@ -110,7 +110,7 @@ public class JOpenSimMPLS extends JFrame {
         this.menuItemAbout = new JMenuItem();
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle(this.translations.getString("Open_SimMPLS"));
-        setIconImage(this.imageBroker.getImage(AvailableImages.ABOUT_MENU_COLOR));
+        setIconImage(this.imageBroker.getImage(AvailableImages.OPENSIMMPLS_APP_ICON));
         setName(this.translations.getString("simulator"));
         addWindowListener(new WindowAdapter() {
             @Override

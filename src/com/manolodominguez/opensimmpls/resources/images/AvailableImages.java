@@ -60,6 +60,7 @@ public enum AvailableImages {
     TRAFFIC_SINK_MOVING("receptor_moviendose.png"),
     EXIT_MENU_COLOR("salir_menu.png"),
     SPLASH_ABOUT("splash.png"),
+    SPLASH_LOADING("splash_inicio.png"),
     ABOUT_MENU_COLOR("splash_menu.png"),
     TUTORIAL_MENU_COLOR("tutorial_menu.png"),
     IMAGE_NOT_FOUND("imagen_no_encontrada.png"),
@@ -124,8 +125,9 @@ public enum AvailableImages {
     LINK_RECOVERED("enlace_recuperado.png"),
     ASK_MENU_COLOR("ask_menu.png"),
     CONTRIBUTE_MENU_COLOR("contribute_menu.png"),
-    WORKING("reloj_arena.png");
-
+    WORKING("reloj_arena.png"),
+    OPENSIMMPLS_APP_ICON("opensimmpls_app_icon.png");
+    
     private final String imageFileName;
 
     /**

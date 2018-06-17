@@ -15,6 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.gui.splash;
 
+import com.manolodominguez.opensimmpls.resources.images.AvailableImages;
 import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -84,7 +85,7 @@ public class JSplash extends javax.swing.JFrame {
         Dimension frameSize = this.getSize();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
-        setIconImage(new ImageIcon(this.getClass().getResource(this.translations.getString("/imagenes/splash_menu.png"))).getImage());
+        setIconImage(new ImageIcon(this.getClass().getResource(AvailableImages.OPENSIMMPLS_APP_ICON.getPath())).getImage());
     }
 
     /**
