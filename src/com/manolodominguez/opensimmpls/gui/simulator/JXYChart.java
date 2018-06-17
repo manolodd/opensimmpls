@@ -36,7 +36,7 @@ public class JXYChart {
      * @param chartTitle The title of the chart
      * @param xAxisTitle The title of X axis
      * @param yAxisTitle The title of Y axis
-     * @param series
+     * @param series Series that has to be plotted in the XY chart.
      * @since 2.0
      */
     public JXYChart(String chartTitle, String xAxisTitle, String yAxisTitle, XYSeriesCollection series) {

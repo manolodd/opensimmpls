@@ -36,7 +36,7 @@ public class JBarChart {
      * @param chartTitle The title of the chart
      * @param categoriesAxisTitle The title of categories axis
      * @param yAxisTitle The title of Y axis
-     * @param series
+     * @param series Series that has to be plotted in the Bar Chart.
      * @since 2.0
      */
     public JBarChart(String chartTitle, String categoriesAxisTitle, String yAxisTitle, DefaultCategoryDataset series) {
