@@ -295,7 +295,7 @@ public class JOpenSimMPLS extends JFrame {
         });
         this.menuHelp.add(this.menuItemLicense);
         this.menuItemAskTheCommunity.setFont(new Font("Dialog", 0, 12));
-        this.menuItemAskTheCommunity.setIcon(this.imageBroker.getImageIcon(AvailableImages.COMMENT_MENU_COLOR));
+        this.menuItemAskTheCommunity.setIcon(this.imageBroker.getImageIcon(AvailableImages.ASK_MENU_COLOR));
         this.menuItemAskTheCommunity.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Comentario").charAt(0));
         this.menuItemAskTheCommunity.setText(this.translations.getString("Contact_the_authors"));
         this.menuItemAskTheCommunity.setToolTipText(this.translations.getString("License"));
@@ -308,7 +308,7 @@ public class JOpenSimMPLS extends JFrame {
         });
         this.menuHelp.add(this.menuItemAskTheCommunity);
         this.menuItemContribute.setFont(new Font("Dialog", 0, 12));
-        this.menuItemContribute.setIcon(this.imageBroker.getImageIcon(AvailableImages.COMMENT_MENU_COLOR));
+        this.menuItemContribute.setIcon(this.imageBroker.getImageIcon(AvailableImages.CONTRIBUTE_MENU_COLOR));
         this.menuItemContribute.setMnemonic(this.translations.getString("Menu.LetraResaltada.Contribuye").charAt(0));
         this.menuItemContribute.setText(this.translations.getString("Contribute"));
         this.menuItemContribute.setToolTipText(this.translations.getString("Contribute"));

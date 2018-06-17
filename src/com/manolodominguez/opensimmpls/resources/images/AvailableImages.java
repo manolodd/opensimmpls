@@ -31,7 +31,6 @@ public enum AvailableImages {
     STOP_SIMULATION_COLOR("boton_parar.png"),
     PAUSE_SIMULATION_COLOR("boton_pausa.png"),
     CLOSE_MENU_COLOR("cerrar_menu.png"),
-    COMMENT_MENU_COLOR("comentario_menu.png"),
     TRAFFIC_GENERATOR("emisor.png"),
     TRAFFIC_GENERATOR_MENU_COLOR("emisor_menu.png"),
     TRAFFIC_GENERATOR_MOVING("emisor_moviendose.png"),
@@ -123,6 +122,8 @@ public enum AvailableImages {
     ACTIVE_LSR_CONGESTED2("lsra_congestionado_60.png"),
     LINK_BROKEN("enlace_caido.png"),
     LINK_RECOVERED("enlace_recuperado.png"),
+    ASK_MENU_COLOR("ask_menu.png"),
+    CONTRIBUTE_MENU_COLOR("contribute_menu.png"),
     WORKING("reloj_arena.png");
 
     private final String imageFileName;
