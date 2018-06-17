@@ -970,7 +970,7 @@ public class JScenarioWindow extends JInternalFrame {
         // FIX: Do not use harcoded values. Use class constants instead
         this.labelScenarioAuthorName.setFont(new Font("Serif", 1, 14));
         // FIX: Do not use harcoded values. Use class constants instead
-        this.labelScenarioAuthorName.setForeground(new Color(102, 0, 51));
+        this.labelScenarioAuthorName.setForeground(new Color(102, 153, 255));
         this.labelScenarioAuthorName.setHorizontalAlignment(SwingConstants.CENTER);
         this.labelScenarioAuthorName.setText(this.translations.getString("JVentanaHija.AutorDelEscenario"));
         this.analysisPanel.add(this.labelScenarioAuthorName, "span 2, grow, wrap");
@@ -2644,21 +2644,21 @@ public class JScenarioWindow extends JInternalFrame {
         author.setMinimumSize(new Dimension());
         description.setMinimumSize(new Dimension());
         element.setMinimumSize(new Dimension());
-        scenarioTitle.add(labelScenarioTitle);
-        labelScenarioAuthorName.setMinimumSize(new Dimension());
-        textAreaScenarioDescription.setMinimumSize(new Dimension());
-        labelElementToAnalize.setMinimumSize(new Dimension());
-        labelScenarioTitle.setMinimumSize(new Dimension());
-        author.add(labelScenarioAuthorName);
-        description.add(textAreaScenarioDescription);
-        element.add(labelElementToAnalize);
+        scenarioTitle.add(this.labelScenarioTitle);
+        this.labelScenarioAuthorName.setMinimumSize(new Dimension());
+        this.textAreaScenarioDescription.setMinimumSize(new Dimension());
+        this.labelElementToAnalize.setMinimumSize(new Dimension());
+        this.labelScenarioTitle.setMinimumSize(new Dimension());
+        author.add(this.labelScenarioAuthorName);
+        description.add(this.textAreaScenarioDescription);
+        element.add(this.labelElementToAnalize);
         scenarioTitle.setBackground(Color.WHITE);
         author.setBackground(Color.WHITE);
         description.setBackground(Color.WHITE);
         element.setBackground(Color.WHITE);
         this.analysisPanel.add(scenarioTitle, "span 2, grow, wrap");
         this.analysisPanel.add(author, "span 2, grow, wrap");
-        this.analysisPanel.add(textAreaScenarioDescription, "span 2, grow, gapleft 10%, gapright 10%, wrap");
+        this.analysisPanel.add(this.textAreaScenarioDescription, "span 2, grow, gapleft 10%, gapright 10%, wrap");
         this.analysisPanel.add(element, "span 2, grow, wrap");
         this.labelScenarioTitle.setText(this.textFieldOptionsScenarioTitle.getText());
         this.labelScenarioAuthorName.setText(this.textFieldOptionsScenarioAuthorName.getText());
