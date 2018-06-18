@@ -38,6 +38,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -362,17 +363,32 @@ public class JOpenSimMPLS extends JFrame {
         if (Desktop.isDesktopSupported()) {
             try {
                 URL url = this.getClass().getResource(this.translations.getString("JSimulator.GuidePath"));
-                Desktop.getDesktop().browse(url.toURI());
+                Desktop.getDesktop().edit(new File(url.getFile()));
             } catch (IOException ex) {
                 JErrorWindow errorWindow = new JErrorWindow(this, true, this.imageBroker);
                 // FIX: i18N needed
                 errorWindow.setErrorMessage("Cannot open Quick Guide");
                 errorWindow.setVisible(true);
-            } catch (URISyntaxException ex) {
-                JErrorWindow errorWindow = new JErrorWindow(this, true, this.imageBroker);
-                // FIX: i18N needed
-                errorWindow.setErrorMessage("Cannot open Quick Guide");
-                errorWindow.setVisible(true);
+            } catch (UnsupportedOperationException e) {
+                try {
+                    URL url = this.getClass().getResource(this.translations.getString("JSimulator.GuidePath"));
+                    Desktop.getDesktop().browse(url.toURI());
+                } catch (IOException ex) {
+                    JErrorWindow errorWindow = new JErrorWindow(this, true, this.imageBroker);
+                    // FIX: i18N needed
+                    errorWindow.setErrorMessage("Cannot open Quick Guide");
+                    errorWindow.setVisible(true);
+                } catch (URISyntaxException ex) {
+                    JErrorWindow errorWindow = new JErrorWindow(this, true, this.imageBroker);
+                    // FIX: i18N needed
+                    errorWindow.setErrorMessage("Cannot open Quick Guide");
+                    errorWindow.setVisible(true);
+                } catch (UnsupportedOperationException ex) {
+                    JErrorWindow errorWindow = new JErrorWindow(this, true, this.imageBroker);
+                    // FIX: i18N needed
+                    errorWindow.setErrorMessage("Cannot open Quick Guide. Operation not supported in this platform");
+                    errorWindow.setVisible(true);
+                }
             }
         } else {
             JErrorWindow errorWindow = new JErrorWindow(this, true, this.imageBroker);
