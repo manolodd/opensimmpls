@@ -40,6 +40,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -361,18 +362,12 @@ public class JOpenSimMPLS extends JFrame {
      */
     private void handleClickOnQickGuide(ActionEvent evt) {
         if (Desktop.isDesktopSupported()) {
-            try {
-                URL url = this.getClass().getResource(this.translations.getString("JSimulator.GuidePath"));
-                Desktop.getDesktop().edit(new File(url.getFile()));
-            } catch (IOException ex) {
-                JErrorWindow errorWindow = new JErrorWindow(this, true, this.imageBroker);
-                // FIX: i18N needed
-                errorWindow.setErrorMessage("Cannot open Quick Guide");
-                errorWindow.setVisible(true);
-            } catch (UnsupportedOperationException e) {
+            if (Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                 try {
-                    URL url = this.getClass().getResource(this.translations.getString("JSimulator.GuidePath"));
-                    Desktop.getDesktop().browse(url.toURI());
+                    URI uri = this.getClass().getResource(this.translations.getString("JSimulator.GuidePath")).toURI();
+                    uri = new URI(uri.toString().replace("file:", "file://"));
+                    System.out.println("URI: " + uri.toString());
+                    Desktop.getDesktop().browse(uri);
                 } catch (IOException ex) {
                     JErrorWindow errorWindow = new JErrorWindow(this, true, this.imageBroker);
                     // FIX: i18N needed
