@@ -111,7 +111,7 @@ limitations under the License.
 
         <zip destfile="${store.bin.jar}">
             <zipfileset src="${store.bin.dir}/temp_final.jar"
-                        excludes="META-INF/*.SF, META-INF/*.DSA, META-INF/*.RSA"/>
+                        excludes="META-INF/*.SF, META-INF/*.DSA, META-INF/*.RSA, com/manolodominguez/opensimmpls/resources/guides/*.docx"/>
         </zip>
 
         <delete file="${store.bin.dir}/temp_final.jar"/>
