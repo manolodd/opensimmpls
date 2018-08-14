@@ -16,7 +16,7 @@ It supports standard MPLS operation as well as GoS/MPLS operation. See "Guarante
 
 ## Current version:
  
-- <b>OpenSimMPLS 2.0</b> (Still unreleased. Only source code available) will be released under the terms of Apache Software License 2.0.
+- <b>OpenSimMPLS 2.0</b> was released under the terms of Apache Software License 2.0.
 
 ## Previous versions:
 
@@ -59,7 +59,12 @@ cd binary-fat-release/opensimmpls
 ```console
 java -jar openSimMPLS-bin-v{YourVersion}.jar
 ```
-- Need some scenarios to try? There is not problem!! You'll find them at the examples folder (root of your cloned repository).
+- Need some scenarios to try? There is not problem!! You'll find them at the examples folder (root of your cloned repository). You can also download these examples, for your OpenSimMPLS version, in the Releases section of this repository.
+
+
+# How to use OpenSimMPLS
+
+You can open a quick start guide directly from the simulator GUI. However, you can find the same guide in some languages at https://github.com/manolodd/opensimmpls/tree/master/src/com/manolodominguez/opensimmpls/resources/guides
 
 
 # THIRD-PARTY COMPONENTS
@@ -67,7 +72,6 @@ java -jar openSimMPLS-bin-v{YourVersion}.jar
 OpenSimMPLS uses third-party components each one of them having its own OSS license. License compatibility has been taken into account to allow OpenSimMPLS be released under its current OSS licence. They are:
 
 - Jfreechart 1.5.0 - LGPL - http://www.jfree.org/jfreechart
-- Liquidlnf - Apache Software License 2.0 - https://sourceforge.net/projects/liquidlnf
 - slf4j-api 1.7.25 - MIT - https://www.slf4j.org
 - slf4j-simple 1.7.25 - MIT - https://www.slf4j.org
 - miglayout-swing 5.1 - BSD - https://github.com/mikaelgrev/miglayout

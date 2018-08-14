@@ -40,9 +40,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
@@ -364,16 +368,16 @@ public class JOpenSimMPLS extends JFrame {
         if (Desktop.isDesktopSupported()) {
             if (Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                 try {
-                    URI uri = this.getClass().getResource(this.translations.getString("JSimulator.GuidePath")).toURI();
-                    uri = new URI(uri.toString().replace("file:", "file://"));
-                    System.out.println("URI: " + uri.toString());
-                    Desktop.getDesktop().browse(uri);
+                    String storedPDFGuide = this.translations.getString("JSimulator.GuidePath");
+                    String[] tokens = storedPDFGuide.split("/");
+                    String temporaryPDFGuide = tokens[tokens.length-1];
+                    Path tempOutput = Files.createTempFile(temporaryPDFGuide, ".pdf");
+                    tempOutput.toFile().deleteOnExit();
+                    try (InputStream is = this.getClass().getClassLoader().getResourceAsStream(storedPDFGuide)) {
+                        Files.copy(is, tempOutput, StandardCopyOption.REPLACE_EXISTING);
+                    }
+                    Desktop.getDesktop().open(tempOutput.toFile());
                 } catch (IOException ex) {
-                    JErrorWindow errorWindow = new JErrorWindow(this, true, this.imageBroker);
-                    // FIX: i18N needed
-                    errorWindow.setErrorMessage("Cannot open Quick Guide");
-                    errorWindow.setVisible(true);
-                } catch (URISyntaxException ex) {
                     JErrorWindow errorWindow = new JErrorWindow(this, true, this.imageBroker);
                     // FIX: i18N needed
                     errorWindow.setErrorMessage("Cannot open Quick Guide");
