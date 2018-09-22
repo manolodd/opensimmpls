@@ -2513,11 +2513,6 @@ public class JScenarioWindow extends JInternalFrame {
             this.scenario.setAlreadySaved(true);
             this.setTitle(this.scenario.getScenarioFile().getName());
             TOSMSaver osmSaver = new TOSMSaver(this.scenario);
-            //JDecissionWindow decissionWindow = new JDecissionWindow(this.parent, true, this.imageBroker);
-            //decissionWindow.setQuestion(this.translations.getString("JVentanaHija.PreguntaEmpotrarCRC"));
-            //decissionWindow.setVisible(true);
-            //boolean addCRCToFile = decissionWindow.getUserAnswer();
-            //boolean savedCorrectly = osmSaver.save(this.scenario.getScenarioFile(), addCRCToFile);
             boolean savedCorrectly = osmSaver.save(this.scenario.getScenarioFile(), false);
             if (savedCorrectly) {
                 this.scenario.setModified(false);
@@ -2570,11 +2565,6 @@ public class JScenarioWindow extends JInternalFrame {
                 decissionWindow.dispose();
                 if (userAnswer) {
                     TOSMSaver osmSaver = new TOSMSaver(this.scenario);
-                    //JDecissionWindow decissionWindow2 = new JDecissionWindow(this.parent, true, this.imageBroker);
-                    //decissionWindow2.setQuestion(this.translations.getString("JVentanaHija.PreguntaEmpotrarCRC"));
-                    //decissionWindow2.setVisible(true);
-                    //boolean addCRCToFile = decissionWindow2.getUserAnswer();
-                    //boolean savedCorrectly = osmSaver.save(this.scenario.getScenarioFile(), addCRCToFile);
                     boolean savedCorrectly = osmSaver.save(this.scenario.getScenarioFile(), false);
                     if (savedCorrectly) {
                         this.scenario.setModified(false);
@@ -2606,11 +2596,7 @@ public class JScenarioWindow extends JInternalFrame {
             if (isModified) {
 
                 TOSMSaver osmSaver = new TOSMSaver(this.scenario);
-                JDecissionWindow decissionWindow = new JDecissionWindow(this.parent, true, this.imageBroker);
-                decissionWindow.setQuestion(this.translations.getString("JVentanaHija.PreguntaEmpotrarCRC"));
-                decissionWindow.setVisible(true);
-                boolean addCRCToFile = decissionWindow.getUserAnswer();
-                boolean savedCorrectly = osmSaver.save(this.scenario.getScenarioFile(), addCRCToFile);
+                boolean savedCorrectly = osmSaver.save(this.scenario.getScenarioFile(), false);
                 if (savedCorrectly) {
                     this.scenario.setModified(false);
                     this.scenario.setAlreadySaved(true);
