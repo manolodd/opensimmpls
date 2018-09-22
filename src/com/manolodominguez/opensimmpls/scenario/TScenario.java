@@ -39,7 +39,7 @@ public class TScenario {
         this.topology = new TTopology(this);
         this.simulation = new TSimulation(this);
         this.scenarioFile = null;
-        this.saved = false;
+        this.alreadySaved = false;
         this.modified = false;
         this.title = "";
         this.author = "";
@@ -56,7 +56,6 @@ public class TScenario {
     public void reset() {
         this.topology.reset();
         this.simulation.reset();
-        this.modified = true;
     }
 
     /**
@@ -249,6 +248,7 @@ public class TScenario {
      */
     public void setTopology(TTopology topology) {
         this.topology = topology;
+        this.modified = true;
     }
 
     /**
@@ -271,6 +271,7 @@ public class TScenario {
      */
     public void setSimulation(TSimulation simulation) {
         this.simulation = simulation;
+        this.modified = true;
     }
 
     /**
@@ -327,8 +328,8 @@ public class TScenario {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void setSaved(boolean saved) {
-        this.saved = saved;
+    public void setAlreadySaved(boolean saved) {
+        this.alreadySaved = saved;
     }
 
     /**
@@ -339,8 +340,8 @@ public class TScenario {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public boolean isSaved() {
-        return this.saved;
+    public boolean isAlreadySaved() {
+        return this.alreadySaved;
     }
 
     /**
@@ -375,6 +376,6 @@ public class TScenario {
     private TTopology topology;
     private TSimulation simulation;
     private File scenarioFile;
-    private boolean saved;
+    private boolean alreadySaved;
     private boolean modified;
 }

@@ -52,7 +52,7 @@ public class TOSMLoader {
         this.inputStream = null;
         this.input = null;
         this.scenarioCRC = new CRC32();
-        this.position = TOSMLoader.NONE;
+        this.section = TOSMLoader.NONE;
     }
 
     /**
@@ -63,45 +63,45 @@ public class TOSMLoader {
      * @return true, if the file can be correctly loaded. False on the contrary.
      * @since 2.0
      */
-    public boolean cargar(File inputFile) {
+    public boolean load(File inputFile) {
         if (this.fileIsValid(inputFile)) {
             String stringAux = "";
             this.scenario.setScenarioFile(inputFile);
-            this.scenario.setSaved(true);
-            this.scenario.setModified(false);
             try {
                 if (inputFile.exists()) {
                     this.inputStream = new FileInputStream(inputFile);
                     this.input = new BufferedReader(new InputStreamReader(this.inputStream));
                     while ((stringAux = this.input.readLine()) != null) {
                         if ((!stringAux.equals("")) && (!stringAux.startsWith("//")) && (!stringAux.startsWith("@CRC#"))) {
-                            if (this.position == TOSMLoader.NONE) {
+                            if (this.section == TOSMLoader.NONE) {
                                 if (stringAux.startsWith("@?Escenario")) {
-                                    this.position = TOSMLoader.SCENARIO;
+                                    this.section = TOSMLoader.SCENARIO;
                                 } else if (stringAux.startsWith("@?Topologia")) {
-                                    this.position = TOSMLoader.TOPOLOGY;
+                                    this.section = TOSMLoader.TOPOLOGY;
                                 } else if (stringAux.startsWith("@?Simulacion")) {
-                                    this.position = TOSMLoader.SIMULATION;
+                                    this.section = TOSMLoader.SIMULATION;
                                 } else if (stringAux.startsWith("@?Analisis")) {
-                                    this.position = TOSMLoader.ANALISYS;
+                                    this.section = TOSMLoader.ANALISYS;
                                 }
-                            } else if (position == TOSMLoader.SCENARIO) {
+                            } else if (section == TOSMLoader.SCENARIO) {
                                 loadScenario(stringAux);
-                            } else if (position == TOSMLoader.TOPOLOGY) {
+                            } else if (section == TOSMLoader.TOPOLOGY) {
                                 loadTopology(stringAux);
-                            } else if (position == TOSMLoader.SIMULATION) {
+                            } else if (section == TOSMLoader.SIMULATION) {
                                 if (stringAux.startsWith("@!Simulacion")) {
-                                    this.position = TOSMLoader.NONE;
+                                    this.section = TOSMLoader.NONE;
                                 }
-                            } else if (position == TOSMLoader.ANALISYS) {
+                            } else if (section == TOSMLoader.ANALISYS) {
                                 if (stringAux.startsWith("@!Analisis")) {
-                                    this.position = TOSMLoader.NONE;
+                                    this.section = TOSMLoader.NONE;
                                 }
                             }
                         }
                     }
                     this.inputStream.close();
                     this.input.close();
+                    this.scenario.setAlreadySaved(true);
+                    this.scenario.setModified(false);
                 }
             } catch (IOException e) {
                 return false;
@@ -113,7 +113,7 @@ public class TOSMLoader {
 
     private void loadTopology(String topologyString) {
         if (topologyString.startsWith("@!Topologia")) {
-            this.position = TOSMLoader.NONE;
+            this.section = TOSMLoader.NONE;
         } else if (topologyString.startsWith("#Receptor#")) {
             TTrafficSinkNode receiver = new TTrafficSinkNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (receiver.unMarshall(topologyString)) {
@@ -181,7 +181,7 @@ public class TOSMLoader {
 
     private void loadScenario(String scenarioString) {
         if (scenarioString.startsWith("@!Escenario")) {
-            this.position = TOSMLoader.NONE;
+            this.section = TOSMLoader.NONE;
         } else if (scenarioString.startsWith("#Titulo#")) {
             if (!this.scenario.unmarshallTitle(scenarioString)) {
                 this.scenario.setTitle("");
@@ -196,6 +196,7 @@ public class TOSMLoader {
             }
         } else if (scenarioString.startsWith("#Temporizacion#")) {
             if (!this.scenario.getSimulation().unmarshallTimeParameters(scenarioString)) {
+                //FIX: Avoid using harcoded values. Use class constants instead.
                 this.scenario.getSimulation().setSimulationLengthInNs(500);
                 this.scenario.getSimulation().setSimulationTickDurationInNs(1);
             }
@@ -258,7 +259,7 @@ public class TOSMLoader {
     private static final int SIMULATION = 3;
     private static final int ANALISYS = 4;
 
-    private int position;
+    private int section;
     private CRC32 scenarioCRC;
     private TScenario scenario;
     private FileInputStream inputStream;

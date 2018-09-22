@@ -38,10 +38,8 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -370,7 +368,7 @@ public class JOpenSimMPLS extends JFrame {
                 try {
                     String storedPDFGuide = this.translations.getString("JSimulator.GuidePath");
                     String[] tokens = storedPDFGuide.split("/");
-                    String temporaryPDFGuide = tokens[tokens.length-1];
+                    String temporaryPDFGuide = tokens[tokens.length - 1];
                     Path tempOutput = Files.createTempFile(temporaryPDFGuide, ".pdf");
                     tempOutput.toFile().deleteOnExit();
                     try (InputStream is = this.getClass().getClassLoader().getResourceAsStream(storedPDFGuide)) {
@@ -420,7 +418,7 @@ public class JOpenSimMPLS extends JFrame {
             if (fileChoosingResult == JFileChooser.APPROVE_OPTION) {
                 if (fileChooser.getSelectedFile().exists()) {
                     TOSMLoader osmLoader = new TOSMLoader();
-                    boolean isLoaded = osmLoader.cargar(fileChooser.getSelectedFile());
+                    boolean isLoaded = osmLoader.load(fileChooser.getSelectedFile());
                     if (isLoaded) {
                         try {
                             TScenario scenario = new TScenario();
@@ -438,6 +436,8 @@ public class JOpenSimMPLS extends JFrame {
                                 e.printStackTrace();
                             }
                             getContentPane().add(this.desktopPane, BorderLayout.CENTER);
+                            scenario.setAlreadySaved(true);
+                            scenario.setModified(false);
                         } catch (Exception e) {
                             JErrorWindow errorWindow;
                             errorWindow = new JErrorWindow(this, true, this.imageBroker);
@@ -831,13 +831,17 @@ public class JOpenSimMPLS extends JFrame {
      * @since 2.0
      */
     private void clickOnAnyExitOption() {
-        JDecissionWindow decissionWindow = new JDecissionWindow(this, true, this.imageBroker);
-        decissionWindow.setQuestion(this.translations.getString("JSimulador.PreguntaSalirDelSimulador"));
-        decissionWindow.setVisible(true);
-        boolean userAnswer = decissionWindow.getUserAnswer();
-        decissionWindow.dispose();
-        if (userAnswer) {
-            closeAll();
+        if (this.numOpenScenarios > 0) {
+            JDecissionWindow decissionWindow = new JDecissionWindow(this, true, this.imageBroker);
+            decissionWindow.setQuestion(this.translations.getString("JSimulador.PreguntaSalirDelSimulador"));
+            decissionWindow.setVisible(true);
+            boolean userAnswer = decissionWindow.getUserAnswer();
+            decissionWindow.dispose();
+            if (userAnswer) {
+                closeAll();
+                this.dispose();
+            }
+        } else {
             this.dispose();
         }
     }

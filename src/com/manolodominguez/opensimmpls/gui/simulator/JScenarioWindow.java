@@ -1611,19 +1611,19 @@ public class JScenarioWindow extends JInternalFrame {
         if (evt.getButton() == MouseEvent.BUTTON3) {
             TTopologyElement topologyElement = this.scenario.getTopology().getElementInScreenPosition(evt.getPoint());
             if (topologyElement == null) {
-        // FIX: Do not use harcoded values. Use class constants instead
+                // FIX: Do not use harcoded values. Use class constants instead
                 this.popupMenuBackgroundDesignPanel.show(this, evt.getX() + 7, evt.getY() - 27);
             } else if (topologyElement.getElementType() == TTopologyElement.NODE) {
                 TNode nt = (TNode) topologyElement;
                 this.chekBoxMenuItemShowElementName.setSelected(nt.getShowName());
                 this.rightClickedElementInDesignPanel = topologyElement;
-        // FIX: Do not use harcoded values. Use class constants instead
+                // FIX: Do not use harcoded values. Use class constants instead
                 this.popupMenuTopologyElement.show(this, evt.getX() + 7, evt.getY() + 15);
             } else if (topologyElement.getElementType() == TTopologyElement.LINK) {
                 TLink ent = (TLink) topologyElement;
                 this.chekBoxMenuItemShowElementName.setSelected(ent.getShowName());
                 this.rightClickedElementInDesignPanel = topologyElement;
-        // FIX: Do not use harcoded values. Use class constants instead
+                // FIX: Do not use harcoded values. Use class constants instead
                 this.popupMenuTopologyElement.show(this, evt.getX() + 7, evt.getY() + 15);
             }
         } else {
@@ -2510,17 +2510,18 @@ public class JScenarioWindow extends JInternalFrame {
             }
             saveAsDialog.setSelectedFile(new File(fileName));
             this.scenario.setScenarioFile(saveAsDialog.getSelectedFile());
-            this.scenario.setSaved(true);
+            this.scenario.setAlreadySaved(true);
             this.setTitle(this.scenario.getScenarioFile().getName());
             TOSMSaver osmSaver = new TOSMSaver(this.scenario);
-            JDecissionWindow decissionWindow = new JDecissionWindow(this.parent, true, this.imageBroker);
-            decissionWindow.setQuestion(this.translations.getString("JVentanaHija.PreguntaEmpotrarCRC"));
-            decissionWindow.setVisible(true);
-            boolean addCRCToFile = decissionWindow.getUserAnswer();
-            boolean savedCorrectly = osmSaver.save(this.scenario.getScenarioFile(), addCRCToFile);
+            //JDecissionWindow decissionWindow = new JDecissionWindow(this.parent, true, this.imageBroker);
+            //decissionWindow.setQuestion(this.translations.getString("JVentanaHija.PreguntaEmpotrarCRC"));
+            //decissionWindow.setVisible(true);
+            //boolean addCRCToFile = decissionWindow.getUserAnswer();
+            //boolean savedCorrectly = osmSaver.save(this.scenario.getScenarioFile(), addCRCToFile);
+            boolean savedCorrectly = osmSaver.save(this.scenario.getScenarioFile(), false);
             if (savedCorrectly) {
                 this.scenario.setModified(false);
-                this.scenario.setSaved(true);
+                this.scenario.setAlreadySaved(true);
             }
         }
     }
@@ -2534,7 +2535,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     public void saveBeforeClosing() {
-        boolean isAlreadySaved = this.scenario.isSaved();
+        boolean isAlreadySaved = this.scenario.isAlreadySaved();
         boolean isModified = this.scenario.isModified();
         updateScenarioInformation();
 
@@ -2560,24 +2561,25 @@ public class JScenarioWindow extends JInternalFrame {
             if (userAnswer) {
                 this.handleSaveAs();
             }
-        } else if ((isAlreadySaved) && (!isModified)) {
-            // Nothing to do. All is already saved.
-        } else if ((isAlreadySaved) && (isModified)) {
-            JDecissionWindow decissionWindow = new JDecissionWindow(this.parent, true, this.imageBroker);
-            decissionWindow.setQuestion(this.translations.getString("JVentanaHija.DialogoGuardar.CambiosSinguardar1") + " " + this.getTitle() + " " + this.translations.getString("JVentanaHija.DialogoGuardar.CambiosSinguardar2"));
-            decissionWindow.setVisible(true);
-            boolean userAnswer = decissionWindow.getUserAnswer();
-            decissionWindow.dispose();
-            if (userAnswer) {
-                TOSMSaver osmSaver = new TOSMSaver(this.scenario);
-                JDecissionWindow decissionWindow2 = new JDecissionWindow(this.parent, true, this.imageBroker);
-                decissionWindow2.setQuestion(this.translations.getString("JVentanaHija.PreguntaEmpotrarCRC"));
-                decissionWindow2.setVisible(true);
-                boolean addCRCToFile = decissionWindow2.getUserAnswer();
-                boolean savedCorrectly = osmSaver.save(this.scenario.getScenarioFile(), addCRCToFile);
-                if (savedCorrectly) {
-                    this.scenario.setModified(false);
-                    this.scenario.setSaved(true);
+        } else {
+            if (isModified) {
+                JDecissionWindow decissionWindow = new JDecissionWindow(this.parent, true, this.imageBroker);
+                decissionWindow.setQuestion(this.translations.getString("JVentanaHija.DialogoGuardar.CambiosSinguardar1") + " " + this.getTitle() + " " + this.translations.getString("JVentanaHija.DialogoGuardar.CambiosSinguardar2"));
+                decissionWindow.setVisible(true);
+                boolean userAnswer = decissionWindow.getUserAnswer();
+                decissionWindow.dispose();
+                if (userAnswer) {
+                    TOSMSaver osmSaver = new TOSMSaver(this.scenario);
+                    //JDecissionWindow decissionWindow2 = new JDecissionWindow(this.parent, true, this.imageBroker);
+                    //decissionWindow2.setQuestion(this.translations.getString("JVentanaHija.PreguntaEmpotrarCRC"));
+                    //decissionWindow2.setVisible(true);
+                    //boolean addCRCToFile = decissionWindow2.getUserAnswer();
+                    //boolean savedCorrectly = osmSaver.save(this.scenario.getScenarioFile(), addCRCToFile);
+                    boolean savedCorrectly = osmSaver.save(this.scenario.getScenarioFile(), false);
+                    if (savedCorrectly) {
+                        this.scenario.setModified(false);
+                        this.scenario.setAlreadySaved(true);
+                    }
                 }
             }
         }
@@ -2593,25 +2595,27 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     public void handleSave() {
-        boolean isAlreadySaved = this.scenario.isSaved();
-        // FIX: Use next line so "Save" dialog is nos always used.
-        boolean isModified = this.scenario.isModified();
+        boolean isAlreadySaved = this.scenario.isAlreadySaved();
         updateScenarioInformation();
+        boolean isModified = this.scenario.isModified();
         if (!isAlreadySaved) {
             this.handleSaveAs();
         } else {
-            TOSMSaver osmSaver = new TOSMSaver(this.scenario);
-            JDecissionWindow decissionWindow = new JDecissionWindow(this.parent, true, this.imageBroker);
-            decissionWindow.setQuestion(this.translations.getString("JVentanaHija.PreguntaEmpotrarCRC"));
-            decissionWindow.setVisible(true);
-            boolean addCRCToFile = decissionWindow.getUserAnswer();
-            boolean savedCorrectly = osmSaver.save(this.scenario.getScenarioFile(), addCRCToFile);
-            if (savedCorrectly) {
-                this.scenario.setModified(false);
-                this.scenario.setSaved(true);
+
+            System.out.println("*************** El escenario está modificado: " + isModified);
+            if (isModified) {
+
+                TOSMSaver osmSaver = new TOSMSaver(this.scenario);
+                JDecissionWindow decissionWindow = new JDecissionWindow(this.parent, true, this.imageBroker);
+                decissionWindow.setQuestion(this.translations.getString("JVentanaHija.PreguntaEmpotrarCRC"));
+                decissionWindow.setVisible(true);
+                boolean addCRCToFile = decissionWindow.getUserAnswer();
+                boolean savedCorrectly = osmSaver.save(this.scenario.getScenarioFile(), addCRCToFile);
+                if (savedCorrectly) {
+                    this.scenario.setModified(false);
+                    this.scenario.setAlreadySaved(true);
+                }
             }
-            this.scenario.setModified(false);
-            this.scenario.setSaved(true);
         }
     }
 
@@ -2752,9 +2756,15 @@ public class JScenarioWindow extends JInternalFrame {
      * @since 2.0
      */
     private void updateScenarioInformation() {
-        this.scenario.setTitle(this.textFieldOptionsScenarioTitle.getText());
-        this.scenario.setAuthor(this.textFieldOptionsScenarioAuthorName.getText());
-        this.scenario.setDescription(this.textAreaOptionsScenarioDescription.getText());
+        if (this.scenario.getTitle().equals(this.textFieldOptionsScenarioTitle.getText())) {
+            this.scenario.setTitle(this.textFieldOptionsScenarioTitle.getText());
+        }
+        if (this.scenario.getAuthor().equals(this.textFieldOptionsScenarioAuthorName.getText())) {
+            this.scenario.setAuthor(this.textFieldOptionsScenarioAuthorName.getText());
+        }
+        if (this.scenario.getDescription().equals(this.textAreaOptionsScenarioDescription.getText())) {
+            this.scenario.setDescription(this.textAreaOptionsScenarioDescription.getText());
+        }
     }
 
     private TProgressEventListener progressEventListener;
