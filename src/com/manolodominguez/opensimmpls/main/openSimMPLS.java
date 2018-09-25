@@ -21,6 +21,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import com.manolodominguez.opensimmpls.gui.simulator.JOpenSimMPLS;
 import com.manolodominguez.opensimmpls.gui.splash.JSplash;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ResourceBundle;
@@ -43,6 +44,7 @@ public class openSimMPLS {
      * @since 2.0
      */
     public static void main(String args[]) {
+        translations = ResourceBundle.getBundle(AvailableBundles.MAIN_OPENSIMMPLS.getPath());
         try {
             boolean nimbusSet = false;
             for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -63,9 +65,9 @@ public class openSimMPLS {
         SwingUtilities.invokeLater(() -> {
             splash.setVisible(true);
         });
-        splash.setMessage(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("Loading_icons..."));
+        splash.setMessage(translations.getString("Loading_icons..."));
         imagesBroker = TImageBroker.getInstance();
-        splash.setMessage(ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("openSimMPLS.generandoInterfaz"));
+        splash.setMessage(translations.getString("openSimMPLS.generandoInterfaz"));
         simulator = new JOpenSimMPLS(imagesBroker);
         Dimension tamPantalla = Toolkit.getDefaultToolkit().getScreenSize();
         simulator.setBounds(0, 0, tamPantalla.width, tamPantalla.height);
@@ -77,4 +79,5 @@ public class openSimMPLS {
     private static TImageBroker imagesBroker;
     private static JSplash splash;
     private static JOpenSimMPLS simulator;
+    private static ResourceBundle translations;
 }

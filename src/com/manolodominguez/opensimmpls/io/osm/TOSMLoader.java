@@ -116,7 +116,7 @@ public class TOSMLoader {
             this.section = TOSMLoader.NONE;
         } else if (topologyString.startsWith("#Receptor#")) {
             TTrafficSinkNode receiver = new TTrafficSinkNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
-            if (receiver.unMarshall(topologyString)) {
+            if (receiver.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addNode(receiver);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(receiver.getNodeID());
                 this.scenario.getTopology().getIPv4AddressGenerator().setIPv4AddressIfGreater(receiver.getIPv4Address());
@@ -124,7 +124,7 @@ public class TOSMLoader {
             receiver = null;
         } else if (topologyString.startsWith("#Emisor#")) {
             TTrafficGeneratorNode sender = new TTrafficGeneratorNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
-            if (sender.unMarshall(topologyString)) {
+            if (sender.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addNode(sender);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(sender.getNodeID());
                 this.scenario.getTopology().getIPv4AddressGenerator().setIPv4AddressIfGreater(sender.getIPv4Address());
@@ -132,7 +132,7 @@ public class TOSMLoader {
             sender = null;
         } else if (topologyString.startsWith("#LER#")) {
             TLERNode ler = new TLERNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
-            if (ler.unMarshall(topologyString)) {
+            if (ler.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addNode(ler);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(ler.getNodeID());
                 this.scenario.getTopology().getIPv4AddressGenerator().setIPv4AddressIfGreater(ler.getIPv4Address());
@@ -140,7 +140,7 @@ public class TOSMLoader {
             ler = null;
         } else if (topologyString.startsWith("#LERA#")) {
             TActiveLERNode activeLER = new TActiveLERNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
-            if (activeLER.unMarshall(topologyString)) {
+            if (activeLER.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addNode(activeLER);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(activeLER.getNodeID());
                 this.scenario.getTopology().getIPv4AddressGenerator().setIPv4AddressIfGreater(activeLER.getIPv4Address());
@@ -148,7 +148,7 @@ public class TOSMLoader {
             activeLER = null;
         } else if (topologyString.startsWith("#LSR#")) {
             TLSRNode lsr = new TLSRNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
-            if (lsr.unMarshall(topologyString)) {
+            if (lsr.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addNode(lsr);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(lsr.getNodeID());
                 this.scenario.getTopology().getIPv4AddressGenerator().setIPv4AddressIfGreater(lsr.getIPv4Address());
@@ -156,7 +156,7 @@ public class TOSMLoader {
             lsr = null;
         } else if (topologyString.startsWith("#LSRA#")) {
             TActiveLSRNode activeLSR = new TActiveLSRNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
-            if (activeLSR.unMarshall(topologyString)) {
+            if (activeLSR.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addNode(activeLSR);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(activeLSR.getNodeID());
                 this.scenario.getTopology().getIPv4AddressGenerator().setIPv4AddressIfGreater(activeLSR.getIPv4Address());
@@ -164,14 +164,14 @@ public class TOSMLoader {
             activeLSR = null;
         } else if (topologyString.startsWith("#EnlaceExterno#")) {
             TExternalLink externalLink = new TExternalLink(0, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
-            if (externalLink.unMarshall(topologyString)) {
+            if (externalLink.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addLink(externalLink);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(externalLink.getID());
             }
             externalLink = null;
         } else if (topologyString.startsWith("#EnlaceInterno#")) {
             TInternalLink internalLink = new TInternalLink(0, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
-            if (internalLink.unMarshall(topologyString)) {
+            if (internalLink.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addLink(internalLink);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(internalLink.getID());
             }

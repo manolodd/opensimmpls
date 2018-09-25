@@ -31,6 +31,8 @@ import com.manolodominguez.opensimmpls.scenario.TTopologyElement;
 import com.manolodominguez.opensimmpls.commons.EIDGeneratorOverflow;
 import com.manolodominguez.opensimmpls.gui.utils.TProgressEventListener;
 import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.ResourceBundle;
 
 /**
  * This class implements a timer that will govern the operation and
@@ -66,6 +68,7 @@ public class TTimer implements Runnable {
         this.running = false;
         this.isFinished = true;
         this.paused = false;
+        this.translations = ResourceBundle.getBundle(AvailableBundles.TIMER.getPath());
     }
 
     /**
@@ -284,6 +287,7 @@ public class TTimer implements Runnable {
             try {
                 linkAux.receiveTimerEvent(new TTimerEvent(this, this.longIdentifierGenerator.getNextIdentifier(), startOfSimulationInterval, endOfSimulationInterval));
             } catch (EIDGeneratorOverflow e) {
+                //FIX: This is ygly. Avoid.
                 e.printStackTrace();
             }
         }
@@ -308,6 +312,7 @@ public class TTimer implements Runnable {
                 this.progressEventListener.receiveProgressEvent(new TProgressEvent(this, this.longIdentifierGenerator.getNextIdentifier(), computedProgress));
             }
         } catch (EIDGeneratorOverflow e) {
+            //FIX: This is ugly. Avoid.
             e.printStackTrace();
         }
     }
@@ -400,6 +405,7 @@ public class TTimer implements Runnable {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
+    @Override
     public void run() {
         this.running = true;
         long currentSimulatedTime;
@@ -413,7 +419,7 @@ public class TTimer implements Runnable {
         if (currentSimulatedTime == simulationDuration) {
             simulationFinished = true;
         }
-        while ((this.currentTimestamp.compareTo(this.finishTimestamp) != TTimestamp.ARGUMENT_IS_LOWER) && (!this.isFinished)) {
+        while ((this.currentTimestamp.compareTo(this.finishTimestamp) != TTimestamp.THIS_GREATER) && (!this.isFinished)) {
             // Let's simulate
             generateProgressEvent();
             generateTimerEvent();
@@ -477,9 +483,9 @@ public class TTimer implements Runnable {
         if (this.thread != null) {
             try {
                 this.thread.join();
-            } catch (Exception e) {
-                System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TReloj.ErrorAlEsperarFinalizacionDelReloj") + e.toString());
-            };
+            } catch (InterruptedException e) {
+                System.out.println(this.translations.getString("TReloj.ErrorAlEsperarFinalizacionDelReloj") + e.toString());
+            }
         }
     }
 
@@ -510,4 +516,5 @@ public class TTimer implements Runnable {
     private TTimestamp currentTimestampAux;
     private TTimestamp previousTimestampAux;
     private TTimestamp finishTimestampAux;
+    private ResourceBundle translations;
 }

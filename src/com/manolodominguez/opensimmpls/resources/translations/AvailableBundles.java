@@ -23,7 +23,20 @@ package com.manolodominguez.opensimmpls.resources.translations;
  * @version 2.0
  */
 public enum AvailableBundles {
+    TRAFFIC_SINK_NODE("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    TRAFFIC_GENERATOR_NODE("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    TOPOLOGY_ELEMENT("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    SCENARIO("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    LINK_CONFIG("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    LSR_NODE("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    LER_NODE("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    ACTIVE_LSR_NODE("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    ACTIVE_LER_NODE("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    MAIN_OPENSIMMPLS("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    OSM_SAVER("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    TIMER("com/manolodominguez/opensimmpls/resources/translations/translations"),
     E_SIMULATION_SINGLE_SUBSCRIBER("com/manolodominguez/opensimmpls/resources/translations/translations"),
+    E_PROGRESS_EVENT_GENERATOR_ONLY_ALLOW_A_SINGLE_LISTENER("com/manolodominguez/opensimmpls/resources/translations/translations"),
     LER_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     LSR_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
     ACTIVE_LER_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),

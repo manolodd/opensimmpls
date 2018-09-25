@@ -32,6 +32,7 @@ public class TSwitchingMatrixEntry {
      * @since 2.0
      */
     public TSwitchingMatrixEntry() {
+        //FIX: Avoid using harcoded values. Use class constant instead.
         this.incomingPortID = TSwitchingMatrixEntry.UNDEFINED;
         this.labelOrFEC = TSwitchingMatrixEntry.UNDEFINED;
         this.outgoingPortID = TSwitchingMatrixEntry.UNDEFINED;
@@ -58,6 +59,7 @@ public class TSwitchingMatrixEntry {
      * @since 2.0
      */
     public boolean backupLSPHasBeenEstablished() {
+        //FIX: Avoid using harcoded values. Use class constant instead.
         if (this.backupOutgoingPortID >= 0) {
             if (this.backupLabel > 15) {
                 return true;
@@ -173,6 +175,7 @@ public class TSwitchingMatrixEntry {
      * @since 2.0
      */
     public void decreaseAttempts() {
+        //FIX: Avoid using harcoded values. Use class constant instead.
         if (this.labelRequestAttempts > 0) {
             this.labelRequestAttempts--;
         }
@@ -191,6 +194,7 @@ public class TSwitchingMatrixEntry {
      * Otherwise, returns false..
      */
     public boolean areThereAvailableAttempts() {
+        //FIX: Avoid using harcoded values. Use class constant instead.
         if (this.labelRequestAttempts > 0) {
             return true;
         }
@@ -217,6 +221,7 @@ public class TSwitchingMatrixEntry {
      * be decreased from the available timeout credit.
      */
     public void decreaseTimeOut(int nanosecondsToDecrease) {
+        //FIX: Avoid using harcoded values. Use class constant instead.
         if (this.timeout > 0) {
             this.timeout -= nanosecondsToDecrease;
         }
@@ -237,6 +242,7 @@ public class TSwitchingMatrixEntry {
      */
     public boolean shouldRetryExpiredTLDPRequest() {
         if (areThereAvailableAttempts()) {
+        //FIX: Avoid using harcoded values. Use class constant instead.
             if (timeout == 0) {
                 if ((this.label == TSwitchingMatrixEntry.LABEL_REQUESTED) || (this.label == TSwitchingMatrixEntry.REMOVING_LABEL)) {
                     return true;
@@ -349,6 +355,7 @@ public class TSwitchingMatrixEntry {
         this.label = this.backupLabel;
         this.backupOutgoingPortID = TSwitchingMatrixEntry.UNDEFINED;
         this.backupLabel = TSwitchingMatrixEntry.UNDEFINED;
+        //FIX: Avoid using harcoded values. Use class constant instead.
         this.isRequestForBackupLSP = false;
     }
 

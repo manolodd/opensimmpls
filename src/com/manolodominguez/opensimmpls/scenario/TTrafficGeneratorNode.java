@@ -31,8 +31,10 @@ import com.manolodominguez.opensimmpls.hardware.ports.TPortSet;
 import com.manolodominguez.opensimmpls.commons.EIDGeneratorOverflow;
 import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
 import com.manolodominguez.opensimmpls.commons.TRotaryIDGenerator;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import java.awt.Point;
 import java.util.Random;
+import java.util.ResourceBundle;
 
 /**
  * This class implements a sender node; a node that only generates traffic.
@@ -76,6 +78,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
         // FIX: This method is overridable. Avoid using this method to update
         // the number of ports or make it final.
         this.stats.setStatsEnabled(this.isGeneratingStats());
+        this.translations = ResourceBundle.getBundle(AvailableBundles.TRAFFIC_GENERATOR_NODE.getPath());
     }
 
     /**
@@ -832,13 +835,13 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
     public String getErrorMessage(int errorCode) {
         switch (errorCode) {
             case UNNAMED:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEmisor.FALTA_NOMBRE"));
+                return (this.translations.getString("TConfigEmisor.FALTA_NOMBRE"));
             case NAME_ALREADY_EXISTS:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEmisor.NOMBRE_REPETIDO"));
+                return (this.translations.getString("TConfigEmisor.NOMBRE_REPETIDO"));
             case ONLY_BLANK_SPACES:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TNodoEmisor.NoSoloEspacios"));
+                return (this.translations.getString("TNodoEmisor.NoSoloEspacios"));
             case TARGET_UNREACHABLE:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TNodoEmisor.DestinoParaElTrafico"));
+                return (this.translations.getString("TNodoEmisor.DestinoParaElTrafico"));
         }
         return ("");
     }
@@ -853,7 +856,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public String marshall() {
+    public String toOSMString() {
         String serializedElement = "#Emisor#";
         serializedElement += this.getNodeID();
         serializedElement += "#";
@@ -900,7 +903,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public boolean unMarshall(String serializedSender) {
+    public boolean fromOSMString(String serializedSender) {
         // FIX: All fixed values in this method should be implemented as class
         // constants instead of harcoded values.
         String[] elementFields = serializedSender.split("#");
@@ -1003,4 +1006,6 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
     public static final int NAME_ALREADY_EXISTS = 2;
     public static final int ONLY_BLANK_SPACES = 3;
     public static final int TARGET_UNREACHABLE = 4;
+
+    private ResourceBundle translations;
 }

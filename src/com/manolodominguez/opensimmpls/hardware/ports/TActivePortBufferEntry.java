@@ -61,12 +61,12 @@ public class TActivePortBufferEntry implements Comparable {
     public int compareTo(Object anotherActivePortBufferEntry) {
         TActivePortBufferEntry activePortBufferEntryAux = (TActivePortBufferEntry) anotherActivePortBufferEntry;
         if (this.incomingOrder < activePortBufferEntryAux.getIncomingOrder()) {
-            return TActivePortBufferEntry.THIS_IS_LOWER;
+            return TActivePortBufferEntry.THIS_LOWER;
         }
         if (this.incomingOrder > activePortBufferEntryAux.getIncomingOrder()) {
-            return TActivePortBufferEntry.THIS_IS_GREATER;
+            return TActivePortBufferEntry.THIS_GREATER;
         }
-        return TActivePortBufferEntry.BOTH_ARE_EQUAL;
+        return TActivePortBufferEntry.THIS_EQUAL;
     }
 
     /**
@@ -108,9 +108,9 @@ public class TActivePortBufferEntry implements Comparable {
         return this.packet;
     }
 
-    private static final int THIS_IS_LOWER = -1;
-    private static final int THIS_IS_GREATER = 1;
-    private static final int BOTH_ARE_EQUAL = 0;
+    private static final int THIS_LOWER = -1;
+    private static final int THIS_GREATER = 1;
+    private static final int THIS_EQUAL = 0;
 
     private int priority;
     private int incomingOrder;

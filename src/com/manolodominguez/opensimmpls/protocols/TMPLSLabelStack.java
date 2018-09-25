@@ -63,6 +63,7 @@ public class TMPLSLabelStack {
         try {
             mplsLabel.setID(this.idGenerator.getNextIdentifier());
         } catch (EIDGeneratorOverflow e) {
+            //FIX: This is ugly. Avoid.
             e.printStackTrace();
         }
         this.stack.addLast(mplsLabel);
@@ -104,6 +105,7 @@ public class TMPLSLabelStack {
         try {
             mplsLabel.setID(this.idGenerator.getNextIdentifier());
         } catch (EIDGeneratorOverflow e) {
+            //FIX: This is ugly. Avoid.
             e.printStackTrace();
         }
         this.stack.addLast(mplsLabel);

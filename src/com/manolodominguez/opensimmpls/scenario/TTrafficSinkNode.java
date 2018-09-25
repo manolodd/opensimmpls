@@ -24,7 +24,9 @@ import com.manolodominguez.opensimmpls.hardware.ports.TFIFOPortSet;
 import com.manolodominguez.opensimmpls.hardware.ports.TPort;
 import com.manolodominguez.opensimmpls.hardware.ports.TPortSet;
 import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import java.awt.Point;
+import java.util.ResourceBundle;
 
 /**
  * This class implements a receiver node; a node that only receives traffic.
@@ -54,6 +56,7 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
         // FIX: Use class constants instead of harcoded values.
         this.ports.setUnlimitedBuffer(true);
         this.stats = new TTrafficSinkStats();
+        this.translations = ResourceBundle.getBundle(AvailableBundles.TRAFFIC_SINK_NODE.getPath());
     }
 
     /**
@@ -280,11 +283,11 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
     public String getErrorMessage(int errorCode) {
         switch (errorCode) {
             case UNNAMED:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigReceptor.FALTA_NOMBRE"));
+                return (this.translations.getString("TConfigReceptor.FALTA_NOMBRE"));
             case NAME_ALREADY_EXISTS:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigReceptor.NOMBRE_REPETIDO"));
+                return (this.translations.getString("TConfigReceptor.NOMBRE_REPETIDO"));
             case ONLY_BLANK_SPACES:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TNodoReceptor.NombreNoSoloEspacios"));
+                return (this.translations.getString("TNodoReceptor.NombreNoSoloEspacios"));
         }
         return ("");
     }
@@ -299,7 +302,7 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public String marshall() {
+    public String toOSMString() {
         // FIX: all harcoded values should be coded as class constants.
         String serializedElement = "#Receptor#";
         serializedElement += this.getNodeID();
@@ -334,7 +337,7 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public boolean unMarshall(String serializedReceiverNode) {
+    public boolean fromOSMString(String serializedReceiverNode) {
         // FIX: All fixed values in this method should be implemented as class
         // constants instead of harcoded values.
         String[] elementFields = serializedReceiverNode.split("#");
@@ -413,4 +416,5 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
     public static final int ONLY_BLANK_SPACES = 3;
 
     private TTrafficSinkStats stats;
+    private ResourceBundle translations;
 }

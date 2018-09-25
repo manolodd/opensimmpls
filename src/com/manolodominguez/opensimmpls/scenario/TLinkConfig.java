@@ -15,6 +15,9 @@
  */
 package com.manolodominguez.opensimmpls.scenario;
 
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.ResourceBundle;
+
 /**
  * This class implements an object that will contain the needed values to
  * configure a link.
@@ -39,6 +42,7 @@ public class TLinkConfig {
         this.linkType = TLink.INTERNAL_LINK;
         this.headEndNodePortID = -1;
         this.tailEndNodePortID = -1;
+        this.translations = ResourceBundle.getBundle(AvailableBundles.LINK_CONFIG.getPath());
     }
 
     /**
@@ -319,19 +323,19 @@ public class TLinkConfig {
     public String getErrorMessage(int errorCode) {
         switch (errorCode) {
             case UNNAMED:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.FALTA_NOMBRE"));
+                return (this.translations.getString("TConfigEnlace.FALTA_NOMBRE"));
             case ONLY_BLANK_SPACES:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.NoSoloEspacios"));
+                return (this.translations.getString("TConfigEnlace.NoSoloEspacios"));
             case NAME_ALREADY_EXISTS:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.NombreYaUsado"));
+                return (this.translations.getString("TConfigEnlace.NombreYaUsado"));
             case MISSING_HEAD_END_NODE_PORT_ID:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.SeleccionrPuertoIzquierdo"));
+                return (this.translations.getString("TConfigEnlace.SeleccionrPuertoIzquierdo"));
             case MISSING_TAIL_END_NODE_PORT_ID:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.SeleccionarPuertoDerecho"));
+                return (this.translations.getString("TConfigEnlace.SeleccionarPuertoDerecho"));
             case MISSING_HEAD_END_NODE_NAME:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.SeleccionarExtremoIzquierdo"));
+                return (this.translations.getString("TConfigEnlace.SeleccionarExtremoIzquierdo"));
             case MISSING_TAIL_END_NODE_NAME:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigEnlace.SeleccionarExtremoDerecho"));
+                return (this.translations.getString("TConfigEnlace.SeleccionarExtremoDerecho"));
         }
         return ("");
     }
@@ -377,4 +381,5 @@ public class TLinkConfig {
     public int linkDelay;
     private boolean showName;
     private boolean wellConfigured;
+    private ResourceBundle translations;
 }

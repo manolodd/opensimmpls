@@ -114,17 +114,17 @@ public class TDMGPEntry implements Comparable {
     public int compareTo(Object o) {
         TDMGPEntry dmgpEntry = (TDMGPEntry) o;
         if (this.order < dmgpEntry.getOrder()) {
-            return TDMGPEntry.ESTE_MENOR;
+            return TDMGPEntry.THIS_LOWER;
         }
         if (this.order > dmgpEntry.getOrder()) {
-            return TDMGPEntry.ESTE_MAYOR;
+            return TDMGPEntry.THIS_GREATER;
         }
-        return TDMGPEntry.ESTE_IGUAL;
+        return TDMGPEntry.THIS_EQUAL;
     }
 
-    private static final int ESTE_MENOR = -1;
-    private static final int ESTE_IGUAL = 0;
-    private static final int ESTE_MAYOR = 1;
+    private static final int THIS_LOWER = -1;
+    private static final int THIS_EQUAL = 0;
+    private static final int THIS_GREATER = 1;
 
     private int flowID;
     private int packetID;

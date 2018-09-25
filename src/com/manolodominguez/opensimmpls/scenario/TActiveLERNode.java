@@ -45,6 +45,8 @@ import com.manolodominguez.opensimmpls.hardware.ports.TPortSet;
 import com.manolodominguez.opensimmpls.commons.EIDGeneratorOverflow;
 import com.manolodominguez.opensimmpls.commons.TIDGenerator;
 import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.ResourceBundle;
 
 /**
  * This class implements an active Label Edge Router (LER) node that will allow
@@ -82,6 +84,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         this.dmgp = new TDMGP();
         this.gpsrpRequests = new TGPSRPRequestsMatrix();
         this.stats = new TActiveLERStats();
+        this.translations = ResourceBundle.getBundle(AvailableBundles.ACTIVE_LER_NODE.getPath());
     }
 
     /**
@@ -2451,11 +2454,11 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     public String getErrorMessage(int errorCode) {
         switch (errorCode) {
             case TActiveLERNode.UNNAMED:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigLER.FALTA_NOMBRE"));
+                return (this.translations.getString("TConfigLER.FALTA_NOMBRE"));
             case TActiveLERNode.NAME_ALREADY_EXISTS:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigLER.NOMBRE_REPETIDO"));
+                return (this.translations.getString("TConfigLER.NOMBRE_REPETIDO"));
             case TActiveLERNode.ONLY_BLANK_SPACES:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TNodoLER.NombreNoSoloEspacios"));
+                return (this.translations.getString("TNodoLER.NombreNoSoloEspacios"));
         }
         return ("");
     }
@@ -2470,7 +2473,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public String marshall() {
+    public String toOSMString() {
         // FIX: all harcoded values should be coded as class constants.
         String serializedElement = "#LERA#";
         serializedElement += this.getNodeID();
@@ -2510,7 +2513,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public boolean unMarshall(String serializedLERA) {
+    public boolean fromOSMString(String serializedLERA) {
         // FIX: All fixed values in this method should be implemented as class
         // constants instead of harcoded values.
         String[] elementFields = serializedLERA.split("#");
@@ -2570,4 +2573,5 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     private TDMGP dmgp;
     private TGPSRPRequestsMatrix gpsrpRequests;
     private TActiveLERStats stats;
+    private ResourceBundle translations;
 }

@@ -52,23 +52,23 @@ public class TTimestamp implements Comparable {
     public int compareTo(Object anotherTimestamp) {
         TTimestamp argument = (TTimestamp) anotherTimestamp;
         if (this.millisecond < argument.getMillisecond()) {
-            return this.ARGUMENT_IS_GREATER;
+            return TTimestamp.THIS_LOWER;
         }
         if (this.millisecond > argument.getMillisecond()) {
-            return this.ARGUMENT_IS_LOWER;
+            return TTimestamp.THIS_GREATER;
         }
         if (this.millisecond == argument.getMillisecond()) {
             if (this.nanosecond < argument.getNanosecond()) {
-                return this.ARGUMENT_IS_GREATER;
+                return TTimestamp.THIS_LOWER;
             }
             if (this.nanosecond > argument.getNanosecond()) {
-                return this.ARGUMENT_IS_LOWER;
+                return TTimestamp.THIS_GREATER;
             }
             if (this.nanosecond == argument.getNanosecond()) {
-                return this.BOTH_ARE_EQUAL;
+                return TTimestamp.THIS_EQUAL;
             }
         }
-        return this.BOTH_ARE_EQUAL;
+        return TTimestamp.THIS_EQUAL;
     }
 
     /**
@@ -100,6 +100,7 @@ public class TTimestamp implements Comparable {
      * @since 2.0
      */
     public void increaseNanoseconds(int addedNanosecond) {
+        //FIX: Avoid using harcoded values. Use class constant instead.
         this.nanosecond += addedNanosecond;
         long integerDivision = (this.nanosecond / 1000000);
         if (integerDivision > 0) {
@@ -161,11 +162,12 @@ public class TTimestamp implements Comparable {
      * @since 2.0
      */
     public long getTotalAsNanoseconds() {
+        //FIX: Avoid using harcoded values. Use class constant instead.
         return (long) ((this.getMillisecond() * 1000000) + this.getNanosecond());
     }
-    public static final int ARGUMENT_IS_GREATER = -1;
-    public static final int BOTH_ARE_EQUAL = 0;
-    public static final int ARGUMENT_IS_LOWER = 1;
+    public static final int THIS_LOWER = -1;
+    public static final int THIS_EQUAL = 0;
+    public static final int THIS_GREATER = 1;
     private long millisecond;
     private int nanosecond;
 }

@@ -486,7 +486,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public abstract String marshall();
+    public abstract String toOSMString();
 
     /**
      * This method gets as an argument a serialized string that contains the
@@ -500,7 +500,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public abstract boolean unMarshall(String serializedElement);
+    public abstract boolean fromOSMString(String serializedElement);
 
     /**
      * This node gets the stat of this node. It has to be implemented by all

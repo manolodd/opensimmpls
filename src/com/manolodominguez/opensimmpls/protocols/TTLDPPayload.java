@@ -34,8 +34,8 @@ public class TTLDPPayload {
      */
     public TTLDPPayload() {
         this.TLDPMessageType = TTLDPPayload.LABEL_REQUEST;
-        this.targetIPAddress = "";
         // FIX: create and use constants instead of these harcoded values
+        this.targetIPAddress = "";
         this.label = 16;
         this.TLDPIdentifier = 0;
     }

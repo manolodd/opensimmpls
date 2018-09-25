@@ -289,7 +289,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * @since 2.0
      */
     @Override
-    public String marshall() {
+    public String toOSMString() {
         String serializedElement = "#EnlaceExterno#";
         serializedElement += this.getID();
         serializedElement += "#";
@@ -323,7 +323,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * @since 2.0
      */
     @Override
-    public boolean unMarshall(String serializedLink) {
+    public boolean fromOSMString(String serializedLink) {
         TLinkConfig linkConfig = new TLinkConfig();
         String[] elementFields = serializedLink.split("#");
         // FIX: Do not use harcoded values. This affect to the entire method. 

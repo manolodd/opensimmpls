@@ -28,6 +28,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 import net.miginfocom.swing.MigLayout;
@@ -39,7 +40,7 @@ import net.miginfocom.swing.MigLayout;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class JSplash extends javax.swing.JFrame {
+public class JSplash extends JFrame {
 
     /**
      * This method is the constructor of the class. It is create a new instance

@@ -43,6 +43,8 @@ import com.manolodominguez.opensimmpls.hardware.ports.TPort;
 import com.manolodominguez.opensimmpls.hardware.ports.TPortSet;
 import com.manolodominguez.opensimmpls.commons.TIDGenerator;
 import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.ResourceBundle;
 
 /**
  * This class implements an active Label Switch Router (LSR) that will operate
@@ -80,6 +82,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         this.dmgp = new TDMGP();
         this.gpsrpRequests = new TGPSRPRequestsMatrix();
         this.stats = new TActiveLSRStats();
+        this.translations = ResourceBundle.getBundle(AvailableBundles.ACTIVE_LSR_NODE.getPath());
     }
 
     /**
@@ -1931,11 +1934,11 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     public String getErrorMessage(int errorCode) {
         switch (errorCode) {
             case TActiveLSRNode.UNNAMED:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigLSR.FALTA_NOMBRE"));
+                return (this.translations.getString("TConfigLSR.FALTA_NOMBRE"));
             case TActiveLSRNode.NAME_ALREADY_EXISTS:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigLSR.NOMBRE_REPETIDO"));
+                return (this.translations.getString("TConfigLSR.NOMBRE_REPETIDO"));
             case TActiveLSRNode.ONLY_BLANK_SPACES:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TNodoLSR.NombreNoSoloEspacios"));
+                return (this.translations.getString("TNodoLSR.NombreNoSoloEspacios"));
         }
         return ("");
     }
@@ -1950,7 +1953,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public String marshall() {
+    public String toOSMString() {
         String serializedElement = "#LSRA#";
         serializedElement += this.getNodeID();
         serializedElement += "#";
@@ -1989,7 +1992,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public boolean unMarshall(String serializedLSRA) {
+    public boolean fromOSMString(String serializedLSRA) {
         // FIX: All fixed values in this method should be implemented as class
         // constants instead of harcoded values.
         String[] elementFields = serializedLSRA.split("#");
@@ -2058,4 +2061,5 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
     private TDMGP dmgp;
     private TGPSRPRequestsMatrix gpsrpRequests;
     private TActiveLSRStats stats;
+    private ResourceBundle translations;
 }

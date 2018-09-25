@@ -21,6 +21,8 @@ import com.manolodominguez.opensimmpls.hardware.timer.TTimerEvent;
 import com.manolodominguez.opensimmpls.hardware.timer.ITimerEventListener;
 import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventListener;
 import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.ResourceBundle;
 
 /**
  * This is an abstract class that is the super class of all elements of a
@@ -52,6 +54,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
         this.wellConfigured = false;
         this.currentTimeInstant = 0;
         this.tickDurationInNs = 0;
+        this.translations = ResourceBundle.getBundle(AvailableBundles.TOPOLOGY_ELEMENT.getPath());
     }
 
     /**
@@ -237,7 +240,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
             try {
                 this.elementThread.join();
             } catch (Exception e) {
-                System.out.println(java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TElementoTopologia.ErrorFinReloj") + e.toString());
+                System.out.println(this.translations.getString("TElementoTopologia.ErrorFinReloj") + e.toString());
             };
         }
     }
@@ -368,7 +371,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public abstract String marshall();
+    public abstract String toOSMString();
 
     /**
      * This is an abstract method that once implemented will configure the
@@ -382,7 +385,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public abstract boolean unMarshall(String serializedElement);
+    public abstract boolean fromOSMString(String serializedElement);
 
     /**
      * This is an abstract method that once implemented will reset all the
@@ -407,4 +410,5 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
     protected boolean wellConfigured;
     private long currentTimeInstant;
     private int tickDurationInNs;
+    private ResourceBundle translations;
 }

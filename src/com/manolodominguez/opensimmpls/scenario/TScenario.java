@@ -15,6 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.scenario;
 
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import java.io.File;
 import java.util.ResourceBundle;
 
@@ -44,6 +45,7 @@ public class TScenario {
         this.title = "";
         this.author = "";
         this.description = "";
+        this.translations = ResourceBundle.getBundle(AvailableBundles.SCENARIO.getPath());
     }
 
     /**
@@ -134,7 +136,7 @@ public class TScenario {
     public String marshallTitle() {
         String serializedTitle = "#Titulo#";
         if (this.getTitle().replace('#', ' ').equals("")) {
-            serializedTitle += ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEscenario.SinDefinir");
+            serializedTitle += this.translations.getString("TEscenario.SinDefinir");
         } else {
             serializedTitle += this.getTitle().replace('#', ' ');
         }
@@ -152,7 +154,7 @@ public class TScenario {
     public String marshallAuthor() {
         String serializedAuthor = "#Autor#";
         if (this.getAuthor().replace('#', ' ').equals("")) {
-            serializedAuthor += ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEscenario.SinDefinir");
+            serializedAuthor += this.translations.getString("TEscenario.SinDefinir");
         } else {
             serializedAuthor += this.getAuthor().replace('#', ' ');
         }
@@ -170,7 +172,7 @@ public class TScenario {
     public String marshallDescription() {
         String serializedDescription = "#Descripcion#";
         if (this.getDescription().replace('#', ' ').equals("")) {
-            serializedDescription += ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TEscenario.SinDefinir");
+            serializedDescription += this.translations.getString("TEscenario.SinDefinir");
         } else {
             serializedDescription += this.getDescription().replace('#', ' ');
         }
@@ -378,4 +380,5 @@ public class TScenario {
     private File scenarioFile;
     private boolean alreadySaved;
     private boolean modified;
+    private ResourceBundle translations;
 }

@@ -37,6 +37,7 @@ public class TTLDPPDU extends TAbstractPDU {
      */
     public TTLDPPDU(long id, String originIP, String targetIP) {
         super(id, originIP, targetIP);
+        //FIX: Do not use harcoded values. Use class constants instead.
         this.tcpPayload = new TTCPPayload(0);
         this.tldpPayload = new TTLDPPayload();
         this.lspType = false;
@@ -52,6 +53,7 @@ public class TTLDPPDU extends TAbstractPDU {
      */
     @Override
     public int getSize() {
+        //FIX: Do not use harcoded values. Use class constants instead.
         int auxSize = 0;
         auxSize += super.getIPv4Header().getSize(); // IPv4 header.
         auxSize += this.tcpPayload.getSize(); // TCP payload.

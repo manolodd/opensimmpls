@@ -37,8 +37,10 @@ import com.manolodominguez.opensimmpls.hardware.ports.TPort;
 import com.manolodominguez.opensimmpls.hardware.ports.TPortSet;
 import com.manolodominguez.opensimmpls.commons.TIDGenerator;
 import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import java.awt.Point;
 import java.util.Iterator;
+import java.util.ResourceBundle;
 
 /**
  * This class implements a Label Switch Router (LSR) that will operate inside a
@@ -74,6 +76,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         //FIX: replace with class constants.
         this.switchingPowerInMbps = 512;
         this.stats = new TLSRStats();
+        this.translations = ResourceBundle.getBundle(AvailableBundles.LSR_NODE.getPath());
     }
 
     /**
@@ -1317,11 +1320,11 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     public String getErrorMessage(int errorCode) {
         switch (errorCode) {
             case UNNAMED:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigLSR.FALTA_NOMBRE"));
+                return (this.translations.getString("TConfigLSR.FALTA_NOMBRE"));
             case NAME_ALREADY_EXISTS:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigLSR.NOMBRE_REPETIDO"));
+                return (this.translations.getString("TConfigLSR.NOMBRE_REPETIDO"));
             case ONLY_BLANK_SPACES:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TNodoLSR.NombreNoSoloEspacios"));
+                return (this.translations.getString("TNodoLSR.NombreNoSoloEspacios"));
         }
         return ("");
     }
@@ -1336,7 +1339,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public String marshall() {
+    public String toOSMString() {
         String serializedElement = "#LSR#";
         serializedElement += this.getNodeID();
         serializedElement += "#";
@@ -1373,7 +1376,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public boolean unMarshall(String serializedLSR) {
+    public boolean fromOSMString(String serializedLSR) {
         // FIX: All fixed values in this method should be implemented as class
         // constants instead of harcoded values.
         String[] elementFields = serializedLSR.split("#");
@@ -1441,4 +1444,5 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     private TIDGenerator gIdentLDP;
     private int switchingPowerInMbps;
     private TLSRStats stats;
+    private ResourceBundle translations;
 }

@@ -73,7 +73,7 @@ public class TMPLSPDU extends TAbstractPDU {
                 for (i = 0; i < auxNumberOfCrossedActiveNodes; i++) {
                     auxCurrentCrossedActiveNodeTag = this.getIPv4Header().getOptionsField().getCrossedActiveNode(i);
                     if (auxCurrentCrossedActiveNodeTag != null) {
-                        clonedMPLSPDU.getIPv4Header().getOptionsField().setCrossedActiveNode(new String(auxCurrentCrossedActiveNodeTag));
+                        clonedMPLSPDU.getIPv4Header().getOptionsField().setCrossedActiveNode(auxCurrentCrossedActiveNodeTag);
                     }
                 }
             }
@@ -97,12 +97,12 @@ public class TMPLSPDU extends TAbstractPDU {
             newLabelForClonedPDU.setEXP(currentLabel.getEXP());
             newLabelForClonedPDU.setLabel(currentLabel.getLabel());
             newLabelForClonedPDU.setTTL(currentLabel.getTTL());
-            if (localLabelStack.size() == 0) {
+            if (localLabelStack.isEmpty()) {
                 localLabelStack.add(newLocalLabel);
             } else {
                 localLabelStack.addFirst(newLocalLabel);
             }
-            if (labelStackForClonedPDU.size() == 0) {
+            if (labelStackForClonedPDU.isEmpty()) {
                 labelStackForClonedPDU.add(newLabelForClonedPDU);
             } else {
                 labelStackForClonedPDU.addFirst(newLabelForClonedPDU);
@@ -126,6 +126,7 @@ public class TMPLSPDU extends TAbstractPDU {
      */
     @Override
     public int getSize() {
+        //FIX: Avoid using harcoded values. Use class constants instead.
         int auxSize = 0;
         auxSize += super.getIPv4Header().getSize(); // IPv4 header.
         auxSize += this.tcpPayload.getSize(); // TCP payload.
@@ -179,8 +180,8 @@ public class TMPLSPDU extends TAbstractPDU {
     }
 
     @Override
-    public void setSubtype(int st) {
-        this.subType = st;
+    public void setSubtype(int subType) {
+        this.subType = subType;
     }
 
     /**

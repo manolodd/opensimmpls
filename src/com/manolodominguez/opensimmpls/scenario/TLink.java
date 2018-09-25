@@ -701,7 +701,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @since 2.0
      */
     @Override
-    public abstract String marshall();
+    public abstract String toOSMString();
 
     /**
      * This method deserializes the link from an OSM (Open SimMpls) string to a
@@ -714,7 +714,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @since 2.0
      */
     @Override
-    public abstract boolean unMarshall(String serializedLink);
+    public abstract boolean fromOSMString(String serializedLink);
 
     /**
      * This method sets this links as a broken one. To be implemented by all

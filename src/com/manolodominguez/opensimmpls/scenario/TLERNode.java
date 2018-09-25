@@ -38,8 +38,10 @@ import com.manolodominguez.opensimmpls.hardware.ports.TPortSet;
 import com.manolodominguez.opensimmpls.commons.EIDGeneratorOverflow;
 import com.manolodominguez.opensimmpls.commons.TIDGenerator;
 import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import java.awt.Point;
 import java.util.Iterator;
+import java.util.ResourceBundle;
 
 /**
  * This class implements an Label Edge Router (LER) node that will allow network
@@ -75,6 +77,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         //FIX: replace with class constants.
         this.routingPowerInMbps = 512;
         this.stats = new TLERStats();
+        this.translations = ResourceBundle.getBundle(AvailableBundles.LER_NODE.getPath());
     }
 
     /**
@@ -1774,11 +1777,11 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     public String getErrorMessage(int errorCode) {
         switch (errorCode) {
             case UNNAMED:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigLER.FALTA_NOMBRE"));
+                return (this.translations.getString("TConfigLER.FALTA_NOMBRE"));
             case NAME_ALREADY_EXISTS:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TConfigLER.NOMBRE_REPETIDO"));
+                return (this.translations.getString("TConfigLER.NOMBRE_REPETIDO"));
             case ONLY_BLANK_SPACES:
-                return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("TNodoLER.NombreNoSoloEspacios"));
+                return (this.translations.getString("TNodoLER.NombreNoSoloEspacios"));
         }
         return ("");
     }
@@ -1793,7 +1796,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public String marshall() {
+    public String toOSMString() {
         String serializedElement = "#LER#";
         serializedElement += this.getNodeID();
         serializedElement += "#";
@@ -1830,7 +1833,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      */
     @Override
-    public boolean unMarshall(String serializedLER) {
+    public boolean fromOSMString(String serializedLER) {
         // FIX: All fixed values in this method should be implemented as class
         // constants instead of harcoded values.
         String[] elementFields = serializedLER.split("#");
@@ -1905,4 +1908,5 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
     private TIDGenerator gIdentLDP;
     private int routingPowerInMbps;
     private TLERStats stats;
+    private ResourceBundle translations;
 }

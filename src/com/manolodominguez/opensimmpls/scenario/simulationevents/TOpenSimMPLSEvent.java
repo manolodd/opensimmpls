@@ -92,6 +92,7 @@ public abstract class TOpenSimMPLSEvent extends EventObject implements Comparabl
     @Override
     public int compareTo(Object anotherEvent) {
         TOpenSimMPLSEvent eventAux = (TOpenSimMPLSEvent) anotherEvent;
+        //FIX: Do not use harcoded values. Use class constants instead.
         if (this.instant < eventAux.getInstant()) {
             return -1;
         } else if (this.instant > eventAux.getInstant()) {

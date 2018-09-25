@@ -15,6 +15,9 @@
  */
 package com.manolodominguez.opensimmpls.hardware.timer;
 
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.ResourceBundle;
+
 /**
  * This class implements an exception that will be thrown in those situations
  * when a single IProgressEventListener is allowed and there is an attempt of
@@ -32,6 +35,7 @@ public class EProgressEventGeneratorOnlyAllowASingleListener extends Exception {
      * @since 2.0
      */
     public EProgressEventGeneratorOnlyAllowASingleListener() {
+        this.translations = ResourceBundle.getBundle(AvailableBundles.E_PROGRESS_EVENT_GENERATOR_ONLY_ALLOW_A_SINGLE_LISTENER.getPath());
     }
 
     /**
@@ -39,8 +43,10 @@ public class EProgressEventGeneratorOnlyAllowASingleListener extends Exception {
      *
      * @return A string explaining the cause of the exception.
      */
+    @Override
     public String toString() {
-        return (java.util.ResourceBundle.getBundle("com/manolodominguez/opensimmpls/resources/translations/translations").getString("EProgresoUnSoloSuscriptor.texto"));
+        return (this.translations.getString("EProgresoUnSoloSuscriptor.texto"));
     }
 
+    private ResourceBundle translations;
 }
