@@ -25,6 +25,7 @@ import java.util.ResourceBundle;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
+@SuppressWarnings("serial")
 public class EIDGeneratorOverflow extends Exception {
 
     /**
@@ -47,8 +48,9 @@ public class EIDGeneratorOverflow extends Exception {
      */
     @Override
     public String toString() {
-        return (this.translations.getString("EDesbordeDelIdentificador.texto"));
+        return (this.translations.getString("exceptionDescription"));
     }
 
     private ResourceBundle translations;
+
 }
