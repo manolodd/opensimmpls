@@ -51,6 +51,6 @@ public class EIDGeneratorOverflow extends Exception {
         return (this.translations.getString("exceptionDescription"));
     }
 
-    private ResourceBundle translations;
+    private final ResourceBundle translations;
 
 }
