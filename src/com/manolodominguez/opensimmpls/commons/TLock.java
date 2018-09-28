@@ -15,6 +15,9 @@
  */
 package com.manolodominguez.opensimmpls.commons;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This class implements a generic monitor that can be used to limit the number
  * of threads that can acces a piece of code simultaneously. That's useful in
@@ -33,7 +36,7 @@ public class TLock {
      * @since 2.0
      */
     public TLock() {
-        this.lock = false;
+        this.lock = UNLOCKED;
     }
 
     /**
@@ -46,15 +49,14 @@ public class TLock {
      * @since 2.0
      */
     public synchronized void lock() {
-        while (this.lock) {
+        while (this.lock == LOCKED) {
             try {
                 wait();
             } catch (InterruptedException e) {
-                // FIX: This is ugly
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
-        this.lock = true;
+        this.lock = LOCKED;
     }
 
     /**
@@ -66,9 +68,14 @@ public class TLock {
      * @since 2.0
      */
     public synchronized void unLock() {
-        this.lock = false;
+        this.lock = UNLOCKED;
         notify();
     }
 
     private boolean lock;
+    
+    
+    private static final boolean LOCKED = true;
+    private static final boolean UNLOCKED = false;
+    private final Logger logger = LoggerFactory.getLogger(TLock.class);
 }
