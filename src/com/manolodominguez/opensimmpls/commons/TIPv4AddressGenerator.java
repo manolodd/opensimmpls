@@ -32,11 +32,10 @@ public class TIPv4AddressGenerator {
      * @since 2.0
      */
     public TIPv4AddressGenerator() {
-        // FIX: Do not use harcoded values. Use class constants instead.
-        this.octect1 = 10;
-        this.octect2 = 0;
-        this.octect3 = 0;
-        this.octect4 = 0;
+        this.octect1 = DEFAULT_OCTECT1;
+        this.octect2 = DEFAULT_OCTECT2;
+        this.octect3 = DEFAULT_OCTECT3;
+        this.octect4 = DEFAULT_OCTECT4;
     }
 
     /**
@@ -48,7 +47,7 @@ public class TIPv4AddressGenerator {
      */
     private boolean setIPv4Address(String newInternalIPv4Address) {
         if (isAValidIPv4Address(newInternalIPv4Address)) {
-            String[] octects = newInternalIPv4Address.split("[.]");
+            String[] octects = newInternalIPv4Address.split(IPV4_SEPARATOR_REGEX);
             this.octect2 = Integer.parseInt(octects[1]);
             this.octect3 = Integer.parseInt(octects[2]);
             this.octect4 = Integer.parseInt(octects[3]);
@@ -69,24 +68,21 @@ public class TIPv4AddressGenerator {
      * @since 2.0
      */
     private boolean isAValidIPv4Address(String ipv4Address) {
-        if (ipv4Address.matches("[1][0][.][0-2]{0,1}[0-9]{0,1}[0-9][.][0-2]{0,1}[0-9]{0,1}[0-9][.][0-2]{0,1}[0-9]{0,1}[0-9]")) {
-            int auxOctect2 = 0;
-            int auxOctect3 = 0;
-            int auxOctect4 = 0;
-            String[] octects = ipv4Address.split("[.]");
+        if (ipv4Address.matches(IPV4_REGEX)) {
+            int auxOctect2 = MIN_OCTECT_VALUE;
+            int auxOctect3 = MIN_OCTECT_VALUE;
+            int auxOctect4 = MIN_OCTECT_VALUE;
+            String[] octects = ipv4Address.split(IPV4_SEPARATOR_REGEX);
             auxOctect2 = Integer.parseInt(octects[1]);
             auxOctect3 = Integer.parseInt(octects[2]);
             auxOctect4 = Integer.parseInt(octects[3]);
-            // FIX: Do not use harcoded values. Use class constants instead.
-            if ((auxOctect2 == 0) && (auxOctect3 == 0) && (auxOctect4 == 0)) {
+            if ((auxOctect2 == MIN_OCTECT_VALUE) && (auxOctect3 == MIN_OCTECT_VALUE) && (auxOctect4 == MIN_OCTECT_VALUE)) {
                 return false;
             }
-            // FIX: Do not use harcoded values. Use class constants instead.
-            if ((auxOctect2 > 255) || (auxOctect3 > 255) || (auxOctect4 > 255)) {
+            if ((auxOctect2 > MAX_OCTECT_VALUE) || (auxOctect3 > MAX_OCTECT_VALUE) || (auxOctect4 > MAX_OCTECT_VALUE)) {
                 return false;
             }
-            // FIX: Do not use harcoded values. Use class constants instead.
-            if ((auxOctect2 > 255) && (auxOctect3 > 255) && (auxOctect4 > 255)) {
+            if ((auxOctect2 > MAX_OCTECT_VALUE) && (auxOctect3 > MAX_OCTECT_VALUE) && (auxOctect4 > MAX_OCTECT_VALUE)) {
                 return false;
             }
         }
@@ -101,10 +97,9 @@ public class TIPv4AddressGenerator {
      * @since 2.0
      */
     public void reset() {
-        // FIX: Do not use harcoded values. Use class constants instead.
-        this.octect2 = 0;
-        this.octect3 = 0;
-        this.octect4 = 0;
+        this.octect2 = DEFAULT_OCTECT2;
+        this.octect3 = DEFAULT_OCTECT3;
+        this.octect4 = DEFAULT_OCTECT4;
     }
 
     /**
@@ -119,7 +114,7 @@ public class TIPv4AddressGenerator {
      */
     public void setIPv4AddressIfGreater(String newInternalIPv4Address) {
         if (isAValidIPv4Address(newInternalIPv4Address)) {
-            String[] octects = newInternalIPv4Address.split("[.]");
+            String[] octects = newInternalIPv4Address.split(IPV4_SEPARATOR_REGEX);
             int auxOctect2 = Integer.parseInt(octects[1]);
             int auxOctect3 = Integer.parseInt(octects[2]);
             int auxOctect4 = Integer.parseInt(octects[3]);
@@ -147,28 +142,37 @@ public class TIPv4AddressGenerator {
      * @since 2.0
      */
     public String getIPv4Address() throws EIPv4AddressGeneratorOverflow {
-        // FIX: Do not use harcoded values. Use class constants instead.
-        if (this.octect4 < 255) {
+        if (this.octect4 < MAX_OCTECT_VALUE) {
             this.octect4++;
         } else {
-            if (this.octect3 < 255) {
-                this.octect4 = 0;
+            if (this.octect3 < MAX_OCTECT_VALUE) {
+                this.octect4 = MIN_OCTECT_VALUE;
                 this.octect3++;
             } else {
-                if (this.octect2 < 254) {
-                    this.octect4 = 0;
-                    this.octect3 = 0;
+                if (this.octect2 < MAX_OCTECT_VALUE-1) {
+                    this.octect4 = MIN_OCTECT_VALUE;
+                    this.octect3 = MIN_OCTECT_VALUE;
                     this.octect2++;
                 } else {
                     throw new EIPv4AddressGeneratorOverflow();
                 }
             }
         }
-        return (this.octect1 + "." + this.octect2 + "." + this.octect3 + "." + this.octect4);
+        return (this.octect1 + IPV4_SEPARATOR + this.octect2 + IPV4_SEPARATOR + this.octect3 + IPV4_SEPARATOR + this.octect4);
     }
 
     private final int octect1;
     private int octect2;
     private int octect3;
     private int octect4;
+    
+    private static final int DEFAULT_OCTECT1 = 10;
+    private static final int DEFAULT_OCTECT2 = 0;
+    private static final int DEFAULT_OCTECT3 = 0;
+    private static final int DEFAULT_OCTECT4 = 0;
+    private static final int MIN_OCTECT_VALUE = 0;
+    private static final int MAX_OCTECT_VALUE = 255;
+    private static final String IPV4_REGEX = "[1][0][.][0-2]{0,1}[0-9]{0,1}[0-9][.][0-2]{0,1}[0-9]{0,1}[0-9][.][0-2]{0,1}[0-9]{0,1}[0-9]";
+    private static final String IPV4_SEPARATOR_REGEX = "[.]";
+    private static final String IPV4_SEPARATOR = ".";
 }
