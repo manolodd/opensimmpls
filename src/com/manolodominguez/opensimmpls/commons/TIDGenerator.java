@@ -31,8 +31,7 @@ public class TIDGenerator {
      * @since 2.0
      */
     public TIDGenerator() {
-        // FIX: Do not use harcoded values. Use class constants instead.
-        this.identifier = 0;
+        this.identifier = DEFAULT_ID;
     }
 
     /**
@@ -42,8 +41,7 @@ public class TIDGenerator {
      * @since 2.0
      */
     public synchronized void reset() {
-        // FIX: Do not use harcoded values. Use class constants instead.
-        this.identifier = 0;
+        this.identifier = DEFAULT_ID;
     }
 
     /**
@@ -92,4 +90,6 @@ public class TIDGenerator {
     }
 
     private int identifier;
+    
+    private static final int DEFAULT_ID = 0;
 }
