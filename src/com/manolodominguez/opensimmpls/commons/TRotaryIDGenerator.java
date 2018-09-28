@@ -32,8 +32,7 @@ public class TRotaryIDGenerator {
      * @since 2.0
      */
     public TRotaryIDGenerator() {
-        // FIX: Do not use harcoded values. Use class constants instead.
-        this.identifier = 0;
+        this.identifier = DEFAULT_ID;
     }
 
     /**
@@ -43,8 +42,7 @@ public class TRotaryIDGenerator {
      * @since 2.0
      */
     public synchronized void reset() {
-        // FIX: Do not use harcoded values. Use class constants instead.
-        this.identifier = 0;
+        this.identifier = DEFAULT_ID;
     }
 
     /**
@@ -56,8 +54,7 @@ public class TRotaryIDGenerator {
      */
     synchronized public int getNextIdentifier() {
         if (this.identifier >= Integer.MAX_VALUE) {
-            // FIX: Do not use harcoded values. Use class constants instead.
-            this.identifier = 0;
+            this.identifier = DEFAULT_ID;
         } else {
             this.identifier++;
         }
@@ -76,4 +73,6 @@ public class TRotaryIDGenerator {
     }
 
     private int identifier;
+    
+    private static final int DEFAULT_ID = 0;
 }
