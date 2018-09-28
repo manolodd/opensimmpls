@@ -31,8 +31,7 @@ public class TLongIDGenerator {
      * @since 2.0
      */
     public TLongIDGenerator() {
-        // FIX: Do not use harcoded values. Use class constants instead.
-        this.identifier = 0;
+        this.identifier = DEFAULT_ID;
     }
 
     /**
@@ -42,8 +41,7 @@ public class TLongIDGenerator {
      * @since 2.0
      */
     public synchronized void reset() {
-        // FIX: Do not use harcoded values. Use class constants instead.
-        this.identifier = 0;
+        this.identifier = DEFAULT_ID;
     }
 
     /**
@@ -65,4 +63,6 @@ public class TLongIDGenerator {
     }
 
     private long identifier;
+
+    private static final long DEFAULT_ID = 0;
 }
