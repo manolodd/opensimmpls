@@ -215,7 +215,7 @@ public class TDMGP {
             // The following values have been defined by design. See "Guarantee
             // of Service (GoS) support over MPLS using Active Techniques"
             // proposal. They determines the number of GoS flows that can be 
-            // using the DMGP in a given moment concurrently.
+            // using the DMGP in a given moment concurrently
             switch (packetGoSLevel) {
                 case TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP:
                     return PERCENTAGE_OF_DMGP_RESERVED_FOR_GOS3;
