@@ -15,7 +15,6 @@
  */
 package com.manolodominguez.opensimmpls.hardware.dmgp;
 
-import java.util.Iterator;
 import java.util.TreeSet;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
