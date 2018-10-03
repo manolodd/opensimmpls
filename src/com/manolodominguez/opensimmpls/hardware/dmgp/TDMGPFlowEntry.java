@@ -43,7 +43,7 @@ public class TDMGPFlowEntry implements Comparable {
         this.assignedPercentage = 0;
         this.assignedOctects = 0;
         this.usedOctects = 0;
-        this.entries = new TreeSet();
+        this.entries = new TreeSet<TDMGPEntry>();
         this.monitor = new TLock();
         this.idGenerator = new TRotaryIDGenerator();
     }
@@ -144,7 +144,7 @@ public class TDMGPFlowEntry implements Comparable {
      * @return The tree containing all the packets of this flow.
      * @since 2.0
      */
-    public TreeSet getEntries() {
+    public TreeSet<TDMGPEntry> getEntries() {
         return this.entries;
     }
 
@@ -245,7 +245,7 @@ public class TDMGPFlowEntry implements Comparable {
     private int assignedPercentage;
     private int assignedOctects;
     private int usedOctects;
-    private TreeSet entries;
+    private TreeSet<TDMGPEntry> entries;
     private TLock monitor;
     private TRotaryIDGenerator idGenerator;
 }

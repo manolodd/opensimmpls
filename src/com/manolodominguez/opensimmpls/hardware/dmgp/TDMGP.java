@@ -21,6 +21,7 @@ import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
 import com.manolodominguez.opensimmpls.commons.TRotaryIDGenerator;
 import com.manolodominguez.opensimmpls.commons.TLock;
+import com.manolodominguez.opensimmpls.commons.UnitsTranslations;
 
 /**
  * This class implements a DMGP memory to save GoS-aware PDUs temporarily.
@@ -38,12 +39,12 @@ public class TDMGP {
      * @since 2.0
      */
     public TDMGP() {
-        this.monitor = new TLock();
+        this.lock = new TLock();
         this.idGenerator = new TRotaryIDGenerator();
-        this.flows = new TreeSet();
-        this.totalAvailablePercentage = 100;
-        this.totalDMGPSizeInKB = 1;
-        this.totalAssignedOctects = 0;
+        this.flows = new TreeSet<>();
+        this.totalAvailablePercentage = DEFAULT_TOTAL_AVAILABLE_PERCENTAGE;
+        this.totalDMGPSizeInKB = DEFAULT_TOTAL_DMGP_SIZE_IN_KB;
+        this.totalAssignedOctects = DEFAULT_TOTAL_ASSIGNED_OCTECTS;
     }
 
     /**
@@ -51,10 +52,10 @@ public class TDMGP {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     * @param size Size in kilobytes.
+     * @param totalDMGPSizeInKB Size in kilobytes.
      */
-    public void setDMGPSizeInKB(int size) {
-        this.totalDMGPSizeInKB = size;
+    public void setDMGPSizeInKB(int totalDMGPSizeInKB) {
+        this.totalDMGPSizeInKB = totalDMGPSizeInKB;
         this.reset();
     }
 
@@ -62,7 +63,7 @@ public class TDMGP {
      * This method obtains the globals soze of DMGP in kilobites.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return Size in kilobites.
+     * @return Size in kilobytes.
      * @since 2.0
      */
     public int getDMGPSizeInKB() {
@@ -80,20 +81,18 @@ public class TDMGP {
      */
     public TMPLSPDU getPacket(int flowID, int packetID) {
         TMPLSPDU wantedPacket = null;
-        TDMGPFlowEntry dmgpFlowEntry = this.getFlow(flowID);
-        if (dmgpFlowEntry != null) {
-            this.monitor.lock();
-            Iterator it = dmgpFlowEntry.getEntries().iterator();
-            TDMGPEntry dmgpEntry = null;
-            while (it.hasNext()) {
-                dmgpEntry = (TDMGPEntry) it.next();
+        TDMGPFlowEntry requestedDMGPFlowEntry = this.getFlow(flowID);
+        // If the requested flowID is already created...
+        if (requestedDMGPFlowEntry != null) {
+            this.lock.lock();
+            for (TDMGPEntry dmgpEntry : requestedDMGPFlowEntry.getEntries()) {
                 if (dmgpEntry.getPacketID() == packetID) {
                     wantedPacket = dmgpEntry.getPacket();
-                    this.monitor.unLock();
+                    this.lock.unLock();
                     return wantedPacket;
                 }
             }
-            this.monitor.unLock();
+            this.lock.unLock();
         }
         return null;
     }
@@ -107,10 +106,10 @@ public class TDMGP {
      */
     public void addPacket(TMPLSPDU packet) {
         TDMGPFlowEntry dmgpFlowEntry = this.getFlow(packet);
-        if (dmgpFlowEntry == null) {
+        if (dmgpFlowEntry == null) { // The correponding flow, dows not exists
             dmgpFlowEntry = this.createFlow(packet);
         }
-        if (dmgpFlowEntry != null) {
+        if (dmgpFlowEntry != null) { // The corresponding flow already exists
             dmgpFlowEntry.addPacket(packet);
         } else {
             packet = null;
@@ -125,18 +124,18 @@ public class TDMGP {
      * @since 2.0
      */
     public void reset() {
-        this.monitor = null;
+        this.lock = null;
         this.idGenerator = null;
         this.flows = null;
-        this.monitor = new TLock();
+        this.lock = new TLock();
         this.idGenerator = new TRotaryIDGenerator();
-        this.flows = new TreeSet();
-        this.totalAvailablePercentage = 100;
-        this.totalAssignedOctects = 0;
+        this.flows = new TreeSet<>();
+        this.totalAvailablePercentage = DEFAULT_TOTAL_AVAILABLE_PERCENTAGE;
+        this.totalAssignedOctects = DEFAULT_TOTAL_ASSIGNED_OCTECTS;
     }
 
     private int getDMGPSizeInOctects() {
-        return (this.totalDMGPSizeInKB * 1024);
+        return (this.totalDMGPSizeInKB * UnitsTranslations.OCTETS_PER_KILOBYTE.getUnits());
     }
 
     private TDMGPFlowEntry getFlow(TAbstractPDU packet) {
@@ -146,31 +145,28 @@ public class TDMGP {
         return dmgpFlowEntry;
     }
 
-    private TDMGPFlowEntry getFlow(int idf) {
-        TDMGPFlowEntry dmgpFlowEntry = null;
-        this.monitor.lock();
-        Iterator ite = flows.iterator();
-        while (ite.hasNext()) {
-            dmgpFlowEntry = (TDMGPFlowEntry) ite.next();
-            if (dmgpFlowEntry.getFlowID() == idf) {
-                this.monitor.unLock();
+    private TDMGPFlowEntry getFlow(int flowID) {
+        this.lock.lock();
+        for (TDMGPFlowEntry dmgpFlowEntry : this.flows) {
+            if (dmgpFlowEntry.getFlowID() == flowID) {
+                this.lock.unLock();
                 return dmgpFlowEntry;
             }
         }
-        this.monitor.unLock();
+        this.lock.unLock();
         return null;
     }
 
     private TDMGPFlowEntry createFlow(TAbstractPDU packet) {
-        this.monitor.lock();
+        this.lock.lock();
         TDMGPFlowEntry dmgpFlowEntry = null;
         int flowID = packet.getIPv4Header().getOriginIPv4Address().hashCode();
-        int percentageToBeAssigned = 0;
-        int octectsToBeAssigned = 0;
+        int percentageToBeAssigned = ZERO;
+        int octectsToBeAssigned = ZERO;
         if (this.totalAssignedOctects < this.getDMGPSizeInOctects()) {
             percentageToBeAssigned = this.getPercentageToBeAssigned(packet);
             octectsToBeAssigned = this.getOctectsToBeAssigned(packet);
-            if (octectsToBeAssigned > 0) {
+            if (octectsToBeAssigned > ZERO) {
                 this.totalAssignedOctects += octectsToBeAssigned;
                 this.totalAvailablePercentage -= percentageToBeAssigned;
                 dmgpFlowEntry = new TDMGPFlowEntry(this.idGenerator.getNextIdentifier());
@@ -178,79 +174,88 @@ public class TDMGP {
                 dmgpFlowEntry.setAssignedPercentage(percentageToBeAssigned);
                 dmgpFlowEntry.setAssignedOctects(octectsToBeAssigned);
                 flows.add(dmgpFlowEntry);
-                this.monitor.unLock();
+                this.lock.unLock();
                 return dmgpFlowEntry;
             }
         }
-        this.monitor.unLock();
+        this.lock.unLock();
         return null;
     }
 
     private int getOctectsToBeAssigned(TAbstractPDU packet) {
         int reservedPercentage = getRequestedPercentage(packet);
-        int reservedOctects = 0;
-        if (this.totalAvailablePercentage > 0) {
+        int reservedOctects = ZERO;
+        if (this.totalAvailablePercentage > ZERO) {
             if (this.totalAvailablePercentage > reservedPercentage) {
-                reservedOctects = ((this.getDMGPSizeInOctects() * reservedPercentage) / 100);
+                reservedOctects = ((this.getDMGPSizeInOctects() * reservedPercentage) / ONE_HUNDRED);
                 return reservedOctects;
             } else {
                 reservedOctects = this.getDMGPSizeInOctects() - this.totalAssignedOctects;
                 return reservedOctects;
             }
         }
-        return 0;
+        return ZERO;
     }
 
     private int getPercentageToBeAssigned(TAbstractPDU packet) {
         int reservedPercentage = getRequestedPercentage(packet);
-        if (this.totalAvailablePercentage > 0) {
+        if (this.totalAvailablePercentage > ZERO) {
             if (this.totalAvailablePercentage > reservedPercentage) {
                 return reservedPercentage;
             } else {
                 return this.totalAvailablePercentage;
             }
         }
-        return 0;
+        return ZERO;
     }
 
     private int getRequestedPercentage(TAbstractPDU packet) {
-        int packetGoSLevel = 0;
+        int packetGoSLevel = ZERO;
         if (packet.getIPv4Header().getOptionsField().isUsed()) {
             packetGoSLevel = packet.getIPv4Header().getOptionsField().getRequestedGoSLevel();
+            // The following values have been defined by design. See "Guarantee
+            // of Service (GoS) support over MPLS using Active Techniques"
+            // proposal. They determines the number of GoS flows that can be 
+            // using the DMGP in a given moment concurrently.
+            switch (packetGoSLevel) {
+                case TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP:
+                    return PERCENTAGE_OF_DMGP_RESERVED_FOR_GOS3;
+                case TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP:
+                    return PERCENTAGE_OF_DMGP_RESERVED_FOR_GOS3;
+                case TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP:
+                    return PERCENTAGE_OF_DMGP_RESERVED_FOR_GOS2;
+                case TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP:
+                    return PERCENTAGE_OF_DMGP_RESERVED_FOR_GOS2;
+                case TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP:
+                    return PERCENTAGE_OF_DMGP_RESERVED_FOR_GOS1;
+                case TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP:
+                    return PERCENTAGE_OF_DMGP_RESERVED_FOR_GOS1;
+                case TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP:
+                    return PERCENTAGE_OF_DMGP_RESERVED_FOR_GOS0;
+                case TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP:
+                    return PERCENTAGE_OF_DMGP_RESERVED_FOR_GOS0;
+                default:
+                    return PERCENTAGE_OF_DMGP_RESERVED_FOR_GOS0;
+            }
         } else {
-            return 0;
+            return PERCENTAGE_OF_DMGP_RESERVED_FOR_GOS0;
         }
-        if (packetGoSLevel == TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP) {
-            return 12;
-        }
-        if (packetGoSLevel == TAbstractPDU.EXP_LEVEL3_WITHOUT_BACKUP_LSP) {
-            return 12;
-        }
-        if (packetGoSLevel == TAbstractPDU.EXP_LEVEL2_WITH_BACKUP_LSP) {
-            return 8;
-        }
-        if (packetGoSLevel == TAbstractPDU.EXP_LEVEL2_WITHOUT_BACKUP_LSP) {
-            return 8;
-        }
-        if (packetGoSLevel == TAbstractPDU.EXP_LEVEL1_WITH_BACKUP_LSP) {
-            return 4;
-        }
-        if (packetGoSLevel == TAbstractPDU.EXP_LEVEL1_WITHOUT_BACKUP_LSP) {
-            return 4;
-        }
-        if (packetGoSLevel == TAbstractPDU.EXP_LEVEL0_WITH_BACKUP_LSP) {
-            return 0;
-        }
-        if (packetGoSLevel == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
-            return 0;
-        }
-        return 1;
     }
 
-    private TLock monitor;
+    private TLock lock;
     private TRotaryIDGenerator idGenerator;
-    private TreeSet flows;
+    private TreeSet<TDMGPFlowEntry> flows;
     private int totalAvailablePercentage;
     private int totalDMGPSizeInKB;
     private int totalAssignedOctects;
+
+    private static final int DEFAULT_TOTAL_AVAILABLE_PERCENTAGE = 100;
+    private static final int DEFAULT_TOTAL_DMGP_SIZE_IN_KB = 1;
+    private static final int DEFAULT_TOTAL_ASSIGNED_OCTECTS = 0;
+    private static final int ZERO = 0;
+    private static final int ONE_HUNDRED = 100;
+    private static final int PERCENTAGE_OF_DMGP_RESERVED_FOR_GOS0 = 0;
+    private static final int PERCENTAGE_OF_DMGP_RESERVED_FOR_GOS1 = 4;
+    private static final int PERCENTAGE_OF_DMGP_RESERVED_FOR_GOS2 = 8;
+    private static final int PERCENTAGE_OF_DMGP_RESERVED_FOR_GOS3 = 12;
 }
