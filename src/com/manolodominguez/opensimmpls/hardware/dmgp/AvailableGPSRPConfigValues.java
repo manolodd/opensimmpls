@@ -13,41 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manolodominguez.opensimmpls.commons;
+package com.manolodominguez.opensimmpls.hardware.dmgp;
 
 /**
- * This enum is used to access unit translations from a centralilzed point. 
- * This easies accessing the same unit translations from classes.
+ * This enum is used to access some GPSRP config values from a centralilzed
+ * point. This easies accessing that values from classes.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public enum UnitsTranslations {
-    BITS_PER_OCTECTS(8),
-    OCTETS_PER_KILOBYTE(1024);
-    
-    private final int units;
+public enum AvailableGPSRPConfigValues {
+    GPSRP_TIMEOUT_NANOSECONDS(50000),
+    GPSRP_ATTEMPTS(8);
+
+    private final int value;
 
     /**
      * This is the constructor of the enum. It will set the default value of
      * each enum item.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param units the number of trasnslated units of the enum's item.
+     * @param value the value of this GPSRP config value.
      * @since 2.0
      */
-    private UnitsTranslations(int units) {
-        this.units = units;
+    private AvailableGPSRPConfigValues(int value) {
+        this.value = value;
     }
 
     /**
-     * This method gets the units translation corresponding to the enum's item.
+     * This method gets the value corresponding to the enum's item.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return the units corresponding to the enum's item.
+     * @return the value corresponding to the enum's item.
      * @since 2.0
      */
-    public int getUnits() {
-        return this.units;
+    public int getValue() {
+        return this.value;
     }
 }

@@ -24,44 +24,44 @@ import java.util.LinkedList;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class TGPSRPRequestEntry implements Comparable {
+public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
 
     /**
      * This is the class constructor. Implements a new instance of
      * TGPSRPRequestsEntry.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param incomingOrder Incoming order. This is a number that must be used to make
-     * this entry shorted in a collection in a coherent way.
+     * @param arrivalOrder Arrival order. This is a number that must be used to
+     * make this entry shorted in a collection in a coherent way.
      * @since 2.0
      */
-    public TGPSRPRequestEntry(int incomingOrder) {
-        this.timeout = TGPSRPRequestsMatrix.TIMEOUT;
-        this.attempts = TGPSRPRequestsMatrix.ATTEMPTS;
-        this.flowID = -1;
-        this.packetID = -1;
-        this.outgoingPort = -1;
-        this.crossedNodes = new LinkedList();
-        this.order = incomingOrder;
+    public TGPSRPRequestEntry(int arrivalOrder) {
+        this.timeout = AvailableGPSRPConfigValues.GPSRP_TIMEOUT_NANOSECONDS.getValue();
+        this.attempts = AvailableGPSRPConfigValues.GPSRP_ATTEMPTS.getValue();
+        this.flowID = DEFAULT_FLOWID;
+        this.packetID = DEFAULT_PACKETID;
+        this.outgoingPortID = DEFAULT_OUTGOING_PORTID;
+        this.crossedNodes = new LinkedList<>();
+        this.arrivalOrder = arrivalOrder;
     }
 
     /**
-     * This method obtains the incoming order to the entry in order to be
-     * shorted in a collection.
+     * This method obtains the arrival order to the entry in order to be shorted
+     * in a collection.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return Incoming order to the entry.
+     * @return Arrival order to the entry.
      * @since 2.0
      */
-    public int getOrder() {
-        return order;
+    public int getArrivalOrder() {
+        return this.arrivalOrder;
     }
 
     /**
-     * This method establishes the flow the entry belongs to.
+     * This method establishes the flow ID of the flow the entry belongs to.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param flowID The flow the entry belongs to.
+     * @param flowID The flow ID of the flow the entry belongs to.
      * @since 2.0
      */
     public void setFlowID(int flowID) {
@@ -69,10 +69,10 @@ public class TGPSRPRequestEntry implements Comparable {
     }
 
     /**
-     * This method obtains the flow the entry belongs to.
+     * This method obtains the flow ID of the flow the entry belongs to.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return The flow the entry belongs to.
+     * @return The flow ID of the flow the entry belongs to.
      * @since 2.0
      */
     public int getFlowID() {
@@ -103,35 +103,35 @@ public class TGPSRPRequestEntry implements Comparable {
     }
 
     /**
-     * This method establishes the outgoing port by where the retransmission
-     * request has been sent.
+     * This method establishes the outgoing port ID of the port by where the
+     * retransmission request has been sent.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param outgoingPort Outgoing port.
+     * @param outgoingPortID Outgoing port ID.
      * @since 2.0
      */
-    public void setOutgoingPort(int outgoingPort) {
-        this.outgoingPort = outgoingPort;
+    public void setOutgoingPort(int outgoingPortID) {
+        this.outgoingPortID = outgoingPortID;
     }
 
     /**
-     * This method obtains the outgoing port by where the retransmission request
-     * has been sent.
+     * This method obtains the outgoing port ID of the port by where the
+     * retransmission request has been sent.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return Outgoing port.
+     * @return Outgoing port ID.
      * @since 2.0
      */
     public int getOutgoingPort() {
-        return this.outgoingPort;
+        return this.outgoingPortID;
     }
 
     /**
-     * This method establishes the IP address of an active node that will be
-     * requested for a packet retransmission.
+     * This method sets the IP address of an active node that will be requested
+     * for a packet retransmission.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param crossedNodeIP IP address of the node to be requested for a packet
+     * @param crossedNodeIP IP address of a node to be requested for a packet
      * retransmission.
      * @since 2.0
      */
@@ -150,8 +150,8 @@ public class TGPSRPRequestEntry implements Comparable {
      * @since 2.0
      */
     public String getCrossedNodeIPv4() {
-        if (this.crossedNodes.size() > 0) {
-            return ((String) this.crossedNodes.removeFirst());
+        if (this.crossedNodes.size() > ZERO) {
+            return this.crossedNodes.removeFirst();
         }
         return null;
     }
@@ -165,8 +165,8 @@ public class TGPSRPRequestEntry implements Comparable {
      */
     public void decreaseTimeout(int nanoseconds) {
         this.timeout -= nanoseconds;
-        if (this.timeout < 0) {
-            this.timeout = 0;
+        if (this.timeout < ZERO) {
+            this.timeout = ZERO;
         }
     }
 
@@ -177,9 +177,9 @@ public class TGPSRPRequestEntry implements Comparable {
      * @since 2.0
      */
     public void resetTimeout() {
-        if (this.timeout == 0) {
-            if (this.attempts > 0) {
-                this.timeout = TGPSRPRequestsMatrix.TIMEOUT;
+        if (this.timeout == ZERO) {
+            if (this.attempts > ZERO) {
+                this.timeout = AvailableGPSRPConfigValues.GPSRP_TIMEOUT_NANOSECONDS.getValue();
                 this.attempts--;
             }
         }
@@ -193,11 +193,11 @@ public class TGPSRPRequestEntry implements Comparable {
      * @since 2.0
      */
     public void forceTimeoutReset() {
-        this.timeout = TGPSRPRequestsMatrix.TIMEOUT;
+        this.timeout = AvailableGPSRPConfigValues.GPSRP_TIMEOUT_NANOSECONDS.getValue();
         this.attempts--;
-        if (this.attempts < 0) {
-            attempts = 0;
-            timeout = 0;
+        if (this.attempts < ZERO) {
+            attempts = ZERO;
+            timeout = ZERO;
         }
     }
 
@@ -210,9 +210,9 @@ public class TGPSRPRequestEntry implements Comparable {
      * @since 2.0
      */
     public boolean isRetryable() {
-        if (this.attempts > 0) {
-            if (this.timeout == 0) {
-                if (this.crossedNodes.size() > 0) {
+        if (this.attempts > ZERO) {
+            if (this.timeout == ZERO) {
+                if (this.crossedNodes.size() > ZERO) {
                     return true;
                 }
             }
@@ -229,11 +229,11 @@ public class TGPSRPRequestEntry implements Comparable {
      * @since 2.0
      */
     public boolean isPurgeable() {
-        if (this.crossedNodes.size() == 0) {
+        if (this.crossedNodes.size() == ZERO) {
             return true;
         }
-        if (this.attempts == 0) {
-            if (this.timeout == 0) {
+        if (this.attempts == ZERO) {
+            if (this.timeout == ZERO) {
                 return true;
             }
         }
@@ -245,19 +245,19 @@ public class TGPSRPRequestEntry implements Comparable {
      * passed as an argument to know the order to be inserted in a collection.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param o Instancia con la que se va a comparar la actual.
+     * @param anotherTGPSRPRequestEntry Instancia con la que se va a comparar la
+     * actual.
      * @return -1, 0, 1, depending on wheter the curren instance is lower,
      * equal, or greater than the one passed as an argument. In terms of
      * shorting.
      * @since 2.0
      */
     @Override
-    public int compareTo(Object o) {
-        TGPSRPRequestEntry e = (TGPSRPRequestEntry) o;
-        if (this.order < e.getOrder()) {
+    public int compareTo(TGPSRPRequestEntry anotherTGPSRPRequestEntry) {
+        if (this.arrivalOrder < anotherTGPSRPRequestEntry.getArrivalOrder()) {
             return TGPSRPRequestEntry.THIS_LOWER;
         }
-        if (this.order > e.getOrder()) {
+        if (this.arrivalOrder > anotherTGPSRPRequestEntry.getArrivalOrder()) {
             return TGPSRPRequestEntry.THIS_GREATER;
         }
         return TGPSRPRequestEntry.THIS_EQUAL;
@@ -267,11 +267,17 @@ public class TGPSRPRequestEntry implements Comparable {
     private static final int THIS_EQUAL = 0;
     private static final int THIS_GREATER = 1;
 
+    private static final int DEFAULT_FLOWID = -1;
+    private static final int DEFAULT_PACKETID = -1;
+    private static final int DEFAULT_OUTGOING_PORTID = -1;
+
+    private static final int ZERO = 0;
+
     private int timeout;
     private int flowID;
     private int packetID;
-    private int outgoingPort;
-    private LinkedList crossedNodes;
-    private int order;
+    private int outgoingPortID;
+    private final LinkedList<String> crossedNodes;
+    private final int arrivalOrder;
     private int attempts;
 }

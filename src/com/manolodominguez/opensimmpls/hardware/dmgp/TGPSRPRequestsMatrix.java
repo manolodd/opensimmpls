@@ -299,19 +299,6 @@ public class TGPSRPRequestsMatrix {
         return this.monitor;
     }
 
-    /**
-     * Timer used to know when a retransmission request should be retried.
-     *
-     * @since 2.0
-     */
-    public static final int TIMEOUT = 50000;
-    /**
-     * Number of times the rentransmission request should be retried.
-     *
-     * @since 2.0
-     */
-    public static final int ATTEMPTS = 8;
-
     private TreeSet entries;
     private TRotaryIDGenerator idGenerator;
     private TLock monitor;
