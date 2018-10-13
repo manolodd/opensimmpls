@@ -24,21 +24,21 @@ import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class TDMGPEntry implements Comparable {
+public class TDMGPEntry implements Comparable<TDMGPEntry> {
 
     /**
-     * This method is the constructor. It creates a new instance of TDMGPEntry
-     * and initialize its attributes.
+     * This method is the constructor of thte class. It creates a new instance
+     * of TDMGPEntry and initialize its attributes.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param incomingOrder Establish the incoming order in the global DMGP
-     * memory.
+     * @param arrivalOrder Establish the arrival of this TDMGPEntry in relation
+     * to itrs corresponding flow.
      */
-    public TDMGPEntry(int incomingOrder) {
-        this.flowID = -1;
-        this.packetID = -1;
+    public TDMGPEntry(int arrivalOrder) {
+        this.flowID = DEFAULT_FLOWID;
+        this.packetID = DEFAULT_PACKETID;
         this.packet = null;
-        this.order = incomingOrder;
+        this.arrivalOrder = arrivalOrder;
     }
 
     /**
@@ -73,20 +73,23 @@ public class TDMGPEntry implements Comparable {
      * @since 2.0
      */
     public TMPLSPDU getPacket() {
-        return this.packet.getAClon();
+        if (this.packet != null) {
+            return this.packet.getAClon();
+        }
+        return null;
     }
 
     /**
      * This method insert the GoS packet in this entry of the DMGP memory.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param p The packet to be inserted in this entry.
+     * @param mplsPacket The packet to be inserted in this entry.
      * @since 2.0
      */
-    public void setPacket(TMPLSPDU p) {
-        this.packet = p.getAClon();
-        this.flowID = p.getIPv4Header().getOriginIPv4Address().hashCode();
-        this.packetID = p.getIPv4Header().getGoSGlobalUniqueIdentifier();
+    public void setPacket(TMPLSPDU mplsPacket) {
+        this.packet = mplsPacket.getAClon();
+        this.flowID = mplsPacket.getIPv4Header().getOriginIPv4Address().hashCode();
+        this.packetID = mplsPacket.getIPv4Header().getGoSGlobalUniqueIdentifier();
     }
 
     /**
@@ -97,26 +100,25 @@ public class TDMGPEntry implements Comparable {
      * @return The order number of this DMGP entry.
      * @since 2.0
      */
-    public int getOrder() {
-        return this.order;
+    public int getArrivalOrder() {
+        return this.arrivalOrder;
     }
 
     /**
      * This method compares this DMGP entry with another to establish the oder.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param o DMGP entry to be compared with this one.
+     * @param anotherDMGPEntry DMGP entry to be compared with this one.
      * @return -1, 0, 1, depending on whether the current entry is lower, equal
      * or greater than the entry specified as argument. In terms of shorting.
      * @since 2.0
      */
     @Override
-    public int compareTo(Object o) {
-        TDMGPEntry dmgpEntry = (TDMGPEntry) o;
-        if (this.order < dmgpEntry.getOrder()) {
+    public int compareTo(TDMGPEntry anotherDMGPEntry) {
+        if (this.arrivalOrder < anotherDMGPEntry.getArrivalOrder()) {
             return TDMGPEntry.THIS_LOWER;
         }
-        if (this.order > dmgpEntry.getOrder()) {
+        if (this.arrivalOrder > anotherDMGPEntry.getArrivalOrder()) {
             return TDMGPEntry.THIS_GREATER;
         }
         return TDMGPEntry.THIS_EQUAL;
@@ -128,6 +130,9 @@ public class TDMGPEntry implements Comparable {
 
     private int flowID;
     private int packetID;
-    private int order;
+    private final int arrivalOrder;
     private TMPLSPDU packet;
+
+    private static final int DEFAULT_FLOWID = -1;
+    private static final int DEFAULT_PACKETID = -1;
 }
