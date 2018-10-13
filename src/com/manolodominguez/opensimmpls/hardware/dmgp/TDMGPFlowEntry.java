@@ -27,23 +27,22 @@ import com.manolodominguez.opensimmpls.commons.TLock;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class TDMGPFlowEntry implements Comparable {
+public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
 
     /**
-     * This method is the constructor. It creates a new TDMGPFlowEntry
-     * instance.
+     * This method is the constructor. It creates a new TDMGPFlowEntry instance.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param incomingOrder Incoming order of the flow to the DMGP memory.
+     * @param arrivalOrder Incoming arrivalOrder of the flow to the DMGP memory.
      * @since 2.0
      */
-    public TDMGPFlowEntry(int incomingOrder) {
-        this.order = incomingOrder;
-        this.flowID = -1;
-        this.assignedPercentage = 0;
-        this.assignedOctects = 0;
-        this.usedOctects = 0;
-        this.entries = new TreeSet<TDMGPEntry>();
+    public TDMGPFlowEntry(int arrivalOrder) {
+        this.arrivalOrder = arrivalOrder;
+        this.flowID = DEFAULT_FLOWID;
+        this.assignedPercentage = DEFAULT_ASSIGNED_PERCENTAGE;
+        this.assignedOctects = DEFAULT_ASSIGNED_OCTECTS;
+        this.usedOctects = DEFAULT_USED_OCTECTS;
+        this.entries = new TreeSet<>();
         this.monitor = new TLock();
         this.idGenerator = new TRotaryIDGenerator();
     }
@@ -149,14 +148,15 @@ public class TDMGPFlowEntry implements Comparable {
     }
 
     /**
-     * This method contains the order of incoming to the DMGP.
+     * This method contains the arrivalOrder of incoming to the DMGP.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return The incoming order.
+     * @return The arrival order of this flow in relation to others in the
+     * global DMGP.
      * @since 2.0
      */
-    public int getOrder() {
-        return this.order;
+    public int getArrivalOrder() {
+        return this.arrivalOrder;
     }
 
     /**
@@ -171,13 +171,13 @@ public class TDMGPFlowEntry implements Comparable {
     }
 
     private void releaseMemory(int octectsToBeReleased) {
-        int releasedOctects = 0;
-        Iterator it = entries.iterator();
+        int releasedOctects = ZERO;
+        Iterator<TDMGPEntry> entriesIterator = this.entries.iterator();
         TDMGPEntry dmgpEntry = null;
-        while ((it.hasNext()) && (releasedOctects < octectsToBeReleased)) {
-            dmgpEntry = (TDMGPEntry) it.next();
+        while ((entriesIterator.hasNext()) && (releasedOctects < octectsToBeReleased)) {
+            dmgpEntry = entriesIterator.next();
             releasedOctects += dmgpEntry.getPacket().getSize();
-            it.remove();
+            entriesIterator.remove();
         }
         this.usedOctects -= releasedOctects;
     }
@@ -185,31 +185,33 @@ public class TDMGPFlowEntry implements Comparable {
     /**
      * This method inserts a packet that belongs to this flow, in the tree of
      * packets. If there is available space, the packet is inserted. Otherwise
-     * packets are reselased untill there are space. If after this release there
-     * are no enough space, the packet is not inserted.
+     * packets are reselased untill there are space. If it is not possible even
+     * releasing packets, the packet is not inserted (and the DMGP for this
+     * packets remains intact).
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param packet Packet of this flow to be inserted in the DMGP.
+     * @param mplsPacket Packet belonging to this flow to be inserted in the
+     * DMGP.
      * @since 2.0
      */
-    public void addPacket(TMPLSPDU packet) {
+    public void addPacket(TMPLSPDU mplsPacket) {
         this.monitor.lock();
         int availableOctects = this.assignedOctects - this.usedOctects;
-        if (availableOctects >= packet.getSize()) {
-            TDMGPEntry dmgpEntry = new TDMGPEntry(idGenerator.getNextIdentifier());
-            dmgpEntry.setPacket(packet);
-            this.usedOctects += packet.getSize();
-            this.entries.add(dmgpEntry);
-        } else {
-            if (usedOctects >= packet.getSize()) {
-                releaseMemory(packet.getSize());
+        if (this.assignedOctects >= mplsPacket.getSize()) {
+            if (availableOctects >= mplsPacket.getSize()) {
                 TDMGPEntry dmgpEntry = new TDMGPEntry(idGenerator.getNextIdentifier());
-                dmgpEntry.setPacket(packet);
-                this.usedOctects += packet.getSize();
+                dmgpEntry.setPacket(mplsPacket);
+                this.usedOctects += mplsPacket.getSize();
                 this.entries.add(dmgpEntry);
             } else {
-                packet = null;
+                releaseMemory(mplsPacket.getSize() - availableOctects);
+                TDMGPEntry dmgpEntry = new TDMGPEntry(idGenerator.getNextIdentifier());
+                dmgpEntry.setPacket(mplsPacket);
+                this.usedOctects += mplsPacket.getSize();
+                this.entries.add(dmgpEntry);
             }
+        } else {
+            mplsPacket = null;
         }
         this.monitor.unLock();
     }
@@ -218,19 +220,18 @@ public class TDMGPFlowEntry implements Comparable {
      * This method compares this flow entry with another of the same type.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param o The entry to be compared with.
+     * @param anotherDMGPFlowEntry The entry to be compared with.
      * @return -1, 0, 1, depending on whether the current instance is lesser,
      * equal or greater than the instance passed as an argument. In terms of
      * shorting.
      * @since 2.0
      */
     @Override
-    public int compareTo(Object o) {
-        TDMGPFlowEntry edmgp = (TDMGPFlowEntry) o;
-        if (this.order < edmgp.getOrder()) {
+    public int compareTo(TDMGPFlowEntry anotherDMGPFlowEntry) {
+        if (this.arrivalOrder < anotherDMGPFlowEntry.getArrivalOrder()) {
             return TDMGPFlowEntry.THIS_LOWER;
         }
-        if (this.order > edmgp.getOrder()) {
+        if (this.arrivalOrder > anotherDMGPFlowEntry.getArrivalOrder()) {
             return TDMGPFlowEntry.THIS_GREATER;
         }
         return TDMGPFlowEntry.THIS_EQUAL;
@@ -240,12 +241,18 @@ public class TDMGPFlowEntry implements Comparable {
     private static final int THIS_EQUAL = 0;
     private static final int THIS_GREATER = 1;
 
-    private int order;
+    private static final int ZERO = 0;
+    private static final int DEFAULT_FLOWID = -1;
+    private static final int DEFAULT_ASSIGNED_PERCENTAGE = 0;
+    private static final int DEFAULT_ASSIGNED_OCTECTS = 0;
+    private static final int DEFAULT_USED_OCTECTS = 0;
+
+    private final int arrivalOrder;
     private int flowID;
     private int assignedPercentage;
     private int assignedOctects;
     private int usedOctects;
-    private TreeSet<TDMGPEntry> entries;
-    private TLock monitor;
-    private TRotaryIDGenerator idGenerator;
+    private final TreeSet<TDMGPEntry> entries;
+    private final TLock monitor;
+    private final TRotaryIDGenerator idGenerator;
 }
