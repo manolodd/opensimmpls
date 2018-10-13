@@ -110,7 +110,7 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @param outgoingPortID Outgoing port ID.
      * @since 2.0
      */
-    public void setOutgoingPort(int outgoingPortID) {
+    public void setOutgoingPortID(int outgoingPortID) {
         this.outgoingPortID = outgoingPortID;
     }
 
@@ -122,7 +122,7 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @return Outgoing port ID.
      * @since 2.0
      */
-    public int getOutgoingPort() {
+    public int getOutgoingPortID() {
         return this.outgoingPortID;
     }
 

@@ -401,7 +401,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 flowID = gpsrpRequestEntry.getFlowID();
                 packetID = gpsrpRequestEntry.getPacketID();
                 targetIPv4Address = gpsrpRequestEntry.getCrossedNodeIPv4();
-                outgoingPortAux = gpsrpRequestEntry.getOutgoingPort();
+                outgoingPortAux = gpsrpRequestEntry.getOutgoingPortID();
                 this.requestGPSRP(flowID, packetID, targetIPv4Address, outgoingPortAux);
             }
             gpsrpRequestEntry.resetTimeout();
@@ -539,7 +539,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         TGPSRPRequestEntry gpsrpRequestEntry = this.gpsrpRequests.getEntry(flowID, packetID);
         if (gpsrpRequestEntry != null) {
             gpsrpRequestEntry.forceTimeoutReset();
-            int p = gpsrpRequestEntry.getOutgoingPort();
+            int p = gpsrpRequestEntry.getOutgoingPortID();
             if (!gpsrpRequestEntry.isPurgeable()) {
                 String targetIPv4Address = gpsrpRequestEntry.getCrossedNodeIPv4();
                 if (targetIPv4Address != null) {

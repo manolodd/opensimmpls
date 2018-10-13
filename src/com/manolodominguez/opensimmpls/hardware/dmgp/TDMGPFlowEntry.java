@@ -43,7 +43,7 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
         this.assignedOctects = DEFAULT_ASSIGNED_OCTECTS;
         this.usedOctects = DEFAULT_USED_OCTECTS;
         this.entries = new TreeSet<>();
-        this.monitor = new TLock();
+        this.lock = new TLock();
         this.idGenerator = new TRotaryIDGenerator();
     }
 
@@ -167,7 +167,7 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @return The monitor of this flow.
      */
     public TLock getMonitor() {
-        return this.monitor;
+        return this.lock;
     }
 
     private void releaseMemory(int octectsToBeReleased) {
@@ -195,7 +195,7 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      */
     public void addPacket(TMPLSPDU mplsPacket) {
-        this.monitor.lock();
+        this.lock.lock();
         int availableOctects = this.assignedOctects - this.usedOctects;
         if (this.assignedOctects >= mplsPacket.getSize()) {
             if (availableOctects >= mplsPacket.getSize()) {
@@ -213,7 +213,7 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
         } else {
             mplsPacket = null;
         }
-        this.monitor.unLock();
+        this.lock.unLock();
     }
 
     /**
@@ -253,6 +253,6 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     private int assignedOctects;
     private int usedOctects;
     private final TreeSet<TDMGPEntry> entries;
-    private final TLock monitor;
+    private final TLock lock;
     private final TRotaryIDGenerator idGenerator;
 }

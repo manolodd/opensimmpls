@@ -38,9 +38,9 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public TGPSRPRequestsMatrix() {
-        this.entries = new TreeSet();
+        this.entries = new TreeSet<>();
         this.idGenerator = new TRotaryIDGenerator();
-        this.monitor = new TLock();
+        this.lock = new TLock();
     }
 
     /**
@@ -51,56 +51,55 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public void reset() {
-        this.entries = null;
-        this.idGenerator = null;
-        this.monitor = null;
-        this.entries = new TreeSet();
+        this.entries = new TreeSet<>();
         this.idGenerator = new TRotaryIDGenerator();
-        this.monitor = new TLock();
+        this.lock = new TLock();
     }
 
     /**
-     * This method update the outgoing port of for all the matching entries. It
+     * This method update the outgoing port for all the matching entries. It
      * will be changed for a new outgoing port.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param currentOutgoingPort The port that is goint to be replaced.
-     * @param newOutgoingPort The new outgoing port for matching entries.
+     * @param currentOutgoingPortID The port ID of the port that is going to be
+     * replaced.
+     * @param newOutgoingPortID The new outgoing port ID of the port for
+     * matching entries.
      * @since 2.0
      */
-    public void updateOutgoingPort(int currentOutgoingPort, int newOutgoingPort) {
-        this.monitor.lock();
-        Iterator iterator = this.entries.iterator();
+    public void updateOutgoingPort(int currentOutgoingPortID, int newOutgoingPortID) {
+        this.lock.lock();
+        Iterator<TGPSRPRequestEntry> iterator = this.entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
-            gpsrpRequestEntry = (TGPSRPRequestEntry) iterator.next();
-            if (gpsrpRequestEntry.getOutgoingPort() == currentOutgoingPort) {
-                gpsrpRequestEntry.setOutgoingPort(newOutgoingPort);
+            gpsrpRequestEntry = iterator.next();
+            if (gpsrpRequestEntry.getOutgoingPortID() == currentOutgoingPortID) {
+                gpsrpRequestEntry.setOutgoingPortID(newOutgoingPortID);
             }
         }
-        this.monitor.unLock();
+        this.lock.unLock();
     }
 
     /**
      * This method removes from the table all entries that have the outgoing
-     * port equal than the one specified as an argument.
+     * port ID equal than the one specified as an argument.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param oldOutgoingPort Port that must match the outgoing port of entries to be
-     * removed.
+     * @param oldOutgoingPortID Port ID of the port that must match the outgoing
+     * port of entries to be removed.
      * @since 2.0
      */
-    public void removeEntriesMatchingOutgoingPort(int oldOutgoingPort) {
-        this.monitor.lock();
-        Iterator iterator = this.entries.iterator();
+    public void removeEntriesMatchingOutgoingPort(int oldOutgoingPortID) {
+        this.lock.lock();
+        Iterator<TGPSRPRequestEntry> iterator = this.entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
-            gpsrpRequestEntry = (TGPSRPRequestEntry) iterator.next();
-            if (gpsrpRequestEntry.getOutgoingPort() == oldOutgoingPort) {
+            gpsrpRequestEntry = iterator.next();
+            if (gpsrpRequestEntry.getOutgoingPortID() == oldOutgoingPortID) {
                 iterator.remove();
             }
         }
-        this.monitor.unLock();
+        this.lock.unLock();
     }
 
     /**
@@ -109,28 +108,28 @@ public class TGPSRPRequestsMatrix {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param mplsPacket Packet for wich the retransmission is going to be
      * requested.
-     * @param incomingPort Incoming port of the packet. It will be the outgoing port
-     * for the retransmission request.
+     * @param incomingPortID Port ID of the incoming port of the packet. It will
+     * be the outgoing port ID for the retransmission request.
      * @return The new created an inserted entry. Otherwise, NULL.
      * @since 2.0
      */
-    public TGPSRPRequestEntry addEntry(TMPLSPDU mplsPacket, int incomingPort) {
-        this.monitor.lock();
+    public TGPSRPRequestEntry addEntry(TMPLSPDU mplsPacket, int incomingPortID) {
+        this.lock.lock();
         TGPSRPRequestEntry gpsrpRequestEntry = new TGPSRPRequestEntry(this.idGenerator.getNextIdentifier());
-        gpsrpRequestEntry.setOutgoingPort(incomingPort);
+        gpsrpRequestEntry.setOutgoingPortID(incomingPortID);
         gpsrpRequestEntry.setFlowID(mplsPacket.getIPv4Header().getOriginIPv4Address().hashCode());
         gpsrpRequestEntry.setPacketID(mplsPacket.getIPv4Header().getGoSGlobalUniqueIdentifier());
         int numberOfCrossedNodes = mplsPacket.getIPv4Header().getOptionsField().getNumberOfCrossedActiveNodes();
-        int i = 0;
-        String nextIPv4 = "";
-        for (i = 0; i < numberOfCrossedNodes; i++) {
+        int i = ZERO;
+        String nextIPv4 = EMPTY;
+        for (i = ZERO; i < numberOfCrossedNodes; i++) {
             nextIPv4 = mplsPacket.getIPv4Header().getOptionsField().getCrossedActiveNode(i);
             if (nextIPv4 != null) {
                 gpsrpRequestEntry.setCrossedNodeIP(nextIPv4);
             }
         }
-        entries.add(gpsrpRequestEntry);
-        this.monitor.unLock();
+        this.entries.add(gpsrpRequestEntry);
+        this.lock.unLock();
         return gpsrpRequestEntry;
     }
 
@@ -138,48 +137,48 @@ public class TGPSRPRequestsMatrix {
      * This method removes a entry from the table.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param flowID Flow the entry refers to.
-     * @param packetID Packet the table refers to.
+     * @param flowID Flow ID of the flow the entry refers to.
+     * @param packetID Packet ID the table refers to.
      * @since 2.0
      */
     public void removeEntry(int flowID, int packetID) {
-        this.monitor.lock();
-        Iterator iterator = this.entries.iterator();
+        this.lock.lock();
+        Iterator<TGPSRPRequestEntry> iterator = this.entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
-            gpsrpRequestEntry = (TGPSRPRequestEntry) iterator.next();
+            gpsrpRequestEntry = iterator.next();
             if (gpsrpRequestEntry.getFlowID() == flowID) {
                 if (gpsrpRequestEntry.getPacketID() == packetID) {
                     iterator.remove();
                 }
             }
         }
-        this.monitor.unLock();
+        this.lock.unLock();
     }
 
     /**
      * This method obtains a specific entry from the table.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param flowID Flow identifier the entry refers to.
-     * @param packetID Packet identifier the entry refers to.
+     * @param flowID Flow ID of the flow identifier the entry refers to.
+     * @param packetID Packet ID the entry refers to.
      * @return Entry matching the specified arguments. Otherwise, NULL.
      * @since 2.0
      */
     public TGPSRPRequestEntry getEntry(int flowID, int packetID) {
-        this.monitor.lock();
-        Iterator iterator = this.entries.iterator();
+        this.lock.lock();
+        Iterator<TGPSRPRequestEntry> iterator = this.entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
-            gpsrpRequestEntry = (TGPSRPRequestEntry) iterator.next();
+            gpsrpRequestEntry = iterator.next();
             if (gpsrpRequestEntry.getFlowID() == flowID) {
                 if (gpsrpRequestEntry.getPacketID() == packetID) {
-                    this.monitor.unLock();
+                    this.lock.unLock();
                     return gpsrpRequestEntry;
                 }
             }
         }
-        this.monitor.unLock();
+        this.lock.unLock();
         return null;
     }
 
@@ -191,61 +190,62 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public void updateEntries() {
-        this.monitor.lock();
-        Iterator iterator = this.entries.iterator();
+        this.lock.lock();
+        Iterator<TGPSRPRequestEntry> iterator = this.entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
-            gpsrpRequestEntry = (TGPSRPRequestEntry) iterator.next();
+            gpsrpRequestEntry = iterator.next();
             if (gpsrpRequestEntry.isPurgeable()) {
                 iterator.remove();
             } else {
                 gpsrpRequestEntry.resetTimeout();
             }
         }
-        this.monitor.unLock();
+        this.lock.unLock();
     }
 
     /**
      * This method drecreases the timeout for all entries of the table.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param nanoseconds Number of nanoseconds to be decreased from all entries timeouts.
+     * @param nanoseconds Number of nanoseconds to be decreased from all entries
+     * timeouts.
      * @since 2.0
      */
     public void decreaseTimeout(int nanoseconds) {
-        this.monitor.lock();
-        Iterator iterator = this.entries.iterator();
+        this.lock.lock();
+        Iterator<TGPSRPRequestEntry> iterator = this.entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
-            gpsrpRequestEntry = (TGPSRPRequestEntry) iterator.next();
+            gpsrpRequestEntry = iterator.next();
             gpsrpRequestEntry.decreaseTimeout(nanoseconds);
         }
-        this.monitor.unLock();
+        this.lock.unLock();
     }
 
     /**
-     * This method obtains the outgoing port of a specific entry.
+     * This method obtains the outgoing port ID of a specific entry.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param flowID Flow identifier the entry refers to.
-     * @param packetID Packet identifier the entry refers to.
+     * @param flowID Flow ID of the flow the entry refers to.
+     * @param packetID Packet ID the entry refers to.
      * @return Outgoing port of the entry maching the specified arguments.
      * @since 2.0
      */
     public int getOutgoingPort(int flowID, int packetID) {
-        this.monitor.lock();
-        Iterator iterator = this.entries.iterator();
+        this.lock.lock();
+        Iterator<TGPSRPRequestEntry> iterator = this.entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
-            gpsrpRequestEntry = (TGPSRPRequestEntry) iterator.next();
+            gpsrpRequestEntry = iterator.next();
             if (gpsrpRequestEntry.getFlowID() == flowID) {
                 if (gpsrpRequestEntry.getPacketID() == packetID) {
-                    this.monitor.unLock();
-                    return gpsrpRequestEntry.getOutgoingPort();
+                    this.lock.unLock();
+                    return gpsrpRequestEntry.getOutgoingPortID();
                 }
             }
         }
-        this.monitor.unLock();
+        this.lock.unLock();
         return -1;
     }
 
@@ -254,38 +254,38 @@ public class TGPSRPRequestsMatrix {
      * requested for a packet retransmission.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param flowID Flow identifier of the desired entry.
-     * @param packetID Packet identifier of the desired entry.
+     * @param flowID Flow ID of the flow of the desired entry.
+     * @param packetID Packet ID of the desired entry.
      * @return IP address of the following node to be requested for a packet
      * retransmission. Otherwise, NULL.
      * @since 2.0
      */
     public String getActiveNodeIP(int flowID, int packetID) {
-        this.monitor.lock();
-        Iterator iterator = this.entries.iterator();
+        this.lock.lock();
+        Iterator<TGPSRPRequestEntry> iterator = this.entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
-            gpsrpRequestEntry = (TGPSRPRequestEntry) iterator.next();
+            gpsrpRequestEntry = iterator.next();
             if (gpsrpRequestEntry.getFlowID() == flowID) {
                 if (gpsrpRequestEntry.getPacketID() == packetID) {
-                    this.monitor.unLock();
+                    this.lock.unLock();
                     return gpsrpRequestEntry.getCrossedNodeIPv4();
                 }
             }
         }
-        this.monitor.unLock();
+        this.lock.unLock();
         return null;
     }
 
     /**
-     * This method obtains the interator of all entries of the table.
+     * This method obtains the iterator of all entries of the table.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Iterator of all entries in the table.
      * @since 2.0
      */
-    public Iterator getEntriesIterator() {
-        return entries.iterator();
+    public Iterator<TGPSRPRequestEntry> getEntriesIterator() {
+        return this.entries.iterator();
     }
 
     /**
@@ -296,10 +296,13 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public TLock getMonitor() {
-        return this.monitor;
+        return this.lock;
     }
 
-    private TreeSet entries;
+    private static final int ZERO = 0;
+    private static final String EMPTY = "";
+
+    private TreeSet<TGPSRPRequestEntry> entries;
     private TRotaryIDGenerator idGenerator;
-    private TLock monitor;
+    private TLock lock;
 }
