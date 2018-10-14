@@ -24,7 +24,7 @@ import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class TActivePortBufferEntry implements Comparable {
+public class TActivePortBufferEntry implements Comparable<TActivePortBufferEntry> {
 
     /**
      * This method is the constructor of the class. It creates a new instance of
@@ -35,13 +35,13 @@ public class TActivePortBufferEntry implements Comparable {
      * @param priority packet priority. Embedded on it as defined by "Guarante
      * of Service (GoS)Support over MPLS using Active Techniques". Read this
      * proposal to know more about GoS priorities.
-     * @param incomingOrder The incoming ordet to the buffer. To be used when
+     * @param arrivalOrder The arrival ordet to the buffer. To be used when
      * following a FIFO packet dispatching.
      * @param packet The packet itself.
      */
-    public TActivePortBufferEntry(int priority, int incomingOrder, TAbstractPDU packet) {
+    public TActivePortBufferEntry(int priority, int arrivalOrder, TAbstractPDU packet) {
         this.priority = priority;
-        this.incomingOrder = incomingOrder;
+        this.arrivalOrder = arrivalOrder;
         this.packet = packet;
     }
 
@@ -58,12 +58,11 @@ public class TActivePortBufferEntry implements Comparable {
      * @since 2.0
      */
     @Override
-    public int compareTo(Object anotherActivePortBufferEntry) {
-        TActivePortBufferEntry activePortBufferEntryAux = (TActivePortBufferEntry) anotherActivePortBufferEntry;
-        if (this.incomingOrder < activePortBufferEntryAux.getIncomingOrder()) {
+    public int compareTo(TActivePortBufferEntry anotherActivePortBufferEntry) {
+        if (this.arrivalOrder < anotherActivePortBufferEntry.getArrivalOrder()) {
             return TActivePortBufferEntry.THIS_LOWER;
         }
-        if (this.incomingOrder > activePortBufferEntryAux.getIncomingOrder()) {
+        if (this.arrivalOrder > anotherActivePortBufferEntry.getArrivalOrder()) {
             return TActivePortBufferEntry.THIS_GREATER;
         }
         return TActivePortBufferEntry.THIS_EQUAL;
@@ -91,11 +90,11 @@ public class TActivePortBufferEntry implements Comparable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     * @return The incoming order of the embedded packet to the active port
+     * @return The arrival order of the embedded packet to the active port
      * parent buffer.
      */
-    public int getIncomingOrder() {
-        return this.incomingOrder;
+    public int getArrivalOrder() {
+        return this.arrivalOrder;
     }
 
     /**
@@ -112,7 +111,7 @@ public class TActivePortBufferEntry implements Comparable {
     private static final int THIS_GREATER = 1;
     private static final int THIS_EQUAL = 0;
 
-    private int priority;
-    private int incomingOrder;
-    private TAbstractPDU packet;
+    private final int priority;
+    private final int arrivalOrder;
+    private final TAbstractPDU packet;
 }
