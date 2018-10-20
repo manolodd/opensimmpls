@@ -41,7 +41,7 @@ public abstract class TPortSet {
     public TPortSet(int numberOfPorts, TNode parentNode) {
         this.numberOfPorts = numberOfPorts;
         this.parentNode = parentNode;
-        this.portSetBufferSize = 1;
+        this.portSetBufferSizeInMB = 1;
         this.portSetBufferOccupancy = 0;
         this.portSetMonitor = new TLock();
         this.artificiallyCongested = false;
@@ -359,7 +359,7 @@ public abstract class TPortSet {
 
     protected int numberOfPorts;
     protected TNode parentNode;
-    protected int portSetBufferSize;
+    protected int portSetBufferSizeInMB;
     private long portSetBufferOccupancy;
     public TLock portSetMonitor;
     protected boolean artificiallyCongested;

@@ -92,7 +92,7 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public void setBufferSizeInMB(int sizeInMB) {
-        this.portSetBufferSize = sizeInMB;
+        this.portSetBufferSizeInMB = sizeInMB;
     }
 
     /**
@@ -104,7 +104,7 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public int getBufferSizeInMBytes() {
-        return this.portSetBufferSize;
+        return this.portSetBufferSizeInMB;
     }
 
     /**
