@@ -121,7 +121,7 @@ public class TGPSRPRequestsMatrix {
         gpsrpRequestEntry.setPacketID(mplsPacket.getIPv4Header().getGoSGlobalUniqueIdentifier());
         int numberOfCrossedNodes = mplsPacket.getIPv4Header().getOptionsField().getNumberOfCrossedActiveNodes();
         int i = ZERO;
-        String nextIPv4 = EMPTY;
+        String nextIPv4 = EMPTY_STRING;
         for (i = ZERO; i < numberOfCrossedNodes; i++) {
             nextIPv4 = mplsPacket.getIPv4Header().getOptionsField().getCrossedActiveNode(i);
             if (nextIPv4 != null) {
@@ -300,7 +300,7 @@ public class TGPSRPRequestsMatrix {
     }
 
     private static final int ZERO = 0;
-    private static final String EMPTY = "";
+    private static final String EMPTY_STRING = "";
 
     private TreeSet<TGPSRPRequestEntry> entries;
     private TRotaryIDGenerator idGenerator;

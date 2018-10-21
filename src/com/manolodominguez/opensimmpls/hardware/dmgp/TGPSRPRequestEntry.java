@@ -36,8 +36,8 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public TGPSRPRequestEntry(int arrivalOrder) {
-        this.timeout = AvailableGPSRPConfigValues.GPSRP_TIMEOUT_NANOSECONDS.getValue();
-        this.attempts = AvailableGPSRPConfigValues.GPSRP_ATTEMPTS.getValue();
+        this.timeout = GPSRP_TIMEOUT_NANOSECONDS;
+        this.attempts = GPSRP_ATTEMPTS;
         this.flowID = DEFAULT_FLOWID;
         this.packetID = DEFAULT_PACKETID;
         this.outgoingPortID = DEFAULT_OUTGOING_PORTID;
@@ -179,7 +179,7 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
     public void resetTimeout() {
         if (this.timeout == ZERO) {
             if (this.attempts > ZERO) {
-                this.timeout = AvailableGPSRPConfigValues.GPSRP_TIMEOUT_NANOSECONDS.getValue();
+                this.timeout = GPSRP_TIMEOUT_NANOSECONDS;
                 this.attempts--;
             }
         }
@@ -193,7 +193,7 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public void forceTimeoutReset() {
-        this.timeout = AvailableGPSRPConfigValues.GPSRP_TIMEOUT_NANOSECONDS.getValue();
+        this.timeout = GPSRP_TIMEOUT_NANOSECONDS;
         this.attempts--;
         if (this.attempts < ZERO) {
             attempts = ZERO;
@@ -270,6 +270,9 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
     private static final int DEFAULT_FLOWID = -1;
     private static final int DEFAULT_PACKETID = -1;
     private static final int DEFAULT_OUTGOING_PORTID = -1;
+
+    private static final int GPSRP_TIMEOUT_NANOSECONDS = 50000;
+    private static final int GPSRP_ATTEMPTS = 8;
 
     private static final int ZERO = 0;
 
