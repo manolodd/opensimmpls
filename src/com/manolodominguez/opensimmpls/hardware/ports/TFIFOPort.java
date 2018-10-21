@@ -179,8 +179,8 @@ public class TFIFOPort extends TPort {
     }
 
     /**
-     * This method compute whether it is possible or not to switch the
-     * next packet in the buffer having the number of octets (specified as an
+     * This method compute whether it is possible or not to switch the next
+     * packet in the buffer having the number of octets (specified as an
      * argument) that the port can switch in the current moment.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
