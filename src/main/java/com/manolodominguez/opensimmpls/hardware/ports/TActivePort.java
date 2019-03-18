@@ -40,48 +40,46 @@ public class TActivePort extends TPort {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     * @param portID port number (the port id used to distinguish
- this port of other in the same active parentNode).
+     * @param portID port number (the port id used to distinguish this port of
+     * other in the same active parentNode).
      * @param parentSetOfActivePorts A reference to the parent set of active
      * ports this active port belongs to.
      */
     public TActivePort(TPortSet parentSetOfActivePorts, int portID) {
         super(parentSetOfActivePorts, portID);
-        this.packetRead = null;
-        this.isUnlimitedBuffer = false;
+        this.packetRead = DEFAULT_PACKET_READ;
+        this.isUnlimitedBuffer = DEFAULT_IS_UNLIMITED_BUFFER;
         this.rotaryIdentifierGenerator = new TRotaryIDGenerator();
-        this.priority0Monitor = new TLock();
-        this.priority1Monitor = new TLock();
-        this.priority2Monitor = new TLock();
-        this.priority3Monitor = new TLock();
-        this.priority4Monitor = new TLock();
-        this.priority5Monitor = new TLock();
-        this.priority6Monitor = new TLock();
-        this.priority7Monitor = new TLock();
-        this.priority8Monitor = new TLock();
-        this.priority9Monitor = new TLock();
-        this.priority10Monitor = new TLock();
-
-        this.priority0Buffer = new TreeSet();
-        this.priority1Buffer = new TreeSet();
-        this.priority2Buffer = new TreeSet();
-        this.priority3Buffer = new TreeSet();
-        this.priority4Buffer = new TreeSet();
-        this.priority5Buffer = new TreeSet();
-        this.priority6Buffer = new TreeSet();
-        this.priority7Buffer = new TreeSet();
-        this.priority8Buffer = new TreeSet();
-        this.priority9Buffer = new TreeSet();
-        this.priority10Buffer = new TreeSet();
-
-        this.selectedBuffer = 0;
+        this.priority0BufferLock = new TLock();
+        this.priority1BufferLock = new TLock();
+        this.priority2BufferLock = new TLock();
+        this.priority3BufferLock = new TLock();
+        this.priority4BufferLock = new TLock();
+        this.priority5BufferLock = new TLock();
+        this.priority6BufferLock = new TLock();
+        this.priority7BufferLock = new TLock();
+        this.priority8BufferLock = new TLock();
+        this.priority9BufferLock = new TLock();
+        this.priority10BufferLock = new TLock();
+        this.priority0Buffer = new TreeSet<>();
+        this.priority1Buffer = new TreeSet<>();
+        this.priority2Buffer = new TreeSet<>();
+        this.priority3Buffer = new TreeSet<>();
+        this.priority4Buffer = new TreeSet<>();
+        this.priority5Buffer = new TreeSet<>();
+        this.priority6Buffer = new TreeSet<>();
+        this.priority7Buffer = new TreeSet<>();
+        this.priority8Buffer = new TreeSet<>();
+        this.priority9Buffer = new TreeSet<>();
+        this.priority10Buffer = new TreeSet<>();
+        this.selectedBuffer = DEFAULT_SELECTED_BUFFER;
         this.nextPacketToBeRead = null;
-        this.maxReadsOfBuffer = new int[11];
-        this.currentReadsOfBuffer = new int[11];
+        this.maxReadsOfBuffer = new int[(HIGHEST_PRIORITY + ONE)];
+        this.currentReadsOfBuffer = new int[(HIGHEST_PRIORITY + ONE)];
         int i;
-        for (i = 0; i < 11; i++) {
-            this.maxReadsOfBuffer[i] = i + 1;
-            this.currentReadsOfBuffer[i] = 0;
+        for (i = ZERO; i < (HIGHEST_PRIORITY + ONE); i++) {
+            this.maxReadsOfBuffer[i] = i + ONE;
+            this.currentReadsOfBuffer[i] = ZERO;
         }
     }
 
@@ -127,243 +125,246 @@ public class TActivePort extends TPort {
         TActivePortBufferEntry activePortBufferEntry = null;
         if (this.nextPacketToBeRead == null) {
             while ((!end) && (numberOfEmptyBuffers < 12)) {
-                if (this.selectedBuffer == 10) {
-                    if (this.priority10Buffer.size() > 0) {
-                        if (this.currentReadsOfBuffer[10] < this.maxReadsOfBuffer[10]) {
-                            this.priority10Monitor.lock();
-                            iterator = priority10Buffer.iterator();
-                            if (iterator.hasNext()) {
-                                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
-                                this.nextPacketToBeRead = activePortBufferEntry.getPacket();
-                                iterator.remove();
+                switch (this.selectedBuffer) {
+                    case TEN:
+                        if (this.priority10Buffer.size() > 0) {
+                            if (this.currentReadsOfBuffer[TEN] < this.maxReadsOfBuffer[TEN]) {
+                                this.priority10BufferLock.lock();
+                                iterator = priority10Buffer.iterator();
+                                if (iterator.hasNext()) {
+                                    activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                                    this.nextPacketToBeRead = activePortBufferEntry.getPacket();
+                                    iterator.remove();
+                                }
+                                this.priority10BufferLock.unLock();
+                                this.currentReadsOfBuffer[TEN]++;
+                                end = true;
+                            } else {
+                                numberOfBuffersAlreadyRead++;
                             }
-                            this.priority10Monitor.unLock();
-                            this.currentReadsOfBuffer[10]++;
-                            end = true;
                         } else {
+                            this.currentReadsOfBuffer[TEN] = this.maxReadsOfBuffer[TEN];
                             numberOfBuffersAlreadyRead++;
-                        }
-                    } else {
-                        this.currentReadsOfBuffer[10] = this.maxReadsOfBuffer[10];
-                        numberOfBuffersAlreadyRead++;
-                        numberOfEmptyBuffers++;
-                    }
-                } else if (this.selectedBuffer == 9) {
-                    if (this.priority9Buffer.size() > 0) {
-                        if (this.currentReadsOfBuffer[9] < this.maxReadsOfBuffer[9]) {
-                            this.priority9Monitor.lock();
-                            iterator = this.priority9Buffer.iterator();
-                            if (iterator.hasNext()) {
-                                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
-                                this.nextPacketToBeRead = activePortBufferEntry.getPacket();
-                                iterator.remove();
+                            numberOfEmptyBuffers++;
+                        }   break;
+                    case NINE:
+                        if (this.priority9Buffer.size() > 0) {
+                            if (this.currentReadsOfBuffer[NINE] < this.maxReadsOfBuffer[NINE]) {
+                                this.priority9BufferLock.lock();
+                                iterator = this.priority9Buffer.iterator();
+                                if (iterator.hasNext()) {
+                                    activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                                    this.nextPacketToBeRead = activePortBufferEntry.getPacket();
+                                    iterator.remove();
+                                }
+                                this.priority9BufferLock.unLock();
+                                this.currentReadsOfBuffer[NINE]++;
+                                end = true;
+                            } else {
+                                numberOfBuffersAlreadyRead++;
                             }
-                            this.priority9Monitor.unLock();
-                            this.currentReadsOfBuffer[9]++;
-                            end = true;
                         } else {
+                            this.currentReadsOfBuffer[NINE] = this.maxReadsOfBuffer[NINE];
                             numberOfBuffersAlreadyRead++;
-                        }
-                    } else {
-                        this.currentReadsOfBuffer[9] = this.maxReadsOfBuffer[9];
-                        numberOfBuffersAlreadyRead++;
-                        numberOfEmptyBuffers++;
-                    }
-                } else if (this.selectedBuffer == 8) {
-                    if (this.priority8Buffer.size() > 0) {
-                        if (this.currentReadsOfBuffer[8] < this.maxReadsOfBuffer[8]) {
-                            this.priority8Monitor.lock();
-                            iterator = this.priority8Buffer.iterator();
-                            if (iterator.hasNext()) {
-                                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
-                                this.nextPacketToBeRead = activePortBufferEntry.getPacket();
-                                iterator.remove();
+                            numberOfEmptyBuffers++;
+                        }   break;
+                    case EIGHT:
+                        if (this.priority8Buffer.size() > 0) {
+                            if (this.currentReadsOfBuffer[EIGHT] < this.maxReadsOfBuffer[EIGHT]) {
+                                this.priority8BufferLock.lock();
+                                iterator = this.priority8Buffer.iterator();
+                                if (iterator.hasNext()) {
+                                    activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                                    this.nextPacketToBeRead = activePortBufferEntry.getPacket();
+                                    iterator.remove();
+                                }
+                                this.priority8BufferLock.unLock();
+                                this.currentReadsOfBuffer[EIGHT]++;
+                                end = true;
+                            } else {
+                                numberOfBuffersAlreadyRead++;
                             }
-                            this.priority8Monitor.unLock();
-                            this.currentReadsOfBuffer[8]++;
-                            end = true;
                         } else {
+                            this.currentReadsOfBuffer[EIGHT] = this.maxReadsOfBuffer[EIGHT];
                             numberOfBuffersAlreadyRead++;
-                        }
-                    } else {
-                        this.currentReadsOfBuffer[8] = this.maxReadsOfBuffer[8];
-                        numberOfBuffersAlreadyRead++;
-                        numberOfEmptyBuffers++;
-                    }
-                } else if (this.selectedBuffer == 7) {
-                    if (this.priority7Buffer.size() > 0) {
-                        if (this.currentReadsOfBuffer[7] < this.maxReadsOfBuffer[7]) {
-                            this.priority7Monitor.lock();
-                            iterator = this.priority7Buffer.iterator();
-                            if (iterator.hasNext()) {
-                                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
-                                this.nextPacketToBeRead = activePortBufferEntry.getPacket();
-                                iterator.remove();
+                            numberOfEmptyBuffers++;
+                        }   break;
+                    case SEVEN:
+                        if (this.priority7Buffer.size() > 0) {
+                            if (this.currentReadsOfBuffer[SEVEN] < this.maxReadsOfBuffer[SEVEN]) {
+                                this.priority7BufferLock.lock();
+                                iterator = this.priority7Buffer.iterator();
+                                if (iterator.hasNext()) {
+                                    activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                                    this.nextPacketToBeRead = activePortBufferEntry.getPacket();
+                                    iterator.remove();
+                                }
+                                this.priority7BufferLock.unLock();
+                                this.currentReadsOfBuffer[SEVEN]++;
+                                end = true;
+                            } else {
+                                numberOfBuffersAlreadyRead++;
                             }
-                            this.priority7Monitor.unLock();
-                            this.currentReadsOfBuffer[7]++;
-                            end = true;
                         } else {
+                            this.currentReadsOfBuffer[SEVEN] = this.maxReadsOfBuffer[SEVEN];
                             numberOfBuffersAlreadyRead++;
-                        }
-                    } else {
-                        this.currentReadsOfBuffer[7] = this.maxReadsOfBuffer[7];
-                        numberOfBuffersAlreadyRead++;
-                        numberOfEmptyBuffers++;
-                    }
-                } else if (this.selectedBuffer == 6) {
-                    if (this.priority6Buffer.size() > 0) {
-                        if (this.currentReadsOfBuffer[6] < this.maxReadsOfBuffer[6]) {
-                            this.priority6Monitor.lock();
-                            iterator = this.priority6Buffer.iterator();
-                            if (iterator.hasNext()) {
-                                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
-                                this.nextPacketToBeRead = activePortBufferEntry.getPacket();
-                                iterator.remove();
+                            numberOfEmptyBuffers++;
+                        }   break;
+                    case SIX:
+                        if (this.priority6Buffer.size() > 0) {
+                            if (this.currentReadsOfBuffer[SIX] < this.maxReadsOfBuffer[SIX]) {
+                                this.priority6BufferLock.lock();
+                                iterator = this.priority6Buffer.iterator();
+                                if (iterator.hasNext()) {
+                                    activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                                    this.nextPacketToBeRead = activePortBufferEntry.getPacket();
+                                    iterator.remove();
+                                }
+                                this.priority6BufferLock.unLock();
+                                this.currentReadsOfBuffer[SIX]++;
+                                end = true;
+                            } else {
+                                numberOfBuffersAlreadyRead++;
                             }
-                            this.priority6Monitor.unLock();
-                            this.currentReadsOfBuffer[6]++;
-                            end = true;
                         } else {
+                            this.currentReadsOfBuffer[SIX] = this.maxReadsOfBuffer[SIX];
                             numberOfBuffersAlreadyRead++;
-                        }
-                    } else {
-                        this.currentReadsOfBuffer[6] = this.maxReadsOfBuffer[6];
-                        numberOfBuffersAlreadyRead++;
-                        numberOfEmptyBuffers++;
-                    }
-                } else if (this.selectedBuffer == 5) {
-                    if (this.priority5Buffer.size() > 0) {
-                        if (this.currentReadsOfBuffer[5] < this.maxReadsOfBuffer[5]) {
-                            this.priority5Monitor.lock();
-                            iterator = this.priority5Buffer.iterator();
-                            if (iterator.hasNext()) {
-                                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
-                                this.nextPacketToBeRead = activePortBufferEntry.getPacket();
-                                iterator.remove();
+                            numberOfEmptyBuffers++;
+                        }   break;
+                    case FIVE:
+                        if (this.priority5Buffer.size() > 0) {
+                            if (this.currentReadsOfBuffer[FIVE] < this.maxReadsOfBuffer[FIVE]) {
+                                this.priority5BufferLock.lock();
+                                iterator = this.priority5Buffer.iterator();
+                                if (iterator.hasNext()) {
+                                    activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                                    this.nextPacketToBeRead = activePortBufferEntry.getPacket();
+                                    iterator.remove();
+                                }
+                                this.priority5BufferLock.unLock();
+                                this.currentReadsOfBuffer[FIVE]++;
+                                end = true;
+                            } else {
+                                numberOfBuffersAlreadyRead++;
                             }
-                            this.priority5Monitor.unLock();
-                            this.currentReadsOfBuffer[5]++;
-                            end = true;
                         } else {
+                            this.currentReadsOfBuffer[FIVE] = this.maxReadsOfBuffer[FIVE];
                             numberOfBuffersAlreadyRead++;
-                        }
-                    } else {
-                        this.currentReadsOfBuffer[5] = this.maxReadsOfBuffer[5];
-                        numberOfBuffersAlreadyRead++;
-                        numberOfEmptyBuffers++;
-                    }
-                } else if (this.selectedBuffer == 4) {
-                    if (this.priority4Buffer.size() > 0) {
-                        if (this.currentReadsOfBuffer[4] < this.maxReadsOfBuffer[4]) {
-                            this.priority4Monitor.lock();
-                            iterator = this.priority4Buffer.iterator();
-                            if (iterator.hasNext()) {
-                                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
-                                this.nextPacketToBeRead = activePortBufferEntry.getPacket();
-                                iterator.remove();
+                            numberOfEmptyBuffers++;
+                        }   break;
+                    case FOUR:
+                        if (this.priority4Buffer.size() > 0) {
+                            if (this.currentReadsOfBuffer[FOUR] < this.maxReadsOfBuffer[FOUR]) {
+                                this.priority4BufferLock.lock();
+                                iterator = this.priority4Buffer.iterator();
+                                if (iterator.hasNext()) {
+                                    activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                                    this.nextPacketToBeRead = activePortBufferEntry.getPacket();
+                                    iterator.remove();
+                                }
+                                this.priority4BufferLock.unLock();
+                                this.currentReadsOfBuffer[FOUR]++;
+                                end = true;
+                            } else {
+                                numberOfBuffersAlreadyRead++;
                             }
-                            this.priority4Monitor.unLock();
-                            this.currentReadsOfBuffer[4]++;
-                            end = true;
                         } else {
+                            this.currentReadsOfBuffer[FOUR] = this.maxReadsOfBuffer[FOUR];
                             numberOfBuffersAlreadyRead++;
-                        }
-                    } else {
-                        this.currentReadsOfBuffer[4] = this.maxReadsOfBuffer[4];
-                        numberOfBuffersAlreadyRead++;
-                        numberOfEmptyBuffers++;
-                    }
-                } else if (this.selectedBuffer == 3) {
-                    if (this.priority3Buffer.size() > 0) {
-                        if (this.currentReadsOfBuffer[3] < this.maxReadsOfBuffer[3]) {
-                            this.priority3Monitor.lock();
-                            iterator = this.priority3Buffer.iterator();
-                            if (iterator.hasNext()) {
-                                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
-                                this.nextPacketToBeRead = activePortBufferEntry.getPacket();
-                                iterator.remove();
+                            numberOfEmptyBuffers++;
+                        }   break;
+                    case THREE:
+                        if (this.priority3Buffer.size() > 0) {
+                            if (this.currentReadsOfBuffer[THREE] < this.maxReadsOfBuffer[THREE]) {
+                                this.priority3BufferLock.lock();
+                                iterator = this.priority3Buffer.iterator();
+                                if (iterator.hasNext()) {
+                                    activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                                    this.nextPacketToBeRead = activePortBufferEntry.getPacket();
+                                    iterator.remove();
+                                }
+                                this.priority3BufferLock.unLock();
+                                this.currentReadsOfBuffer[THREE]++;
+                                end = true;
+                            } else {
+                                numberOfBuffersAlreadyRead++;
                             }
-                            this.priority3Monitor.unLock();
-                            this.currentReadsOfBuffer[3]++;
-                            end = true;
                         } else {
+                            this.currentReadsOfBuffer[THREE] = this.maxReadsOfBuffer[THREE];
                             numberOfBuffersAlreadyRead++;
-                        }
-                    } else {
-                        this.currentReadsOfBuffer[3] = this.maxReadsOfBuffer[3];
-                        numberOfBuffersAlreadyRead++;
-                        numberOfEmptyBuffers++;
-                    }
-                } else if (this.selectedBuffer == 2) {
-                    if (this.priority2Buffer.size() > 0) {
-                        if (this.currentReadsOfBuffer[2] < this.maxReadsOfBuffer[2]) {
-                            this.priority2Monitor.lock();
-                            iterator = this.priority2Buffer.iterator();
-                            if (iterator.hasNext()) {
-                                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
-                                this.nextPacketToBeRead = activePortBufferEntry.getPacket();
-                                iterator.remove();
+                            numberOfEmptyBuffers++;
+                        }   break;
+                    case TWO:
+                        if (this.priority2Buffer.size() > 0) {
+                            if (this.currentReadsOfBuffer[TWO] < this.maxReadsOfBuffer[TWO]) {
+                                this.priority2BufferLock.lock();
+                                iterator = this.priority2Buffer.iterator();
+                                if (iterator.hasNext()) {
+                                    activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                                    this.nextPacketToBeRead = activePortBufferEntry.getPacket();
+                                    iterator.remove();
+                                }
+                                this.priority2BufferLock.unLock();
+                                this.currentReadsOfBuffer[TWO]++;
+                                end = true;
+                            } else {
+                                numberOfBuffersAlreadyRead++;
                             }
-                            this.priority2Monitor.unLock();
-                            this.currentReadsOfBuffer[2]++;
-                            end = true;
                         } else {
+                            this.currentReadsOfBuffer[TWO] = this.maxReadsOfBuffer[TWO];
                             numberOfBuffersAlreadyRead++;
-                        }
-                    } else {
-                        this.currentReadsOfBuffer[2] = this.maxReadsOfBuffer[2];
-                        numberOfBuffersAlreadyRead++;
-                        numberOfEmptyBuffers++;
-                    }
-                } else if (this.selectedBuffer == 1) {
-                    if (this.priority1Buffer.size() > 0) {
-                        if (this.currentReadsOfBuffer[1] < this.maxReadsOfBuffer[1]) {
-                            this.priority1Monitor.lock();
-                            iterator = this.priority1Buffer.iterator();
-                            if (iterator.hasNext()) {
-                                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
-                                this.nextPacketToBeRead = activePortBufferEntry.getPacket();
-                                iterator.remove();
+                            numberOfEmptyBuffers++;
+                        }   break;
+                    case ONE:
+                        if (this.priority1Buffer.size() > 0) {
+                            if (this.currentReadsOfBuffer[ONE] < this.maxReadsOfBuffer[ONE]) {
+                                this.priority1BufferLock.lock();
+                                iterator = this.priority1Buffer.iterator();
+                                if (iterator.hasNext()) {
+                                    activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                                    this.nextPacketToBeRead = activePortBufferEntry.getPacket();
+                                    iterator.remove();
+                                }
+                                this.priority1BufferLock.unLock();
+                                this.currentReadsOfBuffer[ONE]++;
+                                end = true;
+                            } else {
+                                numberOfBuffersAlreadyRead++;
                             }
-                            this.priority1Monitor.unLock();
-                            this.currentReadsOfBuffer[1]++;
-                            end = true;
                         } else {
+                            this.currentReadsOfBuffer[ONE] = this.maxReadsOfBuffer[ONE];
                             numberOfBuffersAlreadyRead++;
-                        }
-                    } else {
-                        this.currentReadsOfBuffer[1] = this.maxReadsOfBuffer[1];
-                        numberOfBuffersAlreadyRead++;
-                        numberOfEmptyBuffers++;
-                    }
-                } else if (this.selectedBuffer == 0) {
-                    if (this.priority0Buffer.size() > 0) {
-                        if (this.currentReadsOfBuffer[0] < this.maxReadsOfBuffer[0]) {
-                            this.priority0Monitor.lock();
-                            iterator = this.priority0Buffer.iterator();
-                            if (iterator.hasNext()) {
-                                activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
-                                this.nextPacketToBeRead = activePortBufferEntry.getPacket();
-                                iterator.remove();
+                            numberOfEmptyBuffers++;
+                        }   break;
+                    case ZERO:
+                        if (this.priority0Buffer.size() > 0) {
+                            if (this.currentReadsOfBuffer[ZERO] < this.maxReadsOfBuffer[ZERO]) {
+                                this.priority0BufferLock.lock();
+                                iterator = this.priority0Buffer.iterator();
+                                if (iterator.hasNext()) {
+                                    activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
+                                    this.nextPacketToBeRead = activePortBufferEntry.getPacket();
+                                    iterator.remove();
+                                }
+                                this.priority0BufferLock.unLock();
+                                this.currentReadsOfBuffer[ZERO]++;
+                                end = true;
+                            } else {
+                                numberOfBuffersAlreadyRead++;
                             }
-                            this.priority0Monitor.unLock();
-                            this.currentReadsOfBuffer[0]++;
-                            end = true;
                         } else {
+                            this.currentReadsOfBuffer[ZERO] = this.maxReadsOfBuffer[ZERO];
                             numberOfBuffersAlreadyRead++;
-                        }
-                    } else {
-                        this.currentReadsOfBuffer[0] = this.maxReadsOfBuffer[0];
-                        numberOfBuffersAlreadyRead++;
-                        numberOfEmptyBuffers++;
-                    }
+                            numberOfEmptyBuffers++;
+                        }   break;
+                    default:
+                        break;
                 }
-                this.selectedBuffer = ((this.selectedBuffer + 1) % 11);
-                if (numberOfBuffersAlreadyRead >= 11) {
+                this.selectedBuffer = ((this.selectedBuffer + ONE) % ELEVEN);
+                if (numberOfBuffersAlreadyRead >= ELEVEN) {
                     int i;
-                    for (i = 0; i < 11; i++) {
-                        this.currentReadsOfBuffer[i] = 0;
+                    for (i = ZERO; i < ELEVEN; i++) {
+                        this.currentReadsOfBuffer[i] = ZERO;
                     }
                 }
             }
@@ -519,49 +520,49 @@ public class TActivePort extends TPort {
     private void addPrioritizedBufferEntry(TActivePortBufferEntry activePortBufferEntry) {
         int priorityAux = activePortBufferEntry.getPriority();
         if (priorityAux == TActivePort.PRIORITY_10) {
-            this.priority10Monitor.lock();
+            this.priority10BufferLock.lock();
             this.priority10Buffer.add(activePortBufferEntry);
-            this.priority10Monitor.unLock();
+            this.priority10BufferLock.unLock();
         } else if (priorityAux == TActivePort.PRIORITY_9) {
-            this.priority9Monitor.lock();
+            this.priority9BufferLock.lock();
             this.priority9Buffer.add(activePortBufferEntry);
-            this.priority9Monitor.unLock();
+            this.priority9BufferLock.unLock();
         } else if (priorityAux == TActivePort.PRIORITY_8) {
-            this.priority8Monitor.lock();
+            this.priority8BufferLock.lock();
             this.priority8Buffer.add(activePortBufferEntry);
-            this.priority8Monitor.unLock();
+            this.priority8BufferLock.unLock();
         } else if (priorityAux == TActivePort.PRIORITY_7) {
-            this.priority7Monitor.lock();
+            this.priority7BufferLock.lock();
             this.priority7Buffer.add(activePortBufferEntry);
-            this.priority7Monitor.unLock();
+            this.priority7BufferLock.unLock();
         } else if (priorityAux == TActivePort.PRIORITY_6) {
-            this.priority6Monitor.lock();
+            this.priority6BufferLock.lock();
             this.priority6Buffer.add(activePortBufferEntry);
-            this.priority6Monitor.unLock();
+            this.priority6BufferLock.unLock();
         } else if (priorityAux == TActivePort.PRIORITY_5) {
-            this.priority5Monitor.lock();
+            this.priority5BufferLock.lock();
             this.priority5Buffer.add(activePortBufferEntry);
-            this.priority5Monitor.unLock();
+            this.priority5BufferLock.unLock();
         } else if (priorityAux == TActivePort.PRIORITY_4) {
-            this.priority4Monitor.lock();
+            this.priority4BufferLock.lock();
             this.priority4Buffer.add(activePortBufferEntry);
-            this.priority4Monitor.unLock();
+            this.priority4BufferLock.unLock();
         } else if (priorityAux == TActivePort.PRIORITY_3) {
-            this.priority3Monitor.lock();
+            this.priority3BufferLock.lock();
             this.priority3Buffer.add(activePortBufferEntry);
-            this.priority3Monitor.unLock();
+            this.priority3BufferLock.unLock();
         } else if (priorityAux == TActivePort.PRIORITY_2) {
-            this.priority2Monitor.lock();
+            this.priority2BufferLock.lock();
             this.priority2Buffer.add(activePortBufferEntry);
-            this.priority2Monitor.unLock();
+            this.priority2BufferLock.unLock();
         } else if (priorityAux == TActivePort.PRIORITY_1) {
-            this.priority1Monitor.lock();
+            this.priority1BufferLock.lock();
             this.priority1Buffer.add(activePortBufferEntry);
-            this.priority1Monitor.unLock();
+            this.priority1BufferLock.unLock();
         } else if (priorityAux == TActivePort.WITHOUT_PRIORITY) {
-            this.priority0Monitor.lock();
+            this.priority0BufferLock.lock();
             this.priority0Buffer.add(activePortBufferEntry);
-            this.priority0Monitor.unLock();
+            this.priority0BufferLock.unLock();
         }
     }
 
@@ -821,7 +822,7 @@ public class TActivePort extends TPort {
             TAbstractPDU packet = null;
             TActivePortBufferEntry activePortBufferEntry = null;
 
-            this.priority10Monitor.lock();
+            this.priority10BufferLock.lock();
             Iterator iterator = this.priority10Buffer.iterator();
             while (iterator.hasNext()) {
                 activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
@@ -830,8 +831,8 @@ public class TActivePort extends TPort {
                     occupancyAux += packet.getSize();
                 }
             }
-            this.priority10Monitor.unLock();
-            this.priority9Monitor.lock();
+            this.priority10BufferLock.unLock();
+            this.priority9BufferLock.lock();
             iterator = this.priority9Buffer.iterator();
             while (iterator.hasNext()) {
                 activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
@@ -840,8 +841,8 @@ public class TActivePort extends TPort {
                     occupancyAux += packet.getSize();
                 }
             }
-            this.priority9Monitor.unLock();
-            this.priority8Monitor.lock();
+            this.priority9BufferLock.unLock();
+            this.priority8BufferLock.lock();
             iterator = this.priority8Buffer.iterator();
             while (iterator.hasNext()) {
                 activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
@@ -850,8 +851,8 @@ public class TActivePort extends TPort {
                     occupancyAux += packet.getSize();
                 }
             }
-            this.priority8Monitor.unLock();
-            this.priority7Monitor.lock();
+            this.priority8BufferLock.unLock();
+            this.priority7BufferLock.lock();
             iterator = this.priority7Buffer.iterator();
             while (iterator.hasNext()) {
                 activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
@@ -860,8 +861,8 @@ public class TActivePort extends TPort {
                     occupancyAux += packet.getSize();
                 }
             }
-            this.priority7Monitor.unLock();
-            this.priority6Monitor.lock();
+            this.priority7BufferLock.unLock();
+            this.priority6BufferLock.lock();
             iterator = this.priority6Buffer.iterator();
             while (iterator.hasNext()) {
                 activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
@@ -870,8 +871,8 @@ public class TActivePort extends TPort {
                     occupancyAux += packet.getSize();
                 }
             }
-            this.priority6Monitor.unLock();
-            this.priority5Monitor.lock();
+            this.priority6BufferLock.unLock();
+            this.priority5BufferLock.lock();
             iterator = this.priority5Buffer.iterator();
             while (iterator.hasNext()) {
                 activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
@@ -880,8 +881,8 @@ public class TActivePort extends TPort {
                     occupancyAux += packet.getSize();
                 }
             }
-            this.priority5Monitor.unLock();
-            this.priority4Monitor.lock();
+            this.priority5BufferLock.unLock();
+            this.priority4BufferLock.lock();
             iterator = this.priority4Buffer.iterator();
             while (iterator.hasNext()) {
                 activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
@@ -890,8 +891,8 @@ public class TActivePort extends TPort {
                     occupancyAux += packet.getSize();
                 }
             }
-            this.priority4Monitor.unLock();
-            this.priority3Monitor.lock();
+            this.priority4BufferLock.unLock();
+            this.priority3BufferLock.lock();
             iterator = this.priority3Buffer.iterator();
             while (iterator.hasNext()) {
                 activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
@@ -900,8 +901,8 @@ public class TActivePort extends TPort {
                     occupancyAux += packet.getSize();
                 }
             }
-            this.priority3Monitor.unLock();
-            this.priority2Monitor.lock();
+            this.priority3BufferLock.unLock();
+            this.priority2BufferLock.lock();
             iterator = this.priority2Buffer.iterator();
             while (iterator.hasNext()) {
                 activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
@@ -910,8 +911,8 @@ public class TActivePort extends TPort {
                     occupancyAux += packet.getSize();
                 }
             }
-            this.priority2Monitor.unLock();
-            this.priority1Monitor.lock();
+            this.priority2BufferLock.unLock();
+            this.priority1BufferLock.lock();
             iterator = this.priority1Buffer.iterator();
             while (iterator.hasNext()) {
                 activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
@@ -920,8 +921,8 @@ public class TActivePort extends TPort {
                     occupancyAux += packet.getSize();
                 }
             }
-            this.priority1Monitor.unLock();
-            this.priority0Monitor.lock();
+            this.priority1BufferLock.unLock();
+            this.priority0BufferLock.lock();
             iterator = this.priority0Buffer.iterator();
             while (iterator.hasNext()) {
                 activePortBufferEntry = (TActivePortBufferEntry) iterator.next();
@@ -930,7 +931,7 @@ public class TActivePort extends TPort {
                     occupancyAux += packet.getSize();
                 }
             }
-            this.priority0Monitor.unLock();
+            this.priority0BufferLock.unLock();
             if (this.nextPacketToBeRead != null) {
                 occupancyAux += this.nextPacketToBeRead.getSize();
             }
@@ -981,83 +982,83 @@ public class TActivePort extends TPort {
     public void reset() {
         this.monitor.lock();
 
-        this.priority10Monitor.lock();
+        this.priority10BufferLock.lock();
         Iterator iterator = this.priority10Buffer.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
         }
-        this.priority10Monitor.unLock();
-        this.priority9Monitor.lock();
+        this.priority10BufferLock.unLock();
+        this.priority9BufferLock.lock();
         iterator = this.priority9Buffer.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
         }
-        this.priority9Monitor.unLock();
-        this.priority8Monitor.lock();
+        this.priority9BufferLock.unLock();
+        this.priority8BufferLock.lock();
         iterator = this.priority8Buffer.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
         }
-        this.priority8Monitor.unLock();
-        this.priority7Monitor.lock();
+        this.priority8BufferLock.unLock();
+        this.priority7BufferLock.lock();
         iterator = this.priority7Buffer.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
         }
-        this.priority7Monitor.unLock();
-        this.priority6Monitor.lock();
+        this.priority7BufferLock.unLock();
+        this.priority6BufferLock.lock();
         iterator = this.priority6Buffer.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
         }
-        this.priority6Monitor.unLock();
-        this.priority5Monitor.lock();
+        this.priority6BufferLock.unLock();
+        this.priority5BufferLock.lock();
         iterator = this.priority5Buffer.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
         }
-        this.priority5Monitor.unLock();
-        this.priority4Monitor.lock();
+        this.priority5BufferLock.unLock();
+        this.priority4BufferLock.lock();
         iterator = this.priority4Buffer.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
         }
-        this.priority4Monitor.unLock();
-        this.priority3Monitor.lock();
+        this.priority4BufferLock.unLock();
+        this.priority3BufferLock.lock();
         iterator = this.priority3Buffer.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
         }
-        this.priority3Monitor.unLock();
-        this.priority2Monitor.lock();
+        this.priority3BufferLock.unLock();
+        this.priority2BufferLock.lock();
         iterator = this.priority2Buffer.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
         }
-        this.priority2Monitor.unLock();
-        this.priority1Monitor.lock();
+        this.priority2BufferLock.unLock();
+        this.priority1BufferLock.lock();
         iterator = this.priority1Buffer.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
         }
-        this.priority1Monitor.unLock();
-        this.priority0Monitor.lock();
+        this.priority1BufferLock.unLock();
+        this.priority0BufferLock.lock();
         iterator = this.priority0Buffer.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
         }
-        this.priority0Monitor.unLock();
+        this.priority0BufferLock.unLock();
         this.monitor.unLock();
         this.packetRead = null;
         this.selectedBuffer = 0;
@@ -1068,6 +1069,38 @@ public class TActivePort extends TPort {
         }
     }
 
+    private final TLock priority0BufferLock;
+    private final TLock priority1BufferLock;
+    private final TLock priority2BufferLock;
+    private final TLock priority3BufferLock;
+    private final TLock priority4BufferLock;
+    private final TLock priority5BufferLock;
+    private final TLock priority6BufferLock;
+    private final TLock priority7BufferLock;
+    private final TLock priority8BufferLock;
+    private final TLock priority9BufferLock;
+    private final TLock priority10BufferLock;
+    private final TreeSet<TActivePortBufferEntry> priority0Buffer;
+    private final TreeSet<TActivePortBufferEntry> priority1Buffer;
+    private final TreeSet<TActivePortBufferEntry> priority2Buffer;
+    private final TreeSet<TActivePortBufferEntry> priority3Buffer;
+    private final TreeSet<TActivePortBufferEntry> priority4Buffer;
+    private final TreeSet<TActivePortBufferEntry> priority5Buffer;
+    private final TreeSet<TActivePortBufferEntry> priority6Buffer;
+    private final TreeSet<TActivePortBufferEntry> priority7Buffer;
+    private final TreeSet<TActivePortBufferEntry> priority8Buffer;
+    private final TreeSet<TActivePortBufferEntry> priority9Buffer;
+    private final TreeSet<TActivePortBufferEntry> priority10Buffer;
+
+    private int selectedBuffer;
+    private TAbstractPDU packetRead;
+    private boolean isUnlimitedBuffer;
+    private final TRotaryIDGenerator rotaryIdentifierGenerator;
+    private final int[] maxReadsOfBuffer;
+    private final int[] currentReadsOfBuffer;
+    private TAbstractPDU nextPacketToBeRead;
+
+    private static final int HIGHEST_PRIORITY = 10;
     private static final int PRIORITY_10 = 10;
     private static final int PRIORITY_9 = 9;
     private static final int PRIORITY_8 = 8;
@@ -1079,37 +1112,22 @@ public class TActivePort extends TPort {
     private static final int PRIORITY_2 = 2;
     private static final int PRIORITY_1 = 1;
     private static final int WITHOUT_PRIORITY = 0;
-
+    private static final int ZERO = 0;
+    private static final int ONE = 1;
+    private static final int TWO = 2;
+    private static final int THREE = 3;
+    private static final int FOUR = 4;
+    private static final int FIVE = 5;
+    private static final int SIX = 6;
+    private static final int SEVEN = 7;
+    private static final int EIGHT = 8;
+    private static final int NINE = 9;
+    private static final int TEN = 10;
+    private static final int ELEVEN = 11;
+    private static final int TWELVE = 12;
     private static final int EPCD_THRESHOLD = 100;
+    private static final int DEFAULT_SELECTED_BUFFER = 0;
+    private static final TAbstractPDU DEFAULT_PACKET_READ = null;
+    private static final boolean DEFAULT_IS_UNLIMITED_BUFFER = false;
 
-    private TLock priority0Monitor;
-    private TLock priority1Monitor;
-    private TLock priority2Monitor;
-    private TLock priority3Monitor;
-    private TLock priority4Monitor;
-    private TLock priority5Monitor;
-    private TLock priority6Monitor;
-    private TLock priority7Monitor;
-    private TLock priority8Monitor;
-    private TLock priority9Monitor;
-    private TLock priority10Monitor;
-    private TreeSet priority0Buffer;
-    private TreeSet priority1Buffer;
-    private TreeSet priority2Buffer;
-    private TreeSet priority3Buffer;
-    private TreeSet priority4Buffer;
-    private TreeSet priority5Buffer;
-    private TreeSet priority6Buffer;
-    private TreeSet priority7Buffer;
-    private TreeSet priority8Buffer;
-    private TreeSet priority9Buffer;
-    private TreeSet priority10Buffer;
-
-    private int selectedBuffer;
-    private TAbstractPDU packetRead;
-    private boolean isUnlimitedBuffer;
-    private TRotaryIDGenerator rotaryIdentifierGenerator;
-    private int[] maxReadsOfBuffer;
-    private int[] currentReadsOfBuffer;
-    private TAbstractPDU nextPacketToBeRead;
 }
