@@ -46,14 +46,14 @@ The best option is to download latest compiled stable releases from the releases
 ```console
 git clone https://github.com/manolodd/opensimmpls.git
 ```
- - Compile the code and obtain a binary jar including all you need (you will need to install Ant before):
+ - Compile the code and obtain a binary jar including all you need (you will need to install Maven before):
 ```console
 cd opensimmpls
-ant opensimmpls-binary-fat-release
+mvn package
 ```
- - The jar file will be located in binary-fat-release/opensimmpls directory.
+ - The jar file will be located in "target" directory.
 ```console
-cd binary-fat-release/opensimmpls
+cd target
 ```
 - Now, run the simulator:
 ```console
@@ -64,7 +64,7 @@ java -jar openSimMPLS-bin-v{YourVersion}.jar
 
 # How to use OpenSimMPLS
 
-You can open a quick start guide directly from the simulator GUI. However, you can find the same guide in some languages at https://github.com/manolodd/opensimmpls/tree/master/src/com/manolodominguez/opensimmpls/resources/guides
+You can open a quick start guide directly from the simulator GUI. However, you can find the same guide in some languages at https://github.com/manolodd/opensimmpls/tree/master/src/main/resources/com/manolodominguez/opensimmpls/resources/guides
 
 
 # THIRD-PARTY COMPONENTS
