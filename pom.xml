@@ -115,11 +115,6 @@
             <version>1.7.26</version>
         </dependency>
         <dependency>
-            <groupId>org.netbeans</groupId>
-            <artifactId>lib</artifactId>
-            <version>3.6</version>
-        </dependency>
-        <dependency>
             <groupId>org.netbeans.external</groupId>
             <artifactId>AbsoluteLayout</artifactId>
             <version>RELEASE82</version>

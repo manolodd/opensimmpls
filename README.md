@@ -10,7 +10,7 @@
 
 It supports standard MPLS operation as well as GoS/MPLS operation. See "Guarantee of Service (GoS) Support Over MPLS using Active Techniques" proposal at http://opensimmpls.manolodominguez.com/content/common/pdf/documentation/gossobrempls.pdf
 
-![OpenSimMPLS logo](https://github.com/manolodd/opensimmpls/raw/master/src/com/manolodominguez/opensimmpls/resources/images/splash_inicio.png)
+![OpenSimMPLS logo](https://github.com/manolodd/opensimmpls/raw/master/src/main/resources/com/manolodominguez/opensimmpls/resources/images/splash_inicio.png)
 
 # LICENSE
 
@@ -76,6 +76,7 @@ OpenSimMPLS uses third-party components each one of them having its own OSS lice
 - slf4j-simple 1.7.25 - MIT - https://www.slf4j.org
 - miglayout-swing 5.1 - BSD - https://github.com/mikaelgrev/miglayout
 - miglayout-core 5.1 - BSD - https://github.com/mikaelgrev/miglayout
+- AbsoluteLayout release82 - CDDL (Being replaced in OpenSimMPLS by miglayout)
 
 Thanks folks!
 
