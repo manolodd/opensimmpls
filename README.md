@@ -14,12 +14,13 @@ It supports standard MPLS operation as well as GoS/MPLS operation. See "Guarante
 
 # LICENSE
 
-## Current version:
+## Current release:
  
+- <b>OpenSimMPLS 2.1</b> is released under the terms of Apache Software License 2.0.
+
+## Previous releases:
+
 - <b>OpenSimMPLS 2.0</b> was released under the terms of Apache Software License 2.0.
-
-## Previous versions:
-
 - <b>OpenSimMPLS 1.1</b> was released under the terms of GPLv3.0+.
 - <b>OpenSimMPLS 1.0</b> was released under the terms of GPLv2.0+.
 
