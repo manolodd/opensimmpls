@@ -24,7 +24,9 @@ package com.manolodominguez.opensimmpls.commons;
  */
 public enum UnitsTranslations {
     BITS_PER_OCTECTS(8),
-    OCTETS_PER_KILOBYTE(1024);
+    OCTETS_PER_KILOBYTE(1024),
+    OCTETS_PER_MEGABYTE(1024*1024),
+    OCTETS_PER_GIGABYTE(1024*1024*1024);
     
     private final int units;
 
