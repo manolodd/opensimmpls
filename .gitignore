@@ -1,3 +1,4 @@
 /.project
-/nbproject/
 /target/
+/dependency-reduced-pom.xml
+/nbactions.xml
