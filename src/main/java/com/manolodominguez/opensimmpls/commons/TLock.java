@@ -53,7 +53,7 @@ public class TLock {
             try {
                 wait();
             } catch (InterruptedException e) {
-                logger.error(e.getMessage(), e);
+                this.logger.error(e.getMessage(), e);
             }
         }
         this.lock = LOCKED;
