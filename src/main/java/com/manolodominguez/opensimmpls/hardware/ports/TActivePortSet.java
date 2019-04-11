@@ -15,6 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.hardware.ports;
 
+import static com.manolodominguez.opensimmpls.commons.UnitsTranslations.OCTETS_PER_MEGABYTE;
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
@@ -41,32 +42,32 @@ public class TActivePortSet extends TPortSet {
     public TActivePortSet(int numberOfPorts, TNode activeNode) {
         super(numberOfPorts, activeNode);
         this.ports = new TActivePort[numberOfPorts];
-        int i = 0;
-        for (i = 0; i < this.numberOfPorts; i++) {
+        int i = ZERO;
+        for (i = ZERO; i < this.numberOfPorts; i++) {
             this.ports[i] = new TActivePort(this, i);
             this.ports[i].setPortID(i);
         }
-        this.readPort = 0;
+        this.readPort = ZERO;
         this.nextPacketToBeRead = null;
-        this.ratioByPriority = new int[11];
-        this.currentByPriority = new int[11];
-        for (i = 0; i < 11; i++) {
-            this.ratioByPriority[i] = i + 1;
-            this.currentByPriority[i] = 0;
+        this.ratioByPriority = new int[MAX_PRIORITY];
+        this.currentByPriority = new int[MAX_PRIORITY];
+        for (i = ZERO; i < MAX_PRIORITY; i++) {
+            this.ratioByPriority[i] = i + ONE;
+            this.currentByPriority[i] = ZERO;
         }
-        this.currentPriority = 0;
+        this.currentPriority = ZERO;
     }
 
     private void runPriorityBasedNextPacketSelection() {
         if (this.nextPacketToBeRead == null) {
-            int priorityCounter = 0;
-            int portsCounter = 0;
+            int priorityCounter = ZERO;
+            int portsCounter = ZERO;
             boolean end = false;
-            int auxPriority = -1;
-            int auxCurrentPriority = 0;
-            int auxReadPort = 0;
-            while ((priorityCounter < 11) && (!end)) {
-                auxCurrentPriority = (this.currentPriority + priorityCounter) % 11;
+            int auxPriority = DUMMY_PRIORITY;
+            int auxCurrentPriority = ZERO;
+            int auxReadPort = ZERO;
+            while ((priorityCounter < MAX_PRIORITY) && (!end)) {
+                auxCurrentPriority = (this.currentPriority + priorityCounter) % MAX_PRIORITY;
                 if (this.currentByPriority[auxCurrentPriority] < this.ratioByPriority[auxCurrentPriority]) {
                     while ((portsCounter < this.numberOfPorts) && (!end)) {
                         auxReadPort = (this.readPort + portsCounter) % this.numberOfPorts;
@@ -89,23 +90,23 @@ public class TActivePortSet extends TPortSet {
                 if (!end) {
                     priorityCounter++;
                 }
-                portsCounter = 0;
+                portsCounter = ZERO;
             }
             resetPriorities();
         }
     }
 
     private void resetPriorities() {
-        int i = 0;
+        int i = ZERO;
         boolean reset = true;
-        for (i = 0; i < 11; i++) {
+        for (i = ZERO; i < MAX_PRIORITY; i++) {
             if (this.currentByPriority[i] < this.ratioByPriority[i]) {
                 reset = false;
             }
         }
         if (reset) {
-            for (i = 0; i < 11; i++) {
-                this.currentByPriority[i] = 0;
+            for (i = ZERO; i < MAX_PRIORITY; i++) {
+                this.currentByPriority[i] = ZERO;
             }
         }
     }
@@ -121,8 +122,8 @@ public class TActivePortSet extends TPortSet {
      */
     @Override
     public void setUnlimitedBuffer(boolean unlimitedBuffer) {
-        int i = 0;
-        for (i = 0; i < this.numberOfPorts; i++) {
+        int i = ZERO;
+        for (i = ZERO; i < this.numberOfPorts; i++) {
             this.ports[i].setUnlimitedBuffer(unlimitedBuffer);
         }
     }
@@ -198,8 +199,8 @@ public class TActivePortSet extends TPortSet {
      */
     @Override
     public boolean hasAvailablePorts() {
-        int i = 0;
-        for (i = 0; i < this.numberOfPorts; i++) {
+        int i = ZERO;
+        for (i = ZERO; i < this.numberOfPorts; i++) {
             if (this.ports[i].isAvailable()) {
                 return true;
             }
@@ -256,7 +257,7 @@ public class TActivePortSet extends TPortSet {
      */
     @Override
     public void disconnectLinkFromPort(int portID) {
-        if ((portID >= 0) && (portID < this.numberOfPorts)) {
+        if ((portID >= ZERO) && (portID < this.numberOfPorts)) {
             this.ports[portID].disconnectLink();
         }
     }
@@ -293,8 +294,8 @@ public class TActivePortSet extends TPortSet {
      */
     @Override
     public boolean isAnyPacketToSwitch() {
-        for (int i = 0; i < numberOfPorts; i++) {
-            if (ports[i].thereIsAPacketWaiting()) {
+        for (int i = ZERO; i < this.numberOfPorts; i++) {
+            if (this.ports[i].thereIsAPacketWaiting()) {
                 return true;
             }
         }
@@ -351,7 +352,7 @@ public class TActivePortSet extends TPortSet {
      */
     @Override
     public void skipPort() {
-        this.readPort = (this.readPort + 1) % this.numberOfPorts;
+        this.readPort = (this.readPort + ONE) % this.numberOfPorts;
     }
 
     /**
@@ -381,7 +382,7 @@ public class TActivePortSet extends TPortSet {
      */
     @Override
     public TPort getLocalPortConnectedToANodeWithIPAddress(String adjacentNodeIP) {
-        for (int i = 0; i < this.numberOfPorts; i++) {
+        for (int i = ZERO; i < this.numberOfPorts; i++) {
             if (!this.ports[i].isAvailable()) {
                 int targetNodeID = this.ports[i].getLink().getDestinationOfTrafficSentBy(this.parentNode);
                 if (targetNodeID == TLink.HEAD_END_NODE) {
@@ -410,9 +411,8 @@ public class TActivePortSet extends TPortSet {
      */
     @Override
     public String getIPv4OfNodeLinkedTo(int portID) {
-        if ((portID >= 0) && (portID < this.numberOfPorts)) {
+        if ((portID >= ZERO) && (portID < this.numberOfPorts)) {
             if (!this.ports[portID].isAvailable()) {
-                String IPv42 = this.ports[portID].getLink().getTailEndNode().getIPv4Address();
                 if (this.ports[portID].getLink().getHeadEndNode().getIPv4Address().equals(this.parentNode.getIPv4Address())) {
                     return this.ports[portID].getLink().getTailEndNode().getIPv4Address();
                 }
@@ -432,9 +432,9 @@ public class TActivePortSet extends TPortSet {
      */
     @Override
     public long getCongestionLevel() {
-        long computedCongestion = 0;
-        int i = 0;
-        for (i = 0; i < this.numberOfPorts; i++) {
+        long computedCongestion = ZERO;
+        int i = ZERO;
+        for (i = ZERO; i < this.numberOfPorts; i++) {
             if (this.ports[i].getCongestionLevel() > computedCongestion) {
                 computedCongestion = ports[i].getCongestionLevel();
             }
@@ -452,26 +452,26 @@ public class TActivePortSet extends TPortSet {
     @Override
     public void reset() {
         this.portSetMonitor.unLock();
-        int i = 0;
-        for (i = 0; i < this.numberOfPorts; i++) {
-            ports[i].reset();
+        int i = ZERO;
+        for (i = ZERO; i < this.numberOfPorts; i++) {
+            this.ports[i].reset();
         }
-        this.readPort = 0;
-        this.setPortSetOccupancySize(0);
-        nextPacketToBeRead = null;
-        for (i = 0; i < 11; i++) {
-            currentByPriority[i] = 0;
+        this.readPort = ZERO;
+        this.setPortSetOccupancySize(ZERO);
+        this.nextPacketToBeRead = null;
+        for (i = ZERO; i < MAX_PRIORITY; i++) {
+            this.currentByPriority[i] = ZERO;
         }
         this.artificiallyCongested = false;
-        this.occupancy = 0;
+        this.occupancy = ZERO;
         this.portSetMonitor.unLock();
     }
 
     /**
      * This method allow establishing the congestion level of the port set to
-     * 97% so that the parent node will start qickly to discard packets. It is a
-     * trick created to simulate this situation, and the port set is able to get
-     * back to the real state when desired.
+     * CONGESTION_FACTOR so that the parent node will start qickly to discard
+     * packets. It is a trick created to simulate this situation, and the port
+     * set is able to get back to the real state when desired.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param congestArtificially TRUE if port set is going to be congested
@@ -480,24 +480,24 @@ public class TActivePortSet extends TPortSet {
      */
     @Override
     public void setArtificiallyCongested(boolean congestArtificially) {
-        long computationOf97Percent = (long) (this.getBufferSizeInMBytes() * 1017118.72);
+        long computedCongestionLevel = (long) (this.getBufferSizeInMBytes() * OCTETS_PER_MEGABYTE.getUnits() * CONGESTION_FACTOR);
         if (congestArtificially) {
             if (!this.artificiallyCongested) {
-                if (this.getPortSetOccupancy() < computationOf97Percent) {
+                if (this.getPortSetOccupancy() < computedCongestionLevel) {
                     this.artificiallyCongested = true;
                     this.occupancy = this.getPortSetOccupancy();
-                    this.setPortSetOccupancySize(computationOf97Percent);
+                    this.setPortSetOccupancySize(computedCongestionLevel);
                 }
             }
         } else {
             if (this.artificiallyCongested) {
-                this.occupancy += (getPortSetOccupancy() - computationOf97Percent);
-                if (this.occupancy < 0) {
-                    this.occupancy = 0;
+                this.occupancy += (getPortSetOccupancy() - computedCongestionLevel);
+                if (this.occupancy < ZERO) {
+                    this.occupancy = ZERO;
                 }
                 this.setPortSetOccupancySize(this.occupancy);
                 this.artificiallyCongested = false;
-                this.occupancy = 0;
+                this.occupancy = ZERO;
             }
         }
     }
@@ -514,4 +514,10 @@ public class TActivePortSet extends TPortSet {
     private int[] ratioByPriority;
     private int[] currentByPriority;
     // end of comment
+
+    private static final int ZERO = 0;
+    private static final int ONE = 1;
+    private static final int DUMMY_PRIORITY = -1;
+    private static final int MAX_PRIORITY = 11;
+    private static final float CONGESTION_FACTOR = 0.97f;
 }
