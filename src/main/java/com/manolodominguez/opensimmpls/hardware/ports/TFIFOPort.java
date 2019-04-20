@@ -15,12 +15,16 @@
  */
 package com.manolodominguez.opensimmpls.hardware.ports;
 
+import com.manolodominguez.opensimmpls.commons.EIDGeneratorOverflow;
 import java.util.Iterator;
 import java.util.LinkedList;
 import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventPacketReceived;
 import com.manolodominguez.opensimmpls.scenario.TStats;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
+import static com.manolodominguez.opensimmpls.commons.UnitsTranslations.OCTETS_PER_MEGABYTE;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class implements a I/O port that follow a FIFO scheme to dispatch
@@ -84,14 +88,14 @@ public class TFIFOPort extends TPort {
     @Override
     public void addPacket(TAbstractPDU packet) {
         TFIFOPortSet parentPortSetAux = (TFIFOPortSet) this.parentPortSet;
-        parentPortSetAux.portSetMonitor.lock();
-        this.monitor.lock();
+        parentPortSetAux.portSetSemaphore.setRed();
+        this.semaphore.setRed();
         TNode parentNode = this.parentPortSet.getParentNode();
-        long eventID = 0;
+        long eventID = ZERO;
         try {
             eventID = parentNode.eventIdentifierGenerator.getNextIdentifier();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (EIDGeneratorOverflow ex) {
+            this.logger.error(ex.getMessage(), ex);
         }
         int packetSubtype = packet.getSubtype();
         if (this.isUnlimitedBuffer) {
@@ -103,7 +107,7 @@ public class TFIFOPort extends TPort {
                 this.getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.INCOMING);
             }
         } else {
-            if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= (parentPortSetAux.getBufferSizeInMBytes() * 1024 * 1024)) {
+            if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= (parentPortSetAux.getBufferSizeInMBytes() * OCTETS_PER_MEGABYTE.getUnits())) {
                 this.buffer.addLast(packet);
                 parentPortSetAux.increasePortSetOccupancy(packet.getSize());
                 TSimulationEventPacketReceived packetReceivedEvent = new TSimulationEventPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getCurrentTimeInstant(), packetSubtype, packet.getSize());
@@ -115,8 +119,8 @@ public class TFIFOPort extends TPort {
                 this.discardPacket(packet);
             }
         }
-        this.monitor.unLock();
-        parentPortSetAux.portSetMonitor.unLock();
+        this.semaphore.setGreen();
+        parentPortSetAux.portSetSemaphore.setGreen();
     }
 
     /**
@@ -131,29 +135,21 @@ public class TFIFOPort extends TPort {
     @Override
     public void reEnqueuePacket(TAbstractPDU packet) {
         TFIFOPortSet parentPortSetAux = (TFIFOPortSet) this.parentPortSet;
-        parentPortSetAux.portSetMonitor.lock();
-        this.monitor.lock();
-        TNode parentNode = this.parentPortSet.getParentNode();
-        long eventID = 0;
-        try {
-            eventID = parentNode.eventIdentifierGenerator.getNextIdentifier();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        int packetSubtype = packet.getSubtype();
+        parentPortSetAux.portSetSemaphore.setRed();
+        this.semaphore.setRed();
         if (this.isUnlimitedBuffer) {
             this.buffer.addLast(packet);
             parentPortSetAux.increasePortSetOccupancy(packet.getSize());
         } else {
-            if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= (parentPortSetAux.getBufferSizeInMBytes() * 1024 * 1024)) {
+            if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= (parentPortSetAux.getBufferSizeInMBytes() * OCTETS_PER_MEGABYTE.getUnits())) {
                 this.buffer.addLast(packet);
                 parentPortSetAux.increasePortSetOccupancy(packet.getSize());
             } else {
                 this.discardPacket(packet);
             }
         }
-        this.monitor.unLock();
-        parentPortSetAux.portSetMonitor.unLock();
+        this.semaphore.setGreen();
+        parentPortSetAux.portSetSemaphore.setGreen();
     }
 
     /**
@@ -167,14 +163,14 @@ public class TFIFOPort extends TPort {
     @Override
     public TAbstractPDU getPacket() {
         TFIFOPortSet parentPortSetAux = (TFIFOPortSet) this.parentPortSet;
-        parentPortSetAux.portSetMonitor.lock();
-        this.monitor.lock();
+        parentPortSetAux.portSetSemaphore.setRed();
+        this.semaphore.setRed();
         this.packetRead = (TAbstractPDU) this.buffer.removeFirst();
         if (!this.isUnlimitedBuffer) {
             parentPortSetAux.decreasePortSetOccupancySize(this.packetRead.getSize());
         }
-        this.monitor.unLock();
-        parentPortSetAux.portSetMonitor.unLock();
+        this.semaphore.setGreen();
+        parentPortSetAux.portSetSemaphore.setGreen();
         return this.packetRead;
     }
 
@@ -192,13 +188,10 @@ public class TFIFOPort extends TPort {
      */
     @Override
     public boolean canSwitchPacket(int octets) {
-        this.monitor.lock();
+        this.semaphore.setRed();
         this.packetRead = (TAbstractPDU) this.buffer.getFirst();
-        this.monitor.unLock();
-        if (this.packetRead.getSize() <= octets) {
-            return true;
-        }
-        return false;
+        this.semaphore.setGreen();
+        return this.packetRead.getSize() <= octets;
     }
 
     /**
@@ -212,10 +205,10 @@ public class TFIFOPort extends TPort {
     @Override
     public long getCongestionLevel() {
         if (this.isUnlimitedBuffer) {
-            return 0;
+            return ZERO;
         }
         TFIFOPortSet parentPortSetAux = (TFIFOPortSet) this.parentPortSet;
-        long congestion = (parentPortSetAux.getPortSetOccupancy() * 100) / (parentPortSetAux.getBufferSizeInMBytes() * 1024 * 1024);
+        long congestion = (parentPortSetAux.getPortSetOccupancy() * ONE_HUNDRED) / (parentPortSetAux.getBufferSizeInMBytes() * OCTETS_PER_MEGABYTE.getUnits());
         return congestion;
     }
 
@@ -230,10 +223,7 @@ public class TFIFOPort extends TPort {
      */
     @Override
     public boolean thereIsAPacketWaiting() {
-        if (this.buffer.size() > 0) {
-            return true;
-        }
-        return false;
+        return this.buffer.size() > ZERO;
     }
 
     /**
@@ -247,8 +237,8 @@ public class TFIFOPort extends TPort {
     @Override
     public long getOccupancy() {
         if (this.isUnlimitedBuffer) {
-            this.monitor.lock();
-            int occupancy = 0;
+            this.semaphore.setRed();
+            int occupancy = ZERO;
             TAbstractPDU packet = null;
             Iterator iterator = this.buffer.iterator();
             while (iterator.hasNext()) {
@@ -257,7 +247,7 @@ public class TFIFOPort extends TPort {
                     occupancy += packet.getSize();
                 }
             }
-            this.monitor.unLock();
+            this.semaphore.setGreen();
             return occupancy;
         }
         TFIFOPortSet parentPortSetAux = (TFIFOPortSet) parentPortSet;
@@ -286,16 +276,20 @@ public class TFIFOPort extends TPort {
      */
     @Override
     public void reset() {
-        this.monitor.lock();
+        this.semaphore.setRed();
         Iterator iterator = this.buffer.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
         }
-        this.monitor.unLock();
+        this.semaphore.setGreen();
     }
 
     private LinkedList buffer;
     private TAbstractPDU packetRead;
     private boolean isUnlimitedBuffer;
+    private final Logger logger = LoggerFactory.getLogger(TFIFOPort.class);
+    
+    private static final int ZERO = 0;
+    private static final int ONE_HUNDRED = 100;
 }
