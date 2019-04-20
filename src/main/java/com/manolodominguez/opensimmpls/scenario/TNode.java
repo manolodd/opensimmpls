@@ -20,7 +20,7 @@ import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
 import com.manolodominguez.opensimmpls.hardware.timer.TTimerEvent;
 import com.manolodominguez.opensimmpls.hardware.timer.ITimerEventListener;
 import com.manolodominguez.opensimmpls.hardware.ports.TPortSet;
-import com.manolodominguez.opensimmpls.commons.TLock;
+import com.manolodominguez.opensimmpls.commons.TSemaphore;
 import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
 import java.awt.Point;
 
@@ -55,7 +55,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
         this.showName = false;
         this.ipv4Address = ipv4Address;
         this.ports = null;
-        this.lock = new TLock();
+        this.lock = new TSemaphore();
         this.topology = topology;
         this.generateStatistics = false;
         this.availableNanoseconds = 0;
@@ -308,9 +308,9 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
      * @since 2.0
      */
     public synchronized void putPacket(TAbstractPDU packet, int portID) {
-        lock.lock();
+        lock.setRed();
         this.ports.getPort(portID).addPacket(packet);
-        lock.unLock();
+        lock.setGreen();
     }
 
     /**
@@ -550,7 +550,7 @@ public abstract class TNode extends TTopologyElement implements Comparable, ITim
     private Point screenPosition;
     private boolean showName;
     private String ipv4Address;
-    private TLock lock;
+    private TSemaphore lock;
     private boolean generateStatistics;
     // FIX: Do not use harcoded values. Use class constant.
     private int ticksWithoutEmittingBeforeAlert = 0;

@@ -18,7 +18,7 @@ package com.manolodominguez.opensimmpls.scenario;
 import com.manolodominguez.opensimmpls.scenario.simulationevents.ESimulationSingleSubscriber;
 import com.manolodominguez.opensimmpls.hardware.timer.TTimer;
 import com.manolodominguez.opensimmpls.commons.TIPv4AddressGenerator;
-import com.manolodominguez.opensimmpls.commons.TLock;
+import com.manolodominguez.opensimmpls.commons.TSemaphore;
 import com.manolodominguez.opensimmpls.commons.TIDGenerator;
 import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
 import java.awt.Point;
@@ -52,8 +52,8 @@ public class TTopology {
         this.eventIDGenerator = new TLongIDGenerator();
         this.elementsIDGenerator = new TIDGenerator();
         this.ipv4AddressGenerator = new TIPv4AddressGenerator();
-        this.floydWarshallAlgorithmLock = new TLock();
-        this.rabanAlgorithmLock = new TLock();
+        this.floydWarshallAlgorithmLock = new TSemaphore();
+        this.rabanAlgorithmLock = new TSemaphore();
     }
 
     /**
@@ -64,7 +64,7 @@ public class TTopology {
      * @since 2.0
      */
     public void reset() {
-        this.floydWarshallAlgorithmLock.lock();
+        this.floydWarshallAlgorithmLock.setRed();
         Iterator nodesIterator;
         nodesIterator = this.nodes.iterator();
         TTopologyElement topologyElement;
@@ -79,8 +79,8 @@ public class TTopology {
         }
         this.timer.reset();
         this.eventIDGenerator.reset();
-        this.floydWarshallAlgorithmLock.unLock();
-        this.rabanAlgorithmLock.unLock();
+        this.floydWarshallAlgorithmLock.setGreen();
+        this.rabanAlgorithmLock.setGreen();
     }
 
     /**
@@ -847,7 +847,7 @@ public class TTopology {
      * @since 2.0
      */
     public synchronized int getFloydWarshallNextHopID(int originNodeID, int targetNodeID) {
-        this.floydWarshallAlgorithmLock.lock();
+        this.floydWarshallAlgorithmLock.setRed();
         int currentNumberOfNodes = this.nodes.size();
         int tmpOrigin = 0;
         int tmpDestination = 0;
@@ -936,7 +936,7 @@ public class TTopology {
         } else {
             nextHop = equivalenceMatrix[nextHop];
         }
-        this.floydWarshallAlgorithmLock.unLock();
+        this.floydWarshallAlgorithmLock.setGreen();
         return nextHop;
     }
 
@@ -1049,7 +1049,7 @@ public class TTopology {
      * @since 2.0
      */
     public synchronized int getRABANNextHopID(int originNodeID, int targetNodeID) {
-        this.rabanAlgorithmLock.lock();
+        this.rabanAlgorithmLock.setRed();
         int currentNumberOfNodes = this.nodes.size();
         int tmpOrigin = 0;
         int tmpDestination = 0;
@@ -1132,7 +1132,7 @@ public class TTopology {
         } else {
             nextHop = equivalenceMatrix[nextHop];
         }
-        this.rabanAlgorithmLock.unLock();
+        this.rabanAlgorithmLock.setGreen();
         return nextHop;
     }
 
@@ -1158,7 +1158,7 @@ public class TTopology {
      * @since 2.0
      */
     public synchronized int getNextHopIDUsingRABAN(int originNodeID, int targetNodeID, int nodeToAvoidID) {
-        this.rabanAlgorithmLock.lock();
+        this.rabanAlgorithmLock.setRed();
         int currentNumberOfNodes = this.nodes.size();
         int tmpOrigin = 0;
         int tmpDestination = 0;
@@ -1253,7 +1253,7 @@ public class TTopology {
         } else {
             nextHop = equivalenceMatrix[nextHop];
         }
-        this.rabanAlgorithmLock.unLock();
+        this.rabanAlgorithmLock.setGreen();
         return nextHop;
     }
 
@@ -1268,6 +1268,6 @@ public class TTopology {
     private TLongIDGenerator eventIDGenerator;
     private TIDGenerator elementsIDGenerator;
     private TIPv4AddressGenerator ipv4AddressGenerator;
-    private TLock floydWarshallAlgorithmLock;
-    private TLock rabanAlgorithmLock;
+    private TSemaphore floydWarshallAlgorithmLock;
+    private TSemaphore rabanAlgorithmLock;
 }

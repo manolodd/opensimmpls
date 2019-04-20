@@ -19,7 +19,7 @@ import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 import com.manolodominguez.opensimmpls.hardware.timer.TTimerEvent;
 import com.manolodominguez.opensimmpls.hardware.timer.ITimerEventListener;
 import com.manolodominguez.opensimmpls.hardware.ports.TPortSet;
-import com.manolodominguez.opensimmpls.commons.TLock;
+import com.manolodominguez.opensimmpls.commons.TSemaphore;
 import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
 import java.awt.Point;
 import java.util.Collections;
@@ -59,8 +59,8 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
         this.tailEndNodePortID = -1;
         this.buffer = Collections.synchronizedSortedSet(new TreeSet());
         this.deliveredPacketsBuffer = new TreeSet();
-        this.packetsInTransitEntriesLock = new TLock();
-        this.deliveredPacketEntriesLock = new TLock();
+        this.packetsInTransitEntriesLock = new TSemaphore();
+        this.deliveredPacketEntriesLock = new TSemaphore();
         this.topology = topology;
         this.linkIsBroken = false;
     }
@@ -509,9 +509,9 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @since 2.0
      */
     public void deliverPacketToNode(TAbstractPDU packet, int endNode) {
-        this.packetsInTransitEntriesLock.lock();
+        this.packetsInTransitEntriesLock.setRed();
         this.buffer.add(new TLinkBufferEntry(packet, this.getDelay(), endNode));
-        this.packetsInTransitEntriesLock.unLock();
+        this.packetsInTransitEntriesLock.setGreen();
     }
 
     /**
@@ -577,7 +577,7 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
      * @return the monitor used to the packets in transit of this link.
      * @since 2.0
      */
-    public TLock getLock() {
+    public TSemaphore getLock() {
         return this.packetsInTransitEntriesLock;
     }
 
@@ -753,8 +753,8 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
 
     protected SortedSet buffer;
     protected TreeSet deliveredPacketsBuffer;
-    protected TLock packetsInTransitEntriesLock;
-    protected TLock deliveredPacketEntriesLock;
+    protected TSemaphore packetsInTransitEntriesLock;
+    protected TSemaphore deliveredPacketEntriesLock;
     protected TTopology topology;
     protected boolean linkIsBroken;
 

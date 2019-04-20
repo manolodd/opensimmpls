@@ -311,7 +311,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         TPort outgoingBackupPort = null;
         TPort incomingPort = null;
         TLink linkAux = null;
-        this.switchingMatrix.getMonitor().lock();
+        this.switchingMatrix.getSemaphore().setRed();
         Iterator switchingMatrixIterator = this.switchingMatrix.getEntriesIterator();
         while (switchingMatrixIterator.hasNext()) {
             switchingMatrixEntry = (TSwitchingMatrixEntry) switchingMatrixIterator.next();
@@ -370,7 +370,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 switchingMatrixIterator.remove();
             }
         }
-        this.switchingMatrix.getMonitor().unLock();
+        this.switchingMatrix.getSemaphore().setGreen();
         this.gpsrpRequests.decreaseTimeout(this.getTickDurationInNs());
         this.gpsrpRequests.updateEntries();
         int numberOfPorts = this.ports.getNumberOfPorts();
@@ -388,7 +388,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 }
             }
         }
-        this.gpsrpRequests.getMonitor().lock();
+        this.gpsrpRequests.getMonitor().setRed();
         Iterator gpsrpRequestsIterator = this.gpsrpRequests.getEntriesIterator();
         int flowID = 0;
         int packetID = 0;
@@ -406,7 +406,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             }
             gpsrpRequestEntry.resetTimeout();
         }
-        this.gpsrpRequests.getMonitor().unLock();
+        this.gpsrpRequests.getMonitor().setGreen();
     }
 
     /**
@@ -1722,7 +1722,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
      */
     public void decreaseCounters() {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
-        this.switchingMatrix.getMonitor().lock();
+        this.switchingMatrix.getSemaphore().setRed();
         Iterator entriesIterator = this.switchingMatrix.getEntriesIterator();
         while (entriesIterator.hasNext()) {
             switchingMatrixEntry = (TSwitchingMatrixEntry) entriesIterator.next();
@@ -1750,7 +1750,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 }
             }
         }
-        this.switchingMatrix.getMonitor().unLock();
+        this.switchingMatrix.getSemaphore().setGreen();
     }
 
     /**

@@ -284,7 +284,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         TPort incomingPort = null;
         TLink linkAux1 = null;
         TLink linkAux2 = null;
-        this.switchingMatrix.getMonitor().lock();
+        this.switchingMatrix.getSemaphore().setRed();
         Iterator switchingMatrixIterator = switchingMatrix.getEntriesIterator();
         while (switchingMatrixIterator.hasNext()) {
             switchingMatrixEntry = (TSwitchingMatrixEntry) switchingMatrixIterator.next();
@@ -350,7 +350,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                 switchingMatrixIterator.remove();
             }
         }
-        this.switchingMatrix.getMonitor().unLock();
+        this.switchingMatrix.getSemaphore().setGreen();
     }
 
     /**
@@ -1259,7 +1259,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
      */
     public void decreaseCounters() {
         TSwitchingMatrixEntry switchingMatrixEntry = null;
-        this.switchingMatrix.getMonitor().lock();
+        this.switchingMatrix.getSemaphore().setRed();
         Iterator entriesIterator = this.switchingMatrix.getEntriesIterator();
         while (entriesIterator.hasNext()) {
             switchingMatrixEntry = (TSwitchingMatrixEntry) entriesIterator.next();
@@ -1287,7 +1287,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
                 }
             }
         }
-        this.switchingMatrix.getMonitor().unLock();
+        this.switchingMatrix.getSemaphore().setGreen();
     }
 
     /**

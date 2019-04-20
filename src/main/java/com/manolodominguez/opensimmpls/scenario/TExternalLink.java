@@ -98,7 +98,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
         if (this.linkIsBroken) {
             try {
                 this.generateSimulationEvent(new TSimulationEventLinkBroken(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant()));
-                this.packetsInTransitEntriesLock.lock();
+                this.packetsInTransitEntriesLock.setRed();
                 TAbstractPDU packet = null;
                 TLinkBufferEntry bufferedPacketEntry = null;
                 Iterator bufferedPacketEntriesIterator = this.buffer.iterator();
@@ -118,7 +118,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
                     }
                     bufferedPacketEntriesIterator.remove();
                 }
-                this.packetsInTransitEntriesLock.unLock();
+                this.packetsInTransitEntriesLock.setGreen();
             } catch (EIDGeneratorOverflow e) {
                 // FIX: this is not a good practice
                 e.printStackTrace();
@@ -156,7 +156,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * @since 2.0
      */
     public void updateTransitDelay() {
-        this.packetsInTransitEntriesLock.lock();
+        this.packetsInTransitEntriesLock.setRed();
         Iterator bufferedPacketEntriesIterator = this.buffer.iterator();
         while (bufferedPacketEntriesIterator.hasNext()) {
             TLinkBufferEntry bufferedPacketEntry = (TLinkBufferEntry) bufferedPacketEntriesIterator.next();
@@ -174,7 +174,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
                 e.printStackTrace();
             }
         }
-        this.packetsInTransitEntriesLock.unLock();
+        this.packetsInTransitEntriesLock.setGreen();
     }
 
     /**
@@ -186,15 +186,15 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * @since 2.0
      */
     public void advancePacketInTransit() {
-        this.packetsInTransitEntriesLock.lock();
+        this.packetsInTransitEntriesLock.setRed();
         Iterator bufferedPacketEntriesIterator = this.buffer.iterator();
         while (bufferedPacketEntriesIterator.hasNext()) {
             TLinkBufferEntry bufferedPacketEntry = (TLinkBufferEntry) bufferedPacketEntriesIterator.next();
             // FIX: Do not use harcoded values. Use constants class instead.
             if (bufferedPacketEntry.getRemainingTransitDelay() <= 0) {
-                this.deliveredPacketEntriesLock.lock();
+                this.deliveredPacketEntriesLock.setRed();
                 this.deliveredPacketsBuffer.add(bufferedPacketEntry);
-                this.deliveredPacketEntriesLock.unLock();
+                this.deliveredPacketEntriesLock.setGreen();
             }
         }
         bufferedPacketEntriesIterator = this.buffer.iterator();
@@ -205,7 +205,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
                 bufferedPacketEntriesIterator.remove();
             }
         }
-        this.packetsInTransitEntriesLock.unLock();
+        this.packetsInTransitEntriesLock.setGreen();
     }
 
     /**
@@ -216,7 +216,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      * @since 2.0
      */
     public void deliverPacketsToDestination() {
-        this.deliveredPacketEntriesLock.lock();
+        this.deliveredPacketEntriesLock.setRed();
         Iterator deliveredPacketEntriesIterator = this.deliveredPacketsBuffer.iterator();
         while (deliveredPacketEntriesIterator.hasNext()) {
             TLinkBufferEntry deliveredBufferedPacketEntry = (TLinkBufferEntry) deliveredPacketEntriesIterator.next();
@@ -229,7 +229,7 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
             }
             deliveredPacketEntriesIterator.remove();
         }
-        this.deliveredPacketEntriesLock.unLock();
+        this.deliveredPacketEntriesLock.setGreen();
     }
 
     /**
@@ -361,20 +361,20 @@ public class TExternalLink extends TLink implements ITimerEventListener, Runnabl
      */
     @Override
     public void reset() {
-        this.packetsInTransitEntriesLock.lock();
+        this.packetsInTransitEntriesLock.setRed();
         Iterator bufferedPacketEntriesIterator = this.buffer.iterator();
         while (bufferedPacketEntriesIterator.hasNext()) {
             bufferedPacketEntriesIterator.next();
             bufferedPacketEntriesIterator.remove();
         }
-        this.packetsInTransitEntriesLock.unLock();
-        this.deliveredPacketEntriesLock.lock();
+        this.packetsInTransitEntriesLock.setGreen();
+        this.deliveredPacketEntriesLock.setRed();
         Iterator deliveredPacketEntriesIterator = this.deliveredPacketsBuffer.iterator();
         while (deliveredPacketEntriesIterator.hasNext()) {
             deliveredPacketEntriesIterator.next();
             deliveredPacketEntriesIterator.remove();
         }
-        this.deliveredPacketEntriesLock.unLock();
+        this.deliveredPacketEntriesLock.setGreen();
         this.setAsBrokenLink(false);
     }
 
