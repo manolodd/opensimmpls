@@ -17,7 +17,7 @@ package com.manolodominguez.opensimmpls.hardware.tldp;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import com.manolodominguez.opensimmpls.commons.TLock;
+import com.manolodominguez.opensimmpls.commons.TSemaphore;
 
 /**
  * This class implements a switching matrix to be used within each node of the
@@ -37,7 +37,7 @@ public class TSwitchingMatrix {
      */
     public TSwitchingMatrix() {
         this.switchingMatrix = new LinkedList();
-        this.monitor = new TLock();
+        this.semaphore = new TSemaphore();
     }
 
     /**
@@ -48,8 +48,8 @@ public class TSwitchingMatrix {
      * @return The monitor of the class.
      * @since 2.0
      */
-    public TLock getMonitor() {
-        return this.monitor;
+    public TSemaphore getMonitor() {
+        return this.semaphore;
     }
 
     /**
@@ -61,9 +61,9 @@ public class TSwitchingMatrix {
      * @since 2.0
      */
     public void addEntry(TSwitchingMatrixEntry switchingMatrixEntry) {
-        this.monitor.lock();
+        this.semaphore.setRed();
         this.switchingMatrix.addLast(switchingMatrixEntry);
-        this.monitor.unLock();
+        this.semaphore.setGreen();
     }
 
     /**
@@ -81,7 +81,7 @@ public class TSwitchingMatrix {
      * @since 2.0
      */
     public TSwitchingMatrixEntry getEntry(int incomingPortID, int labelOrFEC, int entryType) {
-        this.monitor.lock();
+        this.semaphore.setRed();
         Iterator iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
@@ -89,13 +89,13 @@ public class TSwitchingMatrix {
             if (switchingMatrixEntryAux.getLabelOrFEC() == labelOrFEC) {
                 if (switchingMatrixEntryAux.getIncomingPortID() == incomingPortID) {
                     if (switchingMatrixEntryAux.getEntryType() == entryType) {
-                        this.monitor.unLock();
+                        this.semaphore.setGreen();
                         return switchingMatrixEntryAux;
                     }
                 }
             }
         }
-        this.monitor.unLock();
+        this.semaphore.setGreen();
         return null;
     }
 
@@ -111,17 +111,17 @@ public class TSwitchingMatrix {
      * @since 2.0
      */
     public TSwitchingMatrixEntry getEntry(int localTLDPSessionID) {
-        this.monitor.lock();
+        this.semaphore.setRed();
         Iterator iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
             switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
             if (switchingMatrixEntryAux.getLocalTLDPSessionID() == localTLDPSessionID) {
-                this.monitor.unLock();
+                this.semaphore.setGreen();
                 return switchingMatrixEntryAux;
             }
         }
-        this.monitor.unLock();
+        this.semaphore.setGreen();
         return null;
     }
 
@@ -139,19 +139,19 @@ public class TSwitchingMatrix {
      * @since 2.0
      */
     public TSwitchingMatrixEntry getEntry(int upstreamTLDPSessionID, int incomingPortID) {
-        this.monitor.lock();
+        this.semaphore.setRed();
         Iterator iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
             switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
             if (switchingMatrixEntryAux.getUpstreamTLDPSessionID() == upstreamTLDPSessionID) {
                 if (switchingMatrixEntryAux.getIncomingPortID() == incomingPortID) {
-                    this.monitor.unLock();
+                    this.semaphore.setGreen();
                     return switchingMatrixEntryAux;
                 }
             }
         }
-        this.monitor.unLock();
+        this.semaphore.setGreen();
         return null;
     }
 
@@ -170,7 +170,7 @@ public class TSwitchingMatrix {
      * @since 2.0
      */
     public boolean existsEntry(int incomingPortID, int labelOrFEC, int entryType) {
-        this.monitor.lock();
+        this.semaphore.setRed();
         Iterator iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
@@ -178,13 +178,13 @@ public class TSwitchingMatrix {
             if (switchingMatrixEntryAux.getLabelOrFEC() == labelOrFEC) {
                 if (switchingMatrixEntryAux.getIncomingPortID() == incomingPortID) {
                     if (switchingMatrixEntryAux.getEntryType() == entryType) {
-                        this.monitor.unLock();
+                        this.semaphore.setGreen();
                         return true;
                     }
                 }
             }
         }
-        this.monitor.unLock();
+        this.semaphore.setGreen();
         return false;
     }
 
@@ -202,7 +202,7 @@ public class TSwitchingMatrix {
      * @since 2.0
      */
     public void removeEntry(int incomingPortID, int labelOrFEC, int entryType) {
-        this.monitor.lock();
+        this.semaphore.setRed();
         Iterator iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
@@ -215,7 +215,7 @@ public class TSwitchingMatrix {
                 }
             }
         }
-        this.monitor.unLock();
+        this.semaphore.setGreen();
     }
 
     /**
@@ -230,7 +230,7 @@ public class TSwitchingMatrix {
      * @since 2.0
      */
     public void removeEntry(int localTLDPSessionID, int incomingPortID) {
-        this.monitor.lock();
+        this.semaphore.setRed();
         Iterator iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
@@ -241,7 +241,7 @@ public class TSwitchingMatrix {
                 }
             }
         }
-        this.monitor.unLock();
+        this.semaphore.setGreen();
     }
 
     /**
@@ -264,7 +264,7 @@ public class TSwitchingMatrix {
      * @since 2.0
      */
     public int getLabelStackOperation(int incomingPortID, int labelOrFEC, int entryType) {
-        this.monitor.lock();
+        this.semaphore.setRed();
         Iterator iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
@@ -272,13 +272,13 @@ public class TSwitchingMatrix {
             if (switchingMatrixEntryAux.getLabelOrFEC() == labelOrFEC) {
                 if (switchingMatrixEntryAux.getIncomingPortID() == incomingPortID) {
                     if (switchingMatrixEntryAux.getEntryType() == entryType) {
-                        this.monitor.unLock();
+                        this.semaphore.setGreen();
                         return switchingMatrixEntryAux.getLabelStackOperation();
                     }
                 }
             }
         }
-        this.monitor.unLock();
+        this.semaphore.setGreen();
         return TSwitchingMatrixEntry.UNDEFINED;
     }
 
@@ -300,7 +300,7 @@ public class TSwitchingMatrix {
      * @since 2.0
      */
     public int getOutgoingLabel(int incomingPortID, int labelOrFEC, int entryType) {
-        this.monitor.lock();
+        this.semaphore.setRed();
         Iterator iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
@@ -308,13 +308,13 @@ public class TSwitchingMatrix {
             if (switchingMatrixEntryAux.getLabelOrFEC() == labelOrFEC) {
                 if (switchingMatrixEntryAux.getIncomingPortID() == incomingPortID) {
                     if (switchingMatrixEntryAux.getEntryType() == entryType) {
-                        this.monitor.unLock();
+                        this.semaphore.setGreen();
                         return switchingMatrixEntryAux.getOutgoingLabel();
                     }
                 }
             }
         }
-        this.monitor.unLock();
+        this.semaphore.setGreen();
         return TSwitchingMatrixEntry.UNDEFINED;
     }
 
@@ -336,7 +336,7 @@ public class TSwitchingMatrix {
      * @since 2.0
      */
     public int getOutgoingPortID(int incomingPortID, int labelOrFEC, int entryType) {
-        this.monitor.lock();
+        this.semaphore.setRed();
         Iterator iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux = null;
         while (iterator.hasNext()) {
@@ -344,13 +344,13 @@ public class TSwitchingMatrix {
             if (switchingMatrixEntryAux.getLabelOrFEC() == labelOrFEC) {
                 if (switchingMatrixEntryAux.getIncomingPortID() == incomingPortID) {
                     if (switchingMatrixEntryAux.getEntryType() == entryType) {
-                        this.monitor.unLock();
+                        this.semaphore.setGreen();
                         return switchingMatrixEntryAux.getOutgoingPortID();
                     }
                 }
             }
         }
-        this.monitor.unLock();
+        this.semaphore.setGreen();
         return TSwitchingMatrixEntry.UNDEFINED;
     }
 
@@ -365,19 +365,19 @@ public class TSwitchingMatrix {
      * @since 2.0
      */
     public boolean labelIsAlreadyUsed(int label) {
-        this.monitor.lock();
+        this.semaphore.setRed();
         Iterator iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
             switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
             if (switchingMatrixEntryAux.getLabelOrFEC() == label) {
                 if (switchingMatrixEntryAux.getEntryType() == TSwitchingMatrixEntry.LABEL_ENTRY) {
-                    this.monitor.unLock();
+                    this.semaphore.setGreen();
                     return true;
                 }
             }
         }
-        this.monitor.unLock();
+        this.semaphore.setGreen();
         return false;
     }
 
@@ -437,15 +437,15 @@ public class TSwitchingMatrix {
      * @since 2.0
      */
     public void reset() {
-        this.monitor.lock();
+        this.semaphore.setRed();
         Iterator it = this.switchingMatrix.iterator();
         while (it.hasNext()) {
             it.next();
             it.remove();
         }
-        this.monitor.unLock();
+        this.semaphore.setGreen();
     }
 
     private LinkedList switchingMatrix;
-    private TLock monitor;
+    private TSemaphore semaphore;
 }
