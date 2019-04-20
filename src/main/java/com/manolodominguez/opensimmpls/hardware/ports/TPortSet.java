@@ -167,7 +167,7 @@ public abstract class TPortSet {
      * to be switched/routed. Otherwise, returns FALSE.
      * @since 2.0
      */
-    public abstract boolean isAnyPacketToSwitch();
+    public abstract boolean isThereAnyPacketToSwitch();
 
     /**
      * This method, when implemented, will check whether there are packets
@@ -225,7 +225,7 @@ public abstract class TPortSet {
      * connected to this port set, returns NULL.
      * @since 2.0
      */
-    public abstract TPort getLocalPortConnectedToANodeWithIPAddress(String adjacentNodeIP);
+    public abstract TPort getLocalPortConnectedToANodeWithIPv4Address(String adjacentNodeIP);
 
     /**
      * This method, when implemented, will query a given port to obtain the IP

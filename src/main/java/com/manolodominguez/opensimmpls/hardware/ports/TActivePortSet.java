@@ -293,7 +293,7 @@ public class TActivePortSet extends TPortSet {
      * @since 2.0
      */
     @Override
-    public boolean isAnyPacketToSwitch() {
+    public boolean isThereAnyPacketToSwitch() {
         for (int i = ZERO; i < this.numberOfPorts; i++) {
             if (this.ports[i].thereIsAPacketWaiting()) {
                 return true;
@@ -313,7 +313,7 @@ public class TActivePortSet extends TPortSet {
      */
     @Override
     public boolean isThereAnyPacketToRoute() {
-        return this.isAnyPacketToSwitch();
+        return this.isThereAnyPacketToSwitch();
     }
 
     /**
@@ -381,7 +381,7 @@ public class TActivePortSet extends TPortSet {
      * @since 2.0
      */
     @Override
-    public TPort getLocalPortConnectedToANodeWithIPAddress(String adjacentNodeIP) {
+    public TPort getLocalPortConnectedToANodeWithIPv4Address(String adjacentNodeIP) {
         for (int i = ZERO; i < this.numberOfPorts; i++) {
             if (!this.ports[i].isAvailable()) {
                 int targetNodeID = this.ports[i].getLink().getDestinationOfTrafficSentBy(this.parentNode);

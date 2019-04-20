@@ -34,7 +34,8 @@ public class TFIFOPortSet extends TPortSet {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param numberOfPorts Num of ports that the set of ports will contain.
-     * @param parentNode Reference to the parentNode the set of active ports belongs to.
+     * @param parentNode Reference to the parentNode the set of active ports
+     * belongs to.
      * @since 2.0
      */
     public TFIFOPortSet(int numberOfPorts, TNode parentNode) {
@@ -113,8 +114,8 @@ public class TFIFOPortSet extends TPortSet {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param portID port number of the port set to be checked.
-     * @return TRUE, if the portID is not connected to a link (available).
- FALSE if the port is connected to a link (not available).
+     * @return TRUE, if the portID is not connected to a link (available). FALSE
+     * if the port is connected to a link (not available).
      * @since 2.0
      */
     @Override
@@ -229,7 +230,7 @@ public class TFIFOPortSet extends TPortSet {
      * @since 2.0
      */
     @Override
-    public boolean isAnyPacketToSwitch() {
+    public boolean isThereAnyPacketToSwitch() {
         for (int i = ZERO; i < this.numberOfPorts; i++) {
             if (this.ports[i].thereIsAPacketWaiting()) {
                 return true;
@@ -249,7 +250,7 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public boolean isThereAnyPacketToRoute() {
-        return this.isAnyPacketToSwitch();
+        return this.isThereAnyPacketToSwitch();
     }
 
     /**
@@ -307,24 +308,24 @@ public class TFIFOPortSet extends TPortSet {
      * to a node having the IP address specified as an argument.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param adjacentNodeIP IP address of the node connected to the port we are
-     * looking for.
+     * @param adjacentNodeIPv4Address IP address of the node connected to the
+     * port we are looking for.
      * @return The port to wich the node having the specified IP address is
      * connected to. If the node having the specified IP address is not
      * connected to this port set, returns NULL.
      * @since 2.0
      */
     @Override
-    public TPort getLocalPortConnectedToANodeWithIPAddress(String adjacentNodeIP) {
+    public TPort getLocalPortConnectedToANodeWithIPv4Address(String adjacentNodeIPv4Address) {
         for (int i = ZERO; i < this.numberOfPorts; i++) {
             if (!this.ports[i].isAvailable()) {
                 int targetNodeID = this.ports[i].getLink().getDestinationOfTrafficSentBy(this.parentNode);
                 if (targetNodeID == TLink.HEAD_END_NODE) {
-                    if (this.ports[i].getLink().getHeadEndNode().getIPv4Address().equals(adjacentNodeIP)) {
+                    if (this.ports[i].getLink().getHeadEndNode().getIPv4Address().equals(adjacentNodeIPv4Address)) {
                         return this.ports[i];
                     }
                 } else {
-                    if (this.ports[i].getLink().getTailEndNode().getIPv4Address().equals(adjacentNodeIP)) {
+                    if (this.ports[i].getLink().getTailEndNode().getIPv4Address().equals(adjacentNodeIPv4Address)) {
                         return this.ports[i];
                     }
                 }
@@ -435,7 +436,7 @@ public class TFIFOPortSet extends TPortSet {
 
     private TPort[] ports;
     private int readPort;
-    
+
     private static final int ZERO = 0;
     private static final int ONE = 1;
     private static final float CONGESTION_FACTOR = 0.97f;

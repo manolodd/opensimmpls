@@ -231,7 +231,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
     public void receiveTimerEvent(TTimerEvent timerEvent) {
         this.setTickDurationInNs(timerEvent.getTickDurationInNs());
         this.setCurrentTimeInstant(timerEvent.getUpperLimit());
-        if (this.getPorts().isAnyPacketToSwitch()) {
+        if (this.getPorts().isThereAnyPacketToSwitch()) {
             this.availableNanoseconds += timerEvent.getTickDurationInNs();
         } else {
             this.resetTicksWithoutEmitting();
@@ -382,7 +382,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                 this.discardPacket(packet);
             } else {
                 String nextHopIPv4Address = this.topology.getFloydWarsallNextHopIPv4Address(this.getIPv4Address(), targetIPv4Address);
-                outgoingPort = (TFIFOPort) this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPv4Address);
+                outgoingPort = (TFIFOPort) this.ports.getLocalPortConnectedToANodeWithIPv4Address(nextHopIPv4Address);
                 if (outgoingPort != null) {
                     outgoingPort.putPacketOnLink(packet, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                     try {
@@ -802,7 +802,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                         } else {
                             newTLDPPacket.setLocalTarget(TTLDPPDU.DIRECTION_BACKWARD);
                         }
-                        TPort outgoingPort = ports.getLocalPortConnectedToANodeWithIPAddress(targetIPv4Address);
+                        TPort outgoingPort = ports.getLocalPortConnectedToANodeWithIPv4Address(targetIPv4Address);
                         outgoingPort.putPacketOnLink(newTLDPPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                         try {
                             this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant(), TAbstractPDU.TLDP, newTLDPPacket.getSize()));
@@ -849,7 +849,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                         } else {
                             newTLDPPacket.setLocalTarget(TTLDPPDU.DIRECTION_BACKWARD);
                         }
-                        TPort outgoingPort = ports.getLocalPortConnectedToANodeWithIPAddress(targetIPv4Address);
+                        TPort outgoingPort = ports.getLocalPortConnectedToANodeWithIPv4Address(targetIPv4Address);
                         outgoingPort.putPacketOnLink(newTLDPPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                         try {
                             this.generateSimulationEvent(new TSimulationEventPacketGenerated(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant(), TAbstractPDU.TLDP, newTLDPPacket.getSize()));
@@ -947,7 +947,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                     newTLDPPacket.setLSPType(false);
                 }
                 newTLDPPacket.setLocalTarget(TTLDPPDU.DIRECTION_FORWARD);
-                TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPAddress);
+                TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPv4Address(nextHopIPAddress);
                 if (outgoingPort != null) {
                     outgoingPort.putPacketOnLink(newTLDPPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                     try {
@@ -1158,7 +1158,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         String targetIPv4Address = tldpPacket.getTLDPPayload().getTailEndIPAddress();
         String nextHopIPv4Address = this.topology.getFloydWarsallNextHopIPv4Address(this.getIPv4Address(), targetIPv4Address);
         if (nextHopIPv4Address != null) {
-            TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPAddress(nextHopIPv4Address);
+            TPort outgoingPort = this.ports.getLocalPortConnectedToANodeWithIPv4Address(nextHopIPv4Address);
             switchingMatrixEntry = new TSwitchingMatrixEntry();
             switchingMatrixEntry.setUpstreamTLDPSessionID(predecessorTLDPID);
             switchingMatrixEntry.setTailEndIPAddress(targetIPv4Address);
