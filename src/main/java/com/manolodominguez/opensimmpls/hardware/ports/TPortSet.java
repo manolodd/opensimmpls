@@ -41,11 +41,11 @@ public abstract class TPortSet {
     public TPortSet(int numberOfPorts, TNode parentNode) {
         this.numberOfPorts = numberOfPorts;
         this.parentNode = parentNode;
-        this.portSetBufferSize = 1;
-        this.portSetBufferOccupancy = 0;
+        this.portSetBufferSize = ONE;
+        this.portSetBufferOccupancy = ZERO;
         this.portSetSemaphore = new TSemaphore();
         this.artificiallyCongested = false;
-        this.occupancy = 0;
+        this.occupancy = ZERO;
     }
 
     /**
@@ -364,4 +364,7 @@ public abstract class TPortSet {
     public TSemaphore portSetSemaphore;
     protected boolean artificiallyCongested;
     protected long occupancy;
+    
+    private static final int ZERO = 0;
+    private static final int ONE = 1;
 }
