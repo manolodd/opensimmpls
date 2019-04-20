@@ -48,7 +48,7 @@ public class TSwitchingMatrix {
      * @return The monitor of the class.
      * @since 2.0
      */
-    public TSemaphore getMonitor() {
+    public TSemaphore getSemaphore() {
         return this.semaphore;
     }
 
