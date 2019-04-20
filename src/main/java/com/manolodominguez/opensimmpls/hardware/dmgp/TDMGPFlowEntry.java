@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.TreeSet;
 import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
 import com.manolodominguez.opensimmpls.commons.TRotaryIDGenerator;
-import com.manolodominguez.opensimmpls.commons.TLock;
+import com.manolodominguez.opensimmpls.commons.TSemaphore;
 
 /**
  * This class implements a flow entry for the DMGP memory.
@@ -43,7 +43,7 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
         this.assignedOctects = DEFAULT_ASSIGNED_OCTECTS;
         this.usedOctects = DEFAULT_USED_OCTECTS;
         this.entries = new TreeSet<>();
-        this.lock = new TLock();
+        this.semaphore = new TSemaphore();
         this.idGenerator = new TRotaryIDGenerator();
     }
 
@@ -166,8 +166,8 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      * @return The monitor of this flow.
      */
-    public TLock getMonitor() {
-        return this.lock;
+    public TSemaphore getMonitor() {
+        return this.semaphore;
     }
 
     private void releaseMemory(int octectsToBeReleased) {
@@ -195,7 +195,7 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      */
     public void addPacket(TMPLSPDU mplsPacket) {
-        this.lock.lock();
+        this.semaphore.setRed();
         int availableOctects = this.assignedOctects - this.usedOctects;
         if (this.assignedOctects >= mplsPacket.getSize()) {
             if (availableOctects >= mplsPacket.getSize()) {
@@ -213,7 +213,7 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
         } else {
             mplsPacket = null;
         }
-        this.lock.unLock();
+        this.semaphore.setGreen();
     }
 
     /**
@@ -253,6 +253,6 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     private int assignedOctects;
     private int usedOctects;
     private final TreeSet<TDMGPEntry> entries;
-    private final TLock lock;
+    private final TSemaphore semaphore;
     private final TRotaryIDGenerator idGenerator;
 }
