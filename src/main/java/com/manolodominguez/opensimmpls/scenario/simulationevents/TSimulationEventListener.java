@@ -18,7 +18,7 @@ package com.manolodominguez.opensimmpls.scenario.simulationevents;
 import java.util.Iterator;
 import java.util.TreeSet;
 import com.manolodominguez.opensimmpls.gui.simulator.JSimulationPanel;
-import com.manolodominguez.opensimmpls.commons.TLock;
+import com.manolodominguez.opensimmpls.commons.TSemaphore;
 
 /**
  * This class implements a simulation event listener that will receive
@@ -38,7 +38,7 @@ public class TSimulationEventListener implements ISimulationEventListener {
      */
     public TSimulationEventListener() {
         this.simulationEventsBuffer = new TreeSet();
-        this.eventsLock = new TLock();
+        this.eventsSemaphore = new TSemaphore();
         this.simulationPanel = null;
     }
 
@@ -146,16 +146,16 @@ public class TSimulationEventListener implements ISimulationEventListener {
      *
      */
     public void reset() {
-        this.eventsLock.lock();
+        this.eventsSemaphore.setRed();
         Iterator iterator = this.simulationEventsBuffer.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
         }
-        this.eventsLock.unLock();
+        this.eventsSemaphore.setGreen();
     }
 
-    private TLock eventsLock;
+    private TSemaphore eventsSemaphore;
     private TreeSet simulationEventsBuffer;
     private JSimulationPanel simulationPanel;
 }
