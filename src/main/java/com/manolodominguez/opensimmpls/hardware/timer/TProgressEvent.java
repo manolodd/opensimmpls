@@ -37,7 +37,7 @@ public class TProgressEvent extends TOpenSimMPLSEvent {
      * @since 2.0
      */
     public TProgressEvent(Object eventGenerator, long eventID, int progressPercentage) {
-        super(eventGenerator, eventID, 0);
+        super(eventGenerator, eventID, ZERO);
         this.progressPercentage = progressPercentage;
     }
 
@@ -66,4 +66,6 @@ public class TProgressEvent extends TOpenSimMPLSEvent {
     }
 
     private final int progressPercentage;
+    
+    private static final int ZERO = 0;
 }
