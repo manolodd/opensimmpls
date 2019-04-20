@@ -18,7 +18,7 @@ package com.manolodominguez.opensimmpls.hardware.ports;
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TStats;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
-import com.manolodominguez.opensimmpls.commons.TLock;
+import com.manolodominguez.opensimmpls.commons.TSemaphore;
 
 /**
  * This abstract class will be implemented to have an I/O port of a port set.
@@ -42,7 +42,7 @@ public abstract class TPort {
     public TPort(TPortSet parentPortSet, int portID) {
         this.link = null;
         this.parentPortSet = parentPortSet;
-        this.monitor = new TLock();
+        this.semaphore = new TSemaphore();
         this.portID = portID;
     }
 
@@ -283,6 +283,6 @@ public abstract class TPort {
 
     protected TLink link;
     protected TPortSet parentPortSet;
-    protected TLock monitor;
+    protected TSemaphore semaphore;
     protected int portID;
 }
