@@ -94,10 +94,7 @@ public abstract class TPort {
      * @since 2.0
      */
     public boolean isAvailable() {
-        if (this.link == null) {
-            return true;
-        }
-        return false;
+        return this.link == null;
     }
 
     /**
