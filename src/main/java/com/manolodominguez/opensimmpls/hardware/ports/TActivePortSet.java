@@ -451,7 +451,7 @@ public class TActivePortSet extends TPortSet {
      */
     @Override
     public void reset() {
-        this.portSetMonitor.unLock();
+        this.portSetSemaphore.setGreen();
         int i = ZERO;
         for (i = ZERO; i < this.numberOfPorts; i++) {
             this.ports[i].reset();
@@ -464,7 +464,7 @@ public class TActivePortSet extends TPortSet {
         }
         this.artificiallyCongested = false;
         this.occupancy = ZERO;
-        this.portSetMonitor.unLock();
+        this.portSetSemaphore.setGreen();
     }
 
     /**
