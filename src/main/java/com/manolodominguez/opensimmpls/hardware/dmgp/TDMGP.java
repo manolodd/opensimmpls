@@ -19,7 +19,7 @@ import java.util.TreeSet;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
 import com.manolodominguez.opensimmpls.commons.TRotaryIDGenerator;
-import com.manolodominguez.opensimmpls.commons.TLock;
+import com.manolodominguez.opensimmpls.commons.TSemaphore;
 import com.manolodominguez.opensimmpls.commons.UnitsTranslations;
 
 /**
@@ -38,7 +38,7 @@ public class TDMGP {
      * @since 2.0
      */
     public TDMGP() {
-        this.lock = new TLock();
+        this.semaphore = new TSemaphore();
         this.idGenerator = new TRotaryIDGenerator();
         this.flows = new TreeSet<>();
         this.totalAvailablePercentage = DEFAULT_TOTAL_AVAILABLE_PERCENTAGE;
@@ -83,15 +83,15 @@ public class TDMGP {
         TDMGPFlowEntry requestedDMGPFlowEntry = this.getFlow(flowID);
         // If the requested flowID is already created...
         if (requestedDMGPFlowEntry != null) {
-            this.lock.lock();
+            this.semaphore.setRed();
             for (TDMGPEntry dmgpEntry : requestedDMGPFlowEntry.getEntries()) {
                 if (dmgpEntry.getPacketID() == packetID) {
                     wantedPacket = dmgpEntry.getPacket();
-                    this.lock.unLock();
+                    this.semaphore.setGreen();
                     return wantedPacket;
                 }
             }
-            this.lock.unLock();
+            this.semaphore.setGreen();
         }
         return null;
     }
@@ -123,10 +123,10 @@ public class TDMGP {
      * @since 2.0
      */
     public void reset() {
-        this.lock = null;
+        this.semaphore = null;
         this.idGenerator = null;
         this.flows = null;
-        this.lock = new TLock();
+        this.semaphore = new TSemaphore();
         this.idGenerator = new TRotaryIDGenerator();
         this.flows = new TreeSet<>();
         this.totalAvailablePercentage = DEFAULT_TOTAL_AVAILABLE_PERCENTAGE;
@@ -145,19 +145,19 @@ public class TDMGP {
     }
 
     private TDMGPFlowEntry getFlow(int flowID) {
-        this.lock.lock();
+        this.semaphore.setRed();
         for (TDMGPFlowEntry dmgpFlowEntry : this.flows) {
             if (dmgpFlowEntry.getFlowID() == flowID) {
-                this.lock.unLock();
+                this.semaphore.setGreen();
                 return dmgpFlowEntry;
             }
         }
-        this.lock.unLock();
+        this.semaphore.setGreen();
         return null;
     }
 
     private TDMGPFlowEntry createFlow(TAbstractPDU packet) {
-        this.lock.lock();
+        this.semaphore.setRed();
         TDMGPFlowEntry dmgpFlowEntry = null;
         int flowID = packet.getIPv4Header().getOriginIPv4Address().hashCode();
         int percentageToBeAssigned = ZERO;
@@ -173,11 +173,11 @@ public class TDMGP {
                 dmgpFlowEntry.setAssignedPercentage(percentageToBeAssigned);
                 dmgpFlowEntry.setAssignedOctects(octectsToBeAssigned);
                 flows.add(dmgpFlowEntry);
-                this.lock.unLock();
+                this.semaphore.setGreen();
                 return dmgpFlowEntry;
             }
         }
-        this.lock.unLock();
+        this.semaphore.setGreen();
         return null;
     }
 
@@ -241,7 +241,7 @@ public class TDMGP {
         }
     }
 
-    private TLock lock;
+    private TSemaphore semaphore;
     private TRotaryIDGenerator idGenerator;
     private TreeSet<TDMGPFlowEntry> flows;
     private int totalAvailablePercentage;
