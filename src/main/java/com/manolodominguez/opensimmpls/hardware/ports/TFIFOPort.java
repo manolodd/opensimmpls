@@ -48,7 +48,7 @@ public class TFIFOPort extends TPort {
      */
     public TFIFOPort(TPortSet parentPortSet, int portID) {
         super(parentPortSet, portID);
-        this.buffer = new LinkedList();
+        this.buffer = new LinkedList<>();
         this.packetRead = null;
         this.isUnlimitedBuffer = false;
     }
@@ -240,9 +240,9 @@ public class TFIFOPort extends TPort {
             this.semaphore.setRed();
             int occupancy = ZERO;
             TAbstractPDU packet = null;
-            Iterator iterator = this.buffer.iterator();
+            Iterator<TAbstractPDU> iterator = this.buffer.iterator();
             while (iterator.hasNext()) {
-                packet = (TAbstractPDU) iterator.next();
+                packet = iterator.next();
                 if (packet != null) {
                     occupancy += packet.getSize();
                 }
@@ -285,7 +285,7 @@ public class TFIFOPort extends TPort {
         this.semaphore.setGreen();
     }
 
-    private LinkedList buffer;
+    private LinkedList<TAbstractPDU> buffer;
     private TAbstractPDU packetRead;
     private boolean isUnlimitedBuffer;
     private final Logger logger = LoggerFactory.getLogger(TFIFOPort.class);
