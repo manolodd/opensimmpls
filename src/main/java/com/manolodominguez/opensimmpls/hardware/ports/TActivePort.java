@@ -447,7 +447,7 @@ public class TActivePort extends TPort {
     @Override
     public void addPacket(TAbstractPDU packet) {
         TActivePortSet parentPortSetAux = (TActivePortSet) this.parentPortSet;
-        parentPortSetAux.portSetMonitor.setRed();
+        parentPortSetAux.portSetSemaphore.setRed();
         this.monitor.setRed();
         TNode parentNode = this.parentPortSet.getParentNode();
         long eventID = ZERO;
@@ -475,7 +475,7 @@ public class TActivePort extends TPort {
             }
         }
         this.monitor.setGreen();
-        parentPortSetAux.portSetMonitor.setGreen();
+        parentPortSetAux.portSetSemaphore.setGreen();
     }
 
     /**
@@ -683,7 +683,7 @@ public class TActivePort extends TPort {
     @Override
     public void reEnqueuePacket(TAbstractPDU packet) {
         TActivePortSet parentPortSetAux = (TActivePortSet) parentPortSet;
-        parentPortSetAux.portSetMonitor.setRed();
+        parentPortSetAux.portSetSemaphore.setRed();
         this.monitor.setRed();
         int packetOrder = ZERO;
         int packetPriority = this.loadPacketPriority(packet);
@@ -702,7 +702,7 @@ public class TActivePort extends TPort {
             }
         }
         this.monitor.setGreen();
-        parentPortSetAux.portSetMonitor.setGreen();
+        parentPortSetAux.portSetSemaphore.setGreen();
     }
 
     /**
@@ -716,7 +716,7 @@ public class TActivePort extends TPort {
     @Override
     public TAbstractPDU getPacket() {
         TActivePortSet parentPortSetAux = (TActivePortSet) this.parentPortSet;
-        parentPortSetAux.portSetMonitor.setRed();
+        parentPortSetAux.portSetSemaphore.setRed();
         this.monitor.setRed();
         this.doPrioritizedRoundRobinPacketSelection();
         if (this.nextPacketToBeRead != null) {
@@ -727,7 +727,7 @@ public class TActivePort extends TPort {
             this.nextPacketToBeRead = null;
         }
         this.monitor.setGreen();
-        parentPortSetAux.portSetMonitor.setGreen();
+        parentPortSetAux.portSetSemaphore.setGreen();
         return this.packetRead;
     }
 
