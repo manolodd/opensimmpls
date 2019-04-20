@@ -57,8 +57,8 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
         this.delay = 1;
         this.headEndNodePortID = -1;
         this.tailEndNodePortID = -1;
-        this.buffer = Collections.synchronizedSortedSet(new TreeSet());
-        this.deliveredPacketsBuffer = new TreeSet();
+        this.buffer = Collections.synchronizedSortedSet(new TreeSet<>());
+        this.deliveredPacketsBuffer = new TreeSet<>();
         this.packetsInTransitEntriesLock = new TSemaphore();
         this.deliveredPacketEntriesLock = new TSemaphore();
         this.topology = topology;
@@ -751,8 +751,8 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     private boolean showName;
     private int delay;
 
-    protected SortedSet buffer;
-    protected TreeSet deliveredPacketsBuffer;
+    protected SortedSet<TLinkBufferEntry> buffer;
+    protected TreeSet<TLinkBufferEntry> deliveredPacketsBuffer;
     protected TSemaphore packetsInTransitEntriesLock;
     protected TSemaphore deliveredPacketEntriesLock;
     protected TTopology topology;

@@ -15,6 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.hardware.ports;
 
+import static com.manolodominguez.opensimmpls.commons.UnitsTranslations.OCTETS_PER_MEGABYTE;
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
@@ -39,12 +40,12 @@ public class TFIFOPortSet extends TPortSet {
     public TFIFOPortSet(int numberOfPorts, TNode parentNode) {
         super(numberOfPorts, parentNode);
         this.ports = new TFIFOPort[numberOfPorts];
-        int i = 0;
-        for (i = 0; i < this.numberOfPorts; i++) {
+        int i = ZERO;
+        for (i = ZERO; i < this.numberOfPorts; i++) {
             this.ports[i] = new TFIFOPort(this, i);
             this.ports[i].setPortID(i);
         }
-        this.readPort = 0;
+        this.readPort = ZERO;
     }
 
     /**
@@ -58,8 +59,8 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public void setUnlimitedBuffer(boolean unlimitedBuffer) {
-        int i = 0;
-        for (i = 0; i < this.numberOfPorts; i++) {
+        int i = ZERO;
+        for (i = ZERO; i < this.numberOfPorts; i++) {
             this.ports[i].setUnlimitedBuffer(unlimitedBuffer);
         }
     }
@@ -135,8 +136,8 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public boolean hasAvailablePorts() {
-        int i = 0;
-        for (i = 0; i < this.numberOfPorts; i++) {
+        int i = ZERO;
+        for (i = ZERO; i < this.numberOfPorts; i++) {
             if (this.ports[i].isAvailable()) {
                 return true;
             }
@@ -193,7 +194,7 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public void disconnectLinkFromPort(int portID) {
-        if ((portID >= 0) && (portID < this.numberOfPorts)) {
+        if ((portID >= ZERO) && (portID < this.numberOfPorts)) {
             this.ports[portID].disconnectLink();
         }
     }
@@ -209,8 +210,8 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public TAbstractPDU getNextPacket() {
-        for (int i = 0; i < this.numberOfPorts; i++) {
-            this.readPort = (this.readPort + 1) % this.numberOfPorts;
+        for (int i = ZERO; i < this.numberOfPorts; i++) {
+            this.readPort = (this.readPort + ONE) % this.numberOfPorts;
             if (this.ports[this.readPort].thereIsAPacketWaiting()) {
                 return ports[this.readPort].getPacket();
             }
@@ -229,7 +230,7 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public boolean isAnyPacketToSwitch() {
-        for (int i = 0; i < this.numberOfPorts; i++) {
+        for (int i = ZERO; i < this.numberOfPorts; i++) {
             if (this.ports[i].thereIsAPacketWaiting()) {
                 return true;
             }
@@ -264,10 +265,10 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public boolean canSwitchPacket(int maxSwitchableOctects) {
-        int numberOfEmptyPorts = 0;
+        int numberOfEmptyPorts = ZERO;
         while (numberOfEmptyPorts < this.numberOfPorts) {
-            if (this.ports[((this.readPort + 1) % this.numberOfPorts)].thereIsAPacketWaiting()) {
-                return this.ports[((this.readPort + 1) % this.numberOfPorts)].canSwitchPacket(maxSwitchableOctects);
+            if (this.ports[((this.readPort + ONE) % this.numberOfPorts)].thereIsAPacketWaiting()) {
+                return this.ports[((this.readPort + ONE) % this.numberOfPorts)].canSwitchPacket(maxSwitchableOctects);
             } else {
                 numberOfEmptyPorts++;
                 this.skipPort();
@@ -285,7 +286,7 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public void skipPort() {
-        this.readPort = (this.readPort + 1) % this.numberOfPorts;
+        this.readPort = (this.readPort + ONE) % this.numberOfPorts;
     }
 
     /**
@@ -315,7 +316,7 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public TPort getLocalPortConnectedToANodeWithIPAddress(String adjacentNodeIP) {
-        for (int i = 0; i < this.numberOfPorts; i++) {
+        for (int i = ZERO; i < this.numberOfPorts; i++) {
             if (!this.ports[i].isAvailable()) {
                 int targetNodeID = this.ports[i].getLink().getDestinationOfTrafficSentBy(this.parentNode);
                 if (targetNodeID == TLink.HEAD_END_NODE) {
@@ -344,7 +345,7 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public String getIPv4OfNodeLinkedTo(int portID) {
-        if ((portID >= 0) && (portID < this.numberOfPorts)) {
+        if ((portID >= ZERO) && (portID < this.numberOfPorts)) {
             if (!this.ports[portID].isAvailable()) {
                 String IP2 = this.ports[portID].getLink().getTailEndNode().getIPv4Address();
                 if (this.ports[portID].getLink().getHeadEndNode().getIPv4Address().equals(this.parentNode.getIPv4Address())) {
@@ -366,9 +367,9 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public long getCongestionLevel() {
-        long computedCongestion = 0;
-        int i = 0;
-        for (i = 0; i < this.numberOfPorts; i++) {
+        long computedCongestion = ZERO;
+        int i = ZERO;
+        for (i = ZERO; i < this.numberOfPorts; i++) {
             if (this.ports[i].getCongestionLevel() > computedCongestion) {
                 computedCongestion = this.ports[i].getCongestionLevel();
             }
@@ -386,14 +387,14 @@ public class TFIFOPortSet extends TPortSet {
     @Override
     public void reset() {
         this.portSetSemaphore.setGreen();
-        int i = 0;
-        for (i = 0; i < this.numberOfPorts; i++) {
+        int i = ZERO;
+        for (i = ZERO; i < this.numberOfPorts; i++) {
             this.ports[i].reset();
         }
-        this.readPort = 0;
-        this.setPortSetOccupancySize(0);
+        this.readPort = ZERO;
+        this.setPortSetOccupancySize(ZERO);
         this.artificiallyCongested = false;
-        this.occupancy = 0;
+        this.occupancy = ZERO;
         this.portSetSemaphore.setGreen();
     }
 
@@ -410,28 +411,32 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public void setArtificiallyCongested(boolean congestArtificially) {
-        long computationOf97Percent = (long) (this.getBufferSizeInMBytes() * 1017118.72);
+        long computedCongestionLevel = (long) (this.getBufferSizeInMBytes() * OCTETS_PER_MEGABYTE.getUnits() * CONGESTION_FACTOR);
         if (congestArtificially) {
             if (!this.artificiallyCongested) {
-                if (this.getPortSetOccupancy() < computationOf97Percent) {
+                if (this.getPortSetOccupancy() < computedCongestionLevel) {
                     this.artificiallyCongested = true;
                     this.occupancy = this.getPortSetOccupancy();
-                    this.setPortSetOccupancySize(computationOf97Percent);
+                    this.setPortSetOccupancySize(computedCongestionLevel);
                 }
             }
         } else {
             if (this.artificiallyCongested) {
-                this.occupancy += (getPortSetOccupancy() - computationOf97Percent);
-                if (this.occupancy < 0) {
-                    this.occupancy = 0;
+                this.occupancy += (getPortSetOccupancy() - computedCongestionLevel);
+                if (this.occupancy < ZERO) {
+                    this.occupancy = ZERO;
                 }
                 this.setPortSetOccupancySize(this.occupancy);
                 this.artificiallyCongested = false;
-                this.occupancy = 0;
+                this.occupancy = ZERO;
             }
         }
     }
 
     private TPort[] ports;
     private int readPort;
+    
+    private static final int ZERO = 0;
+    private static final int ONE = 1;
+    private static final float CONGESTION_FACTOR = 0.97f;
 }
