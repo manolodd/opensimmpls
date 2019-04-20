@@ -18,7 +18,7 @@ package com.manolodominguez.opensimmpls.hardware.ports;
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
-import com.manolodominguez.opensimmpls.commons.TLock;
+import com.manolodominguez.opensimmpls.commons.TSemaphore;
 
 /**
  * This class implements a set of ports for a node.
@@ -43,7 +43,7 @@ public abstract class TPortSet {
         this.parentNode = parentNode;
         this.portSetBufferSize = 1;
         this.portSetBufferOccupancy = 0;
-        this.portSetMonitor = new TLock();
+        this.portSetSemaphore = new TSemaphore();
         this.artificiallyCongested = false;
         this.occupancy = 0;
     }
@@ -361,7 +361,7 @@ public abstract class TPortSet {
     protected TNode parentNode;
     protected int portSetBufferSize;
     private long portSetBufferOccupancy;
-    public TLock portSetMonitor;
+    public TSemaphore portSetSemaphore;
     protected boolean artificiallyCongested;
     protected long occupancy;
 }
