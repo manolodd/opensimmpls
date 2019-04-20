@@ -32,7 +32,7 @@ import com.manolodominguez.opensimmpls.scenario.TTopology;
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.gui.utils.TImageBroker;
-import com.manolodominguez.opensimmpls.commons.TLock;
+import com.manolodominguez.opensimmpls.commons.TSemaphore;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -105,7 +105,7 @@ public class JSimulationPanel extends JPanel {
         // FIX: Do not use harcoded values. Use class constants instead.
         this.simulationSpeedInMsPerTick = 0;
         this.showLegend = false;
-        this.eventsBuffersLock = new TLock();
+        this.eventsBuffersSemaphore = new TSemaphore();
     }
 
     /**
@@ -115,7 +115,7 @@ public class JSimulationPanel extends JPanel {
      * @since 2.0
      */
     public void reset() {
-        this.eventsBuffersLock.lock();
+        this.eventsBuffersSemaphore.setRed();
         Iterator eventsIterator = null;
         eventsIterator = this.eventsBuffer.iterator();
         while (eventsIterator.hasNext()) {
@@ -128,7 +128,7 @@ public class JSimulationPanel extends JPanel {
             eventsIterator.remove();
         }
         this.showLegend = false;
-        this.eventsBuffersLock.unLock();
+        this.eventsBuffersSemaphore.setGreen();
         // FIX: Do not use harcoded values. Use class constants instead.
         this.currentTick = 0;
     }
@@ -471,10 +471,10 @@ public class JSimulationPanel extends JPanel {
      * @since 2.0
      */
     public void addEvent(TSimulationEvent simulationEvent) {
-        this.eventsBuffersLock.lock();
+        this.eventsBuffersSemaphore.setRed();
         if (simulationEvent.getInstant() <= this.currentTick) {
             this.eventsBuffer.add(simulationEvent);
-            this.eventsBuffersLock.unLock();
+            this.eventsBuffersSemaphore.setGreen();
         } else {
             this.currentTick = simulationEvent.getInstant();
             Iterator simulationEventsBufferIterator = this.simulationBuffer.iterator();
@@ -490,7 +490,7 @@ public class JSimulationPanel extends JPanel {
                 this.simulationBuffer.add(evento);
                 simulationEventsBufferIterator.remove();
             }
-            this.eventsBuffersLock.unLock();
+            this.eventsBuffersSemaphore.setGreen();
             repaint();
             this.eventsBuffer.add(simulationEvent);
             try {
@@ -512,7 +512,7 @@ public class JSimulationPanel extends JPanel {
      * @since 2.0
      */
     private void paintPacketsEvents(Graphics2D graphics2D) {
-        this.eventsBuffersLock.lock();
+        this.eventsBuffersSemaphore.setRed();
         try {
             Iterator simulationEventsIterator = this.simulationBuffer.iterator();
             TSimulationEvent event = null;
@@ -604,7 +604,7 @@ public class JSimulationPanel extends JPanel {
             // FIX: This is ugly.
             e.printStackTrace();
         }
-        this.eventsBuffersLock.unLock();
+        this.eventsBuffersSemaphore.setGreen();
     }
 
     /**
@@ -615,7 +615,7 @@ public class JSimulationPanel extends JPanel {
      * @since 2.0
      */
     private void paintNodesEvents(Graphics2D graphics2D) {
-        this.eventsBuffersLock.lock();
+        this.eventsBuffersSemaphore.setRed();
         try {
             TSimulationEvent event = null;
             Iterator simulationEventsIterator = this.simulationBuffer.iterator();
@@ -684,7 +684,7 @@ public class JSimulationPanel extends JPanel {
             // FIX: This is ugly.
             e.printStackTrace();
         }
-        this.eventsBuffersLock.unLock();
+        this.eventsBuffersSemaphore.setGreen();
     }
 
     /**
@@ -695,7 +695,7 @@ public class JSimulationPanel extends JPanel {
      * @since 2.0
      */
     private void paintLinksEvents(Graphics2D graphics2D) {
-        this.eventsBuffersLock.lock();
+        this.eventsBuffersSemaphore.setRed();
         try {
             TSimulationEvent event = null;
             Iterator simulationEventsIterator = this.simulationBuffer.iterator();
@@ -719,7 +719,7 @@ public class JSimulationPanel extends JPanel {
             // FIX: This is ugly.
             e.printStackTrace();
         }
-        this.eventsBuffersLock.unLock();
+        this.eventsBuffersSemaphore.setGreen();
     }
 
     /**
@@ -976,7 +976,7 @@ public class JSimulationPanel extends JPanel {
     private TreeSet eventsBuffer;
     private TreeSet simulationBuffer;
     private long currentTick;
-    private TLock eventsBuffersLock;
+    private TSemaphore eventsBuffersSemaphore;
     private int simulationSpeedInMsPerTick;
     private boolean showLegend;
     private ResourceBundle translations;
