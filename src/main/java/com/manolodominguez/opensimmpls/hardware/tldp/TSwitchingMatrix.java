@@ -41,11 +41,12 @@ public class TSwitchingMatrix {
     }
 
     /**
-     * This method returns the monitor of the class, that will allow operations
-     * on the switching matrix avoiding the risk of concurrent accesses.
+     * This method returns the semaphore of the class, that will allow
+     * operations on the switching matrix avoiding the risk of concurrent
+     * accesses.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return The monitor of the class.
+     * @return The semaphore of the class.
      * @since 2.0
      */
     public TSemaphore getSemaphore() {
