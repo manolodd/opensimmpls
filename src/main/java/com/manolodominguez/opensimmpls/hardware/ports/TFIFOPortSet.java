@@ -385,7 +385,7 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public void reset() {
-        this.portSetMonitor.unLock();
+        this.portSetSemaphore.setGreen();
         int i = 0;
         for (i = 0; i < this.numberOfPorts; i++) {
             this.ports[i].reset();
@@ -394,7 +394,7 @@ public class TFIFOPortSet extends TPortSet {
         this.setPortSetOccupancySize(0);
         this.artificiallyCongested = false;
         this.occupancy = 0;
-        this.portSetMonitor.unLock();
+        this.portSetSemaphore.setGreen();
     }
 
     /**
