@@ -401,14 +401,14 @@ public class TActivePort extends TPort {
      */
     public int getNextPacketPriority() {
         int priorityAux;
-        this.monitor.setRed();
+        this.semaphore.setRed();
         this.doPrioritizedRoundRobinPacketSelection();
         if (this.nextPacketToBeRead != null) {
             priorityAux = this.loadPacketPriority(this.nextPacketToBeRead);
-            this.monitor.setGreen();
+            this.semaphore.setGreen();
             return priorityAux;
         }
-        this.monitor.setGreen();
+        this.semaphore.setGreen();
         return -1;
     }
 
@@ -448,7 +448,7 @@ public class TActivePort extends TPort {
     public void addPacket(TAbstractPDU packet) {
         TActivePortSet parentPortSetAux = (TActivePortSet) this.parentPortSet;
         parentPortSetAux.portSetSemaphore.setRed();
-        this.monitor.setRed();
+        this.semaphore.setRed();
         TNode parentNode = this.parentPortSet.getParentNode();
         long eventID = ZERO;
         int packetOrder = ZERO;
@@ -474,7 +474,7 @@ public class TActivePort extends TPort {
                 this.discardPacket(packet);
             }
         }
-        this.monitor.setGreen();
+        this.semaphore.setGreen();
         parentPortSetAux.portSetSemaphore.setGreen();
     }
 
@@ -684,7 +684,7 @@ public class TActivePort extends TPort {
     public void reEnqueuePacket(TAbstractPDU packet) {
         TActivePortSet parentPortSetAux = (TActivePortSet) parentPortSet;
         parentPortSetAux.portSetSemaphore.setRed();
-        this.monitor.setRed();
+        this.semaphore.setRed();
         int packetOrder = ZERO;
         int packetPriority = this.loadPacketPriority(packet);
         packetOrder = this.rotaryIdentifierGenerator.getNextIdentifier();
@@ -701,7 +701,7 @@ public class TActivePort extends TPort {
                 this.discardPacket(packet);
             }
         }
-        this.monitor.setGreen();
+        this.semaphore.setGreen();
         parentPortSetAux.portSetSemaphore.setGreen();
     }
 
@@ -717,7 +717,7 @@ public class TActivePort extends TPort {
     public TAbstractPDU getPacket() {
         TActivePortSet parentPortSetAux = (TActivePortSet) this.parentPortSet;
         parentPortSetAux.portSetSemaphore.setRed();
-        this.monitor.setRed();
+        this.semaphore.setRed();
         this.doPrioritizedRoundRobinPacketSelection();
         if (this.nextPacketToBeRead != null) {
             this.packetRead = this.nextPacketToBeRead;
@@ -726,7 +726,7 @@ public class TActivePort extends TPort {
             }
             this.nextPacketToBeRead = null;
         }
-        this.monitor.setGreen();
+        this.semaphore.setGreen();
         parentPortSetAux.portSetSemaphore.setGreen();
         return this.packetRead;
     }
@@ -745,16 +745,16 @@ public class TActivePort extends TPort {
      */
     @Override
     public boolean canSwitchPacket(int octets) {
-        this.monitor.setRed();
+        this.semaphore.setRed();
         this.doPrioritizedRoundRobinPacketSelection();
         if (this.nextPacketToBeRead != null) {
             this.packetRead = this.nextPacketToBeRead;
-            this.monitor.setGreen();
+            this.semaphore.setGreen();
             if (this.packetRead.getSize() <= octets) {
                 return true;
             }
         }
-        this.monitor.setGreen();
+        this.semaphore.setGreen();
         return false;
     }
 
@@ -835,7 +835,7 @@ public class TActivePort extends TPort {
     @Override
     public long getOccupancy() {
         if (this.isUnlimitedBuffer) {
-            this.monitor.setRed();
+            this.semaphore.setRed();
             int occupancyAux = ZERO;
             TAbstractPDU packet = null;
             TActivePortBufferEntry activePortBufferEntry = null;
@@ -952,7 +952,7 @@ public class TActivePort extends TPort {
             if (this.nextPacketToBeRead != null) {
                 occupancyAux += this.nextPacketToBeRead.getSize();
             }
-            this.monitor.setGreen();
+            this.semaphore.setGreen();
             return occupancyAux;
         }
         TActivePortSet parentPortSetAux = (TActivePortSet) this.parentPortSet;
@@ -997,7 +997,7 @@ public class TActivePort extends TPort {
      */
     @Override
     public void reset() {
-        this.monitor.setRed();
+        this.semaphore.setRed();
         this.priority10BufferSemaphore.setRed();
         Iterator iterator = this.priority10Buffer.iterator();
         while (iterator.hasNext()) {
@@ -1075,7 +1075,7 @@ public class TActivePort extends TPort {
             iterator.remove();
         }
         this.priority0BufferSemaphore.setGreen();
-        this.monitor.setGreen();
+        this.semaphore.setGreen();
         this.packetRead = null;
         this.selectedBuffer = ZERO;
         this.nextPacketToBeRead = null;
