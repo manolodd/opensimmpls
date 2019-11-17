@@ -33,6 +33,8 @@ import com.manolodominguez.opensimmpls.gui.utils.TProgressEventListener;
 import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
 import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import java.util.ResourceBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class implements a timer that will govern the operation and
@@ -54,17 +56,17 @@ public class TTimer implements Runnable {
      */
     public TTimer() {
         this.thread = null;
-        this.timerEventListenerNodes = new TreeSet();
-        this.timerEventListenerLInks = new TreeSet();
+        this.timerEventListenerNodes = new TreeSet<>();
+        this.timerEventListenerLinks = new TreeSet<>();
         this.progressEventListener = null;
         this.longIdentifierGenerator = new TLongIDGenerator();
-        this.currentTimestamp = new TTimestamp(0, 0);
-        this.previousTimestamp = new TTimestamp(0, 0);
-        this.finishTimestamp = new TTimestamp(0, 100000);
-        this.currentTimestampAux = new TTimestamp(0, 0);
-        this.previousTimestampAux = new TTimestamp(0, 0);
-        this.finishTimestampAux = new TTimestamp(0, 100000);
-        this.tick = 1000;
+        this.currentTimestamp = new TTimestamp(ZERO, ZERO);
+        this.previousTimestamp = new TTimestamp(ZERO, ZERO);
+        this.finishTimestamp = new TTimestamp(ZERO, ONE_HUNDRED_THOUSAND);
+        this.currentTimestampAux = new TTimestamp(ZERO, ZERO);
+        this.previousTimestampAux = new TTimestamp(ZERO, ZERO);
+        this.finishTimestampAux = new TTimestamp(ZERO, ONE_HUNDRED_THOUSAND);
+        this.tickInNs = DEFAULT_TICK_LENGTH_IN_NS;
         this.running = false;
         this.isFinished = true;
         this.paused = false;
@@ -79,8 +81,8 @@ public class TTimer implements Runnable {
      * @since 2.0
      */
     public void reset() {
-        this.currentTimestamp = new TTimestamp(0, 0);
-        this.previousTimestamp = new TTimestamp(0, 0);
+        this.currentTimestamp = new TTimestamp(ZERO, ZERO);
+        this.previousTimestamp = new TTimestamp(ZERO, ZERO);
         this.running = false;
         this.longIdentifierGenerator.reset();
         this.isFinished = true;
@@ -109,11 +111,11 @@ public class TTimer implements Runnable {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
-     * @param tick the period the timer has to wait between generating a timer
+     * @param tickInNs the period the timer has to wait between generating a timer
      * event and the next one.
      */
-    public void setTick(int tick) {
-        this.tick = tick;
+    public void setTick(int tickInNs) {
+        this.tickInNs = tickInNs;
     }
 
     /**
@@ -126,7 +128,7 @@ public class TTimer implements Runnable {
      */
     public void addTimerEventListener(TTopologyElement timerEventListener) {
         if (timerEventListener.getElementType() == TTopologyElement.LINK) {
-            this.timerEventListenerLInks.add(timerEventListener);
+            this.timerEventListenerLinks.add(timerEventListener);
         } else {
             this.timerEventListenerNodes.add(timerEventListener);
         }
@@ -143,7 +145,7 @@ public class TTimer implements Runnable {
      */
     public void removeTimerEventListener(TTopologyElement timerEventListener) {
         if (timerEventListener.getElementType() == TTopologyElement.LINK) {
-            Iterator iterator = this.timerEventListenerLInks.iterator();
+            Iterator iterator = this.timerEventListenerLinks.iterator();
             TLink linkAux;
             TLink timerEventListenerAux = (TLink) timerEventListener;
             while (iterator.hasNext()) {
@@ -173,7 +175,7 @@ public class TTimer implements Runnable {
      * @since 2.0
      */
     public void purgeTimerEventListenersMarkedForDeletion() {
-        Iterator linksIterator = this.timerEventListenerLInks.iterator();
+        Iterator linksIterator = this.timerEventListenerLinks.iterator();
         TLink linkAux;
         while (linksIterator.hasNext()) {
             linkAux = (TLink) linksIterator.next();
@@ -231,7 +233,7 @@ public class TTimer implements Runnable {
      * @since 2.0
      */
     private void generateTimerEvent() {
-        Iterator linksIterator = this.timerEventListenerLInks.iterator();
+        Iterator linksIterator = this.timerEventListenerLinks.iterator();
         Iterator nodesIterator = this.timerEventListenerNodes.iterator();
         TNode nodeAux;
         TLink linkAux;
@@ -268,8 +270,8 @@ public class TTimer implements Runnable {
             try {
                 TTimerEvent timerEvent = new TTimerEvent(this, this.longIdentifierGenerator.getNextIdentifier(), startOfSimulationInterval, endOfSimulationInterval);
                 nodeAux.receiveTimerEvent(timerEvent);
-            } catch (EIDGeneratorOverflow e) {
-                e.printStackTrace();
+            } catch (EIDGeneratorOverflow ex) {
+                this.logger.error(ex.getMessage(), ex);
             }
         }
         while (linksIterator.hasNext()) {
@@ -286,9 +288,8 @@ public class TTimer implements Runnable {
             }
             try {
                 linkAux.receiveTimerEvent(new TTimerEvent(this, this.longIdentifierGenerator.getNextIdentifier(), startOfSimulationInterval, endOfSimulationInterval));
-            } catch (EIDGeneratorOverflow e) {
-                //FIX: This is ygly. Avoid.
-                e.printStackTrace();
+            } catch (EIDGeneratorOverflow ex) {
+                this.logger.error(ex.getMessage(), ex);
             }
         }
     }
@@ -301,19 +302,18 @@ public class TTimer implements Runnable {
      * @since 2.0
      */
     public void generateProgressEvent() {
-        int computedProgress = 0;
+        int computedProgress = ZERO;
         long simulationDuration = this.finishTimestamp.getTotalAsNanoseconds();
         long currentTime = this.currentTimestamp.getTotalAsNanoseconds();
-        if (simulationDuration != 0) {
-            computedProgress = (int) Math.round((currentTime * 100) / simulationDuration);
+        if (simulationDuration != ZERO) {
+            computedProgress = (int) Math.round((currentTime * ONE_HUNDRED) / simulationDuration);
         }
         try {
             if (this.progressEventListener != null) {
                 this.progressEventListener.receiveProgressEvent(new TProgressEvent(this, this.longIdentifierGenerator.getNextIdentifier(), computedProgress));
             }
-        } catch (EIDGeneratorOverflow e) {
-            //FIX: This is ugly. Avoid.
-            e.printStackTrace();
+        } catch (EIDGeneratorOverflow ex) {
+            this.logger.error(ex.getMessage(), ex);
         }
     }
 
@@ -413,7 +413,7 @@ public class TTimer implements Runnable {
         long simulationDuration;
         boolean simulationFinished = false;
         this.isFinished = false;
-        this.currentTimestamp.increaseNanoseconds(this.tick);
+        this.currentTimestamp.increaseNanoseconds(this.tickInNs);
         currentSimulatedTime = this.currentTimestamp.getTotalAsNanoseconds();
         simulationDuration = this.finishTimestamp.getTotalAsNanoseconds();
         if (currentSimulatedTime == simulationDuration) {
@@ -428,16 +428,16 @@ public class TTimer implements Runnable {
             this.previousTimestamp.setNanosecond(this.currentTimestamp.getNanosecond());
             currentSimulatedTime = this.currentTimestamp.getTotalAsNanoseconds();
             simulationDuration = this.finishTimestamp.getTotalAsNanoseconds();
-            if (currentSimulatedTime + this.tick > simulationDuration) {
+            if (currentSimulatedTime + this.tickInNs > simulationDuration) {
                 if (!simulationFinished) {
                     currentTimestamp.setMillisecond(this.finishTimestamp.getMillisecond());
                     currentTimestamp.setNanosecond(this.finishTimestamp.getNanosecond());
                     simulationFinished = true;
                 } else {
-                    this.currentTimestamp.increaseNanoseconds(this.tick);
+                    this.currentTimestamp.increaseNanoseconds(this.tickInNs);
                 }
             } else {
-                this.currentTimestamp.increaseNanoseconds(this.tick);
+                this.currentTimestamp.increaseNanoseconds(this.tickInNs);
             }
             currentSimulatedTime = this.currentTimestamp.getTotalAsNanoseconds();
             previousSimulatedTime = this.previousTimestamp.getTotalAsNanoseconds();
@@ -459,7 +459,7 @@ public class TTimer implements Runnable {
      */
     private synchronized void waitUntilTimerEventListenersFinishTheirWork() {
         Iterator nodesIterator = this.timerEventListenerNodes.iterator();
-        Iterator linksIterator = this.timerEventListenerLInks.iterator();
+        Iterator linksIterator = this.timerEventListenerLinks.iterator();
         TNode nodeAux;
         TLink linkAux;
         while (nodesIterator.hasNext()) {
@@ -501,11 +501,11 @@ public class TTimer implements Runnable {
         return this.running;
     }
 
-    private TreeSet timerEventListenerNodes;
-    private TreeSet timerEventListenerLInks;
+    private TreeSet<TTopologyElement> timerEventListenerNodes;
+    private TreeSet<TTopologyElement> timerEventListenerLinks;
     private TProgressEventListener progressEventListener;
     private TLongIDGenerator longIdentifierGenerator;
-    private int tick;
+    private int tickInNs;
     private Thread thread;
     private TTimestamp currentTimestamp;
     private TTimestamp previousTimestamp;
@@ -517,4 +517,10 @@ public class TTimer implements Runnable {
     private TTimestamp previousTimestampAux;
     private TTimestamp finishTimestampAux;
     private ResourceBundle translations;
+    private final Logger logger = LoggerFactory.getLogger(TTimer.class);
+    
+    private static final int ZERO = 0;
+    private static final int ONE_HUNDRED = 100;
+    private static final int DEFAULT_TICK_LENGTH_IN_NS = 1000;
+    private static final int ONE_HUNDRED_THOUSAND = 100000;
 }
