@@ -21,7 +21,7 @@ package com.manolodominguez.opensimmpls.hardware.timer;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class TTimestamp implements Comparable {
+public class TTimestamp implements Comparable<TTimestamp> {
 
     /**
      * This method is the constructor of the class. Is creates a new instance of
@@ -49,22 +49,21 @@ public class TTimestamp implements Comparable {
      * @since 2.0
      */
     @Override
-    public int compareTo(Object anotherTimestamp) {
-        TTimestamp argument = (TTimestamp) anotherTimestamp;
-        if (this.millisecond < argument.getMillisecond()) {
+    public int compareTo(TTimestamp anotherTimestamp) {
+        if (this.millisecond < anotherTimestamp.getMillisecond()) {
             return TTimestamp.THIS_LOWER;
         }
-        if (this.millisecond > argument.getMillisecond()) {
+        if (this.millisecond > anotherTimestamp.getMillisecond()) {
             return TTimestamp.THIS_GREATER;
         }
-        if (this.millisecond == argument.getMillisecond()) {
-            if (this.nanosecond < argument.getNanosecond()) {
+        if (this.millisecond == anotherTimestamp.getMillisecond()) {
+            if (this.nanosecond < anotherTimestamp.getNanosecond()) {
                 return TTimestamp.THIS_LOWER;
             }
-            if (this.nanosecond > argument.getNanosecond()) {
+            if (this.nanosecond > anotherTimestamp.getNanosecond()) {
                 return TTimestamp.THIS_GREATER;
             }
-            if (this.nanosecond == argument.getNanosecond()) {
+            if (this.nanosecond == anotherTimestamp.getNanosecond()) {
                 return TTimestamp.THIS_EQUAL;
             }
         }
@@ -100,12 +99,11 @@ public class TTimestamp implements Comparable {
      * @since 2.0
      */
     public void increaseNanoseconds(int addedNanosecond) {
-        //FIX: Avoid using harcoded values. Use class constant instead.
         this.nanosecond += addedNanosecond;
-        long integerDivision = (this.nanosecond / 1000000);
-        if (integerDivision > 0) {
+        long integerDivision = (this.nanosecond / TTimestamp.ONE_MILLION);
+        if (integerDivision > TTimestamp.ZERO) {
             increaseMiliseconds(integerDivision);
-            this.nanosecond %= 1000000;
+            this.nanosecond %= TTimestamp.ONE_MILLION;
         }
     }
 
@@ -162,12 +160,14 @@ public class TTimestamp implements Comparable {
      * @since 2.0
      */
     public long getTotalAsNanoseconds() {
-        //FIX: Avoid using harcoded values. Use class constant instead.
-        return (long) ((this.getMillisecond() * 1000000) + this.getNanosecond());
+        return (this.getMillisecond() * TTimestamp.ONE_MILLION) + this.getNanosecond();
     }
     public static final int THIS_LOWER = -1;
     public static final int THIS_EQUAL = 0;
     public static final int THIS_GREATER = 1;
     private long millisecond;
     private int nanosecond;
+
+    private static final long ZERO = 0;
+    private static final long ONE_MILLION = 1000000;
 }
