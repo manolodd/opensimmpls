@@ -66,7 +66,7 @@ public class TTimerEvent extends TOpenSimMPLSEvent {
      * @since 2.0
      */
     public long getUpperLimit() {
-        return (long) (this.upperEndOfInterval.getTotalAsNanoseconds());
+        return this.upperEndOfInterval.getTotalAsNanoseconds();
     }
 
     /**
