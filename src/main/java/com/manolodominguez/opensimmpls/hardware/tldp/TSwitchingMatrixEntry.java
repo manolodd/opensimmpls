@@ -32,7 +32,6 @@ public class TSwitchingMatrixEntry {
      * @since 2.0
      */
     public TSwitchingMatrixEntry() {
-        //FIX: Avoid using harcoded values. Use class constant instead.
         this.incomingPortID = TSwitchingMatrixEntry.UNDEFINED;
         this.labelOrFEC = TSwitchingMatrixEntry.UNDEFINED;
         this.outgoingPortID = TSwitchingMatrixEntry.UNDEFINED;
@@ -59,9 +58,8 @@ public class TSwitchingMatrixEntry {
      * @since 2.0
      */
     public boolean backupLSPHasBeenEstablished() {
-        //FIX: Avoid using harcoded values. Use class constant instead.
-        if (this.backupOutgoingPortID >= 0) {
-            if (this.backupLabel > 15) {
+        if (this.backupOutgoingPortID >= TSwitchingMatrixEntry.ZERO) {
+            if (this.backupLabel > TSwitchingMatrixEntry.LAST_RESERVED_LABEL) {
                 return true;
             }
         }
@@ -99,10 +97,7 @@ public class TSwitchingMatrixEntry {
      * @since 2.0
      */
     public boolean amIABackupLSPHeadEnd() {
-        if (this.isRequestForBackupLSP) {
-            return false;
-        }
-        return true;
+        return !this.isRequestForBackupLSP;
     }
 
     /**
@@ -175,12 +170,11 @@ public class TSwitchingMatrixEntry {
      * @since 2.0
      */
     public void decreaseAttempts() {
-        //FIX: Avoid using harcoded values. Use class constant instead.
-        if (this.labelRequestAttempts > 0) {
+        if (this.labelRequestAttempts > TSwitchingMatrixEntry.ZERO) {
             this.labelRequestAttempts--;
         }
-        if (this.labelRequestAttempts < 0) {
-            this.labelRequestAttempts = 0;
+        if (this.labelRequestAttempts < TSwitchingMatrixEntry.ZERO) {
+            this.labelRequestAttempts = TSwitchingMatrixEntry.ZERO;
         }
     }
 
@@ -194,11 +188,7 @@ public class TSwitchingMatrixEntry {
      * Otherwise, returns false..
      */
     public boolean areThereAvailableAttempts() {
-        //FIX: Avoid using harcoded values. Use class constant instead.
-        if (this.labelRequestAttempts > 0) {
-            return true;
-        }
-        return false;
+        return this.labelRequestAttempts > TSwitchingMatrixEntry.ZERO;
     }
 
     /**
@@ -221,12 +211,11 @@ public class TSwitchingMatrixEntry {
      * be decreased from the available timeout credit.
      */
     public void decreaseTimeOut(int nanosecondsToDecrease) {
-        //FIX: Avoid using harcoded values. Use class constant instead.
-        if (this.timeout > 0) {
+        if (this.timeout > TSwitchingMatrixEntry.ZERO) {
             this.timeout -= nanosecondsToDecrease;
         }
-        if (this.timeout < 0) {
-            this.timeout = 0;
+        if (this.timeout < TSwitchingMatrixEntry.ZERO) {
+            this.timeout = TSwitchingMatrixEntry.ZERO;
         }
     }
 
@@ -242,8 +231,7 @@ public class TSwitchingMatrixEntry {
      */
     public boolean shouldRetryExpiredTLDPRequest() {
         if (areThereAvailableAttempts()) {
-        //FIX: Avoid using harcoded values. Use class constant instead.
-            if (timeout == 0) {
+            if (timeout == TSwitchingMatrixEntry.ZERO) {
                 if ((this.label == TSwitchingMatrixEntry.LABEL_REQUESTED) || (this.label == TSwitchingMatrixEntry.REMOVING_LABEL)) {
                     return true;
                 }
@@ -580,6 +568,7 @@ public class TSwitchingMatrixEntry {
     // Label space
     public static final int LABEL_SPACE = 1048575;
     public static final int FIRST_UNRESERVED_LABEL = 16;
+    public static final int LAST_RESERVED_LABEL = 15;
 
     // TLDP messages and status
     public static final int LABEL_REQUESTED = -33;
@@ -593,6 +582,9 @@ public class TSwitchingMatrixEntry {
     private static final int TIMEOUT = 50000;
     private static final int LABEL_REQUEST_ATTEMPTS = 3;
 
+    // Others
+    private static final int ZERO = 0;
+    
     private int incomingPortID;
     private int labelOrFEC;
     private int outgoingPortID;
