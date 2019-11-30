@@ -145,7 +145,7 @@ public class TTimer implements Runnable {
      */
     public void removeTimerEventListener(TTopologyElement timerEventListener) {
         if (timerEventListener.getElementType() == TTopologyElement.LINK) {
-            Iterator iterator = this.timerEventListenerLinks.iterator();
+            Iterator<TTopologyElement> iterator = this.timerEventListenerLinks.iterator();
             TLink linkAux;
             TLink timerEventListenerAux = (TLink) timerEventListener;
             while (iterator.hasNext()) {
@@ -155,7 +155,7 @@ public class TTimer implements Runnable {
                 }
             }
         } else {
-            Iterator iterator = this.timerEventListenerNodes.iterator();
+            Iterator<TTopologyElement> iterator = this.timerEventListenerNodes.iterator();
             TNode nodeAux;
             TNode timerEventListenerAux = (TNode) timerEventListener;
             while (iterator.hasNext()) {
@@ -175,7 +175,7 @@ public class TTimer implements Runnable {
      * @since 2.0
      */
     public void purgeTimerEventListenersMarkedForDeletion() {
-        Iterator linksIterator = this.timerEventListenerLinks.iterator();
+        Iterator<TTopologyElement> linksIterator = this.timerEventListenerLinks.iterator();
         TLink linkAux;
         while (linksIterator.hasNext()) {
             linkAux = (TLink) linksIterator.next();
@@ -183,7 +183,7 @@ public class TTimer implements Runnable {
                 linksIterator.remove();
             }
         }
-        Iterator nodesIterator = this.timerEventListenerNodes.iterator();
+        Iterator<TTopologyElement> nodesIterator = this.timerEventListenerNodes.iterator();
         TNode nodeAux;
         while (nodesIterator.hasNext()) {
             nodeAux = (TNode) nodesIterator.next();
@@ -233,8 +233,8 @@ public class TTimer implements Runnable {
      * @since 2.0
      */
     private void generateTimerEvent() {
-        Iterator linksIterator = this.timerEventListenerLinks.iterator();
-        Iterator nodesIterator = this.timerEventListenerNodes.iterator();
+        Iterator<TTopologyElement> linksIterator = this.timerEventListenerLinks.iterator();
+        Iterator<TTopologyElement> nodesIterator = this.timerEventListenerNodes.iterator();
         TNode nodeAux;
         TLink linkAux;
         TTimestamp startOfSimulationInterval = new TTimestamp(this.previousTimestamp.getMillisecond(), this.previousTimestamp.getNanosecond());
@@ -306,7 +306,7 @@ public class TTimer implements Runnable {
         long simulationDuration = this.finishTimestamp.getTotalAsNanoseconds();
         long currentTime = this.currentTimestamp.getTotalAsNanoseconds();
         if (simulationDuration != ZERO) {
-            computedProgress = (int) Math.round((currentTime * ONE_HUNDRED) / simulationDuration);
+            computedProgress = Math.round((currentTime * ONE_HUNDRED) / simulationDuration);
         }
         try {
             if (this.progressEventListener != null) {
@@ -458,8 +458,8 @@ public class TTimer implements Runnable {
      * @since 2.0
      */
     private synchronized void waitUntilTimerEventListenersFinishTheirWork() {
-        Iterator nodesIterator = this.timerEventListenerNodes.iterator();
-        Iterator linksIterator = this.timerEventListenerLinks.iterator();
+        Iterator<TTopologyElement> nodesIterator = this.timerEventListenerNodes.iterator();
+        Iterator<TTopologyElement> linksIterator = this.timerEventListenerLinks.iterator();
         TNode nodeAux;
         TLink linkAux;
         while (nodesIterator.hasNext()) {
@@ -484,7 +484,7 @@ public class TTimer implements Runnable {
             try {
                 this.thread.join();
             } catch (InterruptedException e) {
-                System.out.println(this.translations.getString("TReloj.ErrorAlEsperarFinalizacionDelReloj") + e.toString());
+                logger.error(this.translations.getString("TReloj.ErrorAlEsperarFinalizacionDelReloj") + e.toString());
             }
         }
     }
