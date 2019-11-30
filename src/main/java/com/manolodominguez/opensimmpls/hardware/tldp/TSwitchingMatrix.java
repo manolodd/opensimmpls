@@ -36,7 +36,7 @@ public class TSwitchingMatrix {
      * @since 2.0
      */
     public TSwitchingMatrix() {
-        this.switchingMatrix = new LinkedList();
+        this.switchingMatrix = new LinkedList<>();
         this.semaphore = new TSemaphore();
     }
 
@@ -83,10 +83,10 @@ public class TSwitchingMatrix {
      */
     public TSwitchingMatrixEntry getEntry(int incomingPortID, int labelOrFEC, int entryType) {
         this.semaphore.setRed();
-        Iterator iterator = this.switchingMatrix.iterator();
+        Iterator<TSwitchingMatrixEntry> iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
-            switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
+            switchingMatrixEntryAux = iterator.next();
             if (switchingMatrixEntryAux.getLabelOrFEC() == labelOrFEC) {
                 if (switchingMatrixEntryAux.getIncomingPortID() == incomingPortID) {
                     if (switchingMatrixEntryAux.getEntryType() == entryType) {
@@ -113,10 +113,10 @@ public class TSwitchingMatrix {
      */
     public TSwitchingMatrixEntry getEntry(int localTLDPSessionID) {
         this.semaphore.setRed();
-        Iterator iterator = this.switchingMatrix.iterator();
+        Iterator<TSwitchingMatrixEntry> iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
-            switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
+            switchingMatrixEntryAux = iterator.next();
             if (switchingMatrixEntryAux.getLocalTLDPSessionID() == localTLDPSessionID) {
                 this.semaphore.setGreen();
                 return switchingMatrixEntryAux;
@@ -141,10 +141,10 @@ public class TSwitchingMatrix {
      */
     public TSwitchingMatrixEntry getEntry(int upstreamTLDPSessionID, int incomingPortID) {
         this.semaphore.setRed();
-        Iterator iterator = this.switchingMatrix.iterator();
+        Iterator<TSwitchingMatrixEntry> iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
-            switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
+            switchingMatrixEntryAux = iterator.next();
             if (switchingMatrixEntryAux.getUpstreamTLDPSessionID() == upstreamTLDPSessionID) {
                 if (switchingMatrixEntryAux.getIncomingPortID() == incomingPortID) {
                     this.semaphore.setGreen();
@@ -172,10 +172,10 @@ public class TSwitchingMatrix {
      */
     public boolean existsEntry(int incomingPortID, int labelOrFEC, int entryType) {
         this.semaphore.setRed();
-        Iterator iterator = this.switchingMatrix.iterator();
+        Iterator<TSwitchingMatrixEntry> iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
-            switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
+            switchingMatrixEntryAux = iterator.next();
             if (switchingMatrixEntryAux.getLabelOrFEC() == labelOrFEC) {
                 if (switchingMatrixEntryAux.getIncomingPortID() == incomingPortID) {
                     if (switchingMatrixEntryAux.getEntryType() == entryType) {
@@ -204,10 +204,10 @@ public class TSwitchingMatrix {
      */
     public void removeEntry(int incomingPortID, int labelOrFEC, int entryType) {
         this.semaphore.setRed();
-        Iterator iterator = this.switchingMatrix.iterator();
+        Iterator<TSwitchingMatrixEntry> iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
-            switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
+            switchingMatrixEntryAux = iterator.next();
             if (switchingMatrixEntryAux.getLabelOrFEC() == labelOrFEC) {
                 if (switchingMatrixEntryAux.getIncomingPortID() == incomingPortID) {
                     if (switchingMatrixEntryAux.getEntryType() == entryType) {
@@ -232,10 +232,10 @@ public class TSwitchingMatrix {
      */
     public void removeEntry(int localTLDPSessionID, int incomingPortID) {
         this.semaphore.setRed();
-        Iterator iterator = this.switchingMatrix.iterator();
+        Iterator<TSwitchingMatrixEntry> iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
-            switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
+            switchingMatrixEntryAux = iterator.next();
             if (switchingMatrixEntryAux.getLocalTLDPSessionID() == localTLDPSessionID) {
                 if (switchingMatrixEntryAux.getIncomingPortID() == incomingPortID) {
                     iterator.remove();
@@ -266,10 +266,10 @@ public class TSwitchingMatrix {
      */
     public int getLabelStackOperation(int incomingPortID, int labelOrFEC, int entryType) {
         this.semaphore.setRed();
-        Iterator iterator = this.switchingMatrix.iterator();
+        Iterator<TSwitchingMatrixEntry> iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
-            switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
+            switchingMatrixEntryAux = iterator.next();
             if (switchingMatrixEntryAux.getLabelOrFEC() == labelOrFEC) {
                 if (switchingMatrixEntryAux.getIncomingPortID() == incomingPortID) {
                     if (switchingMatrixEntryAux.getEntryType() == entryType) {
@@ -302,10 +302,10 @@ public class TSwitchingMatrix {
      */
     public int getOutgoingLabel(int incomingPortID, int labelOrFEC, int entryType) {
         this.semaphore.setRed();
-        Iterator iterator = this.switchingMatrix.iterator();
+        Iterator<TSwitchingMatrixEntry> iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
-            switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
+            switchingMatrixEntryAux = iterator.next();
             if (switchingMatrixEntryAux.getLabelOrFEC() == labelOrFEC) {
                 if (switchingMatrixEntryAux.getIncomingPortID() == incomingPortID) {
                     if (switchingMatrixEntryAux.getEntryType() == entryType) {
@@ -338,10 +338,10 @@ public class TSwitchingMatrix {
      */
     public int getOutgoingPortID(int incomingPortID, int labelOrFEC, int entryType) {
         this.semaphore.setRed();
-        Iterator iterator = this.switchingMatrix.iterator();
+        Iterator<TSwitchingMatrixEntry> iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux = null;
         while (iterator.hasNext()) {
-            switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
+            switchingMatrixEntryAux = iterator.next();
             if (switchingMatrixEntryAux.getLabelOrFEC() == labelOrFEC) {
                 if (switchingMatrixEntryAux.getIncomingPortID() == incomingPortID) {
                     if (switchingMatrixEntryAux.getEntryType() == entryType) {
@@ -367,10 +367,10 @@ public class TSwitchingMatrix {
      */
     public boolean labelIsAlreadyUsed(int label) {
         this.semaphore.setRed();
-        Iterator iterator = this.switchingMatrix.iterator();
+        Iterator<TSwitchingMatrixEntry> iterator = this.switchingMatrix.iterator();
         TSwitchingMatrixEntry switchingMatrixEntryAux;
         while (iterator.hasNext()) {
-            switchingMatrixEntryAux = (TSwitchingMatrixEntry) iterator.next();
+            switchingMatrixEntryAux = iterator.next();
             if (switchingMatrixEntryAux.getLabelOrFEC() == label) {
                 if (switchingMatrixEntryAux.getEntryType() == TSwitchingMatrixEntry.LABEL_ENTRY) {
                     this.semaphore.setGreen();
@@ -413,7 +413,7 @@ public class TSwitchingMatrix {
      * @return the switching entries iterator for this switching matrix.
      * @since 2.0
      */
-    public Iterator getEntriesIterator() {
+    public Iterator<TSwitchingMatrixEntry> getEntriesIterator() {
         return this.switchingMatrix.iterator();
     }
 
@@ -439,14 +439,14 @@ public class TSwitchingMatrix {
      */
     public void reset() {
         this.semaphore.setRed();
-        Iterator it = this.switchingMatrix.iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
+        Iterator<TSwitchingMatrixEntry> iterator = this.switchingMatrix.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
         }
         this.semaphore.setGreen();
     }
 
-    private LinkedList switchingMatrix;
+    private LinkedList<TSwitchingMatrixEntry> switchingMatrix;
     private TSemaphore semaphore;
 }
