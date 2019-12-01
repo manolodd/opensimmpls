@@ -69,8 +69,8 @@ public class openSimMPLS {
         imagesBroker = TImageBroker.getInstance();
         splash.setMessage(translations.getString("openSimMPLS.generandoInterfaz"));
         simulator = new JOpenSimMPLS(imagesBroker);
-        Dimension tamPantalla = Toolkit.getDefaultToolkit().getScreenSize();
-        simulator.setBounds(0, 0, tamPantalla.width, tamPantalla.height);
+        Dimension screenDimensions = Toolkit.getDefaultToolkit().getScreenSize();
+        simulator.setBounds(0, 0, screenDimensions.width, screenDimensions.height);
         simulator.setVisible(true);
         splash.dispose();
     }
