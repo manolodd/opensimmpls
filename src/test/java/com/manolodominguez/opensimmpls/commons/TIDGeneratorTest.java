@@ -59,7 +59,7 @@ public class TIDGeneratorTest {
      *
      */
     @Test
-    public void testGetNextIdentifier1() {
+    public void testGetNextIdentifier() {
         try {
             TIDGenerator instance = new TIDGenerator();
             instance.getNextIdentifier(); // should return 1. Next 2
@@ -77,7 +77,7 @@ public class TIDGeneratorTest {
      *
      */
     @Test
-    public void testGetNextIdentifier2() {
+    public void testGetNextIdentifierOverflow() {
         assertThrows(EIDGeneratorOverflow.class, () -> {
             TIDGenerator instance = new TIDGenerator();
             instance.getNextIdentifier(); // should return 1. Next 2
@@ -90,7 +90,7 @@ public class TIDGeneratorTest {
      * Test of setIdentifierIfGreater method, of class TIDGenerator.
      */
     @Test
-    public void testSetIdentifierIfGreater1() {
+    public void testSetIdentifierIfGreaterWhenNotGreater() {
         try {
             TIDGenerator instance = new TIDGenerator();
             instance.getNextIdentifier(); // should return 1. Next 2
@@ -108,7 +108,7 @@ public class TIDGeneratorTest {
      * Test of setIdentifierIfGreater method, of class TIDGenerator.
      */
     @Test
-    public void testSetIdentifierIfGreater2() {
+    public void testSetIdentifierIfGreaterWhenGreater() {
         try {
             TIDGenerator instance = new TIDGenerator();
             instance.getNextIdentifier(); // should return 1. Next 2
@@ -126,7 +126,7 @@ public class TIDGeneratorTest {
      * Test of setIdentifier method, of class TIDGenerator.
      */
     @Test
-    public void testSetIdentifier1() {
+    public void testSetIdentifierWhenLower() {
         try {
             TIDGenerator instance = new TIDGenerator();
             instance.getNextIdentifier(); // should return 1. Next 2
@@ -144,7 +144,25 @@ public class TIDGeneratorTest {
      * Test of setIdentifier method, of class TIDGenerator.
      */
     @Test
-    public void testSetIdentifier2() {
+    public void testSetIdentifierWhenGreater() {
+        try {
+            TIDGenerator instance = new TIDGenerator();
+            instance.getNextIdentifier(); // should return 1. Next 2
+            instance.getNextIdentifier(); // should return 2. Next 3
+            instance.getNextIdentifier(); // should return 3. Next 4
+            instance.getNextIdentifier(); // should return 4. Next 5
+            instance.setIdentifier(10); // Sets 10. Next should be 11
+            assertEquals(11, instance.getNextIdentifier());
+        } catch (EIDGeneratorOverflow ex) {
+            Logger.getLogger(TIDGeneratorTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Test of setIdentifier method, of class TIDGenerator.
+     */
+    @Test
+    public void testSetIdentifierWhenIllegarArgument() {
         assertThrows(IllegalArgumentException.class, () -> {
             TIDGenerator instance = new TIDGenerator();
             instance.setIdentifier(instance.getNextIdentifier()-2); // This is DEFAULT_ID-1 that should throws an exception
