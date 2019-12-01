@@ -27,7 +27,7 @@
 
 @?Topologia
 
-#Receptor#1#Receiver#10.0.0.1#0#true#true#711#194#
+#Receptor#1#Receiver#10.0.0.1#0#true#true#724#195#
 #Emisor#2#IPv4 sender (GoS 1)#10.0.0.2#0#true#false#85#30#10.0.0.1#false#1#false#10240#0#618#
 #Emisor#9#IPv4 sender (GoS 3)#10.0.0.9#0#true#false#80#342#10.0.0.1#false#3#false#10240#0#618#
 #LERA#10#Active entrance LER#10.0.0.10#0#true#true#230#276#10240#1024#1#

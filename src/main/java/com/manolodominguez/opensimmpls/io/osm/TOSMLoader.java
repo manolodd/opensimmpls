@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.zip.CRC32;
 import com.manolodominguez.opensimmpls.scenario.TInternalLink;
 import com.manolodominguez.opensimmpls.scenario.TExternalLink;
 import com.manolodominguez.opensimmpls.scenario.TScenario;
@@ -51,8 +50,7 @@ public class TOSMLoader {
         this.scenario = new TScenario();
         this.inputStream = null;
         this.input = null;
-        this.scenarioCRC = new CRC32();
-        this.section = TOSMLoader.NONE;
+        this.configSection = TOSMLoader.DEFAULT_NONE;
     }
 
     /**
@@ -64,58 +62,71 @@ public class TOSMLoader {
      * @since 2.0
      */
     public boolean load(File inputFile) {
-        if (this.fileIsValid(inputFile)) {
-            String stringAux = "";
-            this.scenario.setScenarioFile(inputFile);
-            try {
-                if (inputFile.exists()) {
-                    this.inputStream = new FileInputStream(inputFile);
-                    this.input = new BufferedReader(new InputStreamReader(this.inputStream));
-                    while ((stringAux = this.input.readLine()) != null) {
-                        if ((!stringAux.equals("")) && (!stringAux.startsWith("//")) && (!stringAux.startsWith("@CRC#"))) {
-                            if (this.section == TOSMLoader.NONE) {
+        String stringAux = "";
+        this.scenario.setScenarioFile(inputFile);
+        try {
+            if (inputFile.exists()) {
+                this.inputStream = new FileInputStream(inputFile);
+                this.input = new BufferedReader(new InputStreamReader(this.inputStream));
+                while ((stringAux = this.input.readLine()) != null) { // Read till EOF
+                    // This code read lines from the file, sequentially, 
+                    // untill it detects tokens that allow to identify 
+                    // different sections of the configuration file. 
+                    // Do not load blank linkes, comments and lines that
+                    // store CRC info (deprecated, but still present in some
+                    // scenarios).
+                    if ((!stringAux.equals("")) && (!stringAux.startsWith("//")) && (!stringAux.startsWith("@CRC#"))) {
+                        switch (this.configSection) {
+                            case TOSMLoader.DEFAULT_NONE:
                                 if (stringAux.startsWith("@?Escenario")) {
-                                    this.section = TOSMLoader.SCENARIO;
+                                    this.configSection = TOSMLoader.SCENARIO;
                                 } else if (stringAux.startsWith("@?Topologia")) {
-                                    this.section = TOSMLoader.TOPOLOGY;
+                                    this.configSection = TOSMLoader.TOPOLOGY;
                                 } else if (stringAux.startsWith("@?Simulacion")) {
-                                    this.section = TOSMLoader.SIMULATION;
+                                    this.configSection = TOSMLoader.SIMULATION;
                                 } else if (stringAux.startsWith("@?Analisis")) {
-                                    this.section = TOSMLoader.ANALISYS;
+                                    this.configSection = TOSMLoader.ANALISYS;
                                 }
-                            } else if (section == TOSMLoader.SCENARIO) {
+                                break;
+                            case TOSMLoader.SCENARIO:
                                 loadScenario(stringAux);
-                            } else if (section == TOSMLoader.TOPOLOGY) {
+                                break;
+                            case TOSMLoader.TOPOLOGY:
                                 loadTopology(stringAux);
-                            } else if (section == TOSMLoader.SIMULATION) {
+                                break;
+                            case TOSMLoader.SIMULATION:
                                 if (stringAux.startsWith("@!Simulacion")) {
-                                    this.section = TOSMLoader.NONE;
+                                    this.configSection = TOSMLoader.DEFAULT_NONE;
                                 }
-                            } else if (section == TOSMLoader.ANALISYS) {
+                                break;
+                            case TOSMLoader.ANALISYS:
                                 if (stringAux.startsWith("@!Analisis")) {
-                                    this.section = TOSMLoader.NONE;
+                                    this.configSection = TOSMLoader.DEFAULT_NONE;
                                 }
-                            }
+                                break;
+                            default:
+                                // Another unexpected line has been read, 
+                                // and is discarded silently.
+                                break;
                         }
                     }
-                    this.inputStream.close();
-                    this.input.close();
-                    this.scenario.setAlreadySaved(true);
-                    this.scenario.setModified(false);
                 }
-            } catch (IOException e) {
-                return false;
+                this.inputStream.close();
+                this.input.close();
+                this.scenario.setAlreadySaved(true);
+                this.scenario.setModified(false);
             }
-            return true;
+        } catch (IOException e) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     private void loadTopology(String topologyString) {
         if (topologyString.startsWith("@!Topologia")) {
-            this.section = TOSMLoader.NONE;
+            this.configSection = TOSMLoader.DEFAULT_NONE;
         } else if (topologyString.startsWith("#Receptor#")) {
-            TTrafficSinkNode receiver = new TTrafficSinkNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            TTrafficSinkNode receiver = new TTrafficSinkNode(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, TOSMLoader.DEFAULT_IPV4_ADDRESS, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (receiver.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addNode(receiver);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(receiver.getNodeID());
@@ -123,7 +134,7 @@ public class TOSMLoader {
             }
             receiver = null;
         } else if (topologyString.startsWith("#Emisor#")) {
-            TTrafficGeneratorNode sender = new TTrafficGeneratorNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            TTrafficGeneratorNode sender = new TTrafficGeneratorNode(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, TOSMLoader.DEFAULT_IPV4_ADDRESS, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (sender.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addNode(sender);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(sender.getNodeID());
@@ -131,7 +142,7 @@ public class TOSMLoader {
             }
             sender = null;
         } else if (topologyString.startsWith("#LER#")) {
-            TLERNode ler = new TLERNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            TLERNode ler = new TLERNode(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, TOSMLoader.DEFAULT_IPV4_ADDRESS, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (ler.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addNode(ler);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(ler.getNodeID());
@@ -139,7 +150,7 @@ public class TOSMLoader {
             }
             ler = null;
         } else if (topologyString.startsWith("#LERA#")) {
-            TActiveLERNode activeLER = new TActiveLERNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            TActiveLERNode activeLER = new TActiveLERNode(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, TOSMLoader.DEFAULT_IPV4_ADDRESS, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (activeLER.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addNode(activeLER);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(activeLER.getNodeID());
@@ -147,7 +158,7 @@ public class TOSMLoader {
             }
             activeLER = null;
         } else if (topologyString.startsWith("#LSR#")) {
-            TLSRNode lsr = new TLSRNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            TLSRNode lsr = new TLSRNode(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, TOSMLoader.DEFAULT_IPV4_ADDRESS, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (lsr.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addNode(lsr);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(lsr.getNodeID());
@@ -155,7 +166,7 @@ public class TOSMLoader {
             }
             lsr = null;
         } else if (topologyString.startsWith("#LSRA#")) {
-            TActiveLSRNode activeLSR = new TActiveLSRNode(0, "10.0.0.1", this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            TActiveLSRNode activeLSR = new TActiveLSRNode(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, TOSMLoader.DEFAULT_IPV4_ADDRESS, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (activeLSR.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addNode(activeLSR);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(activeLSR.getNodeID());
@@ -163,14 +174,14 @@ public class TOSMLoader {
             }
             activeLSR = null;
         } else if (topologyString.startsWith("#EnlaceExterno#")) {
-            TExternalLink externalLink = new TExternalLink(0, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            TExternalLink externalLink = new TExternalLink(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (externalLink.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addLink(externalLink);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(externalLink.getID());
             }
             externalLink = null;
         } else if (topologyString.startsWith("#EnlaceInterno#")) {
-            TInternalLink internalLink = new TInternalLink(0, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            TInternalLink internalLink = new TInternalLink(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (internalLink.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addLink(internalLink);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(internalLink.getID());
@@ -181,24 +192,23 @@ public class TOSMLoader {
 
     private void loadScenario(String scenarioString) {
         if (scenarioString.startsWith("@!Escenario")) {
-            this.section = TOSMLoader.NONE;
+            this.configSection = TOSMLoader.DEFAULT_NONE;
         } else if (scenarioString.startsWith("#Titulo#")) {
             if (!this.scenario.unmarshallTitle(scenarioString)) {
-                this.scenario.setTitle("");
+                this.scenario.setTitle(TOSMLoader.DEFAULT_TITLE);
             }
         } else if (scenarioString.startsWith("#Autor#")) {
             if (!this.scenario.unmarshallAuthor(scenarioString)) {
-                this.scenario.setAuthor("");
+                this.scenario.setAuthor(TOSMLoader.DEFAULT_AUTHOR);
             }
         } else if (scenarioString.startsWith("#Descripcion#")) {
             if (!this.scenario.unmarshallDescription(scenarioString)) {
-                this.scenario.setDescription("");
+                this.scenario.setDescription(TOSMLoader.DEFAULT_DESCRIPTION);
             }
         } else if (scenarioString.startsWith("#Temporizacion#")) {
             if (!this.scenario.getSimulation().unmarshallTimeParameters(scenarioString)) {
-                //FIX: Avoid using harcoded values. Use class constants instead.
-                this.scenario.getSimulation().setSimulationLengthInNs(500);
-                this.scenario.getSimulation().setSimulationTickDurationInNs(1);
+                this.scenario.getSimulation().setSimulationLengthInNs(TOSMLoader.DEFAULT_SIMULATION_LENGTH_IN_NS);
+                this.scenario.getSimulation().setSimulationTickDurationInNs(TOSMLoader.DEFAULT_SIMULATION_TICK_DURATION_IN_NS);
             }
         }
     }
@@ -215,52 +225,22 @@ public class TOSMLoader {
         return this.scenario;
     }
 
-    private boolean fileIsValid(File f) {
-        String inputFileCRC = "";
-        String computedFileCRC = "@CRC#";
-        this.scenarioCRC.reset();
-        String auxString = "";
-        try {
-            if (f.exists()) {
-                FileInputStream inputFile = new FileInputStream(f);
-                BufferedReader ent = new BufferedReader(new InputStreamReader(inputFile));
-                while ((auxString = ent.readLine()) != null) {
-                    if ((!auxString.equals("")) && (!auxString.startsWith("//"))) {
-                        if (auxString.startsWith("@CRC#")) {
-                            inputFileCRC = auxString;
-                        } else {
-                            this.scenarioCRC.update(auxString.getBytes());
-                        }
-                    }
-                }
-                inputFile.close();
-                ent.close();
-                if (inputFileCRC.equals("")) {
-                    return true;
-                } else {
-                    computedFileCRC += Long.toString(this.scenarioCRC.getValue());
-                    if (computedFileCRC.equals(inputFileCRC)) {
-                        return true;
-                    }
-                    return false;
-                }
-            }
-        } catch (IOException e) {
-            this.scenarioCRC.reset();
-            return false;
-        }
-        this.scenarioCRC.reset();
-        return false;
-    }
-
-    private static final int NONE = 0;
+    private static final int DEFAULT_NONE = 0;
     private static final int SCENARIO = 1;
     private static final int TOPOLOGY = 2;
     private static final int SIMULATION = 3;
     private static final int ANALISYS = 4;
 
-    private int section;
-    private CRC32 scenarioCRC;
+    private static final int DEFAULT_SIMULATION_LENGTH_IN_NS = 500;
+    private static final int DEFAULT_SIMULATION_TICK_DURATION_IN_NS = 1;
+    private static final String DEFAULT_IPV4_ADDRESS = "10.0.0.1";
+    private static final int DEFAULT_TOPOLOGY_ELEMENT_ID = 0;
+    private static final String DEFAULT_TITLE = "";
+    private static final String DEFAULT_AUTHOR = "";
+    private static final String DEFAULT_DESCRIPTION = "";
+    
+    
+    private int configSection;
     private TScenario scenario;
     private FileInputStream inputStream;
     private BufferedReader input;
