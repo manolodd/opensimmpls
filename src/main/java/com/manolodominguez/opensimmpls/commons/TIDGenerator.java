@@ -73,7 +73,7 @@ public class TIDGenerator {
      * @since 2.0
      */
     synchronized public void setIdentifierIfGreater(int newInternalIDValue) {
-        if (newInternalIDValue > this.identifier) {
+        if ((newInternalIDValue > this.identifier) && (newInternalIDValue <= Integer.MAX_VALUE)) {
             this.identifier = newInternalIDValue;
         }
     }
@@ -86,10 +86,14 @@ public class TIDGenerator {
      * @since 2.0
      */
     synchronized public void setIdentifier(int newInternalIDValue) {
-        this.identifier = newInternalIDValue;
+        if ((newInternalIDValue < TIDGenerator.DEFAULT_ID) || (newInternalIDValue > Integer.MAX_VALUE)) {
+            throw new IllegalArgumentException("newInternalIDValue out of allowed range");
+        } else {
+            this.identifier = newInternalIDValue;
+        }
     }
 
     private int identifier;
-    
+
     private static final int DEFAULT_ID = 0;
 }

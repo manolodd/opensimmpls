@@ -9,32 +9,33 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
  * @author manolodd
  */
 public class TIDGeneratorTest {
-    
+
     public TIDGeneratorTest() {
     }
-    
+
     @BeforeAll
     public static void setUpClass() {
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
     }
-    
+
     @BeforeEach
     public void setUp() {
     }
-    
+
     @AfterEach
     public void tearDown() {
     }
@@ -55,16 +56,34 @@ public class TIDGeneratorTest {
 
     /**
      * Test of getNextIdentifier method, of class TIDGenerator.
-     * @throws java.lang.Exception
+     *
      */
     @Test
-    public void testGetNextIdentifier() throws Exception {
-        TIDGenerator instance = new TIDGenerator();
-        instance.getNextIdentifier(); // should return 1. Next 2
-        instance.getNextIdentifier(); // should return 2. Next 3
-        instance.getNextIdentifier(); // should return 3. Next 4
-        instance.getNextIdentifier(); // should return 4. Next 5
-        assertEquals(5, instance.getNextIdentifier());
+    public void testGetNextIdentifier1() {
+        try {
+            TIDGenerator instance = new TIDGenerator();
+            instance.getNextIdentifier(); // should return 1. Next 2
+            instance.getNextIdentifier(); // should return 2. Next 3
+            instance.getNextIdentifier(); // should return 3. Next 4
+            instance.getNextIdentifier(); // should return 4. Next 5
+            assertEquals(5, instance.getNextIdentifier());
+        } catch (EIDGeneratorOverflow ex) {
+            Logger.getLogger(TIDGeneratorTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Test of getNextIdentifier method, of class TIDGenerator.
+     *
+     */
+    @Test
+    public void testGetNextIdentifier2() {
+        assertThrows(EIDGeneratorOverflow.class, () -> {
+            TIDGenerator instance = new TIDGenerator();
+            instance.getNextIdentifier(); // should return 1. Next 2
+            instance.setIdentifier(Integer.MAX_VALUE); // Now, next should exceed Integer range.
+            instance.getNextIdentifier(); // Integer range exceeded.
+        });
     }
 
     /**
@@ -102,13 +121,12 @@ public class TIDGeneratorTest {
             Logger.getLogger(TIDGeneratorTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
     /**
      * Test of setIdentifier method, of class TIDGenerator.
      */
     @Test
-    public void testSetIdentifier() {
+    public void testSetIdentifier1() {
         try {
             TIDGenerator instance = new TIDGenerator();
             instance.getNextIdentifier(); // should return 1. Next 2
@@ -121,5 +139,15 @@ public class TIDGeneratorTest {
             Logger.getLogger(TIDGeneratorTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
+    /**
+     * Test of setIdentifier method, of class TIDGenerator.
+     */
+    @Test
+    public void testSetIdentifier2() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            TIDGenerator instance = new TIDGenerator();
+            instance.setIdentifier(instance.getNextIdentifier()-2); // This is DEFAULT_ID-1 that should throws an exception
+        });
+    }    
 }
