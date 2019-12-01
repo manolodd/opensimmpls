@@ -15,7 +15,6 @@
  */
 package com.manolodominguez.opensimmpls.io.osm;
 
-import com.manolodominguez.opensimmpls.hardware.ports.TActivePort;
 import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import java.io.BufferedReader;
 import java.io.File;
