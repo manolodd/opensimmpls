@@ -11,6 +11,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -51,6 +52,7 @@ public class TIDGeneratorTest {
             assertEquals(1, instance.getNextIdentifier());
         } catch (EIDGeneratorOverflow ex) {
             Logger.getLogger(TIDGeneratorTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("Unexpected EIDGeneratorOverflow thrown");
         }
     }
 
@@ -69,6 +71,7 @@ public class TIDGeneratorTest {
             assertEquals(5, instance.getNextIdentifier());
         } catch (EIDGeneratorOverflow ex) {
             Logger.getLogger(TIDGeneratorTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("Unexpected EIDGeneratorOverflow thrown");
         }
     }
 
@@ -101,6 +104,7 @@ public class TIDGeneratorTest {
             assertEquals(5, instance.getNextIdentifier());
         } catch (EIDGeneratorOverflow ex) {
             Logger.getLogger(TIDGeneratorTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("Unexpected EIDGeneratorOverflow thrown");
         }
     }
 
@@ -119,6 +123,7 @@ public class TIDGeneratorTest {
             assertEquals(11, instance.getNextIdentifier());
         } catch (EIDGeneratorOverflow ex) {
             Logger.getLogger(TIDGeneratorTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("Unexpected EIDGeneratorOverflow thrown");
         }
     }
 
@@ -137,6 +142,7 @@ public class TIDGeneratorTest {
             assertEquals(3, instance.getNextIdentifier());
         } catch (EIDGeneratorOverflow ex) {
             Logger.getLogger(TIDGeneratorTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("Unexpected EIDGeneratorOverflow thrown");
         }
     }
 
@@ -155,6 +161,7 @@ public class TIDGeneratorTest {
             assertEquals(11, instance.getNextIdentifier());
         } catch (EIDGeneratorOverflow ex) {
             Logger.getLogger(TIDGeneratorTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("Unexpected EIDGeneratorOverflow thrown");
         }
     }
 
