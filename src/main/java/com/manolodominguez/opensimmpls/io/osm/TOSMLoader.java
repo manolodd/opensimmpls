@@ -198,8 +198,7 @@ public class TOSMLoader {
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(internalLink.getID());
             }
         } else {
-            this.logger.error(translations.getString("argumentDoesNotContainsInfo"));
-            throw new IllegalArgumentException("topologyString does not have the correct format");
+            this.logger.warn(translations.getString("argumentDoesNotContainsInfo"));
         }
     }
 
@@ -226,8 +225,7 @@ public class TOSMLoader {
                 this.scenario.getSimulation().setSimulationTickDurationInNs(TOSMLoader.DEFAULT_SIMULATION_TICK_DURATION_IN_NS);
             }
         } else {
-            this.logger.error(translations.getString("argumentDoesNotContainsInfo"));
-            throw new IllegalArgumentException("scenarioString does not have the correct format");
+            this.logger.warn(translations.getString("argumentDoesNotContainsInfo"));
         }
     }
 
