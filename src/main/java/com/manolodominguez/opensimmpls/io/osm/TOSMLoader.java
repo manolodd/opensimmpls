@@ -66,6 +66,10 @@ public class TOSMLoader {
      * @since 2.0
      */
     public boolean load(File inputFile) {
+        if (inputFile == null) {
+            this.logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException("inputFile is null");
+        }
         String stringAux = "";
         int configSection = TOSMLoader.LOOKING_FOR_A_NEW_CONFIG_SECTION;
         this.scenario.setScenarioFile(inputFile);
@@ -133,8 +137,12 @@ public class TOSMLoader {
         }
         return true;
     }
-    
+
     private void loadTopology(String topologyString) {
+        if ((topologyString == null) || (topologyString.isEmpty())) {
+            this.logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException("topologyString is null or an empty string");
+        }
         if (topologyString.startsWith("#Receptor#")) {
             TTrafficSinkNode receiver = new TTrafficSinkNode(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, TOSMLoader.DEFAULT_IPV4_ADDRESS, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (receiver.fromOSMString(topologyString)) {
@@ -190,11 +198,16 @@ public class TOSMLoader {
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(internalLink.getID());
             }
         } else {
+            this.logger.error(translations.getString("argumentDoesNotContainsInfo"));
             throw new IllegalArgumentException("topologyString does not have the correct format");
         }
     }
-    
+
     private void loadScenario(String scenarioString) {
+        if ((scenarioString == null) || (scenarioString.isEmpty())) {
+            this.logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException("scenarioString is null or an empty string");
+        }
         if (scenarioString.startsWith("#Titulo#")) {
             if (!this.scenario.unmarshallTitle(scenarioString)) {
                 this.scenario.setTitle(TOSMLoader.DEFAULT_TITLE);
@@ -213,6 +226,7 @@ public class TOSMLoader {
                 this.scenario.getSimulation().setSimulationTickDurationInNs(TOSMLoader.DEFAULT_SIMULATION_TICK_DURATION_IN_NS);
             }
         } else {
+            this.logger.error(translations.getString("argumentDoesNotContainsInfo"));
             throw new IllegalArgumentException("scenarioString does not have the correct format");
         }
     }
@@ -228,13 +242,13 @@ public class TOSMLoader {
     public TScenario getScenario() {
         return this.scenario;
     }
-    
+
     private static final int LOOKING_FOR_A_NEW_CONFIG_SECTION = 0;
     private static final int SCENARIO = 1;
     private static final int TOPOLOGY = 2;
     private static final int SIMULATION = 3;
     private static final int ANALISYS = 4;
-    
+
     private static final int DEFAULT_SIMULATION_LENGTH_IN_NS = 500;
     private static final int DEFAULT_SIMULATION_TICK_DURATION_IN_NS = 1;
     private static final String DEFAULT_IPV4_ADDRESS = "10.0.0.1";
@@ -242,7 +256,7 @@ public class TOSMLoader {
     private static final String DEFAULT_TITLE = "";
     private static final String DEFAULT_AUTHOR = "";
     private static final String DEFAULT_DESCRIPTION = "";
-    
+
     private TScenario scenario;
     private FileInputStream inputStream;
     private BufferedReader input;
