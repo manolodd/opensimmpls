@@ -604,7 +604,7 @@ public class TTopology {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public Iterator getNodesIterator() {
+    public Iterator<TNode> getNodesIterator() {
         return this.nodes.iterator();
     }
 
@@ -615,7 +615,7 @@ public class TTopology {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public Iterator getLinksIterator() {
+    public Iterator<TLink> getLinksIterator() {
         return this.links.iterator();
     }
 

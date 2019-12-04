@@ -33,7 +33,6 @@ public enum AvailableBundles {
     ACTIVE_LSR_NODE("com/manolodominguez/opensimmpls/resources/translations/translations"),
     ACTIVE_LER_NODE("com/manolodominguez/opensimmpls/resources/translations/translations"),
     MAIN_OPENSIMMPLS("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    OSM_SAVER("com/manolodominguez/opensimmpls/resources/translations/translations"),
     TIMER("com/manolodominguez/opensimmpls/resources/translations/translations"),
     E_SIMULATION_SINGLE_SUBSCRIBER("com/manolodominguez/opensimmpls/resources/translations/translations"),
     E_PROGRESS_EVENT_GENERATOR_ONLY_ALLOW_A_SINGLE_LISTENER("com/manolodominguez/opensimmpls/resources/translations/translations"),
@@ -58,6 +57,7 @@ public enum AvailableBundles {
     IMAGE_BROKER("com/manolodominguez/opensimmpls/resources/translations/translations"),
     E_ID_GENERATOR_OVERFLOW("com/manolodominguez/opensimmpls/resources/translations/eidgeneratoroverflow"),
     E_IPV4_ADDRESS_GENERATOR_OVERFLOW("com/manolodominguez/opensimmpls/resources/translations/eipv4addressgeneratoroverflow"),
+    OSM_SAVER("com/manolodominguez/opensimmpls/resources/translations/osmsaver"),
     OSM_LOADER("com/manolodominguez/opensimmpls/resources/translations/osmloader");
 
     private final String bundlePath;
