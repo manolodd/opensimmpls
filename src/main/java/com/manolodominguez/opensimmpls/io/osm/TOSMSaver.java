@@ -46,6 +46,10 @@ public class TOSMSaver {
      * @since 2.0
      */
     public TOSMSaver(TScenario scenario) {
+        if (scenario == null) {
+            this.logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException("scenario is null");
+        }
         this.scenario = scenario;
         this.outputStream = null;
         this.output = null;
