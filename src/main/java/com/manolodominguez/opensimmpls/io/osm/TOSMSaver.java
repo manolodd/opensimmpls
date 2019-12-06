@@ -21,7 +21,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Iterator;
-import java.util.zip.CRC32;
 import com.manolodominguez.opensimmpls.scenario.TScenario;
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TNode;
@@ -50,7 +49,6 @@ public class TOSMSaver {
         this.scenario = scenario;
         this.outputStream = null;
         this.output = null;
-//        this.scenarioCRC = new CRC32();
         this.translations = ResourceBundle.getBundle(AvailableBundles.OSM_SAVER.getPath());
     }
 
@@ -92,19 +90,13 @@ public class TOSMSaver {
             this.output.println(this.translations.getString("TAlmacenadorOSM.asteriscos"));
             this.output.println();
             this.output.println("@?Escenario");
-//            this.scenarioCRC.update("@?Escenario".getBytes());
             this.output.println();
             this.output.println(this.scenario.marshallTitle());
-//            this.scenarioCRC.update(this.scenario.marshallTitle().getBytes());
             this.output.println(this.scenario.marshallAuthor());
-//            this.scenarioCRC.update(this.scenario.marshallAuthor().getBytes());
             this.output.println(this.scenario.marshallDescription());
-//            this.scenarioCRC.update(this.scenario.marshallDescription().getBytes());
             this.output.println(this.scenario.getSimulation().marshallTimeParameters());
-//            this.scenarioCRC.update(this.scenario.getSimulation().marshallTimeParameters().getBytes());
             this.output.println();
             this.output.println("@!Escenario");
-//            this.scenarioCRC.update("@!Escenario".getBytes());
             this.output.println();
             this.output.println(this.translations.getString("TAlmacenadorOSM.asteriscos"));
             this.output.println(this.translations.getString("TAlmacenadorOSM.DefinicionDeLaTopologiaDelEscenario"));
@@ -112,7 +104,6 @@ public class TOSMSaver {
             this.output.println();
             this.output.println("@?Topologia");
             this.output.println();
-//            this.scenarioCRC.update("@?Topologia".getBytes());
             // Saving traffic receivers.
             nodesIterator = this.scenario.getTopology().getNodesIterator();
             while (nodesIterator.hasNext()) {
@@ -120,7 +111,6 @@ public class TOSMSaver {
                 if (auxNode != null) {
                     if (auxNode.getNodeType() == TNode.TRAFFIC_SINK) {
                         this.output.println(auxNode.toOSMString());
-//                        this.scenarioCRC.update(auxNode.toOSMString().getBytes());
                     }
                 }
             }
@@ -131,7 +121,6 @@ public class TOSMSaver {
                 if (auxNode != null) {
                     if (auxNode.getNodeType() != TNode.TRAFFIC_SINK) {
                         this.output.println(auxNode.toOSMString());
-//                        this.scenarioCRC.update(auxNode.toOSMString().getBytes());
                     }
                 }
             }
@@ -141,23 +130,10 @@ public class TOSMSaver {
                 auxLink = linksIterator.next();
                 if (auxLink != null) {
                     this.output.println(auxLink.toOSMString());
-//                    this.scenarioCRC.update(auxLink.toOSMString().getBytes());
                 }
             }
             this.output.println();
             this.output.println("@!Topologia");
-//            this.scenarioCRC.update("@!Topologia".getBytes());
-/*
-            if (createCRC) {
-                String auxCRCHash = Long.toString(this.scenarioCRC.getValue());
-                this.output.println();
-                this.output.println(this.translations.getString("TAlmacenadorOSM.asteriscos"));
-                this.output.println(this.translations.getString("TAlmacenadorOSM.CodigoCRCParaLaIntegridadDelFichero"));
-                this.output.println(this.translations.getString("TAlmacenadorOSM.asteriscos"));
-                this.output.println();
-                this.output.println("@CRC#" + auxCRCHash);
-            }
-*/
             this.outputStream.close();
             this.output.close();
         } catch (IOException e) {
@@ -167,7 +143,6 @@ public class TOSMSaver {
         return true;
     }
 
-//    private CRC32 scenarioCRC;
     private TScenario scenario;
     private FileOutputStream outputStream;
     private PrintStream output;
