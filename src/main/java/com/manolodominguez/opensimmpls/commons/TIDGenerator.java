@@ -15,12 +15,18 @@
  */
 package com.manolodominguez.opensimmpls.commons;
 
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.ResourceBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This class implements a ID generator that generates consecutive numeric IDs.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
+@SuppressWarnings("serial")
 public class TIDGenerator {
 
     /**
@@ -31,7 +37,8 @@ public class TIDGenerator {
      * @since 2.0
      */
     public TIDGenerator() {
-        this.identifier = DEFAULT_ID;
+        identifier = DEFAULT_ID;
+        translations = ResourceBundle.getBundle(AvailableBundles.T_ID_GENERATOR.getPath());
     }
 
     /**
@@ -41,7 +48,7 @@ public class TIDGenerator {
      * @since 2.0
      */
     public synchronized void reset() {
-        this.identifier = DEFAULT_ID;
+        identifier = DEFAULT_ID;
     }
 
     /**
@@ -53,13 +60,13 @@ public class TIDGenerator {
      * value.
      * @since 2.0
      */
-    synchronized public int getNextIdentifier() throws EIDGeneratorOverflow {
-        if (this.identifier >= Integer.MAX_VALUE) {
+    public synchronized int getNextIdentifier() throws EIDGeneratorOverflow {
+        if (identifier >= Integer.MAX_VALUE) {
             throw new EIDGeneratorOverflow();
         } else {
-            this.identifier++;
+            identifier++;
         }
-        return (this.identifier);
+        return (identifier);
     }
 
     /**
@@ -73,8 +80,13 @@ public class TIDGenerator {
      * @since 2.0
      */
     synchronized public void setIdentifierIfGreater(int newInternalIDValue) {
-        if ((newInternalIDValue > this.identifier) && (newInternalIDValue <= Integer.MAX_VALUE)) {
-            this.identifier = newInternalIDValue;
+        if (newInternalIDValue > identifier) {
+            if (newInternalIDValue <= Integer.MAX_VALUE) {
+                identifier = newInternalIDValue;
+            } else {
+                logger.error(translations.getString("argumentOutOfRange"));
+                throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+            }
         }
     }
 
@@ -87,13 +99,16 @@ public class TIDGenerator {
      */
     synchronized public void setIdentifier(int newInternalIDValue) {
         if ((newInternalIDValue < TIDGenerator.DEFAULT_ID) || (newInternalIDValue > Integer.MAX_VALUE)) {
-            throw new IllegalArgumentException("newInternalIDValue out of allowed range");
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         } else {
-            this.identifier = newInternalIDValue;
+            identifier = newInternalIDValue;
         }
     }
 
     private int identifier;
+    private final ResourceBundle translations;
+    private final Logger logger = LoggerFactory.getLogger(TIDGenerator.class);
 
     private static final int DEFAULT_ID = 0;
 }

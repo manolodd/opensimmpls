@@ -23,55 +23,61 @@ package com.manolodominguez.opensimmpls.resources.translations;
  * @version 2.0
  */
 public enum AvailableBundles {
-    TRAFFIC_SINK_NODE("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    TRAFFIC_GENERATOR_NODE("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    TOPOLOGY_ELEMENT("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    SCENARIO("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    LINK_CONFIG("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    LSR_NODE("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    LER_NODE("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    ACTIVE_LSR_NODE("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    ACTIVE_LER_NODE("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    MAIN_OPENSIMMPLS("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    TIMER("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    E_SIMULATION_SINGLE_SUBSCRIBER("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    E_PROGRESS_EVENT_GENERATOR_ONLY_ALLOW_A_SINGLE_LISTENER("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    LER_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    LSR_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    ACTIVE_LER_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    LICENSE_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    LINK_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    TRAFFIC_GENERATOR_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    TRAFFIC_SINK_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    ACTIVE_LSR_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    WARNING_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    DECISSION_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    ERROR_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    ABOUT_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    COMMENT_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    OPENSIMMPLS_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    SIMULATION_PANEL("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    SCENARIO_WINDOW("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    SPLASH("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    OSMFILTER("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    IMAGE_BROKER("com/manolodominguez/opensimmpls/resources/translations/translations"),
-    E_ID_GENERATOR_OVERFLOW("com/manolodominguez/opensimmpls/resources/translations/eidgeneratoroverflow"),
-    E_IPV4_ADDRESS_GENERATOR_OVERFLOW("com/manolodominguez/opensimmpls/resources/translations/eipv4addressgeneratoroverflow"),
-    OSM_SAVER("com/manolodominguez/opensimmpls/resources/translations/osmsaver"),
-    OSM_LOADER("com/manolodominguez/opensimmpls/resources/translations/osmloader");
+    TRAFFIC_SINK_NODE("translations"),
+    TRAFFIC_GENERATOR_NODE("translations"),
+    TOPOLOGY_ELEMENT("translations"),
+    SCENARIO("translations"),
+    LINK_CONFIG("translations"),
+    LSR_NODE("translations"),
+    LER_NODE("translations"),
+    ACTIVE_LSR_NODE("translations"),
+    ACTIVE_LER_NODE("translations"),
+    MAIN_OPENSIMMPLS("translations"),
+    TIMER("translations"),
+    E_SIMULATION_SINGLE_SUBSCRIBER("translations"),
+    E_PROGRESS_EVENT_GENERATOR_ONLY_ALLOW_A_SINGLE_LISTENER("translations"),
+    LER_WINDOW("translations"),
+    LSR_WINDOW("translations"),
+    ACTIVE_LER_WINDOW("translations"),
+    LICENSE_WINDOW("translations"),
+    LINK_WINDOW("translations"),
+    TRAFFIC_GENERATOR_WINDOW("translations"),
+    TRAFFIC_SINK_WINDOW("translations"),
+    ACTIVE_LSR_WINDOW("translations"),
+    WARNING_WINDOW("translations"),
+    DECISSION_WINDOW("translations"),
+    ERROR_WINDOW("translations"),
+    ABOUT_WINDOW("translations"),
+    COMMENT_WINDOW("translations"),
+    OPENSIMMPLS_WINDOW("translations"),
+    SIMULATION_PANEL("translations"),
+    SCENARIO_WINDOW("translations"),
+    SPLASH("translations"),
+    OSMFILTER("translations"),
+    IMAGE_BROKER("translations"),
+    E_ID_GENERATOR_OVERFLOW("eidgeneratoroverflow"),
+    E_IPV4_ADDRESS_GENERATOR_OVERFLOW("eipv4addressgeneratoroverflow"),
+    OSM_SAVER("osmsaver"),
+    T_ID_GENERATOR("tidgenerator"),
+    T_ROTARY_ID_GENERATOR("trotaryidgenerator"),
+    T_LONG_ID_GENERATOR("tlongidgenerator"),
+    T_IPV4_ADDRESS_GENERATOR("tipv4addressgenerator"),
+    UNITS_TRANSLATIONS("unitstranslations"),
+    OSM_LOADER("osmloader");
 
     private final String bundlePath;
+    private static final String BASE_PATH = "com/manolodominguez/opensimmpls/resources/translations/";
 
     /**
      * This is the constructor of the enum. It will set the default value of
      * each enum item.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param bundlePath the path of the enum's item.
+     * @param bundle the path of the enum's item.
      * @since 2.0
      */
-    private AvailableBundles(String bundlePath) {
-        this.bundlePath = bundlePath;
+    private AvailableBundles(String bundle) {
+        this.bundlePath = BASE_PATH+bundle;
     }
 
     /**
@@ -82,6 +88,6 @@ public enum AvailableBundles {
      * @since 2.0
      */
     public String getPath() {
-        return this.bundlePath;
+        return bundlePath;
     }
 }

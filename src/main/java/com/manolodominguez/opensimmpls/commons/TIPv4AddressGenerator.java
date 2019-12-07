@@ -15,6 +15,11 @@
  */
 package com.manolodominguez.opensimmpls.commons;
 
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.ResourceBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This class implements a IPv4 address generator. It generates consecutive IPv4
  * addressess from 10.0.0.1 to 10.255.255.254 without repetitions.
@@ -22,6 +27,7 @@ package com.manolodominguez.opensimmpls.commons;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
+@SuppressWarnings("serial")
 public class TIPv4AddressGenerator {
 
     /**
@@ -32,10 +38,11 @@ public class TIPv4AddressGenerator {
      * @since 2.0
      */
     public TIPv4AddressGenerator() {
-        this.octect1 = DEFAULT_OCTECT1;
-        this.octect2 = DEFAULT_OCTECT2;
-        this.octect3 = DEFAULT_OCTECT3;
-        this.octect4 = DEFAULT_OCTECT4;
+        octet1 = DEFAULT_OCTECT1;
+        octet2 = DEFAULT_OCTECT2;
+        octet3 = DEFAULT_OCTECT3;
+        octet4 = DEFAULT_OCTECT4;
+        translations = ResourceBundle.getBundle(AvailableBundles.T_IPV4_ADDRESS_GENERATOR.getPath());
     }
 
     /**
@@ -43,15 +50,24 @@ public class TIPv4AddressGenerator {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param newInternalIPv4Address the ID generator new internal value.
+     * @return TRUE, if the specified IPv4 address is assigned. Otherwise,
+     * FALSE.
      * @since 2.0
      */
     private boolean setIPv4Address(String newInternalIPv4Address) {
-        if (isAValidIPv4Address(newInternalIPv4Address)) {
-            String[] octects = newInternalIPv4Address.split(IPV4_SEPARATOR_REGEX);
-            this.octect2 = Integer.parseInt(octects[1]);
-            this.octect3 = Integer.parseInt(octects[2]);
-            this.octect4 = Integer.parseInt(octects[3]);
-            return true;
+        if (newInternalIPv4Address == null) {
+            logger.error(translations.getString("argumentIsNull"));
+            logger.error(translations.getString("notAValidIPv4Address"));
+        } else {
+            if (isAValidIPv4Address(newInternalIPv4Address)) {
+                String[] octects = newInternalIPv4Address.split(IPV4_SEPARATOR_REGEX);
+                octet2 = Integer.parseInt(octects[1]);
+                octet3 = Integer.parseInt(octects[2]);
+                octet4 = Integer.parseInt(octects[3]);
+                return true;
+            } else {
+                logger.error(translations.getString("notAValidIPv4Address"));
+            }
         }
         return false;
     }
@@ -68,22 +84,35 @@ public class TIPv4AddressGenerator {
      * @since 2.0
      */
     private boolean isAValidIPv4Address(String ipv4Address) {
-        if (ipv4Address.matches(IPV4_REGEX)) {
-            int auxOctect2 = MIN_OCTECT_VALUE;
-            int auxOctect3 = MIN_OCTECT_VALUE;
-            int auxOctect4 = MIN_OCTECT_VALUE;
-            String[] octects = ipv4Address.split(IPV4_SEPARATOR_REGEX);
-            auxOctect2 = Integer.parseInt(octects[1]);
-            auxOctect3 = Integer.parseInt(octects[2]);
-            auxOctect4 = Integer.parseInt(octects[3]);
-            if ((auxOctect2 == MIN_OCTECT_VALUE) && (auxOctect3 == MIN_OCTECT_VALUE) && (auxOctect4 == MIN_OCTECT_VALUE)) {
-                return false;
-            }
-            if ((auxOctect2 > MAX_OCTECT_VALUE) || (auxOctect3 > MAX_OCTECT_VALUE) || (auxOctect4 > MAX_OCTECT_VALUE)) {
-                return false;
-            }
-            if ((auxOctect2 > MAX_OCTECT_VALUE) && (auxOctect3 > MAX_OCTECT_VALUE) && (auxOctect4 > MAX_OCTECT_VALUE)) {
-                return false;
+        if (ipv4Address == null) {
+            logger.error(translations.getString("argumentIsNull"));
+            logger.error(translations.getString("notAValidIPv4Address"));
+            return false;
+        } else {
+            if (ipv4Address.matches(IPV4_REGEX)) {
+                int auxOctect2 = MIN_OCTECT_VALUE;
+                int auxOctect3 = MIN_OCTECT_VALUE;
+                int auxOctect4 = MIN_OCTECT_VALUE;
+                String[] octects = ipv4Address.split(IPV4_SEPARATOR_REGEX);
+                auxOctect2 = Integer.parseInt(octects[1]);
+                auxOctect3 = Integer.parseInt(octects[2]);
+                auxOctect4 = Integer.parseInt(octects[3]);
+                if ((auxOctect2 == MIN_OCTECT_VALUE) && (auxOctect3 == MIN_OCTECT_VALUE) && (auxOctect4 == MIN_OCTECT_VALUE)) {
+                    logger.error(translations.getString("notAValidIPv4Address"));
+                    return false; // 10.0.0.0 --> Reserved for network address
+                }
+                if ((auxOctect2 > MAX_OCTECT_VALUE) || (auxOctect3 > MAX_OCTECT_VALUE) || (auxOctect4 > MAX_OCTECT_VALUE)) {
+                    logger.error(translations.getString("notAValidIPv4Address"));
+                    return false; // Any octet greater than 255
+                }
+                if ((auxOctect2 < MIN_OCTECT_VALUE) || (auxOctect3 < MIN_OCTECT_VALUE) || (auxOctect4 < MIN_OCTECT_VALUE)) {
+                    logger.error(translations.getString("notAValidIPv4Address"));
+                    return false; // Any octet lower than 0
+                }
+                if ((auxOctect2 == MAX_OCTECT_VALUE) && (auxOctect3 == MAX_OCTECT_VALUE) && (auxOctect4 == MAX_OCTECT_VALUE)) {
+                    logger.error(translations.getString("notAValidIPv4Address"));
+                    return false; // 10.255.255.255 --> Reserved for broadcast address
+                }
             }
         }
         return true;
@@ -97,9 +126,9 @@ public class TIPv4AddressGenerator {
      * @since 2.0
      */
     public void reset() {
-        this.octect2 = DEFAULT_OCTECT2;
-        this.octect3 = DEFAULT_OCTECT3;
-        this.octect4 = DEFAULT_OCTECT4;
+        octet2 = DEFAULT_OCTECT2;
+        octet3 = DEFAULT_OCTECT3;
+        octet4 = DEFAULT_OCTECT4;
     }
 
     /**
@@ -113,21 +142,29 @@ public class TIPv4AddressGenerator {
      * @since 2.0
      */
     public void setIPv4AddressIfGreater(String newInternalIPv4Address) {
-        if (isAValidIPv4Address(newInternalIPv4Address)) {
-            String[] octects = newInternalIPv4Address.split(IPV4_SEPARATOR_REGEX);
-            int auxOctect2 = Integer.parseInt(octects[1]);
-            int auxOctect3 = Integer.parseInt(octects[2]);
-            int auxOctect4 = Integer.parseInt(octects[3]);
-            if (auxOctect2 > this.octect2) {
-                this.setIPv4Address(newInternalIPv4Address);
-            } else if (auxOctect2 == this.octect2) {
-                if (auxOctect3 > this.octect3) {
-                    this.setIPv4Address(newInternalIPv4Address);
-                } else if (auxOctect3 == this.octect3) {
-                    if (auxOctect4 > this.octect4) {
-                        this.setIPv4Address(newInternalIPv4Address);
+        if (newInternalIPv4Address == null) {
+            logger.error(translations.getString("argumentIsNull"));
+            throw new IllegalArgumentException(translations.getString("argumentIsNull"));
+        } else {
+            if (isAValidIPv4Address(newInternalIPv4Address)) {
+                String[] octects = newInternalIPv4Address.split(IPV4_SEPARATOR_REGEX);
+                int auxOctect2 = Integer.parseInt(octects[1]);
+                int auxOctect3 = Integer.parseInt(octects[2]);
+                int auxOctect4 = Integer.parseInt(octects[3]);
+                if (auxOctect2 > octet2) {
+                    setIPv4Address(newInternalIPv4Address);
+                } else if (auxOctect2 == octet2) {
+                    if (auxOctect3 > octet3) {
+                        setIPv4Address(newInternalIPv4Address);
+                    } else if (auxOctect3 == octet3) {
+                        if (auxOctect4 > octet4) {
+                            setIPv4Address(newInternalIPv4Address);
+                        }
                     }
                 }
+            } else {
+                logger.error(translations.getString("notAValidIPv4Address"));
+                throw new IllegalArgumentException(translations.getString("notAValidIPv4Address"));
             }
         }
     }
@@ -141,31 +178,53 @@ public class TIPv4AddressGenerator {
      * reaches its maximum value (10.255.255.254).
      * @since 2.0
      */
-    public String getIPv4Address() throws EIPv4AddressGeneratorOverflow {
-        if (this.octect4 < MAX_OCTECT_VALUE) {
-            this.octect4++;
-        } else {
-            if (this.octect3 < MAX_OCTECT_VALUE) {
-                this.octect4 = MIN_OCTECT_VALUE;
-                this.octect3++;
-            } else {
-                if (this.octect2 < MAX_OCTECT_VALUE-1) {
-                    this.octect4 = MIN_OCTECT_VALUE;
-                    this.octect3 = MIN_OCTECT_VALUE;
-                    this.octect2++;
-                } else {
+    public String getNextIPv4Address() throws EIPv4AddressGeneratorOverflow {
+        // Analysis of current IPv4 value
+        if (octet2 >= MAX_OCTECT_VALUE) { //10.255.X:X
+            if (octet3 >= MAX_OCTECT_VALUE) { //10.255.255.X
+                if (octet4 >= (MAX_OCTECT_VALUE - 1)) { //10.255.255.254
                     throw new EIPv4AddressGeneratorOverflow();
+                } else { //10.255.255.<254
+                    octet4++;
+                }
+            } else { //10.255.<255.255
+                if (octet4 >= (MAX_OCTECT_VALUE)) { //10.255.<255.255
+                    octet3++;
+                    octet4 = MIN_OCTECT_VALUE;
+                } else {  //10.255.<255.<255
+                    octet4++;
+                }
+            }
+        } else { //10.<255.X.X
+            if (octet3 >= MAX_OCTECT_VALUE) { //10.<255.255.X
+                if (octet4 >= (MAX_OCTECT_VALUE)) { //10.<255.255.255
+                    octet2++;
+                    octet3 = MIN_OCTECT_VALUE;
+                    octet4 = MIN_OCTECT_VALUE;
+                } else { //10.<255.255.<255
+                    octet4++;
+                }
+            } else { //10.<255.<255.X
+                if (octet4 >= MAX_OCTECT_VALUE) { //10.<255.<255.255 
+                    octet3++;
+                    octet4 = MIN_OCTECT_VALUE;
+                } else { //10.<255.<255.<255 
+                    octet4++;
                 }
             }
         }
-        return (this.octect1 + IPV4_SEPARATOR + this.octect2 + IPV4_SEPARATOR + this.octect3 + IPV4_SEPARATOR + this.octect4);
+        // Returns the new IPv4 value
+        return (this.octet1 + IPV4_SEPARATOR + this.octet2 + IPV4_SEPARATOR + this.octet3 + IPV4_SEPARATOR + this.octet4);
     }
 
-    private final int octect1;
-    private int octect2;
-    private int octect3;
-    private int octect4;
-    
+    private final int octet1;
+    private int octet2;
+    private int octet3;
+    private int octet4;
+
+    private final ResourceBundle translations;
+    private final Logger logger = LoggerFactory.getLogger(TIPv4AddressGenerator.class);
+
     private static final int DEFAULT_OCTECT1 = 10;
     private static final int DEFAULT_OCTECT2 = 0;
     private static final int DEFAULT_OCTECT3 = 0;

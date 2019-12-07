@@ -21,6 +21,7 @@ package com.manolodominguez.opensimmpls.commons;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
+@SuppressWarnings("serial")
 public class TLongIDGenerator {
 
     /**
@@ -31,7 +32,7 @@ public class TLongIDGenerator {
      * @since 2.0
      */
     public TLongIDGenerator() {
-        this.identifier = DEFAULT_ID;
+        identifier = DEFAULT_ID;
     }
 
     /**
@@ -41,7 +42,7 @@ public class TLongIDGenerator {
      * @since 2.0
      */
     public synchronized void reset() {
-        this.identifier = DEFAULT_ID;
+        identifier = DEFAULT_ID;
     }
 
     /**
@@ -54,15 +55,15 @@ public class TLongIDGenerator {
      * @since 2.0
      */
     synchronized public long getNextIdentifier() throws EIDGeneratorOverflow {
-        if (this.identifier >= Long.MAX_VALUE) {
+        if (identifier >= Long.MAX_VALUE) {
             throw new EIDGeneratorOverflow();
         } else {
-            this.identifier++;
+            identifier++;
         }
-        return (this.identifier);
+        return (identifier);
     }
 
     private long identifier;
-
+    
     private static final long DEFAULT_ID = 0;
 }

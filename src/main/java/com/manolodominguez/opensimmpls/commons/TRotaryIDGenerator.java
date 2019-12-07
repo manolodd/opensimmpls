@@ -15,6 +15,11 @@
  */
 package com.manolodominguez.opensimmpls.commons;
 
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.ResourceBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This class implements a ID generator that generates consecutive numeric IDs,
  * in a cycle that never ends.
@@ -22,6 +27,7 @@ package com.manolodominguez.opensimmpls.commons;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
+@SuppressWarnings("serial")
 public class TRotaryIDGenerator {
 
     /**
@@ -32,7 +38,8 @@ public class TRotaryIDGenerator {
      * @since 2.0
      */
     public TRotaryIDGenerator() {
-        this.identifier = DEFAULT_ID;
+        identifier = DEFAULT_ID;
+        translations = ResourceBundle.getBundle(AvailableBundles.T_ROTARY_ID_GENERATOR.getPath());
     }
 
     /**
@@ -42,7 +49,7 @@ public class TRotaryIDGenerator {
      * @since 2.0
      */
     public synchronized void reset() {
-        this.identifier = DEFAULT_ID;
+        identifier = DEFAULT_ID;
     }
 
     /**
@@ -53,12 +60,12 @@ public class TRotaryIDGenerator {
      * @since 2.0
      */
     synchronized public int getNextIdentifier() {
-        if (this.identifier >= Integer.MAX_VALUE) {
-            this.identifier = DEFAULT_ID;
+        if (identifier >= Integer.MAX_VALUE) {
+            identifier = DEFAULT_ID;
         } else {
-            this.identifier++;
+            identifier++;
         }
-        return (this.identifier);
+        return (identifier);
     }
 
     /**
@@ -69,10 +76,18 @@ public class TRotaryIDGenerator {
      * @since 2.0
      */
     synchronized public void setIdentifier(int newInternalIDValue) {
-        this.identifier = newInternalIDValue;
+        if ((newInternalIDValue < TRotaryIDGenerator.DEFAULT_ID) || (newInternalIDValue > Integer.MAX_VALUE)) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        } else {
+            identifier = newInternalIDValue;
+        }
     }
 
     private int identifier;
-    
+
+    private final ResourceBundle translations;
+    private final Logger logger = LoggerFactory.getLogger(TRotaryIDGenerator.class);
+
     private static final int DEFAULT_ID = 0;
 }

@@ -36,7 +36,7 @@ public class EIDGeneratorOverflow extends Exception {
      * @since 2.0
      */
     public EIDGeneratorOverflow() {
-        this.translations = ResourceBundle.getBundle(AvailableBundles.E_ID_GENERATOR_OVERFLOW.getPath());
+        translations = ResourceBundle.getBundle(AvailableBundles.E_ID_GENERATOR_OVERFLOW.getPath());
     }
 
     /**
@@ -48,7 +48,7 @@ public class EIDGeneratorOverflow extends Exception {
      */
     @Override
     public String toString() {
-        return (this.translations.getString("exceptionDescription"));
+        return (translations.getString("exceptionDescription"));
     }
 
     private final ResourceBundle translations;

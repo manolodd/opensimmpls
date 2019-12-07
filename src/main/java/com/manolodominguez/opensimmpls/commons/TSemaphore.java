@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
+@SuppressWarnings("serial")
 public class TSemaphore {
 
     /**
@@ -36,7 +37,7 @@ public class TSemaphore {
      * @since 2.0
      */
     public TSemaphore() {
-        this.semaphore = GREEN;
+        this.semaphoreLight = GREEN;
     }
 
     /**
@@ -50,14 +51,14 @@ public class TSemaphore {
      * @since 2.0
      */
     public synchronized void setRed() {
-        while (this.semaphore == RED) {
+        while (semaphoreLight == RED) {
             try {
                 wait();
             } catch (InterruptedException e) {
-                this.logger.error(e.getMessage(), e);
+                logger.error(e.getMessage(), e);
             }
         }
-        this.semaphore = RED;
+        semaphoreLight = RED;
     }
 
     /**
@@ -69,11 +70,11 @@ public class TSemaphore {
      * @since 2.0
      */
     public synchronized void setGreen() {
-        this.semaphore = GREEN;
+        semaphoreLight = GREEN;
         notify();
     }
 
-    private boolean semaphore;
+    private boolean semaphoreLight;
 
     private static final boolean RED = true;
     private static final boolean GREEN = false;

@@ -15,6 +15,11 @@
  */
 package com.manolodominguez.opensimmpls.commons;
 
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.ResourceBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This enum is used to access unit translations from a centralilzed point. 
  * This easies accessing the same unit translations from classes.
@@ -29,7 +34,8 @@ public enum UnitsTranslations {
     OCTETS_PER_GIGABYTE(1024*1024*1024);
     
     private final int units;
-
+    private final ResourceBundle translations;
+    private final Logger logger = LoggerFactory.getLogger(UnitsTranslations.class);
     /**
      * This is the constructor of the enum. It will set the default value of
      * each enum item.
@@ -39,6 +45,11 @@ public enum UnitsTranslations {
      * @since 2.0
      */
     private UnitsTranslations(int units) {
+        translations = ResourceBundle.getBundle(AvailableBundles.UNITS_TRANSLATIONS.getPath());
+        if (units >= Integer.MAX_VALUE) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
         this.units = units;
     }
 
@@ -50,6 +61,6 @@ public enum UnitsTranslations {
      * @since 2.0
      */
     public int getUnits() {
-        return this.units;
+        return units;
     }
 }

@@ -1643,7 +1643,7 @@ public class JScenarioWindow extends JInternalFrame {
     private void handleClickOnActiveLSRNodeIcon(MouseEvent evt) {
         TActiveLSRNode activeLSRNode = null;
         try {
-            activeLSRNode = new TActiveLSRNode(this.scenario.getTopology().getElementsIDGenerator().getNextIdentifier(), this.scenario.getTopology().getIPv4AddressGenerator().getIPv4Address(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            activeLSRNode = new TActiveLSRNode(this.scenario.getTopology().getElementsIDGenerator().getNextIdentifier(), this.scenario.getTopology().getIPv4AddressGenerator().getNextIPv4Address(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
         } catch (Exception e) {
             JErrorWindow errorWindow;
             errorWindow = new JErrorWindow(this.parent, true, this.imageBroker);
@@ -1681,7 +1681,7 @@ public class JScenarioWindow extends JInternalFrame {
     private void handleClickOnLSRNodeIcon(MouseEvent evt) {
         TLSRNode lsrNode = null;
         try {
-            lsrNode = new TLSRNode(this.scenario.getTopology().getElementsIDGenerator().getNextIdentifier(), this.scenario.getTopology().getIPv4AddressGenerator().getIPv4Address(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            lsrNode = new TLSRNode(this.scenario.getTopology().getElementsIDGenerator().getNextIdentifier(), this.scenario.getTopology().getIPv4AddressGenerator().getNextIPv4Address(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
         } catch (Exception e) {
             JErrorWindow errorWindow;
             errorWindow = new JErrorWindow(this.parent, true, this.imageBroker);
@@ -1719,7 +1719,7 @@ public class JScenarioWindow extends JInternalFrame {
     private void handleClickOnActiveLERNodeIcon(MouseEvent evt) {
         TActiveLERNode activeLERNode = null;
         try {
-            activeLERNode = new TActiveLERNode(this.scenario.getTopology().getElementsIDGenerator().getNextIdentifier(), this.scenario.getTopology().getIPv4AddressGenerator().getIPv4Address(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            activeLERNode = new TActiveLERNode(this.scenario.getTopology().getElementsIDGenerator().getNextIdentifier(), this.scenario.getTopology().getIPv4AddressGenerator().getNextIPv4Address(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
         } catch (Exception e) {
             JErrorWindow errorWindow;
             errorWindow = new JErrorWindow(this.parent, true, this.imageBroker);
@@ -2003,7 +2003,7 @@ public class JScenarioWindow extends JInternalFrame {
     private void handleClickOnLERNodeIcon(MouseEvent evt) {
         TLERNode lerNode = null;
         try {
-            lerNode = new TLERNode(this.scenario.getTopology().getElementsIDGenerator().getNextIdentifier(), this.scenario.getTopology().getIPv4AddressGenerator().getIPv4Address(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            lerNode = new TLERNode(this.scenario.getTopology().getElementsIDGenerator().getNextIdentifier(), this.scenario.getTopology().getIPv4AddressGenerator().getNextIPv4Address(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
         } catch (Exception e) {
             JErrorWindow errorWindow;
             errorWindow = new JErrorWindow(this.parent, true, this.imageBroker);
@@ -2227,7 +2227,7 @@ public class JScenarioWindow extends JInternalFrame {
     private void handleClickOnTrafficSinkNodeIcon(MouseEvent evt) {
         TTrafficSinkNode trafficSinkNode = null;
         try {
-            trafficSinkNode = new TTrafficSinkNode(this.scenario.getTopology().getElementsIDGenerator().getNextIdentifier(), this.scenario.getTopology().getIPv4AddressGenerator().getIPv4Address(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            trafficSinkNode = new TTrafficSinkNode(this.scenario.getTopology().getElementsIDGenerator().getNextIdentifier(), this.scenario.getTopology().getIPv4AddressGenerator().getNextIPv4Address(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
         } catch (Exception e) {
             JErrorWindow errorWindow;
             errorWindow = new JErrorWindow(this.parent, true, this.imageBroker);
@@ -2281,7 +2281,7 @@ public class JScenarioWindow extends JInternalFrame {
         } else {
             TTrafficGeneratorNode trafficGeneratorNode = null;
             try {
-                trafficGeneratorNode = new TTrafficGeneratorNode(this.scenario.getTopology().getElementsIDGenerator().getNextIdentifier(), this.scenario.getTopology().getIPv4AddressGenerator().getIPv4Address(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+                trafficGeneratorNode = new TTrafficGeneratorNode(this.scenario.getTopology().getElementsIDGenerator().getNextIdentifier(), this.scenario.getTopology().getIPv4AddressGenerator().getNextIPv4Address(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             } catch (Exception e) {
                 JErrorWindow errorWindow;
                 errorWindow = new JErrorWindow(this.parent, true, this.imageBroker);
