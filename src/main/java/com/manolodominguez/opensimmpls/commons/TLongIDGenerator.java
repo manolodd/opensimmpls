@@ -15,6 +15,11 @@
  */
 package com.manolodominguez.opensimmpls.commons;
 
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.ResourceBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This class implements a ID generator that generates consecutive numeric IDs.
  *
@@ -33,6 +38,7 @@ public class TLongIDGenerator {
      */
     public TLongIDGenerator() {
         identifier = DEFAULT_ID;
+        translations = ResourceBundle.getBundle(AvailableBundles.T_LONG_ID_GENERATOR.getPath());
     }
 
     /**
@@ -45,6 +51,22 @@ public class TLongIDGenerator {
         identifier = DEFAULT_ID;
     }
 
+    /**
+     * This method sets the Long ID generator new internal value.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @param newInternalIDValue the ID generator new internal value.
+     * @since 2.0
+     */
+    synchronized public void setIdentifier(long newInternalIDValue) {
+        if (newInternalIDValue < TLongIDGenerator.DEFAULT_ID) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        } else {
+            identifier = newInternalIDValue;
+        }
+    }    
+    
     /**
      * This method generates a new ID.
      *
@@ -64,6 +86,8 @@ public class TLongIDGenerator {
     }
 
     private long identifier;
+    private final ResourceBundle translations;
+    private final Logger logger = LoggerFactory.getLogger(TLongIDGenerator.class);
     
     private static final long DEFAULT_ID = 0;
 }

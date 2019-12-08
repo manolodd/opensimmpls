@@ -81,12 +81,7 @@ public class TIDGenerator {
      */
     synchronized public void setIdentifierIfGreater(int newInternalIDValue) {
         if (newInternalIDValue > identifier) {
-            if (newInternalIDValue <= Integer.MAX_VALUE) {
-                identifier = newInternalIDValue;
-            } else {
-                logger.error(translations.getString("argumentOutOfRange"));
-                throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
-            }
+            identifier = newInternalIDValue;
         }
     }
 
@@ -98,7 +93,7 @@ public class TIDGenerator {
      * @since 2.0
      */
     synchronized public void setIdentifier(int newInternalIDValue) {
-        if ((newInternalIDValue < TIDGenerator.DEFAULT_ID) || (newInternalIDValue > Integer.MAX_VALUE)) {
+        if (newInternalIDValue < TIDGenerator.DEFAULT_ID) {
             logger.error(translations.getString("argumentOutOfRange"));
             throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         } else {
