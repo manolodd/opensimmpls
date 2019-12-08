@@ -76,7 +76,7 @@ public class TRotaryIDGenerator {
      * @since 2.0
      */
     synchronized public void setIdentifier(int newInternalIDValue) {
-        if ((newInternalIDValue < TRotaryIDGenerator.DEFAULT_ID) || (newInternalIDValue > Integer.MAX_VALUE)) {
+        if (newInternalIDValue < TRotaryIDGenerator.DEFAULT_ID) {
             logger.error(translations.getString("argumentOutOfRange"));
             throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         } else {

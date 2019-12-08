@@ -19,22 +19,22 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author manolodd
  */
 public class TLongIDGeneratorTest {
-    
+
     public TLongIDGeneratorTest() {
     }
-    
+
     @BeforeAll
     public static void setUpClass() {
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
     }
-    
+
     @BeforeEach
     public void setUp() {
     }
-    
+
     @AfterEach
     public void tearDown() {
     }
@@ -52,8 +52,8 @@ public class TLongIDGeneratorTest {
             Logger.getLogger(TLongIDGeneratorTest.class.getName()).log(Level.SEVERE, null, ex);
             fail("Unexpected EIDGeneratorOverflow thrown");
         }
-    }    
-    
+    }
+
     /**
      * Test of reset method, of class TLongIDGenerator.
      */
@@ -93,6 +93,19 @@ public class TLongIDGeneratorTest {
         }
     }
 
+    /**
+     * Test of getNextIdentifier method, of class TLongIDGenerator.
+     */
+    @Test
+    public void testGetNextIdentifierOverflow() {
+        System.out.println("testing getNextIdentifier() with overflow");
+        assertThrows(EIDGeneratorOverflow.class, () -> {
+            TLongIDGenerator instance = new TLongIDGenerator();
+            instance.setIdentifier(Long.MAX_VALUE - 1);
+            instance.getNextIdentifier(); // should return Long.MAX_VALUE
+            instance.getNextIdentifier(); // should throw an exception
+        });
+    }
 
     /**
      * Test of setIdentifier method, of class TIDGenerator.
@@ -133,19 +146,16 @@ public class TLongIDGeneratorTest {
             fail("Unexpected EIDGeneratorOverflow thrown");
         }
     }
-    
+
     /**
-     * Test of getNextIdentifier method, of class TLongIDGenerator.
+     * Test of setIdentifier method, of class TIDGenerator.
      */
     @Test
-    public void testGetNextIdentifierOverflow() {
-        System.out.println("testing getNextIdentifier() with overflow");
-        assertThrows(EIDGeneratorOverflow.class, () -> {
+    public void testSetIdentifierWhenNegative() {
+        System.out.println("testing setIdentifier() when argument is negative");
+        assertThrows(IllegalArgumentException.class, () -> {
             TLongIDGenerator instance = new TLongIDGenerator();
-            instance.setIdentifier(Long.MAX_VALUE-1);
-            instance.getNextIdentifier(); // should return Long.MAX_VALUE
-            instance.getNextIdentifier(); // should throw an exception
+            instance.setIdentifier(-2); // This is lower than DEFAULT_ID and should throws an exception
         });
     }
-
 }

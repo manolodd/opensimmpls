@@ -215,6 +215,7 @@ public class TIDGeneratorTest {
      */
     @Test
     public void testSetIdentifierWhenNegative() {
+        System.out.println("testing setIdentifier() when argument is negative");
         assertThrows(IllegalArgumentException.class, () -> {
             TIDGenerator instance = new TIDGenerator();
             instance.setIdentifier(-2); // This is lower than DEFAULT_ID and should throws an exception
