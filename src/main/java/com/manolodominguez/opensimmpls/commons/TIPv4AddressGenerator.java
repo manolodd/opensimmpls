@@ -90,13 +90,19 @@ public class TIPv4AddressGenerator {
             return false;
         } else {
             if (ipv4Address.matches(IPV4_REGEX)) {
+                int auxOctect1 = MIN_OCTECT_VALUE;
                 int auxOctect2 = MIN_OCTECT_VALUE;
                 int auxOctect3 = MIN_OCTECT_VALUE;
                 int auxOctect4 = MIN_OCTECT_VALUE;
                 String[] octects = ipv4Address.split(IPV4_SEPARATOR_REGEX);
+                auxOctect1 = Integer.parseInt(octects[0]);
                 auxOctect2 = Integer.parseInt(octects[1]);
                 auxOctect3 = Integer.parseInt(octects[2]);
                 auxOctect4 = Integer.parseInt(octects[3]);
+                if (auxOctect1 != 10) {
+                    logger.error(translations.getString("notAValidIPv4Address"));
+                    return false; // X!=10.0.0.0 --> IPv4 addresses in opensimmpls are from 10.0.0.0/8
+                }
                 if ((auxOctect2 == MIN_OCTECT_VALUE) && (auxOctect3 == MIN_OCTECT_VALUE) && (auxOctect4 == MIN_OCTECT_VALUE)) {
                     logger.error(translations.getString("notAValidIPv4Address"));
                     return false; // 10.0.0.0 --> Reserved for network address
@@ -113,6 +119,8 @@ public class TIPv4AddressGenerator {
                     logger.error(translations.getString("notAValidIPv4Address"));
                     return false; // 10.255.255.255 --> Reserved for broadcast address
                 }
+            } else {
+                return false;
             }
         }
         return true;

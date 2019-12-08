@@ -44,6 +44,7 @@ public class EIDGeneratorOverflowTest {
      */
     @Test
     public void testToString() {
+        System.out.println("toString");
         EIDGeneratorOverflow instance = new EIDGeneratorOverflow();
         ResourceBundle translations = ResourceBundle.getBundle(AvailableBundles.E_ID_GENERATOR_OVERFLOW.getPath());
         assertEquals(translations.getString("exceptionDescription"), instance.toString());
