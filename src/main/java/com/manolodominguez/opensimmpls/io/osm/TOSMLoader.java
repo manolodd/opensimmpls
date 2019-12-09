@@ -54,7 +54,7 @@ public class TOSMLoader {
         this.scenario = new TScenario();
         this.inputStream = null;
         this.input = null;
-        this.translations = ResourceBundle.getBundle(AvailableBundles.OSM_LOADER.getPath());
+        this.translations = ResourceBundle.getBundle(AvailableBundles.T_OSM_LOADER.getPath());
     }
 
     /**

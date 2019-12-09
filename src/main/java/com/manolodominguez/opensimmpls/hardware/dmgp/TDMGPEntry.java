@@ -35,9 +35,9 @@ public class TDMGPEntry implements Comparable<TDMGPEntry> {
      * to itrs corresponding flow.
      */
     public TDMGPEntry(int arrivalOrder) {
-        this.flowID = DEFAULT_FLOWID;
-        this.packetID = DEFAULT_PACKETID;
-        this.packet = null;
+        flowID = DEFAULT_FLOWID;
+        packetID = DEFAULT_PACKETID;
+        packet = null;
         this.arrivalOrder = arrivalOrder;
     }
 
@@ -49,7 +49,7 @@ public class TDMGPEntry implements Comparable<TDMGPEntry> {
      * @since 2.0
      */
     public int getFlowID() {
-        return this.flowID;
+        return flowID;
     }
 
     /**
@@ -61,7 +61,7 @@ public class TDMGPEntry implements Comparable<TDMGPEntry> {
      * @since 2.0
      */
     public int getPacketID() {
-        return this.packetID;
+        return packetID;
     }
 
     /**
@@ -73,8 +73,8 @@ public class TDMGPEntry implements Comparable<TDMGPEntry> {
      * @since 2.0
      */
     public TMPLSPDU getPacket() {
-        if (this.packet != null) {
-            return this.packet.getAClon();
+        if (packet != null) {
+            return packet.getAClon();
         }
         return null;
     }
@@ -87,9 +87,9 @@ public class TDMGPEntry implements Comparable<TDMGPEntry> {
      * @since 2.0
      */
     public void setPacket(TMPLSPDU mplsPacket) {
-        this.packet = mplsPacket.getAClon();
-        this.flowID = mplsPacket.getIPv4Header().getOriginIPv4Address().hashCode();
-        this.packetID = mplsPacket.getIPv4Header().getGoSGlobalUniqueIdentifier();
+        packet = mplsPacket.getAClon();
+        flowID = mplsPacket.getIPv4Header().getOriginIPv4Address().hashCode();
+        packetID = mplsPacket.getIPv4Header().getGoSGlobalUniqueIdentifier();
     }
 
     /**
@@ -101,7 +101,7 @@ public class TDMGPEntry implements Comparable<TDMGPEntry> {
      * @since 2.0
      */
     public int getArrivalOrder() {
-        return this.arrivalOrder;
+        return arrivalOrder;
     }
 
     /**
@@ -115,10 +115,10 @@ public class TDMGPEntry implements Comparable<TDMGPEntry> {
      */
     @Override
     public int compareTo(TDMGPEntry anotherDMGPEntry) {
-        if (this.arrivalOrder < anotherDMGPEntry.getArrivalOrder()) {
+        if (arrivalOrder < anotherDMGPEntry.getArrivalOrder()) {
             return TDMGPEntry.THIS_LOWER;
         }
-        if (this.arrivalOrder > anotherDMGPEntry.getArrivalOrder()) {
+        if (arrivalOrder > anotherDMGPEntry.getArrivalOrder()) {
             return TDMGPEntry.THIS_GREATER;
         }
         return TDMGPEntry.THIS_EQUAL;

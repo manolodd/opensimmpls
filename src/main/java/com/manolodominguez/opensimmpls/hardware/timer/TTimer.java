@@ -70,7 +70,7 @@ public class TTimer implements Runnable {
         this.running = false;
         this.isFinished = true;
         this.paused = false;
-        this.translations = ResourceBundle.getBundle(AvailableBundles.TIMER.getPath());
+        this.translations = ResourceBundle.getBundle(AvailableBundles.T_TIMER.getPath());
     }
 
     /**

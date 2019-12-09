@@ -78,7 +78,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
         // FIX: This method is overridable. Avoid using this method to update
         // the number of ports or make it final.
         this.stats.setStatsEnabled(this.isGeneratingStats());
-        this.translations = ResourceBundle.getBundle(AvailableBundles.TRAFFIC_GENERATOR_NODE.getPath());
+        this.translations = ResourceBundle.getBundle(AvailableBundles.T_TRAFFIC_GENERATOR_NODE.getPath());
     }
 
     /**

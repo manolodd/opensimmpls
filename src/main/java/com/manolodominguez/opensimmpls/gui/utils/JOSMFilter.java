@@ -38,7 +38,7 @@ public class JOSMFilter extends FileFilter {
      * @since 2.0
      */
     public JOSMFilter() {
-        this.translations = ResourceBundle.getBundle(AvailableBundles.OSMFILTER.getPath());
+        this.translations = ResourceBundle.getBundle(AvailableBundles.T_OSM_FILTER.getPath());
     }
 
     /**

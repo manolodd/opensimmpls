@@ -77,7 +77,7 @@ public class TLERNode extends TNode implements ITimerEventListener, Runnable {
         //FIX: replace with class constants.
         this.routingPowerInMbps = 512;
         this.stats = new TLERStats();
-        this.translations = ResourceBundle.getBundle(AvailableBundles.LER_NODE.getPath());
+        this.translations = ResourceBundle.getBundle(AvailableBundles.T_LER_NODE.getPath());
     }
 
     /**

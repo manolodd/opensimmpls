@@ -40,7 +40,7 @@ public class TImageBroker {
      */
     private TImageBroker() {
         this.imageIcons = new EnumMap<>(AvailableImages.class);
-        this.translations = ResourceBundle.getBundle(AvailableBundles.IMAGE_BROKER.getPath());
+        this.translations = ResourceBundle.getBundle(AvailableBundles.T_IMAGE_BROKER.getPath());
         try {
             for (AvailableImages availableImage : AvailableImages.values()) {
                 this.imageIcons.put(availableImage, new ImageIcon(getClass().getResource(availableImage.getPath())));

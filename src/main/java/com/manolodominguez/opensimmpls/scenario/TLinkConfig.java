@@ -42,7 +42,7 @@ public class TLinkConfig {
         this.linkType = TLink.INTERNAL_LINK;
         this.headEndNodePortID = -1;
         this.tailEndNodePortID = -1;
-        this.translations = ResourceBundle.getBundle(AvailableBundles.LINK_CONFIG.getPath());
+        this.translations = ResourceBundle.getBundle(AvailableBundles.T_LINK_CONFIG.getPath());
     }
 
     /**

@@ -36,12 +36,12 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public TGPSRPRequestEntry(int arrivalOrder) {
-        this.timeout = GPSRP_TIMEOUT_NANOSECONDS;
-        this.attempts = GPSRP_ATTEMPTS;
-        this.flowID = DEFAULT_FLOWID;
-        this.packetID = DEFAULT_PACKETID;
-        this.outgoingPortID = DEFAULT_OUTGOING_PORTID;
-        this.crossedNodes = new LinkedList<>();
+        timeout = GPSRP_TIMEOUT_NANOSECONDS;
+        attempts = GPSRP_ATTEMPTS;
+        flowID = DEFAULT_FLOWID;
+        packetID = DEFAULT_PACKETID;
+        outgoingPortID = DEFAULT_OUTGOING_PORTID;
+        crossedNodes = new LinkedList<>();
         this.arrivalOrder = arrivalOrder;
     }
 
@@ -54,7 +54,7 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public int getArrivalOrder() {
-        return this.arrivalOrder;
+        return arrivalOrder;
     }
 
     /**
@@ -76,7 +76,7 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public int getFlowID() {
-        return this.flowID;
+        return flowID;
     }
 
     /**
@@ -99,7 +99,7 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public int getPacketID() {
-        return this.packetID;
+        return packetID;
     }
 
     /**
@@ -123,7 +123,7 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public int getOutgoingPortID() {
-        return this.outgoingPortID;
+        return outgoingPortID;
     }
 
     /**
@@ -136,7 +136,7 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public void setCrossedNodeIP(String crossedNodeIP) {
-        this.crossedNodes.addFirst(crossedNodeIP);
+        crossedNodes.addFirst(crossedNodeIP);
     }
 
     /**
@@ -150,8 +150,8 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public String getCrossedNodeIPv4() {
-        if (this.crossedNodes.size() > ZERO) {
-            return this.crossedNodes.removeFirst();
+        if (crossedNodes.size() > ZERO) {
+            return crossedNodes.removeFirst();
         }
         return null;
     }
@@ -164,9 +164,9 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public void decreaseTimeout(int nanoseconds) {
-        this.timeout -= nanoseconds;
-        if (this.timeout < ZERO) {
-            this.timeout = ZERO;
+        timeout -= nanoseconds;
+        if (timeout < ZERO) {
+            timeout = ZERO;
         }
     }
 
@@ -177,10 +177,10 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public void resetTimeout() {
-        if (this.timeout == ZERO) {
-            if (this.attempts > ZERO) {
-                this.timeout = GPSRP_TIMEOUT_NANOSECONDS;
-                this.attempts--;
+        if (timeout == ZERO) {
+            if (attempts > ZERO) {
+                timeout = GPSRP_TIMEOUT_NANOSECONDS;
+                attempts--;
             }
         }
     }
@@ -193,9 +193,9 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public void forceTimeoutReset() {
-        this.timeout = GPSRP_TIMEOUT_NANOSECONDS;
-        this.attempts--;
-        if (this.attempts < ZERO) {
+        timeout = GPSRP_TIMEOUT_NANOSECONDS;
+        attempts--;
+        if (attempts < ZERO) {
             attempts = ZERO;
             timeout = ZERO;
         }
@@ -210,9 +210,9 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public boolean isRetryable() {
-        if (this.attempts > ZERO) {
-            if (this.timeout == ZERO) {
-                if (this.crossedNodes.size() > ZERO) {
+        if (attempts > ZERO) {
+            if (timeout == ZERO) {
+                if (crossedNodes.size() > ZERO) {
                     return true;
                 }
             }
@@ -229,11 +229,11 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public boolean isPurgeable() {
-        if (this.crossedNodes.size() == ZERO) {
+        if (crossedNodes.size() == ZERO) {
             return true;
         }
-        if (this.attempts == ZERO) {
-            if (this.timeout == ZERO) {
+        if (attempts == ZERO) {
+            if (timeout == ZERO) {
                 return true;
             }
         }
@@ -254,10 +254,10 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      */
     @Override
     public int compareTo(TGPSRPRequestEntry anotherTGPSRPRequestEntry) {
-        if (this.arrivalOrder < anotherTGPSRPRequestEntry.getArrivalOrder()) {
+        if (arrivalOrder < anotherTGPSRPRequestEntry.getArrivalOrder()) {
             return TGPSRPRequestEntry.THIS_LOWER;
         }
-        if (this.arrivalOrder > anotherTGPSRPRequestEntry.getArrivalOrder()) {
+        if (arrivalOrder > anotherTGPSRPRequestEntry.getArrivalOrder()) {
             return TGPSRPRequestEntry.THIS_GREATER;
         }
         return TGPSRPRequestEntry.THIS_EQUAL;

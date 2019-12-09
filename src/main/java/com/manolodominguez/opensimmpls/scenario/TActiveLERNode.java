@@ -84,7 +84,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         this.dmgp = new TDMGP();
         this.gpsrpRequests = new TGPSRPRequestsMatrix();
         this.stats = new TActiveLERStats();
-        this.translations = ResourceBundle.getBundle(AvailableBundles.ACTIVE_LER_NODE.getPath());
+        this.translations = ResourceBundle.getBundle(AvailableBundles.T_ACTIVE_LER_NODE.getPath());
     }
 
     /**

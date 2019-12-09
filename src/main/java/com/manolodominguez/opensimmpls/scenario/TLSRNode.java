@@ -76,7 +76,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
         //FIX: replace with class constants.
         this.switchingPowerInMbps = 512;
         this.stats = new TLSRStats();
-        this.translations = ResourceBundle.getBundle(AvailableBundles.LSR_NODE.getPath());
+        this.translations = ResourceBundle.getBundle(AvailableBundles.T_LSR_NODE.getPath());
     }
 
     /**

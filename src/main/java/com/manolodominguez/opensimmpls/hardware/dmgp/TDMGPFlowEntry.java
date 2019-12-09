@@ -22,7 +22,8 @@ import com.manolodominguez.opensimmpls.commons.TRotaryIDGenerator;
 import com.manolodominguez.opensimmpls.commons.TSemaphore;
 
 /**
- * This class implements a flow entry for the DMGP memory.
+ * This class implements a flow entry for the DMGP memory. A flow includes all
+ * packets that shares the same origin and target nodes.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
@@ -37,14 +38,17 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      */
     public TDMGPFlowEntry(int arrivalOrder) {
+        if (arrivalOrder < 0) {
+
+        }
         this.arrivalOrder = arrivalOrder;
-        this.flowID = DEFAULT_FLOWID;
-        this.assignedPercentage = DEFAULT_ASSIGNED_PERCENTAGE;
-        this.assignedOctects = DEFAULT_ASSIGNED_OCTECTS;
-        this.usedOctects = DEFAULT_USED_OCTECTS;
-        this.entries = new TreeSet<>();
-        this.semaphore = new TSemaphore();
-        this.idGenerator = new TRotaryIDGenerator();
+        flowID = DEFAULT_FLOWID;
+        assignedPercentage = DEFAULT_ASSIGNED_PERCENTAGE;
+        assignedOctects = DEFAULT_ASSIGNED_OCTECTS;
+        usedOctects = DEFAULT_USED_OCTECTS;
+        entries = new TreeSet<>();
+        semaphore = new TSemaphore();
+        idGenerator = new TRotaryIDGenerator();
     }
 
     /**
@@ -66,7 +70,7 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      */
     public int getFlowID() {
-        return this.flowID;
+        return flowID;
     }
 
     /**
@@ -87,7 +91,7 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      */
     public int getAssignedPercentage() {
-        return this.assignedPercentage;
+        return assignedPercentage;
     }
 
     /**
@@ -109,7 +113,7 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      */
     public int getAssignedOctects() {
-        return this.assignedOctects;
+        return assignedOctects;
     }
 
     /**
@@ -133,7 +137,7 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      */
     public int getUsedOctects() {
-        return this.usedOctects;
+        return usedOctects;
     }
 
     /**
@@ -144,7 +148,7 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      */
     public TreeSet<TDMGPEntry> getEntries() {
-        return this.entries;
+        return entries;
     }
 
     /**
@@ -156,7 +160,7 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      */
     public int getArrivalOrder() {
-        return this.arrivalOrder;
+        return arrivalOrder;
     }
 
     /**
@@ -167,19 +171,19 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @return The monitor of this flow.
      */
     public TSemaphore getMonitor() {
-        return this.semaphore;
+        return semaphore;
     }
 
     private void releaseMemory(int octectsToBeReleased) {
         int releasedOctects = ZERO;
-        Iterator<TDMGPEntry> entriesIterator = this.entries.iterator();
+        Iterator<TDMGPEntry> entriesIterator = entries.iterator();
         TDMGPEntry dmgpEntry = null;
         while ((entriesIterator.hasNext()) && (releasedOctects < octectsToBeReleased)) {
             dmgpEntry = entriesIterator.next();
             releasedOctects += dmgpEntry.getPacket().getSize();
             entriesIterator.remove();
         }
-        this.usedOctects -= releasedOctects;
+        usedOctects -= releasedOctects;
     }
 
     /**
@@ -195,25 +199,25 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      */
     public void addPacket(TMPLSPDU mplsPacket) {
-        this.semaphore.setRed();
-        int availableOctects = this.assignedOctects - this.usedOctects;
-        if (this.assignedOctects >= mplsPacket.getSize()) {
+        semaphore.setRed();
+        int availableOctects = assignedOctects - usedOctects;
+        if (assignedOctects >= mplsPacket.getSize()) {
             if (availableOctects >= mplsPacket.getSize()) {
                 TDMGPEntry dmgpEntry = new TDMGPEntry(idGenerator.getNextIdentifier());
                 dmgpEntry.setPacket(mplsPacket);
-                this.usedOctects += mplsPacket.getSize();
-                this.entries.add(dmgpEntry);
+                usedOctects += mplsPacket.getSize();
+                entries.add(dmgpEntry);
             } else {
                 releaseMemory(mplsPacket.getSize() - availableOctects);
                 TDMGPEntry dmgpEntry = new TDMGPEntry(idGenerator.getNextIdentifier());
                 dmgpEntry.setPacket(mplsPacket);
-                this.usedOctects += mplsPacket.getSize();
-                this.entries.add(dmgpEntry);
+                usedOctects += mplsPacket.getSize();
+                entries.add(dmgpEntry);
             }
         } else {
             mplsPacket = null;
         }
-        this.semaphore.setGreen();
+        semaphore.setGreen();
     }
 
     /**
@@ -228,10 +232,10 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      */
     @Override
     public int compareTo(TDMGPFlowEntry anotherDMGPFlowEntry) {
-        if (this.arrivalOrder < anotherDMGPFlowEntry.getArrivalOrder()) {
+        if (arrivalOrder < anotherDMGPFlowEntry.getArrivalOrder()) {
             return TDMGPFlowEntry.THIS_LOWER;
         }
-        if (this.arrivalOrder > anotherDMGPFlowEntry.getArrivalOrder()) {
+        if (arrivalOrder > anotherDMGPFlowEntry.getArrivalOrder()) {
             return TDMGPFlowEntry.THIS_GREATER;
         }
         return TDMGPFlowEntry.THIS_EQUAL;

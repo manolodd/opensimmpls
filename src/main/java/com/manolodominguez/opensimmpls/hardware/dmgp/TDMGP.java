@@ -38,12 +38,12 @@ public class TDMGP {
      * @since 2.0
      */
     public TDMGP() {
-        this.semaphore = new TSemaphore();
-        this.idGenerator = new TRotaryIDGenerator();
-        this.flows = new TreeSet<>();
-        this.totalAvailablePercentage = DEFAULT_TOTAL_AVAILABLE_PERCENTAGE;
-        this.totalDMGPSizeInKB = DEFAULT_TOTAL_DMGP_SIZE_IN_KB;
-        this.totalAssignedOctects = DEFAULT_TOTAL_ASSIGNED_OCTECTS;
+        semaphore = new TSemaphore();
+        idGenerator = new TRotaryIDGenerator();
+        flows = new TreeSet<>();
+        totalAvailablePercentage = DEFAULT_TOTAL_AVAILABLE_PERCENTAGE;
+        totalDMGPSizeInKB = DEFAULT_TOTAL_DMGP_SIZE_IN_KB;
+        totalAssignedOctects = DEFAULT_TOTAL_ASSIGNED_OCTECTS;
     }
 
     /**
@@ -55,7 +55,7 @@ public class TDMGP {
      */
     public void setDMGPSizeInKB(int totalDMGPSizeInKB) {
         this.totalDMGPSizeInKB = totalDMGPSizeInKB;
-        this.reset();
+        reset();
     }
 
     /**
@@ -66,7 +66,7 @@ public class TDMGP {
      * @since 2.0
      */
     public int getDMGPSizeInKB() {
-        return this.totalDMGPSizeInKB;
+        return totalDMGPSizeInKB;
     }
 
     /**
@@ -80,18 +80,18 @@ public class TDMGP {
      */
     public TMPLSPDU getPacket(int flowID, int packetID) {
         TMPLSPDU wantedPacket = null;
-        TDMGPFlowEntry requestedDMGPFlowEntry = this.getFlow(flowID);
+        TDMGPFlowEntry requestedDMGPFlowEntry = getFlow(flowID);
         // If the requested flowID is already created...
         if (requestedDMGPFlowEntry != null) {
-            this.semaphore.setRed();
+            semaphore.setRed();
             for (TDMGPEntry dmgpEntry : requestedDMGPFlowEntry.getEntries()) {
                 if (dmgpEntry.getPacketID() == packetID) {
                     wantedPacket = dmgpEntry.getPacket();
-                    this.semaphore.setGreen();
+                    semaphore.setGreen();
                     return wantedPacket;
                 }
             }
-            this.semaphore.setGreen();
+            semaphore.setGreen();
         }
         return null;
     }
@@ -104,9 +104,9 @@ public class TDMGP {
      * @since 2.0
      */
     public void addPacket(TMPLSPDU packet) {
-        TDMGPFlowEntry dmgpFlowEntry = this.getFlow(packet);
+        TDMGPFlowEntry dmgpFlowEntry = getFlow(packet);
         if (dmgpFlowEntry == null) { // The correponding flow, dows not exists
-            dmgpFlowEntry = this.createFlow(packet);
+            dmgpFlowEntry = createFlow(packet);
         }
         if (dmgpFlowEntry != null) { // The corresponding flow already exists
             dmgpFlowEntry.addPacket(packet);
@@ -123,18 +123,18 @@ public class TDMGP {
      * @since 2.0
      */
     public void reset() {
-        this.semaphore = null;
-        this.idGenerator = null;
-        this.flows = null;
-        this.semaphore = new TSemaphore();
-        this.idGenerator = new TRotaryIDGenerator();
-        this.flows = new TreeSet<>();
-        this.totalAvailablePercentage = DEFAULT_TOTAL_AVAILABLE_PERCENTAGE;
-        this.totalAssignedOctects = DEFAULT_TOTAL_ASSIGNED_OCTECTS;
+        semaphore = null;
+        idGenerator = null;
+        flows = null;
+        semaphore = new TSemaphore();
+        idGenerator = new TRotaryIDGenerator();
+        flows = new TreeSet<>();
+        totalAvailablePercentage = DEFAULT_TOTAL_AVAILABLE_PERCENTAGE;
+        totalAssignedOctects = DEFAULT_TOTAL_ASSIGNED_OCTECTS;
     }
 
     private int getDMGPSizeInOctects() {
-        return (this.totalDMGPSizeInKB * UnitsTranslations.OCTETS_PER_KILOBYTE.getUnits());
+        return (totalDMGPSizeInKB * UnitsTranslations.OCTETS_PER_KILOBYTE.getUnits());
     }
 
     private TDMGPFlowEntry getFlow(TAbstractPDU packet) {
@@ -145,51 +145,51 @@ public class TDMGP {
     }
 
     private TDMGPFlowEntry getFlow(int flowID) {
-        this.semaphore.setRed();
-        for (TDMGPFlowEntry dmgpFlowEntry : this.flows) {
+        semaphore.setRed();
+        for (TDMGPFlowEntry dmgpFlowEntry : flows) {
             if (dmgpFlowEntry.getFlowID() == flowID) {
-                this.semaphore.setGreen();
+                semaphore.setGreen();
                 return dmgpFlowEntry;
             }
         }
-        this.semaphore.setGreen();
+        semaphore.setGreen();
         return null;
     }
 
     private TDMGPFlowEntry createFlow(TAbstractPDU packet) {
-        this.semaphore.setRed();
+        semaphore.setRed();
         TDMGPFlowEntry dmgpFlowEntry = null;
         int flowID = packet.getIPv4Header().getOriginIPv4Address().hashCode();
         int percentageToBeAssigned = ZERO;
         int octectsToBeAssigned = ZERO;
-        if (this.totalAssignedOctects < this.getDMGPSizeInOctects()) {
-            percentageToBeAssigned = this.getPercentageToBeAssigned(packet);
-            octectsToBeAssigned = this.getOctectsToBeAssigned(packet);
+        if (totalAssignedOctects < getDMGPSizeInOctects()) {
+            percentageToBeAssigned = getPercentageToBeAssigned(packet);
+            octectsToBeAssigned = getOctectsToBeAssigned(packet);
             if (octectsToBeAssigned > ZERO) {
-                this.totalAssignedOctects += octectsToBeAssigned;
-                this.totalAvailablePercentage -= percentageToBeAssigned;
-                dmgpFlowEntry = new TDMGPFlowEntry(this.idGenerator.getNextIdentifier());
+                totalAssignedOctects += octectsToBeAssigned;
+                totalAvailablePercentage -= percentageToBeAssigned;
+                dmgpFlowEntry = new TDMGPFlowEntry(idGenerator.getNextIdentifier());
                 dmgpFlowEntry.setFlowID(flowID);
                 dmgpFlowEntry.setAssignedPercentage(percentageToBeAssigned);
                 dmgpFlowEntry.setAssignedOctects(octectsToBeAssigned);
                 flows.add(dmgpFlowEntry);
-                this.semaphore.setGreen();
+                semaphore.setGreen();
                 return dmgpFlowEntry;
             }
         }
-        this.semaphore.setGreen();
+        semaphore.setGreen();
         return null;
     }
 
     private int getOctectsToBeAssigned(TAbstractPDU packet) {
         int reservedPercentage = getRequestedPercentage(packet);
         int reservedOctects = ZERO;
-        if (this.totalAvailablePercentage > ZERO) {
-            if (this.totalAvailablePercentage > reservedPercentage) {
+        if (totalAvailablePercentage > ZERO) {
+            if (totalAvailablePercentage > reservedPercentage) {
                 reservedOctects = ((this.getDMGPSizeInOctects() * reservedPercentage) / ONE_HUNDRED);
                 return reservedOctects;
             } else {
-                reservedOctects = this.getDMGPSizeInOctects() - this.totalAssignedOctects;
+                reservedOctects = getDMGPSizeInOctects() - totalAssignedOctects;
                 return reservedOctects;
             }
         }
@@ -198,11 +198,11 @@ public class TDMGP {
 
     private int getPercentageToBeAssigned(TAbstractPDU packet) {
         int reservedPercentage = getRequestedPercentage(packet);
-        if (this.totalAvailablePercentage > ZERO) {
-            if (this.totalAvailablePercentage > reservedPercentage) {
+        if (totalAvailablePercentage > ZERO) {
+            if (totalAvailablePercentage > reservedPercentage) {
                 return reservedPercentage;
             } else {
-                return this.totalAvailablePercentage;
+                return totalAvailablePercentage;
             }
         }
         return ZERO;

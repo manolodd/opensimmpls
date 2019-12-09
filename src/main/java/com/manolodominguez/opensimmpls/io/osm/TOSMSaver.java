@@ -53,7 +53,7 @@ public class TOSMSaver {
         this.scenario = scenario;
         this.outputStream = null;
         this.output = null;
-        this.translations = ResourceBundle.getBundle(AvailableBundles.OSM_SAVER.getPath());
+        this.translations = ResourceBundle.getBundle(AvailableBundles.T_OSM_SAVER.getPath());
     }
 
     /**

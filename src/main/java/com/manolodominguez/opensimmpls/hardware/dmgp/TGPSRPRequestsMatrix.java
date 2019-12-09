@@ -38,9 +38,9 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public TGPSRPRequestsMatrix() {
-        this.entries = new TreeSet<>();
-        this.idGenerator = new TRotaryIDGenerator();
-        this.semaphore = new TSemaphore();
+        entries = new TreeSet<>();
+        idGenerator = new TRotaryIDGenerator();
+        semaphore = new TSemaphore();
     }
 
     /**
@@ -51,9 +51,9 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public void reset() {
-        this.entries = new TreeSet<>();
-        this.idGenerator = new TRotaryIDGenerator();
-        this.semaphore = new TSemaphore();
+        entries = new TreeSet<>();
+        idGenerator = new TRotaryIDGenerator();
+        semaphore = new TSemaphore();
     }
 
     /**
@@ -68,8 +68,8 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public void updateOutgoingPort(int currentOutgoingPortID, int newOutgoingPortID) {
-        this.semaphore.setRed();
-        Iterator<TGPSRPRequestEntry> iterator = this.entries.iterator();
+        semaphore.setRed();
+        Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
@@ -77,7 +77,7 @@ public class TGPSRPRequestsMatrix {
                 gpsrpRequestEntry.setOutgoingPortID(newOutgoingPortID);
             }
         }
-        this.semaphore.setGreen();
+        semaphore.setGreen();
     }
 
     /**
@@ -90,8 +90,8 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public void removeEntriesMatchingOutgoingPort(int oldOutgoingPortID) {
-        this.semaphore.setRed();
-        Iterator<TGPSRPRequestEntry> iterator = this.entries.iterator();
+        semaphore.setRed();
+        Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
@@ -99,7 +99,7 @@ public class TGPSRPRequestsMatrix {
                 iterator.remove();
             }
         }
-        this.semaphore.setGreen();
+        semaphore.setGreen();
     }
 
     /**
@@ -114,8 +114,8 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public TGPSRPRequestEntry addEntry(TMPLSPDU mplsPacket, int incomingPortID) {
-        this.semaphore.setRed();
-        TGPSRPRequestEntry gpsrpRequestEntry = new TGPSRPRequestEntry(this.idGenerator.getNextIdentifier());
+        semaphore.setRed();
+        TGPSRPRequestEntry gpsrpRequestEntry = new TGPSRPRequestEntry(idGenerator.getNextIdentifier());
         gpsrpRequestEntry.setOutgoingPortID(incomingPortID);
         gpsrpRequestEntry.setFlowID(mplsPacket.getIPv4Header().getOriginIPv4Address().hashCode());
         gpsrpRequestEntry.setPacketID(mplsPacket.getIPv4Header().getGoSGlobalUniqueIdentifier());
@@ -128,8 +128,8 @@ public class TGPSRPRequestsMatrix {
                 gpsrpRequestEntry.setCrossedNodeIP(nextIPv4);
             }
         }
-        this.entries.add(gpsrpRequestEntry);
-        this.semaphore.setGreen();
+        entries.add(gpsrpRequestEntry);
+        semaphore.setGreen();
         return gpsrpRequestEntry;
     }
 
@@ -142,8 +142,8 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public void removeEntry(int flowID, int packetID) {
-        this.semaphore.setRed();
-        Iterator<TGPSRPRequestEntry> iterator = this.entries.iterator();
+        semaphore.setRed();
+        Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
@@ -153,7 +153,7 @@ public class TGPSRPRequestsMatrix {
                 }
             }
         }
-        this.semaphore.setGreen();
+        semaphore.setGreen();
     }
 
     /**
@@ -166,19 +166,19 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public TGPSRPRequestEntry getEntry(int flowID, int packetID) {
-        this.semaphore.setRed();
-        Iterator<TGPSRPRequestEntry> iterator = this.entries.iterator();
+        semaphore.setRed();
+        Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
             if (gpsrpRequestEntry.getFlowID() == flowID) {
                 if (gpsrpRequestEntry.getPacketID() == packetID) {
-                    this.semaphore.setGreen();
+                    semaphore.setGreen();
                     return gpsrpRequestEntry;
                 }
             }
         }
-        this.semaphore.setGreen();
+        semaphore.setGreen();
         return null;
     }
 
@@ -190,8 +190,8 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public void updateEntries() {
-        this.semaphore.setRed();
-        Iterator<TGPSRPRequestEntry> iterator = this.entries.iterator();
+        semaphore.setRed();
+        Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
@@ -201,7 +201,7 @@ public class TGPSRPRequestsMatrix {
                 gpsrpRequestEntry.resetTimeout();
             }
         }
-        this.semaphore.setGreen();
+        semaphore.setGreen();
     }
 
     /**
@@ -213,14 +213,14 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public void decreaseTimeout(int nanoseconds) {
-        this.semaphore.setRed();
-        Iterator<TGPSRPRequestEntry> iterator = this.entries.iterator();
+        semaphore.setRed();
+        Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
             gpsrpRequestEntry.decreaseTimeout(nanoseconds);
         }
-        this.semaphore.setGreen();
+        semaphore.setGreen();
     }
 
     /**
@@ -233,19 +233,19 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public int getOutgoingPort(int flowID, int packetID) {
-        this.semaphore.setRed();
-        Iterator<TGPSRPRequestEntry> iterator = this.entries.iterator();
+        semaphore.setRed();
+        Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
             if (gpsrpRequestEntry.getFlowID() == flowID) {
                 if (gpsrpRequestEntry.getPacketID() == packetID) {
-                    this.semaphore.setGreen();
+                    semaphore.setGreen();
                     return gpsrpRequestEntry.getOutgoingPortID();
                 }
             }
         }
-        this.semaphore.setGreen();
+        semaphore.setGreen();
         return -1;
     }
 
@@ -261,19 +261,19 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public String getActiveNodeIP(int flowID, int packetID) {
-        this.semaphore.setRed();
-        Iterator<TGPSRPRequestEntry> iterator = this.entries.iterator();
+        semaphore.setRed();
+        Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
             if (gpsrpRequestEntry.getFlowID() == flowID) {
                 if (gpsrpRequestEntry.getPacketID() == packetID) {
-                    this.semaphore.setGreen();
+                    semaphore.setGreen();
                     return gpsrpRequestEntry.getCrossedNodeIPv4();
                 }
             }
         }
-        this.semaphore.setGreen();
+        semaphore.setGreen();
         return null;
     }
 
@@ -285,7 +285,7 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public Iterator<TGPSRPRequestEntry> getEntriesIterator() {
-        return this.entries.iterator();
+        return entries.iterator();
     }
 
     /**
@@ -296,7 +296,7 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public TSemaphore getMonitor() {
-        return this.semaphore;
+        return semaphore;
     }
 
     private static final int ZERO = 0;

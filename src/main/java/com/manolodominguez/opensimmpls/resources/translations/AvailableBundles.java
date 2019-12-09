@@ -23,17 +23,17 @@ package com.manolodominguez.opensimmpls.resources.translations;
  * @version 2.0
  */
 public enum AvailableBundles {
-    TRAFFIC_SINK_NODE("translations"),
-    TRAFFIC_GENERATOR_NODE("translations"),
-    TOPOLOGY_ELEMENT("translations"),
+    T_TRAFFIC_SINK_NODE("translations"),
+    T_TRAFFIC_GENERATOR_NODE("translations"),
+    T_TOPOLOGY_ELEMENT("translations"),
     SCENARIO("translations"),
-    LINK_CONFIG("translations"),
-    LSR_NODE("translations"),
-    LER_NODE("translations"),
-    ACTIVE_LSR_NODE("translations"),
-    ACTIVE_LER_NODE("translations"),
+    T_LINK_CONFIG("translations"),
+    T_LSR_NODE("translations"),
+    T_LER_NODE("translations"),
+    T_ACTIVE_LSR_NODE("translations"),
+    T_ACTIVE_LER_NODE("translations"),
     MAIN_OPENSIMMPLS("translations"),
-    TIMER("translations"),
+    T_TIMER("translations"),
     E_SIMULATION_SINGLE_SUBSCRIBER("translations"),
     E_PROGRESS_EVENT_GENERATOR_ONLY_ALLOW_A_SINGLE_LISTENER("translations"),
     LER_WINDOW("translations"),
@@ -53,17 +53,18 @@ public enum AvailableBundles {
     SIMULATION_PANEL("translations"),
     SCENARIO_WINDOW("translations"),
     SPLASH("translations"),
-    OSMFILTER("translations"),
-    IMAGE_BROKER("translations"),
+    T_OSM_FILTER("translations"),
+    T_IMAGE_BROKER("translations"),
     E_ID_GENERATOR_OVERFLOW("eidgeneratoroverflow"),
     E_IPV4_ADDRESS_GENERATOR_OVERFLOW("eipv4addressgeneratoroverflow"),
-    OSM_SAVER("osmsaver"),
+    T_OSM_SAVER("osmsaver"),
     T_ID_GENERATOR("tidgenerator"),
+    T_DMGP_FLOW_ENTRI("tdmgpflowentry"),
     T_ROTARY_ID_GENERATOR("trotaryidgenerator"),
     T_LONG_ID_GENERATOR("tlongidgenerator"),
     T_IPV4_ADDRESS_GENERATOR("tipv4addressgenerator"),
     UNITS_TRANSLATIONS("unitstranslations"),
-    OSM_LOADER("osmloader");
+    T_OSM_LOADER("osmloader");
 
     private final String bundlePath;
     private static final String BASE_PATH = "com/manolodominguez/opensimmpls/resources/translations/";

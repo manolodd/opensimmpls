@@ -54,7 +54,7 @@ public abstract class TTopologyElement implements ITimerEventListener, Runnable 
         this.wellConfigured = false;
         this.currentTimeInstant = 0;
         this.tickDurationInNs = 0;
-        this.translations = ResourceBundle.getBundle(AvailableBundles.TOPOLOGY_ELEMENT.getPath());
+        this.translations = ResourceBundle.getBundle(AvailableBundles.T_TOPOLOGY_ELEMENT.getPath());
     }
 
     /**

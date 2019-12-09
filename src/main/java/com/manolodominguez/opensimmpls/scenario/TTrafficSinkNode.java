@@ -56,7 +56,7 @@ public class TTrafficSinkNode extends TNode implements ITimerEventListener, Runn
         // FIX: Use class constants instead of harcoded values.
         this.ports.setUnlimitedBuffer(true);
         this.stats = new TTrafficSinkStats();
-        this.translations = ResourceBundle.getBundle(AvailableBundles.TRAFFIC_SINK_NODE.getPath());
+        this.translations = ResourceBundle.getBundle(AvailableBundles.T_TRAFFIC_SINK_NODE.getPath());
     }
 
     /**
