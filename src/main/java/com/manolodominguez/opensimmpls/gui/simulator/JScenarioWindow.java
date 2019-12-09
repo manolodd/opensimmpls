@@ -102,6 +102,7 @@ import org.jfree.data.xy.XYSeriesCollection;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
+@SuppressWarnings("serial")
 public class JScenarioWindow extends JInternalFrame {
 
     /**

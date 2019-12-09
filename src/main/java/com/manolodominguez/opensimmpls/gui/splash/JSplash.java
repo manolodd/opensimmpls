@@ -40,6 +40,7 @@ import net.miginfocom.swing.MigLayout;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
+@SuppressWarnings("serial")
 public class JSplash extends JFrame {
 
     /**
