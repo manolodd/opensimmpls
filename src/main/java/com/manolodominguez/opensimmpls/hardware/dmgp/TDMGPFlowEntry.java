@@ -20,6 +20,10 @@ import java.util.TreeSet;
 import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
 import com.manolodominguez.opensimmpls.commons.TRotaryIDGenerator;
 import com.manolodominguez.opensimmpls.commons.TSemaphore;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.ResourceBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class implements a flow entry for the DMGP memory. A flow includes all
@@ -38,8 +42,10 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      */
     public TDMGPFlowEntry(int arrivalOrder) {
+        translations = ResourceBundle.getBundle(AvailableBundles.T_DMGP_FLOW_ENTRY.getPath());
         if (arrivalOrder < 0) {
-
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange")); 
         }
         this.arrivalOrder = arrivalOrder;
         flowID = DEFAULT_FLOWID;
@@ -55,7 +61,7 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * This method establishes the flow identifier associated to this entry.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param flowID The flow identifier.
+     * @param flowID The flow identifier. Could be a negative int.
      * @since 2.0
      */
     public void setFlowID(int flowID) {
@@ -80,6 +86,10 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      */
     public void setAssignedPercentage(int assignedPercentage) {
+        if (assignedPercentage < 0) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange")); 
+        }
         this.assignedPercentage = assignedPercentage;
     }
 
@@ -102,6 +112,10 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      */
     public void setAssignedOctects(int assignedOctects) {
+        if (assignedOctects < 0) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange")); 
+        }
         this.assignedOctects = assignedOctects;
     }
 
@@ -125,6 +139,10 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      */
     public void setUsedOctects(int usedOctects) {
+        if (usedOctects < 0) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange")); 
+        }
         this.usedOctects = usedOctects;
     }
 
@@ -175,6 +193,10 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     }
 
     private void releaseMemory(int octectsToBeReleased) {
+        if (octectsToBeReleased < 0) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange")); 
+        }
         int releasedOctects = ZERO;
         Iterator<TDMGPEntry> entriesIterator = entries.iterator();
         TDMGPEntry dmgpEntry = null;
@@ -199,6 +221,10 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      */
     public void addPacket(TMPLSPDU mplsPacket) {
+        if (mplsPacket == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument")); 
+        }
         semaphore.setRed();
         int availableOctects = assignedOctects - usedOctects;
         if (assignedOctects >= mplsPacket.getSize()) {
@@ -232,6 +258,10 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      */
     @Override
     public int compareTo(TDMGPFlowEntry anotherDMGPFlowEntry) {
+        if (anotherDMGPFlowEntry == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument")); 
+        }
         if (arrivalOrder < anotherDMGPFlowEntry.getArrivalOrder()) {
             return TDMGPFlowEntry.THIS_LOWER;
         }
@@ -259,4 +289,6 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     private final TreeSet<TDMGPEntry> entries;
     private final TSemaphore semaphore;
     private final TRotaryIDGenerator idGenerator;
+    private final ResourceBundle translations;
+    private final Logger logger = LoggerFactory.getLogger(TDMGPFlowEntry.class);
 }

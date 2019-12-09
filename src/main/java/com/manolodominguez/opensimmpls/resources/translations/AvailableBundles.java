@@ -59,7 +59,7 @@ public enum AvailableBundles {
     E_IPV4_ADDRESS_GENERATOR_OVERFLOW("eipv4addressgeneratoroverflow"),
     T_OSM_SAVER("osmsaver"),
     T_ID_GENERATOR("tidgenerator"),
-    T_DMGP_FLOW_ENTRI("tdmgpflowentry"),
+    T_DMGP_FLOW_ENTRY("tdmgpflowentry"),
     T_ROTARY_ID_GENERATOR("trotaryidgenerator"),
     T_LONG_ID_GENERATOR("tlongidgenerator"),
     T_IPV4_ADDRESS_GENERATOR("tipv4addressgenerator"),
