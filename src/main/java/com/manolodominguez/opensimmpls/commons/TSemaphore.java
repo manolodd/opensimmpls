@@ -37,7 +37,7 @@ public class TSemaphore {
      * @since 2.0
      */
     public TSemaphore() {
-        this.semaphoreLight = GREEN;
+        this.semaphoreLight = DEFAULT_LIGHT;
     }
 
     /**
@@ -74,9 +74,25 @@ public class TSemaphore {
         notify();
     }
 
+    /**
+     * This method returns the state of the semaphore
+     * the next thread that called the setRed() method and was blocked, will be
+     * released.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return true, if the if the semaphore is on red. Otherwise, false.
+     * @since 2.0
+     */
+    public boolean isRed() {
+        return semaphoreLight;
+    }
+
+    
+    
     private boolean semaphoreLight;
 
     private static final boolean RED = true;
     private static final boolean GREEN = false;
+    private static final boolean DEFAULT_LIGHT = GREEN;
     private final Logger logger = LoggerFactory.getLogger(TSemaphore.class);
 }

@@ -23,7 +23,7 @@ package com.manolodominguez.opensimmpls.commons;
  * @version 2.0
  */
 public enum UnitsTranslations {
-    BITS_PER_OCTECTS(8),
+    BITS_PER_OCTETS(8),
     OCTETS_PER_KILOBYTE(1024),
     OCTETS_PER_MEGABYTE(1024 * 1024),
     OCTETS_PER_GIGABYTE(1024 * 1024 * 1024);
