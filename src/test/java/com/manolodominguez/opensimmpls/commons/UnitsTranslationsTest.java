@@ -1,7 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.manolodominguez.opensimmpls.commons;
 
@@ -17,22 +27,22 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author manolodd
  */
 public class UnitsTranslationsTest {
-    
+
     public UnitsTranslationsTest() {
     }
-    
+
     @BeforeAll
     public static void setUpClass() {
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
     }
-    
+
     @BeforeEach
     public void setUp() {
     }
-    
+
     @AfterEach
     public void tearDown() {
     }
@@ -55,14 +65,14 @@ public class UnitsTranslationsTest {
         System.out.println("Test valueOf()");
         boolean result = true;
         UnitsTranslations[] enumValues = UnitsTranslations.values();
-        for (UnitsTranslations singleValue: enumValues) {
+        for (UnitsTranslations singleValue : enumValues) {
             if (singleValue.getUnits() < 0) {
                 result = false;
             }
         }
         assertTrue(result);
-    }    
-    
+    }
+
     /**
      * Test of getUnits method, of class UnitsTranslations.
      */
@@ -72,5 +82,5 @@ public class UnitsTranslationsTest {
         UnitsTranslations instance = UnitsTranslations.BITS_PER_OCTETS;
         assertEquals(8, instance.getUnits());
     }
-    
+
 }

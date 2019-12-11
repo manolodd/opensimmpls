@@ -294,9 +294,6 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     private static final int ZERO = 0;
     private static final int ONE_HUNDRED = 100;
     private static final int DEFAULT_FLOWID = 0;
-//    private static final int DEFAULT_ASSIGNED_PERCENTAGE = 0;
-//    private static final int DEFAULT_ASSIGNED_OCTECTS = 0;
-//    private static final int DEFAULT_USED_OCTECTS = 0;
     private static final int DEFAULT_ASSIGNED_PERCENTAGE = -1;
     private static final int DEFAULT_ASSIGNED_OCTECTS = -1;
     private static final int DEFAULT_USED_OCTECTS = -1;

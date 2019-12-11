@@ -85,7 +85,7 @@ public class TDMGP {
         if (requestedDMGPFlowEntry != null) {
             semaphore.setRed();
             for (TDMGPEntry dmgpEntry : requestedDMGPFlowEntry.getEntries()) {
-                if (dmgpEntry.getPacketID() == packetID) {
+                if (dmgpEntry.getPacketGoSGlobalUniqueIdentifier() == packetID) {
                     wantedPacket = dmgpEntry.getPacket();
                     semaphore.setGreen();
                     return wantedPacket;

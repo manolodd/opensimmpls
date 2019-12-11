@@ -16,6 +16,10 @@
 package com.manolodominguez.opensimmpls.hardware.dmgp;
 
 import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.ResourceBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class implements an entry of the DMGP memory. It stores a GoS packet and
@@ -27,29 +31,22 @@ import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
 public class TDMGPEntry implements Comparable<TDMGPEntry> {
 
     /**
-     * This method is the constructor of thte class. It creates a new instance
-     * of TDMGPEntry and initialize its attributes.
+     * This method is the constructor of the class. It creates a new instance of
+     * TDMGPEntry and initialize its attributes.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param arrivalOrder Establish the arrival of this TDMGPEntry in relation
      * to itrs corresponding flow.
      */
     public TDMGPEntry(int arrivalOrder) {
-        flowID = DEFAULT_FLOWID;
-        packetID = DEFAULT_PACKETID;
+        translations = ResourceBundle.getBundle(AvailableBundles.T_DMGP_ENTRY.getPath());
+        if (arrivalOrder < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
+        packetGoSGlobalUniqueIdentifier = DEFAULT_PACKETID;
         packet = null;
         this.arrivalOrder = arrivalOrder;
-    }
-
-    /**
-     * This method obtains the identifier of the flow associated to this entry.
-     *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return The identifier of the flow associated to this entry.
-     * @since 2.0
-     */
-    public int getFlowID() {
-        return flowID;
     }
 
     /**
@@ -60,8 +57,12 @@ public class TDMGPEntry implements Comparable<TDMGPEntry> {
      * @return The identifier of the GoS packet.
      * @since 2.0
      */
-    public int getPacketID() {
-        return packetID;
+    public int getPacketGoSGlobalUniqueIdentifier() {
+        if (packetGoSGlobalUniqueIdentifier == DEFAULT_PACKETID) {
+            logger.error(translations.getString("attributeNotInitialized"));
+            throw new RuntimeException(translations.getString("attributeNotInitialized"));
+        }
+        return packetGoSGlobalUniqueIdentifier;
     }
 
     /**
@@ -73,10 +74,11 @@ public class TDMGPEntry implements Comparable<TDMGPEntry> {
      * @since 2.0
      */
     public TMPLSPDU getPacket() {
-        if (packet != null) {
-            return packet.getAClon();
+        if (packet == null) {
+            logger.error(translations.getString("attributeNotInitialized"));
+            throw new RuntimeException(translations.getString("attributeNotInitialized"));
         }
-        return null;
+            return packet.getAClon();
     }
 
     /**
@@ -87,9 +89,12 @@ public class TDMGPEntry implements Comparable<TDMGPEntry> {
      * @since 2.0
      */
     public void setPacket(TMPLSPDU mplsPacket) {
+        if (mplsPacket == null) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
         packet = mplsPacket.getAClon();
-        flowID = mplsPacket.getIPv4Header().getOriginIPv4Address().hashCode();
-        packetID = mplsPacket.getIPv4Header().getGoSGlobalUniqueIdentifier();
+        packetGoSGlobalUniqueIdentifier = mplsPacket.getIPv4Header().getGoSGlobalUniqueIdentifier();
     }
 
     /**
@@ -115,6 +120,10 @@ public class TDMGPEntry implements Comparable<TDMGPEntry> {
      */
     @Override
     public int compareTo(TDMGPEntry anotherDMGPEntry) {
+        if (anotherDMGPEntry == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         if (arrivalOrder < anotherDMGPEntry.getArrivalOrder()) {
             return TDMGPEntry.THIS_LOWER;
         }
@@ -127,12 +136,12 @@ public class TDMGPEntry implements Comparable<TDMGPEntry> {
     private static final int THIS_LOWER = -1;
     private static final int THIS_EQUAL = 0;
     private static final int THIS_GREATER = 1;
+    private static final int DEFAULT_PACKETID = 0;
+    private static final int ZERO = 0;
 
-    private int flowID;
-    private int packetID;
+    private int packetGoSGlobalUniqueIdentifier;
     private final int arrivalOrder;
     private TMPLSPDU packet;
-
-    private static final int DEFAULT_FLOWID = -1;
-    private static final int DEFAULT_PACKETID = -1;
+    private final ResourceBundle translations;
+    private final Logger logger = LoggerFactory.getLogger(TDMGPEntry.class);
 }

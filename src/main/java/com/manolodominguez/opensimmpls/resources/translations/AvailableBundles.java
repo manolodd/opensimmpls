@@ -60,6 +60,7 @@ public enum AvailableBundles {
     T_OSM_SAVER("osmsaver"),
     T_ID_GENERATOR("tidgenerator"),
     T_DMGP_FLOW_ENTRY("tdmgpflowentry"),
+    T_DMGP_ENTRY("tdmgpentry"),
     T_ROTARY_ID_GENERATOR("trotaryidgenerator"),
     T_LONG_ID_GENERATOR("tlongidgenerator"),
     T_IPV4_ADDRESS_GENERATOR("tipv4addressgenerator"),
