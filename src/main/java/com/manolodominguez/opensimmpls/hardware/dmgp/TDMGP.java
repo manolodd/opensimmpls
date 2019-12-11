@@ -171,7 +171,7 @@ public class TDMGP {
                 dmgpFlowEntry = new TDMGPFlowEntry(idGenerator.getNextIdentifier());
                 dmgpFlowEntry.setFlowID(flowID);
                 dmgpFlowEntry.setAssignedPercentage(percentageToBeAssigned);
-                dmgpFlowEntry.setAssignedOctects(octectsToBeAssigned);
+                dmgpFlowEntry.setAssignedOctets(octectsToBeAssigned);
                 flows.add(dmgpFlowEntry);
                 semaphore.setGreen();
                 return dmgpFlowEntry;

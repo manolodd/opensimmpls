@@ -43,15 +43,15 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      */
     public TDMGPFlowEntry(int arrivalOrder) {
         translations = ResourceBundle.getBundle(AvailableBundles.T_DMGP_FLOW_ENTRY.getPath());
-        if (arrivalOrder < 0) {
+        if (arrivalOrder < ZERO) {
             logger.error(translations.getString("argumentOutOfRange"));
-            throw new IllegalArgumentException(translations.getString("argumentOutOfRange")); 
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         }
         this.arrivalOrder = arrivalOrder;
         flowID = DEFAULT_FLOWID;
         assignedPercentage = DEFAULT_ASSIGNED_PERCENTAGE;
-        assignedOctects = DEFAULT_ASSIGNED_OCTECTS;
-        usedOctects = DEFAULT_USED_OCTECTS;
+        assignedOctets = DEFAULT_ASSIGNED_OCTECTS;
+        usedOctets = DEFAULT_USED_OCTECTS;
         entries = new TreeSet<>();
         semaphore = new TSemaphore();
         idGenerator = new TRotaryIDGenerator();
@@ -76,6 +76,10 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      */
     public int getFlowID() {
+        if (flowID == DEFAULT_FLOWID) {
+            logger.error(translations.getString("attributeNotInitialized"));
+            throw new RuntimeException(translations.getString("attributeNotInitialized"));
+        }
         return flowID;
     }
 
@@ -86,9 +90,9 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      */
     public void setAssignedPercentage(int assignedPercentage) {
-        if (assignedPercentage < 0) {
+        if ((assignedPercentage < ZERO) || (assignedPercentage > ONE_HUNDRED)) {
             logger.error(translations.getString("argumentOutOfRange"));
-            throw new IllegalArgumentException(translations.getString("argumentOutOfRange")); 
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         }
         this.assignedPercentage = assignedPercentage;
     }
@@ -101,6 +105,10 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      */
     public int getAssignedPercentage() {
+        if (assignedPercentage < ZERO) {
+            logger.error(translations.getString("attributeNotInitialized"));
+            throw new RuntimeException(translations.getString("attributeNotInitialized"));
+        }
         return assignedPercentage;
     }
 
@@ -108,15 +116,15 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * This method establishes the number of DMGP octects assigned to this flow.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param assignedOctects Number of DMGP octects assigned to this flow.
+     * @param assignedOctets Number of DMGP octects assigned to this flow.
      * @since 2.0
      */
-    public void setAssignedOctects(int assignedOctects) {
-        if (assignedOctects < 0) {
+    public void setAssignedOctets(int assignedOctets) {
+        if (assignedOctets < ZERO) {
             logger.error(translations.getString("argumentOutOfRange"));
-            throw new IllegalArgumentException(translations.getString("argumentOutOfRange")); 
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         }
-        this.assignedOctects = assignedOctects;
+        this.assignedOctets = assignedOctets;
     }
 
     /**
@@ -126,8 +134,12 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @return The number of DMGP octects assigned to this flow.
      * @since 2.0
      */
-    public int getAssignedOctects() {
-        return assignedOctects;
+    public int getAssignedOctets() {
+        if (assignedOctets < ZERO) {
+            logger.error(translations.getString("attributeNotInitialized"));
+            throw new RuntimeException(translations.getString("attributeNotInitialized"));
+        }
+        return assignedOctets;
     }
 
     /**
@@ -135,15 +147,15 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * flow.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param usedOctects Number of DMGP octects currently used by the flow.
+     * @param usedOctets Number of DMGP octects currently used by the flow.
      * @since 2.0
      */
-    public void setUsedOctects(int usedOctects) {
-        if (usedOctects < 0) {
+    public void setUsedOctets(int usedOctets) {
+        if (usedOctets < ZERO) {
             logger.error(translations.getString("argumentOutOfRange"));
-            throw new IllegalArgumentException(translations.getString("argumentOutOfRange")); 
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         }
-        this.usedOctects = usedOctects;
+        this.usedOctets = usedOctets;
     }
 
     /**
@@ -154,8 +166,12 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @return Number of DMGP octects currently used by the flow.
      * @since 2.0
      */
-    public int getUsedOctects() {
-        return usedOctects;
+    public int getUsedOctets() {
+        if (usedOctets < ZERO) {
+            logger.error(translations.getString("attributeNotInitialized"));
+            throw new RuntimeException(translations.getString("attributeNotInitialized"));
+        }
+        return usedOctets;
     }
 
     /**
@@ -188,24 +204,24 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      * @return The monitor of this flow.
      */
-    public TSemaphore getMonitor() {
+    public TSemaphore getSemaphore() {
         return semaphore;
     }
 
-    private void releaseMemory(int octectsToBeReleased) {
-        if (octectsToBeReleased < 0) {
+    private void releaseMemory(int octetsToBeReleased) {
+        if (octetsToBeReleased < ZERO) {
             logger.error(translations.getString("argumentOutOfRange"));
-            throw new IllegalArgumentException(translations.getString("argumentOutOfRange")); 
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         }
-        int releasedOctects = ZERO;
+        int releasedOctets = ZERO;
         Iterator<TDMGPEntry> entriesIterator = entries.iterator();
         TDMGPEntry dmgpEntry = null;
-        while ((entriesIterator.hasNext()) && (releasedOctects < octectsToBeReleased)) {
+        while ((entriesIterator.hasNext()) && (releasedOctets < octetsToBeReleased)) {
             dmgpEntry = entriesIterator.next();
-            releasedOctects += dmgpEntry.getPacket().getSize();
+            releasedOctets += dmgpEntry.getPacket().getSize();
             entriesIterator.remove();
         }
-        usedOctects -= releasedOctects;
+        usedOctets -= releasedOctets;
     }
 
     /**
@@ -223,21 +239,21 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     public void addPacket(TMPLSPDU mplsPacket) {
         if (mplsPacket == null) {
             logger.error(translations.getString("badArgument"));
-            throw new IllegalArgumentException(translations.getString("badArgument")); 
+            throw new IllegalArgumentException(translations.getString("badArgument"));
         }
         semaphore.setRed();
-        int availableOctects = assignedOctects - usedOctects;
-        if (assignedOctects >= mplsPacket.getSize()) {
-            if (availableOctects >= mplsPacket.getSize()) {
+        int availableOctets = assignedOctets - usedOctets;
+        if (assignedOctets >= mplsPacket.getSize()) {
+            if (availableOctets >= mplsPacket.getSize()) {
                 TDMGPEntry dmgpEntry = new TDMGPEntry(idGenerator.getNextIdentifier());
                 dmgpEntry.setPacket(mplsPacket);
-                usedOctects += mplsPacket.getSize();
+                usedOctets += mplsPacket.getSize();
                 entries.add(dmgpEntry);
             } else {
-                releaseMemory(mplsPacket.getSize() - availableOctects);
+                releaseMemory(mplsPacket.getSize() - availableOctets);
                 TDMGPEntry dmgpEntry = new TDMGPEntry(idGenerator.getNextIdentifier());
                 dmgpEntry.setPacket(mplsPacket);
-                usedOctects += mplsPacket.getSize();
+                usedOctets += mplsPacket.getSize();
                 entries.add(dmgpEntry);
             }
         } else {
@@ -260,7 +276,7 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     public int compareTo(TDMGPFlowEntry anotherDMGPFlowEntry) {
         if (anotherDMGPFlowEntry == null) {
             logger.error(translations.getString("badArgument"));
-            throw new IllegalArgumentException(translations.getString("badArgument")); 
+            throw new IllegalArgumentException(translations.getString("badArgument"));
         }
         if (arrivalOrder < anotherDMGPFlowEntry.getArrivalOrder()) {
             return TDMGPFlowEntry.THIS_LOWER;
@@ -276,16 +292,20 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     private static final int THIS_GREATER = 1;
 
     private static final int ZERO = 0;
-    private static final int DEFAULT_FLOWID = -1;
-    private static final int DEFAULT_ASSIGNED_PERCENTAGE = 0;
-    private static final int DEFAULT_ASSIGNED_OCTECTS = 0;
-    private static final int DEFAULT_USED_OCTECTS = 0;
+    private static final int ONE_HUNDRED = 100;
+    private static final int DEFAULT_FLOWID = 0;
+//    private static final int DEFAULT_ASSIGNED_PERCENTAGE = 0;
+//    private static final int DEFAULT_ASSIGNED_OCTECTS = 0;
+//    private static final int DEFAULT_USED_OCTECTS = 0;
+    private static final int DEFAULT_ASSIGNED_PERCENTAGE = -1;
+    private static final int DEFAULT_ASSIGNED_OCTECTS = -1;
+    private static final int DEFAULT_USED_OCTECTS = -1;
 
     private final int arrivalOrder;
     private int flowID;
     private int assignedPercentage;
-    private int assignedOctects;
-    private int usedOctects;
+    private int assignedOctets;
+    private int usedOctets;
     private final TreeSet<TDMGPEntry> entries;
     private final TSemaphore semaphore;
     private final TRotaryIDGenerator idGenerator;
