@@ -344,7 +344,7 @@ public class TDMGPFlowEntryTest {
             worksFine = false;
         }
         for (TDMGPEntry entry : instance.getEntries()) {
-            auxMPLSPacket = entry.getPacket();
+            auxMPLSPacket = entry.getPacketClone();
             if (auxMPLSPacket.getID() == 1) {
                 if (!auxMPLSPacket.getIPv4Header().getOriginIPv4Address().equals("10.0.0.1")) {
                     worksFine = false;
@@ -399,7 +399,7 @@ public class TDMGPFlowEntryTest {
             worksFine = false;
         }
         for (TDMGPEntry entry : instance.getEntries()) {
-            auxMPLSPacket = entry.getPacket();
+            auxMPLSPacket = entry.getPacketClone();
             if (auxMPLSPacket.getID() == 2) {
                 if (!auxMPLSPacket.getIPv4Header().getOriginIPv4Address().equals("10.0.0.1")) {
                     worksFine = false;

@@ -73,12 +73,12 @@ public class TDMGPEntry implements Comparable<TDMGPEntry> {
      * @return The stored GoS packet.
      * @since 2.0
      */
-    public TMPLSPDU getPacket() {
+    public TMPLSPDU getPacketClone() {
         if (packet == null) {
             logger.error(translations.getString("attributeNotInitialized"));
             throw new RuntimeException(translations.getString("attributeNotInitialized"));
         }
-            return packet.getAClon();
+        return packet.getAClon();
     }
 
     /**

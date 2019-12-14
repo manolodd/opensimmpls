@@ -53,7 +53,8 @@ public class TIPv4Header {
     public int getGoSGlobalUniqueIdentifier() {
         String RawGoSGlobalUniqueIdentifier = "";
         if (this.IPv4OptionsField.isUsed()) {
-            RawGoSGlobalUniqueIdentifier = this.originIP + this.IPv4OptionsField.getPacketLocalUniqueIdentifier();
+            // this.targetIP was included 12/12/19
+            RawGoSGlobalUniqueIdentifier = this.originIP + this.IPv4OptionsField.getPacketLocalUniqueIdentifier() + this.targetIP;
             return RawGoSGlobalUniqueIdentifier.hashCode();
         }
         // FIX: Create and use a constant instead of this harcoded value

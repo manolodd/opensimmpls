@@ -218,7 +218,7 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
         TDMGPEntry dmgpEntry = null;
         while ((entriesIterator.hasNext()) && (releasedOctets < octetsToBeReleased)) {
             dmgpEntry = entriesIterator.next();
-            releasedOctets += dmgpEntry.getPacket().getSize();
+            releasedOctets += dmgpEntry.getPacketClone().getSize();
             entriesIterator.remove();
         }
         usedOctets -= releasedOctets;
