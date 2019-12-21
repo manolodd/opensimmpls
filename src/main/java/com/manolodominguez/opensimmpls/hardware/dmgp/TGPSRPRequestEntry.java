@@ -15,7 +15,12 @@
  */
 package com.manolodominguez.opensimmpls.hardware.dmgp;
 
+import com.manolodominguez.opensimmpls.commons.TIPv4AddressGenerator;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import java.util.LinkedList;
+import java.util.ResourceBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class implements an entry that will store data related to a
@@ -36,13 +41,18 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public TGPSRPRequestEntry(int arrivalOrder) {
-        timeout = GPSRP_TIMEOUT_NANOSECONDS;
-        attempts = GPSRP_ATTEMPTS;
+        translations = ResourceBundle.getBundle(AvailableBundles.T_GPSRP_REQUEST_ENTRY.getPath());
+        if (arrivalOrder < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
+        this.arrivalOrder = arrivalOrder;
+        timeout = DEFAULT_GPSRP_TIMEOUT_NANOSECONDS;
+        attempts = DEFAULT_GPSRP_ATTEMPTS;
         flowID = DEFAULT_FLOWID;
-        packetID = DEFAULT_PACKETID;
+        gosGlobalUniqueIdentifier = DEFAULT_PACKET_GOS_GLOBAL_UNIQUE_ID;
         outgoingPortID = DEFAULT_OUTGOING_PORTID;
         crossedNodes = new LinkedList<>();
-        this.arrivalOrder = arrivalOrder;
     }
 
     /**
@@ -76,6 +86,10 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public int getFlowID() {
+        if (flowID == DEFAULT_FLOWID) {
+            logger.error(translations.getString("attributeNotInitialized"));
+            throw new RuntimeException(translations.getString("attributeNotInitialized"));
+        }
         return flowID;
     }
 
@@ -84,11 +98,11 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * to.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param packetID The packet identifier.
+     * @param gosGlobalUniqueIdentifier The packet identifier.
      * @since 2.0
      */
-    public void setPacketID(int packetID) {
-        this.packetID = packetID;
+    public void setGoSGlobalUniqueIdentifier(int gosGlobalUniqueIdentifier) {
+        this.gosGlobalUniqueIdentifier = gosGlobalUniqueIdentifier;
     }
 
     /**
@@ -98,8 +112,12 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @return The packet identifier.
      * @since 2.0
      */
-    public int getPacketID() {
-        return packetID;
+    public int getGoSGlobalUniqueIdentifier() {
+        if (gosGlobalUniqueIdentifier == DEFAULT_PACKET_GOS_GLOBAL_UNIQUE_ID) {
+            logger.error(translations.getString("attributeNotInitialized"));
+            throw new RuntimeException(translations.getString("attributeNotInitialized"));
+        }
+        return gosGlobalUniqueIdentifier;
     }
 
     /**
@@ -111,6 +129,10 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public void setOutgoingPortID(int outgoingPortID) {
+        if (outgoingPortID < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
         this.outgoingPortID = outgoingPortID;
     }
 
@@ -123,6 +145,10 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public int getOutgoingPortID() {
+        if (outgoingPortID == DEFAULT_OUTGOING_PORTID) {
+            logger.error(translations.getString("attributeNotInitialized"));
+            throw new RuntimeException(translations.getString("attributeNotInitialized"));
+        }
         return outgoingPortID;
     }
 
@@ -136,6 +162,18 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public void setCrossedNodeIP(String crossedNodeIP) {
+        if ((crossedNodeIP == null) || (crossedNodeIP.isEmpty())) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        } else {
+            TIPv4AddressGenerator ipv4AddresGenerator = new TIPv4AddressGenerator();
+            try {
+                ipv4AddresGenerator.setIPv4AddressIfGreater(crossedNodeIP);
+            } catch (IllegalArgumentException ex) {
+                logger.error(translations.getString("argumentOutOfRange"));
+                throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+            }
+        }
         crossedNodes.addFirst(crossedNodeIP);
     }
 
@@ -149,22 +187,29 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * return NULL.
      * @since 2.0
      */
-    public String getCrossedNodeIPv4() {
-        if (crossedNodes.size() > ZERO) {
-            return crossedNodes.removeFirst();
+    public String getNextNearestCrossedNodeIPv4() {
+        if (crossedNodes.isEmpty()) {
+            logger.error(translations.getString("attributeNotInitialized"));
+            throw new RuntimeException(translations.getString("attributeNotInitialized"));
+//        return null; // ¿FIXED using the above two lines?
         }
-        return null;
+        return crossedNodes.removeFirst();
     }
 
     /**
      * This method decreases the retransmission TimeOut.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param nanoseconds Number of nanoseconds to decrease from the timeout.
+     * @param nanosecondsToDecrease Number of nanoseconds to decrease from the
+     * timeout.
      * @since 2.0
      */
-    public void decreaseTimeout(int nanoseconds) {
-        timeout -= nanoseconds;
+    public void decreaseTimeout(int nanosecondsToDecrease) {
+        if (nanosecondsToDecrease < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
+        timeout -= nanosecondsToDecrease;
         if (timeout < ZERO) {
             timeout = ZERO;
         }
@@ -176,10 +221,10 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public void resetTimeout() {
+    public void resetTimeoutAndDecreaseAttempts() {
         if (timeout == ZERO) {
             if (attempts > ZERO) {
-                timeout = GPSRP_TIMEOUT_NANOSECONDS;
+                timeout = DEFAULT_GPSRP_TIMEOUT_NANOSECONDS;
                 attempts--;
             }
         }
@@ -193,7 +238,7 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public void forceTimeoutReset() {
-        timeout = GPSRP_TIMEOUT_NANOSECONDS;
+        timeout = DEFAULT_GPSRP_TIMEOUT_NANOSECONDS;
         attempts--;
         if (attempts < ZERO) {
             attempts = ZERO;
@@ -212,7 +257,7 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
     public boolean isRetryable() {
         if (attempts > ZERO) {
             if (timeout == ZERO) {
-                if (crossedNodes.size() > ZERO) {
+                if (!crossedNodes.isEmpty()) {
                     return true;
                 }
             }
@@ -228,8 +273,8 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @return TRUE, if the entry must be removed. Otherwise, FALSE.
      * @since 2.0
      */
-    public boolean isPurgeable() {
-        if (crossedNodes.size() == ZERO) {
+    public boolean canBePurged() {
+        if (crossedNodes.isEmpty()) {
             return true;
         }
         if (attempts == ZERO) {
@@ -254,6 +299,10 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      */
     @Override
     public int compareTo(TGPSRPRequestEntry anotherTGPSRPRequestEntry) {
+        if (anotherTGPSRPRequestEntry == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         if (arrivalOrder < anotherTGPSRPRequestEntry.getArrivalOrder()) {
             return TGPSRPRequestEntry.THIS_LOWER;
         }
@@ -267,20 +316,22 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
     private static final int THIS_EQUAL = 0;
     private static final int THIS_GREATER = 1;
 
-    private static final int DEFAULT_FLOWID = -1;
-    private static final int DEFAULT_PACKETID = -1;
+    private static final int DEFAULT_FLOWID = 0;
+    private static final int DEFAULT_PACKET_GOS_GLOBAL_UNIQUE_ID = 0;
     private static final int DEFAULT_OUTGOING_PORTID = -1;
 
-    private static final int GPSRP_TIMEOUT_NANOSECONDS = 50000;
-    private static final int GPSRP_ATTEMPTS = 8;
+    private static final int DEFAULT_GPSRP_TIMEOUT_NANOSECONDS = 50000;
+    private static final int DEFAULT_GPSRP_ATTEMPTS = 8;
 
     private static final int ZERO = 0;
 
     private int timeout;
     private int flowID;
-    private int packetID;
+    private int gosGlobalUniqueIdentifier;
     private int outgoingPortID;
     private final LinkedList<String> crossedNodes;
     private final int arrivalOrder;
     private int attempts;
+    private final ResourceBundle translations;
+    private final Logger logger = LoggerFactory.getLogger(TGPSRPRequestEntry.class);
 }

@@ -118,7 +118,7 @@ public class TGPSRPRequestsMatrix {
         TGPSRPRequestEntry gpsrpRequestEntry = new TGPSRPRequestEntry(idGenerator.getNextIdentifier());
         gpsrpRequestEntry.setOutgoingPortID(incomingPortID);
         gpsrpRequestEntry.setFlowID(mplsPacket.getIPv4Header().getOriginIPv4Address().hashCode());
-        gpsrpRequestEntry.setPacketID(mplsPacket.getIPv4Header().getGoSGlobalUniqueIdentifier());
+        gpsrpRequestEntry.setGoSGlobalUniqueIdentifier(mplsPacket.getIPv4Header().getGoSGlobalUniqueIdentifier());
         int numberOfCrossedNodes = mplsPacket.getIPv4Header().getOptionsField().getNumberOfCrossedActiveNodes();
         int i = ZERO;
         String nextIPv4 = EMPTY_STRING;
@@ -148,7 +148,7 @@ public class TGPSRPRequestsMatrix {
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
             if (gpsrpRequestEntry.getFlowID() == flowID) {
-                if (gpsrpRequestEntry.getPacketID() == packetID) {
+                if (gpsrpRequestEntry.getGoSGlobalUniqueIdentifier() == packetID) {
                     iterator.remove();
                 }
             }
@@ -172,7 +172,7 @@ public class TGPSRPRequestsMatrix {
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
             if (gpsrpRequestEntry.getFlowID() == flowID) {
-                if (gpsrpRequestEntry.getPacketID() == packetID) {
+                if (gpsrpRequestEntry.getGoSGlobalUniqueIdentifier() == packetID) {
                     semaphore.setGreen();
                     return gpsrpRequestEntry;
                 }
@@ -195,10 +195,10 @@ public class TGPSRPRequestsMatrix {
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
-            if (gpsrpRequestEntry.isPurgeable()) {
+            if (gpsrpRequestEntry.canBePurged()) {
                 iterator.remove();
             } else {
-                gpsrpRequestEntry.resetTimeout();
+                gpsrpRequestEntry.resetTimeoutAndDecreaseAttempts();
             }
         }
         semaphore.setGreen();
@@ -239,7 +239,7 @@ public class TGPSRPRequestsMatrix {
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
             if (gpsrpRequestEntry.getFlowID() == flowID) {
-                if (gpsrpRequestEntry.getPacketID() == packetID) {
+                if (gpsrpRequestEntry.getGoSGlobalUniqueIdentifier() == packetID) {
                     semaphore.setGreen();
                     return gpsrpRequestEntry.getOutgoingPortID();
                 }
@@ -267,9 +267,9 @@ public class TGPSRPRequestsMatrix {
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
             if (gpsrpRequestEntry.getFlowID() == flowID) {
-                if (gpsrpRequestEntry.getPacketID() == packetID) {
+                if (gpsrpRequestEntry.getGoSGlobalUniqueIdentifier() == packetID) {
                     semaphore.setGreen();
-                    return gpsrpRequestEntry.getCrossedNodeIPv4();
+                    return gpsrpRequestEntry.getNextNearestCrossedNodeIPv4();
                 }
             }
         }

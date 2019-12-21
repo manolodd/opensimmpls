@@ -399,12 +399,12 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
             gpsrpRequestEntry = (TGPSRPRequestEntry) gpsrpRequestsIterator.next();
             if (gpsrpRequestEntry.isRetryable()) {
                 flowID = gpsrpRequestEntry.getFlowID();
-                packetID = gpsrpRequestEntry.getPacketID();
-                targetIPv4Address = gpsrpRequestEntry.getCrossedNodeIPv4();
+                packetID = gpsrpRequestEntry.getGoSGlobalUniqueIdentifier();
+                targetIPv4Address = gpsrpRequestEntry.getNextNearestCrossedNodeIPv4();
                 outgoingPortAux = gpsrpRequestEntry.getOutgoingPortID();
                 this.requestGPSRP(flowID, packetID, targetIPv4Address, outgoingPortAux);
             }
-            gpsrpRequestEntry.resetTimeout();
+            gpsrpRequestEntry.resetTimeoutAndDecreaseAttempts();
         }
         this.gpsrpRequests.getMonitor().setGreen();
     }
@@ -540,8 +540,8 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         if (gpsrpRequestEntry != null) {
             gpsrpRequestEntry.forceTimeoutReset();
             int p = gpsrpRequestEntry.getOutgoingPortID();
-            if (!gpsrpRequestEntry.isPurgeable()) {
-                String targetIPv4Address = gpsrpRequestEntry.getCrossedNodeIPv4();
+            if (!gpsrpRequestEntry.canBePurged()) {
+                String targetIPv4Address = gpsrpRequestEntry.getNextNearestCrossedNodeIPv4();
                 if (targetIPv4Address != null) {
                     requestGPSRP(flowID, packetID, targetIPv4Address, p);
                 } else {
@@ -584,7 +584,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         if (gpsrpRequestEntry != null) {
             TActivePort outgoingPort = (TActivePort) ports.getPort(outgoingPortID);
             TGPSRPPDU gpsrpPacket = null;
-            String targetIPv4Address = gpsrpRequestEntry.getCrossedNodeIPv4();
+            String targetIPv4Address = gpsrpRequestEntry.getNextNearestCrossedNodeIPv4();
             if (targetIPv4Address != null) {
                 try {
                     gpsrpPacket = new TGPSRPPDU(this.gIdent.getNextIdentifier(), this.getIPv4Address(), targetIPv4Address);
@@ -595,7 +595,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
                 // FIX: gpsrPacket could be null if the previous try generates 
                 // an exception. 
                 gpsrpPacket.getGPSRPPayload().setFlowID(gpsrpRequestEntry.getFlowID());
-                gpsrpPacket.getGPSRPPayload().setPacketID(gpsrpRequestEntry.getPacketID());
+                gpsrpPacket.getGPSRPPayload().setPacketID(gpsrpRequestEntry.getGoSGlobalUniqueIdentifier());
                 gpsrpPacket.getGPSRPPayload().setGPSRPMessageType(TGPSRPPayload.RETRANSMISSION_REQUEST);
                 outgoingPort.putPacketOnLink(gpsrpPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                 try {

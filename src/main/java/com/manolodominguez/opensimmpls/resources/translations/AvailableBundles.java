@@ -64,6 +64,7 @@ public enum AvailableBundles {
     T_ROTARY_ID_GENERATOR("trotaryidgenerator"),
     T_LONG_ID_GENERATOR("tlongidgenerator"),
     T_IPV4_ADDRESS_GENERATOR("tipv4addressgenerator"),
+    T_GPSRP_REQUEST_ENTRY("tgpsrprequestentry"),
     UNITS_TRANSLATIONS("unitstranslations"),
     T_OSM_LOADER("osmloader");
 
