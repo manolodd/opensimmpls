@@ -1,5 +1,7 @@
 OpenSimMPLS license has changed during the project evolution:
 
-- OpenSimMPLS 1.0 was released under GPL2+
-- OpenSimMPLS 1.1 was released under GPL3+
-- OpenSimMPLS 2.0 (this one) is released under Apache Software License 2.0
+- OpenSimMPLS 2.2 was released under Apache Software License 2.0 + CC-BY 4.0
+- OpenSimMPLS 2.1 was released under Apache Software License 2.0 + FDL1.2
+- OpenSimMPLS 2.0 was released under Apache Software License 2.0 + FDL1.2
+- OpenSimMPLS 1.1 was released under GPL3+ + FDL1.2
+- OpenSimMPLS 1.0 was released under GPL2+ + FDL1.2 

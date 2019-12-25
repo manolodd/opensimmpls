@@ -14,15 +14,16 @@ It supports standard MPLS operation as well as GoS/MPLS operation. See "Guarante
 
 # LICENSE
 
-## Current release:
+## This release:
  
-- <b>OpenSimMPLS 2.1</b> is released under the terms of Apache Software License 2.0.
+- <b>OpenSimMPLS 2.2</b> is released under the terms of Apache Software License 2.0 + CC-BY 4.0 (for not software things).
 
 ## Previous releases:
 
-- <b>OpenSimMPLS 2.0</b> was released under the terms of Apache Software License 2.0.
-- <b>OpenSimMPLS 1.1</b> was released under the terms of GPLv3.0+.
-- <b>OpenSimMPLS 1.0</b> was released under the terms of GPLv2.0+.
+- <b>OpenSimMPLS 2.1</b> is released under the terms of Apache Software License 2.0 + FDL 1.2 (for not software things).
+- <b>OpenSimMPLS 2.0</b> was released under the terms of Apache Software License 2.0  + FDL 1.2 (for not software things).
+- <b>OpenSimMPLS 1.1</b> was released under the terms of GPLv3.0+ + FDL 1.2 (for not software things).
+- <b>OpenSimMPLS 1.0</b> was released under the terms of GPLv2.0+ + FDL 1.2 (for not software things).
 
 # PEOPLE BEHIND OPENSIMMPLS
 
@@ -73,11 +74,11 @@ You can open a quick start guide directly from the simulator GUI. However, you c
 OpenSimMPLS uses third-party components each one of them having its own OSS license. License compatibility has been taken into account to allow OpenSimMPLS be released under its current OSS licence. They are:
 
 - Jfreechart 1.5.0 - LGPL - http://www.jfree.org/jfreechart
-- slf4j-api 1.7.25 - MIT - https://www.slf4j.org
-- slf4j-simple 1.7.25 - MIT - https://www.slf4j.org
-- miglayout-swing 5.1 - BSD - https://github.com/mikaelgrev/miglayout
-- miglayout-core 5.1 - BSD - https://github.com/mikaelgrev/miglayout
-- AbsoluteLayout release82 - CDDL (Being replaced in OpenSimMPLS by miglayout)
+- slf4j-api 2.0.0-alpha1 - MIT - https://www.slf4j.org
+- slf4j-simple 2.0.0-alpha1 - MIT - https://www.slf4j.org
+- miglayout-swing 5.2 - BSD - https://github.com/mikaelgrev/miglayout
+- miglayout-core 5.2 - BSD - https://github.com/mikaelgrev/miglayout
+- AbsoluteLayout RELEASE802 - CDDL (Being replaced in OpenSimMPLS by miglayout)
 
 Thanks folks!
 

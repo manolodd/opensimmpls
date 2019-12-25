@@ -20,6 +20,10 @@ import java.util.TreeSet;
 import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
 import com.manolodominguez.opensimmpls.commons.TRotaryIDGenerator;
 import com.manolodominguez.opensimmpls.commons.TSemaphore;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.ResourceBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class implements a table where received requests for retrnasmission will
@@ -34,10 +38,10 @@ public class TGPSRPRequestsMatrix {
      * This is the class constructor. It creates a new instance of
      * TGPSRPRequestsMatrix.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TGPSRPRequestsMatrix() {
+        translations = ResourceBundle.getBundle(AvailableBundles.T_GPSRP_REQUESTS_MATRIX.getPath());
         entries = new TreeSet<>();
         idGenerator = new TRotaryIDGenerator();
         semaphore = new TSemaphore();
@@ -47,7 +51,6 @@ public class TGPSRPRequestsMatrix {
      * This method reset all attributes od the class to its original values, as
      * when created by the constructor.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void reset() {
@@ -60,7 +63,6 @@ public class TGPSRPRequestsMatrix {
      * This method update the outgoing port for all the matching entries. It
      * will be changed for a new outgoing port.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param currentOutgoingPortID The port ID of the port that is going to be
      * replaced.
      * @param newOutgoingPortID The new outgoing port ID of the port for
@@ -84,7 +86,6 @@ public class TGPSRPRequestsMatrix {
      * This method removes from the table all entries that have the outgoing
      * port ID equal than the one specified as an argument.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param oldOutgoingPortID Port ID of the port that must match the outgoing
      * port of entries to be removed.
      * @since 2.0
@@ -105,7 +106,6 @@ public class TGPSRPRequestsMatrix {
     /**
      * This method insert a new entry in the table.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param mplsPacket Packet for wich the retransmission is going to be
      * requested.
      * @param incomingPortID Port ID of the incoming port of the packet. It will
@@ -136,7 +136,6 @@ public class TGPSRPRequestsMatrix {
     /**
      * This method removes a entry from the table.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param flowID Flow ID of the flow the entry refers to.
      * @param packetID Packet ID the table refers to.
      * @since 2.0
@@ -159,7 +158,6 @@ public class TGPSRPRequestsMatrix {
     /**
      * This method obtains a specific entry from the table.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param flowID Flow ID of the flow identifier the entry refers to.
      * @param packetID Packet ID the entry refers to.
      * @return Entry matching the specified arguments. Otherwise, NULL.
@@ -186,7 +184,6 @@ public class TGPSRPRequestsMatrix {
      * This method updates the table. It removes all entries for which no
      * retransmission attemps are available and their timeouts have expired.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void updateEntries() {
@@ -207,7 +204,6 @@ public class TGPSRPRequestsMatrix {
     /**
      * This method drecreases the timeout for all entries of the table.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param nanoseconds Number of nanoseconds to be decreased from all entries
      * timeouts.
      * @since 2.0
@@ -226,7 +222,6 @@ public class TGPSRPRequestsMatrix {
     /**
      * This method obtains the outgoing port ID of a specific entry.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param flowID Flow ID of the flow the entry refers to.
      * @param packetID Packet ID the entry refers to.
      * @return Outgoing port of the entry maching the specified arguments.
@@ -253,7 +248,6 @@ public class TGPSRPRequestsMatrix {
      * Thism method obtains the IP address of the following node that should be
      * requested for a packet retransmission.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param flowID Flow ID of the flow of the desired entry.
      * @param packetID Packet ID of the desired entry.
      * @return IP address of the following node to be requested for a packet
@@ -280,7 +274,6 @@ public class TGPSRPRequestsMatrix {
     /**
      * This method obtains the iterator of all entries of the table.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Iterator of all entries in the table.
      * @since 2.0
      */
@@ -305,4 +298,6 @@ public class TGPSRPRequestsMatrix {
     private TreeSet<TGPSRPRequestEntry> entries;
     private TRotaryIDGenerator idGenerator;
     private TSemaphore semaphore;
+    private final ResourceBundle translations;
+    private final Logger logger = LoggerFactory.getLogger(TGPSRPRequestsMatrix.class);
 }
