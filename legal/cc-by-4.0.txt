@@ -1,6 +1,6 @@
 ================================================================================
 The following license applies to documentation, guides, sounds, graphic arts...
-in OpenSimMPLS. It does not aplly to source code.
+in OpenSimMPLS. It does not apply to source code.
 ================================================================================
 
 
