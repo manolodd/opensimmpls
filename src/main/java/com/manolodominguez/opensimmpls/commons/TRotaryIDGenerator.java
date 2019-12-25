@@ -34,7 +34,6 @@ public class TRotaryIDGenerator {
      * This method is the constructor of the class. It is create a new instance
      * of TIDGenerator.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TRotaryIDGenerator() {
@@ -45,7 +44,6 @@ public class TRotaryIDGenerator {
     /**
      * This method resets the ID generator to its initial internal value.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public synchronized void reset() {
@@ -55,7 +53,6 @@ public class TRotaryIDGenerator {
     /**
      * This method generates a new ID.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return an integer value that is unique.
      * @since 2.0
      */
@@ -71,7 +68,6 @@ public class TRotaryIDGenerator {
     /**
      * This method sets the ID generator new internal value.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param newInternalIDValue the ID generator new internal value.
      * @since 2.0
      */

@@ -33,7 +33,6 @@ public class TIDGenerator {
      * This method is the constructor of the class. It is create a new instance
      * of TIDGenerator.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TIDGenerator() {
@@ -44,7 +43,6 @@ public class TIDGenerator {
     /**
      * This method resets the ID generator to its initial internal value.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public synchronized void reset() {
@@ -54,7 +52,6 @@ public class TIDGenerator {
     /**
      * This method generates a new ID.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return an integer value that is unique.
      * @throws EIDGeneratorOverflow when the ID generator reaches its maximum
      * value.
@@ -74,7 +71,6 @@ public class TIDGenerator {
      * an argument, only if the specified value is greater than the one the ID
      * generator has.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param newInternalIDValue the new internal ID value to set the ID
      * generator.
      * @since 2.0
@@ -88,7 +84,6 @@ public class TIDGenerator {
     /**
      * This method sets the ID generator new internal value.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param newInternalIDValue the ID generator new internal value.
      * @since 2.0
      */

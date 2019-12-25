@@ -397,7 +397,7 @@ public class TActiveLSRNode extends TNode implements ITimerEventListener, Runnab
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (gpsrpRequestsIterator.hasNext()) {
             gpsrpRequestEntry = (TGPSRPRequestEntry) gpsrpRequestsIterator.next();
-            if (gpsrpRequestEntry.isRetryable()) {
+            if (gpsrpRequestEntry.isRetriable()) {
                 flowID = gpsrpRequestEntry.getFlowID();
                 packetID = gpsrpRequestEntry.getGoSGlobalUniqueIdentifier();
                 targetIPv4Address = gpsrpRequestEntry.getNextNearestCrossedNodeIPv4();

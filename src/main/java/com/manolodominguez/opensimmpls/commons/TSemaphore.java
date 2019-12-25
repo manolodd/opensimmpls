@@ -33,7 +33,6 @@ public class TSemaphore {
      * This method is the constructor of the class. It is create a new instance
      * of TSemaphore.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TSemaphore() {
@@ -47,7 +46,6 @@ public class TSemaphore {
      * calling thread takes control and blocks the rest until it releases the
      * semaphore.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public synchronized void setRed() {
@@ -66,7 +64,6 @@ public class TSemaphore {
      * the next thread that called the setRed() method and was blocked, will be
      * released.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public synchronized void setGreen() {
@@ -79,7 +76,6 @@ public class TSemaphore {
      * the next thread that called the setRed() method and was blocked, will be
      * released.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return true, if the if the semaphore is on red. Otherwise, false.
      * @since 2.0
      */

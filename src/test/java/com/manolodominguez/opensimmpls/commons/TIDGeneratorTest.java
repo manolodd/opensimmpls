@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  *
- * @author manolodd
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  */
 public class TIDGeneratorTest {
 

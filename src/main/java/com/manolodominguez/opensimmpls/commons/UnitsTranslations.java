@@ -36,7 +36,6 @@ public enum UnitsTranslations {
      * This is the constructor of the enum. It will set the default value of
      * each enum item.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param units the number of trasnslated units of the enum's item. Values
      * greater than Integer.MAX_VALUE will be truncated silently.
      * @since 2.0
@@ -48,7 +47,6 @@ public enum UnitsTranslations {
     /**
      * This method gets the units translation corresponding to the enum's item.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return the units corresponding to the enum's item.
      * @since 2.0
      */

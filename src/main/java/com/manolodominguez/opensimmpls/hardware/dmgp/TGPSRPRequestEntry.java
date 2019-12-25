@@ -35,7 +35,6 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * This is the class constructor. Implements a new instance of
      * TGPSRPRequestsEntry.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param arrivalOrder Arrival order. This is a number that must be used to
      * make this entry shorted in a collection in a coherent way.
      * @since 2.0
@@ -59,7 +58,6 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * This method obtains the arrival order to the entry in order to be shorted
      * in a collection.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Arrival order to the entry.
      * @since 2.0
      */
@@ -70,7 +68,6 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
     /**
      * This method establishes the flow ID of the flow the entry belongs to.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param flowID The flow ID of the flow the entry belongs to.
      * @since 2.0
      */
@@ -81,7 +78,6 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
     /**
      * This method obtains the flow ID of the flow the entry belongs to.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The flow ID of the flow the entry belongs to.
      * @since 2.0
      */
@@ -97,7 +93,6 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * This method establishes the identifier of the packet this entry refers
      * to.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param gosGlobalUniqueIdentifier The packet identifier.
      * @since 2.0
      */
@@ -108,7 +103,6 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
     /**
      * This method obtains the identifier of the packet this entry refers to.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The packet identifier.
      * @since 2.0
      */
@@ -124,7 +118,6 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * This method establishes the outgoing port ID of the port by where the
      * retransmission request has been sent.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param outgoingPortID Outgoing port ID.
      * @since 2.0
      */
@@ -140,7 +133,6 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * This method obtains the outgoing port ID of the port by where the
      * retransmission request has been sent.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Outgoing port ID.
      * @since 2.0
      */
@@ -156,7 +148,6 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * This method sets the IP address of an active node that will be requested
      * for a packet retransmission.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param crossedNodeIP IP address of a node to be requested for a packet
      * retransmission.
      * @since 2.0
@@ -181,7 +172,6 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * This method obtains the IP address of the next active node that will be
      * requested for a packet retransmission.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return IP address of the next active node to be requested for a packet
      * retransmission. If there is not a node to be requested, this method
      * return NULL.
@@ -191,7 +181,6 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
         if (crossedNodes.isEmpty()) {
             logger.error(translations.getString("attributeNotInitialized"));
             throw new RuntimeException(translations.getString("attributeNotInitialized"));
-//        return null; // ¿FIXED using the above two lines?
         }
         return crossedNodes.removeFirst();
     }
@@ -199,7 +188,6 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
     /**
      * This method decreases the retransmission TimeOut.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param nanosecondsToDecrease Number of nanoseconds to decrease from the
      * timeout.
      * @since 2.0
@@ -218,7 +206,6 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
     /**
      * This method restores the retransmission TimeOut to its original value.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void resetTimeoutAndDecreaseAttempts() {
@@ -234,7 +221,6 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * This method forces the TimeOut restoration to its original value and also
      * increases the number of expired retransmission attempts.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void forceTimeoutReset() {
@@ -250,11 +236,10 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * This method ckeck whether the retransmission request must be retried
      * again or not.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TRUE, if the retransmission must be retried. Otherwise, FALSE.
      * @since 2.0
      */
-    public boolean isRetryable() {
+    public boolean isRetriable() {
         if (attempts > ZERO) {
             if (timeout == ZERO) {
                 if (!crossedNodes.isEmpty()) {
@@ -269,7 +254,6 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * This method check whether the entry must be removed from the table
      * (because retransmission is not going to be retried) or not.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return TRUE, if the entry must be removed. Otherwise, FALSE.
      * @since 2.0
      */
@@ -289,7 +273,6 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * This method compares the current instance with another of the same type
      * passed as an argument to know the order to be inserted in a collection.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param anotherTGPSRPRequestEntry Instancia con la que se va a comparar la
      * actual.
      * @return -1, 0, 1, depending on wheter the curren instance is lower,

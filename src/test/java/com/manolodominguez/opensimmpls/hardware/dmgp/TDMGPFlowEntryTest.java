@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
- * @author manolodd
+ * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  */
 public class TDMGPFlowEntryTest {
 
@@ -101,7 +101,7 @@ public class TDMGPFlowEntryTest {
      */
     @Test
     public void testGetFlowIDWhenNotInitialized() {
-        System.out.println("Test setFlowID()");
+        System.out.println("Test getFlowID()");
         int arrivalOrder = 345; // It could be any other
         TDMGPFlowEntry instance = new TDMGPFlowEntry(arrivalOrder);
         assertThrows(RuntimeException.class, () -> {

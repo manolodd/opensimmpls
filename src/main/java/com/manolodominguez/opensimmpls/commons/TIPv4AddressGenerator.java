@@ -34,7 +34,6 @@ public class TIPv4AddressGenerator {
      * This method is the constructor of the class. It is create a new instance
      * of TIPv4AddressGenerator.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public TIPv4AddressGenerator() {
@@ -48,7 +47,6 @@ public class TIPv4AddressGenerator {
     /**
      * This method sets the IPv4 address generator new internal value.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param newInternalIPv4Address the ID generator new internal value.
      * @return TRUE, if the specified IPv4 address is assigned. Otherwise,
      * FALSE.
@@ -78,7 +76,6 @@ public class TIPv4AddressGenerator {
      * IPv4 address is valid in the context of this TIPV4AddressGenerator if it
      * is in the range of 10.0.0.1 - 10.255.255.254
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param ipv4Address the IPv4 address to check.
      * @return TRUE, if the specified IPv4 address is valid. Otherwise, FALSE.
      * @since 2.0
@@ -130,7 +127,6 @@ public class TIPv4AddressGenerator {
      * This method resets the IPv4 address generator to its initial internal
      * value.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public void reset() {
@@ -144,7 +140,6 @@ public class TIPv4AddressGenerator {
      * specified as an argument, only if the specified IPv4 address is greater
      * than the one the IPv4 address generator has.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param newInternalIPv4Address the new internal IPv4 address to set the
      * IPv4 address generator.
      * @since 2.0
@@ -180,7 +175,6 @@ public class TIPv4AddressGenerator {
     /**
      * This method generates a new IPv4 address.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return A new IPv4 addres in in the range of 10.0.0.1 - 10.255.255.254.
      * @throws EIPv4AddressGeneratorOverflow when the IPv4 address generator
      * reaches its maximum value (10.255.255.254).

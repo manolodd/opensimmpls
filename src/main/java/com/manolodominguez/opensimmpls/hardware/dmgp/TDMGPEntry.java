@@ -34,7 +34,6 @@ public class TDMGPEntry implements Comparable<TDMGPEntry> {
      * This method is the constructor of the class. It creates a new instance of
      * TDMGPEntry and initialize its attributes.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param arrivalOrder Establish the arrival of this TDMGPEntry in relation
      * to itrs corresponding flow.
      */
@@ -53,7 +52,6 @@ public class TDMGPEntry implements Comparable<TDMGPEntry> {
      * This method obtains the identifier of the GoS packet stored in this
      * entry.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The identifier of the GoS packet.
      * @since 2.0
      */
@@ -69,7 +67,6 @@ public class TDMGPEntry implements Comparable<TDMGPEntry> {
      * This method obtains the GoS packet that is stored in this entry of the
      * DMGP memory.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The stored GoS packet.
      * @since 2.0
      */
@@ -84,7 +81,6 @@ public class TDMGPEntry implements Comparable<TDMGPEntry> {
     /**
      * This method insert the GoS packet in this entry of the DMGP memory.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param mplsPacket The packet to be inserted in this entry.
      * @since 2.0
      */
@@ -101,7 +97,6 @@ public class TDMGPEntry implements Comparable<TDMGPEntry> {
      * This method allow estabishing the order number in the complete DMGP
      * memory.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The order number of this DMGP entry.
      * @since 2.0
      */
@@ -112,7 +107,6 @@ public class TDMGPEntry implements Comparable<TDMGPEntry> {
     /**
      * This method compares this DMGP entry with another to establish the oder.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param anotherDMGPEntry DMGP entry to be compared with this one.
      * @return -1, 0, 1, depending on whether the current entry is lower, equal
      * or greater than the entry specified as argument. In terms of shorting.

@@ -37,7 +37,6 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     /**
      * This method is the constructor. It creates a new TDMGPFlowEntry instance.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param arrivalOrder Incoming arrivalOrder of the flow to the DMGP memory.
      * @since 2.0
      */
@@ -60,7 +59,6 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     /**
      * This method establishes the flow identifier associated to this entry.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param flowID The flow identifier. Could be a negative int.
      * @since 2.0
      */
@@ -71,7 +69,6 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     /**
      * This method returns the identifier of the flow assigned to this entry.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The flow identifier.
      * @since 2.0
      */
@@ -100,7 +97,6 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     /**
      * This method obtains the percentage of DMGP assigned to this flow..
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Percentage of DMGP assigned to this flow.
      * @since 2.0
      */
@@ -115,7 +111,6 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     /**
      * This method establishes the number of DMGP octects assigned to this flow.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param assignedOctets Number of DMGP octects assigned to this flow.
      * @since 2.0
      */
@@ -130,7 +125,6 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     /**
      * This method obtains the number of DMGP octects assigned to this flow.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The number of DMGP octects assigned to this flow.
      * @since 2.0
      */
@@ -146,7 +140,6 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * This method establishes the number of DMGP octects currently used by the
      * flow.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param usedOctets Number of DMGP octects currently used by the flow.
      * @since 2.0
      */
@@ -162,7 +155,6 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * This method obtains the number of DMGP octects currently used by the
      * flow.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return Number of DMGP octects currently used by the flow.
      * @since 2.0
      */
@@ -177,7 +169,6 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     /**
      * This method obtains the tree that contains all the packets of this flow.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The tree containing all the packets of this flow.
      * @since 2.0
      */
@@ -188,7 +179,6 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     /**
      * This method contains the arrivalOrder of incoming to the DMGP.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The arrival order of this flow in relation to others in the
      * global DMGP.
      * @since 2.0
@@ -200,7 +190,6 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     /**
      * This method returns the monitor of this flow.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      * @return The monitor of this flow.
      */
@@ -231,7 +220,6 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * releasing packets, the packet is not inserted (and the DMGP for this
      * packets remains intact).
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param mplsPacket Packet belonging to this flow to be inserted in the
      * DMGP.
      * @since 2.0
@@ -265,7 +253,6 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     /**
      * This method compares this flow entry with another of the same type.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param anotherDMGPFlowEntry The entry to be compared with.
      * @return -1, 0, 1, depending on whether the current instance is lesser,
      * equal or greater than the instance passed as an argument. In terms of

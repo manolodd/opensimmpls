@@ -32,7 +32,6 @@ public class EIPv4AddressGeneratorOverflow extends Exception {
      * This method is the constructor of the class. It is create a new instance
      * of EIPv4AddressGeneratorOverflow.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
     public EIPv4AddressGeneratorOverflow() {
@@ -42,7 +41,6 @@ public class EIPv4AddressGeneratorOverflow extends Exception {
     /**
      * This method gets a textual representation of this exception.
      *
-     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return a textual representation of this exception.
      * @since 2.0
      */
