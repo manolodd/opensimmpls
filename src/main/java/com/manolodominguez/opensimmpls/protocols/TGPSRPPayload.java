@@ -36,7 +36,7 @@ public class TGPSRPPayload {
     public TGPSRPPayload() {
         this.GPSRPMessageType = TGPSRPPayload.RETRANSMISSION_REQUEST;
         this.flowID = 0;
-        this.packetID = 0;
+        this.packetGlobalUniqueID = 0;
     }
 
     /**
@@ -70,12 +70,12 @@ public class TGPSRPPayload {
      * being requested by this GPSRP packet.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param packetID Packet ID of the packet whose retransmission is being
+     * @param packetGlobalUniqueID Packet ID of the packet whose retransmission is being
      * requested.
      * @since 2.0
      */
-    public void setPacketID(int packetID) {
-        this.packetID = packetID;
+    public void setPacketID(int packetGlobalUniqueID) {
+        this.packetGlobalUniqueID = packetGlobalUniqueID;
     }
 
     /**
@@ -87,7 +87,7 @@ public class TGPSRPPayload {
      * @since 2.0
      */
     public int getPacketID() {
-        return this.packetID;
+        return this.packetGlobalUniqueID;
     }
 
     /**
@@ -139,5 +139,5 @@ public class TGPSRPPayload {
 
     private int GPSRPMessageType;
     private int flowID;
-    private int packetID;
+    private int packetGlobalUniqueID;
 }

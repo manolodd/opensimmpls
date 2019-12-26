@@ -126,8 +126,8 @@ public class TGPSRPRequestEntryTest {
         System.out.println("Test testSetGoSGlobalUniqueIdentifier()");
         int arrivalOrder = 345; // It could be any other
         TGPSRPRequestEntry instance = new TGPSRPRequestEntry(arrivalOrder);
-        instance.setGoSGlobalUniqueIdentifier("AGoSGlobalUniqueIdentifier".hashCode());
-        assertEquals("AGoSGlobalUniqueIdentifier".hashCode(), instance.getGoSGlobalUniqueIdentifier());
+        instance.setGlobalUniqueIdentifier("AGoSGlobalUniqueIdentifier".hashCode());
+        assertEquals("AGoSGlobalUniqueIdentifier".hashCode(), instance.getGlobalUniqueIdentifier());
     }
 
     /**
@@ -138,8 +138,8 @@ public class TGPSRPRequestEntryTest {
         System.out.println("Test getGoSGlobalUniqueIdentifier()");
         int arrivalOrder = 345; // It could be any other
         TGPSRPRequestEntry instance = new TGPSRPRequestEntry(arrivalOrder);
-        instance.setGoSGlobalUniqueIdentifier("AGoSGlobalUniqueIdentifier".hashCode());
-        assertEquals("AGoSGlobalUniqueIdentifier".hashCode(), instance.getGoSGlobalUniqueIdentifier());
+        instance.setGlobalUniqueIdentifier("AGoSGlobalUniqueIdentifier".hashCode());
+        assertEquals("AGoSGlobalUniqueIdentifier".hashCode(), instance.getGlobalUniqueIdentifier());
     }
 
     /**
@@ -151,7 +151,7 @@ public class TGPSRPRequestEntryTest {
         int arrivalOrder = 345; // It could be any other
         TGPSRPRequestEntry instance = new TGPSRPRequestEntry(arrivalOrder);
         assertThrows(RuntimeException.class, () -> {
-            instance.getGoSGlobalUniqueIdentifier(); // Should throw an exception. It's not initialized
+            instance.getGlobalUniqueIdentifier(); // Should throw an exception. It's not initialized
         });
     }
 
@@ -214,7 +214,7 @@ public class TGPSRPRequestEntryTest {
         int arrivalOrder = 345; // It could be any other
         TGPSRPRequestEntry instance = new TGPSRPRequestEntry(arrivalOrder);
         instance.setCrossedNodeIP("10.0.0.1");
-        assertEquals("10.0.0.1", instance.getNextNearestCrossedNodeIPv4());
+        assertEquals("10.0.0.1", instance.getNearestCossedActiveNodeIPv4());
     }
 
     /**
@@ -228,10 +228,10 @@ public class TGPSRPRequestEntryTest {
         TGPSRPRequestEntry instance = new TGPSRPRequestEntry(arrivalOrder);
         instance.setCrossedNodeIP("10.0.0.1");
         instance.setCrossedNodeIP("10.0.0.2");
-        if (!instance.getNextNearestCrossedNodeIPv4().equals("10.0.0.2")) {
+        if (!instance.getNearestCossedActiveNodeIPv4().equals("10.0.0.2")) {
             worksFine = false;
         }
-        if (!instance.getNextNearestCrossedNodeIPv4().equals("10.0.0.1")) {
+        if (!instance.getNearestCossedActiveNodeIPv4().equals("10.0.0.1")) {
             worksFine = false;
         }
         assertTrue(worksFine);
@@ -345,7 +345,7 @@ public class TGPSRPRequestEntryTest {
         int arrivalOrder = 345; // It could be any other
         TGPSRPRequestEntry instance = new TGPSRPRequestEntry(arrivalOrder);
         instance.setCrossedNodeIP("10.0.0.1");
-        assertTrue(instance.getNextNearestCrossedNodeIPv4().equals("10.0.0.1"));
+        assertTrue(instance.getNearestCossedActiveNodeIPv4().equals("10.0.0.1"));
     }
 
     /**
@@ -358,7 +358,7 @@ public class TGPSRPRequestEntryTest {
         int arrivalOrder = 345; // It could be any other
         TGPSRPRequestEntry instance = new TGPSRPRequestEntry(arrivalOrder);
         assertThrows(RuntimeException.class, () -> {
-            instance.getNextNearestCrossedNodeIPv4();// Should throw an exception. It's not initialized
+            instance.getNearestCossedActiveNodeIPv4();// Should throw an exception. It's not initialized
         });
     }
 

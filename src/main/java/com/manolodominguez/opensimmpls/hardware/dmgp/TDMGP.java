@@ -74,18 +74,18 @@ public class TDMGP {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param flowID Identifier of the flow the packet belongs to.
-     * @param packetID Identifier of the packet.
+     * @param packetGlobalUniqueID Identifier of the packet.
      * @return The packet, if in the DMGP. NULL on the contrary.
      * @since 2.0
      */
-    public TMPLSPDU getPacket(int flowID, int packetID) {
+    public TMPLSPDU getPacket(int flowID, int packetGlobalUniqueID) {
         TMPLSPDU wantedPacket = null;
         TDMGPFlowEntry requestedDMGPFlowEntry = getFlow(flowID);
         // If the requested flowID is already created...
         if (requestedDMGPFlowEntry != null) {
             semaphore.setRed();
             for (TDMGPEntry dmgpEntry : requestedDMGPFlowEntry.getEntries()) {
-                if (dmgpEntry.getPacketGoSGlobalUniqueIdentifier() == packetID) {
+                if (dmgpEntry.getPacketGoSGlobalUniqueIdentifier() == packetGlobalUniqueID) {
                     wantedPacket = dmgpEntry.getPacketClone();
                     semaphore.setGreen();
                     return wantedPacket;

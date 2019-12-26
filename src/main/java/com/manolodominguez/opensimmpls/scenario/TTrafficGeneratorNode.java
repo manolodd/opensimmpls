@@ -61,7 +61,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
         // FIX: This method is overridable. Avoid using this method to update
         // the number of ports or make it final.
         this.setPorts(super.DEFAULT_NUM_PORTS_TRAFFIC_GENERATOR);
-        this.packetIdentifierGenerator = new TLongIDGenerator();
+        this.identifierGenerator = new TLongIDGenerator();
         this.packetGoSdentifierGenerator = new TRotaryIDGenerator();
         this.targetIPv4Address = "";
         // FIX: Use class constants instead of harcoded values for all cases.
@@ -650,7 +650,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
         try {
             if (this.encapsulateOverMPLS) {
                 if (requiredEXPValue == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
-                    TMPLSPDU mplsPacket = new TMPLSPDU(this.packetIdentifierGenerator.getNextIdentifier(), getIPv4Address(), this.targetIPv4Address, 0);
+                    TMPLSPDU mplsPacket = new TMPLSPDU(this.identifierGenerator.getNextIdentifier(), getIPv4Address(), this.targetIPv4Address, 0);
                     TMPLSLabel outgoingMPLSLabel = new TMPLSLabel();
                     // FIX: Use class constants instead of harcoded values
                     outgoingMPLSLabel.setBoS(true);
@@ -661,7 +661,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
                     mplsPacket.getLabelStack().pushTop(outgoingMPLSLabel);
                     return mplsPacket;
                 } else {
-                    TMPLSPDU mplsPacket = new TMPLSPDU(packetIdentifierGenerator.getNextIdentifier(), getIPv4Address(), this.targetIPv4Address, 0);
+                    TMPLSPDU mplsPacket = new TMPLSPDU(identifierGenerator.getNextIdentifier(), getIPv4Address(), this.targetIPv4Address, 0);
                     mplsPacket.setSubtype(TAbstractPDU.MPLS_GOS);
                     mplsPacket.getIPv4Header().getOptionsField().setRequestedGoSLevel(requiredEXPValue);
                     mplsPacket.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(this.packetGoSdentifierGenerator.getNextIdentifier());
@@ -684,10 +684,10 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
                     return mplsPacket;
                 }
             } else if (requiredEXPValue == TAbstractPDU.EXP_LEVEL0_WITHOUT_BACKUP_LSP) {
-                TIPv4PDU ipv4Packet = new TIPv4PDU(packetIdentifierGenerator.getNextIdentifier(), getIPv4Address(), this.targetIPv4Address, 0);
+                TIPv4PDU ipv4Packet = new TIPv4PDU(identifierGenerator.getNextIdentifier(), getIPv4Address(), this.targetIPv4Address, 0);
                 return ipv4Packet;
             } else {
-                TIPv4PDU ipv4Packet = new TIPv4PDU(packetIdentifierGenerator.getNextIdentifier(), getIPv4Address(), this.targetIPv4Address, 0);
+                TIPv4PDU ipv4Packet = new TIPv4PDU(identifierGenerator.getNextIdentifier(), getIPv4Address(), this.targetIPv4Address, 0);
                 ipv4Packet.setSubtype(TAbstractPDU.IPV4_GOS);
                 ipv4Packet.getIPv4Header().getOptionsField().setRequestedGoSLevel(requiredEXPValue);
                 ipv4Packet.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(this.packetGoSdentifierGenerator.getNextIdentifier());
@@ -938,7 +938,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
      */
     @Override
     public void reset() {
-        this.packetIdentifierGenerator.reset();
+        this.identifierGenerator.reset();
         this.packetGoSdentifierGenerator.reset();
         this.ports.reset();
         this.stats.reset();
@@ -994,7 +994,7 @@ public class TTrafficGeneratorNode extends TNode implements ITimerEventListener,
     private TRotaryIDGenerator packetGoSdentifierGenerator;
     private int constantPayloadSizeInBytes;
     private int variablePayloadSizeInBytes;
-    private TLongIDGenerator packetIdentifierGenerator;
+    private TLongIDGenerator identifierGenerator;
 
     public TTrafficGeneratorStats stats;
 

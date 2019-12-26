@@ -49,7 +49,7 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
         timeout = DEFAULT_GPSRP_TIMEOUT_NANOSECONDS;
         attempts = DEFAULT_GPSRP_ATTEMPTS;
         flowID = DEFAULT_FLOWID;
-        gosGlobalUniqueIdentifier = DEFAULT_PACKET_GOS_GLOBAL_UNIQUE_ID;
+        globalUniqueIdentifier = DEFAULT_PACKET_GLOBAL_UNIQUE_ID;
         outgoingPortID = DEFAULT_OUTGOING_PORTID;
         crossedNodes = new LinkedList<>();
     }
@@ -93,11 +93,11 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * This method establishes the identifier of the packet this entry refers
      * to.
      *
-     * @param gosGlobalUniqueIdentifier The packet identifier.
+     * @param globalUniqueIdentifier The packet identifier.
      * @since 2.0
      */
-    public void setGoSGlobalUniqueIdentifier(int gosGlobalUniqueIdentifier) {
-        this.gosGlobalUniqueIdentifier = gosGlobalUniqueIdentifier;
+    public void setGlobalUniqueIdentifier(int globalUniqueIdentifier) {
+        this.globalUniqueIdentifier = globalUniqueIdentifier;
     }
 
     /**
@@ -106,12 +106,12 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @return The packet identifier.
      * @since 2.0
      */
-    public int getGoSGlobalUniqueIdentifier() {
-        if (gosGlobalUniqueIdentifier == DEFAULT_PACKET_GOS_GLOBAL_UNIQUE_ID) {
+    public int getGlobalUniqueIdentifier() {
+        if (globalUniqueIdentifier == DEFAULT_PACKET_GLOBAL_UNIQUE_ID) {
             logger.error(translations.getString("attributeNotInitialized"));
             throw new RuntimeException(translations.getString("attributeNotInitialized"));
         }
-        return gosGlobalUniqueIdentifier;
+        return globalUniqueIdentifier;
     }
 
     /**
@@ -177,7 +177,7 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * return NULL.
      * @since 2.0
      */
-    public String getNextNearestCrossedNodeIPv4() {
+    public String getNearestCossedActiveNodeIPv4() {
         if (crossedNodes.isEmpty()) {
             logger.error(translations.getString("attributeNotInitialized"));
             throw new RuntimeException(translations.getString("attributeNotInitialized"));
@@ -300,7 +300,7 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
     private static final int THIS_GREATER = 1;
 
     private static final int DEFAULT_FLOWID = 0;
-    private static final int DEFAULT_PACKET_GOS_GLOBAL_UNIQUE_ID = 0;
+    private static final int DEFAULT_PACKET_GLOBAL_UNIQUE_ID = 0;
     private static final int DEFAULT_OUTGOING_PORTID = -1;
 
     private static final int DEFAULT_GPSRP_TIMEOUT_NANOSECONDS = 50000;
@@ -310,7 +310,7 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
 
     private int timeout;
     private int flowID;
-    private int gosGlobalUniqueIdentifier;
+    private int globalUniqueIdentifier;
     private int outgoingPortID;
     private final LinkedList<String> crossedNodes;
     private final int arrivalOrder;

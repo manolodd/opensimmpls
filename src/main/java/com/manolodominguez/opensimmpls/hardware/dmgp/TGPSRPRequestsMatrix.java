@@ -26,8 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class implements a table where received requests for retrnasmission will
- * be stored while they wait to be managed.
+ * This class implements a table where received requests for retransmission will
+ * be stored while they wait to be handled.
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
@@ -71,6 +71,10 @@ public class TGPSRPRequestsMatrix {
      */
     public void updateOutgoingPort(int currentOutgoingPortID, int newOutgoingPortID) {
         semaphore.setRed();
+        if ((currentOutgoingPortID < ZERO) || (newOutgoingPortID < ZERO)) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
         Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
@@ -92,6 +96,10 @@ public class TGPSRPRequestsMatrix {
      */
     public void removeEntriesMatchingOutgoingPort(int oldOutgoingPortID) {
         semaphore.setRed();
+        if (oldOutgoingPortID < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
         Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
@@ -115,10 +123,22 @@ public class TGPSRPRequestsMatrix {
      */
     public TGPSRPRequestEntry addEntry(TMPLSPDU mplsPacket, int incomingPortID) {
         semaphore.setRed();
+        if (incomingPortID < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
+        if (mplsPacket == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         TGPSRPRequestEntry gpsrpRequestEntry = new TGPSRPRequestEntry(idGenerator.getNextIdentifier());
         gpsrpRequestEntry.setOutgoingPortID(incomingPortID);
+        //FIX: As an improvement, flowID should be computed taking into account
+        //the origin and the target IP. Although at this moment a traffic 
+        //generator can only send traffic to a single target node, this could 
+        //change in the future.
         gpsrpRequestEntry.setFlowID(mplsPacket.getIPv4Header().getOriginIPv4Address().hashCode());
-        gpsrpRequestEntry.setGoSGlobalUniqueIdentifier(mplsPacket.getIPv4Header().getGoSGlobalUniqueIdentifier());
+        gpsrpRequestEntry.setGlobalUniqueIdentifier(mplsPacket.getIPv4Header().getGoSGlobalUniqueIdentifier());
         int numberOfCrossedNodes = mplsPacket.getIPv4Header().getOptionsField().getNumberOfCrossedActiveNodes();
         int i = ZERO;
         String nextIPv4 = EMPTY_STRING;
@@ -137,17 +157,17 @@ public class TGPSRPRequestsMatrix {
      * This method removes a entry from the table.
      *
      * @param flowID Flow ID of the flow the entry refers to.
-     * @param packetID Packet ID the table refers to.
+     * @param packetGlobalUniqueID Packet ID the table refers to.
      * @since 2.0
      */
-    public void removeEntry(int flowID, int packetID) {
+    public void removeEntry(int flowID, int packetGlobalUniqueID) {
         semaphore.setRed();
         Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
             if (gpsrpRequestEntry.getFlowID() == flowID) {
-                if (gpsrpRequestEntry.getGoSGlobalUniqueIdentifier() == packetID) {
+                if (gpsrpRequestEntry.getGlobalUniqueIdentifier() == packetGlobalUniqueID) {
                     iterator.remove();
                 }
             }
@@ -159,18 +179,18 @@ public class TGPSRPRequestsMatrix {
      * This method obtains a specific entry from the table.
      *
      * @param flowID Flow ID of the flow identifier the entry refers to.
-     * @param packetID Packet ID the entry refers to.
+     * @param packetGlobalUniqueID Packet ID the entry refers to.
      * @return Entry matching the specified arguments. Otherwise, NULL.
      * @since 2.0
      */
-    public TGPSRPRequestEntry getEntry(int flowID, int packetID) {
+    public TGPSRPRequestEntry getEntry(int flowID, int packetGlobalUniqueID) {
         semaphore.setRed();
         Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
             if (gpsrpRequestEntry.getFlowID() == flowID) {
-                if (gpsrpRequestEntry.getGoSGlobalUniqueIdentifier() == packetID) {
+                if (gpsrpRequestEntry.getGlobalUniqueIdentifier() == packetGlobalUniqueID) {
                     semaphore.setGreen();
                     return gpsrpRequestEntry;
                 }
@@ -183,6 +203,8 @@ public class TGPSRPRequestsMatrix {
     /**
      * This method updates the table. It removes all entries for which no
      * retransmission attemps are available and their timeouts have expired.
+     * Also, it update timeouts and attempts for those entries that cannot be
+     * purged yet.
      *
      * @since 2.0
      */
@@ -210,6 +232,10 @@ public class TGPSRPRequestsMatrix {
      */
     public void decreaseTimeout(int nanoseconds) {
         semaphore.setRed();
+        if (nanoseconds < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
         Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
@@ -223,25 +249,25 @@ public class TGPSRPRequestsMatrix {
      * This method obtains the outgoing port ID of a specific entry.
      *
      * @param flowID Flow ID of the flow the entry refers to.
-     * @param packetID Packet ID the entry refers to.
+     * @param packetGlobalUniqueID Packet ID the entry refers to.
      * @return Outgoing port of the entry maching the specified arguments.
      * @since 2.0
      */
-    public int getOutgoingPort(int flowID, int packetID) {
+    public int getOutgoingPort(int flowID, int packetGlobalUniqueID) {
         semaphore.setRed();
         Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
             if (gpsrpRequestEntry.getFlowID() == flowID) {
-                if (gpsrpRequestEntry.getGoSGlobalUniqueIdentifier() == packetID) {
+                if (gpsrpRequestEntry.getGlobalUniqueIdentifier() == packetGlobalUniqueID) {
                     semaphore.setGreen();
                     return gpsrpRequestEntry.getOutgoingPortID();
                 }
             }
         }
         semaphore.setGreen();
-        return -1;
+        return INVALID_PORT;
     }
 
     /**
@@ -249,21 +275,21 @@ public class TGPSRPRequestsMatrix {
      * requested for a packet retransmission.
      *
      * @param flowID Flow ID of the flow of the desired entry.
-     * @param packetID Packet ID of the desired entry.
+     * @param packetGlobalUniqueID Packet ID of the desired entry.
      * @return IP address of the following node to be requested for a packet
      * retransmission. Otherwise, NULL.
      * @since 2.0
      */
-    public String getActiveNodeIP(int flowID, int packetID) {
+    public String getNearestCossedActiveNodeIPv4(int flowID, int packetGlobalUniqueID) {
         semaphore.setRed();
         Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
             if (gpsrpRequestEntry.getFlowID() == flowID) {
-                if (gpsrpRequestEntry.getGoSGlobalUniqueIdentifier() == packetID) {
+                if (gpsrpRequestEntry.getGlobalUniqueIdentifier() == packetGlobalUniqueID) {
                     semaphore.setGreen();
-                    return gpsrpRequestEntry.getNextNearestCrossedNodeIPv4();
+                    return gpsrpRequestEntry.getNearestCossedActiveNodeIPv4();
                 }
             }
         }
@@ -294,6 +320,7 @@ public class TGPSRPRequestsMatrix {
 
     private static final int ZERO = 0;
     private static final String EMPTY_STRING = "";
+    private static final int INVALID_PORT = -1;
 
     private TreeSet<TGPSRPRequestEntry> entries;
     private TRotaryIDGenerator idGenerator;
