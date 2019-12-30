@@ -105,6 +105,34 @@ public class TGPSRPRequestsMatrixTest {
     }
 
     /**
+     * Test of updateOutgoingPort method, of class TGPSRPRequestsMatrix.
+     */
+    @Test
+    public void testUpdateOutgoingPortWhenOutOfRange1() {
+        System.out.println("Test updateOutgoingPort");
+        TGPSRPRequestsMatrix instance = new TGPSRPRequestsMatrix();
+        TMPLSPDU mplsPacket1 = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
+        instance.addEntry(mplsPacket1, 0);
+        assertThrows(RuntimeException.class, () -> {
+            instance.updateOutgoingPort(-1, 2); // Not possible. Should throws an exception
+        });
+    }
+
+    /**
+     * Test of updateOutgoingPort method, of class TGPSRPRequestsMatrix.
+     */
+    @Test
+    public void testUpdateOutgoingPortWhenOutOfRange2() {
+        System.out.println("Test updateOutgoingPort");
+        TGPSRPRequestsMatrix instance = new TGPSRPRequestsMatrix();
+        TMPLSPDU mplsPacket1 = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
+        instance.addEntry(mplsPacket1, 0);
+        assertThrows(RuntimeException.class, () -> {
+            instance.updateOutgoingPort(0, -1); // Not possible. Should throws an exception
+        });
+    }
+
+    /**
      * Test of removeEntriesMatchingOutgoingPort method, of class
      * TGPSRPRequestsMatrix.
      */
@@ -181,6 +209,41 @@ public class TGPSRPRequestsMatrixTest {
     }
 
     /**
+     * Test of removeEntriesMatchingOutgoingPort method, of class
+     * TGPSRPRequestsMatrix.
+     */
+    @Test
+    public void testRemoveEntriesMatchingOutgoingPortWhenOutOfRange() {
+        System.out.println("Test removeEntriesMatchingOutgoingPort");
+
+        int numberOfEntries = 0;
+        TGPSRPRequestsMatrix instance = new TGPSRPRequestsMatrix();
+
+        TMPLSPDU mplsPacket1 = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 100);
+        mplsPacket1.setSubtype(TAbstractPDU.MPLS_GOS);
+        mplsPacket1.getIPv4Header().getOptionsField().setRequestedGoSLevel(7);
+        mplsPacket1.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(1);
+        TMPLSLabel bottomOutgoingMPLSLabel1 = new TMPLSLabel();
+        bottomOutgoingMPLSLabel1.setBoS(true);
+        bottomOutgoingMPLSLabel1.setEXP(0);
+        bottomOutgoingMPLSLabel1.setLabel(123);
+        bottomOutgoingMPLSLabel1.setTTL(mplsPacket1.getIPv4Header().getTTL());
+        TMPLSLabel upperOutgoingMPLSLabel1 = new TMPLSLabel();
+        upperOutgoingMPLSLabel1.setBoS(false);
+        upperOutgoingMPLSLabel1.setEXP(mplsPacket1.getIPv4Header().getOptionsField().getRequestedGoSLevel());
+        upperOutgoingMPLSLabel1.setLabel(1);
+        upperOutgoingMPLSLabel1.setTTL(mplsPacket1.getIPv4Header().getTTL());
+        mplsPacket1.getLabelStack().pushTop(bottomOutgoingMPLSLabel1);
+        mplsPacket1.getLabelStack().pushTop(upperOutgoingMPLSLabel1);
+
+        instance.addEntry(mplsPacket1, 0);
+
+        assertThrows(RuntimeException.class, () -> {
+            instance.removeEntriesMatchingOutgoingPort(-1); // Not possible. Should throws an exception
+        });
+    }
+
+    /**
      * Test of addEntry method, of class TGPSRPRequestsMatrix.
      */
     @Test
@@ -245,6 +308,48 @@ public class TGPSRPRequestsMatrixTest {
         }
 
         assertTrue(worksFine);
+    }
+
+    /**
+     * Test of addEntry method, of class TGPSRPRequestsMatrix.
+     */
+    @Test
+    public void testAddEntryWhenPacketIsNull() {
+        System.out.println("Test addEntry");
+        TGPSRPRequestsMatrix instance = new TGPSRPRequestsMatrix();
+        assertThrows(RuntimeException.class, () -> {
+            instance.addEntry(null, 0); // Not possible. Should throws an exception
+        });
+    }
+
+    /**
+     * Test of addEntry method, of class TGPSRPRequestsMatrix.
+     */
+    @Test
+    public void testAddEntryWhenPortIsOutOfRange() {
+        System.out.println("Test addEntry");
+        TGPSRPRequestsMatrix instance = new TGPSRPRequestsMatrix();
+
+        TMPLSPDU mplsPacket1 = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 100);
+        mplsPacket1.setSubtype(TAbstractPDU.MPLS_GOS);
+        mplsPacket1.getIPv4Header().getOptionsField().setRequestedGoSLevel(7);
+        mplsPacket1.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(1);
+        TMPLSLabel bottomOutgoingMPLSLabel1 = new TMPLSLabel();
+        bottomOutgoingMPLSLabel1.setBoS(true);
+        bottomOutgoingMPLSLabel1.setEXP(0);
+        bottomOutgoingMPLSLabel1.setLabel(123);
+        bottomOutgoingMPLSLabel1.setTTL(mplsPacket1.getIPv4Header().getTTL());
+        TMPLSLabel upperOutgoingMPLSLabel1 = new TMPLSLabel();
+        upperOutgoingMPLSLabel1.setBoS(false);
+        upperOutgoingMPLSLabel1.setEXP(mplsPacket1.getIPv4Header().getOptionsField().getRequestedGoSLevel());
+        upperOutgoingMPLSLabel1.setLabel(1);
+        upperOutgoingMPLSLabel1.setTTL(mplsPacket1.getIPv4Header().getTTL());
+        mplsPacket1.getLabelStack().pushTop(bottomOutgoingMPLSLabel1);
+        mplsPacket1.getLabelStack().pushTop(upperOutgoingMPLSLabel1);
+
+        assertThrows(RuntimeException.class, () -> {
+            instance.addEntry(mplsPacket1, -1); // Not possible. Should throws an exception
+        });
     }
 
     /**
@@ -353,6 +458,39 @@ public class TGPSRPRequestsMatrixTest {
         TGPSRPRequestEntry auxEntry = instance.getEntry("10.0.0.1".hashCode(), mplsPacket2.getIPv4Header().getGoSGlobalUniqueIdentifier());
 
         assertEquals(2, auxEntry.getOutgoingPortID());
+    }
+
+    /**
+     * Test of getEntry method, of class TGPSRPRequestsMatrix.
+     */
+    @Test
+    public void testGetEntryWhenNoEntryFound() {
+        System.out.println("getEntry");
+
+        TGPSRPRequestsMatrix instance = new TGPSRPRequestsMatrix();
+
+        TMPLSPDU mplsPacket1 = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 100);
+        mplsPacket1.setSubtype(TAbstractPDU.MPLS_GOS);
+        mplsPacket1.getIPv4Header().getOptionsField().setRequestedGoSLevel(7);
+        mplsPacket1.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(1);
+        TMPLSLabel bottomOutgoingMPLSLabel1 = new TMPLSLabel();
+        bottomOutgoingMPLSLabel1.setBoS(true);
+        bottomOutgoingMPLSLabel1.setEXP(0);
+        bottomOutgoingMPLSLabel1.setLabel(123);
+        bottomOutgoingMPLSLabel1.setTTL(mplsPacket1.getIPv4Header().getTTL());
+        TMPLSLabel upperOutgoingMPLSLabel1 = new TMPLSLabel();
+        upperOutgoingMPLSLabel1.setBoS(false);
+        upperOutgoingMPLSLabel1.setEXP(mplsPacket1.getIPv4Header().getOptionsField().getRequestedGoSLevel());
+        upperOutgoingMPLSLabel1.setLabel(1);
+        upperOutgoingMPLSLabel1.setTTL(mplsPacket1.getIPv4Header().getTTL());
+        mplsPacket1.getLabelStack().pushTop(bottomOutgoingMPLSLabel1);
+        mplsPacket1.getLabelStack().pushTop(upperOutgoingMPLSLabel1);
+
+        instance.addEntry(mplsPacket1, 0);
+
+        TGPSRPRequestEntry auxEntry = instance.getEntry("10.0.0.2".hashCode(), mplsPacket1.getIPv4Header().getGoSGlobalUniqueIdentifier());
+
+        assertEquals(null, auxEntry);
     }
 
     /**
@@ -550,6 +688,40 @@ public class TGPSRPRequestsMatrixTest {
     }
 
     /**
+     * Test of decreaseTimeout method, of class TGPSRPRequestsMatrix.
+     */
+    @Test
+    public void testDecreaseTimeoutWhenOutOfRange() {
+        System.out.println("Test decreaseTimeout");
+
+        TGPSRPRequestsMatrix instance = new TGPSRPRequestsMatrix();
+
+        TMPLSPDU mplsPacket1 = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 100);
+        mplsPacket1.setSubtype(TAbstractPDU.MPLS_GOS);
+        mplsPacket1.getIPv4Header().getOptionsField().setRequestedGoSLevel(7);
+        mplsPacket1.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(1);
+        TMPLSLabel bottomOutgoingMPLSLabel1 = new TMPLSLabel();
+        bottomOutgoingMPLSLabel1.setBoS(true);
+        bottomOutgoingMPLSLabel1.setEXP(0);
+        bottomOutgoingMPLSLabel1.setLabel(123);
+        bottomOutgoingMPLSLabel1.setTTL(mplsPacket1.getIPv4Header().getTTL());
+        TMPLSLabel upperOutgoingMPLSLabel1 = new TMPLSLabel();
+        upperOutgoingMPLSLabel1.setBoS(false);
+        upperOutgoingMPLSLabel1.setEXP(mplsPacket1.getIPv4Header().getOptionsField().getRequestedGoSLevel());
+        upperOutgoingMPLSLabel1.setLabel(1);
+        upperOutgoingMPLSLabel1.setTTL(mplsPacket1.getIPv4Header().getTTL());
+        mplsPacket1.getLabelStack().pushTop(bottomOutgoingMPLSLabel1);
+        mplsPacket1.getLabelStack().pushTop(upperOutgoingMPLSLabel1);
+        mplsPacket1.getIPv4Header().getOptionsField().setCrossedActiveNode("10.0.0.3");
+
+        instance.addEntry(mplsPacket1, 0);
+
+        assertThrows(RuntimeException.class, () -> {
+            instance.decreaseTimeout(-1); // Not possible. Should throws an exception
+        });
+    }
+
+    /**
      * Test of getOutgoingPort method, of class TGPSRPRequestsMatrix.
      */
     @Test
@@ -621,6 +793,37 @@ public class TGPSRPRequestsMatrixTest {
     }
 
     /**
+     * Test of getOutgoingPort method, of class TGPSRPRequestsMatrix.
+     */
+    @Test
+    public void testGetOutgoingPortWhenEntryNotFound() {
+        System.out.println("getOutgoingPort");
+
+        TGPSRPRequestsMatrix instance = new TGPSRPRequestsMatrix();
+
+        TMPLSPDU mplsPacket1 = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 100);
+        mplsPacket1.setSubtype(TAbstractPDU.MPLS_GOS);
+        mplsPacket1.getIPv4Header().getOptionsField().setRequestedGoSLevel(7);
+        mplsPacket1.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(1);
+        TMPLSLabel bottomOutgoingMPLSLabel1 = new TMPLSLabel();
+        bottomOutgoingMPLSLabel1.setBoS(true);
+        bottomOutgoingMPLSLabel1.setEXP(0);
+        bottomOutgoingMPLSLabel1.setLabel(123);
+        bottomOutgoingMPLSLabel1.setTTL(mplsPacket1.getIPv4Header().getTTL());
+        TMPLSLabel upperOutgoingMPLSLabel1 = new TMPLSLabel();
+        upperOutgoingMPLSLabel1.setBoS(false);
+        upperOutgoingMPLSLabel1.setEXP(mplsPacket1.getIPv4Header().getOptionsField().getRequestedGoSLevel());
+        upperOutgoingMPLSLabel1.setLabel(1);
+        upperOutgoingMPLSLabel1.setTTL(mplsPacket1.getIPv4Header().getTTL());
+        mplsPacket1.getLabelStack().pushTop(bottomOutgoingMPLSLabel1);
+        mplsPacket1.getLabelStack().pushTop(upperOutgoingMPLSLabel1);
+
+        instance.addEntry(mplsPacket1, 0);
+
+        assertEquals(-1, instance.getOutgoingPort("10.0.0.10".hashCode(), mplsPacket1.getIPv4Header().getGoSGlobalUniqueIdentifier()));
+    }
+
+    /**
      * Test of getNearestCossedActiveNodeIPv4 method, of class
      * TGPSRPRequestsMatrix.
      */
@@ -686,6 +889,40 @@ public class TGPSRPRequestsMatrixTest {
             }
         }
         assertTrue(worksFine);
+    }
+
+    /**
+     * Test of getNearestCossedActiveNodeIPv4 method, of class
+     * TGPSRPRequestsMatrix.
+     */
+    @Test
+    public void testGetNearestCossedActiveNodeIPv4WhenEntryNotFound() {
+        System.out.println("Test getNearestCossedActiveNodeIPv4");
+
+        boolean worksFine = true;
+        TGPSRPRequestsMatrix instance = new TGPSRPRequestsMatrix();
+
+        TMPLSPDU mplsPacket1 = new TMPLSPDU(1, "10.0.0.1", "10.0.0.10", 100);
+        mplsPacket1.setSubtype(TAbstractPDU.MPLS_GOS);
+        mplsPacket1.getIPv4Header().getOptionsField().setRequestedGoSLevel(7);
+        mplsPacket1.getIPv4Header().getOptionsField().setPacketLocalUniqueIdentifier(1);
+        TMPLSLabel bottomOutgoingMPLSLabel1 = new TMPLSLabel();
+        bottomOutgoingMPLSLabel1.setBoS(true);
+        bottomOutgoingMPLSLabel1.setEXP(0);
+        bottomOutgoingMPLSLabel1.setLabel(123);
+        bottomOutgoingMPLSLabel1.setTTL(mplsPacket1.getIPv4Header().getTTL());
+        TMPLSLabel upperOutgoingMPLSLabel1 = new TMPLSLabel();
+        upperOutgoingMPLSLabel1.setBoS(false);
+        upperOutgoingMPLSLabel1.setEXP(mplsPacket1.getIPv4Header().getOptionsField().getRequestedGoSLevel());
+        upperOutgoingMPLSLabel1.setLabel(1);
+        upperOutgoingMPLSLabel1.setTTL(mplsPacket1.getIPv4Header().getTTL());
+        mplsPacket1.getLabelStack().pushTop(bottomOutgoingMPLSLabel1);
+        mplsPacket1.getLabelStack().pushTop(upperOutgoingMPLSLabel1);
+        mplsPacket1.getIPv4Header().getOptionsField().setCrossedActiveNode("10.0.0.2");
+
+        instance.addEntry(mplsPacket1, 0);
+
+        assertEquals(null, instance.getNextNearestCrossedActiveNodeIPv4("10.0.0.50".hashCode(), mplsPacket1.getIPv4Header().getGoSGlobalUniqueIdentifier()));
     }
 
     /**

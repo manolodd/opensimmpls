@@ -70,11 +70,11 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public void updateOutgoingPort(int currentOutgoingPortID, int newOutgoingPortID) {
-        semaphore.setRed();
         if ((currentOutgoingPortID < ZERO) || (newOutgoingPortID < ZERO)) {
             logger.error(translations.getString("argumentOutOfRange"));
             throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         }
+        semaphore.setRed();
         Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
@@ -95,11 +95,11 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public void removeEntriesMatchingOutgoingPort(int outgoingPortID) {
-        semaphore.setRed();
         if (outgoingPortID < ZERO) {
             logger.error(translations.getString("argumentOutOfRange"));
             throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         }
+        semaphore.setRed();
         Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
@@ -122,7 +122,6 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public TGPSRPRequestEntry addEntry(TMPLSPDU mplsPacket, int incomingPortID) {
-        semaphore.setRed();
         if (incomingPortID < ZERO) {
             logger.error(translations.getString("argumentOutOfRange"));
             throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
@@ -131,6 +130,7 @@ public class TGPSRPRequestsMatrix {
             logger.error(translations.getString("badArgument"));
             throw new IllegalArgumentException(translations.getString("badArgument"));
         }
+        semaphore.setRed();
         TGPSRPRequestEntry gpsrpRequestEntry = new TGPSRPRequestEntry(idGenerator.getNextIdentifier());
         gpsrpRequestEntry.setOutgoingPortID(incomingPortID);
         //FIX: As an improvement, globalFlowID should be computed taking into account
@@ -231,11 +231,11 @@ public class TGPSRPRequestsMatrix {
      * @since 2.0
      */
     public void decreaseTimeout(int nanoseconds) {
-        semaphore.setRed();
         if (nanoseconds < ZERO) {
             logger.error(translations.getString("argumentOutOfRange"));
             throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         }
+        semaphore.setRed();
         Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
