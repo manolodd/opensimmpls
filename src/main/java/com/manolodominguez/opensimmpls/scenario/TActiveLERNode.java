@@ -423,19 +423,19 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         }
         this.gpsrpRequests.getMonitor().setRed();
         Iterator gpsrpRequestsIterator = this.gpsrpRequests.getEntriesIterator();
-        int flowID = 0;
-        int packetGlobalUniqueID = 0;
+        int globalFlowID = 0;
+        int packetGoSGlobalUniqueID = 0;
         String targetIPv4Address = null;
         int outgoingPortAux = 0;
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (gpsrpRequestsIterator.hasNext()) {
             gpsrpRequestEntry = (TGPSRPRequestEntry) gpsrpRequestsIterator.next();
             if (gpsrpRequestEntry.isRetriable()) {
-                flowID = gpsrpRequestEntry.getFlowID();
-                packetGlobalUniqueID = gpsrpRequestEntry.getGlobalUniqueIdentifier();
-                targetIPv4Address = gpsrpRequestEntry.getNearestCossedActiveNodeIPv4();
+                globalFlowID = gpsrpRequestEntry.getFlowID();
+                packetGoSGlobalUniqueID = gpsrpRequestEntry.getPacketGoSGlobalUniqueIdentifier();
+                targetIPv4Address = gpsrpRequestEntry.getNextNearestCrossedActiveNodeIPv4();
                 outgoingPortAux = gpsrpRequestEntry.getOutgoingPortID();
-                this.requestGPSRP(flowID, packetGlobalUniqueID, targetIPv4Address, outgoingPortAux);
+                this.requestGPSRP(globalFlowID, packetGoSGlobalUniqueID, targetIPv4Address, outgoingPortAux);
             }
             gpsrpRequestEntry.resetTimeoutAndDecreaseAttempts();
         }
@@ -497,10 +497,10 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
     public void handleGPSRPPacket(TGPSRPPDU packet, int incomingPortID) {
         if (packet != null) {
             int messageType = packet.getGPSRPPayload().getGPSRPMessageType();
-            // FIX: flowID and packetGlobalUniqueID seems not to be used. If not necessary,
+            // FIX: globalFlowID and packetGlobalUniqueID seems not to be used. If not necessary,
             // remove from the code.
-            int flowID = packet.getGPSRPPayload().getFlowID();
-            int packetGlobalUniqueID = packet.getGPSRPPayload().getPacketID();
+            int globalFlowID = packet.getGPSRPPayload().getFlowID();
+            int packetGoSGlobalUniqueID = packet.getGPSRPPayload().getPacketGoSGlobalUniqueID();
             String targetIPv4Address = packet.getIPv4Header().getTailEndIPAddress();
             TFIFOPort outgoingPort = null;
             if (targetIPv4Address.equals(this.getIPv4Address())) {
@@ -539,9 +539,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @since 2.0
      */
     public void handleGPSRPRetransmissionRequest(TGPSRPPDU packet, int incomingPortID) {
-        int flowID = packet.getGPSRPPayload().getFlowID();
-        int packetGlobalUniqueID = packet.getGPSRPPayload().getPacketID();
-        TMPLSPDU wantedPacket = (TMPLSPDU) this.dmgp.getPacket(flowID, packetGlobalUniqueID);
+        int globalFlowID = packet.getGPSRPPayload().getFlowID();
+        int packetGoSGlobalUniqueID = packet.getGPSRPPayload().getPacketGoSGlobalUniqueID();
+        TMPLSPDU wantedPacket = (TMPLSPDU) this.dmgp.getPacket(globalFlowID, packetGoSGlobalUniqueID);
         if (wantedPacket != null) {
             this.acceptGPSRP(packet, incomingPortID);
             TActivePort outgoingPort = (TActivePort) this.ports.getPort(incomingPortID);
@@ -568,21 +568,21 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @since 2.0
      */
     public void handleGPSRPRetransmissionNotPossible(TGPSRPPDU packet, int incomingPortID) {
-        int flowID = packet.getGPSRPPayload().getFlowID();
-        int packetGlobalUniqueID = packet.getGPSRPPayload().getPacketID();
-        TGPSRPRequestEntry gpsrpRequestEntry = this.gpsrpRequests.getEntry(flowID, packetGlobalUniqueID);
+        int globalFlowID = packet.getGPSRPPayload().getFlowID();
+        int packetGoSGlobalUniqueID = packet.getGPSRPPayload().getPacketGoSGlobalUniqueID();
+        TGPSRPRequestEntry gpsrpRequestEntry = this.gpsrpRequests.getEntry(globalFlowID, packetGoSGlobalUniqueID);
         if (gpsrpRequestEntry != null) {
             gpsrpRequestEntry.forceTimeoutReset();
             int outgoingPortAux = gpsrpRequestEntry.getOutgoingPortID();
             if (!gpsrpRequestEntry.canBePurged()) {
-                String targetIPv4Address = gpsrpRequestEntry.getNearestCossedActiveNodeIPv4();
+                String targetIPv4Address = gpsrpRequestEntry.getNextNearestCrossedActiveNodeIPv4();
                 if (targetIPv4Address != null) {
-                    requestGPSRP(flowID, packetGlobalUniqueID, targetIPv4Address, outgoingPortAux);
+                    requestGPSRP(globalFlowID, packetGoSGlobalUniqueID, targetIPv4Address, outgoingPortAux);
                 } else {
-                    this.gpsrpRequests.removeEntry(flowID, packetGlobalUniqueID);
+                    this.gpsrpRequests.removeEntry(globalFlowID, packetGoSGlobalUniqueID);
                 }
             } else {
-                this.gpsrpRequests.removeEntry(flowID, packetGlobalUniqueID);
+                this.gpsrpRequests.removeEntry(globalFlowID, packetGoSGlobalUniqueID);
             }
         }
     }
@@ -596,9 +596,9 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * @since 2.0
      */
     public void handleGPSRPRetransmissionOk(TGPSRPPDU packet, int incomingPortID) {
-        int flowID = packet.getGPSRPPayload().getFlowID();
-        int packetGlobalUniqueID = packet.getGPSRPPayload().getPacketID();
-        this.gpsrpRequests.removeEntry(flowID, packetGlobalUniqueID);
+        int globalFlowID = packet.getGPSRPPayload().getFlowID();
+        int packetGoSGlobalUniqueID = packet.getGPSRPPayload().getPacketGoSGlobalUniqueID();
+        this.gpsrpRequests.removeEntry(globalFlowID, packetGoSGlobalUniqueID);
     }
 
     /**
@@ -619,7 +619,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
         if (gpsrpRequestEntry != null) {
             TActivePort outgoingPort = (TActivePort) this.ports.getPort(outgoingPortID);
             TGPSRPPDU gpsrpPacket = null;
-            String targetIPv4Address = gpsrpRequestEntry.getNearestCossedActiveNodeIPv4();
+            String targetIPv4Address = gpsrpRequestEntry.getNextNearestCrossedActiveNodeIPv4();
             if (targetIPv4Address != null) {
                 try {
                     gpsrpPacket = new TGPSRPPDU(this.gIdent.getNextIdentifier(), this.getIPv4Address(), targetIPv4Address);
@@ -630,7 +630,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
                 // FIX: gpsrPacket could be null if the previous try generates 
                 // an exception. 
                 gpsrpPacket.getGPSRPPayload().setFlowID(gpsrpRequestEntry.getFlowID());
-                gpsrpPacket.getGPSRPPayload().setPacketID(gpsrpRequestEntry.getGlobalUniqueIdentifier());
+                gpsrpPacket.getGPSRPPayload().setPacketGoSGlobalUniqueID(gpsrpRequestEntry.getPacketGoSGlobalUniqueIdentifier());
                 gpsrpPacket.getGPSRPPayload().setGPSRPMessageType(TGPSRPPayload.RETRANSMISSION_REQUEST);
                 outgoingPort.putPacketOnLink(gpsrpPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                 try {
@@ -649,17 +649,17 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
      * lost packet part of whose data has been recovered before discarding it.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param flowID flow ID for wich the retransmision is requested.
+     * @param globalFlowID flow ID for wich the retransmision is requested.
      * @param outgoingPortID Port of this node through wich the GPSRP
      * retransmission request is going to be sent.
-     * @param packetGlobalUniqueID packet, of the specified flow, for wich the
+     * @param packetGoSGlobalUniqueID packet, of the specified flow, for wich the
      * retransmission is requested.
      * @param targetIPv4Address IP address of the node to wich the
      * retransmission request is sent. Hopefuly, the one that could retransmit
      * the lost packet.
      * @since 2.0
      */
-    public void requestGPSRP(int flowID, int packetGlobalUniqueID, String targetIPv4Address, int outgoingPortID) {
+    public void requestGPSRP(int globalFlowID, int packetGoSGlobalUniqueID, String targetIPv4Address, int outgoingPortID) {
         TActivePort outgoingPort = (TActivePort) this.ports.getPort(outgoingPortID);
         TGPSRPPDU gpsrpPacket = null;
         if (targetIPv4Address != null) {
@@ -671,8 +671,8 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             }
             // FIX: gpsrPacket could be null if the previous try generates an 
             // exception. 
-            gpsrpPacket.getGPSRPPayload().setFlowID(flowID);
-            gpsrpPacket.getGPSRPPayload().setPacketID(packetGlobalUniqueID);
+            gpsrpPacket.getGPSRPPayload().setFlowID(globalFlowID);
+            gpsrpPacket.getGPSRPPayload().setPacketGoSGlobalUniqueID(packetGoSGlobalUniqueID);
             gpsrpPacket.getGPSRPPayload().setGPSRPMessageType(TGPSRPPayload.RETRANSMISSION_REQUEST);
             outgoingPort.putPacketOnLink(gpsrpPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
             try {
@@ -706,7 +706,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             // FIX: gpsrPacket could be null if the previous try generates an 
             // exception. 
             gpsrpPacket.getGPSRPPayload().setFlowID(packet.getGPSRPPayload().getFlowID());
-            gpsrpPacket.getGPSRPPayload().setPacketID(packet.getGPSRPPayload().getPacketID());
+            gpsrpPacket.getGPSRPPayload().setPacketGoSGlobalUniqueID(packet.getGPSRPPayload().getPacketGoSGlobalUniqueID());
             gpsrpPacket.getGPSRPPayload().setGPSRPMessageType(TGPSRPPayload.RETRANSMISION_NOT_POSSIBLE);
             outgoingPort.putPacketOnLink(gpsrpPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
             try {
@@ -742,7 +742,7 @@ public class TActiveLERNode extends TNode implements ITimerEventListener, Runnab
             // FIX: gpsrPacket could be null if the previous try generates an 
             // exception. 
             gpsrpPacket.getGPSRPPayload().setFlowID(packet.getGPSRPPayload().getFlowID());
-            gpsrpPacket.getGPSRPPayload().setPacketID(packet.getGPSRPPayload().getPacketID());
+            gpsrpPacket.getGPSRPPayload().setPacketGoSGlobalUniqueID(packet.getGPSRPPayload().getPacketGoSGlobalUniqueID());
             gpsrpPacket.getGPSRPPayload().setGPSRPMessageType(TGPSRPPayload.RETRANSMISION_OK);
             outgoingPort.putPacketOnLink(gpsrpPacket, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
             try {

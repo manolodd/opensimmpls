@@ -48,8 +48,8 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
         this.arrivalOrder = arrivalOrder;
         timeout = DEFAULT_GPSRP_TIMEOUT_NANOSECONDS;
         attempts = DEFAULT_GPSRP_ATTEMPTS;
-        flowID = DEFAULT_FLOWID;
-        globalUniqueIdentifier = DEFAULT_PACKET_GLOBAL_UNIQUE_ID;
+        globalFlowID = DEFAULT_FLOWID;
+        packetGoSGlobalUniqueIdentifier = DEFAULT_PACKET_GOS_GLOBAL_UNIQUE_ID;
         outgoingPortID = DEFAULT_OUTGOING_PORTID;
         crossedNodes = new LinkedList<>();
     }
@@ -68,11 +68,11 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
     /**
      * This method establishes the flow ID of the flow the entry belongs to.
      *
-     * @param flowID The flow ID of the flow the entry belongs to.
+     * @param globalFlowID The flow ID of the flow the entry belongs to.
      * @since 2.0
      */
-    public void setFlowID(int flowID) {
-        this.flowID = flowID;
+    public void setFlowID(int globalFlowID) {
+        this.globalFlowID = globalFlowID;
     }
 
     /**
@@ -82,22 +82,22 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @since 2.0
      */
     public int getFlowID() {
-        if (flowID == DEFAULT_FLOWID) {
+        if (globalFlowID == DEFAULT_FLOWID) {
             logger.error(translations.getString("attributeNotInitialized"));
             throw new RuntimeException(translations.getString("attributeNotInitialized"));
         }
-        return flowID;
+        return globalFlowID;
     }
 
     /**
      * This method establishes the identifier of the packet this entry refers
      * to.
      *
-     * @param globalUniqueIdentifier The packet identifier.
+     * @param packetGoSGlobalUniqueIdentifier The packet identifier.
      * @since 2.0
      */
-    public void setGlobalUniqueIdentifier(int globalUniqueIdentifier) {
-        this.globalUniqueIdentifier = globalUniqueIdentifier;
+    public void setPacketGoSGlobalUniqueIdentifier(int packetGoSGlobalUniqueIdentifier) {
+        this.packetGoSGlobalUniqueIdentifier = packetGoSGlobalUniqueIdentifier;
     }
 
     /**
@@ -106,17 +106,17 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * @return The packet identifier.
      * @since 2.0
      */
-    public int getGlobalUniqueIdentifier() {
-        if (globalUniqueIdentifier == DEFAULT_PACKET_GLOBAL_UNIQUE_ID) {
+    public int getPacketGoSGlobalUniqueIdentifier() {
+        if (packetGoSGlobalUniqueIdentifier == DEFAULT_PACKET_GOS_GLOBAL_UNIQUE_ID) {
             logger.error(translations.getString("attributeNotInitialized"));
             throw new RuntimeException(translations.getString("attributeNotInitialized"));
         }
-        return globalUniqueIdentifier;
+        return packetGoSGlobalUniqueIdentifier;
     }
 
     /**
      * This method establishes the outgoing port ID of the port by where the
-     * retransmission request has been sent.
+     * retransmission request is sent.
      *
      * @param outgoingPortID Outgoing port ID.
      * @since 2.0
@@ -131,7 +131,7 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
 
     /**
      * This method obtains the outgoing port ID of the port by where the
-     * retransmission request has been sent.
+     * retransmission request is sent.
      *
      * @return Outgoing port ID.
      * @since 2.0
@@ -177,7 +177,7 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
      * return NULL.
      * @since 2.0
      */
-    public String getNearestCossedActiveNodeIPv4() {
+    public String getNextNearestCrossedActiveNodeIPv4() {
         if (crossedNodes.isEmpty()) {
             logger.error(translations.getString("attributeNotInitialized"));
             throw new RuntimeException(translations.getString("attributeNotInitialized"));
@@ -300,7 +300,7 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
     private static final int THIS_GREATER = 1;
 
     private static final int DEFAULT_FLOWID = 0;
-    private static final int DEFAULT_PACKET_GLOBAL_UNIQUE_ID = 0;
+    private static final int DEFAULT_PACKET_GOS_GLOBAL_UNIQUE_ID = 0;
     private static final int DEFAULT_OUTGOING_PORTID = -1;
 
     private static final int DEFAULT_GPSRP_TIMEOUT_NANOSECONDS = 50000;
@@ -309,8 +309,8 @@ public class TGPSRPRequestEntry implements Comparable<TGPSRPRequestEntry> {
     private static final int ZERO = 0;
 
     private int timeout;
-    private int flowID;
-    private int globalUniqueIdentifier;
+    private int globalFlowID;
+    private int packetGoSGlobalUniqueIdentifier;
     private int outgoingPortID;
     private final LinkedList<String> crossedNodes;
     private final int arrivalOrder;

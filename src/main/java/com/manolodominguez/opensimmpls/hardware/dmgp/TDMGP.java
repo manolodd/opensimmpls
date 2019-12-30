@@ -73,15 +73,15 @@ public class TDMGP {
      * This method look for a packet tagged as GoS within the DMGP memory.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param flowID Identifier of the flow the packet belongs to.
+     * @param globalFlowID Identifier of the flow the packet belongs to.
      * @param packetGlobalUniqueID Identifier of the packet.
      * @return The packet, if in the DMGP. NULL on the contrary.
      * @since 2.0
      */
-    public TMPLSPDU getPacket(int flowID, int packetGlobalUniqueID) {
+    public TMPLSPDU getPacket(int globalFlowID, int packetGlobalUniqueID) {
         TMPLSPDU wantedPacket = null;
-        TDMGPFlowEntry requestedDMGPFlowEntry = getFlow(flowID);
-        // If the requested flowID is already created...
+        TDMGPFlowEntry requestedDMGPFlowEntry = getFlow(globalFlowID);
+        // If the requested globalFlowID is already created...
         if (requestedDMGPFlowEntry != null) {
             semaphore.setRed();
             for (TDMGPEntry dmgpEntry : requestedDMGPFlowEntry.getEntries()) {
@@ -139,15 +139,15 @@ public class TDMGP {
 
     private TDMGPFlowEntry getFlow(TAbstractPDU packet) {
         TDMGPFlowEntry dmgpFlowEntry = null;
-        int flowID = packet.getIPv4Header().getOriginIPv4Address().hashCode();
-        dmgpFlowEntry = getFlow(flowID);
+        int globalFlowID = packet.getIPv4Header().getOriginIPv4Address().hashCode();
+        dmgpFlowEntry = getFlow(globalFlowID);
         return dmgpFlowEntry;
     }
 
-    private TDMGPFlowEntry getFlow(int flowID) {
+    private TDMGPFlowEntry getFlow(int globalFlowID) {
         semaphore.setRed();
         for (TDMGPFlowEntry dmgpFlowEntry : flows) {
-            if (dmgpFlowEntry.getFlowID() == flowID) {
+            if (dmgpFlowEntry.getFlowID() == globalFlowID) {
                 semaphore.setGreen();
                 return dmgpFlowEntry;
             }
@@ -159,7 +159,7 @@ public class TDMGP {
     private TDMGPFlowEntry createFlow(TAbstractPDU packet) {
         semaphore.setRed();
         TDMGPFlowEntry dmgpFlowEntry = null;
-        int flowID = packet.getIPv4Header().getOriginIPv4Address().hashCode();
+        int globalFlowID = packet.getIPv4Header().getOriginIPv4Address().hashCode();
         int percentageToBeAssigned = ZERO;
         int octectsToBeAssigned = ZERO;
         if (totalAssignedOctects < getDMGPSizeInOctects()) {
@@ -169,7 +169,7 @@ public class TDMGP {
                 totalAssignedOctects += octectsToBeAssigned;
                 totalAvailablePercentage -= percentageToBeAssigned;
                 dmgpFlowEntry = new TDMGPFlowEntry(idGenerator.getNextIdentifier());
-                dmgpFlowEntry.setFlowID(flowID);
+                dmgpFlowEntry.setFlowID(globalFlowID);
                 dmgpFlowEntry.setAssignedPercentage(percentageToBeAssigned);
                 dmgpFlowEntry.setAssignedOctets(octectsToBeAssigned);
                 flows.add(dmgpFlowEntry);

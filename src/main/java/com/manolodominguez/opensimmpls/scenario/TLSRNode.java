@@ -369,11 +369,11 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
      */
     public void handleGPSRPPacket(TGPSRPPDU packet, int incomingPortID) {
         if (packet != null) {
-            // FIX: , messageType, flowID and packetGlobalUniqueID seems not to be used. If 
+            // FIX: , messageType, globalFlowID and packetGlobalUniqueID seems not to be used. If 
             // not necessary, remove from the code.
             int messageType = packet.getGPSRPPayload().getGPSRPMessageType();
-            int flowID = packet.getGPSRPPayload().getFlowID();
-            int packetGlobalUniqueID = packet.getGPSRPPayload().getPacketID();
+            int globalFlowID = packet.getGPSRPPayload().getFlowID();
+            int packetGoSGlobalUniqueID = packet.getGPSRPPayload().getPacketGoSGlobalUniqueID();
             String targetIPv4Address = packet.getIPv4Header().getTailEndIPAddress();
             TFIFOPort outgoingPort = null;
             if (targetIPv4Address.equals(this.getIPv4Address())) {

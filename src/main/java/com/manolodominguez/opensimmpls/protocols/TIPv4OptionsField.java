@@ -125,7 +125,7 @@ public class TIPv4OptionsField {
      * MPLS domain.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param packetLocalUniqueIdentifier The global unique identifier for this
+     * @param packetLocalUniqueIdentifier The local unique identifier for this
      * packet.
      * @since 2.0
      */
@@ -141,7 +141,7 @@ public class TIPv4OptionsField {
      * MPLS domain.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return The global unique identifier of this packet.
+     * @return The local unique identifier of this packet.
      * @since 2.0
      */
     public int getPacketLocalUniqueIdentifier() {

@@ -47,7 +47,7 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
             throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         }
         this.arrivalOrder = arrivalOrder;
-        flowID = DEFAULT_FLOWID;
+        globalFlowID = DEFAULT_FLOWID;
         assignedPercentage = DEFAULT_ASSIGNED_PERCENTAGE;
         assignedOctets = DEFAULT_ASSIGNED_OCTECTS;
         usedOctets = DEFAULT_USED_OCTECTS;
@@ -59,11 +59,11 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     /**
      * This method establishes the flow identifier associated to this entry.
      *
-     * @param flowID The flow identifier. Could be a negative int.
+     * @param globalFlowID The flow identifier. Could be a negative int.
      * @since 2.0
      */
-    public void setFlowID(int flowID) {
-        this.flowID = flowID;
+    public void setFlowID(int globalFlowID) {
+        this.globalFlowID = globalFlowID;
     }
 
     /**
@@ -73,11 +73,11 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
      * @since 2.0
      */
     public int getFlowID() {
-        if (flowID == DEFAULT_FLOWID) {
+        if (globalFlowID == DEFAULT_FLOWID) {
             logger.error(translations.getString("attributeNotInitialized"));
             throw new RuntimeException(translations.getString("attributeNotInitialized"));
         }
-        return flowID;
+        return globalFlowID;
     }
 
     /**
@@ -286,7 +286,7 @@ public class TDMGPFlowEntry implements Comparable<TDMGPFlowEntry> {
     private static final int DEFAULT_USED_OCTECTS = -1;
 
     private final int arrivalOrder;
-    private int flowID;
+    private int globalFlowID;
     private int assignedPercentage;
     private int assignedOctets;
     private int usedOctets;

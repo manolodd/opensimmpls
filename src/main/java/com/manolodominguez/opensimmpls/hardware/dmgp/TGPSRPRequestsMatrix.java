@@ -90,13 +90,13 @@ public class TGPSRPRequestsMatrix {
      * This method removes from the table all entries that have the outgoing
      * port ID equal than the one specified as an argument.
      *
-     * @param oldOutgoingPortID Port ID of the port that must match the outgoing
+     * @param outgoingPortID Port ID of the port that must match the outgoing
      * port of entries to be removed.
      * @since 2.0
      */
-    public void removeEntriesMatchingOutgoingPort(int oldOutgoingPortID) {
+    public void removeEntriesMatchingOutgoingPort(int outgoingPortID) {
         semaphore.setRed();
-        if (oldOutgoingPortID < ZERO) {
+        if (outgoingPortID < ZERO) {
             logger.error(translations.getString("argumentOutOfRange"));
             throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         }
@@ -104,7 +104,7 @@ public class TGPSRPRequestsMatrix {
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
-            if (gpsrpRequestEntry.getOutgoingPortID() == oldOutgoingPortID) {
+            if (gpsrpRequestEntry.getOutgoingPortID() == outgoingPortID) {
                 iterator.remove();
             }
         }
@@ -133,12 +133,12 @@ public class TGPSRPRequestsMatrix {
         }
         TGPSRPRequestEntry gpsrpRequestEntry = new TGPSRPRequestEntry(idGenerator.getNextIdentifier());
         gpsrpRequestEntry.setOutgoingPortID(incomingPortID);
-        //FIX: As an improvement, flowID should be computed taking into account
+        //FIX: As an improvement, globalFlowID should be computed taking into account
         //the origin and the target IP. Although at this moment a traffic 
         //generator can only send traffic to a single target node, this could 
         //change in the future.
         gpsrpRequestEntry.setFlowID(mplsPacket.getIPv4Header().getOriginIPv4Address().hashCode());
-        gpsrpRequestEntry.setGlobalUniqueIdentifier(mplsPacket.getIPv4Header().getGoSGlobalUniqueIdentifier());
+        gpsrpRequestEntry.setPacketGoSGlobalUniqueIdentifier(mplsPacket.getIPv4Header().getGoSGlobalUniqueIdentifier());
         int numberOfCrossedNodes = mplsPacket.getIPv4Header().getOptionsField().getNumberOfCrossedActiveNodes();
         int i = ZERO;
         String nextIPv4 = EMPTY_STRING;
@@ -156,18 +156,18 @@ public class TGPSRPRequestsMatrix {
     /**
      * This method removes a entry from the table.
      *
-     * @param flowID Flow ID of the flow the entry refers to.
-     * @param packetGlobalUniqueID Packet ID the table refers to.
+     * @param globalFlowID Flow ID of the flow the entry refers to.
+     * @param packetGoSGlobalUniqueID Packet ID the table refers to.
      * @since 2.0
      */
-    public void removeEntry(int flowID, int packetGlobalUniqueID) {
+    public void removeEntry(int globalFlowID, int packetGoSGlobalUniqueID) {
         semaphore.setRed();
         Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
-            if (gpsrpRequestEntry.getFlowID() == flowID) {
-                if (gpsrpRequestEntry.getGlobalUniqueIdentifier() == packetGlobalUniqueID) {
+            if (gpsrpRequestEntry.getFlowID() == globalFlowID) {
+                if (gpsrpRequestEntry.getPacketGoSGlobalUniqueIdentifier() == packetGoSGlobalUniqueID) {
                     iterator.remove();
                 }
             }
@@ -178,19 +178,19 @@ public class TGPSRPRequestsMatrix {
     /**
      * This method obtains a specific entry from the table.
      *
-     * @param flowID Flow ID of the flow identifier the entry refers to.
-     * @param packetGlobalUniqueID Packet ID the entry refers to.
+     * @param globalFlowID Flow ID of the flow identifier the entry refers to.
+     * @param packetGoSGlobalUniqueID Packet ID the entry refers to.
      * @return Entry matching the specified arguments. Otherwise, NULL.
      * @since 2.0
      */
-    public TGPSRPRequestEntry getEntry(int flowID, int packetGlobalUniqueID) {
+    public TGPSRPRequestEntry getEntry(int globalFlowID, int packetGoSGlobalUniqueID) {
         semaphore.setRed();
         Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
-            if (gpsrpRequestEntry.getFlowID() == flowID) {
-                if (gpsrpRequestEntry.getGlobalUniqueIdentifier() == packetGlobalUniqueID) {
+            if (gpsrpRequestEntry.getFlowID() == globalFlowID) {
+                if (gpsrpRequestEntry.getPacketGoSGlobalUniqueIdentifier() == packetGoSGlobalUniqueID) {
                     semaphore.setGreen();
                     return gpsrpRequestEntry;
                 }
@@ -248,19 +248,19 @@ public class TGPSRPRequestsMatrix {
     /**
      * This method obtains the outgoing port ID of a specific entry.
      *
-     * @param flowID Flow ID of the flow the entry refers to.
-     * @param packetGlobalUniqueID Packet ID the entry refers to.
+     * @param globalFlowID Flow ID of the flow the entry refers to.
+     * @param packetGoSGlobalUniqueID Packet ID the entry refers to.
      * @return Outgoing port of the entry maching the specified arguments.
      * @since 2.0
      */
-    public int getOutgoingPort(int flowID, int packetGlobalUniqueID) {
+    public int getOutgoingPort(int globalFlowID, int packetGoSGlobalUniqueID) {
         semaphore.setRed();
         Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
-            if (gpsrpRequestEntry.getFlowID() == flowID) {
-                if (gpsrpRequestEntry.getGlobalUniqueIdentifier() == packetGlobalUniqueID) {
+            if (gpsrpRequestEntry.getFlowID() == globalFlowID) {
+                if (gpsrpRequestEntry.getPacketGoSGlobalUniqueIdentifier() == packetGoSGlobalUniqueID) {
                     semaphore.setGreen();
                     return gpsrpRequestEntry.getOutgoingPortID();
                 }
@@ -274,22 +274,22 @@ public class TGPSRPRequestsMatrix {
      * Thism method obtains the IP address of the following node that should be
      * requested for a packet retransmission.
      *
-     * @param flowID Flow ID of the flow of the desired entry.
-     * @param packetGlobalUniqueID Packet ID of the desired entry.
+     * @param globalFlowID Flow ID of the flow of the desired entry.
+     * @param packetGoSGlobalUniqueID Packet ID of the desired entry.
      * @return IP address of the following node to be requested for a packet
      * retransmission. Otherwise, NULL.
      * @since 2.0
      */
-    public String getNearestCossedActiveNodeIPv4(int flowID, int packetGlobalUniqueID) {
+    public String getNextNearestCrossedActiveNodeIPv4(int globalFlowID, int packetGoSGlobalUniqueID) {
         semaphore.setRed();
         Iterator<TGPSRPRequestEntry> iterator = entries.iterator();
         TGPSRPRequestEntry gpsrpRequestEntry = null;
         while (iterator.hasNext()) {
             gpsrpRequestEntry = iterator.next();
-            if (gpsrpRequestEntry.getFlowID() == flowID) {
-                if (gpsrpRequestEntry.getGlobalUniqueIdentifier() == packetGlobalUniqueID) {
+            if (gpsrpRequestEntry.getFlowID() == globalFlowID) {
+                if (gpsrpRequestEntry.getPacketGoSGlobalUniqueIdentifier() == packetGoSGlobalUniqueID) {
                     semaphore.setGreen();
-                    return gpsrpRequestEntry.getNearestCossedActiveNodeIPv4();
+                    return gpsrpRequestEntry.getNextNearestCrossedActiveNodeIPv4();
                 }
             }
         }
