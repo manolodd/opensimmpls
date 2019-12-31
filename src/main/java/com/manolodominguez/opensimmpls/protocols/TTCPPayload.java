@@ -30,14 +30,14 @@ public class TTCPPayload {
      * will be added to the specified value, so specify only payload size.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param size The desired size for this TCP packet payload, in bytes
+     * @param payloadSizeInOctets The desired size for this TCP packet payload, in bytes
      * (octects).
      * @since 2.0
      */
-    public TTCPPayload(int size) {
+    public TTCPPayload(int payloadSizeInOctets) {
         // FIX: create a constant insted of this harcoded value.
-        this.size = 20;   // TCP header size in bytes (octects)
-        this.size += size;
+        this.sizeInOctets = 20;   // TCP header size in bytes (octects)
+        this.sizeInOctets += payloadSizeInOctets;
     }
 
     /**
@@ -50,7 +50,7 @@ public class TTCPPayload {
      * @since 2.0
      */
     public int getSize() {
-        return this.size;
+        return this.sizeInOctets;
     }
 
     /**
@@ -64,9 +64,9 @@ public class TTCPPayload {
      */
     public void setSize(int size) {
         //FIX: create a constant instead of this harcoded value
-        this.size = 20;   // TCP header size in byts (octects).
-        this.size += size;
+        this.sizeInOctets = 20;   // TCP header size in byts (octects).
+        this.sizeInOctets += size;
     }
 
-    private int size;
+    private int sizeInOctets;
 }

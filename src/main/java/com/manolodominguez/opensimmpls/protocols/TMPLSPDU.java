@@ -33,13 +33,13 @@ public class TMPLSPDU extends TAbstractPDU {
      * @param id Packet identifier.
      * @param originIP IP addres of this packet's sender.
      * @param targetIP IP addres of this packet's receiver.
-     * @param payloadSize The desired size for the payload of this MPLS packet,
+     * @param payloadSizeInOctets The desired size for the payload of this MPLS packet,
      * in bytes (octects).
      * @since 2.0
      */
-    public TMPLSPDU(long id, String originIP, String targetIP, int payloadSize) {
+    public TMPLSPDU(long id, String originIP, String targetIP, int payloadSizeInOctets) {
         super(id, originIP, targetIP);
-        this.tcpPayload = new TTCPPayload(payloadSize);
+        this.tcpPayload = new TTCPPayload(payloadSizeInOctets);
         this.mplsLabelStack = new TMPLSLabelStack();
         this.subType = TAbstractPDU.MPLS;
     }

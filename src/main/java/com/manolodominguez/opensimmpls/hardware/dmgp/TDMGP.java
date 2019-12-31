@@ -83,18 +83,18 @@ public class TDMGP {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param globalFlowID Identifier of the flow the packet belongs to.
-     * @param packetGlobalUniqueID Identifier of the packet.
+     * @param packetGoSGlobalUniqueID Identifier of the packet.
      * @return The packet, if in the DMGP. NULL on the contrary.
      * @since 2.0
      */
-    public TMPLSPDU getPacket(int globalFlowID, int packetGlobalUniqueID) {
+    public TMPLSPDU getPacket(int globalFlowID, int packetGoSGlobalUniqueID) {
         TMPLSPDU wantedPacket = null;
         TDMGPFlowEntry requestedDMGPFlowEntry = getFlow(globalFlowID);
         // If the requested globalFlowID is already created...
         if (requestedDMGPFlowEntry != null) {
             semaphore.setRed();
             for (TDMGPEntry dmgpEntry : requestedDMGPFlowEntry.getEntries()) {
-                if (dmgpEntry.getPacketGoSGlobalUniqueIdentifier() == packetGlobalUniqueID) {
+                if (dmgpEntry.getPacketGoSGlobalUniqueIdentifier() == packetGoSGlobalUniqueID) {
                     wantedPacket = dmgpEntry.getPacketClone();
                     semaphore.setGreen();
                     return wantedPacket;
@@ -211,7 +211,7 @@ public class TDMGP {
         int reservedOctects = ZERO;
         if (totalAvailablePercentage > ZERO) {
             if (totalAvailablePercentage > reservedPercentage) {
-                reservedOctects = ((this.getDMGPSizeInOctects() * reservedPercentage) / ONE_HUNDRED);
+                reservedOctects = ((getDMGPSizeInOctects() * reservedPercentage) / ONE_HUNDRED);
                 return reservedOctects;
             } else {
                 reservedOctects = getDMGPSizeInOctects() - totalAssignedOctects;
