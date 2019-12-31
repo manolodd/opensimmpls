@@ -21,6 +21,10 @@ import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
 import com.manolodominguez.opensimmpls.commons.TRotaryIDGenerator;
 import com.manolodominguez.opensimmpls.commons.TSemaphore;
 import com.manolodominguez.opensimmpls.commons.UnitsTranslations;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.ResourceBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class implements a DMGP memory to save GoS-aware PDUs temporarily.
@@ -38,6 +42,7 @@ public class TDMGP {
      * @since 2.0
      */
     public TDMGP() {
+        translations = ResourceBundle.getBundle(AvailableBundles.T_DMGP.getPath());
         semaphore = new TSemaphore();
         idGenerator = new TRotaryIDGenerator();
         flows = new TreeSet<>();
@@ -54,6 +59,10 @@ public class TDMGP {
      * @param totalDMGPSizeInKB Size in kilobytes.
      */
     public void setDMGPSizeInKB(int totalDMGPSizeInKB) {
+        if (totalDMGPSizeInKB < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
         this.totalDMGPSizeInKB = totalDMGPSizeInKB;
         reset();
     }
@@ -104,6 +113,10 @@ public class TDMGP {
      * @since 2.0
      */
     public void addPacket(TMPLSPDU packet) {
+        if (packet == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         TDMGPFlowEntry dmgpFlowEntry = getFlow(packet);
         if (dmgpFlowEntry == null) { // The correponding flow, dows not exists
             dmgpFlowEntry = createFlow(packet);
@@ -138,6 +151,10 @@ public class TDMGP {
     }
 
     private TDMGPFlowEntry getFlow(TAbstractPDU packet) {
+        if (packet == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         TDMGPFlowEntry dmgpFlowEntry = null;
         int globalFlowID = packet.getIPv4Header().getOriginIPv4Address().hashCode();
         dmgpFlowEntry = getFlow(globalFlowID);
@@ -157,6 +174,10 @@ public class TDMGP {
     }
 
     private TDMGPFlowEntry createFlow(TAbstractPDU packet) {
+        if (packet == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         semaphore.setRed();
         TDMGPFlowEntry dmgpFlowEntry = null;
         int globalFlowID = packet.getIPv4Header().getOriginIPv4Address().hashCode();
@@ -182,6 +203,10 @@ public class TDMGP {
     }
 
     private int getOctectsToBeAssigned(TAbstractPDU packet) {
+        if (packet == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         int reservedPercentage = getRequestedPercentage(packet);
         int reservedOctects = ZERO;
         if (totalAvailablePercentage > ZERO) {
@@ -197,6 +222,10 @@ public class TDMGP {
     }
 
     private int getPercentageToBeAssigned(TAbstractPDU packet) {
+        if (packet == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         int reservedPercentage = getRequestedPercentage(packet);
         if (totalAvailablePercentage > ZERO) {
             if (totalAvailablePercentage > reservedPercentage) {
@@ -209,12 +238,16 @@ public class TDMGP {
     }
 
     private int getRequestedPercentage(TAbstractPDU packet) {
+        if (packet == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         int packetGoSLevel = ZERO;
         if (packet.getIPv4Header().getOptionsField().isUsed()) {
             packetGoSLevel = packet.getIPv4Header().getOptionsField().getRequestedGoSLevel();
             // The following values have been defined by design. See "Guarantee
             // of Service (GoS) support over MPLS using Active Techniques"
-            // proposal. They determines the number of GoS flows that can be 
+            // proposal. It determines the number of GoS flows that can be 
             // using the DMGP in a given moment concurrently
             switch (packetGoSLevel) {
                 case TAbstractPDU.EXP_LEVEL3_WITH_BACKUP_LSP:
@@ -248,11 +281,16 @@ public class TDMGP {
     private int totalDMGPSizeInKB;
     private int totalAssignedOctects;
 
+    private final ResourceBundle translations;
+    private final Logger logger = LoggerFactory.getLogger(TDMGP.class);
+
     private static final int DEFAULT_TOTAL_AVAILABLE_PERCENTAGE = 100;
     private static final int DEFAULT_TOTAL_DMGP_SIZE_IN_KB = 1;
     private static final int DEFAULT_TOTAL_ASSIGNED_OCTECTS = 0;
     private static final int ZERO = 0;
     private static final int ONE_HUNDRED = 100;
+    // The following proportion is defined in the "Guarentee of Service (GoS) 
+    // support over MPLS using Active Techniques" proposal.
     private static final int PERCENTAGE_OF_DMGP_RESERVED_FOR_GOS0 = 0;
     private static final int PERCENTAGE_OF_DMGP_RESERVED_FOR_GOS1 = 4;
     private static final int PERCENTAGE_OF_DMGP_RESERVED_FOR_GOS2 = 8;
