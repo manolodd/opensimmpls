@@ -40,9 +40,9 @@ public abstract class TPort {
      * to.
      */
     public TPort(TPortSet parentPortSet, int portID) {
-        this.link = null;
+        link = null;
+        semaphore = new TSemaphore();
         this.parentPortSet = parentPortSet;
-        this.semaphore = new TSemaphore();
         this.portID = portID;
     }
 
@@ -63,7 +63,7 @@ public abstract class TPort {
      * @since 2.0
      */
     public TPortSet getPortSet() {
-        return this.parentPortSet;
+        return parentPortSet;
     }
 
     /**
@@ -83,7 +83,7 @@ public abstract class TPort {
      * @since 2.0
      */
     public int getPortID() {
-        return this.portID;
+        return portID;
     }
 
     /**
@@ -94,7 +94,7 @@ public abstract class TPort {
      * @since 2.0
      */
     public boolean isAvailable() {
-        return this.link == null;
+        return link == null;
     }
 
     /**
@@ -116,7 +116,7 @@ public abstract class TPort {
      * @since 2.0
      */
     public TLink getLink() {
-        return this.link;
+        return link;
     }
 
     /**
@@ -126,7 +126,7 @@ public abstract class TPort {
      * @since 2.0
      */
     public void disconnectLink() {
-        this.link = null;
+        link = null;
     }
 
     /**
@@ -141,21 +141,21 @@ public abstract class TPort {
      * @since 2.0
      */
     public void putPacketOnLink(TAbstractPDU packet, int endNode) {
-        if (this.link != null) {
-            if (!this.link.isBroken()) {
-                if (this.link.getLinkType() == TLink.INTERNAL_LINK) {
-                    this.link.deliverPacketToNode(packet, endNode);
-                    if (this.getPortSet().getParentNode().getStats() != null) {
-                        this.getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.OUTGOING);
+        if (link != null) {
+            if (!link.isBroken()) {
+                if (link.getLinkType() == TLink.INTERNAL_LINK) {
+                    link.deliverPacketToNode(packet, endNode);
+                    if (getPortSet().getParentNode().getStats() != null) {
+                        getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.OUTGOING);
                     }
                 } else if ((packet.getType() != TAbstractPDU.GPSRP) && (packet.getType() != TAbstractPDU.TLDP)) {
-                    this.link.deliverPacketToNode(packet, endNode);
-                    if (this.getPortSet().getParentNode().getStats() != null) {
-                        this.getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.OUTGOING);
+                    link.deliverPacketToNode(packet, endNode);
+                    if (getPortSet().getParentNode().getStats() != null) {
+                        getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.OUTGOING);
                     }
                 }
             } else {
-                this.discardPacket(packet);
+                discardPacket(packet);
             }
         }
     }
