@@ -41,11 +41,11 @@ public abstract class TPortSet {
     public TPortSet(int numberOfPorts, TNode parentNode) {
         this.numberOfPorts = numberOfPorts;
         this.parentNode = parentNode;
-        this.portSetBufferSize = ONE;
-        this.portSetBufferOccupancy = ZERO;
-        this.portSetSemaphore = new TSemaphore();
-        this.artificiallyCongested = false;
-        this.occupancy = ZERO;
+        portSetBufferSize = ONE;
+        portSetBufferOccupancy = ZERO;
+        portSetSemaphore = new TSemaphore();
+        artificiallyCongested = false;
+        occupancy = ZERO;
     }
 
     /**
@@ -56,7 +56,7 @@ public abstract class TPortSet {
      * @since 2.0
      */
     public synchronized void increasePortSetOccupancy(long occupancyIncrement) {
-        this.portSetBufferOccupancy += occupancyIncrement;
+        portSetBufferOccupancy += occupancyIncrement;
     }
 
     /**
@@ -67,7 +67,7 @@ public abstract class TPortSet {
      * @since 2.0
      */
     public synchronized void decreasePortSetOccupancySize(long occupancyDecrement) {
-        this.portSetBufferOccupancy -= occupancyDecrement;
+        portSetBufferOccupancy -= occupancyDecrement;
     }
 
     /**
@@ -88,7 +88,7 @@ public abstract class TPortSet {
      * @since 2.0
      */
     public synchronized long getPortSetOccupancy() {
-        return this.portSetBufferOccupancy;
+        return portSetBufferOccupancy;
     }
 
     /**
@@ -100,7 +100,7 @@ public abstract class TPortSet {
      * FALSE.
      */
     public boolean isCongestedArtificially() {
-        return this.artificiallyCongested;
+        return artificiallyCongested;
     }
 
     /**
@@ -124,7 +124,7 @@ public abstract class TPortSet {
      * @since 2.0
      */
     public int getNumberOfPorts() {
-        return this.numberOfPorts;
+        return numberOfPorts;
     }
 
     /**
@@ -144,7 +144,7 @@ public abstract class TPortSet {
      * @since 2.0
      */
     public TNode getParentNode() {
-        return this.parentNode;
+        return parentNode;
     }
 
     /**
@@ -364,7 +364,7 @@ public abstract class TPortSet {
     public TSemaphore portSetSemaphore;
     protected boolean artificiallyCongested;
     protected long occupancy;
-    
+
     private static final int ZERO = 0;
     private static final int ONE = 1;
 }
