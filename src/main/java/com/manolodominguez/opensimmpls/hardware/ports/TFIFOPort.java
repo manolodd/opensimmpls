@@ -23,6 +23,9 @@ import com.manolodominguez.opensimmpls.scenario.TStats;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 import static com.manolodominguez.opensimmpls.commons.UnitsTranslations.OCTETS_PER_MEGABYTE;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.NoSuchElementException;
+import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,9 +51,18 @@ public class TFIFOPort extends TPort {
      */
     public TFIFOPort(TPortSet parentPortSet, int portID) {
         super(parentPortSet, portID);
-        this.buffer = new LinkedList<>();
-        this.packetRead = null;
-        this.isUnlimitedBuffer = false;
+        translations = ResourceBundle.getBundle(AvailableBundles.T_FIFO_PORT.getPath());
+        if (portID < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
+        if (parentPortSet == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
+        buffer = new LinkedList<>();
+        packetRead = null;
+        isUnlimitedBuffer = false;
     }
 
     /**
@@ -63,7 +75,7 @@ public class TFIFOPort extends TPort {
      */
     @Override
     public void setUnlimitedBuffer(boolean unlimitedBuffer) {
-        this.isUnlimitedBuffer = unlimitedBuffer;
+        isUnlimitedBuffer = unlimitedBuffer;
     }
 
     /**
@@ -75,7 +87,11 @@ public class TFIFOPort extends TPort {
      */
     @Override
     public void discardPacket(TAbstractPDU packet) {
-        this.getPortSet().getParentNode().discardPacket(packet);
+        if (packet == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
+        getPortSet().getParentNode().discardPacket(packet);
     }
 
     /**
@@ -87,39 +103,43 @@ public class TFIFOPort extends TPort {
      */
     @Override
     public void addPacket(TAbstractPDU packet) {
-        TFIFOPortSet parentPortSetAux = (TFIFOPortSet) this.parentPortSet;
+        if (packet == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
+        TFIFOPortSet parentPortSetAux = (TFIFOPortSet) parentPortSet;
         parentPortSetAux.portSetSemaphore.setRed();
-        this.semaphore.setRed();
-        TNode parentNode = this.parentPortSet.getParentNode();
+        semaphore.setRed();
+        TNode parentNode = parentPortSet.getParentNode();
         long eventID = ZERO;
         try {
             eventID = parentNode.eventIdentifierGenerator.getNextIdentifier();
         } catch (EIDGeneratorOverflow ex) {
-            this.logger.error(ex.getMessage(), ex);
+            logger.error(ex.getMessage(), ex);
         }
         int packetSubtype = packet.getSubtype();
-        if (this.isUnlimitedBuffer) {
-            this.buffer.addLast(packet);
+        if (isUnlimitedBuffer) {
+            buffer.addLast(packet);
             parentPortSetAux.increasePortSetOccupancy(packet.getSize());
-            TSimulationEventPacketReceived packetReceivedEvent = new TSimulationEventPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getCurrentTimeInstant(), packetSubtype, packet.getSize());
+            TSimulationEventPacketReceived packetReceivedEvent = new TSimulationEventPacketReceived(parentNode, eventID, getPortSet().getParentNode().getCurrentTimeInstant(), packetSubtype, packet.getSize());
             parentNode.simulationEventsListener.captureSimulationEvents(packetReceivedEvent);
-            if (this.getPortSet().getParentNode().getStats() != null) {
-                this.getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.INCOMING);
+            if (getPortSet().getParentNode().getStats() != null) {
+                getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.INCOMING);
             }
         } else {
             if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= (parentPortSetAux.getBufferSizeInMBytes() * OCTETS_PER_MEGABYTE.getUnits())) {
-                this.buffer.addLast(packet);
+                buffer.addLast(packet);
                 parentPortSetAux.increasePortSetOccupancy(packet.getSize());
-                TSimulationEventPacketReceived packetReceivedEvent = new TSimulationEventPacketReceived(parentNode, eventID, this.getPortSet().getParentNode().getCurrentTimeInstant(), packetSubtype, packet.getSize());
+                TSimulationEventPacketReceived packetReceivedEvent = new TSimulationEventPacketReceived(parentNode, eventID, getPortSet().getParentNode().getCurrentTimeInstant(), packetSubtype, packet.getSize());
                 parentNode.simulationEventsListener.captureSimulationEvents(packetReceivedEvent);
-                if (this.getPortSet().getParentNode().getStats() != null) {
-                    this.getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.INCOMING);
+                if (getPortSet().getParentNode().getStats() != null) {
+                    getPortSet().getParentNode().getStats().addStatEntry(packet, TStats.INCOMING);
                 }
             } else {
-                this.discardPacket(packet);
+                discardPacket(packet);
             }
         }
-        this.semaphore.setGreen();
+        semaphore.setGreen();
         parentPortSetAux.portSetSemaphore.setGreen();
     }
 
@@ -134,27 +154,32 @@ public class TFIFOPort extends TPort {
      */
     @Override
     public void reEnqueuePacket(TAbstractPDU packet) {
-        TFIFOPortSet parentPortSetAux = (TFIFOPortSet) this.parentPortSet;
+        if (packet == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
+        TFIFOPortSet parentPortSetAux = (TFIFOPortSet) parentPortSet;
         parentPortSetAux.portSetSemaphore.setRed();
-        this.semaphore.setRed();
-        if (this.isUnlimitedBuffer) {
-            this.buffer.addLast(packet);
+        semaphore.setRed();
+        if (isUnlimitedBuffer) {
+            buffer.addLast(packet);
             parentPortSetAux.increasePortSetOccupancy(packet.getSize());
         } else {
             if ((parentPortSetAux.getPortSetOccupancy() + packet.getSize()) <= (parentPortSetAux.getBufferSizeInMBytes() * OCTETS_PER_MEGABYTE.getUnits())) {
-                this.buffer.addLast(packet);
+                buffer.addLast(packet);
                 parentPortSetAux.increasePortSetOccupancy(packet.getSize());
             } else {
-                this.discardPacket(packet);
+                discardPacket(packet);
             }
         }
-        this.semaphore.setGreen();
+        semaphore.setGreen();
         parentPortSetAux.portSetSemaphore.setGreen();
     }
 
     /**
      * This method reads an returns the next packet of the buffer according to
-     * FIFO policy.
+     * FIFO policy. If there is not a packet to be read from the buffer, then a
+     * NoSuchElementException is thrown.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @return The read packet
@@ -162,16 +187,21 @@ public class TFIFOPort extends TPort {
      */
     @Override
     public TAbstractPDU getPacket() {
-        TFIFOPortSet parentPortSetAux = (TFIFOPortSet) this.parentPortSet;
+        TFIFOPortSet parentPortSetAux = (TFIFOPortSet) parentPortSet;
         parentPortSetAux.portSetSemaphore.setRed();
-        this.semaphore.setRed();
-        this.packetRead = (TAbstractPDU) this.buffer.removeFirst();
-        if (!this.isUnlimitedBuffer) {
-            parentPortSetAux.decreasePortSetOccupancySize(this.packetRead.getSize());
+        semaphore.setRed();
+        try {
+            packetRead = buffer.removeFirst();
+            if (!isUnlimitedBuffer) {
+                parentPortSetAux.decreasePortSetOccupancySize(packetRead.getSize());
+            }
+        } catch (NoSuchElementException e) {
+            logger.error(translations.getString("elementDoesNotExist"));
+            throw e;
         }
-        this.semaphore.setGreen();
+        semaphore.setGreen();
         parentPortSetAux.portSetSemaphore.setGreen();
-        return this.packetRead;
+        return packetRead;
     }
 
     /**
@@ -180,18 +210,22 @@ public class TFIFOPort extends TPort {
      * argument) that the port can switch in the current moment.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param octets The number of octets that the port can switch in this
-     * moment.
+     * @param switchableOctets The number of octets that the port can switch in
+     * this moment.
      * @return TRUE, if we can switch the next packet of the buffer at this
      * moment. Otherwise, FALSE.
      * @since 2.0
      */
     @Override
-    public boolean canSwitchPacket(int octets) {
-        this.semaphore.setRed();
-        this.packetRead = (TAbstractPDU) this.buffer.getFirst();
-        this.semaphore.setGreen();
-        return this.packetRead.getSize() <= octets;
+    public boolean canSwitchPacket(int switchableOctets) {
+        if (switchableOctets < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
+        semaphore.setRed();
+        packetRead = buffer.getFirst();
+        semaphore.setGreen();
+        return packetRead.getSize() <= switchableOctets;
     }
 
     /**
@@ -204,10 +238,10 @@ public class TFIFOPort extends TPort {
      */
     @Override
     public long getCongestionLevel() {
-        if (this.isUnlimitedBuffer) {
+        if (isUnlimitedBuffer) {
             return ZERO;
         }
-        TFIFOPortSet parentPortSetAux = (TFIFOPortSet) this.parentPortSet;
+        TFIFOPortSet parentPortSetAux = (TFIFOPortSet) parentPortSet;
         long congestion = (parentPortSetAux.getPortSetOccupancy() * ONE_HUNDRED) / (parentPortSetAux.getBufferSizeInMBytes() * OCTETS_PER_MEGABYTE.getUnits());
         return congestion;
     }
@@ -223,7 +257,7 @@ public class TFIFOPort extends TPort {
      */
     @Override
     public boolean thereIsAPacketWaiting() {
-        return this.buffer.size() > ZERO;
+        return buffer.size() > ZERO;
     }
 
     /**
@@ -236,18 +270,18 @@ public class TFIFOPort extends TPort {
      */
     @Override
     public long getOccupancy() {
-        if (this.isUnlimitedBuffer) {
-            this.semaphore.setRed();
+        if (isUnlimitedBuffer) {
+            semaphore.setRed();
             int occupancy = ZERO;
             TAbstractPDU packet = null;
-            Iterator<TAbstractPDU> iterator = this.buffer.iterator();
+            Iterator<TAbstractPDU> iterator = buffer.iterator();
             while (iterator.hasNext()) {
                 packet = iterator.next();
                 if (packet != null) {
                     occupancy += packet.getSize();
                 }
             }
-            this.semaphore.setGreen();
+            semaphore.setGreen();
             return occupancy;
         }
         TFIFOPortSet parentPortSetAux = (TFIFOPortSet) parentPortSet;
@@ -264,7 +298,7 @@ public class TFIFOPort extends TPort {
      */
     @Override
     public int getNumberOfPackets() {
-        return this.buffer.size();
+        return buffer.size();
     }
 
     /**
@@ -276,20 +310,21 @@ public class TFIFOPort extends TPort {
      */
     @Override
     public void reset() {
-        this.semaphore.setRed();
-        Iterator iterator = this.buffer.iterator();
+        semaphore.setRed();
+        Iterator<TAbstractPDU> iterator = buffer.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
         }
-        this.semaphore.setGreen();
+        semaphore.setGreen();
     }
 
     private LinkedList<TAbstractPDU> buffer;
     private TAbstractPDU packetRead;
     private boolean isUnlimitedBuffer;
+    private final ResourceBundle translations;
     private final Logger logger = LoggerFactory.getLogger(TFIFOPort.class);
-    
+
     private static final int ZERO = 0;
     private static final int ONE_HUNDRED = 100;
 }

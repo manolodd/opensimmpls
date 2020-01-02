@@ -19,6 +19,10 @@ import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 import com.manolodominguez.opensimmpls.commons.TSemaphore;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.ResourceBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class implements a set of ports for a node.
@@ -39,6 +43,15 @@ public abstract class TPortSet {
      * @since 2.0
      */
     public TPortSet(int numberOfPorts, TNode parentNode) {
+        translations = ResourceBundle.getBundle(AvailableBundles.T_PORT_SET.getPath());
+        if (numberOfPorts < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
+        if (parentNode == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         this.numberOfPorts = numberOfPorts;
         this.parentNode = parentNode;
         portSetBufferSize = ONE;
@@ -56,6 +69,10 @@ public abstract class TPortSet {
      * @since 2.0
      */
     public synchronized void increasePortSetOccupancy(long occupancyIncrement) {
+        if (occupancyIncrement < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
         portSetBufferOccupancy += occupancyIncrement;
     }
 
@@ -67,6 +84,10 @@ public abstract class TPortSet {
      * @since 2.0
      */
     public synchronized void decreasePortSetOccupancySize(long occupancyDecrement) {
+        if (occupancyDecrement < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
         portSetBufferOccupancy -= occupancyDecrement;
     }
 
@@ -78,6 +99,10 @@ public abstract class TPortSet {
      * @since 2.0
      */
     public synchronized void setPortSetOccupancySize(long portSetBufferOccupancy) {
+        if (portSetBufferOccupancy < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
         this.portSetBufferOccupancy = portSetBufferOccupancy;
     }
 
@@ -134,6 +159,10 @@ public abstract class TPortSet {
      * @since 2.0
      */
     public void setParentNode(TNode parentNode) {
+        if (parentNode == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         this.parentNode = parentNode;
     }
 
@@ -144,6 +173,10 @@ public abstract class TPortSet {
      * @since 2.0
      */
     public TNode getParentNode() {
+        if (parentNode == null) {
+            logger.error(translations.getString("attributeNotInitialized"));
+            throw new IllegalArgumentException(translations.getString("attributeNotInitialized"));
+        }
         return parentNode;
     }
 
@@ -364,6 +397,8 @@ public abstract class TPortSet {
     public TSemaphore portSetSemaphore;
     protected boolean artificiallyCongested;
     protected long occupancy;
+    private final ResourceBundle translations;
+    private final Logger logger = LoggerFactory.getLogger(TPortSet.class);
 
     private static final int ZERO = 0;
     private static final int ONE = 1;

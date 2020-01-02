@@ -19,6 +19,10 @@ import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TStats;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 import com.manolodominguez.opensimmpls.commons.TSemaphore;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.ResourceBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This abstract class will be implemented to have an I/O port of a port set.
@@ -40,6 +44,15 @@ public abstract class TPort {
      * to.
      */
     public TPort(TPortSet parentPortSet, int portID) {
+        translations = ResourceBundle.getBundle(AvailableBundles.T_PORT.getPath());
+        if (portID < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
+        if (parentPortSet == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         link = null;
         semaphore = new TSemaphore();
         this.parentPortSet = parentPortSet;
@@ -53,6 +66,10 @@ public abstract class TPort {
      * @since 2.0
      */
     public void setPortSet(TPortSet parentPortSet) {
+        if (parentPortSet == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         this.parentPortSet = parentPortSet;
     }
 
@@ -63,6 +80,10 @@ public abstract class TPort {
      * @since 2.0
      */
     public TPortSet getPortSet() {
+        if (parentPortSet == null) {
+            logger.error(translations.getString("attributeNotInitialized"));
+            throw new IllegalArgumentException(translations.getString("attributeNotInitialized"));
+        }
         return parentPortSet;
     }
 
@@ -73,6 +94,10 @@ public abstract class TPort {
      * @since 2.0
      */
     public void setPortID(int portID) {
+        if (portID < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
         this.portID = portID;
     }
 
@@ -83,6 +108,10 @@ public abstract class TPort {
      * @since 2.0
      */
     public int getPortID() {
+        if (portID < ZERO) {
+            logger.error(translations.getString("attributeNotInitialized"));
+            throw new IllegalArgumentException(translations.getString("attributeNotInitialized"));
+        }
         return portID;
     }
 
@@ -105,6 +134,10 @@ public abstract class TPort {
      * @since 2.0
      */
     public void setLink(TLink link) {
+        if (parentPortSet == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         this.link = link;
     }
 
@@ -141,6 +174,14 @@ public abstract class TPort {
      * @since 2.0
      */
     public void putPacketOnLink(TAbstractPDU packet, int endNode) {
+        if ((endNode != TLink.TAIL_END_NODE) && (endNode != TLink.HEAD_END_NODE)) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
+        if (packet == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         if (link != null) {
             if (!link.isBroken()) {
                 if (link.getLinkType() == TLink.INTERNAL_LINK) {
@@ -282,4 +323,8 @@ public abstract class TPort {
     protected TPortSet parentPortSet;
     protected TSemaphore semaphore;
     protected int portID;
+    private final ResourceBundle translations;
+    private final Logger logger = LoggerFactory.getLogger(TPort.class);
+    
+    private static final int ZERO = 0;
 }
