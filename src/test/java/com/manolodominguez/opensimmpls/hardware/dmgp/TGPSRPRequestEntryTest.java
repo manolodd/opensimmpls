@@ -397,7 +397,7 @@ public class TGPSRPRequestEntryTest {
         instance.decreaseTimeout(500); // Attempts 0, Timeout = 9.500
         instance.decreaseTimeout(1500); // Attempts 0, Timeout = 8.000
         instance.decreaseTimeout(1234); // Attempts 0, Timeout = 6.766
-        instance.decreaseTimeout(6766); // Attempts 0, Timeout = 0
+        instance.decreaseTimeout(6800); // Attempts 0, Timeout = 0 (although its greater than the remaining ns)
         result &= !instance.isRetriable();  // !false --> true
         assertTrue(!instance.isRetriable() && result); // (!false && true) = true
     }
@@ -599,4 +599,17 @@ public class TGPSRPRequestEntryTest {
         }
         assertEquals(true, worksFineInAllCases);
     }
+
+    /**
+     * Test of compareTo method, of class TGPSRPRequestEntry.
+     */
+    @Test
+    public void testCompareToWhenNull() {
+        System.out.println("Test compareTo");
+        TGPSRPRequestEntry instance = new TGPSRPRequestEntry(1);
+        assertThrows(RuntimeException.class, () -> {
+            instance.compareTo(null); // Not possible. Should throws an exception
+        });
+    }
+
 }

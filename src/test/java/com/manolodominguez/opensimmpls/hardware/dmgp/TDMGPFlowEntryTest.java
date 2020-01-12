@@ -467,4 +467,16 @@ public class TDMGPFlowEntryTest {
         assertEquals(true, worksFineInAllCases);
     }
 
+    /**
+     * Test of compareTo method, of class TDMGPFlowEntry.
+     */
+    @Test
+    public void testCompareToWhenNull() {
+        System.out.println("Test compareTo");
+        TDMGPFlowEntry instance = new TDMGPFlowEntry(1);
+        assertThrows(RuntimeException.class, () -> {
+            instance.compareTo(null); // Not possible. Should throws an exception
+        });
+    }
+
 }

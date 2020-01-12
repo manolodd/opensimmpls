@@ -204,4 +204,16 @@ public class TDMGPEntryTest {
         assertEquals(true, worksFineInAllCases);
     }
 
+    /**
+     * Test of compareTo method, of class TGPSRPRequestEntry.
+     */
+    @Test
+    public void testCompareToWhenNull() {
+        System.out.println("Test compareTo");
+        TDMGPEntry instance = new TDMGPEntry(1);
+        assertThrows(RuntimeException.class, () -> {
+            instance.compareTo(null); // Not possible. Should throws an exception
+        });
+    }
+
 }

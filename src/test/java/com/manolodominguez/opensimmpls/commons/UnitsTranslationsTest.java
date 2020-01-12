@@ -83,4 +83,28 @@ public class UnitsTranslationsTest {
         assertEquals(8, instance.getUnits());
     }
 
+    /**
+     * Test values, of class UnitsTranslations.
+     */
+    @Test
+    public void testValuesContent() {
+        System.out.println("Test values content");
+        boolean worksFine = true;
+        if (UnitsTranslations.BITS_PER_OCTETS.getUnits() != 8) {
+            worksFine &= false;
+        }
+        if (UnitsTranslations.OCTETS_PER_KILOBYTE.getUnits() != 1024) {
+            worksFine &= false;
+        }
+        if (UnitsTranslations.OCTETS_PER_MEGABYTE.getUnits() != (1024*1024)) {
+            worksFine &= false;
+        }
+        if (UnitsTranslations.OCTETS_PER_GIGABYTE.getUnits() != (1024*1024*1024)) {
+            worksFine &= false;
+        }
+        
+        assertTrue(worksFine);
+    }
+
+
 }

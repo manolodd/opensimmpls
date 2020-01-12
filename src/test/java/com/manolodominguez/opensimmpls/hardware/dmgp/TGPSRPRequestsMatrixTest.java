@@ -216,7 +216,6 @@ public class TGPSRPRequestsMatrixTest {
     public void testRemoveEntriesMatchingOutgoingPortWhenOutOfRange() {
         System.out.println("Test removeEntriesMatchingOutgoingPort");
 
-        int numberOfEntries = 0;
         TGPSRPRequestsMatrix instance = new TGPSRPRequestsMatrix();
 
         TMPLSPDU mplsPacket1 = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 100);
@@ -785,11 +784,17 @@ public class TGPSRPRequestsMatrixTest {
         instance.addEntry(mplsPacket2, 1);
         instance.addEntry(mplsPacket3, 2);
 
-        TGPSRPRequestEntry auxEntry1 = instance.getEntry("10.0.0.1".hashCode(), mplsPacket1.getIPv4Header().getGoSGlobalUniqueIdentifier());
-        TGPSRPRequestEntry auxEntry2 = instance.getEntry("10.0.0.1".hashCode(), mplsPacket2.getIPv4Header().getGoSGlobalUniqueIdentifier());
-        TGPSRPRequestEntry auxEntry3 = instance.getEntry("10.0.0.1".hashCode(), mplsPacket3.getIPv4Header().getGoSGlobalUniqueIdentifier());
-
-        assertTrue((auxEntry1.getOutgoingPortID() == 0) || (auxEntry2.getOutgoingPortID() == 1) || (auxEntry3.getOutgoingPortID() == 2));
+        System.out.println("**************************************************");
+        int packet1GoSGlobalID = mplsPacket1.getIPv4Header().getGoSGlobalUniqueIdentifier();
+        int packet2GoSGlobalID = mplsPacket2.getIPv4Header().getGoSGlobalUniqueIdentifier();
+        int packet3GoSGlobalID = mplsPacket3.getIPv4Header().getGoSGlobalUniqueIdentifier();
+        
+        int outgoingPortID1 = instance.getOutgoingPort("10.0.0.1".hashCode(), packet1GoSGlobalID);
+        int outgoingPortID2 = instance.getOutgoingPort("10.0.0.1".hashCode(), packet2GoSGlobalID);
+        int outgoingPortID3 = instance.getOutgoingPort("10.0.0.1".hashCode(), packet3GoSGlobalID);
+        
+        
+        assertTrue((outgoingPortID1 == 0) || (outgoingPortID2 == 1) || (outgoingPortID3 == 2));
     }
 
     /**
