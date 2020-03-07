@@ -52,6 +52,11 @@ public abstract class TPort {
         if (parentPortSet == null) {
             logger.error(translations.getString("badArgument"));
             throw new IllegalArgumentException(translations.getString("badArgument"));
+        } else {
+            if (portID >= parentPortSet.getNumberOfPorts()) {
+                logger.error(translations.getString("argumentOutOfRange"));
+                throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+            }
         }
         link = null;
         semaphore = new TSemaphore();
@@ -98,6 +103,15 @@ public abstract class TPort {
             logger.error(translations.getString("argumentOutOfRange"));
             throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         }
+        if (parentPortSet == null) {
+            logger.error(translations.getString("attributeNotInitialized"));
+            throw new IllegalArgumentException(translations.getString("attributeNotInitialized"));
+        } else {
+            if (portID >= parentPortSet.getNumberOfPorts()) {
+                logger.error(translations.getString("argumentOutOfRange"));
+                throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+            }
+        }
         this.portID = portID;
     }
 
@@ -111,6 +125,15 @@ public abstract class TPort {
         if (portID < ZERO) {
             logger.error(translations.getString("attributeNotInitialized"));
             throw new IllegalArgumentException(translations.getString("attributeNotInitialized"));
+        }
+        if (parentPortSet == null) {
+            logger.error(translations.getString("attributeNotInitialized"));
+            throw new IllegalArgumentException(translations.getString("attributeNotInitialized"));
+        } else {
+            if (portID >= parentPortSet.getNumberOfPorts()) {
+                logger.error(translations.getString("attributeNotInitialized"));
+                throw new IllegalArgumentException(translations.getString("attributeNotInitialized"));
+            }
         }
         return portID;
     }
@@ -134,7 +157,7 @@ public abstract class TPort {
      * @since 2.0
      */
     public void setLink(TLink link) {
-        if (parentPortSet == null) {
+        if (link == null) {
             logger.error(translations.getString("badArgument"));
             throw new IllegalArgumentException(translations.getString("badArgument"));
         }
@@ -325,6 +348,6 @@ public abstract class TPort {
     protected int portID;
     private final ResourceBundle translations;
     private final Logger logger = LoggerFactory.getLogger(TPort.class);
-    
+
     private static final int ZERO = 0;
 }

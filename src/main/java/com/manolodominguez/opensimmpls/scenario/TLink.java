@@ -515,6 +515,22 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
     }
 
     /**
+     * This method gets the current number of packet in tranit through this link
+     * that have not reached their destionation yet.
+     *
+     * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
+     * @return The current number of packet in tranit through this link that
+     * have not reached their destionation yet
+     * @since 2.0
+     */
+    public int getNumberOfPacketInTransit() {
+        this.packetsInTransitEntriesLock.setRed();
+        int numberOfPacketInTransit = this.buffer.size();
+        this.packetsInTransitEntriesLock.setGreen();
+        return numberOfPacketInTransit;
+    }
+
+    /**
      * This method checks if, given some screen coordinates, these coordinates
      * correspond to this link.
      *

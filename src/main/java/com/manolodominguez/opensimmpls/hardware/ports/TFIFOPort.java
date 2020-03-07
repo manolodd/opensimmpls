@@ -59,6 +59,11 @@ public class TFIFOPort extends TPort {
         if (parentPortSet == null) {
             logger.error(translations.getString("badArgument"));
             throw new IllegalArgumentException(translations.getString("badArgument"));
+        } else {
+            if (portID >= parentPortSet.getNumberOfPorts()) {
+                logger.error(translations.getString("argumentOutOfRange"));
+                throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+            }
         }
         buffer = new LinkedList<>();
         packetRead = null;
