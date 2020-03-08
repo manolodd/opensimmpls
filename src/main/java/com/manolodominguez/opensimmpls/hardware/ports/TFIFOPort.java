@@ -84,6 +84,19 @@ public class TFIFOPort extends TPort {
     }
 
     /**
+     * This method, when implemented, will allow to known wheter a port is
+     * configured as unlimited (as an ideal port), or not.
+     *
+     * @return TRUE if the port is defined as an ideal one (unlimited space on
+     * it). FALSE, on the contrary.
+     * @since 2.0
+     */
+    @Override
+    public boolean isUnlimitedBuffer() {
+        return this.isUnlimitedBuffer;
+    }
+
+    /**
      * This method discard the packet passed as an argument from the buffer.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com

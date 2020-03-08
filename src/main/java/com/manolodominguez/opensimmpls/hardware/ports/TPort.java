@@ -342,6 +342,16 @@ public abstract class TPort {
      */
     public abstract void setUnlimitedBuffer(boolean unlimitedBuffer);
 
+    /**
+     * This method, when implemented, will allow to known wheter a port is
+     * configured as unlimited (as an ideal port), or not.
+     *
+     * @return TRUE if the port is defined as an ideal one (unlimited space on
+     * it). FALSE, on the contrary.
+     * @since 2.0
+     */
+    public abstract boolean isUnlimitedBuffer();
+
     protected TLink link;
     protected TPortSet parentPortSet;
     protected TSemaphore semaphore;

@@ -426,6 +426,19 @@ public class TActivePort extends TPort {
     }
 
     /**
+     * This method, when implemented, will allow to known wheter a port is
+     * configured as unlimited (as an ideal port), or not.
+     *
+     * @return TRUE if the port is defined as an ideal one (unlimited space on
+     * it). FALSE, on the contrary.
+     * @since 2.0
+     */
+    @Override
+    public boolean isUnlimitedBuffer() {
+        return this.isUnlimitedBuffer;
+    }
+
+    /**
      * This method discard the packet passed as an argument from the buffer.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
@@ -1147,5 +1160,4 @@ public class TActivePort extends TPort {
     private static final int DEFAULT_SELECTED_BUFFER = 0;
     private static final TAbstractPDU DEFAULT_PACKET_READ = null;
     private static final boolean DEFAULT_IS_UNLIMITED_BUFFER = false;
-
 }
