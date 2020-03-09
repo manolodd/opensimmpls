@@ -28,6 +28,7 @@ import com.manolodominguez.opensimmpls.scenario.TScenario;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
 import com.manolodominguez.opensimmpls.scenario.simulationevents.ESimulationSingleSubscriber;
 import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventListener;
+import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterEach;
@@ -777,12 +778,47 @@ public class TFIFOPortTest {
     @Test
     public void testGetPacket() {
         System.out.println("test getPacket");
-        TFIFOPort instance = null;
-        TAbstractPDU expResult = null;
-        TAbstractPDU result = instance.getPacket();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        boolean worksFine = true;
+        if (tailEndNode.getPorts().getPort(0).getNumberOfPackets() != 0) {
+            worksFine &= false;
+        }
+        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
+        tailEndNode.getPorts().getPort(0).reEnqueuePacket(mplsPacket);
+        if (tailEndNode.getPorts().getPort(0).getNumberOfPackets() != 1) {
+            worksFine &= false;
+        }
+        TMPLSPDU mplsPacketRead = (TMPLSPDU) tailEndNode.getPorts().getPort(0).getPacket();
+        if (tailEndNode.getPorts().getPort(0).getNumberOfPackets() != 0) {
+            worksFine &= false;
+        }
+        assertTrue(worksFine);
+    }
+
+    /**
+     * Test of getPacket method, of class TFIFOPort.
+     */
+    @Test
+    public void testGetPacketWhenNoPacketAvailable() {
+        System.out.println("test getPacket");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Tries to read a packet. Does not exit so, throws an exception.
+        assertThrows(NoSuchElementException.class, () -> {
+            TMPLSPDU mplsPacketRead = (TMPLSPDU) tailEndNode.getPorts().getPort(0).getPacket();
+        });
     }
 
     /**
@@ -791,13 +827,60 @@ public class TFIFOPortTest {
     @Test
     public void testCanSwitchPacket() {
         System.out.println("test canSwitchPacket");
-        int switchableOctets = 0;
-        TFIFOPort instance = null;
-        boolean expResult = false;
-        boolean result = instance.canSwitchPacket(switchableOctets);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        // a 1024 octets payload means a packet with a total size of 1064 octects
+        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
+        tailEndNode.getPorts().getPort(0).reEnqueuePacket(mplsPacket);
+        assertTrue(tailEndNode.getPorts().getPort(0).canSwitchPacket(1064));
+    }
+
+    /**
+     * Test of canSwitchPacket method, of class TFIFOPort.
+     */
+    @Test
+    public void testCanSwitchPacketWhenCannot() {
+        System.out.println("test canSwitchPacket");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        // a 1024 octets payload means a packet with a total size of 1064 octects
+        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
+        tailEndNode.getPorts().getPort(0).reEnqueuePacket(mplsPacket);
+        assertFalse(tailEndNode.getPorts().getPort(0).canSwitchPacket(1063));
+    }
+
+    /**
+     * Test of canSwitchPacket method, of class TFIFOPort.
+     */
+    @Test
+    public void testCanSwitchPacketOutOfRange() {
+        System.out.println("test canSwitchPacket");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        // a 1024 octets payload means a packet with a total size of 1064 octects
+        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
+        tailEndNode.getPorts().getPort(0).reEnqueuePacket(mplsPacket);
+        assertThrows(IllegalArgumentException.class, () -> {
+            tailEndNode.getPorts().getPort(0).canSwitchPacket(-1); //throws an exception
+        });
     }
 
     /**
@@ -806,12 +889,37 @@ public class TFIFOPortTest {
     @Test
     public void testGetCongestionLevel() {
         System.out.println("test getCongestionLevel");
-        TFIFOPort instance = null;
-        long expResult = 0L;
-        long result = instance.getCongestionLevel();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 65535);
+        tailEndNode.getPorts().getPort(0).reEnqueuePacket(mplsPacket);
+        assertTrue(tailEndNode.getPorts().getPort(0).getCongestionLevel() > 0L);
+    }
+
+    /**
+     * Test of getCongestionLevel method, of class TFIFOPort.
+     */
+    @Test
+    public void testGetCongestionLevelWhenUnlimited() {
+        System.out.println("test getCongestionLevel");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        tailEndNode.getPorts().setUnlimitedBuffer(true);
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 65535);
+        tailEndNode.getPorts().getPort(0).reEnqueuePacket(mplsPacket);
+        assertFalse(tailEndNode.getPorts().getPort(0).getCongestionLevel() > 0L);
     }
 
     /**
@@ -820,12 +928,34 @@ public class TFIFOPortTest {
     @Test
     public void testThereIsAPacketWaiting() {
         System.out.println("test thereIsAPacketWaiting");
-        TFIFOPort instance = null;
-        boolean expResult = false;
-        boolean result = instance.thereIsAPacketWaiting();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
+        tailEndNode.getPorts().getPort(0).reEnqueuePacket(mplsPacket);
+        assertTrue(tailEndNode.getPorts().getPort(0).thereIsAPacketWaiting());
+    }
+
+    /**
+     * Test of thereIsAPacketWaiting method, of class TFIFOPort.
+     */
+    @Test
+    public void testThereIsAPacketWaitingWhenNoPacketAwaiting() {
+        System.out.println("test thereIsAPacketWaiting");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        assertFalse(tailEndNode.getPorts().getPort(0).thereIsAPacketWaiting());
     }
 
     /**
@@ -886,9 +1016,35 @@ public class TFIFOPortTest {
     @Test
     public void testReset() {
         System.out.println("test reset");
-        TFIFOPort instance = null;
-        instance.reset();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        boolean worksFine = true;
+        if (tailEndNode.getPorts().getPort(0).getNumberOfPackets() != 0) {
+            worksFine &= false;
+        }
+        TMPLSPDU mplsPacket1 = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
+        TMPLSPDU mplsPacket2 = new TMPLSPDU(2, "10.0.0.1", "10.0.0.2", 1024);
+        TMPLSPDU mplsPacket3 = new TMPLSPDU(3, "10.0.0.1", "10.0.0.2", 1024);
+        TMPLSPDU mplsPacket4 = new TMPLSPDU(4, "10.0.0.1", "10.0.0.2", 1024);
+        TMPLSPDU mplsPacket5 = new TMPLSPDU(5, "10.0.0.1", "10.0.0.2", 1024);
+        tailEndNode.getPorts().getPort(0).addPacket(mplsPacket1);
+        tailEndNode.getPorts().getPort(0).addPacket(mplsPacket2);
+        tailEndNode.getPorts().getPort(0).addPacket(mplsPacket3);
+        tailEndNode.getPorts().getPort(0).addPacket(mplsPacket4);
+        tailEndNode.getPorts().getPort(0).addPacket(mplsPacket5);
+        if (tailEndNode.getPorts().getPort(0).getNumberOfPackets() != 5) {
+            worksFine &= false;
+        }
+        tailEndNode.getPorts().getPort(0).reset();
+        if (tailEndNode.getPorts().getPort(0).getNumberOfPackets() != 0) {
+            worksFine &= false;
+        }
+        assertTrue(worksFine);
     }
 }
