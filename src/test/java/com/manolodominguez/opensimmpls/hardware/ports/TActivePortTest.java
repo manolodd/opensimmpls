@@ -16,7 +16,9 @@
 package com.manolodominguez.opensimmpls.hardware.ports;
 
 import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
+import com.manolodominguez.opensimmpls.gui.simulator.JSimulationPanel;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
+import com.manolodominguez.opensimmpls.protocols.TMPLSLabel;
 import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
 import com.manolodominguez.opensimmpls.scenario.TExternalLink;
 import com.manolodominguez.opensimmpls.scenario.TInternalLink;
@@ -26,6 +28,7 @@ import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TLinkConfig;
 import com.manolodominguez.opensimmpls.scenario.TScenario;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,22 +41,22 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author manolodd
  */
 public class TActivePortTest {
-    
+
     public TActivePortTest() {
     }
-    
+
     @BeforeAll
     public static void setUpClass() {
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
     }
-    
+
     @BeforeEach
     public void setUp() {
     }
-    
+
     @AfterEach
     public void tearDown() {
     }
@@ -662,11 +665,34 @@ public class TActivePortTest {
     @Test
     public void testDiscardPacket() {
         System.out.println("discardPacket");
-        TAbstractPDU packet = null;
-        TActivePort instance = null;
-        instance.discardPacket(packet);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
+        assertDoesNotThrow(() -> {
+            tailEndNode.getPorts().getPort(0).discardPacket(mplsPacket);
+        });
+    }
+
+    /**
+     * Test of discardPacket method, of class TActivePort.
+     */
+    @Test
+    public void testDiscardPacketWhenPacketIsNull() {
+        System.out.println("test discardPacket 2");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        assertThrows(IllegalArgumentException.class, () -> {
+            tailEndNode.getPorts().getPort(0).discardPacket(null); // This throws an exception
+        });
     }
 
     /**
@@ -675,11 +701,48 @@ public class TActivePortTest {
     @Test
     public void testAddPacket() {
         System.out.println("addPacket");
-        TAbstractPDU packet = null;
-        TActivePort instance = null;
-        instance.addPacket(packet);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        boolean worksFine = true;
+        if (tailEndNode.getPorts().getPort(0).getNumberOfPackets() != 0) {
+            worksFine &= false;
+        }
+        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
+        TMPLSLabel outgoingMPLSLabel = new TMPLSLabel();
+        outgoingMPLSLabel.setBoS(true);
+        outgoingMPLSLabel.setEXP(0);
+        outgoingMPLSLabel.setLabel(50); // A valid and unreserved label
+        outgoingMPLSLabel.setTTL(mplsPacket.getIPv4Header().getTTL());
+        mplsPacket.getLabelStack().pushTop(outgoingMPLSLabel);
+        tailEndNode.getPorts().getPort(0).addPacket(mplsPacket);
+        if (tailEndNode.getPorts().getPort(0).getNumberOfPackets() != 1) {
+            worksFine &= false;
+        }
+        assertTrue(worksFine);
+    }
+
+    /**
+     * Test of addPacket method, of class TActivePort.
+     */
+    @Test
+    public void testAddPacketWhenPacketIsNull() {
+        System.out.println("test addPacket");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        assertThrows(IllegalArgumentException.class, () -> {
+            tailEndNode.getPorts().getPort(0).addPacket(null);
+        });
     }
 
     /**
@@ -703,11 +766,48 @@ public class TActivePortTest {
     @Test
     public void testReEnqueuePacket() {
         System.out.println("reEnqueuePacket");
-        TAbstractPDU packet = null;
-        TActivePort instance = null;
-        instance.reEnqueuePacket(packet);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        boolean worksFine = true;
+        if (tailEndNode.getPorts().getPort(0).getNumberOfPackets() != 0) {
+            worksFine &= false;
+        }
+        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
+        TMPLSLabel outgoingMPLSLabel = new TMPLSLabel();
+        outgoingMPLSLabel.setBoS(true);
+        outgoingMPLSLabel.setEXP(0);
+        outgoingMPLSLabel.setLabel(50); // A valid and unreserved label
+        outgoingMPLSLabel.setTTL(mplsPacket.getIPv4Header().getTTL());
+        mplsPacket.getLabelStack().pushTop(outgoingMPLSLabel);
+        tailEndNode.getPorts().getPort(0).reEnqueuePacket(mplsPacket);
+        if (tailEndNode.getPorts().getPort(0).getNumberOfPackets() != 1) {
+            worksFine &= false;
+        }
+        assertTrue(worksFine);
+    }
+
+    /**
+     * Test of reEnqueuePacket method, of class TActivePort.
+     */
+    @Test
+    public void testReEnqueuePacketWhenPacketIsNull() {
+        System.out.println("test reEnqueuePacket");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        assertThrows(IllegalArgumentException.class, () -> {
+            tailEndNode.getPorts().getPort(0).reEnqueuePacket(null);
+        });
     }
 
     /**
@@ -716,14 +816,54 @@ public class TActivePortTest {
     @Test
     public void testGetPacket() {
         System.out.println("getPacket");
-        TActivePort instance = null;
-        TAbstractPDU expResult = null;
-        TAbstractPDU result = instance.getPacket();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        boolean worksFine = true;
+        if (tailEndNode.getPorts().getPort(0).getNumberOfPackets() != 0) {
+            worksFine &= false;
+        }
+        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
+        TMPLSLabel outgoingMPLSLabel = new TMPLSLabel();
+        outgoingMPLSLabel.setBoS(true);
+        outgoingMPLSLabel.setEXP(0);
+        outgoingMPLSLabel.setLabel(50); // A valid and unreserved label
+        outgoingMPLSLabel.setTTL(mplsPacket.getIPv4Header().getTTL());
+        mplsPacket.getLabelStack().pushTop(outgoingMPLSLabel);
+        tailEndNode.getPorts().getPort(0).reEnqueuePacket(mplsPacket);
+        if (tailEndNode.getPorts().getPort(0).getNumberOfPackets() != 1) {
+            worksFine &= false;
+        }
+        TMPLSPDU mplsPacketRead = (TMPLSPDU) tailEndNode.getPorts().getPort(0).getPacket();
+        if (tailEndNode.getPorts().getPort(0).getNumberOfPackets() != 0) {
+            worksFine &= false;
+        }
+        assertTrue(worksFine);
     }
 
+    /**
+     * Test of getPacket method, of class TActivePort.
+     */
+    @Test
+    public void testGetPacketWhenNoPacketAvailable() {
+        System.out.println("test getPacket");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Tries to read a packet. Does not exit so, throws an exception.
+        assertThrows(NoSuchElementException.class, () -> {
+            TMPLSPDU mplsPacketRead = (TMPLSPDU) tailEndNode.getPorts().getPort(0).getPacket();
+        });
+    }    
     /**
      * Test of canSwitchPacket method, of class TActivePort.
      */
@@ -806,5 +946,5 @@ public class TActivePortTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-    
+
 }

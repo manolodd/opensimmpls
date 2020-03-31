@@ -26,6 +26,9 @@ import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
 import com.manolodominguez.opensimmpls.commons.TRotaryIDGenerator;
 import com.manolodominguez.opensimmpls.commons.TSemaphore;
 import static com.manolodominguez.opensimmpls.commons.UnitsTranslations.OCTETS_PER_MEGABYTE;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
+import java.util.NoSuchElementException;
+import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,6 +54,7 @@ public class TActivePort extends TPort {
      */
     public TActivePort(TPortSet parentSetOfActivePorts, int portID) {
         super(parentSetOfActivePorts, portID);
+        translations = ResourceBundle.getBundle(AvailableBundles.T_ACTIVE_PORT.getPath());
         packetRead = DEFAULT_PACKET_READ;
         isUnlimitedBuffer = DEFAULT_IS_UNLIMITED_BUFFER;
         rotaryIdentifierGenerator = new TRotaryIDGenerator();
@@ -359,7 +363,7 @@ public class TActivePort extends TPort {
                                     activePortBufferEntry = iterator.next();
                                     nextPacketToBeRead = activePortBufferEntry.getPacket();
                                     iterator.remove();
-                                }
+                                } 
                                 priority0BufferSemaphore.setGreen();
                                 currentReadsOfBuffer[ZERO]++;
                                 end = true;
@@ -447,6 +451,10 @@ public class TActivePort extends TPort {
      */
     @Override
     public void discardPacket(TAbstractPDU packet) {
+        if (packet == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         getPortSet().getParentNode().discardPacket(packet);
     }
 
@@ -459,6 +467,10 @@ public class TActivePort extends TPort {
      */
     @Override
     public void addPacket(TAbstractPDU packet) {
+        if (packet == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         TActivePortSet parentPortSetAux = (TActivePortSet) parentPortSet;
         parentPortSetAux.portSetSemaphore.setRed();
         semaphore.setRed();
@@ -695,6 +707,10 @@ public class TActivePort extends TPort {
      */
     @Override
     public void reEnqueuePacket(TAbstractPDU packet) {
+        if (packet == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         TActivePortSet parentPortSetAux = (TActivePortSet) parentPortSet;
         parentPortSetAux.portSetSemaphore.setRed();
         semaphore.setRed();
@@ -741,6 +757,11 @@ public class TActivePort extends TPort {
         }
         semaphore.setGreen();
         parentPortSetAux.portSetSemaphore.setGreen();
+        // Added to be 100% compatible to the same method of TFIFOPort
+        if (packetRead == null) {
+            throw new NoSuchElementException();
+        }
+        //**************
         return packetRead;
     }
 
@@ -1128,6 +1149,7 @@ public class TActivePort extends TPort {
     private final int[] maxReadsOfBuffer;
     private final int[] currentReadsOfBuffer;
     private TAbstractPDU nextPacketToBeRead;
+    private final ResourceBundle translations;
     private final Logger logger = LoggerFactory.getLogger(TActivePort.class);
 
     private static final int HIGHEST_PRIORITY = 10;

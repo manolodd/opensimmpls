@@ -65,6 +65,7 @@ public enum AvailableBundles {
     T_PORT("tport"),
     T_PORT_SET("tportset"),
     T_FIFO_PORT("tfifoport"),
+    T_ACTIVE_PORT("tactiveport"),
     T_ROTARY_ID_GENERATOR("trotaryidgenerator"),
     T_LONG_ID_GENERATOR("tlongidgenerator"),
     T_IPV4_ADDRESS_GENERATOR("tipv4addressgenerator"),
