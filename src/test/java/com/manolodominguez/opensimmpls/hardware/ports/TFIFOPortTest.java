@@ -948,7 +948,7 @@ public class TFIFOPortTest {
         topology.addNode(tailEndNode); // Adds tail end node to the topology
         JSimulationPanel simulationPanel = new JSimulationPanel();
         tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
-        //Creates a new MPLS packet directed to tail end node.
+        //The port has not a packet waiting.
         assertFalse(tailEndNode.getPorts().getPort(0).thereIsAPacketWaiting());
     }
 
@@ -996,9 +996,11 @@ public class TFIFOPortTest {
         if (tailEndNode.getPorts().getPort(0).getNumberOfPackets() != 0) {
             worksFine &= false;
         }
-        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
-        tailEndNode.getPorts().getPort(0).addPacket(mplsPacket);
-        if (tailEndNode.getPorts().getPort(0).getNumberOfPackets() != 1) {
+        TMPLSPDU mplsPacket1 = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
+        TMPLSPDU mplsPacket2 = new TMPLSPDU(2, "10.0.0.1", "10.0.0.2", 1024);
+        tailEndNode.getPorts().getPort(0).addPacket(mplsPacket1);
+        tailEndNode.getPorts().getPort(0).addPacket(mplsPacket2);
+        if (tailEndNode.getPorts().getPort(0).getNumberOfPackets() != 2) {
             worksFine &= false;
         }
         assertTrue(worksFine);
