@@ -19,6 +19,9 @@ import static com.manolodominguez.opensimmpls.commons.UnitsTranslations.OCTETS_P
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
+import java.util.ResourceBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class implements a set of ports for a node.
@@ -40,6 +43,14 @@ public class TFIFOPortSet extends TPortSet {
      */
     public TFIFOPortSet(int numberOfPorts, TNode parentNode) {
         super(numberOfPorts, parentNode);
+        if (numberOfPorts < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
+        if (parentNode == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         this.ports = new TFIFOPort[numberOfPorts];
         int i = ZERO;
         for (i = ZERO; i < this.numberOfPorts; i++) {
@@ -436,6 +447,8 @@ public class TFIFOPortSet extends TPortSet {
 
     private TPort[] ports;
     private int readPort;
+    private final ResourceBundle translations;
+    private final Logger logger = LoggerFactory.getLogger(TFIFOPortSet.class);
 
     private static final int ZERO = 0;
     private static final int ONE = 1;
