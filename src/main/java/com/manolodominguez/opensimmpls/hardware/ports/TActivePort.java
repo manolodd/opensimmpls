@@ -55,6 +55,19 @@ public class TActivePort extends TPort {
     public TActivePort(TPortSet parentSetOfActivePorts, int portID) {
         super(parentSetOfActivePorts, portID);
         translations = ResourceBundle.getBundle(AvailableBundles.T_ACTIVE_PORT.getPath());
+        if (portID < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
+        if (parentPortSet == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        } else {
+            if (portID >= parentPortSet.getNumberOfPorts()) {
+                logger.error(translations.getString("argumentOutOfRange"));
+                throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+            }
+        }
         packetRead = DEFAULT_PACKET_READ;
         isUnlimitedBuffer = DEFAULT_IS_UNLIMITED_BUFFER;
         rotaryIdentifierGenerator = new TRotaryIDGenerator();
@@ -363,7 +376,7 @@ public class TActivePort extends TPort {
                                     activePortBufferEntry = iterator.next();
                                     nextPacketToBeRead = activePortBufferEntry.getPacket();
                                     iterator.remove();
-                                } 
+                                }
                                 priority0BufferSemaphore.setGreen();
                                 currentReadsOfBuffer[ZERO]++;
                                 end = true;
@@ -527,6 +540,10 @@ public class TActivePort extends TPort {
      * retransmission.
      */
     public boolean runEarlyPacketCatchAndDiscard(TAbstractPDU packet) {
+        if (packet == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
         TActivePortSet parentPortSetAux = (TActivePortSet) parentPortSet;
         long eventID = 0;
         int packetOrder = 0;
