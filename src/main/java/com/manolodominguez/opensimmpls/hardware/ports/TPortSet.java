@@ -121,7 +121,7 @@ public abstract class TPortSet {
      * not.
      *
      * @since 2.0
-     * @return TRUE, if hte parent node is congested artificially. Otherwise,
+     * @return TRUE, if the parent node is congested artificially. Otherwise,
      * FALSE.
      */
     public boolean isCongestedArtificially() {
@@ -302,15 +302,14 @@ public abstract class TPortSet {
     public abstract void connectLinkToPort(TLink link, int portID);
 
     /**
-     * Este m�todo devuelve el enlace al que est� conectado un puerto del
-     * conjunto de puertos.
+     * This method returns the link to wich the specified port of the port set
+     * is connected.
      *
-     * @param p Identificador de puerto de uno de los puertos del conjunto.
-     * @return Enlace al que est� conectado el puerto especificado. NULL si el
-     * puerto est� libre.
+     * @param portID the port ID of the por whose link is being obtainded.
+     * @return the link to wich the specified port of the port set is connected.
      * @since 2.0
      */
-    public abstract TLink getLinkConnectedToPort(int p);
+    public abstract TLink getLinkConnectedToPort(int portID);
 
     /**
      * This method, when implemented, will disconnect a link from a given port,
