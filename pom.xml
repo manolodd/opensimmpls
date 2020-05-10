@@ -138,20 +138,12 @@
         <dependency>
             <groupId>com.miglayout</groupId>
             <artifactId>miglayout-swing</artifactId>
-<<<<<<< OURS
             <version>${miglayout-swing.version}</version>
-=======
-            <version>5.1</version>
->>>>>>> THEIRS
         </dependency>
         <dependency>
             <groupId>com.miglayout</groupId>
             <artifactId>miglayout-core</artifactId>
-<<<<<<< OURS
             <version>${miglayout-core.version}</version>
-=======
-            <version>5.1</version>
->>>>>>> THEIRS
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -166,7 +158,6 @@
         <dependency>
             <groupId>org.netbeans.external</groupId>
             <artifactId>AbsoluteLayout</artifactId>
-<<<<<<< OURS
             <version>${absolutelayout.version}</version>
         </dependency>
         <dependency>
@@ -174,9 +165,6 @@
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit-jupiter-engine.version}</version>
             <scope>test</scope>
-=======
-            <version>RELEASE82</version>
->>>>>>> THEIRS
         </dependency>
     </dependencies>
 </project>
