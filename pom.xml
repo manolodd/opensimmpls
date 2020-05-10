@@ -7,7 +7,7 @@
         <miglayout-core.version>5.2</miglayout-core.version>
         <lsf4j-api.version>2.0.0-alpha1</lsf4j-api.version>
         <lsf4j-simple.version>2.0.0-alpha1</lsf4j-simple.version>
-        <absolutelayout.version>RELEASE802</absolutelayout.version>
+        <absolutelayout.version>RELEASE90</absolutelayout.version>
         <!--- Dependency for testing -->
         <junit-jupiter-engine.version>5.7.0-M1</junit-jupiter-engine.version>
         <!--- Build parameters -->
@@ -121,14 +121,7 @@
             </plugin>
         </plugins>
     </build>
-    
-    <repositories>
-        <repository>
-            <id>netbeans</id>
-            <name>Netbeans rep</name>
-            <url>http://bits.netbeans.org/maven2/</url>
-        </repository>
-    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.jfree</groupId>

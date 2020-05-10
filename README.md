@@ -78,7 +78,7 @@ OpenSimMPLS uses third-party components each one of them having its own OSS lice
 - slf4j-simple 2.0.0-alpha1 - MIT - https://www.slf4j.org
 - miglayout-swing 5.2 - BSD - https://github.com/mikaelgrev/miglayout
 - miglayout-core 5.2 - BSD - https://github.com/mikaelgrev/miglayout
-- AbsoluteLayout RELEASE802 - CDDL (Being replaced in OpenSimMPLS by miglayout)
+- AbsoluteLayout RELEASE90 - CDDL (Being replaced in OpenSimMPLS by miglayout)
 
 Thanks folks!
 
