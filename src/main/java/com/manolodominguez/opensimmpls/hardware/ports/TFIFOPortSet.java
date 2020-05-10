@@ -15,10 +15,12 @@
  */
 package com.manolodominguez.opensimmpls.hardware.ports;
 
+import com.manolodominguez.opensimmpls.commons.TIPv4AddressGenerator;
 import static com.manolodominguez.opensimmpls.commons.UnitsTranslations.OCTETS_PER_MEGABYTE;
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
+import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
 import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +45,7 @@ public class TFIFOPortSet extends TPortSet {
      */
     public TFIFOPortSet(int numberOfPorts, TNode parentNode) {
         super(numberOfPorts, parentNode);
+        translations = ResourceBundle.getBundle(AvailableBundles.T_FIFO_PORT_SET.getPath());
         if (numberOfPorts < ZERO) {
             logger.error(translations.getString("argumentOutOfRange"));
             throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
@@ -51,13 +54,12 @@ public class TFIFOPortSet extends TPortSet {
             logger.error(translations.getString("badArgument"));
             throw new IllegalArgumentException(translations.getString("badArgument"));
         }
-        this.ports = new TFIFOPort[numberOfPorts];
-        int i = ZERO;
-        for (i = ZERO; i < this.numberOfPorts; i++) {
-            this.ports[i] = new TFIFOPort(this, i);
-            this.ports[i].setPortID(i);
+        ports = new TFIFOPort[numberOfPorts];
+        for (int i = ZERO; i < numberOfPorts; i++) {
+            ports[i] = new TFIFOPort(this, i);
+            ports[i].setPortID(i);
         }
-        this.readPort = ZERO;
+        readPort = ZERO;
     }
 
     /**
@@ -71,9 +73,8 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public void setUnlimitedBuffer(boolean unlimitedBuffer) {
-        int i = ZERO;
-        for (i = ZERO; i < this.numberOfPorts; i++) {
-            this.ports[i].setUnlimitedBuffer(unlimitedBuffer);
+        for (int i = ZERO; i < numberOfPorts; i++) {
+            ports[i].setUnlimitedBuffer(unlimitedBuffer);
         }
     }
 
@@ -83,16 +84,16 @@ public class TFIFOPortSet extends TPortSet {
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param portID port number of the port to be obtained.
-     * @return The port matching the port number specified as an argument. If
-     * the port does not exist, returns NULL.
+     * @return The port matching the port number specified as an argument.
      * @since 2.0
      */
     @Override
     public TPort getPort(int portID) {
-        if (portID < this.numberOfPorts) {
-            return this.ports[portID];
+        if ((portID < ZERO) || (portID >= numberOfPorts)) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         }
-        return null;
+        return ports[portID];
     }
 
     /**
@@ -105,7 +106,7 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public void setBufferSizeInMB(int sizeInMB) {
-        this.portSetBufferSize = sizeInMB;
+        portSetBufferSize = sizeInMB;
     }
 
     /**
@@ -117,7 +118,7 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public int getBufferSizeInMBytes() {
-        return this.portSetBufferSize;
+        return portSetBufferSize;
     }
 
     /**
@@ -131,10 +132,11 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public boolean isAvailable(int portID) {
-        if (portID < this.numberOfPorts) {
-            return this.ports[portID].isAvailable();
+        if ((portID < ZERO) || (portID >= numberOfPorts)) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         }
-        return false;
+        return ports[portID].isAvailable();
     }
 
     /**
@@ -148,9 +150,8 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public boolean hasAvailablePorts() {
-        int i = ZERO;
-        for (i = ZERO; i < this.numberOfPorts; i++) {
-            if (this.ports[i].isAvailable()) {
+        for (int i = ZERO; i < numberOfPorts; i++) {
+            if (ports[i].isAvailable()) {
                 return true;
             }
         }
@@ -167,10 +168,16 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public void connectLinkToPort(TLink link, int portID) {
-        if (portID < this.numberOfPorts) {
-            if (this.ports[portID].isAvailable()) {
-                this.ports[portID].setLink(link);
-            }
+        if ((portID < ZERO) || (portID >= numberOfPorts)) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
+        if (link == null) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
+        if (ports[portID].isAvailable()) {
+            ports[portID].setLink(link);
         }
     }
 
@@ -187,12 +194,11 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public TLink getLinkConnectedToPort(int portID) {
-        if (portID < this.numberOfPorts) {
-            if (!this.ports[portID].isAvailable()) {
-                return this.ports[portID].getLink();
-            }
+        if ((portID < ZERO) || (portID >= numberOfPorts)) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         }
-        return null;
+        return ports[portID].getLink();
     }
 
     /**
@@ -206,9 +212,11 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public void disconnectLinkFromPort(int portID) {
-        if ((portID >= ZERO) && (portID < this.numberOfPorts)) {
-            this.ports[portID].disconnectLink();
+        if ((portID < ZERO) || (portID >= numberOfPorts)) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         }
+        ports[portID].disconnectLink();
     }
 
     /**
@@ -222,10 +230,10 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public TAbstractPDU getNextPacket() {
-        for (int i = ZERO; i < this.numberOfPorts; i++) {
-            this.readPort = (this.readPort + ONE) % this.numberOfPorts;
-            if (this.ports[this.readPort].thereIsAPacketWaiting()) {
-                return ports[this.readPort].getPacket();
+        for (int i = ZERO; i < numberOfPorts; i++) {
+            readPort = (readPort + ONE) % numberOfPorts;
+            if (ports[readPort].thereIsAPacketWaiting()) {
+                return ports[readPort].getPacket();
             }
         }
         return null;
@@ -242,8 +250,8 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public boolean isThereAnyPacketToSwitch() {
-        for (int i = ZERO; i < this.numberOfPorts; i++) {
-            if (this.ports[i].thereIsAPacketWaiting()) {
+        for (int i = ZERO; i < numberOfPorts; i++) {
+            if (ports[i].thereIsAPacketWaiting()) {
                 return true;
             }
         }
@@ -261,7 +269,7 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public boolean isThereAnyPacketToRoute() {
-        return this.isThereAnyPacketToSwitch();
+        return isThereAnyPacketToSwitch();
     }
 
     /**
@@ -277,13 +285,17 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public boolean canSwitchPacket(int maxSwitchableOctects) {
+        if (maxSwitchableOctects < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
         int numberOfEmptyPorts = ZERO;
-        while (numberOfEmptyPorts < this.numberOfPorts) {
-            if (this.ports[((this.readPort + ONE) % this.numberOfPorts)].thereIsAPacketWaiting()) {
-                return this.ports[((this.readPort + ONE) % this.numberOfPorts)].canSwitchPacket(maxSwitchableOctects);
+        while (numberOfEmptyPorts < numberOfPorts) {
+            if (ports[((readPort + ONE) % numberOfPorts)].thereIsAPacketWaiting()) {
+                return ports[((readPort + ONE) % numberOfPorts)].canSwitchPacket(maxSwitchableOctects);
             } else {
                 numberOfEmptyPorts++;
-                this.skipPort();
+                skipPort();
             }
         }
         return false;
@@ -298,7 +310,7 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public void skipPort() {
-        this.readPort = (this.readPort + ONE) % this.numberOfPorts;
+        readPort = (readPort + ONE) % numberOfPorts;
     }
 
     /**
@@ -311,7 +323,7 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public int getReadPort() {
-        return this.readPort;
+        return readPort;
     }
 
     /**
@@ -328,16 +340,21 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public TPort getLocalPortConnectedToANodeWithIPv4Address(String adjacentNodeIPv4Address) {
-        for (int i = ZERO; i < this.numberOfPorts; i++) {
-            if (!this.ports[i].isAvailable()) {
-                int targetNodeID = this.ports[i].getLink().getDestinationOfTrafficSentBy(this.parentNode);
+        TIPv4AddressGenerator ipv4AddressGenerator = new TIPv4AddressGenerator();
+        if (!ipv4AddressGenerator.isAValidIPv4Address(adjacentNodeIPv4Address)) {
+            logger.error(translations.getString("badArgument"));
+            throw new IllegalArgumentException(translations.getString("badArgument"));
+        }
+        for (int i = ZERO; i < numberOfPorts; i++) {
+            if (!ports[i].isAvailable()) {
+                int targetNodeID = ports[i].getLink().getDestinationOfTrafficSentBy(parentNode);
                 if (targetNodeID == TLink.HEAD_END_NODE) {
-                    if (this.ports[i].getLink().getHeadEndNode().getIPv4Address().equals(adjacentNodeIPv4Address)) {
-                        return this.ports[i];
+                    if (ports[i].getLink().getHeadEndNode().getIPv4Address().equals(adjacentNodeIPv4Address)) {
+                        return ports[i];
                     }
                 } else {
-                    if (this.ports[i].getLink().getTailEndNode().getIPv4Address().equals(adjacentNodeIPv4Address)) {
-                        return this.ports[i];
+                    if (ports[i].getLink().getTailEndNode().getIPv4Address().equals(adjacentNodeIPv4Address)) {
+                        return ports[i];
                     }
                 }
             }
@@ -357,14 +374,15 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public String getIPv4OfNodeLinkedTo(int portID) {
-        if ((portID >= ZERO) && (portID < this.numberOfPorts)) {
-            if (!this.ports[portID].isAvailable()) {
-                String IP2 = this.ports[portID].getLink().getTailEndNode().getIPv4Address();
-                if (this.ports[portID].getLink().getHeadEndNode().getIPv4Address().equals(this.parentNode.getIPv4Address())) {
-                    return this.ports[portID].getLink().getTailEndNode().getIPv4Address();
-                }
-                return this.ports[portID].getLink().getHeadEndNode().getIPv4Address();
+        if ((portID < ZERO) || (portID >= numberOfPorts)) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
+        if (!ports[portID].isAvailable()) {
+            if (ports[portID].getLink().getHeadEndNode().getIPv4Address().equals(parentNode.getIPv4Address())) {
+                return ports[portID].getLink().getTailEndNode().getIPv4Address();
             }
+            return ports[portID].getLink().getHeadEndNode().getIPv4Address();
         }
         return null;
     }
@@ -380,10 +398,9 @@ public class TFIFOPortSet extends TPortSet {
     @Override
     public long getCongestionLevel() {
         long computedCongestion = ZERO;
-        int i = ZERO;
-        for (i = ZERO; i < this.numberOfPorts; i++) {
-            if (this.ports[i].getCongestionLevel() > computedCongestion) {
-                computedCongestion = this.ports[i].getCongestionLevel();
+        for (int i = ZERO; i < numberOfPorts; i++) {
+            if (ports[i].getCongestionLevel() > computedCongestion) {
+                computedCongestion = ports[i].getCongestionLevel();
             }
         }
         return computedCongestion;
@@ -398,16 +415,15 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public void reset() {
-        this.portSetSemaphore.setGreen();
-        int i = ZERO;
-        for (i = ZERO; i < this.numberOfPorts; i++) {
-            this.ports[i].reset();
+        portSetSemaphore.setGreen();
+        for (int i = ZERO; i < numberOfPorts; i++) {
+            ports[i].reset();
         }
-        this.readPort = ZERO;
-        this.setPortSetOccupancySize(ZERO);
-        this.artificiallyCongested = false;
-        this.occupancy = ZERO;
-        this.portSetSemaphore.setGreen();
+        readPort = ZERO;
+        setPortSetOccupancySize(ZERO);
+        artificiallyCongested = false;
+        occupancy = ZERO;
+        portSetSemaphore.setGreen();
     }
 
     /**
@@ -423,24 +439,24 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public void setArtificiallyCongested(boolean congestArtificially) {
-        long computedCongestionLevel = (long) (this.getBufferSizeInMBytes() * OCTETS_PER_MEGABYTE.getUnits() * CONGESTION_FACTOR);
+        long computedCongestionLevel = (long) (getBufferSizeInMBytes() * OCTETS_PER_MEGABYTE.getUnits() * CONGESTION_FACTOR);
         if (congestArtificially) {
-            if (!this.artificiallyCongested) {
-                if (this.getPortSetOccupancy() < computedCongestionLevel) {
-                    this.artificiallyCongested = true;
-                    this.occupancy = this.getPortSetOccupancy();
-                    this.setPortSetOccupancySize(computedCongestionLevel);
+            if (!artificiallyCongested) {
+                if (getPortSetOccupancy() < computedCongestionLevel) {
+                    artificiallyCongested = true;
+                    occupancy = getPortSetOccupancy();
+                    setPortSetOccupancySize(computedCongestionLevel);
                 }
             }
         } else {
-            if (this.artificiallyCongested) {
-                this.occupancy += (getPortSetOccupancy() - computedCongestionLevel);
-                if (this.occupancy < ZERO) {
-                    this.occupancy = ZERO;
+            if (artificiallyCongested) {
+                occupancy += (getPortSetOccupancy() - computedCongestionLevel);
+                if (occupancy < ZERO) {
+                    occupancy = ZERO;
                 }
-                this.setPortSetOccupancySize(this.occupancy);
-                this.artificiallyCongested = false;
-                this.occupancy = ZERO;
+                setPortSetOccupancySize(occupancy);
+                artificiallyCongested = false;
+                occupancy = ZERO;
             }
         }
     }

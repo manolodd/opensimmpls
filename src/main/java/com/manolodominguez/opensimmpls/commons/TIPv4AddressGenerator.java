@@ -80,7 +80,7 @@ public class TIPv4AddressGenerator {
      * @return TRUE, if the specified IPv4 address is valid. Otherwise, FALSE.
      * @since 2.0
      */
-    private boolean isAValidIPv4Address(String ipv4Address) {
+    public boolean isAValidIPv4Address(String ipv4Address) {
         if (ipv4Address == null) {
             logger.error(translations.getString("argumentIsNull"));
             logger.error(translations.getString("notAValidIPv4Address"));

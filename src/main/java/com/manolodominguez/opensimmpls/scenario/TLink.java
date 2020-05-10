@@ -231,13 +231,17 @@ public abstract class TLink extends TTopologyElement implements Comparable, ITim
         if (this.headEndNode != null) {
             TPortSet portSetAux1 = this.headEndNode.getPorts();
             if (portSetAux1 != null) {
-                portSetAux1.disconnectLinkFromPort(this.headEndNodePortID);
+                if (this.headEndNodePortID >= 0) {
+                    portSetAux1.disconnectLinkFromPort(this.headEndNodePortID);
+                }
             }
         }
         if (this.tailEndNode != null) {
             TPortSet portSetAux2 = this.tailEndNode.getPorts();
             if (portSetAux2 != null) {
-                portSetAux2.disconnectLinkFromPort(this.tailEndNodePortID);
+                if (this.tailEndNodePortID >= 0) {
+                    portSetAux2.disconnectLinkFromPort(this.tailEndNodePortID);
+                }
             }
         }
     }
