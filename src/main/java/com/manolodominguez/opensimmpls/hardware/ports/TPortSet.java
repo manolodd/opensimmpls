@@ -55,7 +55,7 @@ public abstract class TPortSet {
         this.numberOfPorts = numberOfPorts;
         this.parentNode = parentNode;
         portSetBufferSize = ONE;
-        portSetBufferOccupancy = ZERO;
+        portSetBufferOccupancySizeInOctets = ZERO;
         portSetSemaphore = new TSemaphore();
         artificiallyCongested = false;
         occupancy = ZERO;
@@ -73,7 +73,7 @@ public abstract class TPortSet {
             logger.error(translations.getString("argumentOutOfRange"));
             throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         }
-        portSetBufferOccupancy += occupancyIncrement;
+        portSetBufferOccupancySizeInOctets += occupancyIncrement;
     }
 
     /**
@@ -88,22 +88,22 @@ public abstract class TPortSet {
             logger.error(translations.getString("argumentOutOfRange"));
             throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         }
-        portSetBufferOccupancy -= occupancyDecrement;
+        portSetBufferOccupancySizeInOctets -= occupancyDecrement;
     }
 
     /**
      * This method set the amount of buffer memory that is occuped.
      *
-     * @param portSetBufferOccupancy The amount of buffer memory that is occuped
+     * @param portSetBufferOccupancySizeInOctets The amount of buffer memory that is occuped
      * (in octects). that is occuped.
      * @since 2.0
      */
-    public synchronized void setPortSetOccupancySize(long portSetBufferOccupancy) {
-        if (portSetBufferOccupancy < ZERO) {
+    public synchronized void setPortSetOccupancySize(long portSetBufferOccupancySizeInOctets) {
+        if (portSetBufferOccupancySizeInOctets < ZERO) {
             logger.error(translations.getString("argumentOutOfRange"));
             throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
         }
-        this.portSetBufferOccupancy = portSetBufferOccupancy;
+        this.portSetBufferOccupancySizeInOctets = portSetBufferOccupancySizeInOctets;
     }
 
     /**
@@ -113,7 +113,7 @@ public abstract class TPortSet {
      * @since 2.0
      */
     public synchronized long getPortSetOccupancy() {
-        return portSetBufferOccupancy;
+        return portSetBufferOccupancySizeInOctets;
     }
 
     /**
@@ -392,7 +392,7 @@ public abstract class TPortSet {
     protected int numberOfPorts;
     protected TNode parentNode;
     protected int portSetBufferSize;
-    private long portSetBufferOccupancy;
+    private long portSetBufferOccupancySizeInOctets;
     public TSemaphore portSetSemaphore;
     protected boolean artificiallyCongested;
     protected long occupancy;

@@ -784,7 +784,6 @@ public class TGPSRPRequestsMatrixTest {
         instance.addEntry(mplsPacket2, 1);
         instance.addEntry(mplsPacket3, 2);
 
-        System.out.println("**************************************************");
         int packet1GoSGlobalID = mplsPacket1.getIPv4Header().getGoSGlobalUniqueIdentifier();
         int packet2GoSGlobalID = mplsPacket2.getIPv4Header().getGoSGlobalUniqueIdentifier();
         int packet3GoSGlobalID = mplsPacket3.getIPv4Header().getGoSGlobalUniqueIdentifier();
