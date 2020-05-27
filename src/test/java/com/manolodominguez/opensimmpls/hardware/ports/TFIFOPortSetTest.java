@@ -5,8 +5,13 @@
  */
 package com.manolodominguez.opensimmpls.hardware.ports;
 
+import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
+import com.manolodominguez.opensimmpls.commons.TSemaphore;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
+import com.manolodominguez.opensimmpls.scenario.TLSRNode;
 import com.manolodominguez.opensimmpls.scenario.TLink;
+import com.manolodominguez.opensimmpls.scenario.TScenario;
+import com.manolodominguez.opensimmpls.scenario.TTopology;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,25 +49,89 @@ public class TFIFOPortSetTest {
      */
     @Test
     public void testConstructor() {
-        System.out.println("setUnlimitedBuffer");
-        boolean unlimitedBuffer = false;
-        TFIFOPortSet instance = null;
-        instance.setUnlimitedBuffer(unlimitedBuffer);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("test constructor");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        // We set 8 ports for the ports set and also give the created node as 
+        // the parent node.
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        boolean worksFine = true;
+        if (instance.getParentNode() != node) { // Web compare the node reference
+            worksFine &= false;
+        }
+        if (instance.getNumberOfPorts() != 8) { // and the specified numer of ports
+            worksFine &= false;
+        }
+        // And the rest of values the constructor sets
+        if (instance.getBufferSizeInMBytes() != 1) {
+            worksFine &= false;
+        }
+        if (instance.getPortSetOccupancy() != 0) {
+            worksFine &= false;
+        }
+        if (instance.isCongestedArtificially()) {
+            worksFine &= false;
+        }
+        assertTrue(worksFine);
+    }
+
+    /**
+     * Test of constructor of class TFIFOPortSet.
+     */
+    @Test
+    public void testConstructorWhenNumberOfPortsNegative() {
+        System.out.println("test constructor");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        // We set -1 ports for the ports set and this should throws an exception
+        assertThrows(IllegalArgumentException.class, () -> {
+            TFIFOPortSet instance = new TFIFOPortSet(-1, node);
+        });
+    }
+
+    /**
+     * Test of constructor of class TFIFOPortSet.
+     */
+
+    @Test
+    public void testConstructorWhenParentNodeIsNull() {
+        System.out.println("test constructor");
+        // We set null for the parent node and this should throws an exception
+        assertThrows(IllegalArgumentException.class, () -> {
+            TFIFOPortSet instance = new TFIFOPortSet(8, null);
+        });
+    }
+
+// Test of TPortSet superclass
+    /**
+     * Test of increasePortSetOccupancy method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testIncreasePortSetOccupancy() {
+        System.out.println("increasePortSetOccupancy");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node); // Occupancy is 0 here
+        instance.increasePortSetOccupancy(123); // increase port set occupancy in 123 octets
+        assertEquals(123, instance.getPortSetOccupancy());
     }
 
     /**
      * Test of increasePortSetOccupancy method, of class TFIFOPortSet.
      */
     @Test
-    public void testIncreasePortSetOccupancy() {
-        System.out.println("setUnlimitedBuffer");
-        boolean unlimitedBuffer = false;
-        TFIFOPortSet instance = null;
-        instance.setUnlimitedBuffer(unlimitedBuffer);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testIncreasePortSetOccupancyWhenNegativeIncrement() {
+        System.out.println("increasePortSetOccupancy");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node); // Occupancy is 0 here
+        assertThrows(IllegalArgumentException.class, () -> {
+            instance.increasePortSetOccupancy(-1); // This should thrown an exception
+        });
     }
 
     /**
@@ -70,14 +139,32 @@ public class TFIFOPortSetTest {
      */
     @Test
     public void testDecreasePortSetOccupancy() {
-        System.out.println("setUnlimitedBuffer");
-        boolean unlimitedBuffer = false;
-        TFIFOPortSet instance = null;
-        instance.setUnlimitedBuffer(unlimitedBuffer);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("test decreasePortSetOccupancy");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node); // Occupancy is 0 here
+        instance.increasePortSetOccupancy(123); // increase port set occupancy in 123 octets
+        instance.decreasePortSetOccupancySize(23); // decrease port set occupancy in 23 octets
+        assertEquals(100, instance.getPortSetOccupancy());
     }
 
+    /**
+     * Test of decreasePortSetOccupancy method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testDecreasePortSetOccupancyWhenNegativeDecrease() {
+        System.out.println("test decreasePortSetOccupancy");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node); // Occupancy is 0 here
+        instance.increasePortSetOccupancy(123); // increase port set occupancy in 123 octets
+        assertThrows(IllegalArgumentException.class, () -> {
+            instance.decreasePortSetOccupancySize(-1); // This should thrown an exception
+        });
+    }
+    
     /**
      * Test of setPortSetOccupancySize method, of class TFIFOPortSet.
      */
@@ -169,6 +256,7 @@ public class TFIFOPortSetTest {
         fail("The test case is a prototype.");
     }
 
+// Test of TFIFOPortSet subclass
     /**
      * Test of getPort method, of class TFIFOPortSet.
      */

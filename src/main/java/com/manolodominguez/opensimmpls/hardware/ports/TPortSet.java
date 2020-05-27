@@ -58,6 +58,7 @@ public abstract class TPortSet {
         portSetBufferOccupancySizeInOctets = ZERO;
         portSetSemaphore = new TSemaphore();
         artificiallyCongested = false;
+        // FIX: occupancy seems not to be used
         occupancy = ZERO;
     }
 
@@ -94,8 +95,8 @@ public abstract class TPortSet {
     /**
      * This method set the amount of buffer memory that is occuped.
      *
-     * @param portSetBufferOccupancySizeInOctets The amount of buffer memory that is occuped
-     * (in octects). that is occuped.
+     * @param portSetBufferOccupancySizeInOctets The amount of buffer memory
+     * that is occuped (in octects). that is occuped.
      * @since 2.0
      */
     public synchronized void setPortSetOccupancySize(long portSetBufferOccupancySizeInOctets) {
@@ -395,6 +396,7 @@ public abstract class TPortSet {
     private long portSetBufferOccupancySizeInOctets;
     public TSemaphore portSetSemaphore;
     protected boolean artificiallyCongested;
+    // FIX: occupancy seems not to be used
     protected long occupancy;
     private final ResourceBundle translations;
     private final Logger logger = LoggerFactory.getLogger(TPortSet.class);
