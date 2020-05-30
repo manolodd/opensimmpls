@@ -154,20 +154,6 @@ public abstract class TPortSet {
     }
 
     /**
-     * This method sets the parent node of this port set.
-     *
-     * @param parentNode The parent node of this port set.
-     * @since 2.0
-     */
-    public void setParentNode(TNode parentNode) {
-        if (parentNode == null) {
-            logger.error(translations.getString("badArgument"));
-            throw new IllegalArgumentException(translations.getString("badArgument"));
-        }
-        this.parentNode = parentNode;
-    }
-
-    /**
      * This method gets the parent node of this port set.
      *
      * @return The parent node of this port set.

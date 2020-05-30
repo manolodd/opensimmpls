@@ -170,12 +170,28 @@ public class TFIFOPortSetTest {
      */
     @Test
     public void testSetPortSetOccupancySize() {
-        System.out.println("setUnlimitedBuffer");
-        boolean unlimitedBuffer = false;
-        TFIFOPortSet instance = null;
-        instance.setUnlimitedBuffer(unlimitedBuffer);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("test setPortSetOccupancySize");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node); // Occupancy is 0 here
+        instance.setPortSetOccupancySize(123); // sets the port set occupancy in 123 octets
+        assertEquals(123, instance.getPortSetOccupancy());
+    }
+
+    /**
+     * Test of setPortSetOccupancySize method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testSetPortSetOccupancySizeWhenNegative() {
+        System.out.println("test setPortSetOccupancySize");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node); // Occupancy is 0 here
+        assertThrows(IllegalArgumentException.class, () -> {
+            instance.setPortSetOccupancySize(-1); // This should thrown an exception
+        });
     }
 
     /**
@@ -183,12 +199,13 @@ public class TFIFOPortSetTest {
      */
     @Test
     public void testGetPortSetOccupancy() {
-        System.out.println("setUnlimitedBuffer");
-        boolean unlimitedBuffer = false;
-        TFIFOPortSet instance = null;
-        instance.setUnlimitedBuffer(unlimitedBuffer);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("test getPortSetOccupancy");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node); // Occupancy is 0 here
+        instance.setPortSetOccupancySize(100); //sets occupancy to 100 octets
+        assertEquals(100, instance.getPortSetOccupancy());
     }
 
     /**
@@ -196,12 +213,21 @@ public class TFIFOPortSetTest {
      */
     @Test
     public void testIsCongestedArtificially() {
-        System.out.println("setUnlimitedBuffer");
-        boolean unlimitedBuffer = false;
-        TFIFOPortSet instance = null;
-        instance.setUnlimitedBuffer(unlimitedBuffer);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("test isCongestedArtificially");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node); // Occupancy is 0 here
+        instance.setPortSetOccupancySize(100); //sets occupancy to 100 octets
+        boolean worksFine = true;
+        if (instance.isCongestedArtificially()) { // By default is not congested
+            worksFine &= false;
+        }
+        instance.setArtificiallyCongested(true); // sets artificially congested
+        if (!instance.isCongestedArtificially()) { // Should be congested artificially
+            worksFine &= false;
+        }
+        assertTrue(worksFine);
     }
 
     /**
@@ -209,25 +235,12 @@ public class TFIFOPortSetTest {
      */
     @Test
     public void testGetNumberOfPorts() {
-        System.out.println("setUnlimitedBuffer");
-        boolean unlimitedBuffer = false;
-        TFIFOPortSet instance = null;
-        instance.setUnlimitedBuffer(unlimitedBuffer);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setParentNode method, of class TFIFOPortSet.
-     */
-    @Test
-    public void testSetParentNode() {
-        System.out.println("setUnlimitedBuffer");
-        boolean unlimitedBuffer = false;
-        TFIFOPortSet instance = null;
-        instance.setUnlimitedBuffer(unlimitedBuffer);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("test getNumberOfPorts");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(5, node); // sets 5 ports
+        assertEquals(5, instance.getNumberOfPorts());
     }
 
     /**
@@ -235,12 +248,12 @@ public class TFIFOPortSetTest {
      */
     @Test
     public void testGetParentNode() {
-        System.out.println("setUnlimitedBuffer");
-        boolean unlimitedBuffer = false;
-        TFIFOPortSet instance = null;
-        instance.setUnlimitedBuffer(unlimitedBuffer);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("test getParentNode");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        assertTrue(node == instance.getParentNode()); // Both references should be the same
     }
 
     /**
