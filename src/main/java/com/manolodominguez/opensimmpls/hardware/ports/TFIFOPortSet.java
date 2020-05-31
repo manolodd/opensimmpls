@@ -106,6 +106,10 @@ public class TFIFOPortSet extends TPortSet {
      */
     @Override
     public void setBufferSizeInMB(int sizeInMB) {
+        if (sizeInMB < ZERO) {
+            logger.error(translations.getString("argumentOutOfRange"));
+            throw new IllegalArgumentException(translations.getString("argumentOutOfRange"));
+        }
         portSetBufferSize = sizeInMB;
     }
 

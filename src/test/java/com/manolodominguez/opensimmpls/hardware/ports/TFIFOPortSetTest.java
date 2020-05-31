@@ -8,6 +8,8 @@ package com.manolodominguez.opensimmpls.hardware.ports;
 import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
 import com.manolodominguez.opensimmpls.commons.TSemaphore;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
+import com.manolodominguez.opensimmpls.scenario.TExternalLink;
+import com.manolodominguez.opensimmpls.scenario.TLERNode;
 import com.manolodominguez.opensimmpls.scenario.TLSRNode;
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TScenario;
@@ -94,7 +96,6 @@ public class TFIFOPortSetTest {
     /**
      * Test of constructor of class TFIFOPortSet.
      */
-
     @Test
     public void testConstructorWhenParentNodeIsNull() {
         System.out.println("test constructor");
@@ -164,7 +165,7 @@ public class TFIFOPortSetTest {
             instance.decreasePortSetOccupancySize(-1); // This should thrown an exception
         });
     }
-    
+
     /**
      * Test of setPortSetOccupancySize method, of class TFIFOPortSet.
      */
@@ -261,12 +262,24 @@ public class TFIFOPortSetTest {
      */
     @Test
     public void testSetUnlimitedBuffer() {
-        System.out.println("setUnlimitedBuffer");
-        boolean unlimitedBuffer = false;
-        TFIFOPortSet instance = null;
-        instance.setUnlimitedBuffer(unlimitedBuffer);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("test setUnlimitedBuffer");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node); // By default, it is not unlimited
+        boolean worksFine = true;
+        for (int i = 0; i < instance.getNumberOfPorts(); i++) {
+            if (instance.getPort(i).isUnlimitedBuffer()) {
+                worksFine &= false;
+            }
+        }
+        instance.setUnlimitedBuffer(true); // all ports are defined as unlimited
+        for (int i = 0; i < instance.getNumberOfPorts(); i++) {
+            if (!instance.getPort(i).isUnlimitedBuffer()) {
+                worksFine &= false;
+            }
+        }
+        assertTrue(worksFine);
     }
 
 // Test of TFIFOPortSet subclass
@@ -275,14 +288,42 @@ public class TFIFOPortSetTest {
      */
     @Test
     public void testGetPort() {
-        System.out.println("getPort");
-        int portID = 0;
-        TFIFOPortSet instance = null;
-        TPort expResult = null;
-        TPort result = instance.getPort(portID);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("test getPort");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node); // By default, it is not unlimited
+        assertTrue(instance.getPort(3) instanceof TPort);
+    }
+
+    /**
+     * Test of getPort method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testGetPortWhenOutOfRange1() {
+        System.out.println("test getPort");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node); // By default, it is not unlimited
+        assertThrows(IllegalArgumentException.class, () -> {
+            instance.getPort(-1); // This should thrown an exception
+        });
+    }
+
+    /**
+     * Test of getPort method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testGetPortWhenOutOfRange2() {
+        System.out.println("test getPort");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node); // By default, it is not unlimited
+        assertThrows(IllegalArgumentException.class, () -> {
+            instance.getPort(8); // There are 8 ports (0 to 7) so, this causes an exception
+        });
     }
 
     /**
@@ -290,12 +331,28 @@ public class TFIFOPortSetTest {
      */
     @Test
     public void testSetBufferSizeInMB() {
-        System.out.println("setBufferSizeInMB");
-        int sizeInMB = 0;
-        TFIFOPortSet instance = null;
-        instance.setBufferSizeInMB(sizeInMB);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("test setBufferSizeInMB");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        instance.setBufferSizeInMB(5); // we set 5 MB buffer size
+        assertEquals(5, instance.getBufferSizeInMBytes());
+    }
+
+    /**
+     * Test of setBufferSizeInMB method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testSetBufferSizeInMBWhenNegative() {
+        System.out.println("test setBufferSizeInMB");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        assertThrows(IllegalArgumentException.class, () -> {
+            instance.setBufferSizeInMB(-1); // This causes an exception
+        });
     }
 
     /**
@@ -304,12 +361,19 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetBufferSizeInMBytes() {
         System.out.println("getBufferSizeInMBytes");
-        TFIFOPortSet instance = null;
-        int expResult = 0;
-        int result = instance.getBufferSizeInMBytes();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        boolean worksFine = true;
+        if (instance.getBufferSizeInMBytes() != 1) { // By default buffer size is 1 MB
+            worksFine &= false;
+        }
+        instance.setBufferSizeInMB(5); // we set 5 MB buffer size
+        if (instance.getBufferSizeInMBytes() != 5) {
+            worksFine &= false;
+        }
+        assertTrue(worksFine);
     }
 
     /**
@@ -317,14 +381,51 @@ public class TFIFOPortSetTest {
      */
     @Test
     public void testIsAvailable() {
-        System.out.println("isAvailable");
-        int portID = 0;
-        TFIFOPortSet instance = null;
-        boolean expResult = false;
-        boolean result = instance.isAvailable(portID);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("test isAvailable");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        TExternalLink link = new TExternalLink(1, new TLongIDGenerator(), topology);
+        boolean worksFine = true;
+        if (!instance.getPort(3).isAvailable()) { // By default all ports ara available
+            worksFine &= false;
+        }
+        instance.getPort(3).setLink(link); // Now, port 3 is not available
+        if (instance.getPort(3).isAvailable()) {
+            worksFine &= false;
+        }
+        assertTrue(worksFine);
+    }
+
+    /**
+     * Test of isAvailable method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testIsAvailableWhenOutOfRange1() {
+        System.out.println("test isAvailable");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        assertThrows(IllegalArgumentException.class, () -> {
+            instance.isAvailable(-1); // There are 8 ports (0 to 7) so, this causes an exception
+        });
+    }
+
+    /**
+     * Test of isAvailable method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testIsAvailableWhenOutOfRange2() {
+        System.out.println("test isAvailable");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        assertThrows(IllegalArgumentException.class, () -> {
+            instance.isAvailable(8); // There are 8 ports (0 to 7) so, this causes an exception
+        });
     }
 
     /**
@@ -332,13 +433,23 @@ public class TFIFOPortSetTest {
      */
     @Test
     public void testHasAvailablePorts() {
-        System.out.println("hasAvailablePorts");
-        TFIFOPortSet instance = null;
-        boolean expResult = false;
-        boolean result = instance.hasAvailablePorts();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("test hasAvailablePorts");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        TExternalLink link = new TExternalLink(1, new TLongIDGenerator(), topology);
+        boolean worksFine = true;
+        if (!instance.hasAvailablePorts()) { // By default all ports are available
+            worksFine &= false;
+        }
+        for (int i = 0; i < instance.getNumberOfPorts(); i++) {
+            instance.getPort(i).setLink(link); // set all ports as unavailable
+        }
+        if (instance.hasAvailablePorts()) {
+            worksFine &= false;
+        }
+        assertTrue(worksFine);
     }
 
     /**
@@ -346,13 +457,70 @@ public class TFIFOPortSetTest {
      */
     @Test
     public void testConnectLinkToPort() {
-        System.out.println("connectLinkToPort");
-        TLink link = null;
-        int portID = 0;
-        TFIFOPortSet instance = null;
-        instance.connectLinkToPort(link, portID);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("test connectLinkToPort");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        TExternalLink link = new TExternalLink(1, new TLongIDGenerator(), topology);
+        boolean worksFine = true;
+        if (!instance.hasAvailablePorts()) { // By default all ports are available
+            worksFine &= false;
+        }
+        for (int i = 0; i < instance.getNumberOfPorts(); i++) {
+            instance.connectLinkToPort(link, i); // set all ports as unavailable
+        }
+        if (instance.hasAvailablePorts()) {
+            worksFine &= false;
+        }
+        assertTrue(worksFine);
+    }
+
+    /**
+     * Test of connectLinkToPort method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testConnectLinkToPortWhenOutOfRange1() {
+        System.out.println("test connectLinkToPort");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        TExternalLink link = new TExternalLink(1, new TLongIDGenerator(), topology);
+        assertThrows(IllegalArgumentException.class, () -> {
+            instance.connectLinkToPort(link, -1); // There are 8 ports (0 to 7) so, this causes an exception
+        });
+    }
+
+    /**
+     * Test of connectLinkToPort method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testConnectLinkToPortWhenOutOfRange2() {
+        System.out.println("test connectLinkToPort");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        TExternalLink link = new TExternalLink(1, new TLongIDGenerator(), topology);
+        assertThrows(IllegalArgumentException.class, () -> {
+            instance.connectLinkToPort(link, 8); // There are 8 ports (0 to 7) so, this causes an exception
+        });
+    }
+
+    /**
+     * Test of connectLinkToPort method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testConnectLinkToPortWhenLinkIsNull() {
+        System.out.println("test connectLinkToPort");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        assertThrows(IllegalArgumentException.class, () -> {
+            instance.connectLinkToPort(null, 5); // link == null causes an exception
+        });
     }
 
     /**
