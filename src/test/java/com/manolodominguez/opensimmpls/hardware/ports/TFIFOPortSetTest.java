@@ -7,7 +7,9 @@ package com.manolodominguez.opensimmpls.hardware.ports;
 
 import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
 import com.manolodominguez.opensimmpls.commons.TSemaphore;
+import com.manolodominguez.opensimmpls.gui.simulator.JSimulationPanel;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
+import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
 import com.manolodominguez.opensimmpls.scenario.TExternalLink;
 import com.manolodominguez.opensimmpls.scenario.TLERNode;
 import com.manolodominguez.opensimmpls.scenario.TLSRNode;
@@ -528,14 +530,52 @@ public class TFIFOPortSetTest {
      */
     @Test
     public void testGetLinkConnectedToPort() {
-        System.out.println("getLinkConnectedToPort");
-        int portID = 0;
-        TFIFOPortSet instance = null;
-        TLink expResult = null;
-        TLink result = instance.getLinkConnectedToPort(portID);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("test getLinkConnectedToPort");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        TExternalLink link = new TExternalLink(1, new TLongIDGenerator(), topology);
+        boolean worksFine = true;
+        for (int i = 0; i < instance.getNumberOfPorts(); i++) {
+            instance.connectLinkToPort(link, i); // set all ports as unavailable
+        }
+        for (int i = 0; i < instance.getNumberOfPorts(); i++) {
+            if (instance.getLinkConnectedToPort(i) != link) { // compares references 
+                worksFine &= false;
+            }
+        }
+        assertTrue(worksFine);
+    }
+
+    /**
+     * Test of getLinkConnectedToPort method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testGetLinkConnectedToPortWhnOutOfRange1() {
+        System.out.println("test getLinkConnectedToPort");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        assertThrows(IllegalArgumentException.class, () -> {
+            instance.getLinkConnectedToPort(-1); // should cause an exception
+        });
+    }
+
+    /**
+     * Test of getLinkConnectedToPort method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testGetLinkConnectedToPortWhnOutOfRange2() {
+        System.out.println("test getLinkConnectedToPort");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        assertThrows(IllegalArgumentException.class, () -> {
+            instance.getLinkConnectedToPort(8); // should cause an exception
+        });
     }
 
     /**
@@ -543,12 +583,53 @@ public class TFIFOPortSetTest {
      */
     @Test
     public void testDisconnectLinkFromPort() {
-        System.out.println("disconnectLinkFromPort");
-        int portID = 0;
-        TFIFOPortSet instance = null;
-        instance.disconnectLinkFromPort(portID);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("test disconnectLinkFromPort");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        TExternalLink link = new TExternalLink(1, new TLongIDGenerator(), topology);
+        boolean worksFine = true;
+        for (int i = 0; i < instance.getNumberOfPorts(); i++) {
+            instance.connectLinkToPort(link, i); // set all ports as unavailable
+        }
+        for (int i = 0; i < instance.getNumberOfPorts(); i++) {
+            instance.disconnectLinkFromPort(i); // set all port as available
+            if (!instance.getPort(i).isAvailable()) {
+                worksFine &= false;
+            }
+        }
+        assertTrue(worksFine);
+    }
+
+    /**
+     * Test of disconnectLinkFromPort method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testDisconnectLinkFromPortWhenOutOfRange1() {
+        System.out.println("test disconnectLinkFromPort");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        assertThrows(IllegalArgumentException.class, () -> {
+            instance.disconnectLinkFromPort(8); // should cause an exception
+        });
+    }
+
+    /**
+     * Test of disconnectLinkFromPort method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testDisconnectLinkFromPortWhenOutOfRange2() {
+        System.out.println("test disconnectLinkFromPort");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        assertThrows(IllegalArgumentException.class, () -> {
+            instance.disconnectLinkFromPort(8); // should cause an exception
+        });
     }
 
     /**
@@ -557,12 +638,44 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetNextPacket() {
         System.out.println("getNextPacket");
-        TFIFOPortSet instance = null;
-        TAbstractPDU expResult = null;
-        TAbstractPDU result = instance.getNextPacket();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLERNode tailEndNode = new TLERNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        boolean worksFine = true;
+        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
+        for (int i = 0; i < tailEndNode.getPorts().getNumberOfPorts(); i++) {
+            tailEndNode.getPorts().getPort(i).reEnqueuePacket(mplsPacket); // put a packet in each port
+            if (tailEndNode.getPorts().getPort(i).getNumberOfPackets() != 1) { // check that packets are there
+                worksFine &= false;
+            }
+        }
+        for (int i = 0; i < tailEndNode.getPorts().getNumberOfPorts(); i++) {
+            if (!(tailEndNode.getPorts().getNextPacket() instanceof TAbstractPDU)) { // check that all packets are there and can be retrieved
+                worksFine &= false;
+            }
+        }
+        if (tailEndNode.getPorts().getNextPacket() != null) { // Next call to getNextPacket should return null
+            worksFine &= false;
+        }
+        assertTrue(worksFine);
+    }
+
+    /**
+     * Test of getNextPacket method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testGetNextPacketWhenNoPacketAwaiting() {
+        System.out.println("getNextPacket");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        assertNull(instance.getNextPacket()); // No packet awaiting, so should be null
     }
 
     /**
@@ -571,12 +684,32 @@ public class TFIFOPortSetTest {
     @Test
     public void testIsThereAnyPacketToSwitch() {
         System.out.println("isThereAnyPacketToSwitch");
-        TFIFOPortSet instance = null;
-        boolean expResult = false;
-        boolean result = instance.isThereAnyPacketToSwitch();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLERNode tailEndNode = new TLERNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
+        for (int i = 0; i < tailEndNode.getPorts().getNumberOfPorts(); i++) {
+            tailEndNode.getPorts().getPort(i).reEnqueuePacket(mplsPacket); // put a packet in each port
+        }
+        assertTrue(tailEndNode.getPorts().isThereAnyPacketToSwitch());
+    }
+
+    /**
+     * Test of isThereAnyPacketToSwitch method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testIsThereAnyPacketToSwitchWhenThereIsNotAPacket() {
+        System.out.println("isThereAnyPacketToSwitch");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        assertFalse(instance.isThereAnyPacketToSwitch());
     }
 
     /**
