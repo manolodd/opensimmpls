@@ -718,12 +718,32 @@ public class TFIFOPortSetTest {
     @Test
     public void testIsThereAnyPacketToRoute() {
         System.out.println("isThereAnyPacketToRoute");
-        TFIFOPortSet instance = null;
-        boolean expResult = false;
-        boolean result = instance.isThereAnyPacketToRoute();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLERNode tailEndNode = new TLERNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
+        for (int i = 0; i < tailEndNode.getPorts().getNumberOfPorts(); i++) {
+            tailEndNode.getPorts().getPort(i).reEnqueuePacket(mplsPacket); // put a packet in each port
+        }
+        assertTrue(tailEndNode.getPorts().isThereAnyPacketToRoute());
+    }
+
+    /**
+     * Test of isThereAnyPacketToRoute method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testIsThereAnyPacketToRouteWhenThereIsNotAPacket() {
+        System.out.println("isThereAnyPacketToRoute");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        assertFalse(instance.isThereAnyPacketToRoute());
     }
 
     /**
