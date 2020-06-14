@@ -6,14 +6,15 @@
 package com.manolodominguez.opensimmpls.hardware.ports;
 
 import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
-import com.manolodominguez.opensimmpls.commons.TSemaphore;
 import com.manolodominguez.opensimmpls.gui.simulator.JSimulationPanel;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
 import com.manolodominguez.opensimmpls.scenario.TExternalLink;
+import com.manolodominguez.opensimmpls.scenario.TInternalLink;
 import com.manolodominguez.opensimmpls.scenario.TLERNode;
 import com.manolodominguez.opensimmpls.scenario.TLSRNode;
 import com.manolodominguez.opensimmpls.scenario.TLink;
+import com.manolodominguez.opensimmpls.scenario.TLinkConfig;
 import com.manolodominguez.opensimmpls.scenario.TScenario;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
 import org.junit.jupiter.api.AfterEach;
@@ -752,13 +753,60 @@ public class TFIFOPortSetTest {
     @Test
     public void testCanSwitchPacket() {
         System.out.println("canSwitchPacket");
-        int maxSwitchableOctects = 0;
-        TFIFOPortSet instance = null;
-        boolean expResult = false;
-        boolean result = instance.canSwitchPacket(maxSwitchableOctects);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        // a 1024 octets payload means a packet with a total size of 1064 octects
+        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
+        tailEndNode.getPorts().getPort(0).reEnqueuePacket(mplsPacket);
+        assertTrue(tailEndNode.getPorts().canSwitchPacket(1064));
+    }
+
+    /**
+     * Test of canSwitchPacket method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testCanSwitchPacketWhenOutOfRange() {
+        System.out.println("canSwitchPacket");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        // a 1024 octets payload means a packet with a total size of 1064 octects
+        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
+        tailEndNode.getPorts().getPort(0).reEnqueuePacket(mplsPacket);
+        assertThrows(IllegalArgumentException.class, () -> {
+            tailEndNode.getPorts().canSwitchPacket(-1); //throws an exception
+        });
+    }
+
+    /**
+     * Test of canSwitchPacket method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testCanSwitchPacketWhenCannot() {
+        System.out.println("canSwitchPacket");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        // a 1024 octets payload means a packet with a total size of 1064 octects
+        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 1024);
+        tailEndNode.getPorts().getPort(0).reEnqueuePacket(mplsPacket);
+        assertFalse(tailEndNode.getPorts().canSwitchPacket(1063));
     }
 
     /**
@@ -767,10 +815,39 @@ public class TFIFOPortSetTest {
     @Test
     public void testSkipPort() {
         System.out.println("skipPort");
-        TFIFOPortSet instance = null;
-        instance.skipPort();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        // By default readPort is ZERO and each call to skipPort skip to the
+        // next port in a cicle.
+        instance.skipPort(); // sets readPort to 1
+        instance.skipPort(); // sets readPort to 2
+        instance.skipPort(); // sets readPort to 3
+        assertEquals(3, instance.getReadPort());
+    }
+
+    /**
+     * Test of skipPort method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testSkipPortWhenNumberOfPortsIsReached() {
+        System.out.println("skipPort");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        // By default readPort is ZERO and each call to skipPort skip to the
+        // next port in a cicle.
+        instance.skipPort(); // sets readPort to 1
+        instance.skipPort(); // sets readPort to 2
+        instance.skipPort(); // sets readPort to 3
+        instance.skipPort(); // sets readPort to 4
+        instance.skipPort(); // sets readPort to 5
+        instance.skipPort(); // sets readPort to 6
+        instance.skipPort(); // sets readPort to 7
+        instance.skipPort(); // sets readPort to 0 <-- return the the first one
+        assertEquals(0, instance.getReadPort());
     }
 
     /**
@@ -779,12 +856,16 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetReadPort() {
         System.out.println("getReadPort");
-        TFIFOPortSet instance = null;
-        int expResult = 0;
-        int result = instance.getReadPort();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        // By default readPort is ZERO and each call to skipPort skip to the
+        // next port in a cicle.
+        instance.skipPort(); // sets readPort to 1
+        instance.skipPort(); // sets readPort to 2
+        instance.skipPort(); // sets readPort to 3
+        assertEquals(3, instance.getReadPort());
     }
 
     /**
@@ -794,13 +875,83 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetLocalPortConnectedToANodeWithIPv4Address() {
         System.out.println("getLocalPortConnectedToANodeWithIPv4Address");
-        String adjacentNodeIPv4Address = "";
-        TFIFOPortSet instance = null;
-        TPort expResult = null;
-        TPort result = instance.getLocalPortConnectedToANodeWithIPv4Address(adjacentNodeIPv4Address);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode parentNode = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology); //Creates a node
+        TLSRNode anotherNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        parentNode.setName("Dummy parent node name");
+        anotherNode.setName("Dummy another node name");
+        topology.addNode(parentNode); // Adds tail end node to the topology
+        topology.addNode(anotherNode); // Adds tail end node to the topology
+
+        TInternalLink internalLink = new TInternalLink(3, new TLongIDGenerator(), topology);  //Creats a link
+
+        TLinkConfig linkConfig = new TLinkConfig(); // Creates a link configuration object
+        linkConfig.setName("Dummy link name");
+        linkConfig.setShowName(false);
+        linkConfig.setLinkDelay(1); //1 ns
+        linkConfig.setHeadEndNodeName("Dummy parent node name");
+        linkConfig.setTailEndNodeName("Dummy another node name");
+        linkConfig.setLinkType(TLink.INTERNAL_LINK);
+        linkConfig.setHeadEndNodePortID(4); // port 0 of head end
+        linkConfig.setTailEndNodePortID(2); // port 0 of tail end
+
+        int error = linkConfig.validateConfig(topology, false); // Check the link config against the topology
+        if (error != TLinkConfig.OK) {
+            System.out.println("****************** LINK CONFIG ERROR");
+            linkConfig.setWellConfigured(false);
+            fail("The test case is a prototype.");
+        } else {
+            linkConfig.setWellConfigured(true);
+        }
+
+        internalLink.configure(linkConfig, topology, false);
+
+        assertEquals(4, parentNode.getPorts().getLocalPortConnectedToANodeWithIPv4Address("10.0.0.2").getPortID());
+    }
+
+    /**
+     * Test of getLocalPortConnectedToANodeWithIPv4Address method, of class
+     * TFIFOPortSet.
+     */
+    @Test
+    public void testGetLocalPortConnectedToANodeWithIPv4AddressWhenItDoesNotExist() {
+        System.out.println("getLocalPortConnectedToANodeWithIPv4Address");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode parentNode = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology); //Creates a node
+        TLSRNode anotherNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        parentNode.setName("Dummy parent node name");
+        anotherNode.setName("Dummy another node name");
+        topology.addNode(parentNode); // Adds tail end node to the topology
+        topology.addNode(anotherNode); // Adds tail end node to the topology
+
+        TInternalLink internalLink = new TInternalLink(3, new TLongIDGenerator(), topology);  //Creats a link
+
+        TLinkConfig linkConfig = new TLinkConfig(); // Creates a link configuration object
+        linkConfig.setName("Dummy link name");
+        linkConfig.setShowName(false);
+        linkConfig.setLinkDelay(1); //1 ns
+        linkConfig.setHeadEndNodeName("Dummy parent node name");
+        linkConfig.setTailEndNodeName("Dummy another node name");
+        linkConfig.setLinkType(TLink.INTERNAL_LINK);
+        linkConfig.setHeadEndNodePortID(4); // port 0 of head end
+        linkConfig.setTailEndNodePortID(2); // port 0 of tail end
+
+        int error = linkConfig.validateConfig(topology, false); // Check the link config against the topology
+        if (error != TLinkConfig.OK) {
+            System.out.println("****************** LINK CONFIG ERROR");
+            linkConfig.setWellConfigured(false);
+            fail("The test case is a prototype.");
+        } else {
+            linkConfig.setWellConfigured(true);
+        }
+
+        internalLink.configure(linkConfig, topology, false);
+
+        // Node with IP "10.1.3.2" is not connected to the parent node, therefore, 
+        // null should be returned
+        assertNull(parentNode.getPorts().getLocalPortConnectedToANodeWithIPv4Address("10.1.3.2"));
     }
 
     /**
@@ -809,13 +960,118 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetIPv4OfNodeLinkedTo() {
         System.out.println("getIPv4OfNodeLinkedTo");
-        int portID = 0;
-        TFIFOPortSet instance = null;
-        String expResult = "";
-        String result = instance.getIPv4OfNodeLinkedTo(portID);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode parentNode = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology); //Creates a node
+        TLSRNode anotherNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        parentNode.setName("Dummy parent node name");
+        anotherNode.setName("Dummy another node name");
+        topology.addNode(parentNode); // Adds tail end node to the topology
+        topology.addNode(anotherNode); // Adds tail end node to the topology
+
+        TInternalLink internalLink = new TInternalLink(3, new TLongIDGenerator(), topology);  //Creats a link
+
+        TLinkConfig linkConfig = new TLinkConfig(); // Creates a link configuration object
+        linkConfig.setName("Dummy link name");
+        linkConfig.setShowName(false);
+        linkConfig.setLinkDelay(1); //1 ns
+        linkConfig.setHeadEndNodeName("Dummy parent node name");
+        linkConfig.setTailEndNodeName("Dummy another node name");
+        linkConfig.setLinkType(TLink.INTERNAL_LINK);
+        linkConfig.setHeadEndNodePortID(4); // port 0 of head end
+        linkConfig.setTailEndNodePortID(2); // port 0 of tail end
+
+        int error = linkConfig.validateConfig(topology, false); // Check the link config against the topology
+        if (error != TLinkConfig.OK) {
+            System.out.println("****************** LINK CONFIG ERROR");
+            linkConfig.setWellConfigured(false);
+            fail("The test case is a prototype.");
+        } else {
+            linkConfig.setWellConfigured(true);
+        }
+
+        internalLink.configure(linkConfig, topology, false);
+
+        // Node connected to port 4 of parent node is "anotherNode" that has
+        // IPv4 = 10.0.0.2
+        assertTrue(parentNode.getPorts().getIPv4OfNodeLinkedTo(4).equals("10.0.0.2"));
+    }
+
+    /**
+     * Test of getIPv4OfNodeLinkedTo method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testGetIPv4OfNodeLinkedToWhenSpecifiedAnAvailablePort() {
+        System.out.println("getIPv4OfNodeLinkedTo");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode parentNode = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology); //Creates a node
+        TLSRNode anotherNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        parentNode.setName("Dummy parent node name");
+        anotherNode.setName("Dummy another node name");
+        topology.addNode(parentNode); // Adds tail end node to the topology
+        topology.addNode(anotherNode); // Adds tail end node to the topology
+
+        TInternalLink internalLink = new TInternalLink(3, new TLongIDGenerator(), topology);  //Creats a link
+
+        TLinkConfig linkConfig = new TLinkConfig(); // Creates a link configuration object
+        linkConfig.setName("Dummy link name");
+        linkConfig.setShowName(false);
+        linkConfig.setLinkDelay(1); //1 ns
+        linkConfig.setHeadEndNodeName("Dummy parent node name");
+        linkConfig.setTailEndNodeName("Dummy another node name");
+        linkConfig.setLinkType(TLink.INTERNAL_LINK);
+        linkConfig.setHeadEndNodePortID(4); // port 0 of head end
+        linkConfig.setTailEndNodePortID(2); // port 0 of tail end
+
+        int error = linkConfig.validateConfig(topology, false); // Check the link config against the topology
+        if (error != TLinkConfig.OK) {
+            System.out.println("****************** LINK CONFIG ERROR");
+            linkConfig.setWellConfigured(false);
+            fail("The test case is a prototype.");
+        } else {
+            linkConfig.setWellConfigured(true);
+        }
+
+        internalLink.configure(linkConfig, topology, false);
+
+        // No node is connected to port 0 of parent node, so null is returned 
+        // as IPv4
+        assertNull(parentNode.getPorts().getIPv4OfNodeLinkedTo(0));
+    }
+
+    /**
+     * Test of getIPv4OfNodeLinkedTo method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testGetIPv4OfNodeLinkedToWhenOutOfRange1() {
+        System.out.println("getIPv4OfNodeLinkedTo");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode parentNode = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology); //Creates a node
+        parentNode.setName("Dummy parent node name");
+        topology.addNode(parentNode); // Adds tail end node to the topology
+        // This node has only eight ports numbered 0-7 
+        assertThrows(IllegalArgumentException.class, () -> {
+            parentNode.getPorts().getIPv4OfNodeLinkedTo(-1); //throws an exception
+        });
+    }
+
+    /**
+     * Test of getIPv4OfNodeLinkedTo method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testGetIPv4OfNodeLinkedToWhenOutOfRange2() {
+        System.out.println("getIPv4OfNodeLinkedTo");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode parentNode = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology); //Creates a node
+        parentNode.setName("Dummy parent node name");
+        topology.addNode(parentNode); // Adds tail end node to the topology
+        // This node has only eight ports numbered 0-7 
+        assertThrows(IllegalArgumentException.class, () -> {
+            parentNode.getPorts().getIPv4OfNodeLinkedTo(8); //throws an exception
+        });
     }
 
     /**
@@ -824,12 +1080,37 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetCongestionLevel() {
         System.out.println("getCongestionLevel");
-        TFIFOPortSet instance = null;
-        long expResult = 0L;
-        long result = instance.getCongestionLevel();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 65535);
+        tailEndNode.getPorts().getPort(0).reEnqueuePacket(mplsPacket);
+        assertTrue(tailEndNode.getPorts().getCongestionLevel() > 0L);
+    }
+
+    /**
+     * Test of getCongestionLevel method, of class TFIFOPortSet.
+     */
+    @Test
+    public void testGetCongestionLevelWhenUnlimited() {
+        System.out.println("getCongestionLevel");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        tailEndNode.setName("Dummy tail end node name");
+        tailEndNode.getPorts().setUnlimitedBuffer(true);
+        topology.addNode(tailEndNode); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        tailEndNode.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        TMPLSPDU mplsPacket = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 65535);
+        tailEndNode.getPorts().getPort(0).reEnqueuePacket(mplsPacket);
+        assertFalse(tailEndNode.getPorts().getCongestionLevel() > 0L);
     }
 
     /**
@@ -838,10 +1119,49 @@ public class TFIFOPortSetTest {
     @Test
     public void testReset() {
         System.out.println("reset");
-        TFIFOPortSet instance = null;
-        instance.reset();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();  //Creates an scenario
+        TTopology topology = new TTopology(scenario); //Creates a topology
+        TLSRNode instance = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
+        instance.setName("Dummy tail end node name");
+        topology.addNode(instance); // Adds tail end node to the topology
+        JSimulationPanel simulationPanel = new JSimulationPanel();
+        instance.simulationEventsListener.setSimulationPanel(simulationPanel);
+        //Creates a new MPLS packet directed to tail end node.
+        boolean worksFine = true;
+        if (instance.getPorts().getPortSetOccupancy() != 0L) {
+            worksFine &= false;
+        }
+        // Creates a packet with a size enough to make getCongestionLevel() be
+        // greater than zero
+        TMPLSPDU mplsPacket1 = new TMPLSPDU(1, "10.0.0.1", "10.0.0.2", 102400);
+        instance.getPorts().getPort(0).addPacket(mplsPacket1);
+        instance.getPorts().setPortSetOccupancySize(mplsPacket1.getSize());
+        if (instance.getPorts().getCongestionLevel() <= 0L) {
+            worksFine &= false;
+        }
+        instance.getPorts().skipPort();
+        instance.getPorts().skipPort();
+        if (instance.getPorts().getReadPort() != 2) {
+            worksFine &= false;
+        }
+        instance.getPorts().reset();
+        if (instance.getPorts().getParentNode() != instance) { // Web compare the node reference
+            worksFine &= false;
+        }
+        if (instance.getPorts().getNumberOfPorts() != 8) { // and the specified numer of ports
+            worksFine &= false;
+        }
+        // And the rest of values the constructor sets
+        if (instance.getPorts().getBufferSizeInMBytes() != 1) {
+            worksFine &= false;
+        }
+        if (instance.getPorts().getPortSetOccupancy() != 0) {
+            worksFine &= false;
+        }
+        if (instance.getPorts().isCongestedArtificially()) {
+            worksFine &= false;
+        }
+        assertTrue(worksFine);
     }
 
     /**
@@ -850,11 +1170,13 @@ public class TFIFOPortSetTest {
     @Test
     public void testSetArtificiallyCongested() {
         System.out.println("setArtificiallyCongested");
-        boolean congestArtificially = false;
-        TFIFOPortSet instance = null;
-        instance.setArtificiallyCongested(congestArtificially);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        TScenario scenario = new TScenario();
+        TTopology topology = new TTopology(scenario);
+        TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
+        TFIFOPortSet instance = new TFIFOPortSet(8, node);
+        // By default is not congested artificially
+        instance.setArtificiallyCongested(true);
+        assertTrue(instance.isCongestedArtificially());
     }
 
 }

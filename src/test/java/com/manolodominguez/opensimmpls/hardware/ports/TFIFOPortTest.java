@@ -439,7 +439,7 @@ public class TFIFOPortTest {
 
         internalLink.configure(linkConfig, topology, false);
 
-        // Here we habe two nodes linked by a link on the port 0 of each one.
+        // Here we have two nodes linked by a link on the port 0 of each one.
         // Put packet (really, null) on link connected to port 0 of head en node.
         assertThrows(IllegalArgumentException.class, () -> {
             // Should throws an exception because the specified packet is null
@@ -859,7 +859,7 @@ public class TFIFOPortTest {
      * Test of canSwitchPacket method, of class TFIFOPort.
      */
     @Test
-    public void testCanSwitchPacketOutOfRange() {
+    public void testCanSwitchPacketWhenOutOfRange() {
         System.out.println("test canSwitchPacket");
         TScenario scenario = new TScenario();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
