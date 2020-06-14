@@ -24,7 +24,7 @@ import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class TActivePortBufferEntry implements Comparable {
+public class TActivePortBufferEntry implements Comparable<TActivePortBufferEntry> {
 
     /**
      * This method is the constructor of the class. It creates a new instance of
@@ -58,12 +58,11 @@ public class TActivePortBufferEntry implements Comparable {
      * @since 2.0
      */
     @Override
-    public int compareTo(Object anotherActivePortBufferEntry) {
-        TActivePortBufferEntry activePortBufferEntryAux = (TActivePortBufferEntry) anotherActivePortBufferEntry;
-        if (this.incomingOrder < activePortBufferEntryAux.getIncomingOrder()) {
+    public int compareTo(TActivePortBufferEntry anotherActivePortBufferEntry) {
+        if (this.incomingOrder < anotherActivePortBufferEntry.getIncomingOrder()) {
             return TActivePortBufferEntry.THIS_LOWER;
         }
-        if (this.incomingOrder > activePortBufferEntryAux.getIncomingOrder()) {
+        if (this.incomingOrder > anotherActivePortBufferEntry.getIncomingOrder()) {
             return TActivePortBufferEntry.THIS_GREATER;
         }
         return TActivePortBufferEntry.THIS_EQUAL;
