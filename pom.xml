@@ -24,7 +24,7 @@
     <name>opensimmpls</name>
     <url>http://opensimmpls.manolodominguez.com/</url>
     <build>
-        <finalName>openSimMPLS-bin-v${project.version}</finalName>
+        <finalName>opensimmpls-${project.version}</finalName>
         <plugins>         
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -87,6 +87,8 @@
                                     <mainClass>com.manolodominguez.opensimmpls.main.openSimMPLS</mainClass>
                                 </transformer>
                             </transformers>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>with-dependencies</shadedClassifierName>
                         </configuration>
                     </execution>
                 </executions>

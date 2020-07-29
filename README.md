@@ -16,14 +16,14 @@ It supports standard MPLS operation as well as GoS/MPLS operation. See "Guarante
 
 ## This release:
  
-- <b>OpenSimMPLS 2.2</b> is released under the terms of Apache Software License 2.0 + CC-BY 4.0 (for not software things).
+- <b>OpenSimMPLS 2.2</b> is released under the terms of Apache Software License 2.0.
 
 ## Previous releases:
 
-- <b>OpenSimMPLS 2.1</b> is released under the terms of Apache Software License 2.0 + FDL 1.2 (for not software things).
-- <b>OpenSimMPLS 2.0</b> was released under the terms of Apache Software License 2.0  + FDL 1.2 (for not software things).
-- <b>OpenSimMPLS 1.1</b> was released under the terms of GPLv3.0+ + FDL 1.2 (for not software things).
-- <b>OpenSimMPLS 1.0</b> was released under the terms of GPLv2.0+ + FDL 1.2 (for not software things).
+- <b>OpenSimMPLS 2.1</b> is released under the terms of Apache Software License 2.0.
+- <b>OpenSimMPLS 2.0</b> was released under the terms of Apache Software License 2.0.
+- <b>OpenSimMPLS 1.1</b> was released under the terms of GPLv3.0+.
+- <b>OpenSimMPLS 1.0</b> was released under the terms of GPLv2.0+.
 
 # PEOPLE BEHIND OPENSIMMPLS
 
@@ -59,7 +59,7 @@ cd target
 ```
 - Now, run the simulator:
 ```console
-java -jar openSimMPLS-bin-v{YourVersion}.jar
+java -jar openSimMPLS-{YourVersion}-with-dependencies.jar
 ```
 - Need some scenarios to try? There is not problem!! You'll find them at the examples folder (root of your cloned repository). You can also download these examples, for your OpenSimMPLS version, in the Releases section of this repository.
 
