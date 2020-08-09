@@ -1,8 +1,8 @@
 # PROJECT STATUS (Java 8)
 
-- Master branch [![Build Status](https://api.travis-ci.org/manolodd/opensimmpls.svg?branch=master)](https://travis-ci.org/manolodd/opensimmpls)
+- Master branch [![Build Status](https://img.shields.io/travis/manolodd/opensimmpls/master.svg)](https://travis-ci.org/manolodd/opensimmpls)
 
-- Development branch [![Build Status](https://api.travis-ci.org/manolodd/opensimmpls.svg?branch=development)](https://travis-ci.org/manolodd/opensimmpls?branch=development)
+- Development branch [![Build Status](https://img.shields.io/travis/manolodd/opensimmpls/development.svg)](https://travis-ci.org/manolodd/opensimmpls?branch=development)
 
 # THE PROJECT
 
