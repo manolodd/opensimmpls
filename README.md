@@ -1,4 +1,4 @@
-# PROJECT STATUS (Java 8)
+# PROJECT STATUS (Tested from JDK 9 to 15)
 
 - Master branch [![Build Status](https://img.shields.io/travis/manolodd/opensimmpls/master.svg)](https://travis-ci.org/manolodd/opensimmpls)
 
