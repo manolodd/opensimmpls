@@ -16,12 +16,10 @@
 package com.manolodominguez.opensimmpls.hardware.dmgp;
 
 import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
@@ -32,20 +30,16 @@ public class TDMGPEntryTest {
     public TDMGPEntryTest() {
     }
 
-    @BeforeAll
-    public static void setUpClass() {
+    public static void setUpClass() throws Exception {
     }
 
-    @AfterAll
-    public static void tearDownClass() {
+    public static void tearDownClass() throws Exception {
     }
 
-    @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
     }
 
-    @AfterEach
-    public void tearDown() {
+    public void tearDown() throws Exception {
     }
 
     /**

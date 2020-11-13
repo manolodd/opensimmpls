@@ -360,7 +360,7 @@ public class TSwitchingMatrix {
      * entry in the switching matrix.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param label The label we whant to check.
+     * @param label The label we want to check.
      * @return TRUE if any switching entry in the switching matrix is using the
      * specified label. Otherwise returns FALSE.
      * @since 2.0

@@ -9,7 +9,7 @@
         <lsf4j-simple.version>2.0.0-alpha1</lsf4j-simple.version>
         <absolutelayout.version>RELEASE90</absolutelayout.version>
         <!--- Dependency for testing -->
-        <junit-jupiter-engine.version>5.7.0-M1</junit-jupiter-engine.version>
+        <junit-jupiter-engine.version>5.7.0</junit-jupiter-engine.version>
         <!-- Maven plugins versions -->
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <maven.enforcer.plugin.version>3.0.0-M3</maven.enforcer.plugin.version>
@@ -23,15 +23,38 @@
         <!--- Build parameters -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>9</maven.compiler.release> 
+        <!-- About this version of OpenSimMPLS -->
+        <opensimmpls.version>2.3-SNAPSHOT</opensimmpls.version>
+        <opensimmpls.license>The Apache License, Version 2.0</opensimmpls.license>
     </properties>
     
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.manolodominguez</groupId>
     <artifactId>opensimmpls</artifactId>
-    <version>2.2</version>
+    <version>2.3-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>opensimmpls</name>
+    <name>OpenSimMPLS - Opensource GoS/MPLS network simulator</name>
+    <description>OpenSimMPLS is an MPLS network simulator, multiplatform and mutilanguage. It is easy-to-use and is intended for teaching activities. It can be used as well to test new protocols, techniques and methods related to MPLS and/or GoS.</description>
     <url>http://opensimmpls.manolodominguez.com/</url>
+    <licenses>
+        <license>
+            <name>${opensimmpls.license}</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>    
+    <developers>
+        <developer>
+            <name>Manuel Domínguez Dorado</name>
+            <email>ingeniero@ManoloDominguez.com</email>
+            <organization>Manuel Domínguez Dorado</organization>
+            <organizationUrl>https://manolodominguez.com</organizationUrl>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:git://github.com/manolodd/opensimmpls.git</connection>
+        <developerConnection>scm:git:ssh://github.com:manolodd/opensimmpls.git</developerConnection>
+        <url>http://github.com/manolodd/opensimmpls/tree/master</url>
+    </scm>    
     <build>
         <finalName>opensimmpls-${project.version}</finalName>
         <plugins>         

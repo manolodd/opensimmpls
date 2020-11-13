@@ -80,6 +80,7 @@ OpenSimMPLS uses third-party components each one of them having its own OSS lice
 - miglayout-swing 5.2 - BSD - https://github.com/mikaelgrev/miglayout
 - miglayout-core 5.2 - BSD - https://github.com/mikaelgrev/miglayout
 - AbsoluteLayout RELEASE90 - CDDL (Being replaced in OpenSimMPLS by miglayout)
+- junit-jupiter-engine 5.7.0 - EPL-2.0 - https://junit.org/junit5
 
 Thanks folks!
 
