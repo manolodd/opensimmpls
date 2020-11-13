@@ -10,3 +10,13 @@ jdk:
   
 services:
   - xvfb
+  
+addons:
+  sonarcloud:
+    organization: "manolodd"
+    token:
+      secure: "UDf8g0RnN+B2AhalGQKTHkhJW8+cUoOqaZuo+dcjANRx9U88aj277VV3bb0MmKjAKAxCO/cXT8l7cTffmOPPOfk4PrvoJ8821zk5HxSEPam6c+omjTwh2MvBmZ3PK4eDp5L5j4PUEv4jo2q/2JPw7veWGVzJ5FnGPbSMnagzTbI="
+
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=manolodd_opensimmpls
