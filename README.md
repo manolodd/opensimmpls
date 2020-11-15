@@ -1,8 +1,14 @@
 # PROJECT STATUS (Tested from JDK 9 to 15)
 
-- Master branch [![Build Status](https://img.shields.io/travis/manolodd/opensimmpls/master.svg)](https://travis-ci.org/manolodd/opensimmpls)
+## Master branch
 
-- Development branch [![Build Status](https://img.shields.io/travis/manolodd/opensimmpls/development.svg)](https://travis-ci.org/manolodd/opensimmpls?branch=development)
+[![Build Status](https://img.shields.io/travis/manolodd/opensimmpls/master.svg)](https://travis-ci.org/manolodd/opensimmpls?branch=master)
+[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=manolodd_opensimmpls&branch=master&metric=alert_status#.svg)](https://sonarcloud.io/dashboard?id=manolodd_opensimmpls)
+
+## Develop branch
+
+[![Build Status](https://img.shields.io/travis/manolodd/opensimmpls/development.svg)](https://travis-ci.org/manolodd/opensimmpls?branch=development)
+[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=manolodd_opensimmpls&branch=development&metric=alert_status#.svg)](https://sonarcloud.io/dashboard?branch=development&id=manolodd_opensimmpls)
 
 # THE PROJECT
 

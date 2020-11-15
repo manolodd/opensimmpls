@@ -25,7 +25,7 @@
         <maven.compiler.release>9</maven.compiler.release> 
         <!-- About this version of OpenSimMPLS -->
         <opensimmpls.version>2.3-SNAPSHOT</opensimmpls.version>
-        <opensimmpls.license>The Apache License, Version 2.0</opensimmpls.license>
+        <opensimmpls.license>Apache-2.0</opensimmpls.license>
     </properties>
     
     <modelVersion>4.0.0</modelVersion>
