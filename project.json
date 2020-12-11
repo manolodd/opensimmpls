@@ -1,0 +1,59 @@
+{
+    "projectinfo": {
+        "name": "OpenSimMPLS",
+        "version": "1.3-SNAPSHOT",
+        "redistribution": "SOFTWARE_PACKAGE_OR_SAAS",
+        "licenses": ["APACHE_2_0"]
+    },
+    "componentbindings": [
+        {
+            "component": "jfreechart",
+            "version": "1.5.0",
+            "license": "LGPL_2_1_OR_LATER",
+            "weight": "NEAR_LOW",
+            "link": "DYNAMIC"
+        },
+        {
+            "component": "miglayout-swing",
+            "version": "5.2",
+            "license": "BSD_3_CLAUSE",
+            "weight": "NEAR_LOW",
+            "link": "DYNAMIC"
+        },
+        {
+            "component": "miglayout-core",
+            "version": "5.2",
+            "license": "BSD_3_CLAUSE",
+            "weight": "NEAR_LOW",
+            "link": "DYNAMIC"
+        },
+        {
+            "component": "slf4j-api",
+            "version": "2.0.0-alpha1",
+            "license": "MIT",
+            "weight": "NEAR_LOW",
+            "link": "DYNAMIC"
+        },
+        {
+            "component": "slf4j-simple",
+            "version": "2.0.0-alpha1",
+            "license": "MIT",
+            "weight": "NEAR_LOW",
+            "link": "DYNAMIC"
+        },
+        {
+            "component": "AbsoluteLayout",
+            "version": "RELEASE90",
+            "license": "CDDL_1_0",
+            "weight": "NEAR_HIGH",
+            "link": "DYNAMIC"
+        },
+        {
+            "component": "junit-jupiter-engine",
+            "version": "5.7.0",
+            "license": "UNSUPPORTED",
+            "weight": "NEAR_HIGH",
+            "link": "DYNAMIC"
+        }
+    ]
+}

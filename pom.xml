@@ -20,6 +20,7 @@
         <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
         <jacoco.maven.plugin.version>0.8.5</jacoco.maven.plugin.version>
         <maven.assembly.plugin.version>3.3.0</maven.assembly.plugin.version>
+        <openlrae.maven.plugin>0.8</openlrae.maven.plugin>
         <!--- Build parameters -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>9</maven.compiler.release> 
@@ -58,6 +59,24 @@
     <build>
         <finalName>opensimmpls-${project.version}</finalName>
         <plugins>         
+            <plugin>
+                <groupId>com.manolodominguez</groupId>
+                <artifactId>openlrae-maven-plugin</artifactId>
+                <version>${openlrae.maven.plugin}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>analyse</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <riskThresholds>
+                        <HAVING_COMPONENTS_LICENSES_INCOMPATIBLE_WITH_PROJECT_LICENSES>1</HAVING_COMPONENTS_LICENSES_INCOMPATIBLE_WITH_PROJECT_LICENSES>
+                    </riskThresholds>
+                    <showReport>true</showReport>
+                </configuration>
+            </plugin>            
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
