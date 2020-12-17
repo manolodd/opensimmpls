@@ -115,7 +115,10 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>${maven.jar.plugin.version}</version>
                 <configuration>
-                    <archive>
+                    <excludes>
+                        <exclude>**/*.docx</exclude>
+                        <exclude>**/*.psd</exclude>
+                    </excludes>                    <archive>
                         <manifest>
                             <mainClass>com.manolodominguez.opensimmpls.main.openSimMPLS</mainClass>
                         </manifest>
