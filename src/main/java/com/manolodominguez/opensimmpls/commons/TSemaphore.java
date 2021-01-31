@@ -68,7 +68,7 @@ public class TSemaphore {
      */
     public synchronized void setGreen() {
         semaphoreLight = GREEN;
-        notify();
+        notifyAll();
     }
 
     /**

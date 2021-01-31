@@ -45,8 +45,8 @@ public class TTopology {
      * @since 2.0
      */
     public TTopology(TScenario parentScenario) {
-        this.nodes = new TreeSet();
-        this.links = new TreeSet();
+        this.nodes = new TreeSet<>();
+        this.links = new TreeSet<>();
         this.timer = new TTimer();
         this.parentScenario = parentScenario;
         this.eventIDGenerator = new TLongIDGenerator();
@@ -1261,8 +1261,8 @@ public class TTopology {
     public static final long VERY_HIGH_WEIGHT = (long) INFINITE_WEIGHT / 2;
     public static final int TARGET_UNREACHABLE = -1;
 
-    private TreeSet nodes;
-    private TreeSet links;
+    private TreeSet<TNode> nodes;
+    private TreeSet<TLink> links;
     private TTimer timer;
     private TScenario parentScenario;
     private TLongIDGenerator eventIDGenerator;
