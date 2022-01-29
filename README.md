@@ -80,13 +80,13 @@ You can open a quick start guide directly from the simulator GUI. However, you c
 
 OpenSimMPLS uses third-party components each one of them having its own OSS license. License compatibility has been taken into account to allow OpenSimMPLS be released under its current OSS licence. They are:
 
-- Jfreechart 1.5.0 - LGPL - http://www.jfree.org/jfreechart
-- slf4j-api 2.0.0-alpha1 - MIT - https://www.slf4j.org
-- slf4j-simple 2.0.0-alpha1 - MIT - https://www.slf4j.org
-- miglayout-swing 5.2 - BSD - https://github.com/mikaelgrev/miglayout
-- miglayout-core 5.2 - BSD - https://github.com/mikaelgrev/miglayout
-- AbsoluteLayout RELEASE90 - CDDL (Being replaced in OpenSimMPLS by miglayout)
-- junit-jupiter-engine 5.7.0 - EPL-2.0 - https://junit.org/junit5
+- Jfreechart 1.5.3 - LGPL - http://www.jfree.org/jfreechart
+- slf4j-api 2.0.0-alpha6 - MIT - https://www.slf4j.org
+- slf4j-simple 2.0.0-alpha6 - MIT - https://www.slf4j.org
+- miglayout-swing 11.0 - BSD-3-clause - https://github.com/mikaelgrev/miglayout
+- miglayout-core 11.0 - BSD-3-clause - https://github.com/mikaelgrev/miglayout
+- AbsoluteLayout RELEASE126 - CDDL (Being replaced in OpenSimMPLS by miglayout)
+- junit-jupiter-engine 5.8.2 - EPL-2.0 - https://junit.org/junit5
 
 Thanks folks!
 

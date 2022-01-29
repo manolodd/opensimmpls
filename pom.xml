@@ -2,14 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <properties>
         <!--- Dependency versions -->
-        <jfreechart.version>1.5.0</jfreechart.version>
-        <miglayout-swing.version>5.2</miglayout-swing.version>
-        <miglayout-core.version>5.2</miglayout-core.version>
-        <lsf4j-api.version>2.0.0-alpha1</lsf4j-api.version>
-        <lsf4j-simple.version>2.0.0-alpha1</lsf4j-simple.version>
-        <absolutelayout.version>RELEASE90</absolutelayout.version>
+        <jfreechart.version>1.5.3</jfreechart.version>
+        <miglayout-swing.version>11.0</miglayout-swing.version>
+        <miglayout-core.version>11.0</miglayout-core.version>
+        <lsf4j-api.version>2.0.0-alpha6</lsf4j-api.version>
+        <lsf4j-simple.version>2.0.0-alpha6</lsf4j-simple.version>
+        <absolutelayout.version>RELEASE126</absolutelayout.version>
         <!--- Dependency for testing -->
-        <junit-jupiter-engine.version>5.7.0</junit-jupiter-engine.version>
+        <junit-jupiter-engine.version>5.8.2</junit-jupiter-engine.version>
         <!-- Maven plugins versions -->
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <maven.enforcer.plugin.version>3.0.0-M3</maven.enforcer.plugin.version>
@@ -18,9 +18,9 @@
         <maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
         <maven.surefire.plugin.version>3.0.0-M4</maven.surefire.plugin.version>
         <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
-        <jacoco.maven.plugin.version>0.8.5</jacoco.maven.plugin.version>
+        <jacoco.maven.plugin.version>0.8.7</jacoco.maven.plugin.version>
         <maven.assembly.plugin.version>3.3.0</maven.assembly.plugin.version>
-        <openlrae.maven.plugin>0.8</openlrae.maven.plugin>
+        <openlrae.maven.plugin>2.2</openlrae.maven.plugin>
         <!--- Build parameters -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>9</maven.compiler.release> 
@@ -72,7 +72,7 @@
                 </executions>
                 <configuration>
                     <riskThresholds>
-                        <HAVING_COMPONENTS_LICENSES_INCOMPATIBLE_WITH_PROJECT_LICENSES>1</HAVING_COMPONENTS_LICENSES_INCOMPATIBLE_WITH_PROJECT_LICENSES>
+                        <HAVING_COMPONENTS_LICENSES_INCOMPATIBLE_WITH_PROJECT_LICENSES>0.0</HAVING_COMPONENTS_LICENSES_INCOMPATIBLE_WITH_PROJECT_LICENSES>
                     </riskThresholds>
                     <showReport>true</showReport>
                 </configuration>
