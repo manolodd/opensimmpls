@@ -1,7 +1,7 @@
 {
     "projectinfo": {
         "name": "OpenSimMPLS",
-        "version": "2.3",
+        "version": "2.4",
         "redistribution": "SOFTWARE_PACKAGE_OR_SAAS",
         "licenses": ["APACHE_2_0"]
     },
