@@ -9,13 +9,6 @@ jdk:
   - openjdk16
   - openjdk17
   
-matrix:
-  include:
-    - jdk: openjdk9
-      before_install:
-        - rm "${JAVA_HOME}/lib/security/cacerts"
-        - ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"
-  
 services:
   - xvfb
   
