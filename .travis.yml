@@ -1,6 +1,20 @@
 language: java
 jdk:
+  - openjdk10
+  - openjdk11
+  - openjdk12
+  - openjdk13
+  - openjdk14
+  - openjdk15
+  - openjdk16
   - openjdk17
+  
+matrix:
+  include:
+    - jdk: openjdk9
+      before_install:
+        - rm "${JAVA_HOME}/lib/security/cacerts"
+        - ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"
   
 services:
   - xvfb
