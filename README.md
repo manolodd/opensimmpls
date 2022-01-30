@@ -1,4 +1,4 @@
-# PROJECT STATUS (Tested from JDK 9 to 15)
+# PROJECT STATUS (needs Java 9 or later)
 
 ## Master branch
 
@@ -20,17 +20,16 @@ It supports standard MPLS operation as well as GoS/MPLS operation. See "Guarante
 
 # LICENSE
 
-## This release:
+## Latest snapshot version being developed:
+
+- <b>OpenSimMPLS 2.4-SNAPSHOT</b> (develop branch) - Apache-2.0.
+
+## Binary releases:
  
-- <b>OpenSimMPLS 2.3</b> is released under the terms of Apache Software License 2.0.
-
-## Previous releases:
-
-- <b>OpenSimMPLS 2.2</b> was released under the terms of Apache Software License 2.0.
-- <b>OpenSimMPLS 2.1</b> was released under the terms of Apache Software License 2.0.
-- <b>OpenSimMPLS 2.0</b> was released under the terms of Apache Software License 2.0.
-- <b>OpenSimMPLS 1.1</b> was released under the terms of GPLv3.0+.
-- <b>OpenSimMPLS 1.0</b> was released under the terms of GPLv2.0+.
+- <b>OpenSimMPLS 2.3</b> (current, master branch) - Apache-2.0.
+- <b>OpenSimMPLS 2.0 - 2.2</b> - Apache-2.0.
+- <b>OpenSimMPLS 1.1</b> - GPLv3.0-or-later.
+- <b>OpenSimMPLS 1.0</b> - GPLv2.0-or-later.
 
 # PEOPLE BEHIND OPENSIMMPLS
 
