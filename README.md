@@ -2,12 +2,12 @@
 
 ## Master branch
 
-[![Build Status](https://img.shields.io/travis/manolodd/opensimmpls/master.svg)](https://travis-ci.org/manolodd/opensimmpls?branch=master)
+[![Build Status](https://img.shields.io/travis/manolodd/opensimmpls/master.svg)](https://app.travis-ci.com/github/manolodd/opensimmpls/builds)
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=manolodd_opensimmpls&branch=master&metric=alert_status#.svg)](https://sonarcloud.io/dashboard?id=manolodd_opensimmpls)
 
 ## Develop branch
 
-[![Build Status](https://img.shields.io/travis/manolodd/opensimmpls/development.svg)](https://travis-ci.org/manolodd/opensimmpls?branch=development)
+[![Build Status](https://img.shields.io/travis/manolodd/opensimmpls/development.svg)](https://app.travis-ci.com/github/manolodd/opensimmpls/builds)
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=manolodd_opensimmpls&branch=development&metric=alert_status#.svg)](https://sonarcloud.io/dashboard?branch=development&id=manolodd_opensimmpls)
 
 # THE PROJECT
