@@ -173,7 +173,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.analysisMainContainerPanel = new JPanel();
         this.analysisToolbarPanel = new JPanel();
         this.labelSelectANodeToAnalyze = new JLabel();
-        this.comboBoxNodeToAnalize = new JComboBox();
+        this.comboBoxNodeToAnalize = new JComboBox<>();
         this.scrollPaneAnalysis = new JScrollPane();
         this.analysisPanel = new JScrollablePanel();
         this.labelScenarioTitle = new JLabel();
@@ -948,7 +948,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.analysisToolbarPanel.setBorder(new EtchedBorder());
         this.labelSelectANodeToAnalyze.setText(this.translations.getString("JVentanaHija.SelcUnElemParaVerDatos"));
         this.analysisToolbarPanel.add(this.labelSelectANodeToAnalyze);
-        this.comboBoxNodeToAnalize.setModel(new DefaultComboBoxModel(new String[]{""}));
+        this.comboBoxNodeToAnalize.setModel(new DefaultComboBoxModel<>(new String[]{""}));
         this.comboBoxNodeToAnalize.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -2829,6 +2829,6 @@ public class JScenarioWindow extends JInternalFrame {
     private JSimulationPanel simulationPanel;
     private JPanel simulationMainContainerPanel;
     private JSlider sliderOptionsTickDurationInNs;
-    private JComboBox comboBoxNodeToAnalize;
+    private JComboBox<String> comboBoxNodeToAnalize;
     private ResourceBundle translations;
 }

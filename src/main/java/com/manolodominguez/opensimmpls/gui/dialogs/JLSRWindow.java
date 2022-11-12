@@ -109,7 +109,7 @@ public class JLSRWindow extends JDialog {
         this.labelQuickConfiguration = new JLabel();
         this.checkBoxQuickGenerateStatistics = new JCheckBox();
         this.labelLSRFeatures = new JLabel();
-        this.comboBoxPredefinedOptions = new JComboBox();
+        this.comboBoxPredefinedOptions = new JComboBox<>();
         this.panelAdvancedConfiguration = new JPanel();
         this.labelAdvancedConfiguration = new JLabel();
         this.checkBoxAdvancedGenerateStatistics = new JCheckBox();
@@ -192,7 +192,7 @@ public class JLSRWindow extends JDialog {
         this.labelLSRFeatures.setText(this.translations.getString("VentanaLSR.Caracteristicas"));
         this.panelQuickConfiguration.add(this.labelLSRFeatures, new AbsoluteConstraints(20, 110, 160, -1));
         this.comboBoxPredefinedOptions.setFont(new Font("Dialog", 0, 12));
-        this.comboBoxPredefinedOptions.setModel(new DefaultComboBoxModel(new String[]{"Personalized", "Very low cost LSR", "Low cost LSR", "Medium cost LSR", "Expensive LSR", "Very expensive LSR"}));
+        this.comboBoxPredefinedOptions.setModel(new DefaultComboBoxModel<>(new String[]{"Personalized", "Very low cost LSR", "Low cost LSR", "Medium cost LSR", "Expensive LSR", "Very expensive LSR"}));
         this.comboBoxPredefinedOptions.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -575,7 +575,7 @@ public class JLSRWindow extends JDialog {
     private JCheckBox checkBoxQuickGenerateStatistics;
     private JSlider sliderSwitchingPower;
     private JSlider sliderBufferSize;
-    private JComboBox comboBoxPredefinedOptions;
+    private JComboBox<String> comboBoxPredefinedOptions;
     private JCheckBox checkBoxShowName;
     private ResourceBundle translations;
 }

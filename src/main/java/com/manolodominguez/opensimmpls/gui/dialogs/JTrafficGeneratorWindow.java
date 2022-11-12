@@ -112,19 +112,19 @@ public class JTrafficGeneratorWindow extends JDialog {
         this.coordinatesPanel = new JCoordinatesPanel();
         this.checkBoxShowName = new JCheckBox();
         this.labelTargetTrafficSinkNode = new JLabel();
-        this.comboBoxTargetTrafficSinkNode = new JComboBox();
+        this.comboBoxTargetTrafficSinkNode = new JComboBox<>();
         this.panelQuickConfiguration = new JPanel();
         this.labelQuickConfiguration = new JLabel();
         this.labelQuickTrafficType = new JLabel();
         this.checkBoxQuickGenerateStatistics = new JCheckBox();
-        this.comboBoxPredefinedOptions = new JComboBox();
+        this.comboBoxPredefinedOptions = new JComboBox<>();
         this.panelAdvancedConfiguration = new JPanel();
         this.labelAdvancedConfiguration = new JLabel();
         this.labelTrafficGenerationRate = new JLabel();
         this.labelTrafficGenerationRateMbps = new JLabel();
         this.checkBoxAdvancedGenerateStatistics = new JCheckBox();
         this.labelGoSLevel = new JLabel();
-        this.comboBoxGoSLevel = new JComboBox();
+        this.comboBoxGoSLevel = new JComboBox<>();
         this.checkBoxBackupLSP = new JCheckBox();
         this.labelAdvancedTrafficType = new JLabel();
         this.radioButtonConstantPacketSize = new JRadioButton();
@@ -218,7 +218,7 @@ public class JTrafficGeneratorWindow extends JDialog {
         });
         this.panelQuickConfiguration.add(this.checkBoxQuickGenerateStatistics, new AbsoluteConstraints(70, 195, -1, -1));
         this.comboBoxPredefinedOptions.setFont(new Font("Dialog", 0, 12));
-        this.comboBoxPredefinedOptions.setModel(new DefaultComboBoxModel(new String[]{"Personalized", "Email", "Web", "P2P file sharing", "Bank data transaction", "Tele-medical video", "Bulk traffic"}));
+        this.comboBoxPredefinedOptions.setModel(new DefaultComboBoxModel<>(new String[]{"Personalized", "Email", "Web", "P2P file sharing", "Bank data transaction", "Tele-medical video", "Bulk traffic"}));
         this.comboBoxPredefinedOptions.setToolTipText(this.translations.getString("VentanaEmisor.TipoDeTrafico1"));
         this.comboBoxPredefinedOptions.addActionListener(new ActionListener() {
             @Override
@@ -256,7 +256,7 @@ public class JTrafficGeneratorWindow extends JDialog {
         this.labelGoSLevel.setText(this.translations.getString("VentanaEmisor.NivelDeGoS"));
         this.panelAdvancedConfiguration.add(this.labelGoSLevel, new AbsoluteConstraints(10, 240, 85, -1));
         this.comboBoxGoSLevel.setFont(new Font("Dialog", 0, 12));
-        this.comboBoxGoSLevel.setModel(new DefaultComboBoxModel(new String[]{"None", "Level 1", "Level 2", "Level 3"}));
+        this.comboBoxGoSLevel.setModel(new DefaultComboBoxModel<>(new String[]{"None", "Level 1", "Level 2", "Level 3"}));
         this.comboBoxGoSLevel.setToolTipText(this.translations.getString("VentanaEmisor.tooltip.nivelDeGoS"));
         this.comboBoxGoSLevel.addActionListener(new ActionListener() {
             @Override
@@ -852,12 +852,12 @@ public class JTrafficGeneratorWindow extends JDialog {
     private JPanel panelQuickConfiguration;
     private JCheckBox checkBoxAdvancedGenerateStatistics;
     private JCheckBox checkBoxQuickGenerateStatistics;
-    private JComboBox comboBoxGoSLevel;
+    private JComboBox<String> comboBoxGoSLevel;
     private JSlider sliderConstantTrafficPayloadSize;
     private JSlider sliderTrafficGenerationRate;
-    private JComboBox comboBoxTargetTrafficSinkNode;
+    private JComboBox<String> comboBoxTargetTrafficSinkNode;
     private JCheckBox checkBoxBackupLSP;
-    private JComboBox comboBoxPredefinedOptions;
+    private JComboBox<String> comboBoxPredefinedOptions;
     private JRadioButton radioButtonConstantPacketSize;
     private JRadioButton constantTrafficVariablePacketSize;
     private JCheckBox checkBoxShowName;
