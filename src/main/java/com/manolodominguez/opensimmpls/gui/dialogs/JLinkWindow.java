@@ -99,16 +99,16 @@ public class JLinkWindow extends JDialog {
         this.iconContainerLink = new JLabel();
         this.labelHeadEnd = new JLabel();
         this.labelTailEnd = new JLabel();
-        this.comboBoxTailEndNode = new JComboBox();
-        this.comboBoxHeadEndNode = new JComboBox();
-        this.comboBoxTailEndNodePort = new JComboBox();
-        this.comboBoxHeadEndNodePort = new JComboBox();
+        this.comboBoxTailEndNode = new JComboBox<>();
+        this.comboBoxHeadEndNode = new JComboBox<>();
+        this.comboBoxTailEndNodePort = new JComboBox<>();
+        this.comboBoxHeadEndNodePort = new JComboBox<>();
         this.labelHeadEndColons = new JLabel();
         this.labelTailEndColons = new JLabel();
         this.panelQuickConfiguration = new JPanel();
         this.iconContainerWizard = new JLabel();
         this.labelSpeed = new JLabel();
-        this.comboBoxPredefinedOptions = new JComboBox();
+        this.comboBoxPredefinedOptions = new JComboBox<>();
         this.panelAdvancedConfiguration = new JPanel();
         this.iconContainerToolbox = new JLabel();
         this.labelDelay = new JLabel();
@@ -154,7 +154,7 @@ public class JLinkWindow extends JDialog {
         this.labelTailEnd.setText(this.translations.getString("VentanaEnlace.etiquetaExtremoDerecho"));
         this.panelGeneralConfiguration.add(this.labelTailEnd, new AbsoluteConstraints(220, 135, 130, -1));
         this.comboBoxTailEndNode.setFont(new Font("Dialog", 0, 12));
-        this.comboBoxTailEndNode.setModel(new DefaultComboBoxModel(new String[]{""}));
+        this.comboBoxTailEndNode.setModel(new DefaultComboBoxModel<>(new String[]{""}));
         this.comboBoxTailEndNode.setToolTipText(this.translations.getString("JVentanaEnlace.tooltip.ExtremoIzquierdo"));
         this.comboBoxTailEndNode.addActionListener(new ActionListener() {
             @Override
@@ -164,7 +164,7 @@ public class JLinkWindow extends JDialog {
         });
         this.panelGeneralConfiguration.add(this.comboBoxTailEndNode, new AbsoluteConstraints(220, 160, 90, -1));
         this.comboBoxHeadEndNode.setFont(new Font("Dialog", 0, 12));
-        this.comboBoxHeadEndNode.setModel(new DefaultComboBoxModel(new String[]{""}));
+        this.comboBoxHeadEndNode.setModel(new DefaultComboBoxModel<>(new String[]{""}));
         this.comboBoxHeadEndNode.setToolTipText(this.translations.getString("JVentanaEnlace.tooltip.extremoDerecho"));
         this.comboBoxHeadEndNode.addActionListener(new ActionListener() {
             @Override
@@ -196,7 +196,7 @@ public class JLinkWindow extends JDialog {
         this.panelQuickConfiguration.add(this.labelSpeed, new AbsoluteConstraints(20, 105, 100, -1));
         this.comboBoxPredefinedOptions.setFont(new Font("Dialog", 0, 12));
         this.comboBoxPredefinedOptions.setMaximumRowCount(6);
-        this.comboBoxPredefinedOptions.setModel(new DefaultComboBoxModel(new String[]{"Personalizado", "Very high", "High", "Normal", "Low", "Very low"}));
+        this.comboBoxPredefinedOptions.setModel(new DefaultComboBoxModel<>(new String[]{"Personalizado", "Very high", "High", "Normal", "Low", "Very low"}));
         this.comboBoxPredefinedOptions.setSelectedIndex(3);
         this.comboBoxPredefinedOptions.setToolTipText(this.translations.getString("JVentanaEnlace.Select_the_link_speed"));
         this.comboBoxPredefinedOptions.addActionListener(new ActionListener() {
@@ -600,7 +600,7 @@ public class JLinkWindow extends JDialog {
     private TTopology topology;
     private TLinkConfig linkConfig;
     private JSlider sliderDelay;
-    private JComboBox comboBoxPredefinedOptions;
+    private JComboBox<String> comboBoxPredefinedOptions;
     private JLabel labelNs;
     private JLabel labelName;
     private JLabel labelLink;
@@ -622,10 +622,10 @@ public class JLinkWindow extends JDialog {
     private JTabbedPane panelTabs;
     private JPanel mainPanel;
     private JPanel panelQuickConfiguration;
-    private JComboBox comboBoxTailEndNode;
-    private JComboBox comboBoxHeadEndNode;
-    private JComboBox comboBoxTailEndNodePort;
-    private JComboBox comboBoxHeadEndNodePort;
+    private JComboBox<String> comboBoxTailEndNode;
+    private JComboBox<String> comboBoxHeadEndNode;
+    private JComboBox<String> comboBoxTailEndNodePort;
+    private JComboBox<String> comboBoxHeadEndNodePort;
     private JCheckBox checkBoxShowName;
     private ResourceBundle translations;
 }

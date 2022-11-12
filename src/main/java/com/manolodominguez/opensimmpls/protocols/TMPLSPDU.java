@@ -81,8 +81,8 @@ public class TMPLSPDU extends TAbstractPDU {
         TMPLSLabel currentLabel = null;
         TMPLSLabel newLocalLabel = null;
         TMPLSLabel newLabelForClonedPDU = null;
-        LinkedList localLabelStack = new LinkedList();
-        LinkedList labelStackForClonedPDU = new LinkedList();
+        LinkedList<TMPLSLabel> localLabelStack = new LinkedList<>();
+        LinkedList<TMPLSLabel> labelStackForClonedPDU = new LinkedList<>();
         while (this.getLabelStack().getSize() > 0) {
             currentLabel = this.getLabelStack().getTop();
             this.getLabelStack().popTop();

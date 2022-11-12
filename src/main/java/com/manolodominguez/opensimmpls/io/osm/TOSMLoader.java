@@ -255,7 +255,9 @@ public class TOSMLoader {
     private static final String DEFAULT_AUTHOR = "";
     private static final String DEFAULT_DESCRIPTION = "";
 
-    private TScenario scenario;
+    
+    
+    private final TScenario scenario;
     private FileInputStream inputStream;
     private BufferedReader input;
     private final ResourceBundle translations;

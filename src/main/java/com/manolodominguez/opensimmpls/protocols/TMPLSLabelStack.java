@@ -36,7 +36,7 @@ public class TMPLSLabelStack {
      * @since 2.0
      */
     public TMPLSLabelStack() {
-        this.stack = new LinkedList();
+        this.stack = new LinkedList<>();
         this.idGenerator = new TIDGenerator();
     }
 
@@ -125,6 +125,6 @@ public class TMPLSLabelStack {
         }
     }
 
-    private LinkedList stack;
+    private LinkedList<TMPLSLabel> stack;
     private TIDGenerator idGenerator;
 }

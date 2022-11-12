@@ -99,8 +99,8 @@ public class JSimulationPanel extends JPanel {
         this.maxX = 10;
         // FIX: Do not use harcoded values. Use class constants instead.
         this.maxY = 10;
-        this.eventsBuffer = new TreeSet();
-        this.simulationBuffer = new TreeSet();
+        this.eventsBuffer = new TreeSet<>();
+        this.simulationBuffer = new TreeSet<>();
         // FIX: Do not use harcoded values. Use class constants instead.
         this.currentTick = 0;
         // FIX: Do not use harcoded values. Use class constants instead.
@@ -974,8 +974,8 @@ public class JSimulationPanel extends JPanel {
     private Dimension screenSize;
     private int maxX;
     private int maxY;
-    private TreeSet eventsBuffer;
-    private TreeSet simulationBuffer;
+    private TreeSet<TSimulationEvent> eventsBuffer;
+    private TreeSet<TSimulationEvent> simulationBuffer;
     private long currentTick;
     private TSemaphore eventsBuffersSemaphore;
     private int simulationSpeedInMsPerTick;
