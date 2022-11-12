@@ -109,7 +109,7 @@ public class JActiveLERWindow extends JDialog {
         this.checkBoxQuickGenerateStatistics = new JCheckBox();
         this.labelQuickConfiguration = new JLabel();
         this.labelActiveLERFeatures = new JLabel();
-        this.comboBoxPredefinedOptions = new JComboBox();
+        this.comboBoxPredefinedOptions = new JComboBox<>();
         this.panelAdvancedConfiguration = new JPanel();
         this.checkBoxAdvancedGenerateStatistics = new JCheckBox();
         this.labelAdvancedConfiguration = new JLabel();
@@ -196,7 +196,7 @@ public class JActiveLERWindow extends JDialog {
         this.panelQuickConfiguration.add(this.labelActiveLERFeatures, new AbsoluteConstraints(20, 110, 160, -1));
         this.comboBoxPredefinedOptions.setFont(new Font("Dialog", 0, 12));
         //FIX: Apply I18N in the next line.
-        this.comboBoxPredefinedOptions.setModel(new DefaultComboBoxModel(new String[]{"Personalized", "Very low cost LER", "Low cost LER", "Medium cost LER", "Expensive LER", "Very expensive LER"}));
+        this.comboBoxPredefinedOptions.setModel(new DefaultComboBoxModel<>(new String[]{"Personalized", "Very low cost LER", "Low cost LER", "Medium cost LER", "Expensive LER", "Very expensive LER"}));
         this.comboBoxPredefinedOptions.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -627,7 +627,7 @@ public class JActiveLERWindow extends JDialog {
     private JSlider sliderRoutingPower;
     private JSlider sliderBufferSize;
     private JSlider sliderDMGPSize;
-    private JComboBox comboBoxPredefinedOptions;
+    private JComboBox<String> comboBoxPredefinedOptions;
     private JCheckBox checkBoxShowName;
     private ResourceBundle translations;
 }

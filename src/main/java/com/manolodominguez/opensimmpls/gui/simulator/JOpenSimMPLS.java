@@ -131,7 +131,7 @@ public class JOpenSimMPLS extends JFrame {
         this.menuScenario.setActionCommand(this.translations.getString("File"));
         this.menuScenario.setDoubleBuffered(true);
         this.menuScenario.setFont(new Font("Dialog", 0, 12));
-        this.menuItemNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
+        this.menuItemNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK, false));
         this.menuItemNew.setFont(new Font("Dialog", 0, 12));
         this.menuItemNew.setIcon(this.imageBroker.getImageIcon(AvailableImages.NEW_MENU_COLOR));
         this.menuItemNew.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Nuevo").charAt(0));
@@ -156,7 +156,7 @@ public class JOpenSimMPLS extends JFrame {
             }
         });
         this.menuScenario.add(this.menuItemOpen);
-        this.menuItemClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
+        this.menuItemClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK, false));
         this.menuItemClose.setFont(new Font("Dialog", 0, 12));
         this.menuItemClose.setIcon(this.imageBroker.getImageIcon(AvailableImages.CLOSE_MENU_COLOR));
         this.menuItemClose.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Cerrar").charAt(0));
@@ -197,7 +197,7 @@ public class JOpenSimMPLS extends JFrame {
         });
         this.menuScenario.add(this.menuItemSaveAs);
         this.menuScenario.add(this.separatorMenuScenario);
-        this.menuItemExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_MASK));
+        this.menuItemExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK, false));
         this.menuItemExit.setFont(new Font("Dialog", 0, 12));
         this.menuItemExit.setIcon(this.imageBroker.getImageIcon(AvailableImages.EXIT_MENU_COLOR));
         this.menuItemExit.setMnemonic(this.translations.getString("Menu.Letra_resaltada.Salir").charAt(0));
