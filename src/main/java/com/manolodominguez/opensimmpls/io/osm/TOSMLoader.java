@@ -143,55 +143,55 @@ public class TOSMLoader {
             this.logger.error(translations.getString("badArgument"));
             throw new IllegalArgumentException("topologyString is null or an empty string");
         }
-        if (topologyString.startsWith("#Receptor#")) {
+        if (topologyString.startsWith(TRAFFIC_SINK_TOKEN)) {
             TTrafficSinkNode receiver = new TTrafficSinkNode(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, TOSMLoader.DEFAULT_IPV4_ADDRESS, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (receiver.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addNode(receiver);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(receiver.getNodeID());
                 this.scenario.getTopology().getIPv4AddressGenerator().setIPv4AddressIfGreater(receiver.getIPv4Address());
             }
-        } else if (topologyString.startsWith("#Emisor#")) {
+        } else if (topologyString.startsWith(TRAFFIC_GENERATOR_TOKEN)) {
             TTrafficGeneratorNode sender = new TTrafficGeneratorNode(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, TOSMLoader.DEFAULT_IPV4_ADDRESS, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (sender.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addNode(sender);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(sender.getNodeID());
                 this.scenario.getTopology().getIPv4AddressGenerator().setIPv4AddressIfGreater(sender.getIPv4Address());
             }
-        } else if (topologyString.startsWith("#LER#")) {
+        } else if (topologyString.startsWith(LER_TOKEN)) {
             TLERNode ler = new TLERNode(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, TOSMLoader.DEFAULT_IPV4_ADDRESS, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (ler.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addNode(ler);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(ler.getNodeID());
                 this.scenario.getTopology().getIPv4AddressGenerator().setIPv4AddressIfGreater(ler.getIPv4Address());
             }
-        } else if (topologyString.startsWith("#LERA#")) {
+        } else if (topologyString.startsWith(LERA_TOKEN)) {
             TActiveLERNode activeLER = new TActiveLERNode(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, TOSMLoader.DEFAULT_IPV4_ADDRESS, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (activeLER.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addNode(activeLER);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(activeLER.getNodeID());
                 this.scenario.getTopology().getIPv4AddressGenerator().setIPv4AddressIfGreater(activeLER.getIPv4Address());
             }
-        } else if (topologyString.startsWith("#LSR#")) {
+        } else if (topologyString.startsWith(LSR_TOKEN)) {
             TLSRNode lsr = new TLSRNode(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, TOSMLoader.DEFAULT_IPV4_ADDRESS, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (lsr.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addNode(lsr);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(lsr.getNodeID());
                 this.scenario.getTopology().getIPv4AddressGenerator().setIPv4AddressIfGreater(lsr.getIPv4Address());
             }
-        } else if (topologyString.startsWith("#LSRA#")) {
+        } else if (topologyString.startsWith(LSRA_TOKEN)) {
             TActiveLSRNode activeLSR = new TActiveLSRNode(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, TOSMLoader.DEFAULT_IPV4_ADDRESS, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (activeLSR.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addNode(activeLSR);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(activeLSR.getNodeID());
                 this.scenario.getTopology().getIPv4AddressGenerator().setIPv4AddressIfGreater(activeLSR.getIPv4Address());
             }
-        } else if (topologyString.startsWith("#EnlaceExterno#")) {
+        } else if (topologyString.startsWith(OUTER_LINK_TOKEN)) {
             TOuterLink externalLink = new TOuterLink(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (externalLink.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addLink(externalLink);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(externalLink.getID());
             }
-        } else if (topologyString.startsWith("#EnlaceInterno#")) {
+        } else if (topologyString.startsWith(INNER_LINK_TOKEN)) {
             TInnerLink internalLink = new TInnerLink(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (internalLink.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addLink(internalLink);
@@ -207,19 +207,19 @@ public class TOSMLoader {
             this.logger.error(translations.getString("badArgument"));
             throw new IllegalArgumentException("scenarioString is null or an empty string");
         }
-        if (scenarioString.startsWith("#Titulo#")) {
+        if (scenarioString.startsWith(TITLE_TOKEN)) {
             if (!this.scenario.unmarshallTitle(scenarioString)) {
                 this.scenario.setTitle(TOSMLoader.DEFAULT_TITLE);
             }
-        } else if (scenarioString.startsWith("#Autor#")) {
+        } else if (scenarioString.startsWith(AUTHOR_TOKEN)) {
             if (!this.scenario.unmarshallAuthor(scenarioString)) {
                 this.scenario.setAuthor(TOSMLoader.DEFAULT_AUTHOR);
             }
-        } else if (scenarioString.startsWith("#Descripcion#")) {
+        } else if (scenarioString.startsWith(DESCRIPTION_TOKEN)) {
             if (!this.scenario.unmarshallDescription(scenarioString)) {
                 this.scenario.setDescription(TOSMLoader.DEFAULT_DESCRIPTION);
             }
-        } else if (scenarioString.startsWith("#Temporizacion#")) {
+        } else if (scenarioString.startsWith(TIMING_TOKEN)) {
             if (!this.scenario.getSimulation().unmarshallTimeParameters(scenarioString)) {
                 this.scenario.getSimulation().setSimulationLengthInNs(TOSMLoader.DEFAULT_SIMULATION_LENGTH_IN_NS);
                 this.scenario.getSimulation().setSimulationTickDurationInNs(TOSMLoader.DEFAULT_SIMULATION_TICK_DURATION_IN_NS);
@@ -253,6 +253,20 @@ public class TOSMLoader {
     private static final String TOPOLOGY_END_TOKEN = "@!Topologia";
     private static final String SIMULATION_END_TOKEN = "@!Simulacion";
     private static final String ANALYSIS_END_TOKEN = "@!Analisis";
+
+    private static final String TRAFFIC_SINK_TOKEN = "#Receptor#";
+    private static final String TRAFFIC_GENERATOR_TOKEN = "#Emisor#";
+    private static final String LER_TOKEN = "#LER#";
+    private static final String LSR_TOKEN = "#LSR#";
+    private static final String LERA_TOKEN = "#LERA#";
+    private static final String LSRA_TOKEN = "#LSRA#";
+    private static final String INNER_LINK_TOKEN = "#EnlaceInterno#";
+    private static final String OUTER_LINK_TOKEN = "#EnlaceExterno#";
+
+    private static final String TITLE_TOKEN = "#Titulo#";
+    private static final String AUTHOR_TOKEN = "#Autor#";
+    private static final String DESCRIPTION_TOKEN = "#Descripcion#";
+    private static final String TIMING_TOKEN = "#Temporizacion#";
 
     private static final int LOOKING_FOR_A_NEW_CONFIG_SECTION = 0;
     private static final int SCENARIO = 1;

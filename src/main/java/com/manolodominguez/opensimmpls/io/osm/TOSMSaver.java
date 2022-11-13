@@ -93,20 +93,20 @@ public class TOSMSaver {
             this.output.println(this.translations.getString("TAlmacenadorOSM.DefinicionGlobalDelEscenario"));
             this.output.println(this.translations.getString("TAlmacenadorOSM.asteriscos"));
             this.output.println();
-            this.output.println("@?Escenario");
+            this.output.println(SCENE_BEGIN_TOKEN);
             this.output.println();
             this.output.println(this.scenario.marshallTitle());
             this.output.println(this.scenario.marshallAuthor());
             this.output.println(this.scenario.marshallDescription());
             this.output.println(this.scenario.getSimulation().marshallTimeParameters());
             this.output.println();
-            this.output.println("@!Escenario");
+            this.output.println(SCENE_END_TOKEN);
             this.output.println();
             this.output.println(this.translations.getString("TAlmacenadorOSM.asteriscos"));
             this.output.println(this.translations.getString("TAlmacenadorOSM.DefinicionDeLaTopologiaDelEscenario"));
             this.output.println(this.translations.getString("TAlmacenadorOSM.asteriscos"));
             this.output.println();
-            this.output.println("@?Topologia");
+            this.output.println(TOPOLOGY_BEGIN_TOKEN);
             this.output.println();
             // Saving traffic receivers.
             nodesIterator = this.scenario.getTopology().getNodesIterator();
@@ -137,7 +137,7 @@ public class TOSMSaver {
                 }
             }
             this.output.println();
-            this.output.println("@!Topologia");
+            this.output.println(TOPOLOGY_END_TOKEN);
             this.outputStream.close();
             this.output.close();
         } catch (IOException e) {
@@ -146,6 +146,11 @@ public class TOSMSaver {
         }
         return true;
     }
+
+    private static final String SCENE_BEGIN_TOKEN = "@?Escenario";
+    private static final String TOPOLOGY_BEGIN_TOKEN = "@?Topologia";
+    private static final String SCENE_END_TOKEN = "@!Escenario";
+    private static final String TOPOLOGY_END_TOKEN = "@!Topologia";
 
     private TScene scenario;
     private FileOutputStream outputStream;
