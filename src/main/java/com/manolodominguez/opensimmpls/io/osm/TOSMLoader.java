@@ -70,7 +70,7 @@ public class TOSMLoader {
             this.logger.error(translations.getString("badArgument"));
             throw new IllegalArgumentException("inputFile is null");
         }
-        String stringAux = "";
+        String stringAux = EMPTY;
         int configSection = TOSMLoader.LOOKING_FOR_A_NEW_CONFIG_SECTION;
         this.scenario.setScenarioFile(inputFile);
         try {
@@ -79,7 +79,7 @@ public class TOSMLoader {
                 this.input = new BufferedReader(new InputStreamReader(this.inputStream));
                 while ((stringAux = this.input.readLine()) != null) { // Read till EOF
                     // This code read lines from the file, sequentially, 
-                    // untill it detects tokens that allow to identify 
+                    // untill it detects tokens that allow identifying 
                     // different sections of the configuration file. 
                     // Do not load blank linkes, comments and lines that
                     // store CRC info (deprecated, but still present in some
@@ -264,9 +264,9 @@ public class TOSMLoader {
     private static final int DEFAULT_SIMULATION_TICK_DURATION_IN_NS = 1;
     private static final String DEFAULT_IPV4_ADDRESS = "10.0.0.1";
     private static final int DEFAULT_TOPOLOGY_ELEMENT_ID = 0;
-    private static final String DEFAULT_TITLE = "";
-    private static final String DEFAULT_AUTHOR = "";
-    private static final String DEFAULT_DESCRIPTION = "";
+    private static final String DEFAULT_TITLE = EMPTY;
+    private static final String DEFAULT_AUTHOR = EMPTY;
+    private static final String DEFAULT_DESCRIPTION = EMPTY;
 
     private final TScene scenario;
     private FileInputStream inputStream;
