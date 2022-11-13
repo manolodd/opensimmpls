@@ -20,15 +20,15 @@ import com.manolodominguez.opensimmpls.hardware.timer.TTimestamp;
 import com.manolodominguez.opensimmpls.io.osm.TOSMSaver;
 import com.manolodominguez.opensimmpls.resources.images.AvailableImages;
 import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
-import com.manolodominguez.opensimmpls.scenario.TExternalLink;
-import com.manolodominguez.opensimmpls.scenario.TInternalLink;
+import com.manolodominguez.opensimmpls.scenario.TOuterLink;
+import com.manolodominguez.opensimmpls.scenario.TInnerLink;
 import com.manolodominguez.opensimmpls.scenario.TActiveLERNode;
 import com.manolodominguez.opensimmpls.scenario.TLERNode;
 import com.manolodominguez.opensimmpls.scenario.TActiveLSRNode;
 import com.manolodominguez.opensimmpls.scenario.TLSRNode;
 import com.manolodominguez.opensimmpls.scenario.TLinkConfig;
 import com.manolodominguez.opensimmpls.scenario.TTrafficSinkNode;
-import com.manolodominguez.opensimmpls.scenario.TScenario;
+import com.manolodominguez.opensimmpls.scenario.TScene;
 import com.manolodominguez.opensimmpls.scenario.TTrafficGeneratorNode;
 import com.manolodominguez.opensimmpls.scenario.TStats;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
@@ -1015,7 +1015,7 @@ public class JScenarioWindow extends JInternalFrame {
         this.setSize((parentSize.width * 8 / 10), (parentSize.height * 8 / 10));
         Dimension frameSize = this.getSize();
         this.setLocation((parentSize.width - frameSize.width) / 2, (parentSize.height - frameSize.height) / 2);
-        this.scenario = new TScenario();
+        this.scenario = new TScene();
         this.designPanel.setTopology(this.scenario.getTopology());
         this.simulationPanel.setTopology(this.scenario.getTopology());
         this.selectedNode = null;
@@ -1232,10 +1232,10 @@ public class JScenarioWindow extends JInternalFrame {
                 linkWindow.setConfiguration(linkConfig, true);
                 linkWindow.setVisible(true);
                 if (link.getLinkType() == TLink.EXTERNAL_LINK) {
-                    TExternalLink externalLink = (TExternalLink) link;
+                    TOuterLink externalLink = (TOuterLink) link;
                     externalLink.configure(linkConfig, this.scenario.getTopology(), true);
                 } else if (link.getLinkType() == TLink.INTERNAL_LINK) {
-                    TInternalLink internalLink = (TInternalLink) link;
+                    TInnerLink internalLink = (TInnerLink) link;
                     internalLink.configure(linkConfig, this.scenario.getTopology(), true);
                 }
                 this.rightClickedElementInDesignPanel = null;
@@ -1444,7 +1444,7 @@ public class JScenarioWindow extends JInternalFrame {
      * @param scenario The scenario
      * @since 2.0
      */
-    public void setScenario(TScenario scenario) {
+    public void setScenario(TScene scenario) {
         this.timingControlDisabled = true;
         long simulationLength = scenario.getSimulation().getSimulationLengthInNs();
         long simulationTickDurationInNs = scenario.getSimulation().getSimulationTickDurationInNs();
@@ -1504,11 +1504,11 @@ public class JScenarioWindow extends JInternalFrame {
             if (linkConfig.isWellConfigured()) {
                 try {
                     if (linkConfig.getLinkType() == TLink.INTERNAL_LINK) {
-                        TInternalLink internalLink = new TInternalLink(this.scenario.getTopology().getElementsIDGenerator().getNextIdentifier(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+                        TInnerLink internalLink = new TInnerLink(this.scenario.getTopology().getElementsIDGenerator().getNextIdentifier(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
                         internalLink.configure(linkConfig, scenario.getTopology(), false);
                         this.scenario.getTopology().addLink(internalLink);
                     } else {
-                        TExternalLink externalLink = new TExternalLink(this.scenario.getTopology().getElementsIDGenerator().getNextIdentifier(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+                        TOuterLink externalLink = new TOuterLink(this.scenario.getTopology().getElementsIDGenerator().getNextIdentifier(), this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
                         externalLink.configure(linkConfig, this.scenario.getTopology(), false);
                         this.scenario.getTopology().addLink(externalLink);
                     }
@@ -2755,7 +2755,7 @@ public class JScenarioWindow extends JInternalFrame {
     }
 
     private TProgressEventListener progressEventListener;
-    private TScenario scenario;
+    private TScene scenario;
     private TNode selectedNode;
     private TImageBroker imageBroker;
     private JOpenSimMPLS parent;

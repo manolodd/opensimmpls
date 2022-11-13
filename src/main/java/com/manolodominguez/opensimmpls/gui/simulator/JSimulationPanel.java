@@ -18,7 +18,7 @@ package com.manolodominguez.opensimmpls.gui.simulator;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 import com.manolodominguez.opensimmpls.resources.images.AvailableImages;
 import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
-import com.manolodominguez.opensimmpls.scenario.TInternalLink;
+import com.manolodominguez.opensimmpls.scenario.TInnerLink;
 import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventNodeCongested;
 import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventPacketDiscarded;
 import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventPacketGenerated;
@@ -271,7 +271,7 @@ public class JSimulationPanel extends JPanel {
 
             if (!link.isBroken()) {
                 if (link.getLinkType() == TLink.INTERNAL_LINK) {
-                    TInternalLink internalLink = (TInternalLink) link;
+                    TInnerLink internalLink = (TInnerLink) link;
                     if (internalLink.isBeingUsedByAnyLSP()) {
                         float dash1[] = {5.0f};
                         // FIX: Do not use harcoded values. Use class constants instead.
@@ -297,7 +297,7 @@ public class JSimulationPanel extends JPanel {
             }
             if (!link.isBroken()) {
                 if (link.getLinkType() == TLink.INTERNAL_LINK) {
-                    TInternalLink internalLink = (TInternalLink) link;
+                    TInnerLink internalLink = (TInnerLink) link;
                     if (internalLink.isBeingUsedByAnyBackupLSP()) {
                         // FIX: Do not use harcoded values. Use class constants instead.
                         float dash1[] = {10.0f, 5.0f, 0.2f, 5.0f};

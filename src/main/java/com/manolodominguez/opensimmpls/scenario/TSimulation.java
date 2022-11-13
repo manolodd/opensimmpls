@@ -37,7 +37,7 @@ public class TSimulation {
      * events will come from.
      * @since 2.0
      */
-    public TSimulation(TScenario scenario) {
+    public TSimulation(TScene scenario) {
         this.parentScenario = scenario;
         this.simulationEventListener = new TSimulationEventListener();
         // FIX: Use class constants instead of harcoded values.
@@ -167,6 +167,6 @@ public class TSimulation {
     private long simulationLengthInNs;
     private long simulationTickDurationInNs;
 
-    private TScenario parentScenario;
+    private TScene parentScenario;
     private TSimulationEventListener simulationEventListener;
 }

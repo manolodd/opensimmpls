@@ -44,7 +44,7 @@ public class TTopology {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TTopology(TScenario parentScenario) {
+    public TTopology(TScene parentScenario) {
         this.nodes = new TreeSet<>();
         this.links = new TreeSet<>();
         this.timer = new TTimer();
@@ -498,11 +498,11 @@ public class TTopology {
             link = (TLink) linksIterator.next();
             if (link.getID() == modifiedLink.getID()) {
                 if (link.getLinkType() == TLink.EXTERNAL_LINK) {
-                    TExternalLink externalLink = (TExternalLink) link;
+                    TOuterLink externalLink = (TOuterLink) link;
                     externalLink.setHeadEndNode(modifiedLink.getHeadEndNode());
                     externalLink.setTailEndNode(modifiedLink.getTailEndNode());
                 } else if (modifiedLink.getLinkType() == TLink.INTERNAL_LINK) {
-                    TInternalLink internalLink = (TInternalLink) link;
+                    TInnerLink internalLink = (TInnerLink) link;
                     internalLink.setHeadEndNode(modifiedLink.getHeadEndNode());
                     internalLink.setTailEndNode(modifiedLink.getTailEndNode());
                 }
@@ -888,11 +888,11 @@ public class TTopology {
                     }
                 } else if (link.getLinkType() == TLink.EXTERNAL_LINK) {
                     // We put the link weight in the adjacency matrix
-                    TExternalLink externalLink = (TExternalLink) link;
+                    TOuterLink externalLink = (TOuterLink) link;
                     adjacencyMatrix[i][j] = externalLink.getWeight();
                 } else {
                     // We put the link weight in the adjacency matrix
-                    TInternalLink internalLink = (TInternalLink) link;
+                    TInnerLink internalLink = (TInnerLink) link;
                     adjacencyMatrix[i][j] = internalLink.getWeight();
                 }
             }
@@ -1085,10 +1085,10 @@ public class TTopology {
                         adjacencyMatrix[i][j] = TTopology.INFINITE_WEIGHT;
                     }
                 } else if (link.getLinkType() == TLink.EXTERNAL_LINK) {
-                    TExternalLink externalLink = (TExternalLink) link;
+                    TOuterLink externalLink = (TOuterLink) link;
                     adjacencyMatrix[i][j] = externalLink.getRABANWeight();
                 } else {
-                    TInternalLink internalLink = (TInternalLink) link;
+                    TInnerLink internalLink = (TInnerLink) link;
                     adjacencyMatrix[i][j] = internalLink.getRABANWeight();
                 }
             }
@@ -1197,10 +1197,10 @@ public class TTopology {
                         adjacencyMatrix[i][j] = TTopology.INFINITE_WEIGHT;
                     }
                 } else if (link.getLinkType() == TLink.EXTERNAL_LINK) {
-                    TExternalLink externalLink = (TExternalLink) link;
+                    TOuterLink externalLink = (TOuterLink) link;
                     adjacencyMatrix[i][j] = externalLink.getRABANWeight();
                 } else {
-                    TInternalLink internalLink = (TInternalLink) link;
+                    TInnerLink internalLink = (TInnerLink) link;
                     adjacencyMatrix[i][j] = internalLink.getRABANWeight();
                 }
                 // He we avoid to choose the specified undesired node as next
@@ -1264,7 +1264,7 @@ public class TTopology {
     private TreeSet<TNode> nodes;
     private TreeSet<TLink> links;
     private TTimer timer;
-    private TScenario parentScenario;
+    private TScene parentScenario;
     private TLongIDGenerator eventIDGenerator;
     private TIDGenerator elementsIDGenerator;
     private TIPv4AddressGenerator ipv4AddressGenerator;

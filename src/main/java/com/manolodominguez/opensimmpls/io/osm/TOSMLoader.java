@@ -21,9 +21,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import com.manolodominguez.opensimmpls.scenario.TInternalLink;
-import com.manolodominguez.opensimmpls.scenario.TExternalLink;
-import com.manolodominguez.opensimmpls.scenario.TScenario;
+import com.manolodominguez.opensimmpls.scenario.TInnerLink;
+import com.manolodominguez.opensimmpls.scenario.TOuterLink;
+import com.manolodominguez.opensimmpls.scenario.TScene;
 import com.manolodominguez.opensimmpls.scenario.TLERNode;
 import com.manolodominguez.opensimmpls.scenario.TTrafficGeneratorNode;
 import com.manolodominguez.opensimmpls.scenario.TTrafficSinkNode;
@@ -51,7 +51,7 @@ public class TOSMLoader {
      * @since 2.0
      */
     public TOSMLoader() {
-        this.scenario = new TScenario();
+        this.scenario = new TScene();
         this.inputStream = null;
         this.input = null;
         this.translations = ResourceBundle.getBundle(AvailableBundles.T_OSM_LOADER.getPath());
@@ -84,40 +84,40 @@ public class TOSMLoader {
                     // Do not load blank linkes, comments and lines that
                     // store CRC info (deprecated, but still present in some
                     // scenarios).
-                    if ((!stringAux.equals("")) && (!stringAux.startsWith("//")) && (!stringAux.startsWith("@CRC#"))) {
+                    if ((!stringAux.equals(EMPTY)) && (!stringAux.startsWith(COMMENT_TOKEN)) && (!stringAux.startsWith(CRC_TOKEN))) {
                         switch (configSection) {
                             case TOSMLoader.LOOKING_FOR_A_NEW_CONFIG_SECTION:
-                                if (stringAux.startsWith("@?Escenario")) {
+                                if (stringAux.startsWith(SCENE_BEGIN_TOKEN)) {
                                     configSection = TOSMLoader.SCENARIO;
-                                } else if (stringAux.startsWith("@?Topologia")) {
+                                } else if (stringAux.startsWith(TOPOLOGY_BEGIN_TOKEN)) {
                                     configSection = TOSMLoader.TOPOLOGY;
-                                } else if (stringAux.startsWith("@?Simulacion")) {
+                                } else if (stringAux.startsWith(SIMULATION_BEGIN_TOKEN)) {
                                     configSection = TOSMLoader.SIMULATION;
-                                } else if (stringAux.startsWith("@?Analisis")) {
+                                } else if (stringAux.startsWith(ANALYSIS_BEGIN_TOKEN)) {
                                     configSection = TOSMLoader.ANALISYS;
                                 }
                                 break;
                             case TOSMLoader.SCENARIO:
-                                if (stringAux.startsWith("@!Escenario")) {
+                                if (stringAux.startsWith(SCENE_END_TOKEN)) {
                                     configSection = TOSMLoader.LOOKING_FOR_A_NEW_CONFIG_SECTION;
                                 } else {
                                     loadScenario(stringAux);
                                 }
                                 break;
                             case TOSMLoader.TOPOLOGY:
-                                if (stringAux.startsWith("@!Topologia")) {
+                                if (stringAux.startsWith(TOPOLOGY_END_TOKEN)) {
                                     configSection = TOSMLoader.LOOKING_FOR_A_NEW_CONFIG_SECTION;
                                 } else {
                                     loadTopology(stringAux);
                                 }
                                 break;
                             case TOSMLoader.SIMULATION:
-                                if (stringAux.startsWith("@!Simulacion")) {
+                                if (stringAux.startsWith(SIMULATION_END_TOKEN)) {
                                     configSection = TOSMLoader.LOOKING_FOR_A_NEW_CONFIG_SECTION;
                                 }
                                 break;
                             case TOSMLoader.ANALISYS:
-                                if (stringAux.startsWith("@!Analisis")) {
+                                if (stringAux.startsWith(ANALYSIS_END_TOKEN)) {
                                     configSection = TOSMLoader.LOOKING_FOR_A_NEW_CONFIG_SECTION;
                                 }
                                 break;
@@ -186,13 +186,13 @@ public class TOSMLoader {
                 this.scenario.getTopology().getIPv4AddressGenerator().setIPv4AddressIfGreater(activeLSR.getIPv4Address());
             }
         } else if (topologyString.startsWith("#EnlaceExterno#")) {
-            TExternalLink externalLink = new TExternalLink(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            TOuterLink externalLink = new TOuterLink(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (externalLink.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addLink(externalLink);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(externalLink.getID());
             }
         } else if (topologyString.startsWith("#EnlaceInterno#")) {
-            TInternalLink internalLink = new TInternalLink(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
+            TInnerLink internalLink = new TInnerLink(TOSMLoader.DEFAULT_TOPOLOGY_ELEMENT_ID, this.scenario.getTopology().getEventIDGenerator(), this.scenario.getTopology());
             if (internalLink.fromOSMString(topologyString)) {
                 this.scenario.getTopology().addLink(internalLink);
                 this.scenario.getTopology().getElementsIDGenerator().setIdentifierIfGreater(internalLink.getID());
@@ -237,9 +237,22 @@ public class TOSMLoader {
      * has been loaded.
      * @since 2.0
      */
-    public TScenario getScenario() {
+    public TScene getScenario() {
         return this.scenario;
     }
+
+    private static final String EMPTY = "";
+    private static final String COMMENT_TOKEN = "//";
+    private static final String CRC_TOKEN = "@CRC#";
+
+    private static final String SCENE_BEGIN_TOKEN = "@?Escenario";
+    private static final String TOPOLOGY_BEGIN_TOKEN = "@?Topologia";
+    private static final String SIMULATION_BEGIN_TOKEN = "@?Simulacion";
+    private static final String ANALYSIS_BEGIN_TOKEN = "@?Analisis";
+    private static final String SCENE_END_TOKEN = "@!Escenario";
+    private static final String TOPOLOGY_END_TOKEN = "@!Topologia";
+    private static final String SIMULATION_END_TOKEN = "@!Simulacion";
+    private static final String ANALYSIS_END_TOKEN = "@!Analisis";
 
     private static final int LOOKING_FOR_A_NEW_CONFIG_SECTION = 0;
     private static final int SCENARIO = 1;
@@ -255,9 +268,7 @@ public class TOSMLoader {
     private static final String DEFAULT_AUTHOR = "";
     private static final String DEFAULT_DESCRIPTION = "";
 
-    
-    
-    private final TScenario scenario;
+    private final TScene scenario;
     private FileInputStream inputStream;
     private BufferedReader input;
     private final ResourceBundle translations;

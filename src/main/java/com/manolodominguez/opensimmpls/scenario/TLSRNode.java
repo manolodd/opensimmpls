@@ -526,7 +526,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                     TPort outgoingPort = ports.getPort(switchingMatrixEntry.getOutgoingPortID());
                     outgoingPort.putPacketOnLink(packet, outgoingPort.getLink().getDestinationOfTrafficSentBy(this));
                     if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
-                        TInternalLink internalLinkAux = (TInternalLink) outgoingPort.getLink();
+                        TInnerLink internalLinkAux = (TInnerLink) outgoingPort.getLink();
                         internalLinkAux.setAsUsedByALSP();
                         internalLinkAux.unlinkFromABackupLSP();
                         switchingMatrixEntry.setEntryAsForBackupLSP(false);
@@ -663,7 +663,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                 if (switchingMatrixEntry.getLabelOrFEC() == TSwitchingMatrixEntry.UNDEFINED) {
                     switchingMatrixEntry.setLabelOrFEC(this.switchingMatrix.getNewLabel());
                 }
-                TInternalLink internalLink = (TInternalLink) ports.getPort(incomingPortID).getLink();
+                TInnerLink internalLink = (TInnerLink) ports.getPort(incomingPortID).getLink();
                 if (internalLink != null) {
                     if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
                         internalLink.setAsUsedByABackupLSP();
@@ -754,7 +754,7 @@ public class TLSRNode extends TNode implements ITimerEventListener, Runnable {
                 discardPacket(packet);
             } else if (currentLabel == TSwitchingMatrixEntry.REMOVING_LABEL) {
                 TPort outgoingPort = ports.getPort(incomingPortID);
-                TInternalLink internalLink = (TInternalLink) outgoingPort.getLink();
+                TInnerLink internalLink = (TInnerLink) outgoingPort.getLink();
                 if (switchingMatrixEntry.aBackupLSPHasBeenRequested()) {
                     internalLink.unlinkFromABackupLSP();
                 } else {

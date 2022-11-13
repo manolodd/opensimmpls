@@ -15,30 +15,29 @@
  */
 package com.manolodominguez.opensimmpls.scenario;
 
-import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventLSPEstablished;
 import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventLinkBroken;
-import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventLSPRemoved;
 import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventPacketDiscarded;
 import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventLinkRecovered;
 import com.manolodominguez.opensimmpls.scenario.simulationevents.TSimulationEventPacketOnFly;
 import java.util.Iterator;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
+import com.manolodominguez.opensimmpls.hardware.timer.TTimerEvent;
 import com.manolodominguez.opensimmpls.hardware.timer.ITimerEventListener;
 import com.manolodominguez.opensimmpls.commons.EIDGeneratorOverflow;
 import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
 
 /**
- * This class implements a link of the topology (a link that is within the MPLS
- * domain).
+ * This class implements an external link of the topology (a link that is
+ * outside the MPLS domain).
  *
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class TInternalLink extends TLink implements ITimerEventListener, Runnable {
+public class TOuterLink extends TLink implements ITimerEventListener, Runnable {
 
     /**
      * This method is the constructor of the class. It creates a new instance of
-     * TInternalLink.
+     * TExternalLink.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param linkID Unique identifier that identifies this link in the overall
@@ -48,11 +47,9 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @param topology Topology this link belongs to.
      * @since 2.0
      */
-    public TInternalLink(int linkID, TLongIDGenerator longIDGenerator, TTopology topology) {
+    public TOuterLink(int linkID, TLongIDGenerator longIDGenerator, TTopology topology) {
         super(linkID, longIDGenerator, topology);
         //FIX: Use class constants instead of harcoded values
-        this.numberOfLSPs = 0;
-        this.numberOfBackupLSPs = 0;
         this.stepLength = 0;
     }
 
@@ -60,12 +57,12 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * This metod return the type of this link.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return TLink.INTERNAL, that means that this is an internal link.
+     * @return TLink.EXTERNAL, that means that this is an external link.
      * @since 2.0
      */
     @Override
     public int getLinkType() {
-        return TLink.INTERNAL_LINK;
+        return TLink.EXTERNAL_LINK;
     }
 
     /**
@@ -79,7 +76,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * @since 2.0
      */
     @Override
-    public void receiveTimerEvent(com.manolodominguez.opensimmpls.hardware.timer.TTimerEvent timerEvent) {
+    public void receiveTimerEvent(TTimerEvent timerEvent) {
         this.setTickDurationInNs(timerEvent.getTickDurationInNs());
         this.setCurrentTimeInstant(timerEvent.getUpperLimit());
         this.stepLength = timerEvent.getTickDurationInNs();
@@ -92,8 +89,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @param linkIsBroken TRUE, means that the link is considered as broken.
-     * FALSE means that bufferedPacketEntriesIterator should be considered as
-     * up.
+     * FALSE means that it should be considered as up.
      * @since 2.0
      */
     @Override
@@ -101,9 +97,6 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
         this.linkIsBroken = linkIsBroken;
         if (this.linkIsBroken) {
             try {
-                // FIX: Use class contants instead of harcoded values
-                this.numberOfLSPs = 0;
-                this.numberOfBackupLSPs = 0;
                 this.generateSimulationEvent(new TSimulationEventLinkBroken(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant()));
                 this.packetsInTransitEntriesLock.setRed();
                 TAbstractPDU packet = null;
@@ -113,12 +106,12 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
                     bufferedPacketEntry = (TLinkBufferEntry) bufferedPacketEntriesIterator.next();
                     packet = bufferedPacketEntry.getPacket();
                     if (packet != null) {
-                        // FIX: do not use harcoded values. Use class constants
+                        // FIX: do not use harcoded values. Use constants class
                         // instead
                         if (bufferedPacketEntry.getPacketEnd() == 1) {
                             this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this.getTailEndNode(), this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant(), packet.getSubtype()));
-                            // FIX: do not use harcoded values. Use class
-                            // constants instead
+                            // FIX: do not use harcoded values. Use constants class
+                            // instead
                         } else if (bufferedPacketEntry.getPacketEnd() == 2) {
                             this.generateSimulationEvent(new TSimulationEventPacketDiscarded(this.getHeadEndNode(), this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant(), packet.getSubtype()));
                         }
@@ -141,10 +134,9 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
     }
 
     /**
-     * This method runs in bufferedPacketEntriesIterator own thread and is
-     * started after a synchronization event is received and only during the
-     * time specified in that syncronization event. This is what the link does
-     * while running.
+     * This method runs in it own thread and is started after a synchronization
+     * event is received and only during the time specified in that
+     * syncronization event. This is what the link does while running.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
@@ -154,93 +146,6 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
         this.updateTransitDelay();
         this.advancePacketInTransit();
         this.deliverPacketsToDestination();
-    }
-
-    /**
-     * This method checks whether the link is being used by any LSP.
-     *
-     * @return TRUE, if the link is being used by any LSP. Otherwise, FALSE.
-     * @since 2.0
-     */
-    public boolean isBeingUsedByAnyLSP() {
-        // FIX: use class constants instead of harcoded values
-        if (this.numberOfLSPs > 0) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * This method set this link as used by a LSP.
-     *
-     * @since 2.0
-     */
-    public void setAsUsedByALSP() {
-        this.numberOfLSPs++;
-        try {
-            this.generateSimulationEvent(new TSimulationEventLSPEstablished(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant()));
-        } catch (Exception e) {
-            // FIX: this is not a good practice
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * This method unlink the internal link from a LSP. It is used when the
-     * corresponding LSP finishes and the link has to be shown in the simulator
-     * as "not being used by the LSP".
-     *
-     * @since 2.0
-     */
-    public void unlinkFromALSP() {
-        // FIX: use class constants instead of harcoded values
-        if (this.numberOfLSPs > 0) {
-            this.numberOfLSPs--;
-            try {
-                this.generateSimulationEvent(new TSimulationEventLSPRemoved(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant()));
-            } catch (Exception e) {
-                // FIX: this is not a good practice
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
-     * This method checks whether the link is being used by any backup LSP.
-     *
-     * @return TRUE, if the link is being used by any backup LSP. Otherwise,
-     * FALSE.
-     * @since 2.0
-     */
-    public boolean isBeingUsedByAnyBackupLSP() {
-        // FIX: use class constants instead of harcoded values
-        if (this.numberOfBackupLSPs > 0) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * This method set this link as used by a backup LSP.
-     *
-     * @since 2.0
-     */
-    public void setAsUsedByABackupLSP() {
-        this.numberOfBackupLSPs++;
-    }
-
-    /**
-     * This method unlink the internal link from a backup LSP. It is used when
-     * the corresponding backup LSP finishes and the link has to be shown in the
-     * simulator as "not being used by the backup LSP".
-     *
-     * @since 2.0
-     */
-    public void unlinkFromABackupLSP() {
-        // FIX: use class constants instead of harcoded values
-        if (this.numberOfBackupLSPs > 0) {
-            this.numberOfBackupLSPs--;
-        }
     }
 
     /**
@@ -263,15 +168,9 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
                 transitPercentage = 100 - transitPercentage;
             }
             try {
-                if (bufferedPacketEntry.getPacket().getType() == TAbstractPDU.TLDP) {
-                    this.generateSimulationEvent(new TSimulationEventPacketOnFly(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant(), TAbstractPDU.TLDP, transitPercentage));
-                } else if (bufferedPacketEntry.getPacket().getType() == TAbstractPDU.MPLS) {
-                    this.generateSimulationEvent(new TSimulationEventPacketOnFly(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant(), bufferedPacketEntry.getPacket().getSubtype(), transitPercentage));
-                } else if (bufferedPacketEntry.getPacket().getType() == TAbstractPDU.GPSRP) {
-                    this.generateSimulationEvent(new TSimulationEventPacketOnFly(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant(), TAbstractPDU.GPSRP, transitPercentage));
-                }
+                this.generateSimulationEvent(new TSimulationEventPacketOnFly(this, this.eventIdentifierGenerator.getNextIdentifier(), this.getCurrentTimeInstant(), bufferedPacketEntry.getPacket().getSubtype(), transitPercentage));
             } catch (EIDGeneratorOverflow e) {
-                // FIX: this is not a good practice
+                // FIX: This is not a good practice.
                 e.printStackTrace();
             }
         }
@@ -280,8 +179,8 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
 
     /**
      * This method pick up all packets in transit through this link and advances
-     * them to the destination node. Also, bufferedPacketEntriesIterator detects
-     * those packets that have already reached the target node.
+     * them to the destination node. Also, it detects those packets that have
+     * already reached the target node.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
@@ -338,8 +237,8 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      * algoritm.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return The weight measurement for this link. For a TInternalLink
- bufferedPacketEntriesIterator is the link delay.
+     * @return The weight measurement for this link. For an TExternalLink it is
+     * the link delay.
      * @since 2.0
      */
     @Override
@@ -375,13 +274,13 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
     @Override
     public String getErrorMessage(int errorCode) {
         // FIX: Review this method. In fact this is doing nothing and I cannot 
-        // remember the reason. It could be a mistake. Perhaps bufferedPacketEntriesIterator is an 
-        // obligation because bufferedPacketEntriesIterator's an abstract method in the superclass.
+        // remember the reason. It could be a mistake. Perhaps it is an 
+        // obligation because it's an abstract method in the superclass.
         return null;
     }
 
     /**
-     * This method serializes the configuration parameters of this internal link
+     * This method serializes the configuration parameters of this external link
      * into an string that can be saved into disk.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
@@ -391,7 +290,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
      */
     @Override
     public String toOSMString() {
-        String serializedElement = "#EnlaceInterno#";
+        String serializedElement = "#EnlaceExterno#";
         serializedElement += this.getID();
         serializedElement += "#";
         serializedElement += this.getName().replace('#', ' ');
@@ -413,11 +312,11 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
 
     /**
      * This method gets as an argument a serialized string that contains the
- needed parameters to configure an TInternalLink and configure this
- internal link using them.
+     * needed parameters to configure an TExternalLink and configure this
+     * external link using them.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @param serializedLink A serialized representation of a TInternalLink.
+     * @param serializedLink A serialized representation of a TExternalLink.
      * @return true, whether the serialized string is correct and this external
      * link has been initialized correctly using the serialized values.
      * Otherwise, false.
@@ -432,9 +331,9 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
         if (elementFields.length != 10) {
             return false;
         }
-        this.getID(Integer.parseInt(elementFields[2]));
+        this.getID(Integer.valueOf(elementFields[2]));
         linkConfig.setName(elementFields[3]);
-        linkConfig.setShowName(Boolean.valueOf(elementFields[4]));
+        linkConfig.setShowName(Boolean.parseBoolean(elementFields[4]));
         linkConfig.setLinkDelay(Integer.parseInt(elementFields[5]));
         String ipv4AddressOfNodeAtEND1 = elementFields[6];
         String ipv4AddressOfNodeAtEND2 = elementFields[8];
@@ -454,7 +353,7 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
     }
 
     /**
-     * This method reset all the values and attribues of this internal link as
+     * This method reset all the values and attribues of this external link as
      * in the moment of its instantiation.
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
@@ -470,46 +369,31 @@ public class TInternalLink extends TLink implements ITimerEventListener, Runnabl
         }
         this.packetsInTransitEntriesLock.setGreen();
         this.deliveredPacketEntriesLock.setRed();
-        bufferedPacketEntriesIterator = this.deliveredPacketsBuffer.iterator();
-        while (bufferedPacketEntriesIterator.hasNext()) {
-            bufferedPacketEntriesIterator.next();
-            bufferedPacketEntriesIterator.remove();
+        Iterator deliveredPacketEntriesIterator = this.deliveredPacketsBuffer.iterator();
+        while (deliveredPacketEntriesIterator.hasNext()) {
+            deliveredPacketEntriesIterator.next();
+            deliveredPacketEntriesIterator.remove();
         }
         this.deliveredPacketEntriesLock.setGreen();
-        // FIX: Do not use harcoded values. Use class constants instead.
-        this.numberOfLSPs = 0;
-        this.numberOfBackupLSPs = 0;
-        setAsBrokenLink(false);
+        this.setAsBrokenLink(false);
     }
 
     /**
      * This method gets the weight of this link to be used in the RABAN routing
-     * algorithm. RABAN operates in internal links, and use some other factor
-     * apart from the link delay to compute the contribution of this link in
-     * thte overall global routing algorithm RABAN.
+     * algorithm. As RABAN does not operates in external links, this methohd
+     * returns the same than the method getWeight().
      *
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
-     * @return The RABAN weight measurement for this link. See "Guarentee of
-     * Service Support (GOS) over MPLS using active techniques" proposal from
-     * additional info.
+     * @return The RABAN weight measurement for this link. For an TExternalLink
+     * it is the link delay.
      * @since 2.0
      */
     @Override
     public long getRABANWeight() {
-        // FIX: Do not use harcoded values. Use class constants instead.
-        long rabanWeight = 0;
-        long delayWeight = this.getDelay();
-        long routingWeightOfNodeAtEnd1 = (long) ((double) (delayWeight * 0.10)) * this.getHeadEndNode().getRoutingWeight();
-        long routingWeightOfNodeAtEnd2 = (long) ((double) (delayWeight * 0.10)) * this.getTailEndNode().getRoutingWeight();
-        long numberOfLSPsWeight = (long) ((double) (delayWeight * 0.05)) * this.numberOfLSPs;
-        long numberOfBackupLSPsWeight = (long) ((double) (delayWeight * 0.05)) * this.numberOfBackupLSPs;
-        long packetsInTransitWeight = (long) ((double) (delayWeight * 0.10)) * this.buffer.size();
-        long subWeight = (long) (routingWeightOfNodeAtEnd1 + routingWeightOfNodeAtEnd2 + numberOfLSPsWeight + numberOfBackupLSPsWeight + packetsInTransitWeight);
-        rabanWeight = (long) ((delayWeight * 0.5) + (subWeight * 0.5));
-        return rabanWeight;
+        // There is no RABAN weight for external links, so, the usual weight is
+        // returned.
+        return this.getWeight();
     }
 
-    private int numberOfLSPs;
-    private int numberOfBackupLSPs;
     private long stepLength;
 }

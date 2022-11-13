@@ -21,7 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Iterator;
-import com.manolodominguez.opensimmpls.scenario.TScenario;
+import com.manolodominguez.opensimmpls.scenario.TScene;
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TNode;
 import java.util.ResourceBundle;
@@ -45,7 +45,7 @@ public class TOSMSaver {
      * @param scenario The TScenario object to be stored in disk.
      * @since 2.0
      */
-    public TOSMSaver(TScenario scenario) {
+    public TOSMSaver(TScene scenario) {
         if (scenario == null) {
             this.logger.error(translations.getString("badArgument"));
             throw new IllegalArgumentException("scenario is null");
@@ -147,7 +147,7 @@ public class TOSMSaver {
         return true;
     }
 
-    private TScenario scenario;
+    private TScene scenario;
     private FileOutputStream outputStream;
     private PrintStream output;
     private ResourceBundle translations;

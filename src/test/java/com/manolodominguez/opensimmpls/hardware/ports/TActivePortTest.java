@@ -20,13 +20,13 @@ import com.manolodominguez.opensimmpls.gui.simulator.JSimulationPanel;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 import com.manolodominguez.opensimmpls.protocols.TMPLSLabel;
 import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
-import com.manolodominguez.opensimmpls.scenario.TExternalLink;
-import com.manolodominguez.opensimmpls.scenario.TInternalLink;
+import com.manolodominguez.opensimmpls.scenario.TOuterLink;
+import com.manolodominguez.opensimmpls.scenario.TInnerLink;
 import com.manolodominguez.opensimmpls.scenario.TActiveLSRNode;
 import com.manolodominguez.opensimmpls.scenario.TLSRNode;
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TLinkConfig;
-import com.manolodominguez.opensimmpls.scenario.TScenario;
+import com.manolodominguez.opensimmpls.scenario.TScene;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
 import java.util.NoSuchElementException;
 import org.junit.jupiter.api.AfterEach;
@@ -67,7 +67,7 @@ public class TActivePortTest {
     @Test
     public void testConstructor() {
         System.out.println("test Constructor");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
@@ -105,7 +105,7 @@ public class TActivePortTest {
     @Test
     public void testConstructorWhenPortIsNegative() {
         System.out.println("test constructor");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
@@ -120,7 +120,7 @@ public class TActivePortTest {
     @Test
     public void testConstructorWhenPortIsOutOfRange() {
         System.out.println("test constructor");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
@@ -135,7 +135,7 @@ public class TActivePortTest {
     @Test
     public void testSetPortSetWheNull() {
         System.out.println("test setPortSet");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
@@ -151,7 +151,7 @@ public class TActivePortTest {
     @Test
     public void testSetPortSet() {
         System.out.println("test setPortSet");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
@@ -166,7 +166,7 @@ public class TActivePortTest {
     @Test
     public void testGetPortSet() {
         System.out.println("test getPortSet");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
@@ -180,7 +180,7 @@ public class TActivePortTest {
     @Test
     public void testSetPortID() {
         System.out.println("test setPortID");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
@@ -195,7 +195,7 @@ public class TActivePortTest {
     @Test
     public void testSetPortIDWhenNegative() {
         System.out.println("test setPortID");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
@@ -211,7 +211,7 @@ public class TActivePortTest {
     @Test
     public void testSetPortIDWhenOutOfRange() {
         System.out.println("test setPortID");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
@@ -227,7 +227,7 @@ public class TActivePortTest {
     @Test
     public void testGetPortID() {
         System.out.println("test getPortID");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
@@ -241,7 +241,7 @@ public class TActivePortTest {
     @Test
     public void testGetPortIDWhenNegative() {
         System.out.println("test getPortID");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
@@ -260,7 +260,7 @@ public class TActivePortTest {
     @Test
     public void testGetPortIDWhenOutOfRange() {
         System.out.println("test getPortID");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
@@ -279,7 +279,7 @@ public class TActivePortTest {
     @Test
     public void testIsAvailable() {
         System.out.println("test isAvailable");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
@@ -293,12 +293,12 @@ public class TActivePortTest {
     @Test
     public void testIsAvailableWhenUnavailable() {
         System.out.println("test isAvailable");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
         TActivePort instance = new TActivePort(portSet, 0);
-        TExternalLink link = new TExternalLink(1, new TLongIDGenerator(), topology);
+        TOuterLink link = new TOuterLink(1, new TLongIDGenerator(), topology);
         instance.setLink(link);
         assertFalse(instance.isAvailable());
     }
@@ -309,12 +309,12 @@ public class TActivePortTest {
     @Test
     public void testSetLink() {
         System.out.println("test setLink");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
         TActivePort instance = new TActivePort(portSet, 0);
-        TExternalLink link = new TExternalLink(1, new TLongIDGenerator(), topology);
+        TOuterLink link = new TOuterLink(1, new TLongIDGenerator(), topology);
         instance.setLink(link);
         assertFalse(instance.isAvailable());
     }
@@ -325,7 +325,7 @@ public class TActivePortTest {
     @Test
     public void testSetLinkWhenNull() {
         System.out.println("test setLink");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
@@ -341,12 +341,12 @@ public class TActivePortTest {
     @Test
     public void testGetLink() {
         System.out.println("test getLink");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
         TActivePort instance = new TActivePort(portSet, 0);
-        TExternalLink link = new TExternalLink(1, new TLongIDGenerator(), topology);
+        TOuterLink link = new TOuterLink(1, new TLongIDGenerator(), topology);
         instance.setLink(link);
         assertTrue(instance.getLink() == link); // Correct. Here both references have to be the same
     }
@@ -357,7 +357,7 @@ public class TActivePortTest {
     @Test
     public void testGetLinkWhenNull() {
         System.out.println("test getLink");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
@@ -372,12 +372,12 @@ public class TActivePortTest {
     public void testDisconnectLink() {
         System.out.println("test disconnectLink");
         boolean worksFine = true;
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
         TActivePort instance = new TActivePort(portSet, 0);
-        TExternalLink link = new TExternalLink(1, new TLongIDGenerator(), topology);
+        TOuterLink link = new TOuterLink(1, new TLongIDGenerator(), topology);
         instance.setLink(link);
         if (instance.getLink() != link) {  // Correct. Here both references have to be the same
             worksFine &= false;
@@ -395,7 +395,7 @@ public class TActivePortTest {
     @Test
     public void testDisconnectLinkWhenNotLinked() {
         System.out.println("test disconnectLink");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TActivePortSet portSet = new TActivePortSet(8, node);
@@ -410,13 +410,13 @@ public class TActivePortTest {
     @Test
     public void testPutPacketOnLinkWhenPacketIsNull() {
         System.out.println("test putPacketOnLink");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode headEndNode = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology); //Creates a node
         headEndNode.setName("Dummy head end node name");
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
-        TInternalLink internalLink = new TInternalLink(3, new TLongIDGenerator(), topology);  //Creats a link
+        TInnerLink internalLink = new TInnerLink(3, new TLongIDGenerator(), topology);  //Creats a link
         topology.addNode(headEndNode); // Adds head end node to the topology
         topology.addNode(tailEndNode); // Adds tail end node to the topology
         topology.addLink(internalLink); //Adds node to
@@ -456,13 +456,13 @@ public class TActivePortTest {
     @Test
     public void testPutPacketOnLinkWhenOutOfRange1() {
         System.out.println("test putPacketOnLink");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode headEndNode = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology); //Creates a node
         headEndNode.setName("Dummy head end node name");
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
-        TInternalLink internalLink = new TInternalLink(3, new TLongIDGenerator(), topology);  //Creats a link
+        TInnerLink internalLink = new TInnerLink(3, new TLongIDGenerator(), topology);  //Creats a link
         topology.addNode(headEndNode); // Adds head end node to the topology
         topology.addNode(tailEndNode); // Adds tail end node to the topology
         topology.addLink(internalLink); //Adds node to
@@ -505,13 +505,13 @@ public class TActivePortTest {
     @Test
     public void testPutPacketOnLinkWhenOutOfRange2() {
         System.out.println("test putPacketOnLink");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode headEndNode = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology); //Creates a node
         headEndNode.setName("Dummy head end node name");
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
-        TInternalLink internalLink = new TInternalLink(3, new TLongIDGenerator(), topology);  //Creats a link
+        TInnerLink internalLink = new TInnerLink(3, new TLongIDGenerator(), topology);  //Creats a link
         topology.addNode(headEndNode); // Adds head end node to the topology
         topology.addNode(tailEndNode); // Adds tail end node to the topology
         topology.addLink(internalLink); //Adds node to
@@ -554,13 +554,13 @@ public class TActivePortTest {
     @Test
     public void testPutPacketOnLink() {
         System.out.println("test putPacketOnLink");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode headEndNode = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology); //Creates a node
         headEndNode.setName("Dummy head end node name");
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
-        TInternalLink internalLink = new TInternalLink(3, new TLongIDGenerator(), topology);  //Creats a link
+        TInnerLink internalLink = new TInnerLink(3, new TLongIDGenerator(), topology);  //Creats a link
         topology.addNode(headEndNode); // Adds head end node to the topology
         topology.addNode(tailEndNode); // Adds tail end node to the topology
         topology.addLink(internalLink); //Adds node to
@@ -607,7 +607,7 @@ public class TActivePortTest {
     @Test
     public void testGetNextPacketPriorityWhenNoPacketAvailable() {
         System.out.println("getNextPacketPriority");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -623,7 +623,7 @@ public class TActivePortTest {
     @Test
     public void testGetNextPacketPriority() {
         System.out.println("getNextPacketPriority");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -648,7 +648,7 @@ public class TActivePortTest {
     @Test
     public void testSetUnlimitedBuffer() {
         System.out.println("test setUnlimitedBuffer");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology); //Creates a node
         // All ports of this node are set to not unlimited by default constructor.
@@ -670,7 +670,7 @@ public class TActivePortTest {
     @Test
     public void testIsUnlimitedBuffer() {
         System.out.println("test isUnlimitedBuffer");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode node = new TActiveLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology); //Creates a node
         // All ports of this node are set to not unlimited by default constructor.
@@ -692,7 +692,7 @@ public class TActivePortTest {
     @Test
     public void testDiscardPacket() {
         System.out.println("discardPacket");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -712,7 +712,7 @@ public class TActivePortTest {
     @Test
     public void testDiscardPacketWhenPacketIsNull() {
         System.out.println("test discardPacket 2");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -728,7 +728,7 @@ public class TActivePortTest {
     @Test
     public void testAddPacket() {
         System.out.println("addPacket");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -760,7 +760,7 @@ public class TActivePortTest {
     @Test
     public void testAddPacketWhenPacketIsNull() {
         System.out.println("test addPacket");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -778,7 +778,7 @@ public class TActivePortTest {
     @Test
     public void testRunEarlyPacketCatchAndDiscard() {
         System.out.println("runEarlyPacketCatchAndDiscard");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -807,7 +807,7 @@ public class TActivePortTest {
     @Test
     public void testRunEarlyPacketCatchAndDiscardWhenPacketIsNull() {
         System.out.println("runEarlyPacketCatchAndDiscard");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -826,7 +826,7 @@ public class TActivePortTest {
     @Test
     public void testRunEarlyPacketCatchAndDiscardWhenBufferIsFull() {
         System.out.println("runEarlyPacketCatchAndDiscard");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -856,7 +856,7 @@ public class TActivePortTest {
     @Test
     public void testReEnqueuePacket() {
         System.out.println("reEnqueuePacket");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -888,7 +888,7 @@ public class TActivePortTest {
     @Test
     public void testReEnqueuePacketWhenPacketIsNull() {
         System.out.println("test reEnqueuePacket");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -906,7 +906,7 @@ public class TActivePortTest {
     @Test
     public void testGetPacket() {
         System.out.println("getPacket");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -942,7 +942,7 @@ public class TActivePortTest {
     @Test
     public void testGetPacketWhenNoPacketAvailable() {
         System.out.println("test getPacket");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -961,7 +961,7 @@ public class TActivePortTest {
     @Test
     public void testCanSwitchPacket() {
         System.out.println("canSwitchPacket");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -988,7 +988,7 @@ public class TActivePortTest {
     @Test
     public void testGetCongestionLevel() {
         System.out.println("getCongestionLevel");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -1013,7 +1013,7 @@ public class TActivePortTest {
     @Test
     public void testGetCongestionLevelWhenUnlimited() {
         System.out.println("test getCongestionLevel");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -1039,7 +1039,7 @@ public class TActivePortTest {
     @Test
     public void testThereIsAPacketWaiting() {
         System.out.println("thereIsAPacketWaiting");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -1064,7 +1064,7 @@ public class TActivePortTest {
     @Test
     public void testThereIsAPacketWaitingWhenNoPacketAwaiting() {
         System.out.println("test thereIsAPacketWaiting");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -1081,7 +1081,7 @@ public class TActivePortTest {
     @Test
     public void testGetOccupancy() {
         System.out.println("getOccupancy");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -1113,7 +1113,7 @@ public class TActivePortTest {
     @Test
     public void testGetNumberOfPackets() {
         System.out.println("getNumberOfPackets");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -1153,7 +1153,7 @@ public class TActivePortTest {
     @Test
     public void testReset() {
         System.out.println("reset");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TActiveLSRNode tailEndNode = new TActiveLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");

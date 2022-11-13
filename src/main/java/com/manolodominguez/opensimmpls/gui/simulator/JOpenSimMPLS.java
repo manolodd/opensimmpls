@@ -18,7 +18,7 @@ package com.manolodominguez.opensimmpls.gui.simulator;
 import com.manolodominguez.opensimmpls.io.osm.TOSMLoader;
 import com.manolodominguez.opensimmpls.resources.images.AvailableImages;
 import com.manolodominguez.opensimmpls.resources.translations.AvailableBundles;
-import com.manolodominguez.opensimmpls.scenario.TScenario;
+import com.manolodominguez.opensimmpls.scenario.TScene;
 import com.manolodominguez.opensimmpls.gui.dialogs.JLicenseWindow;
 import com.manolodominguez.opensimmpls.gui.dialogs.JAboutWindow;
 import com.manolodominguez.opensimmpls.gui.dialogs.JWarningWindow;
@@ -422,7 +422,7 @@ public class JOpenSimMPLS extends JFrame {
                     boolean isLoaded = osmLoader.load(fileChooser.getSelectedFile());
                     if (isLoaded) {
                         try {
-                            TScenario scenario = new TScenario();
+                            TScene scenario = new TScene();
                             scenario = osmLoader.getScenario();
                             String title = scenario.getScenarioFile().getName();
                             this.numOpenScenarios++;

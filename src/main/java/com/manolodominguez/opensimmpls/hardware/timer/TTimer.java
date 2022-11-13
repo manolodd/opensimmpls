@@ -17,8 +17,8 @@ package com.manolodominguez.opensimmpls.hardware.timer;
 
 import java.util.Iterator;
 import java.util.TreeSet;
-import com.manolodominguez.opensimmpls.scenario.TExternalLink;
-import com.manolodominguez.opensimmpls.scenario.TInternalLink;
+import com.manolodominguez.opensimmpls.scenario.TOuterLink;
+import com.manolodominguez.opensimmpls.scenario.TInnerLink;
 import com.manolodominguez.opensimmpls.scenario.TActiveLERNode;
 import com.manolodominguez.opensimmpls.scenario.TLERNode;
 import com.manolodominguez.opensimmpls.scenario.TActiveLSRNode;
@@ -278,11 +278,11 @@ public class TTimer implements Runnable {
             linkAux = (TLink) linksIterator.next();
             switch (linkAux.getLinkType()) {
                 case TLink.EXTERNAL_LINK: {
-                    linkAux = (TExternalLink) linkAux;
+                    linkAux = (TOuterLink) linkAux;
                     break;
                 }
                 case TLink.INTERNAL_LINK: {
-                    linkAux = (TInternalLink) linkAux;
+                    linkAux = (TInnerLink) linkAux;
                     break;
                 }
             }

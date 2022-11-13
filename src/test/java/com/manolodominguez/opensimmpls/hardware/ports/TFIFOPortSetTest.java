@@ -9,13 +9,13 @@ import com.manolodominguez.opensimmpls.commons.TLongIDGenerator;
 import com.manolodominguez.opensimmpls.gui.simulator.JSimulationPanel;
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
 import com.manolodominguez.opensimmpls.protocols.TMPLSPDU;
-import com.manolodominguez.opensimmpls.scenario.TExternalLink;
-import com.manolodominguez.opensimmpls.scenario.TInternalLink;
+import com.manolodominguez.opensimmpls.scenario.TOuterLink;
+import com.manolodominguez.opensimmpls.scenario.TInnerLink;
 import com.manolodominguez.opensimmpls.scenario.TLERNode;
 import com.manolodominguez.opensimmpls.scenario.TLSRNode;
 import com.manolodominguez.opensimmpls.scenario.TLink;
 import com.manolodominguez.opensimmpls.scenario.TLinkConfig;
-import com.manolodominguez.opensimmpls.scenario.TScenario;
+import com.manolodominguez.opensimmpls.scenario.TScene;
 import com.manolodominguez.opensimmpls.scenario.TTopology;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
@@ -55,7 +55,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testConstructor() {
         System.out.println("test constructor");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         // We set 8 ports for the ports set and also give the created node as 
@@ -87,7 +87,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testConstructorWhenNumberOfPortsNegative() {
         System.out.println("test constructor");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         // We set -1 ports for the ports set and this should throws an exception
@@ -115,7 +115,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testIncreasePortSetOccupancy() {
         System.out.println("increasePortSetOccupancy");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node); // Occupancy is 0 here
@@ -129,7 +129,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testIncreasePortSetOccupancyWhenNegativeIncrement() {
         System.out.println("increasePortSetOccupancy");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node); // Occupancy is 0 here
@@ -144,7 +144,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testDecreasePortSetOccupancy() {
         System.out.println("test decreasePortSetOccupancy");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node); // Occupancy is 0 here
@@ -159,7 +159,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testDecreasePortSetOccupancyWhenNegativeDecrease() {
         System.out.println("test decreasePortSetOccupancy");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node); // Occupancy is 0 here
@@ -175,7 +175,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testSetPortSetOccupancySize() {
         System.out.println("test setPortSetOccupancySize");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node); // Occupancy is 0 here
@@ -189,7 +189,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testSetPortSetOccupancySizeWhenNegative() {
         System.out.println("test setPortSetOccupancySize");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node); // Occupancy is 0 here
@@ -204,7 +204,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetPortSetOccupancy() {
         System.out.println("test getPortSetOccupancy");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node); // Occupancy is 0 here
@@ -218,7 +218,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testIsCongestedArtificially() {
         System.out.println("test isCongestedArtificially");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node); // Occupancy is 0 here
@@ -240,7 +240,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetNumberOfPorts() {
         System.out.println("test getNumberOfPorts");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(5, node); // sets 5 ports
@@ -253,7 +253,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetParentNode() {
         System.out.println("test getParentNode");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
@@ -266,7 +266,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testSetUnlimitedBuffer() {
         System.out.println("test setUnlimitedBuffer");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node); // By default, it is not unlimited
@@ -292,7 +292,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetPort() {
         System.out.println("test getPort");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node); // By default, it is not unlimited
@@ -305,7 +305,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetPortWhenOutOfRange1() {
         System.out.println("test getPort");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node); // By default, it is not unlimited
@@ -320,7 +320,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetPortWhenOutOfRange2() {
         System.out.println("test getPort");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node); // By default, it is not unlimited
@@ -335,7 +335,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testSetBufferSizeInMB() {
         System.out.println("test setBufferSizeInMB");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
@@ -349,7 +349,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testSetBufferSizeInMBWhenNegative() {
         System.out.println("test setBufferSizeInMB");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
@@ -364,7 +364,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetBufferSizeInMBytes() {
         System.out.println("getBufferSizeInMBytes");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLSRNode node = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
@@ -385,11 +385,11 @@ public class TFIFOPortSetTest {
     @Test
     public void testIsAvailable() {
         System.out.println("test isAvailable");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
-        TExternalLink link = new TExternalLink(1, new TLongIDGenerator(), topology);
+        TOuterLink link = new TOuterLink(1, new TLongIDGenerator(), topology);
         boolean worksFine = true;
         if (!instance.getPort(3).isAvailable()) { // By default all ports ara available
             worksFine &= false;
@@ -407,7 +407,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testIsAvailableWhenOutOfRange1() {
         System.out.println("test isAvailable");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
@@ -422,7 +422,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testIsAvailableWhenOutOfRange2() {
         System.out.println("test isAvailable");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
@@ -437,11 +437,11 @@ public class TFIFOPortSetTest {
     @Test
     public void testHasAvailablePorts() {
         System.out.println("test hasAvailablePorts");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
-        TExternalLink link = new TExternalLink(1, new TLongIDGenerator(), topology);
+        TOuterLink link = new TOuterLink(1, new TLongIDGenerator(), topology);
         boolean worksFine = true;
         if (!instance.hasAvailablePorts()) { // By default all ports are available
             worksFine &= false;
@@ -461,11 +461,11 @@ public class TFIFOPortSetTest {
     @Test
     public void testConnectLinkToPort() {
         System.out.println("test connectLinkToPort");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
-        TExternalLink link = new TExternalLink(1, new TLongIDGenerator(), topology);
+        TOuterLink link = new TOuterLink(1, new TLongIDGenerator(), topology);
         boolean worksFine = true;
         if (!instance.hasAvailablePorts()) { // By default all ports are available
             worksFine &= false;
@@ -485,11 +485,11 @@ public class TFIFOPortSetTest {
     @Test
     public void testConnectLinkToPortWhenOutOfRange1() {
         System.out.println("test connectLinkToPort");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
-        TExternalLink link = new TExternalLink(1, new TLongIDGenerator(), topology);
+        TOuterLink link = new TOuterLink(1, new TLongIDGenerator(), topology);
         assertThrows(IllegalArgumentException.class, () -> {
             instance.connectLinkToPort(link, -1); // There are 8 ports (0 to 7) so, this causes an exception
         });
@@ -501,11 +501,11 @@ public class TFIFOPortSetTest {
     @Test
     public void testConnectLinkToPortWhenOutOfRange2() {
         System.out.println("test connectLinkToPort");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
-        TExternalLink link = new TExternalLink(1, new TLongIDGenerator(), topology);
+        TOuterLink link = new TOuterLink(1, new TLongIDGenerator(), topology);
         assertThrows(IllegalArgumentException.class, () -> {
             instance.connectLinkToPort(link, 8); // There are 8 ports (0 to 7) so, this causes an exception
         });
@@ -517,7 +517,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testConnectLinkToPortWhenLinkIsNull() {
         System.out.println("test connectLinkToPort");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
@@ -532,11 +532,11 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetLinkConnectedToPort() {
         System.out.println("test getLinkConnectedToPort");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
-        TExternalLink link = new TExternalLink(1, new TLongIDGenerator(), topology);
+        TOuterLink link = new TOuterLink(1, new TLongIDGenerator(), topology);
         boolean worksFine = true;
         for (int i = 0; i < instance.getNumberOfPorts(); i++) {
             instance.connectLinkToPort(link, i); // set all ports as unavailable
@@ -555,7 +555,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetLinkConnectedToPortWhnOutOfRange1() {
         System.out.println("test getLinkConnectedToPort");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
@@ -570,7 +570,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetLinkConnectedToPortWhnOutOfRange2() {
         System.out.println("test getLinkConnectedToPort");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
@@ -585,11 +585,11 @@ public class TFIFOPortSetTest {
     @Test
     public void testDisconnectLinkFromPort() {
         System.out.println("test disconnectLinkFromPort");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
-        TExternalLink link = new TExternalLink(1, new TLongIDGenerator(), topology);
+        TOuterLink link = new TOuterLink(1, new TLongIDGenerator(), topology);
         boolean worksFine = true;
         for (int i = 0; i < instance.getNumberOfPorts(); i++) {
             instance.connectLinkToPort(link, i); // set all ports as unavailable
@@ -609,7 +609,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testDisconnectLinkFromPortWhenOutOfRange1() {
         System.out.println("test disconnectLinkFromPort");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
@@ -624,7 +624,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testDisconnectLinkFromPortWhenOutOfRange2() {
         System.out.println("test disconnectLinkFromPort");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
@@ -639,7 +639,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetNextPacket() {
         System.out.println("getNextPacket");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TLERNode tailEndNode = new TLERNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -672,7 +672,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetNextPacketWhenNoPacketAwaiting() {
         System.out.println("getNextPacket");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
@@ -685,7 +685,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testIsThereAnyPacketToSwitch() {
         System.out.println("isThereAnyPacketToSwitch");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TLERNode tailEndNode = new TLERNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -706,7 +706,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testIsThereAnyPacketToSwitchWhenThereIsNotAPacket() {
         System.out.println("isThereAnyPacketToSwitch");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
@@ -719,7 +719,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testIsThereAnyPacketToRoute() {
         System.out.println("isThereAnyPacketToRoute");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TLERNode tailEndNode = new TLERNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -740,7 +740,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testIsThereAnyPacketToRouteWhenThereIsNotAPacket() {
         System.out.println("isThereAnyPacketToRoute");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
@@ -753,7 +753,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testCanSwitchPacket() {
         System.out.println("canSwitchPacket");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -773,7 +773,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testCanSwitchPacketWhenOutOfRange() {
         System.out.println("canSwitchPacket");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -795,7 +795,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testCanSwitchPacketWhenCannot() {
         System.out.println("canSwitchPacket");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -815,7 +815,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testSkipPort() {
         System.out.println("skipPort");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
@@ -833,7 +833,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testSkipPortWhenNumberOfPortsIsReached() {
         System.out.println("skipPort");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
@@ -856,7 +856,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetReadPort() {
         System.out.println("getReadPort");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);
@@ -875,7 +875,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetLocalPortConnectedToANodeWithIPv4Address() {
         System.out.println("getLocalPortConnectedToANodeWithIPv4Address");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TLSRNode parentNode = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology); //Creates a node
         TLSRNode anotherNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
@@ -884,7 +884,7 @@ public class TFIFOPortSetTest {
         topology.addNode(parentNode); // Adds tail end node to the topology
         topology.addNode(anotherNode); // Adds tail end node to the topology
 
-        TInternalLink internalLink = new TInternalLink(3, new TLongIDGenerator(), topology);  //Creats a link
+        TInnerLink internalLink = new TInnerLink(3, new TLongIDGenerator(), topology);  //Creats a link
 
         TLinkConfig linkConfig = new TLinkConfig(); // Creates a link configuration object
         linkConfig.setName("Dummy link name");
@@ -917,7 +917,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetLocalPortConnectedToANodeWithIPv4AddressWhenItDoesNotExist() {
         System.out.println("getLocalPortConnectedToANodeWithIPv4Address");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TLSRNode parentNode = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology); //Creates a node
         TLSRNode anotherNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
@@ -926,7 +926,7 @@ public class TFIFOPortSetTest {
         topology.addNode(parentNode); // Adds tail end node to the topology
         topology.addNode(anotherNode); // Adds tail end node to the topology
 
-        TInternalLink internalLink = new TInternalLink(3, new TLongIDGenerator(), topology);  //Creats a link
+        TInnerLink internalLink = new TInnerLink(3, new TLongIDGenerator(), topology);  //Creats a link
 
         TLinkConfig linkConfig = new TLinkConfig(); // Creates a link configuration object
         linkConfig.setName("Dummy link name");
@@ -960,7 +960,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetIPv4OfNodeLinkedTo() {
         System.out.println("getIPv4OfNodeLinkedTo");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TLSRNode parentNode = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology); //Creates a node
         TLSRNode anotherNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
@@ -969,7 +969,7 @@ public class TFIFOPortSetTest {
         topology.addNode(parentNode); // Adds tail end node to the topology
         topology.addNode(anotherNode); // Adds tail end node to the topology
 
-        TInternalLink internalLink = new TInternalLink(3, new TLongIDGenerator(), topology);  //Creats a link
+        TInnerLink internalLink = new TInnerLink(3, new TLongIDGenerator(), topology);  //Creats a link
 
         TLinkConfig linkConfig = new TLinkConfig(); // Creates a link configuration object
         linkConfig.setName("Dummy link name");
@@ -1003,7 +1003,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetIPv4OfNodeLinkedToWhenSpecifiedAnAvailablePort() {
         System.out.println("getIPv4OfNodeLinkedTo");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TLSRNode parentNode = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology); //Creates a node
         TLSRNode anotherNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
@@ -1012,7 +1012,7 @@ public class TFIFOPortSetTest {
         topology.addNode(parentNode); // Adds tail end node to the topology
         topology.addNode(anotherNode); // Adds tail end node to the topology
 
-        TInternalLink internalLink = new TInternalLink(3, new TLongIDGenerator(), topology);  //Creats a link
+        TInnerLink internalLink = new TInnerLink(3, new TLongIDGenerator(), topology);  //Creats a link
 
         TLinkConfig linkConfig = new TLinkConfig(); // Creates a link configuration object
         linkConfig.setName("Dummy link name");
@@ -1046,7 +1046,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetIPv4OfNodeLinkedToWhenOutOfRange1() {
         System.out.println("getIPv4OfNodeLinkedTo");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TLSRNode parentNode = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology); //Creates a node
         parentNode.setName("Dummy parent node name");
@@ -1063,7 +1063,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetIPv4OfNodeLinkedToWhenOutOfRange2() {
         System.out.println("getIPv4OfNodeLinkedTo");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TLSRNode parentNode = new TLSRNode(1, "10.0.0.1", new TLongIDGenerator(), topology); //Creates a node
         parentNode.setName("Dummy parent node name");
@@ -1080,7 +1080,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetCongestionLevel() {
         System.out.println("getCongestionLevel");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -1099,7 +1099,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testGetCongestionLevelWhenUnlimited() {
         System.out.println("getCongestionLevel");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TLSRNode tailEndNode = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         tailEndNode.setName("Dummy tail end node name");
@@ -1119,7 +1119,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testReset() {
         System.out.println("reset");
-        TScenario scenario = new TScenario();  //Creates an scenario
+        TScene scenario = new TScene();  //Creates an scenario
         TTopology topology = new TTopology(scenario); //Creates a topology
         TLSRNode instance = new TLSRNode(2, "10.0.0.2", new TLongIDGenerator(), topology); //Creates a node
         instance.setName("Dummy tail end node name");
@@ -1170,7 +1170,7 @@ public class TFIFOPortSetTest {
     @Test
     public void testSetArtificiallyCongested() {
         System.out.println("setArtificiallyCongested");
-        TScenario scenario = new TScenario();
+        TScene scenario = new TScene();
         TTopology topology = new TTopology(scenario);
         TLERNode node = new TLERNode(1, "10.0.0.1", new TLongIDGenerator(), topology);
         TFIFOPortSet instance = new TFIFOPortSet(8, node);

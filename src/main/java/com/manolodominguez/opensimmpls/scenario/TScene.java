@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
  * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
  * @version 2.0
  */
-public class TScenario {
+public class TScene {
 
     /**
      * This is the constructor of the class. It creates a new instance of
@@ -35,7 +35,7 @@ public class TScenario {
      * @author Manuel Domínguez Dorado - ingeniero@ManoloDominguez.com
      * @since 2.0
      */
-    public TScenario() {
+    public TScene() {
         // FIX: Use class constants instead of harcoded values.
         this.topology = new TTopology(this);
         this.simulation = new TSimulation(this);
