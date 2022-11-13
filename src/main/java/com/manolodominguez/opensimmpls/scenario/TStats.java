@@ -16,7 +16,6 @@
 package com.manolodominguez.opensimmpls.scenario;
 
 import com.manolodominguez.opensimmpls.protocols.TAbstractPDU;
-import java.util.ResourceBundle;
 import org.jfree.data.general.AbstractDataset;
 
 /**
