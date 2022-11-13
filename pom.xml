@@ -5,11 +5,11 @@
         <jfreechart.version>1.5.3</jfreechart.version>
         <miglayout-swing.version>11.0</miglayout-swing.version>
         <miglayout-core.version>11.0</miglayout-core.version>
-        <lsf4j-api.version>2.0.0-alpha6</lsf4j-api.version>
-        <lsf4j-simple.version>2.0.0-alpha6</lsf4j-simple.version>
-        <absolutelayout.version>RELEASE126</absolutelayout.version>
+        <lsf4j-api.version>2.0.3</lsf4j-api.version>
+        <lsf4j-simple.version>2.0.3</lsf4j-simple.version>
+        <absolutelayout.version>RELEASE150</absolutelayout.version>
         <!--- Dependency for testing -->
-        <junit-jupiter-engine.version>5.8.2</junit-jupiter-engine.version>
+        <junit-jupiter-engine.version>5.9.1</junit-jupiter-engine.version>
         <!-- Maven plugins versions -->
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <maven.enforcer.plugin.version>3.0.0-M3</maven.enforcer.plugin.version>
@@ -20,7 +20,7 @@
         <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
         <jacoco.maven.plugin.version>0.8.7</jacoco.maven.plugin.version>
         <maven.assembly.plugin.version>3.3.0</maven.assembly.plugin.version>
-        <openlrae.maven.plugin>2.2</openlrae.maven.plugin>
+        <openlrae.maven.plugin>3.1</openlrae.maven.plugin>
         <!--- Build parameters -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>9</maven.compiler.release> 
