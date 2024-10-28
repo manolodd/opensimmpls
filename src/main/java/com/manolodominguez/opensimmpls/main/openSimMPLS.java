@@ -44,6 +44,8 @@ public class openSimMPLS {
      * @since 2.0
      */
     public static void main(String args[]) {
+        // Enable text antialiasing
+        System.setProperty("awt.useSystemAAFontSettings", "on");
         translations = ResourceBundle.getBundle(AvailableBundles.MAIN_OPENSIMMPLS.getPath());
         try {
             boolean nimbusSet = false;
