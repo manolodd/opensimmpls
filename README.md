@@ -3,12 +3,10 @@
 ## Master branch
 
 [![Build Status](https://img.shields.io/travis/com/manolodd/opensimmpls/master)](https://app.travis-ci.com/github/manolodd/opensimmpls/builds)
-[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=manolodd_opensimmpls&branch=master&metric=alert_status#.svg)](https://sonarcloud.io/dashboard?id=manolodd_opensimmpls)
 
 ## Develop branch
 
 [![Build Status](https://img.shields.io/travis/com/manolodd/opensimmpls/development)](https://app.travis-ci.com/github/manolodd/opensimmpls/builds)
-[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=manolodd_opensimmpls&branch=development&metric=alert_status#.svg)](https://sonarcloud.io/dashboard?branch=development&id=manolodd_opensimmpls)
 
 # THE PROJECT
 
@@ -37,14 +35,10 @@ It supports standard MPLS operation as well as GoS/MPLS operation. See "Guarante
     
  - Manuel Domínguez-Dorado - <ingeniero@ManoloDominguez.com>
    
-## Other collaborators (only for release 1.0):
-
- - Javier Carmona Murillo - <jcarmur@unex.es>
-    
-    
+   
 Please, refer always to the project home page at:
 
- - http://opensimmpls.manolodominguez.com/
+ - https://opensimmpls.manolodominguez.com
 
 # COMPILING FROM SOURCES
 
