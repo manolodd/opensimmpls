@@ -53,7 +53,7 @@ Anyway, please, refer always to the official project home page at:
 - <b>OpenSimMPLS 2.4-SNAPSHOT</b> (develop branch) - Apache-2.0.
 
 ## Binary releases:
- 
+
 - <b>OpenSimMPLS 2.3</b> (current, master branch) - Apache-2.0.
 - <b>OpenSimMPLS 2.0 - 2.2</b> - Apache-2.0.
 - <b>OpenSimMPLS 1.1</b> - GPLv3.0-or-later.
@@ -67,32 +67,38 @@ Anyway, please, refer always to the official project home page at:
 
 # COMPILING FROM SOURCES
 
-The best option is to download latest compiled stable releases from the releases section of this repository. However, if you want to test new features (please, do it and give feedback), you will need to compile the project from sources. Follow these steps:
+The best option is to download the latest compiled stable releases from the releases section of this repository. However, if you want to test new features (please, do it and give feedback), you will need to compile the project from sources. Follow these steps:
 
- - Clone the OpenSimMPLS repo: 
+- Clone the OpenSimMPLS repo:
+
 ```console
 git clone https://github.com/manolodd/opensimmpls.git
 ```
- - Compile the code and obtain a binary jar including all you need (you will need to install Maven before):
+
+- Compile the code and obtain a binary jar including all you need (you will need to install Maven before):
+
 ```console
 cd opensimmpls
 mvn package
 ```
- - The jar file will be located in "target" directory.
+
+- The jar file will be located in "target" directory.
+
 ```console
 cd target
 ```
+
 - Now, run the simulator:
+
 ```console
 java -jar openSimMPLS-{YourVersion}-with-dependencies.jar
 ```
-- Need some scenarios to try? There is not problem!! You'll find them at the examples folder (root of your cloned repository). You can also download these examples, for your OpenSimMPLS version, in the Releases section of this repository.
 
+- Need some scenarios to try? That is not a problem!! You'll find them at the examples folder (root of your cloned repository). You can also download these examples, for your OpenSimMPLS version, in the Releases section of this repository.
 
 # How to use OpenSimMPLS
 
 You can open a quick start guide directly from the simulator GUI. However, you can find the same guide in some languages at https://github.com/manolodd/opensimmpls/tree/master/src/main/resources/com/manolodominguez/opensimmpls/resources/guides
-
 
 # THIRD-PARTY COMPONENTS
 
@@ -108,37 +114,36 @@ OpenSimMPLS uses third-party components each one of them having its own OSS lice
 
 Thanks folks!
 
-
 # HOW TO CONTRIBUTE
 
-OpenSimMPLS is opensource software. I encourage you to modify it as much as possible; but I would like you to send this modifications back and, hence, became an OpenSimMPLS contributor. In this way, all the people will benefit from them as you are doing downloading and using OpenSimMPLS now.
+OpenSimMPLS is opensource software. I encourage you to modify it as much as possible; but I would like you to send this modifications back and, hence, become an OpenSimMPLS contributor. In this way, all the people will benefit from them as you are doing downloading and using OpenSimMPLS now.
 
 If you want to contribute to OpenSimMPLS project, follow these instructions:
 
- - Log in to your GitHub account.
- - Look for OpenSimMPLS project.
- - Select the <b>development branch</b> of OpenSimMPLS and create a fork in your own GitHub repository.
- - Clone <b>your</b> OpenSimMPLS repository to your PC or laptop.
- - Do all modifications in local, file additions or deletions, modifications, commits...
- - Push your modifications to <b>your</b> remote github OpenSimMPLS repository.
- - Go again to yout GitHub account, choose your OpenSimMPLS repository and click on the tab "Pull requests".
- - Then, click on the green button at the right "New pull request". This will guide you to make a pull request (send your modifications on your own OpenSimMPLS repository to OpenSimMPLS main repository from where you did your fork at the beginning). 
- - Choose the development branch of manolodd/OpenSimMPLS as base branch to merge to. Then "Create pull request" (give a title and a description, please).
- - That's all; I will have your contribution and I will try to merge it into the development branch of OpenSimMPLS. Please, comment your contribution as much as possible; I have to be able to understand your contribution.
+- Log in to your GitHub account.
+- Look for OpenSimMPLS project.
+- Select the <b>development branch</b> of OpenSimMPLS and create a fork in your own GitHub repository.
+- Clone <b>your</b> OpenSimMPLS repository to your PC or laptop.
+- Do all modifications in local, file additions or deletions, modifications, commits...
+- Push your modifications to <b>your</b> remote GitHub OpenSimMPLS repository.
+- Go again to your GitHub account, choose your OpenSimMPLS repository and click on the tab "Pull requests".
+- Then, click on the green button at the right "New pull request". This will guide you to make a pull request (send your modifications on your own OpenSimMPLS repository to OpenSimMPLS main repository from where you did your fork at the beginning).
+- Choose the development branch of manolodd/OpenSimMPLS as base branch to merge to. Then "Create pull request" (give a title and a description, please).
+- That's all; I will have your contribution and I will try to merge it into the development branch of OpenSimMPLS. Please, comment your contribution as much as possible; I have to be able to understand your contribution.
 
-REMEMBER!!!! all your contributions have to be compatible with Apache Software License 2.0 and you have to own all rights on them. And no source code contributions has to be compatible to Creative Commons - By.
+REMEMBER!!!! all your contributions have to be compatible with Apache Software License 2.0 and you have to own all rights on them. And no source code contributions have to be compatible with Creative Commons..
 
 # WHAT CAN YOU CONTRIBUTE?
 
-Lot of things. Most people doesn't have the possibility to contribute code. But there are lots of other thigs that are very important too:
+A lot of things. Most people doesn't have the possibility to contribute code. But there are lots of other things that are very important too:
 
- - Source code.
- - Translations.
- - Scenarios already designed.
- - Teaching units. Lots of <b>OpenSimMPLS</b> users are university techers. They use <b>OpenSimMPLS to teach network subjects</b>. If this is your case, share with everybody your teaching units: things you ask your students, exams, exercises based on <b>OpenSimMPLS</b>, and so on.
- - Documentation. Independently of your native language, there is an <b>OpenSimMPLS</b> user that also have the same native language. I've not the possibility of documenting everything, but if you do that, share it!
- - Presentations.
- - New icons and graphics art.
- - Ideas.
+- Source code.
+- Translations.
+- Scenarios already designed.
+- Teaching units. Lots of <b>OpenSimMPLS</b> users are university teachers. They use <b>OpenSimMPLS to teach network subjects</b>. If this is your case, share with everybody your teaching units: things you ask your students, exams, exercises based on <b>OpenSimMPLS</b>, and so on.
+- Documentation. Independently of your native language, there is an <b>OpenSimMPLS</b> user that also has the same native language as you. It is not possible for me to documenting everything, but if you can do it, share it!
+- Presentations.
+- New icons and graphics art.
+- Ideas.
 
 #### Thanks for contributing.
