@@ -28,6 +28,8 @@ Here are some of the scientific works in which OpenSimMPLS has been essential:
 8. Domínguez-Dorado, Manuel; Rodríguez-Pérez, Francisco Javier; González-Sánchez, José Luis. Simulador MPLS para la Innovación Pedagógica en el Área de Ingeniería Telemática. IEEE RITA. Revista Iberoamericana de Tecnologías del Aprendizaje. , vol. 2, no 1, pp. 27-34, 2007, ISSN: 1932-8540.
 9. Domínguez-Dorado, Manuel; Rodríguez-Pérez, Francisco Javier; Carmona-Murillo, Javier; González-Sánchez, José Luis. Educational improvements applying an MPLS network simulator: a technical approach. IEEE MEEM. Multidisciplinary Engineering Education Magazine , vol. 2, no 4, pp. 18-25, 2007, ISSN: 1558-7908.
 
+OpenSimMPLS and the mentioned works continue to be referenced in current international research.
+
 In addition to the authors, others have also written about OpenSimMPLS. For instance:
 
 1. Lucas J. González. Garantía de Servicio sobre MPLS: entrega garantizada. Linux Magazine nº56. Págs. 67-70. ISSN: 1576-4079. Enero, 2010.
