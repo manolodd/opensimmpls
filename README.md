@@ -10,6 +10,8 @@
 
 # THE PROJECT
 
+![OpenSimMPLS logo](src/main/resources/com/manolodominguez/opensimmpls/resources/images/splash_inicio.png)
+
 <b>OpenSimMPLS</b> stands out as a powerful MPLS network simulation tool, designed to be multiplatform and multilingual. Its user-friendly interface makes it an ideal resource for teaching and advanced research activities. Since its inception, it has been utilized to investigate new communication protocols, techniques, and methods related to MPLS and Quality of Service (GoS), as well as in studies on educational innovations across various disciplines. This mature project is employed by universities and companies in over 130 countries, becoming a cornerstone for teaching, research, and MPLS network design. Originally developed in 2004 as part of a research project at the University of Extremadura, OpenSimMPLS has significantly evolved, initially hosted on SourceForge.net and transitioning to a GIT repository on GitHub in 2014. Its established history and ongoing updates ensure its relevance in academic and professional fields, facilitating advancements in the study of modern networks.
 
 It supports standard MPLS operation as well as GoS/MPLS operation. See "Guarantee of Service (GoS) Support Over MPLS using Active Techniques" proposal at http://opensimmpls.manolodominguez.com/content/common/pdf/documentation/gossobrempls.pdf
@@ -25,8 +27,6 @@ Here are some of the scientific works in which OpenSimMPLS has been essential:
 7. Domínguez-Dorado, Manuel; Rodríguez-Pérez, Francisco Javier; González-Sánchez, José Luis. Guarantee of Service (GoS) support over MPLS using Active Techniques. WSEAS Transactions on Computers (WSEAS International Journal) , vol. 3, no 6, pp. 1959-1964, 2004, ISSN: 1109-2750.
 8. Domínguez-Dorado, Manuel; Rodríguez-Pérez, Francisco Javier; González-Sánchez, José Luis. Simulador MPLS para la Innovación Pedagógica en el Área de Ingeniería Telemática. IEEE RITA. Revista Iberoamericana de Tecnologías del Aprendizaje. , vol. 2, no 1, pp. 27-34, 2007, ISSN: 1932-8540.
 9. Domínguez-Dorado, Manuel; Rodríguez-Pérez, Francisco Javier; Carmona-Murillo, Javier; González-Sánchez, José Luis. Educational improvements applying an MPLS network simulator: a technical approach. IEEE MEEM. Multidisciplinary Engineering Education Magazine , vol. 2, no 4, pp. 18-25, 2007, ISSN: 1558-7908.
-
-![OpenSimMPLS logo](src/main/resources/com/manolodominguez/opensimmpls/resources/images/splash_inicio.png)
 
 # LICENSE
 
