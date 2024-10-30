@@ -65,6 +65,16 @@ Anyway, please, refer always to the official project home page at:
     
  - Manuel Domínguez-Dorado - <ingeniero@ManoloDominguez.com>
 
+- Manuel Domínguez-Dorado - <ingeniero@ManoloDominguez.com>
+
+## Other collaborators (only for release 1.0):
+
+- Javier Carmona Murillo - <jcarmur@unex.es>
+
+Please, refer always to the project home page at:
+
+- http://opensimmpls.manolodominguez.com/
+
 # COMPILING FROM SOURCES
 
 The best option is to download the latest compiled stable releases from the releases section of this repository. However, if you want to test new features (please, do it and give feedback), you will need to compile the project from sources. Follow these steps:
