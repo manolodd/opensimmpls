@@ -28,6 +28,22 @@ Here are some of the scientific works in which OpenSimMPLS has been essential:
 8. Domínguez-Dorado, Manuel; Rodríguez-Pérez, Francisco Javier; González-Sánchez, José Luis. Simulador MPLS para la Innovación Pedagógica en el Área de Ingeniería Telemática. IEEE RITA. Revista Iberoamericana de Tecnologías del Aprendizaje. , vol. 2, no 1, pp. 27-34, 2007, ISSN: 1932-8540.
 9. Domínguez-Dorado, Manuel; Rodríguez-Pérez, Francisco Javier; Carmona-Murillo, Javier; González-Sánchez, José Luis. Educational improvements applying an MPLS network simulator: a technical approach. IEEE MEEM. Multidisciplinary Engineering Education Magazine , vol. 2, no 4, pp. 18-25, 2007, ISSN: 1558-7908.
 
+In addition to the authors, others have also written about OpenSimMPLS. For instance:
+
+1. Lucas J. González. Garantía de Servicio sobre MPLS: entrega garantizada. Linux Magazine nº56. Págs. 67-70. ISSN: 1576-4079. Enero, 2010.
+
+Many individuals have produced content, such as YouTube videos, covering OpenSimMPLS, its usage, key features, and more:
+
+https://www.youtube.com/results?search_query=opensimmpls
+
+A quick search on the internet will yield a wealth of references to OpenSimMPLS, including instances where the simulator has been utilized, ready-to-use scenarios, presentations, and more.
+
+https://www.google.com/search?q=opensimmpls
+
+Anyway, please, refer always to the official project home page at:
+
+ - https://opensimmpls.manolodominguez.com
+
 # LICENSE
 
 ## Latest snapshot version being developed:
@@ -46,11 +62,6 @@ Here are some of the scientific works in which OpenSimMPLS has been essential:
 ## Author:
     
  - Manuel Domínguez-Dorado - <ingeniero@ManoloDominguez.com>
-   
-   
-Please, refer always to the project home page at:
-
- - https://opensimmpls.manolodominguez.com
 
 # COMPILING FROM SOURCES
 
