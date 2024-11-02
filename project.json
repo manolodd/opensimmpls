@@ -8,42 +8,42 @@
     "componentbindings": [
         {
             "component": "jfreechart",
-            "version": "1.5.3",
+            "version": "1.5.5",
             "license": "LGPL_2_1_OR_LATER",
             "weight": "NEAR_LOW",
             "link": "DYNAMIC"
         },
         {
             "component": "miglayout-swing",
-            "version": "11.0",
+            "version": "11.4.2",
             "license": "BSD_3_CLAUSE",
             "weight": "NEAR_LOW",
             "link": "DYNAMIC"
         },
         {
             "component": "miglayout-core",
-            "version": "11.0",
+            "version": "11.4.2",
             "license": "BSD_3_CLAUSE",
             "weight": "NEAR_LOW",
             "link": "DYNAMIC"
         },
         {
             "component": "slf4j-api",
-            "version": "2.0.0-alpha6",
+            "version": "2.1.0-alpha1",
             "license": "MIT",
             "weight": "NEAR_LOW",
             "link": "DYNAMIC"
         },
         {
             "component": "slf4j-simple",
-            "version": "2.0.0-alpha6",
+            "version": "2.1.0-alpha1",
             "license": "MIT",
             "weight": "NEAR_LOW",
             "link": "DYNAMIC"
         },
         {
             "component": "AbsoluteLayout",
-            "version": "RELEASE126",
+            "version": "RELEASE230",
             "license": "CDDL_1_0",
             "weight": "NEAR_HIGH",
             "link": "DYNAMIC"

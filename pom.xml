@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <properties>
         <!--- Dependency versions -->
-        <jfreechart.version>1.5.3</jfreechart.version>
-        <miglayout-swing.version>11.0</miglayout-swing.version>
-        <miglayout-core.version>11.0</miglayout-core.version>
-        <lsf4j-api.version>2.0.3</lsf4j-api.version>
-        <lsf4j-simple.version>2.0.3</lsf4j-simple.version>
-        <absolutelayout.version>RELEASE150</absolutelayout.version>
+        <jfreechart.version>1.5.5</jfreechart.version>
+        <miglayout-swing.version>11.4.2</miglayout-swing.version>
+        <miglayout-core.version>11.4.2</miglayout-core.version>
+        <lsf4j-api.version>2.1.0-alpha1</lsf4j-api.version>
+        <lsf4j-simple.version>2.1.0-alpha1</lsf4j-simple.version>
+        <absolutelayout.version>RELEASE230</absolutelayout.version>
         <!--- Dependency for testing -->
         <junit-jupiter-engine.version>5.9.1</junit-jupiter-engine.version>
         <!-- Maven plugins versions -->
