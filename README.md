@@ -63,13 +63,7 @@ Anyway, please, refer always to the official project home page at:
 
 ## Author:
     
- - Manuel Domínguez-Dorado - <ingeniero@ManoloDominguez.com>
-
 - Manuel Domínguez-Dorado - <ingeniero@ManoloDominguez.com>
-
-## Other collaborators (only for release 1.0):
-
-- Javier Carmona Murillo - <jcarmur@unex.es>
 
 Please, refer always to the project home page at:
 
