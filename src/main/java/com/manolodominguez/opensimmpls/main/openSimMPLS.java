@@ -15,6 +15,7 @@
  */
 package com.manolodominguez.opensimmpls.main;
 
+import com.manolodominguez.opensimmpls.commons.TIPv4AddressGenerator;
 import com.manolodominguez.opensimmpls.gui.utils.TImageBroker;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -26,6 +27,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ResourceBundle;
 import javax.swing.SwingUtilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class implements a new OpenSimMPLS network simulator. This is the main
@@ -44,37 +47,42 @@ public class openSimMPLS {
      * @since 2.0
      */
     public static void main(String args[]) {
-        // Enable text antialiasing
-        System.setProperty("awt.useSystemAAFontSettings", "on");
-        translations = ResourceBundle.getBundle(AvailableBundles.MAIN_OPENSIMMPLS.getPath());
-        try {
-            boolean nimbusSet = false;
-            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    nimbusSet = true;
-                    break;
+        if (args.length > 0) {
+            final Logger logger = LoggerFactory.getLogger(openSimMPLS.class);
+            logger.info("OpenSimMPLS GoS/MPLS Network Simulator. Visit https://opensimmpls.manolodominguez.com for additional info.");
+        } else {
+            // Enable text antialiasing
+            System.setProperty("awt.useSystemAAFontSettings", "on");
+            translations = ResourceBundle.getBundle(AvailableBundles.MAIN_OPENSIMMPLS.getPath());
+            try {
+                boolean nimbusSet = false;
+                for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                    if ("Nimbus".equals(info.getName())) {
+                        UIManager.setLookAndFeel(info.getClassName());
+                        nimbusSet = true;
+                        break;
+                    }
                 }
+                if (!nimbusSet) {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                }
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+                // FIX: I189N required
+                System.out.println("An error happened when starting OpenSimMPLS. Cannot set LaF.");
             }
-            if (!nimbusSet) {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
-            // FIX: I189N required
-            System.out.println("An error happened when starting OpenSimMPLS. Cannot set LaF.");
+            splash = new JSplash();
+            SwingUtilities.invokeLater(() -> {
+                splash.setVisible(true);
+            });
+            splash.setMessage(translations.getString("Loading_icons..."));
+            imagesBroker = TImageBroker.getInstance();
+            splash.setMessage(translations.getString("openSimMPLS.generandoInterfaz"));
+            simulator = new JOpenSimMPLS(imagesBroker);
+            Dimension screenDimensions = Toolkit.getDefaultToolkit().getScreenSize();
+            simulator.setBounds(0, 0, screenDimensions.width, screenDimensions.height);
+            simulator.setVisible(true);
+            splash.dispose();
         }
-        splash = new JSplash();
-        SwingUtilities.invokeLater(() -> {
-            splash.setVisible(true);
-        });
-        splash.setMessage(translations.getString("Loading_icons..."));
-        imagesBroker = TImageBroker.getInstance();
-        splash.setMessage(translations.getString("openSimMPLS.generandoInterfaz"));
-        simulator = new JOpenSimMPLS(imagesBroker);
-        Dimension screenDimensions = Toolkit.getDefaultToolkit().getScreenSize();
-        simulator.setBounds(0, 0, screenDimensions.width, screenDimensions.height);
-        simulator.setVisible(true);
-        splash.dispose();
     }
 
     // Variables declaration - do not modify
