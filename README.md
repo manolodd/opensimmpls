@@ -1,5 +1,7 @@
 # PROJECT STATUS (needs Java 9 or later)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14182465.svg)](https://doi.org/10.5281/zenodo.14182465)
+
 ## Master branch
 
 [![Build Status](https://img.shields.io/travis/com/manolodd/opensimmpls/master)](https://app.travis-ci.com/github/manolodd/opensimmpls/builds)
