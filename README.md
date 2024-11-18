@@ -50,12 +50,12 @@ Anyway, please, refer always to the official project home page at:
 
 ## Latest snapshot version being developed:
 
-- <b>OpenSimMPLS 2.4-SNAPSHOT</b> (develop branch) - Apache-2.0.
+- <b>OpenSimMPLS 2.5-SNAPSHOT</b> (develop branch) - Apache-2.0.
 
 ## Binary releases:
 
-- <b>OpenSimMPLS 2.3</b> (current, master branch) - Apache-2.0.
-- <b>OpenSimMPLS 2.0 - 2.2</b> - Apache-2.0.
+- <b>OpenSimMPLS 2.4</b> (current, master branch) - Apache-2.0.
+- <b>OpenSimMPLS 2.0 - 2.3</b> - Apache-2.0.
 - <b>OpenSimMPLS 1.1</b> - GPLv3.0-or-later.
 - <b>OpenSimMPLS 1.0</b> - GPLv2.0-or-later.
 
