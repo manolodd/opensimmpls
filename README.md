@@ -49,7 +49,7 @@ Anyway, please, refer always to the official project home page at:
 
  - https://opensimmpls.manolodominguez.com
 
-# CITE
+## CITE
 
 If you have used OpenSimMPLS in your research, please reference it using the following bibliographic citation:
 
