@@ -49,6 +49,13 @@ Anyway, please, refer always to the official project home page at:
 
  - https://opensimmpls.manolodominguez.com
 
+# CITE
+
+If you have used OpenSimMPLS in your research, please reference it using the following bibliographic citation:
+
+- Domínguez-Dorado, Manuel; Carmona-Murillo, Javier; Cortés-Polo, David; Rodríguez-Pérez, Francisco J.; Galeano-Brajones, Jesús; Calle-Cancho, Jesús. Leveraging OpenSimMPLS: A simulation platform for GoS/MPLS networks in research and education. SoftwareX, Volume 29, 2025, 102074, ISSN 2352-7110, https://doi.org/10.1016/j.softx.2025.102074.
+
+
 # LICENSE
 
 ## Latest snapshot version being developed:
